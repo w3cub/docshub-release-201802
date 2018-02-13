@@ -1,0 +1,117 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Using Kotlin Annotation Processing Tool - Kotlin - W3cubDocs</title>
+  
+  <meta name="description" content=" The Kotlin plugin supports annotation processors like Dagger or DBFlow. In order for them to work with Kotlin classes, apply the kotlin-kapt plugin. ">
+  <meta name="keywords" content="using, kotlin, annotation, processing, tool, -">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/kotlin/docs/reference/kapt/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/kotlin.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/kotlin/" class="_nav-link" title="" style="margin-left:0;">Kotlin</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _kotlin">
+				
+<h1 id="using-kotlin-annotation-processing-tool">Using Kotlin annotation processing tool</h1> <p>The Kotlin plugin supports annotation processors like <em>Dagger</em> or <em>DBFlow</em>. In order for them to work with Kotlin classes, apply the <code>kotlin-kapt</code> plugin.</p> <h2 id="gradle-configuration">Gradle configuration</h2> <pre>apply plugin: 'kotlin-kapt'
+</pre> <p>Or, starting with Kotlin 1.1.1, you can apply it using the plugins DSL:</p> <pre>plugins {
+    id "org.jetbrains.kotlin.kapt" version "&lt;version to use&gt;"
+}
+</pre> <p>Then add the respective dependencies using the <code>kapt</code> configuration in your <code>dependencies</code> block:</p> <pre>dependencies {
+    kapt 'groupId:artifactId:version'
+}
+</pre> <p>If you previously used the <a href="https://bitbucket.org/hvisser/android-apt" target="_blank">android-apt</a> plugin, remove it from your <code>build.gradle</code> file and replace usages of the <code>apt</code> configuration with <code>kapt</code>. If your project contains Java classes, <code>kapt</code> will also take care of them.</p> <p>If you use annotation processors for your <code>androidTest</code> or <code>test</code> sources, the respective <code>kapt</code> configurations are named <code>kaptAndroidTest</code> and <code>kaptTest</code>. Note that <code>kaptAndroidTest</code> and <code>kaptTest</code> extends <code>kapt</code>, so you can just provide the <code>kapt</code> dependency and it will be available both for production sources and tests.</p> <p>Some annotation processors (such as <code>AutoFactory</code>) rely on precise types in declaration signatures. By default, Kapt replaces every unknown type (including types for the generated classes) to <code>NonExistentClass</code>, but you can change this behavior. Add the additional flag to the <code>build.gradle</code> file to enable error type inferring in stubs:</p> <pre>kapt {
+    correctErrorTypes = true
+}
+</pre> <p>Note that this option is experimental and it is disabled by default.</p> <h2 id="maven-configuration-since-kotlin-112">Maven configuration (since Kotlin 1.1.2)</h2> <p>Add an execution of the <code>kapt</code> goal from kotlin-maven-plugin before <code>compile</code>:</p> <pre data-language="xml">&lt;execution&gt;
+    &lt;id&gt;kapt&lt;/id&gt;
+    &lt;goals&gt;
+        &lt;goal&gt;kapt&lt;/goal&gt;
+    &lt;/goals&gt;
+    &lt;configuration&gt;
+        &lt;sourceDirs&gt;
+            &lt;sourceDir&gt;src/main/kotlin&lt;/sourceDir&gt;
+            &lt;sourceDir&gt;src/main/java&lt;/sourceDir&gt;
+        &lt;/sourceDirs&gt;
+        &lt;annotationProcessorPaths&gt;
+            &lt;!-- Specify your annotation processors here. --&gt;
+            &lt;annotationProcessorPath&gt;
+                &lt;groupId&gt;com.google.dagger&lt;/groupId&gt;
+                &lt;artifactId&gt;dagger-compiler&lt;/artifactId&gt;
+                &lt;version&gt;2.9&lt;/version&gt;
+            &lt;/annotationProcessorPath&gt;
+        &lt;/annotationProcessorPaths&gt;
+    &lt;/configuration&gt;
+&lt;/execution&gt;
+</pre> <p>You can find a complete sample project showing the use of Kotlin, Maven and Dagger in the <a href="https://github.com/JetBrains/kotlin-examples/tree/master/maven/dagger-maven-example" target="_blank">Kotlin examples repository</a>.</p> <p>Please note that kapt is still not supported for IntelliJ IDEA’s own build system. Launch the build from the “Maven Projects” toolbar whenever you want to re-run the annotation processing.</p>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2010–2017 JetBrains s.r.o.<br>Licensed under the Apache License, Version 2.0.<br>
+    <a href="https://kotlinlang.org/docs/reference/kapt.html" class="_attribution-link" target="_blank">https://kotlinlang.org/docs/reference/kapt.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

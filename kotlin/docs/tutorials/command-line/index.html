@@ -1,0 +1,105 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Working With the Command Line Compiler - Kotlin - W3cubDocs</title>
+  
+  <meta name="description" content=" Every release ships with a standalone version of the compiler. We can download it from GitHub Releases. The latest release is 1.1.4. ">
+  <meta name="keywords" content="working, with, command, line, compiler, -, kotlin">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/kotlin/docs/tutorials/command-line/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/kotlin.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/kotlin/" class="_nav-link" title="" style="margin-left:0;">Kotlin</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _kotlin">
+				
+<h1> Working with the Command Line Compiler </h1>  This tutorial walks us through creating a Hello World application using the command line compiler. <br> <br> <h3 id="downloading-the-compiler">Downloading the compiler</h3> <p>Every release ships with a standalone version of the compiler. We can download it from <a href="https://github.com/JetBrains/kotlin/releases/tag/v1.1.4" target="_blank">GitHub Releases</a>. The latest release is 1.1.4.</p> <h4 id="manual-install">Manual Install</h4> <p>Unzip the standalone compiler into a directory and optionally add the <code>bin</code> directory to the system path. The <code>bin</code> directory contains the scripts needed to compile and run Kotlin on Windows, OS X and Linux.</p> <h4 id="sdkman">SDKMAN!</h4> <p>An easier way to install Kotlin on UNIX based systems such as OS X, Linux, Cygwin, FreeBSD and Solaris is by using <a href="http://sdkman.io" target="_blank">SDKMAN!</a>. Simply run the following in a terminal and follow any instructions:</p> <pre>   $ curl -s https://get.sdkman.io | bash
+</pre> <p>Next open a new terminal and install Kotlin with:</p> <pre>   $ sdk install kotlin
+</pre> <h4 id="homebrew">Homebrew</h4> <p>Alternatively, on OS X you can install the compiler via <a href="http://brew.sh/" target="_blank">Homebrew</a>.</p> <pre>   $ brew update
+   $ brew install kotlin
+</pre> <h4 id="macports">MacPorts</h4> <p>If you're a <a href="https://www.macports.org/" target="_blank">MacPorts</a> user, you can install the compiler with:</p> <pre>   $ sudo port install kotlin
+</pre> <h3 id="creating-and-running-a-first-application">Creating and running a first application</h3> <ol> <li> <p>Create a simple application in Kotlin that displays Hello, World!. Using our favorite editor, we create a new file called <em>hello.kt</em> with the following:</p> <pre data-language="kotlin">fun main(args: Array&lt;String&gt;) {
+    println("Hello, World!")
+}
+</pre> </li> <li> <p>Compile the application using the Kotlin compiler</p> <pre>$ kotlinc hello.kt -include-runtime -d hello.jar
+</pre> <p>The <code>-d</code> option indicates what we want the output of the compiler to be called and may be either a directory name for class files or a <em>.jar</em> file name. The <code>-include-runtime</code> option makes the resulting <em>.jar</em> file self-contained and runnable by including the Kotlin runtime library in it. If you want to see all available options run</p> <pre>$ kotlinc -help
+</pre> </li> <li> <p>Run the application.</p> <pre>$ java -jar hello.jar
+</pre> </li> </ol> <h3 id="compiling-a-library">Compiling a library</h3> <p>If you're developing a library to be used by other Kotlin applications, you can produce the .jar file without including the Kotlin runtime into it.</p> <pre>   $ kotlinc hello.kt -d hello.jar
+</pre> <p>Since binaries compiled this way depend on the Kotlin runtime you should make sure the latter is present in the classpath whenever your compiled library is used.</p> <p>You can also use the <code>kotlin</code> script to run binaries produced by the Kotlin compiler:</p> <pre>   $ kotlin -classpath hello.jar HelloKt
+</pre> <p><code>HelloKt</code> is the main class name that the Kotlin compiler generates for the file named <code>hello.kt</code>.</p> <h3 id="running-the-repl">Running the REPL</h3> <p>We can run the compiler without parameters to have an interactive shell. We can type any valid Kotlin code and see the results.</p> <p><img alt="Shell" src="data:image/png;base64,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"></p> <h3 id="using-the-command-line-to-run-scripts">Using the command line to run scripts</h3> <p>Kotlin can also be used as a scripting language. A script is a Kotlin source file (.kts) with top level executable code.</p> <pre data-language="kotlin">   import java.io.File
+
+   val folders = File(args[0]).listFiles { file -&gt; file.isDirectory() }
+   folders?.forEach { folder -&gt; println(folder) }
+</pre> <p>To run a script, we just pass the <code>-script</code> option to the compiler with the corresponding script file.</p> <pre>   $ kotlinc -script list_folders.kts &lt;path_to_folder_to_inspect&gt;
+</pre>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2010–2017 JetBrains s.r.o.<br>Licensed under the Apache License, Version 2.0.<br>
+    <a href="https://kotlinlang.org/docs/tutorials/command-line.html" class="_attribution-link" target="_blank">https://kotlinlang.org/docs/tutorials/command-line.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>
