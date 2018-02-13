@@ -1,0 +1,181 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>NetInfo - ReactNative - W3cubDocs</title>
+  
+  <meta name="description" content=" NetInfo exposes info about online&#47;offline status ">
+  <meta name="keywords" content="netinfo, -, reactnative, react_native">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/react_native/netinfo/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/react_native.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/react_native/" class="_nav-link" title="" style="margin-left:0;">ReactNative</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _react_native">
+				
+<h1 id="netinfo">
+NetInfo </h1>
+<p>NetInfo exposes info about online/offline status</p>
+<pre class="prism language-javascript" data-language="javascript">NetInfo.getConnectionInfo().then((connectionInfo) =&gt; {
+  console.log('Initial, type: ' + connectionInfo.type + ', effectiveType: ' + connectionInfo.effectiveType);
+});
+function handleFirstConnectivityChange(connectionInfo) {
+  console.log('First change, type: ' + connectionInfo.type + ', effectiveType: ' + connectionInfo.effectiveType);
+  NetInfo.removeEventListener(
+    'connectionChange',
+    handleFirstConnectivityChange
+  );
+}
+NetInfo.addEventListener(
+  'connectionChange',
+  handleFirstConnectivityChange
+);</pre>
+<h3 id="connectiontype-enum">
+ConnectionType enum </h3>
+<p><code>ConnectionType</code> describes the type of connection the device is using to communicate with the network.</p>
+<p>Cross platform values for <code>ConnectionType</code>: - <code>none</code> - device is offline - <code>wifi</code> - device is online and connected via wifi, or is the iOS simulator - <code>cellular</code> - device is connected via Edge, 3G, WiMax, or LTE - <code>unknown</code> - error case and the network status is unknown</p>
+<p>Android-only values for <code>ConnectionType</code>: - <code>bluetooth</code> - device is connected via Bluetooth - <code>ethernet</code> - device is connected via Ethernet - <code>wimax</code> - device is connected via WiMAX</p>
+<h3 id="effectiveconnectiontype-enum">
+EffectiveConnectionType enum </h3>
+<p>Cross platform values for <code>EffectiveConnectionType</code>: - <code>2g</code> - <code>3g</code> - <code>4g</code> - <code>unknown</code></p>
+<h3 id="android">
+Android </h3>
+<p>To request network info, you need to add the following line to your app's <code>AndroidManifest.xml</code>:</p>
+<p><code>&lt;uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" /&gt;</code></p>
+<h3 id="isconnectionexpensive">
+isConnectionExpensive </h3>
+<p>Available on Android. Detect if the current active connection is metered or not. A network is classified as metered when the user is sensitive to heavy data usage on that connection due to monetary costs, data limitations or battery/performance issues.</p>
+<pre class="prism language-javascript" data-language="javascript">NetInfo.isConnectionExpensive()
+.then(isConnectionExpensive =&gt; {
+  console.log('Connection is ' + (isConnectionExpensive ? 'Expensive' : 'Not Expensive'));
+})
+.catch(error =&gt; {
+  console.error(error);
+});</pre>
+<h3 id="isconnected">
+isConnected </h3>
+<p>Available on all platforms. Asynchronously fetch a boolean to determine internet connectivity.</p>
+<pre class="prism language-javascript" data-language="javascript">NetInfo.isConnected.fetch().then(isConnected =&gt; {
+  console.log('First, is ' + (isConnected ? 'online' : 'offline'));
+});
+function handleFirstConnectivityChange(isConnected) {
+  console.log('Then, is ' + (isConnected ? 'online' : 'offline'));
+  NetInfo.isConnected.removeEventListener(
+    'change',
+    handleFirstConnectivityChange
+  );
+}
+NetInfo.isConnected.addEventListener(
+  'change',
+  handleFirstConnectivityChange
+);</pre>
+<h3 id="connectivity-types-deprecated">
+Connectivity Types (deprecated) </h3>
+<p>The following connectivity types are deprecated. They're used by the deprecated APIs <code>fetch</code> and the <code>change</code> event.</p>
+<p>iOS connectivity types (deprecated): - <code>none</code> - device is offline - <code>wifi</code> - device is online and connected via wifi, or is the iOS simulator - <code>cell</code> - device is connected via Edge, 3G, WiMax, or LTE - <code>unknown</code> - error case and the network status is unknown</p>
+<p>Android connectivity types (deprecated). - <code>NONE</code> - device is offline - <code>BLUETOOTH</code> - The Bluetooth data connection. - <code>DUMMY</code> - Dummy data connection. - <code>ETHERNET</code> - The Ethernet data connection. - <code>MOBILE</code> - The Mobile data connection. - <code>MOBILE_DUN</code> - A DUN-specific Mobile data connection. - <code>MOBILE_HIPRI</code> - A High Priority Mobile data connection. - <code>MOBILE_MMS</code> - An MMS-specific Mobile data connection. - <code>MOBILE_SUPL</code> - A SUPL-specific Mobile data connection. - <code>VPN</code> - A virtual network using one or more native bearers. Requires API Level 21 - <code>WIFI</code> - The WIFI data connection. - <code>WIMAX</code> - The WiMAX data connection. - <code>UNKNOWN</code> - Unknown data connection.</p>
+<p>The rest of the connectivity types are hidden by the Android API, but can be used if necessary.</p>
+<h2 id="methods">
+Methods </h2>
+<h3 class="methodTitle" id="addeventlistener">
+<span class="methodType">static </span>addEventListener<span class="methodType">(eventName, handler)</span> </h3>
+<p>Adds an event handler. Supported events:</p>
+<ul>
+<li>
+<code>connectionChange</code>: Fires when the network status changes. The argument to the event handler is an object with keys:<ul>
+<li>
+<code>type</code>: A <code>ConnectionType</code> (listed above)</li>
+<li>
+<code>effectiveType</code>: An <code>EffectiveConnectionType</code> (listed above)</li>
+</ul>
+</li>
+<li>
+<code>change</code>: This event is deprecated. Listen to <code>connectionChange</code> instead. Fires when the network status changes. The argument to the event handler is one of the deprecated connectivity types listed above.</li>
+</ul>
+<h3 class="methodTitle" id="removeeventlistener">
+<span class="methodType">static </span>removeEventListener<span class="methodType">(eventName, handler)</span> </h3>
+<p>Removes the listener for network status changes.</p>
+<h3 class="methodTitle" id="fetch">
+<span class="methodType">static </span>fetch<span class="methodType">()</span> </h3>
+<p>This function is deprecated. Use <code>getConnectionInfo</code> instead. Returns a promise that resolves with one of the deprecated connectivity types listed above.</p>
+<h3 class="methodTitle" id="getconnectioninfo">
+<span class="methodType">static </span>getConnectionInfo<span class="methodType">()</span> </h3>
+<p>Returns a promise that resolves to an object with <code>type</code> and <code>effectiveType</code> keys whose values are a <code>ConnectionType</code> and an <code>EffectiveConnectionType</code>, (described above), respectively.</p>
+<h3 class="methodTitle" id="isconnectionexpensive">
+<span class="methodType">static </span>isConnectionExpensive<span class="methodType">()</span> </h3>
+<h3 id="properties">
+Properties </h3>
+<h3 class="propTitle" id="isconnected">
+isConnected<code class="propType">: ObjectExpression</code> </h3>
+<p>An object with the same methods as above but the listener receives a boolean which represents the internet connectivity. Use this if you are only interested with whether the device has internet connectivity.</p>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2015–2017 Facebook Inc.<br>Licensed under the Creative Commons Attribution 4.0 International Public License.<br>
+    <a href="https://facebook.github.io/react-native/docs/netinfo.html" class="_attribution-link" target="_blank">https://facebook.github.io/react-native/docs/netinfo.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

@@ -1,0 +1,242 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Handling Touches - ReactNative - W3cubDocs</title>
+  
+  <meta name="description" content="Users interact with mobile apps mainly through touch. They can use a combination of gestures, such as tapping on a button, scrolling a list, or &hellip;">
+  <meta name="keywords" content="handling, touches, -, reactnative, react_native">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/react_native/handling-touches/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/react_native.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/react_native/" class="_nav-link" title="" style="margin-left:0;">ReactNative</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _react_native">
+				
+<h1 id="handling-touches">
+Handling Touches </h1>
+<p>Users interact with mobile apps mainly through touch. They can use a combination of gestures, such as tapping on a button, scrolling a list, or zooming on a map. React Native provides components to handle all sorts of common gestures, as well as a comprehensive <a href="../gesture-responder-system/">gesture responder system</a> to allow for more advanced gesture recognition, but the one component you will most likely be interested in is the basic Button.</p>
+<h2 id="displaying-a-basic-button">
+Displaying a basic button </h2>
+<p><a href="../button/">Button</a> provides a basic button component that is rendered nicely on all platforms. The minimal example to display a button looks like this:</p>
+<pre class="prism language-javascript" data-language="javascript">&lt;Button
+  onPress={() =&gt; { Alert.alert('You tapped the button!')}}
+  title="Press Me"
+/&gt;</pre>
+<p>This will render a blue label on iOS, and a blue rounded rectangle with white text on Android. Pressing the button will call the "onPress" function, which in this case displays an alert popup. If you like, you can specify a "color" prop to change the color of your button.</p>
+<p><img src="data:image/png;base64,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" alt=""></p>
+<p>Go ahead and play around with the <code>Button</code> component using the example below. You can select which platform your app is previewed in by clicking on the toggle in the bottom right, then click on "Tap to Play" to preview the app.</p>
+<div class="mobile-friendly-snack" style="display:none;"><pre class="prism language-javascript" data-language="javascript">import React, { Component } from 'react';
+import { Alert, AppRegistry, Button, StyleSheet, View } from 'react-native';
+
+export default class ButtonBasics extends Component {
+  _onPressButton() {
+    Alert.alert('You tapped the button!')
+  }
+
+  render() {
+    return (
+      &lt;View style={styles.container}&gt;
+        &lt;View style={styles.buttonContainer}&gt;
+          &lt;Button
+            onPress={this._onPressButton}
+            title="Press Me"
+          /&gt;
+        &lt;/View&gt;
+        &lt;View style={styles.buttonContainer}&gt;
+          &lt;Button
+            onPress={this._onPressButton}
+            title="Press Me"
+            color="#841584"
+          /&gt;
+        &lt;/View&gt;
+        &lt;View style={styles.alternativeLayoutButtonContainer}&gt;
+          &lt;Button
+            onPress={this._onPressButton}
+            title="This looks great!"
+          /&gt;
+          &lt;Button
+            onPress={this._onPressButton}
+            title="OK!"
+            color="#841584"
+          /&gt;
+        &lt;/View&gt;
+      &lt;/View&gt;
+    );
+  }
+}
+
+const styles = StyleSheet.create({
+  container: {
+   flex: 1,
+   justifyContent: 'center',
+  },
+  buttonContainer: {
+    margin: 20
+  },
+  alternativeLayoutButtonContainer: {
+    margin: 20,
+    flexDirection: 'row',
+    justifyContent: 'space-between'
+  }
+})
+
+// skip this line if using Create React Native App
+AppRegistry.registerComponent('AwesomeProject', () =&gt; ButtonBasics);</pre></div>
+
+<h2 id="touchables">
+Touchables </h2>
+<p>If the basic button doesn't look right for your app, you can build your own button using any of the "Touchable" components provided by React Native. The "Touchable" components provide the capability to capture tapping gestures, and can display feedback when a gesture is recognized. These components do not provide any default styling, however, so you will need to do a bit of work to get them looking nicely in your app.</p>
+<p>Which "Touchable" component you use will depend on what kind of feedback you want to provide:</p>
+<ul>
+<li><p>Generally, you can use <a href="../touchablehighlight/"><strong>TouchableHighlight</strong></a> anywhere you would use a button or link on web. The view's background will be darkened when the user presses down on the button.</p></li>
+<li><p>You may consider using <a href="../touchablenativefeedback/"><strong>TouchableNativeFeedback</strong></a> on Android to display ink surface reaction ripples that respond to the user's touch.</p></li>
+<li><p><a href="../touchableopacity/"><strong>TouchableOpacity</strong></a> can be used to provide feedback by reducing the opacity of the button, allowing the background to be seen through while the user is pressing down.</p></li>
+<li><p>If you need to handle a tap gesture but you don't want any feedback to be displayed, use <a href="../touchablewithoutfeedback/"><strong>TouchableWithoutFeedback</strong></a>.</p></li>
+</ul>
+<p>In some cases, you may want to detect when a user presses and holds a view for a set amount of time. These long presses can be handled by passing a function to the <code>onLongPress</code> props of any of the "Touchable" components.</p>
+<p>Let's see all of these in action:</p>
+<div class="mobile-friendly-snack" style="display:none;"><pre class="prism language-javascript" data-language="javascript">import React, { Component } from 'react';
+import { Alert, AppRegistry, Platform, StyleSheet, Text, TouchableHighlight, TouchableOpacity, TouchableNativeFeedback, TouchableWithoutFeedback, View } from 'react-native';
+
+export default class Touchables extends Component {
+  _onPressButton() {
+    Alert.alert('You tapped the button!')
+  }
+
+  _onLongPressButton() {
+    Alert.alert('You long-pressed the button!')
+  }
+
+
+  render() {
+    return (
+      &lt;View style={styles.container}&gt;
+        &lt;TouchableHighlight onPress={this._onPressButton} underlayColor="white"&gt;
+          &lt;View style={styles.button}&gt;
+            &lt;Text style={styles.buttonText}&gt;TouchableHighlight&lt;/Text&gt;
+          &lt;/View&gt;
+        &lt;/TouchableHighlight&gt;
+        &lt;TouchableOpacity onPress={this._onPressButton}&gt;
+          &lt;View style={styles.button}&gt;
+            &lt;Text style={styles.buttonText}&gt;TouchableOpacity&lt;/Text&gt;
+          &lt;/View&gt;
+        &lt;/TouchableOpacity&gt;
+        &lt;TouchableNativeFeedback
+            onPress={this._onPressButton}
+            background={Platform.OS === 'android' ? TouchableNativeFeedback.SelectableBackground() : ''}&gt;
+          &lt;View style={styles.button}&gt;
+            &lt;Text style={styles.buttonText}&gt;TouchableNativeFeedback&lt;/Text&gt;
+          &lt;/View&gt;
+        &lt;/TouchableNativeFeedback&gt;
+        &lt;TouchableWithoutFeedback
+            onPress={this._onPressButton}
+            &gt;
+          &lt;View style={styles.button}&gt;
+            &lt;Text style={styles.buttonText}&gt;TouchableWithoutFeedback&lt;/Text&gt;
+          &lt;/View&gt;
+        &lt;/TouchableWithoutFeedback&gt;
+        &lt;TouchableHighlight onPress={this._onPressButton} onLongPress={this._onLongPressButton} underlayColor="white"&gt;
+          &lt;View style={styles.button}&gt;
+            &lt;Text style={styles.buttonText}&gt;Touchable with Long Press&lt;/Text&gt;
+          &lt;/View&gt;
+        &lt;/TouchableHighlight&gt;
+      &lt;/View&gt;
+    );
+  }
+}
+
+const styles = StyleSheet.create({
+  container: {
+    paddingTop: 60,
+    alignItems: 'center'
+  },
+  button: {
+    marginBottom: 30,
+    width: 260,
+    alignItems: 'center',
+    backgroundColor: '#2196F3'
+  },
+  buttonText: {
+    padding: 20,
+    color: 'white'
+  }
+})
+
+// skip this line if using Create React Native App
+AppRegistry.registerComponent('AwesomeProject', () =&gt; Touchables);</pre></div>
+
+<h2 id="scrolling-lists-swiping-pages-and-pinch-to-zoom">
+Scrolling lists, swiping pages, and pinch-to-zoom </h2>
+<p>Another gesture commonly used in mobile apps is the swipe or pan. This gesture allows the user to scroll through a list of items, or swipe through pages of content. In order to handle these and other gestures, we'll learn <a href="../using-a-scrollview/">how to use a ScrollView</a> next.</p>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2015–2017 Facebook Inc.<br>Licensed under the Creative Commons Attribution 4.0 International Public License.<br>
+    <a href="https://facebook.github.io/react-native/docs/handling-touches.html" class="_attribution-link" target="_blank">https://facebook.github.io/react-native/docs/handling-touches.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

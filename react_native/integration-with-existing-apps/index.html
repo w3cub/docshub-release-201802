@@ -1,0 +1,583 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Integration With Existing Apps - ReactNative - W3cubDocs</title>
+  
+  <meta name="description" content="This page only applies to projects made with react-native init or to those made with Create React Native App which have since ejected. For more &hellip;">
+  <meta name="keywords" content="integration, with, existing, apps, -, reactnative, react_native">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/react_native/integration-with-existing-apps/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/react_native.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/react_native/" class="_nav-link" title="" style="margin-left:0;">ReactNative</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _react_native">
+				
+<h1 id="integration-with-existing-apps">
+Integration with Existing Apps </h1>
+<h3>Project with Native Code Required</h3>
+<p>This page only applies to projects made with <code>react-native init</code> or to those made with Create React Native App which have since ejected. For more information about ejecting, please see the <a href="https://github.com/react-community/create-react-native-app/blob/master/EJECTING.md" target="_blank">guide</a> on the Create React Native App repository.</p> <p>React Native is great when you are starting a new mobile app from scratch. However, it also works well for adding a single view or user flow to existing native applications. With a few steps, you can add new React Native based features, screens, views, etc.</p>
+<p>The specific steps are different depending on what platform you're targeting.</p>
+<div class="toggler"> <ul role="tablist"> <li id="objc" class="button-objc" aria-selected="false" role="tab" tabindex="0" aria-controls="objctab" onclick="displayTab('language', 'objc')"> iOS (Objective-C) </li> <li id="swift" class="button-swift" aria-selected="false" role="tab" tabindex="0" aria-controls="swifttab" onclick="displayTab('language', 'swift')"> iOS (Swift) </li> <li id="android" class="button-android" aria-selected="false" role="tab" tabindex="0" aria-controls="androidtab" onclick="displayTab('language', 'android')"> Android (Java) </li> </ul> </div>  <h2 id="key-concepts">
+Key Concepts </h2>
+ <p>The keys to integrating React Native components into your iOS application are to:</p>
+<ol>
+<li>Set up React Native dependencies and directory structure.</li>
+<li>Understand what React Native components you will use in your app.</li>
+<li>Add these components as dependencies using CocoaPods.</li>
+<li>Develop your React Native components in JavaScript.</li>
+<li>Add a <code>RCTRootView</code> to your iOS app. This view will serve as the container for your React Native component.</li>
+<li>Start the React Native server and run your native application.</li>
+<li>Verify that the React Native aspect of your application works as expected.</li>
+</ol>
+ <p>The keys to integrating React Native components into your Android application are to:</p>
+<ol>
+<li>Set up React Native dependencies and directory structure.</li>
+<li>Develop your React Native components in JavaScript.</li>
+<li>Add a <code>ReactRootView</code> to your Android app. This view will serve as the container for your React Native component.</li>
+<li>Start the React Native server and run your native application.</li>
+<li>Verify that the React Native aspect of your application works as expected.</li>
+</ol>
+ <h2 id="prerequisites">
+Prerequisites </h2>
+ <p>Follow the instructions for building apps with native code from the <a href="../">Getting Started guide</a> to configure your development environment for building React Native apps for iOS.</p>
+<h3 id="1-set-up-directory-structure">
+1. Set up directory structure </h3>
+<p>To ensure a smooth experience, create a new folder for your integrated React Native project, then copy your existing iOS project to a <code>/ios</code> subfolder.</p>
+ <p>Follow the instructions for building apps with native code from the <a href="../">Getting Started guide</a> to configure your development environment for building React Native apps for Android.</p>
+<h3 id="1-set-up-directory-structure">
+1. Set up directory structure </h3>
+<p>To ensure a smooth experience, create a new folder for your integrated React Native project, then copy your existing Android project to a <code>/android</code> subfolder.</p>
+ <h3 id="2-install-javascript-dependencies">
+2. Install JavaScript dependencies </h3>
+<p>Go to the root directory for your project and create a new <code>package.json</code> file with the following contents:</p>
+<pre class="prism language-javascript" data-language="javascript">{
+  "name": "MyReactNativeApp",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node node_modules/react-native/local-cli/cli.js start"
+  }
+}</pre>
+<p>Next, you will install the <code>react</code> and <code>react-native</code> packages. Open a terminal or command prompt, then navigate to the root directory for your project and type the following commands:</p>
+<pre class="prism language-javascript" data-language="javascript">$ npm install --save react@16.0.0-beta.5 react-native</pre>
+<blockquote><p>Make sure you use the same React version as specified in the <a href="https://github.com/facebook/react-native/blob/0.49-stable/package.json" target="_blank">React Native <code>package.json</code> file</a>. This will only be necessary as long as React Native depends on a pre-release version of React.</p></blockquote>
+<p>This will create a new <code>/node_modules</code> folder in your project's root directory. This folder stores all the JavaScript dependencies required to build your project.</p>
+ <h3 id="3-install-cocoapods">
+3. Install CocoaPods </h3>
+<p><a href="http://cocoapods.org" target="_blank">CocoaPods</a> is a package management tool for iOS and macOS development. We use it to add the actual React Native framework code locally into your current project.</p>
+<p>We recommend installing CocoaPods using <a href="http://brew.sh/" target="_blank">Homebrew</a>.</p>
+<pre class="prism language-javascript" data-language="javascript">$ brew install cocoapods</pre>
+<blockquote><p>It is technically possible not to use CocoaPods, but that would require manual library and linker additions that would overly complicate this process.</p></blockquote>
+ <h2 id="adding-react-native-to-your-app">
+Adding React Native to your app </h2>
+ <p>Assume the <a href="https://github.com/JoelMarcey/iOS-2048" target="_blank">app for integration</a> is a <a href="https://en.wikipedia.org/wiki/2048_%28video_game%29" target="_blank">2048</a> game. Here is what the main menu of the native application looks like without React Native.</p>
+ <p>Assume the <a href="https://github.com/JoelMarcey/swift-2048" target="_blank">app for integration</a> is a <a href="https://en.wikipedia.org/wiki/2048_%28video_game%29" target="_blank">2048</a> game. Here is what the main menu of the native application looks like without React Native.</p>
+ <p><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAPoAAAG8CAMAAADAREjKAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAByUExURQAAAJqamiiM96ioqBwcHO/x84yMjP///wJ7/vX4+0BAQAYGBj6W9/z9/RB+9sfc81ah8svLy9jn9g8PD1FRUcLCwuDg4HFxcTiN6S0tLdbW1pHB9LLP8LW1tYK062BgYHx8fKbJ7m+u8nGp5Z/E7Wyo6TKzDOEAAARdSURBVHja7dfZetpGAIBRISRGK4h9sVnspO//ih3JdoyTfr0hdfPh819gQArSYTQjkiSSJEmSJEmSJEmSJEnSdeHLho7+FenldrX+uGE0/vi6vezrej+56WD5eXV8+bDtqv/47WrycvDtZR5fxW3tcfvbiflk9LHtNb2tN6H6V9Y6ycZtOcqSwy3f82WeHMMhD/vVvB6Hqtpk/WnkyeVcr8Ow5C5//2U4zn5a2TfX9G0/5OMwWWbzsK+qcN6P1/MwyrJDfLkc/v0xHFfn+N76FnoelqMQL51xGfaXkB3DZD/QQzx0SOLBD59CP+bv9Op1p9Bm/fmFLA7zPI+Py5CVr1NiuayqOrvpJOZJsnp9eoiHyeskawd6m1erkIyzUB0+gz6q3+mvJzTJsizUw+t2PV8vsywJP7DD3L9lzEOZHPLl5WX+xRkWluN8mw30JNm3ITkkm2X4BPphVL3Tx+c431f94L/R46hv4svNOz2MkmR+0zms49Q5VyGbhE0977+JMi4hrxd8fyqH8XIbPmeut+/LXJWd4xVYn/c/6Md+1sdV6OoSry43nkRd13GZjBOqP4EqrJI6GV3T2+S/uNseLz/R5x/v6+Ww7OU/XaHt777PbD5+/qH8jBv4ePKx+f/xk6Ztw5+TX3Po6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6OjoX4befj162TRNl4dQ/Lopb6bp7J7pxWx2Khb/QJ8V38Ns+nTP9Pjwrevpi6ZZhG7WP+m3DOpFfP+xaeJl0SyaLpzSU7/78HhH9Lz4/lgsZmkIz6e3DcPoTx+/F20omlmanh6LWUi7WbO7E3rvKYaVbvfQxidF+bphttu9GKdliPpF2u8xfCfFXdB3u/4ij5ammBYPoXvK07fvJH96KkKZxvfLYUYM9LyYxso7ueCHYey6ENKH6OsewvVcn85eRj1cj3ob7on+nOZP06gupm8r/EP5OH0Mu648XY96SJ/jG3dxX3/5G/906emvONLf3pawPB3u622TPnVlv8MiXhf9Hl3a3cOo/9p08UV/w7fTZ/99QUdHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dH/+PokiRJkiRJkiRJkiRJ0nV/A9/lCbMvHf8GAAAAAElFTkSuQmCC" alt="Before RN Integration"></p>
+<h3 id="configuring-cocoapods-dependencies">
+Configuring CocoaPods dependencies </h3>
+<p>Before you integrate React Native into your application, you will want to decide what parts of the React Native framework you would like to integrate. We will use CocoaPods to specify which of these "subspecs" your app will depend on.</p>
+<p>The list of supported <code>subspec</code>s is available in <a href="https://github.com/facebook/react-native/blob/master/React.podspec" target="_blank"><code>/node_modules/react-native/React.podspec</code></a>. They are generally named by functionality. For example, you will generally always want the <code>Core</code> <code>subspec</code>. That will get you the <code>AppRegistry</code>, <code>StyleSheet</code>, <code>View</code> and other core React Native libraries. If you want to add the React Native <code>Text</code> library (e.g., for <code>&lt;Text&gt;</code> elements), then you will need the <code>RCTText</code> <code>subspec</code>. If you want the <code>Image</code> library (e.g., for <code>&lt;Image&gt;</code> elements), then you will need the <code>RCTImage</code> <code>subspec</code>.</p>
+<p>You can specify which <code>subspec</code>s your app will depend on in a <code>Podfile</code> file. The easiest way to create a <code>Podfile</code> is by running the CocoaPods <code>init</code> command in the <code>/ios</code> subfolder of your project:</p>
+<pre class="prism language-javascript" data-language="javascript">$ pod init</pre>
+<p>The <code>Podfile</code> will contain a boilerplate setup that you will tweak for your integration purposes. In the end, <code>Podfile</code> should look something similar to this:</p>
+ <pre class="prism language-javascript" data-language="javascript"># The target name is most likely the name of your project.
+target 'NumberTileGame' do
+
+  # Your 'node_modules' directory is probably in the root of your project,
+  # but if not, adjust the `:path` accordingly
+  pod 'React', :path =&gt; '../node_modules/react-native', :subspecs =&gt; [
+    'Core',
+    'DevSupport', # Include this to enable In-App Devmenu if RN &gt;= 0.43
+    'RCTText',
+    'RCTNetwork',
+    'RCTWebSocket', # needed for debugging
+    # Add any other subspecs you want to use in your project
+  ]
+  # Explicitly include Yoga if you are using RN &gt;= 0.42.0
+  pod 'yoga', :path =&gt; '../node_modules/react-native/ReactCommon/yoga'
+
+end</pre>
+ <pre class="prism language-javascript" data-language="javascript">source 'https://github.com/CocoaPods/Specs.git'
+
+# Required for Swift apps
+platform :ios, '8.0'
+use_frameworks!
+
+# The target name is most likely the name of your project.
+target 'swift-2048' do
+
+  # Your 'node_modules' directory is probably in the root of your project,
+  # but if not, adjust the `:path` accordingly
+  pod 'React', :path =&gt; '../node_modules/react-native', :subspecs =&gt; [
+    'Core',
+    'CxxBridge', # Include this for RN &gt;= 0.47
+    'DevSupport', # Include this to enable In-App Devmenu if RN &gt;= 0.43
+    'RCTText',
+    'RCTNetwork',
+    'RCTWebSocket', # needed for debugging
+    # Add any other subspecs you want to use in your project
+  ]
+  # Explicitly include Yoga if you are using RN &gt;= 0.42.0
+  pod "yoga", :path =&gt; "../node_modules/react-native/ReactCommon/yoga"
+
+end</pre>
+ <p>After you have created your <code>Podfile</code>, you are ready to install the React Native pod.</p>
+<pre class="prism language-javascript" data-language="javascript">$ pod install</pre>
+<p>You should see output such as:</p>
+<pre class="prism language-javascript" data-language="javascript">Analyzing dependencies
+Fetching podspec for `React` from `../node_modules/react-native`
+Downloading dependencies
+Installing React (0.26.0)
+Generating Pods project
+Integrating client project
+Sending stats
+Pod installation complete! There are 3 dependencies from the Podfile and 1 total pod installed.</pre>
+ <blockquote><p>If you get a warning such as "<em>The <code>swift-2048 [Debug]</code> target overrides the <code>FRAMEWORK_SEARCH_PATHS</code> build setting defined in <code>Pods/Target Support Files/Pods-swift-2048/Pods-swift-2048.debug.xcconfig</code>. This can lead to problems with the CocoaPods installation</em>", then make sure the <code>Framework Search Paths</code> in <code>Build Settings</code> for both <code>Debug</code> and <code>Release</code> only contain <code>$(inherited)</code>.</p></blockquote>
+ <h3 id="code-integration">
+Code integration </h3>
+<p>Now we will actually modify the native iOS application to integrate React Native. For our 2048 sample app, we will add a "High Score" screen in React Native.</p>
+<h4 id="the-react-native-component">
+The React Native component </h4>
+<p>The first bit of code we will write is the actual React Native code for the new "High Score" screen that will be integrated into our application.</p>
+<h5 id="1-create-a-index-js-file">
+1. Create a <code>index.js</code> file </h5>
+<p>First, create an empty <code>index.js</code> file in the root of your React Native project.</p>
+<p><code>index.js</code> is the starting point for React Native applications, and it is always required. It can be a small file that <code>require</code>s other file that are part of your React Native component or application, or it can contain all the code that is needed for it. In our case, we will just put everything in <code>index.js</code>.</p>
+<h5 id="2-add-your-react-native-code">
+2. Add your React Native code </h5>
+<p>In your <code>index.js</code>, create your component. In our sample here, we will add simple <code>&lt;Text&gt;</code> component within a styled <code>&lt;View&gt;</code></p>
+<pre class="prism language-javascript" data-language="javascript">'use strict';
+
+import React from 'react';
+import {
+  AppRegistry,
+  StyleSheet,
+  Text,
+  View
+} from 'react-native';
+
+class RNHighScores extends React.Component {
+  render() {
+    var contents = this.props["scores"].map(
+      score =&gt; &lt;Text key={score.name}&gt;{score.name}:{score.value}{"\n"}&lt;/Text&gt;
+    );
+    return (
+      &lt;View style={styles.container}&gt;
+        &lt;Text style={styles.highScoresTitle}&gt;
+          2048 High Scores!
+        &lt;/Text&gt;
+        &lt;Text style={styles.scores}&gt;
+          {contents}
+        &lt;/Text&gt;
+      &lt;/View&gt;
+    );
+  }
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#FFFFFF',
+  },
+  highScoresTitle: {
+    fontSize: 20,
+    textAlign: 'center',
+    margin: 10,
+  },
+  scores: {
+    textAlign: 'center',
+    color: '#333333',
+    marginBottom: 5,
+  },
+});
+
+// Module name
+AppRegistry.registerComponent('MyReactNativeApp', () =&gt; RNHighScores);</pre>
+<blockquote><p><code>RNHighScores</code> is the name of your module that will be used when you add a view to React Native from within your iOS application.</p></blockquote>
+<h4 id="the-magic-rctrootview">
+The Magic: <code>RCTRootView</code> </h4>
+<p>Now that your React Native component is created via <code>index.js</code>, you need to add that component to a new or existing <code>ViewController</code>. The easiest path to take is to optionally create an event path to your component and then add that component to an existing <code>ViewController</code>.</p>
+<p>We will tie our React Native component with a new native view in the <code>ViewController</code> that will actually host it called <code>RCTRootView</code> .</p>
+<h5 id="1-create-an-event-path">
+1. Create an Event Path </h5>
+<p>You can add a new link on the main game menu to go to the "High Score" React Native page.</p>
+<p><img src="data:image/png;base64,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" alt="Event Path"></p>
+<h5 id="2-event-handler">
+2. Event Handler </h5>
+<p>We will now add an event handler from the menu link. A method will be added to the main <code>ViewController</code> of your application. This is where <code>RCTRootView</code> comes into play.</p>
+<p>When you build a React Native application, you use the React Native packager to create an <code>index.bundle</code> that will be served by the React Native server. Inside <code>index.bundle</code> will be our <code>RNHighScore</code> module. So, we need to point our <code>RCTRootView</code> to the location of the <code>index.bundle</code> resource (via <code>NSURL</code>) and tie it to the module.</p>
+<p>We will, for debugging purposes, log that the event handler was invoked. Then, we will create a string with the location of our React Native code that exists inside the <code>index.bundle</code>. Finally, we will create the main <code>RCTRootView</code>. Notice how we provide <code>RNHighScores</code> as the <code>moduleName</code> that we created <a href="#the-react-native-component">above</a> when writing the code for our React Native component.</p>
+ <p>First <code>import</code> the <code>RCTRootView</code> header.</p>
+<pre class="prism language-objectivec" data-language="objectivec">#import &lt;React/RCTRootView.h&gt;</pre>
+<blockquote><p>The <code>initialProperties</code> are here for illustration purposes so we have some data for our high score screen. In our React Native component, we will use <code>this.props</code> to get access to that data.</p></blockquote>
+<pre class="prism language-objectivec" data-language="objectivec">- (IBAction)highScoreButtonPressed:(id)sender {
+    NSLog(@"High Score Button Pressed");
+    NSURL *jsCodeLocation = [NSURL URLWithString:@"http://localhost:8081/index.bundle?platform=ios"];
+
+    RCTRootView *rootView =
+      [[RCTRootView alloc] initWithBundleURL: jsCodeLocation
+                                  moduleName: @"RNHighScores"
+                           initialProperties:
+                             @{
+                               @"scores" : @[
+                                 @{
+                                   @"name" : @"Alex",
+                                   @"value": @"42"
+                                  },
+                                 @{
+                                   @"name" : @"Joel",
+                                   @"value": @"10"
+                                 }
+                               ]
+                             }
+                               launchOptions: nil];
+    UIViewController *vc = [[UIViewController alloc] init];
+    vc.view = rootView;
+    [self presentViewController:vc animated:YES completion:nil];
+}</pre>
+<blockquote><p>Note that <code>RCTRootView initWithURL</code> starts up a new JSC VM. To save resources and simplify the communication between RN views in different parts of your native app, you can have multiple views powered by React Native that are associated with a single JS runtime. To do that, instead of using <code>[RCTRootView alloc] initWithURL</code>, use <a href="https://github.com/facebook/react-native/blob/master/React/Base/RCTBridge.h#L93" target="_blank"><code>RCTBridge initWithBundleURL</code></a> to create a bridge and then use <code>RCTRootView initWithBridge</code>.</p></blockquote>
+ <p>First <code>import</code> the <code>React</code> library.</p>
+<pre class="prism language-javascript" data-language="javascript">import React</pre>
+<blockquote><p>The <code>initialProperties</code> are here for illustration purposes so we have some data for our high score screen. In our React Native component, we will use <code>this.props</code> to get access to that data.</p></blockquote>
+<pre class="prism language-swift" data-language="swift">@IBAction func highScoreButtonTapped(sender : UIButton) {
+  NSLog("Hello")
+  let jsCodeLocation = URL(string: "http://localhost:8081/index.bundle?platform=ios")
+  let mockData:NSDictionary = ["scores":
+      [
+          ["name":"Alex", "value":"42"],
+          ["name":"Joel", "value":"10"]
+      ]
+  ]
+
+  let rootView = RCTRootView(
+      bundleURL: jsCodeLocation,
+      moduleName: "RNHighScores",
+      initialProperties: mockData as [NSObject : AnyObject],
+      launchOptions: nil
+  )
+  let vc = UIViewController()
+  vc.view = rootView
+  self.present(vc, animated: true, completion: nil)
+}</pre>
+<blockquote><p>Note that <code>RCTRootView bundleURL</code> starts up a new JSC VM. To save resources and simplify the communication between RN views in different parts of your native app, you can have multiple views powered by React Native that are associated with a single JS runtime. To do that, instead of using <code>RCTRootView bundleURL</code>, use <a href="https://github.com/facebook/react-native/blob/master/React/Base/RCTBridge.h#L89" target="_blank"><code>RCTBridge initWithBundleURL</code></a> to create a bridge and then use <code>RCTRootView initWithBridge</code>.</p></blockquote>
+ <blockquote><p>When moving your app to production, the <code>NSURL</code> can point to a pre-bundled file on disk via something like <code>[[NSBundle mainBundle] URLForResource:@"main" withExtension:@"jsbundle"];</code>. You can use the <code>react-native-xcode.sh</code> script in <code>node_modules/react-native/scripts/</code> to generate that pre-bundled file.</p></blockquote>
+ <blockquote><p>When moving your app to production, the <code>NSURL</code> can point to a pre-bundled file on disk via something like <code>let mainBundle = NSBundle(URLForResource: "main" withExtension:"jsbundle")</code>. You can use the <code>react-native-xcode.sh</code> script in <code>node_modules/react-native/scripts/</code> to generate that pre-bundled file.</p></blockquote>
+ <h5 id="3-wire-up">
+3. Wire Up </h5>
+<p>Wire up the new link in the main menu to the newly added event handler method.</p>
+<p><img src="data:image/png;base64,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" alt="Event Path"></p>
+<blockquote><p>One of the easier ways to do this is to open the view in the storyboard and right click on the new link. Select something such as the <code>Touch Up Inside</code> event, drag that to the storyboard and then select the created method from the list provided.</p></blockquote>
+<h3 id="test-your-integration">
+Test your integration </h3>
+<p>You have now done all the basic steps to integrate React Native with your current application. Now we will start the React Native packager to build the <code>index.bundle</code> package and the server running on <code>localhost</code> to serve it.</p>
+<h5 id="1-add-app-transport-security-exception">
+1. Add App Transport Security exception </h5>
+<p>Apple has blocked implicit cleartext HTTP resource loading. So we need to add the following our project's <code>Info.plist</code> (or equivalent) file.</p>
+<pre class="prism language-xml" data-language="xml">&lt;key&gt;NSAppTransportSecurity&lt;/key&gt;
+&lt;dict&gt;
+    &lt;key&gt;NSExceptionDomains&lt;/key&gt;
+    &lt;dict&gt;
+        &lt;key&gt;localhost&lt;/key&gt;
+        &lt;dict&gt;
+            &lt;key&gt;NSTemporaryExceptionAllowsInsecureHTTPLoads&lt;/key&gt;
+            &lt;true/&gt;
+        &lt;/dict&gt;
+    &lt;/dict&gt;
+&lt;/dict&gt;</pre>
+<blockquote><p>App Transport Security is good for your users. Make sure to re-enable it prior to releasing your app for production.</p></blockquote>
+<h5 id="2-run-the-packager">
+2. Run the packager </h5>
+<p>To run your app, you need to first start the development server. To do this, simply run the following command in the root directory of your React Native project:</p>
+<pre class="prism language-javascript" data-language="javascript">$ npm start</pre>
+<h5 id="3-run-the-app">
+3. Run the app </h5>
+<p>If you are using Xcode or your favorite editor, build and run your native iOS application as normal. Alternatively, you can run the app from the command line using:</p>
+<pre class="prism language-javascript" data-language="javascript"># From the root of your project
+$ react-native run-ios</pre>
+<p>In our sample application, you should see the link to the "High Scores" and then when you click on that you will see the rendering of your React Native component.</p>
+<p>Here is the <em>native</em> application home screen:</p>
+<p><img src="data:image/png;base64,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" alt="Home Screen"></p>
+<p>Here is the <em>React Native</em> high score screen:</p>
+<p><img src="data:image/png;base64,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" alt="High Scores"></p>
+<blockquote><p>If you are getting module resolution issues when running your application please see <a href="https://github.com/facebook/react-native/issues/4968" target="_blank">this GitHub issue</a> for information and possible resolution. <a href="https://github.com/facebook/react-native/issues/4968#issuecomment-220941717" target="_blank">This comment</a> seemed to be the latest possible resolution.</p></blockquote>
+<h3 id="see-the-code">
+See the Code </h3>
+ <p>You can examine the code that added the React Native screen to our sample app on <a href="https://github.com/JoelMarcey/iOS-2048/commit/9ae70c7cdd53eb59f5f7c7daab382b0300ed3585" target="_blank">GitHub</a>.</p>
+ <p>You can examine the code that added the React Native screen to our sample app on <a href="https://github.com/JoelMarcey/swift-2048/commit/13272a31ee6dd46dc68b1dcf4eaf16c1a10f5229" target="_blank">GitHub</a>.</p>
+ <h2 id="adding-react-native-to-your-app">
+Adding React Native to your app </h2>
+<h3 id="configuring-maven">
+Configuring maven </h3>
+<p>Add the React Native dependency to your app's <code>build.gradle</code> file:</p>
+<pre class="prism language-javascript" data-language="javascript">dependencies {
+    ...
+    compile "com.facebook.react:react-native:+" // From node_modules.
+}</pre>
+<blockquote><p>If you want to ensure that you are always using a specific React Native version in your native build, replace <code>+</code> with an actual React Native version you've downloaded from <code>npm</code>.</p></blockquote>
+<p>Add an entry for the local React Native maven directory to <code>build.gradle</code>. Be sure to add it to the "allprojects" block:</p>
+<pre class="prism language-javascript" data-language="javascript">allprojects {
+    repositories {
+        ...
+        maven {
+            // All of React Native (JS, Android binaries) is installed from npm
+            url "$rootDir/node_modules/react-native/android"
+        }
+    }
+    ...
+}</pre>
+<blockquote><p>Make sure that the path is correct! You shouldn’t run into any “Failed to resolve: com.facebook.react:react-native:0.x.x" errors after running Gradle sync in Android Studio.</p></blockquote>
+<h3 id="configuring-permissions">
+Configuring permissions </h3>
+<p>Next, make sure you have the Internet permission in your <code>AndroidManifest.xml</code>:</p>
+<pre class="prism language-javascript" data-language="javascript">&lt;uses-permission android:name="android.permission.INTERNET" /&gt;</pre>
+<p>If you need to access to the <code>DevSettingsActivity</code> add to your <code>AndroidManifest.xml</code>:</p>
+<pre class="prism language-javascript" data-language="javascript">&lt;activity android:name="com.facebook.react.devsupport.DevSettingsActivity" /&gt;</pre>
+<p>This is only really used in dev mode when reloading JavaScript from the development server, so you can strip this in release builds if you need to.</p>
+<h3 id="code-integration">
+Code integration </h3>
+<p>Now we will actually modify the native Android application to integrate React Native.</p>
+<h4 id="the-react-native-component">
+The React Native component </h4>
+<p>The first bit of code we will write is the actual React Native code for the new "High Score" screen that will be integrated into our application.</p>
+<h5 id="1-create-a-index-js-file">
+1. Create a <code>index.js</code> file </h5>
+<p>First, create an empty <code>index.js</code> file in the root of your React Native project.</p>
+<p><code>index.js</code> is the starting point for React Native applications, and it is always required. It can be a small file that <code>require</code>s other file that are part of your React Native component or application, or it can contain all the code that is needed for it. In our case, we will just put everything in <code>index.js</code>.</p>
+<h5 id="2-add-your-react-native-code">
+2. Add your React Native code </h5>
+<p>In your <code>index.js</code>, create your component. In our sample here, we will add simple <code>&lt;Text&gt;</code> component within a styled <code>&lt;View&gt;</code>:</p>
+<pre class="prism language-javascript" data-language="javascript">'use strict';
+
+import React from 'react';
+import {
+  AppRegistry,
+  StyleSheet,
+  Text,
+  View
+} from 'react-native';
+
+class HelloWorld extends React.Component {
+  render() {
+    return (
+      &lt;View style={styles.container}&gt;
+        &lt;Text style={styles.hello}&gt;Hello, World&lt;/Text&gt;
+      &lt;/View&gt;
+    )
+  }
+}
+var styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+  },
+  hello: {
+    fontSize: 20,
+    textAlign: 'center',
+    margin: 10,
+  },
+});
+
+AppRegistry.registerComponent('MyReactNativeApp', () =&gt; HelloWorld);</pre>
+<h5 id="3-configure-permissions-for-development-error-overlay">
+3. Configure permissions for development error overlay </h5>
+<p>If your app is targeting the Android <code>API level 23</code> or greater, make sure you have the <code>overlay</code> permission enabled for the development build. You can check it with <code>Settings.canDrawOverlays(this);</code>. This is required in dev builds because react native development errors must be displayed above all the other windows. Due to the new permissions system introduced in the API level 23, the user needs to approve it. This can be achieved by adding the following code to the Activity file in the onCreate() method. OVERLAY_PERMISSION_REQ_CODE is a field of the class which would be responsible for passing the result back to the Activity.</p>
+<pre class="prism language-java" data-language="java">if (Build.VERSION.SDK_INT &gt;= Build.VERSION_CODES.M) {
+    if (!Settings.canDrawOverlays(this)) {
+        Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+                                   Uri.parse("package:" + getPackageName()));
+        startActivityForResult(intent, OVERLAY_PERMISSION_REQ_CODE);
+    }
+}</pre>
+<p>Finally, the <code>onActivityResult()</code> method (as shown in the code below) has to be overridden to handle the permission Accepted or Denied cases for consistent UX.</p>
+<pre class="prism language-java" data-language="java">@Override
+protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    if (requestCode == OVERLAY_PERMISSION_REQ_CODE) {
+        if (Build.VERSION.SDK_INT &gt;= Build.VERSION_CODES.M) {
+            if (!Settings.canDrawOverlays(this)) {
+                // SYSTEM_ALERT_WINDOW permission not granted...
+            }
+        }
+    }
+}</pre>
+<h4 id="the-magic-reactrootview">
+The Magic: <code>ReactRootView</code> </h4>
+<p>You need to add some native code in order to start the React Native runtime and get it to render something. To do this, we're going to create an <code>Activity</code> that creates a <code>ReactRootView</code>, starts a React application inside it and sets it as the main content view.</p>
+<blockquote><p>If you are targetting Android version &lt;5, use the <code>AppCompatActivity</code> class from the <code>com.android.support:appcompat</code> package instead of <code>Activity</code>.</p></blockquote>
+<pre class="prism language-java" data-language="java">public class MyReactActivity extends Activity implements DefaultHardwareBackBtnHandler {
+    private ReactRootView mReactRootView;
+    private ReactInstanceManager mReactInstanceManager;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        mReactRootView = new ReactRootView(this);
+        mReactInstanceManager = ReactInstanceManager.builder()
+                .setApplication(getApplication())
+                .setBundleAssetName("index.android.bundle")
+                .setJSMainModulePath("index")
+                .addPackage(new MainReactPackage())
+                .setUseDeveloperSupport(BuildConfig.DEBUG)
+                .setInitialLifecycleState(LifecycleState.RESUMED)
+                .build();
+        mReactRootView.startReactApplication(mReactInstanceManager, "MyReactNativeApp", null);
+
+        setContentView(mReactRootView);
+    }
+
+    @Override
+    public void invokeDefaultOnBackPressed() {
+        super.onBackPressed();
+    }
+}</pre>
+<blockquote><p>If you are using a starter kit for React Native, replace the "HelloWorld" string with the one in your index.js file (it’s the first argument to the <code>AppRegistry.registerComponent()</code> method).</p></blockquote>
+<p>If you are using Android Studio, use <code>Alt + Enter</code> to add all missing imports in your MyReactActivity class. Be careful to use your package’s <code>BuildConfig</code> and not the one from the <code>...facebook...</code> package.</p>
+<p>We need set the theme of <code>MyReactActivity</code> to <code>Theme.AppCompat.Light.NoActionBar</code> because some components rely on this theme.</p>
+<pre class="prism language-xml" data-language="xml">&lt;activity
+  android:name=".MyReactActivity"
+  android:label="@string/app_name"
+  android:theme="@style/Theme.AppCompat.Light.NoActionBar"&gt;
+&lt;/activity&gt;</pre>
+<blockquote><p>A <code>ReactInstanceManager</code> can be shared amongst multiple activities and/or fragments. You will want to make your own <code>ReactFragment</code> or <code>ReactActivity</code> and have a singleton <em>holder</em> that holds a <code>ReactInstanceManager</code>. When you need the <code>ReactInstanceManager</code> (e.g., to hook up the <code>ReactInstanceManager</code> to the lifecycle of those Activities or Fragments) use the one provided by the singleton.</p></blockquote>
+<p>Next, we need to pass some activity lifecycle callbacks down to the <code>ReactInstanceManager</code>:</p>
+<pre class="prism language-java" data-language="java">@Override
+protected void onPause() {
+    super.onPause();
+
+    if (mReactInstanceManager != null) {
+        mReactInstanceManager.onHostPause(this);
+    }
+}
+
+@Override
+protected void onResume() {
+    super.onResume();
+
+    if (mReactInstanceManager != null) {
+        mReactInstanceManager.onHostResume(this, this);
+    }
+}
+
+@Override
+protected void onDestroy() {
+    super.onDestroy();
+
+    if (mReactInstanceManager != null) {
+        mReactInstanceManager.onHostDestroy();
+    }
+}</pre>
+<p>We also need to pass back button events to React Native:</p>
+<pre class="prism language-java" data-language="java">@Override
+ public void onBackPressed() {
+    if (mReactInstanceManager != null) {
+        mReactInstanceManager.onBackPressed();
+    } else {
+        super.onBackPressed();
+    }
+}</pre>
+<p>This allows JavaScript to control what happens when the user presses the hardware back button (e.g. to implement navigation). When JavaScript doesn't handle a back press, your <code>invokeDefaultOnBackPressed</code> method will be called. By default this simply finishes your <code>Activity</code>.</p>
+<p>Finally, we need to hook up the dev menu. By default, this is activated by (rage) shaking the device, but this is not very useful in emulators. So we make it show when you press the hardware menu button (use <code>Ctrl + M</code> if you're using Android Studio emulator):</p>
+<pre class="prism language-java" data-language="java">@Override
+public boolean onKeyUp(int keyCode, KeyEvent event) {
+    if (keyCode == KeyEvent.KEYCODE_MENU &amp;&amp; mReactInstanceManager != null) {
+        mReactInstanceManager.showDevOptionsDialog();
+        return true;
+    }
+    return super.onKeyUp(keyCode, event);
+}</pre>
+<p>Now your activity is ready to run some JavaScript code.</p>
+<h3 id="test-your-integration">
+Test your integration </h3>
+<p>You have now done all the basic steps to integrate React Native with your current application. Now we will start the React Native packager to build the <code>index.bundle</code> package and the server running on localhost to serve it.</p>
+<h5 id="1-run-the-packager">
+1. Run the packager </h5>
+<p>To run your app, you need to first start the development server. To do this, simply run the following command in the root directory of your React Native project:</p>
+<pre class="prism language-javascript" data-language="javascript">$ npm start</pre>
+<h5 id="2-run-the-app">
+2. Run the app </h5>
+<p>Now build and run your Android app as normal.</p>
+<p>Once you reach your React-powered activity inside the app, it should load the JavaScript code from the development server and display:</p>
+<p><img src="data:image/png;base64,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" alt="Screenshot"></p>
+<h3 id="creating-a-release-build-in-android-studio">
+Creating a release build in Android Studio </h3>
+<p>You can use Android Studio to create your release builds too! It’s as easy as creating release builds of your previously-existing native Android app. There’s just one additional step, which you’ll have to do before every release build. You need to execute the following to create a React Native bundle, which will be included with your native Android app:</p>
+<pre class="prism language-javascript" data-language="javascript">$ react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/com/your-company-name/app-package-name/src/main/assets/index.android.bundle --assets-dest android/com/your-company-name/app-package-name/src/main/res/</pre>
+<blockquote><p>Don’t forget to replace the paths with correct ones and create the assets folder if it doesn’t exist.</p></blockquote>
+<p>Now just create a release build of your native app from within Android Studio as usual and you should be good to go!</p>
+ <h3 id="now-what">
+Now what? </h3>
+<p>At this point you can continue developing your app as usual. Refer to our <a href="../debugging/">debugging</a> and <a href="../running-on-device/">deployment</a> docs to learn more about working with React Native.</p>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2015–2017 Facebook Inc.<br>Licensed under the Creative Commons Attribution 4.0 International Public License.<br>
+    <a href="https://facebook.github.io/react-native/docs/integration-with-existing-apps.html" class="_attribution-link" target="_blank">https://facebook.github.io/react-native/docs/integration-with-existing-apps.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

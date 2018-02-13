@@ -1,0 +1,178 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Using List Views - ReactNative - W3cubDocs</title>
+  
+  <meta name="description" content=" React Native provides a suite of components for presenting lists of data. Generally, you&#39;ll want to use either FlatList or SectionList. ">
+  <meta name="keywords" content="using, list, views, -, reactnative, react_native">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/react_native/using-a-listview/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/react_native.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/react_native/" class="_nav-link" title="" style="margin-left:0;">ReactNative</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _react_native">
+				
+<h1 id="using-list-views">
+Using List Views </h1>
+<p>React Native provides a suite of components for presenting lists of data. Generally, you'll want to use either <a href="../flatlist/">FlatList</a> or <a href="../sectionlist/">SectionList</a>.</p>
+<p>The <code>FlatList</code> component displays a scrolling list of changing, but similarly structured, data. <code>FlatList</code> works well for long lists of data, where the number of items might change over time. Unlike the more generic <a href="../using-a-scrollview/"><code>ScrollView</code></a>, the <code>FlatList</code> only renders elements that are currently showing on the screen, not all the elements at once.</p>
+<p>The <code>FlatList</code> component requires two props: <code>data</code> and <code>renderItem</code>. <code>data</code> is the source of information for the list. <code>renderItem</code> takes one item from the source and returns a formatted component to render.</p>
+<p>This example creates a simple <code>FlatList</code> of hardcoded data. Each item in the <code>data</code> props is rendered as a <code>Text</code> component. The <code>FlatListBasics</code> component then renders the <code>FlatList</code> and all <code>Text</code> components.</p>
+<div class="mobile-friendly-snack" style="display:none;"><pre class="prism language-javascript" data-language="javascript">import React, { Component } from 'react';
+import { AppRegistry, FlatList, StyleSheet, Text, View } from 'react-native';
+
+export default class FlatListBasics extends Component {
+  render() {
+    return (
+      &lt;View style={styles.container}&gt;
+        &lt;FlatList
+          data={[
+            {key: 'Devin'},
+            {key: 'Jackson'},
+            {key: 'James'},
+            {key: 'Joel'},
+            {key: 'John'},
+            {key: 'Jillian'},
+            {key: 'Jimmy'},
+            {key: 'Julie'},
+          ]}
+          renderItem={({item}) =&gt; &lt;Text style={styles.item}&gt;{item.key}&lt;/Text&gt;}
+        /&gt;
+      &lt;/View&gt;
+    );
+  }
+}
+
+const styles = StyleSheet.create({
+  container: {
+   flex: 1,
+   paddingTop: 22
+  },
+  item: {
+    padding: 10,
+    fontSize: 18,
+    height: 44,
+  },
+})
+
+// skip this line if using Create React Native App
+AppRegistry.registerComponent('AwesomeProject', () =&gt; FlatListBasics);</pre></div>
+
+<p>If you want to render a set of data broken into logical sections, maybe with section headers, similar to <code>UITableView</code>s on iOS, then a <a href="../sectionlist/">SectionList</a> is the way to go.</p>
+<div class="mobile-friendly-snack" style="display:none;"><pre class="prism language-javascript" data-language="javascript">import React, { Component } from 'react';
+import { AppRegistry, SectionList, StyleSheet, Text, View } from 'react-native';
+
+export default class SectionListBasics extends Component {
+  render() {
+    return (
+      &lt;View style={styles.container}&gt;
+        &lt;SectionList
+          sections={[
+            {title: 'D', data: ['Devin']},
+            {title: 'J', data: ['Jackson', 'James', 'Jillian', 'Jimmy', 'Joel', 'John', 'Julie']},
+          ]}
+          renderItem={({item}) =&gt; &lt;Text style={styles.item}&gt;{item}&lt;/Text&gt;}
+          renderSectionHeader={({section}) =&gt; &lt;Text style={styles.sectionHeader}&gt;{section.title}&lt;/Text&gt;}
+        /&gt;
+      &lt;/View&gt;
+    );
+  }
+}
+
+const styles = StyleSheet.create({
+  container: {
+   flex: 1,
+   paddingTop: 22
+  },
+  sectionHeader: {
+    paddingTop: 2,
+    paddingLeft: 10,
+    paddingRight: 10,
+    paddingBottom: 2,
+    fontSize: 14,
+    fontWeight: 'bold',
+    backgroundColor: 'rgba(247,247,247,1.0)',
+  },
+  item: {
+    padding: 10,
+    fontSize: 18,
+    height: 44,
+  },
+})
+
+// skip this line if using Create React Native App
+AppRegistry.registerComponent('AwesomeProject', () =&gt; SectionListBasics);</pre></div>
+
+<p>One of the most common uses for a list view is displaying data that you fetch from a server. To do that, you will need to <a href="../network/">learn about networking in React Native</a>.</p>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2015–2017 Facebook Inc.<br>Licensed under the Creative Commons Attribution 4.0 International Public License.<br>
+    <a href="https://facebook.github.io/react-native/docs/using-a-listview.html" class="_attribution-link" target="_blank">https://facebook.github.io/react-native/docs/using-a-listview.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

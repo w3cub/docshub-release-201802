@@ -1,0 +1,142 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>VirtualizedList - ReactNative - W3cubDocs</title>
+  
+  <meta name="description" content="Base implementation for the more convenient &#60;FlatList&#62; and &#60;SectionList&#62; components, which are also better documented. In general, &hellip;">
+  <meta name="keywords" content="virtualizedlist, -, reactnative, react_native">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/react_native/virtualizedlist/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/react_native.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/react_native/" class="_nav-link" title="" style="margin-left:0;">ReactNative</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _react_native">
+				
+<h1 id="virtualizedlist">
+VirtualizedList </h1>
+<p>Base implementation for the more convenient <a href="../flatlist/"><code>&lt;FlatList&gt;</code></a> and <a href="../sectionlist/"><code>&lt;SectionList&gt;</code></a> components, which are also better documented. In general, this should only really be used if you need more flexibility than <code>FlatList</code> provides, e.g. for use with immutable data instead of plain arrays.</p>
+<p>Virtualization massively improves memory consumption and performance of large lists by maintaining a finite render window of active items and replacing all items outside of the render window with appropriately sized blank space. The window adapts to scrolling behavior, and items are rendered incrementally with low-pri (after any running interactions) if they are far from the visible area, or with hi-pri otherwise to minimize the potential of seeing blank space.</p>
+<p>Some caveats:</p>
+<ul>
+<li>Internal state is not preserved when content scrolls out of the render window. Make sure all your data is captured in the item data or external stores like Flux, Redux, or Relay.</li>
+<li>This is a <code>PureComponent</code> which means that it will not re-render if <code>props</code> remain shallow- equal. Make sure that everything your <code>renderItem</code> function depends on is passed as a prop (e.g. <code>extraData</code>) that is not <code>===</code> after updates, otherwise your UI may not update on changes. This includes the <code>data</code> prop and parent component state.</li>
+<li>In order to constrain memory and enable smooth scrolling, content is rendered asynchronously offscreen. This means it's possible to scroll faster than the fill rate ands momentarily see blank content. This is a tradeoff that can be adjusted to suit the needs of each application, and we are working on improving it behind the scenes.</li>
+<li>By default, the list looks for a <code>key</code> prop on each item and uses that for the React key. Alternatively, you can provide a custom <code>keyExtractor</code> prop.</li>
+</ul>
+<h2 id="props">
+Props </h2>
+<h3 class="propTitle" id="disablevirtualization">
+disableVirtualization?: </h3>
+<h3 class="propTitle" id="first">
+first: <code class="propType">number</code> </h3>
+<h3 class="propTitle" id="horizontal">
+horizontal?: </h3>
+<h3 class="propTitle" id="initialnumtorender">
+initialNumToRender?: </h3>
+<h3 class="propTitle" id="keyextractor">
+keyExtractor?: </h3>
+<h3 class="propTitle" id="last">
+last: <code class="propType">number</code> </h3>
+<h3 class="propTitle" id="maxtorenderperbatch">
+maxToRenderPerBatch?: </h3>
+<h3 class="propTitle" id="onendreachedthreshold">
+onEndReachedThreshold?: </h3>
+<h3 class="propTitle" id="scrolleventthrottle">
+scrollEventThrottle?: </h3>
+<h3 class="propTitle" id="updatecellsbatchingperiod">
+updateCellsBatchingPeriod?: </h3>
+<h3 class="propTitle" id="windowsize">
+windowSize?: </h3>
+<h2 id="methods">
+Methods </h2>
+<h3 class="methodTitle" id="scrolltoend">
+scrollToEnd<span class="methodType">(params?: object)</span> </h3>
+<h3 class="methodTitle" id="scrolltoindex">
+scrollToIndex<span class="methodType">(params: object)</span> </h3>
+<h3 class="methodTitle" id="scrolltoitem">
+scrollToItem<span class="methodType">(params: object)</span> </h3>
+<h3 class="methodTitle" id="scrolltooffset">
+scrollToOffset<span class="methodType">(params: object)</span> </h3>
+<p>Scroll to a specific content pixel offset in the list.</p>
+<p>Param <code>offset</code> expects the offset to scroll to. In case of <code>horizontal</code> is true, the offset is the x-value, in any other case the offset is the y-value.</p>
+<p>Param <code>animated</code> (<code>true</code> by default) defines whether the list should do an animation while scrolling.</p>
+<h3 class="methodTitle" id="recordinteraction">
+recordInteraction<span class="methodType">()</span> </h3>
+<h3 class="methodTitle" id="flashscrollindicators">
+flashScrollIndicators<span class="methodType">()</span> </h3>
+<h3 id="type-definitions">
+Type Definitions </h3>
+<h3 class="propTitle" id="props">
+Props </h3>
+<strong>Type:</strong><br>IntersectionTypeAnnotation<div class="_attribution">
+  <p class="_attribution-p">
+    © 2015–2017 Facebook Inc.<br>Licensed under the Creative Commons Attribution 4.0 International Public License.<br>
+    <a href="https://facebook.github.io/react-native/docs/virtualizedlist.html" class="_attribution-link" target="_blank">https://facebook.github.io/react-native/docs/virtualizedlist.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

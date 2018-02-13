@@ -1,0 +1,188 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>CameraRoll - ReactNative - W3cubDocs</title>
+  
+  <meta name="description" content="CameraRoll provides access to the local camera roll &#47; gallery. Before using this you must link the RCTCameraRoll library. You can refer to &hellip;">
+  <meta name="keywords" content="cameraroll, -, reactnative, react_native">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/react_native/cameraroll/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/react_native.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/react_native/" class="_nav-link" title="" style="margin-left:0;">ReactNative</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _react_native">
+				
+<h1 id="cameraroll">
+CameraRoll </h1>
+<p><code>CameraRoll</code> provides access to the local camera roll / gallery. Before using this you must link the <code>RCTCameraRoll</code> library. You can refer to <a href="../linking-libraries-ios/">Linking</a> for help.</p>
+<h3 id="permissions">
+Permissions </h3>
+<p>The user's permission is required in order to access the Camera Roll on devices running iOS 10 or later. Add the <code>NSPhotoLibraryUsageDescription</code> key in your <code>Info.plist</code> with a string that describes how your app will use this data. This key will appear as <code>Privacy - Photo Library Usage Description</code> in Xcode.</p>
+<h2 id="methods">
+Methods </h2>
+<h3 class="methodTitle" id="">
+=<span class="methodType">(;, AssetTypeOptions, static, (, :)</span> </h3>
+<h3 class="methodTitle" id="savetocameraroll">
+<span class="methodType">static </span>saveToCameraRoll<span class="methodType">(tag, type?)</span> </h3>
+<p>Saves the photo or video to the camera roll / gallery.</p>
+<p>On Android, the tag must be a local image or video URI, such as <code>"file:///sdcard/img.png"</code>.</p>
+<p>On iOS, the tag can be any image URI (including local, remote asset-library and base64 data URIs) or a local video file URI (remote or data URIs are not supported for saving video at this time).</p>
+<p>If the tag has a file extension of .mov or .mp4, it will be inferred as a video. Otherwise it will be treated as a photo. To override the automatic choice, you can pass an optional <code>type</code> parameter that must be one of 'photo' or 'video'.</p>
+<p>Returns a Promise which will resolve with the new URI.</p>
+<h3 class="methodTitle" id="getphotos">
+<span class="methodType">static </span>getPhotos<span class="methodType">(params)</span> </h3>
+<p>Returns a Promise with photo identifier objects from the local camera roll of the device matching shape defined by <code>getPhotosReturnChecker</code>.</p>
+<p>Expects a params object of the following shape:</p>
+<ul>
+<li>
+<code>first</code> : {number} : The number of photos wanted in reverse order of the photo application (i.e. most recent first for SavedPhotos).</li>
+<li>
+<code>after</code> : {string} : A cursor that matches <code>page_info { end_cursor }</code> returned from a previous call to <code>getPhotos</code>.</li>
+<li>
+<code>groupTypes</code> : {string} : Specifies which group types to filter the results to. Valid values are:<ul>
+<li><code>Album</code></li>
+<li><code>All</code></li>
+<li><code>Event</code></li>
+<li><code>Faces</code></li>
+<li><code>Library</code></li>
+<li><code>PhotoStream</code></li>
+<li>
+<code>SavedPhotos</code> // default</li>
+</ul>
+</li>
+<li>
+<code>groupName</code> : {string} : Specifies filter on group names, like 'Recent Photos' or custom album titles.</li>
+<li>
+<code>assetType</code> : {string} : Specifies filter on asset type. Valid values are:<ul>
+<li><code>All</code></li>
+<li><code>Videos</code></li>
+<li>
+<code>Photos</code> // default</li>
+</ul>
+</li>
+<li>
+<code>mimeTypes</code> : {string} : Filter by mimetype (e.g. image/jpeg).</li>
+</ul>
+<p>Returns a Promise which when resolved will be of the following shape:</p>
+<ul>
+<li>
+<code>edges</code> : {Array&lt;node&gt;} An array of node objects<ul><li>
+<code>node</code>: {object} An object with the following shape:<ul>
+<li>
+<code>type</code>: {string}</li>
+<li>
+<code>group_name</code>: {string}</li>
+<li>
+<code>image</code>: {object} : An object with the following shape:<ul>
+<li>
+<code>uri</code>: {string}</li>
+<li>
+<code>height</code>: {number}</li>
+<li>
+<code>width</code>: {number}</li>
+<li>
+<code>isStored</code>: {boolean}</li>
+</ul>
+</li>
+<li>
+<code>timestamp</code>: {number}</li>
+<li>
+<code>location</code>: {object} : An object with the following shape:<ul>
+<li>
+<code>latitude</code>: {number}</li>
+<li>
+<code>longitude</code>: {number}</li>
+<li>
+<code>altitude</code>: {number}</li>
+<li>
+<code>heading</code>: {number}</li>
+<li>
+<code>speed</code>: {number}</li>
+</ul>
+</li>
+</ul>
+</li></ul>
+</li>
+<li>
+<code>page_info</code> : {object} : An object with the following shape:<ul>
+<li>
+<code>has_next_page</code>: {boolean}</li>
+<li>
+<code>start_cursor</code>: {boolean}</li>
+<li>
+<code>end_cursor</code>: {boolean}</li>
+</ul>
+</li>
+</ul>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2015–2017 Facebook Inc.<br>Licensed under the Creative Commons Attribution 4.0 International Public License.<br>
+    <a href="https://facebook.github.io/react-native/docs/cameraroll.html" class="_attribution-link" target="_blank">https://facebook.github.io/react-native/docs/cameraroll.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

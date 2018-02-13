@@ -1,0 +1,378 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>TextInput - ReactNative - W3cubDocs</title>
+  
+  <meta name="description" content="A foundational component for inputting text into the app via a keyboard. Props provide configurability for several features, such as auto-correction &hellip;">
+  <meta name="keywords" content="textinput, -, reactnative, react_native">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/react_native/textinput/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/react_native.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/react_native/" class="_nav-link" title="" style="margin-left:0;">ReactNative</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _react_native">
+				
+<h1 id="textinput">
+TextInput </h1>
+<p>A foundational component for inputting text into the app via a keyboard. Props provide configurability for several features, such as auto-correction, auto-capitalization, placeholder text, and different keyboard types, such as a numeric keypad.</p>
+<p>The simplest use case is to plop down a <code>TextInput</code> and subscribe to the <code>onChangeText</code> events to read the user input. There are also other events, such as <code>onSubmitEditing</code> and <code>onFocus</code> that can be subscribed to. A simple example:</p>
+<div class="web-player"><pre class="prism language-javascript" data-language="javascript">import React, { Component } from 'react';
+import { AppRegistry, TextInput } from 'react-native';
+
+export default class UselessTextInput extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { text: 'Useless Placeholder' };
+  }
+
+  render() {
+    return (
+      &lt;TextInput
+        style={{height: 40, borderColor: 'gray', borderWidth: 1}}
+        onChangeText={(text) =&gt; this.setState({text})}
+        value={this.state.text}
+      /&gt;
+    );
+  }
+}
+
+// skip this line if using Create React Native App
+AppRegistry.registerComponent('AwesomeProject', () =&gt; UselessTextInput);</pre></div>
+<p>Two methods exposed via the native element are .focus() and .blur() that will focus or blur the TextInput programmatically.</p>
+<p>Note that some props are only available with <code>multiline={true/false}</code>. Additionally, border styles that apply to only one side of the element (e.g., <code>borderBottomColor</code>, <code>borderLeftWidth</code>, etc.) will not be applied if <code>multiline=false</code>. To achieve the same effect, you can wrap your <code>TextInput</code> in a <code>View</code>:</p>
+<div class="web-player"><pre class="prism language-javascript" data-language="javascript">import React, { Component } from 'react';
+import { AppRegistry, View, TextInput } from 'react-native';
+
+class UselessTextInput extends Component {
+  render() {
+    return (
+      &lt;TextInput
+        {...this.props} // Inherit any props passed to it; e.g., multiline, numberOfLines below
+        editable = {true}
+        maxLength = {40}
+      /&gt;
+    );
+  }
+}
+
+export default class UselessTextInputMultiline extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      text: 'Useless Multiline Placeholder',
+    };
+  }
+
+  // If you type something in the text box that is a color, the background will change to that
+  // color.
+  render() {
+    return (
+     &lt;View style={{
+       backgroundColor: this.state.text,
+       borderBottomColor: '#000000',
+       borderBottomWidth: 1 }}
+     &gt;
+       &lt;UselessTextInput
+         multiline = {true}
+         numberOfLines = {4}
+         onChangeText={(text) =&gt; this.setState({text})}
+         value={this.state.text}
+       /&gt;
+     &lt;/View&gt;
+    );
+  }
+}
+
+// skip these lines if using Create React Native App
+AppRegistry.registerComponent(
+ 'AwesomeProject',
+ () =&gt; UselessTextInputMultiline
+);</pre></div>
+<p><code>TextInput</code> has by default a border at the bottom of its view. This border has its padding set by the background image provided by the system, and it cannot be changed. Solutions to avoid this is to either not set height explicitly, case in which the system will take care of displaying the border in the correct position, or to not display the border by setting <code>underlineColorAndroid</code> to transparent.</p>
+<p>Note that on Android performing text selection in input can change app's activity <code>windowSoftInputMode</code> param to <code>adjustResize</code>. This may cause issues with components that have position: 'absolute' while keyboard is active. To avoid this behavior either specify <code>windowSoftInputMode</code> in AndroidManifest.xml ( <a href="https://developer.android.com/guide/topics/manifest/activity-element.html" target="_blank">https://developer.android.com/guide/topics/manifest/activity-element.html</a> ) or control this param programmatically with native code.</p>
+<h2 id="props">
+Props </h2>
+<h3 class="propTitle" id="viewproptypes">
+<a href="../viewproptypes/#props">ViewPropTypes props...</a> </h3>
+<h3 class="propTitle" id="autocapitalize">
+autoCapitalize?: <code class="propType">enum('none', 'sentences', 'words', 'characters')</code> </h3>
+<p>Can tell <code>TextInput</code> to automatically capitalize certain characters.</p>
+<ul>
+<li>
+<code>characters</code>: all characters.</li>
+<li>
+<code>words</code>: first letter of each word.</li>
+<li>
+<code>sentences</code>: first letter of each sentence (<em>default</em>).</li>
+<li>
+<code>none</code>: don't auto capitalize anything.</li>
+</ul>
+<h3 class="propTitle" id="autocorrect">
+autoCorrect?: <code class="propType">bool</code> </h3>
+<p>If <code>false</code>, disables auto-correct. The default value is <code>true</code>.</p>
+<h3 class="propTitle" id="autofocus">
+autoFocus?: <code class="propType">bool</code> </h3>
+<p>If <code>true</code>, focuses the input on <code>componentDidMount</code>. The default value is <code>false</code>.</p>
+<h3 class="propTitle" id="bluronsubmit">
+blurOnSubmit?: <code class="propType">bool</code> </h3>
+<p>If <code>true</code>, the text field will blur when submitted. The default value is true for single-line fields and false for multiline fields. Note that for multiline fields, setting <code>blurOnSubmit</code> to <code>true</code> means that pressing return will blur the field and trigger the <code>onSubmitEditing</code> event instead of inserting a newline into the field.</p>
+<h3 class="propTitle" id="carethidden">
+caretHidden?: <code class="propType">bool</code> </h3>
+<p>If <code>true</code>, caret is hidden. The default value is <code>false</code>.</p>
+<h3 class="propTitle" id="defaultvalue">
+defaultValue?: <code class="propType">string</code> </h3>
+<p>Provides an initial value that will change when the user starts typing. Useful for simple use-cases where you do not want to deal with listening to events and updating the value prop to keep the controlled state in sync.</p>
+<h3 class="propTitle" id="editable">
+editable?: <code class="propType">bool</code> </h3>
+<p>If <code>false</code>, text is not editable. The default value is <code>true</code>.</p>
+<h3 class="propTitle" id="keyboardtype">
+keyboardType?: <code class="propType">enum('default', 'email-address', 'numeric', 'phone-pad', 'ascii-capable', 'numbers-and-punctuation', 'url', 'number-pad', 'name-phone-pad', 'decimal-pad', 'twitter', 'web-search')</code> </h3>
+<p>Determines which keyboard to open, e.g.<code>numeric</code>.</p>
+<p>The following values work across platforms:</p>
+<ul>
+<li><code>default</code></li>
+<li><code>numeric</code></li>
+<li><code>email-address</code></li>
+<li><code>phone-pad</code></li>
+</ul>
+<h3 class="propTitle" id="maxheight">
+maxHeight?: <code class="propType">number</code> </h3>
+<p>If autogrow is <code>true</code>, limits the height that the TextInput box can grow to. Once it reaches this height, the TextInput becomes scrollable.</p>
+<h3 class="propTitle" id="maxlength">
+maxLength?: <code class="propType">number</code> </h3>
+<p>Limits the maximum number of characters that can be entered. Use this instead of implementing the logic in JS to avoid flicker.</p>
+<h3 class="propTitle" id="multiline">
+multiline?: <code class="propType">bool</code> </h3>
+<p>If <code>true</code>, the text input can be multiple lines. The default value is <code>false</code>.</p>
+<h3 class="propTitle" id="onblur">
+onBlur?: <code class="propType">function</code> </h3>
+<p>Callback that is called when the text input is blurred.</p>
+<h3 class="propTitle" id="onchange">
+onChange?: <code class="propType">function</code> </h3>
+<p>Callback that is called when the text input's text changes.</p>
+<h3 class="propTitle" id="onchangetext">
+onChangeText?: <code class="propType">function</code> </h3>
+<p>Callback that is called when the text input's text changes. Changed text is passed as an argument to the callback handler.</p>
+<h3 class="propTitle" id="oncontentsizechange">
+onContentSizeChange?: <code class="propType">function</code> </h3>
+<p>Callback that is called when the text input's content size changes. This will be called with <code>{ nativeEvent: { contentSize: { width, height } } }</code>.</p>
+<p>Only called for multiline text inputs.</p>
+<h3 class="propTitle" id="onendediting">
+onEndEditing?: <code class="propType">function</code> </h3>
+<p>Callback that is called when text input ends.</p>
+<h3 class="propTitle" id="onfocus">
+onFocus?: <code class="propType">function</code> </h3>
+<p>Callback that is called when the text input is focused.</p>
+<h3 class="propTitle" id="onlayout">
+onLayout?: <code class="propType">function</code> </h3>
+<p>Invoked on mount and layout changes with <code>{x, y, width, height}</code>.</p>
+<h3 class="propTitle" id="onscroll">
+onScroll?: <code class="propType">function</code> </h3>
+<p>Invoked on content scroll with <code>{ nativeEvent: { contentOffset: { x, y } } }</code>. May also contain other properties from ScrollEvent but on Android contentSize is not provided for performance reasons.</p>
+<h3 class="propTitle" id="onselectionchange">
+onSelectionChange?: <code class="propType">function</code> </h3>
+<p>Callback that is called when the text input selection is changed. This will be called with <code>{ nativeEvent: { selection: { start, end } } }</code>.</p>
+<h3 class="propTitle" id="onsubmitediting">
+onSubmitEditing?: <code class="propType">function</code> </h3>
+<p>Callback that is called when the text input's submit button is pressed. Invalid if <code>multiline={true}</code> is specified.</p>
+<h3 class="propTitle" id="placeholder">
+placeholder?: <code class="propType">node</code> </h3>
+<p>The string that will be rendered before text input has been entered.</p>
+<h3 class="propTitle" id="placeholdertextcolor">
+placeholderTextColor?: <code class="propType"><a href="../colors/">color</a></code> </h3>
+<p>The text color of the placeholder string.</p>
+<h3 class="propTitle" id="returnkeytype">
+returnKeyType?: <code class="propType">enum('done', 'go', 'next', 'search', 'send', 'none', 'previous', 'default', 'emergency-call', 'google', 'join', 'route', 'yahoo')</code> </h3>
+<p>Determines how the return key should look. On Android you can also use <code>returnKeyLabel</code>.</p>
+<p><em>Cross platform</em></p>
+<p>The following values work across platforms:</p>
+<ul>
+<li><code>done</code></li>
+<li><code>go</code></li>
+<li><code>next</code></li>
+<li><code>search</code></li>
+<li><code>send</code></li>
+</ul>
+<p><em>Android Only</em></p>
+<p>The following values work on Android only:</p>
+<ul>
+<li><code>none</code></li>
+<li><code>previous</code></li>
+</ul>
+<p><em>iOS Only</em></p>
+<p>The following values work on iOS only:</p>
+<ul>
+<li><code>default</code></li>
+<li><code>emergency-call</code></li>
+<li><code>google</code></li>
+<li><code>join</code></li>
+<li><code>route</code></li>
+<li><code>yahoo</code></li>
+</ul>
+<h3 class="propTitle" id="securetextentry">
+secureTextEntry?: <code class="propType">bool</code> </h3>
+<p>If <code>true</code>, the text input obscures the text entered so that sensitive text like passwords stay secure. The default value is <code>false</code>.</p>
+<h3 class="propTitle" id="selecttextonfocus">
+selectTextOnFocus?: <code class="propType">bool</code> </h3>
+<p>If <code>true</code>, all text will automatically be selected on focus.</p>
+<h3 class="propTitle" id="selection">
+selection?: <code class="propType">{start: number, end: number}</code> </h3>
+<p>The start and end of the text input's selection. Set start and end to the same value to position the cursor.</p>
+<h3 class="propTitle" id="selectioncolor">
+selectionColor?: <code class="propType"><a href="../colors/">color</a></code> </h3>
+<p>The highlight and cursor color of the text input.</p>
+<h3 class="propTitle" id="style">
+style?: <code class="propType"><a href="../text/#style">Text#style</a></code> </h3>
+<p>Note that not all Text styles are supported, see <a href="https://github.com/facebook/react-native/issues/7070" target="_blank">Issue#7070</a> for more detail.</p>
+<p><a href="../style/">Styles</a></p>
+<h3 class="propTitle" id="value">
+value?: <code class="propType">string</code> </h3>
+<p>The value to show for the text input. <code>TextInput</code> is a controlled component, which means the native value will be forced to match this value prop if provided. For most uses, this works great, but in some cases this may cause flickering - one common cause is preventing edits by keeping value the same. In addition to simply setting the same value, either set <code>editable={false}</code>, or set/update <code>maxLength</code> to prevent unwanted edits without flicker.</p>
+<h3 class="propTitle" id="autogrow">
+<span class="platform">android</span>autoGrow?: <code class="propType">bool</code> </h3>
+<p>If true, will increase the height of the textbox if need be. If false, the textbox will become scrollable once the height is reached. The default value is false.</p>
+<h3 class="propTitle" id="disablefullscreenui">
+<span class="platform">android</span>disableFullscreenUI?: <code class="propType">bool</code> </h3>
+<p>When <code>false</code>, if there is a small amount of space available around a text input (e.g. landscape orientation on a phone), the OS may choose to have the user edit the text inside of a full screen text input mode. When <code>true</code>, this feature is disabled and users will always edit the text directly inside of the text input. Defaults to <code>false</code>.</p>
+<h3 class="propTitle" id="inlineimageleft">
+<span class="platform">android</span>inlineImageLeft?: <code class="propType">string</code> </h3>
+<p>If defined, the provided image resource will be rendered on the left. The image resource must be inside <code>/android/app/src/main/res/drawable</code> and referenced like</p>
+<pre class="prism language-javascript" data-language="javascript">&lt;TextInput
+ inlineImageLeft='search_icon'
+/&gt;</pre>
+<h3 class="propTitle" id="inlineimagepadding">
+<span class="platform">android</span>inlineImagePadding?: <code class="propType">number</code> </h3>
+<p>Padding between the inline image, if any, and the text input itself.</p>
+<h3 class="propTitle" id="numberoflines">
+<span class="platform">android</span>numberOfLines?: <code class="propType">number</code> </h3>
+<p>Sets the number of lines for a <code>TextInput</code>. Use it with multiline set to <code>true</code> to be able to fill the lines.</p>
+<h3 class="propTitle" id="returnkeylabel">
+<span class="platform">android</span>returnKeyLabel?: <code class="propType">string</code> </h3>
+<p>Sets the return key to the label. Use it instead of <code>returnKeyType</code>.</p>
+<h3 class="propTitle" id="textbreakstrategy">
+<span class="platform">android</span>textBreakStrategy?: <code class="propType">enum('simple', 'highQuality', 'balanced')</code> </h3>
+<p>Set text break strategy on Android API Level 23+, possible values are <code>simple</code>, <code>highQuality</code>, <code>balanced</code> The default value is <code>simple</code>.</p>
+<h3 class="propTitle" id="underlinecolorandroid">
+<span class="platform">android</span>underlineColorAndroid?: <code class="propType"><a href="../colors/">color</a></code> </h3>
+<p>The color of the <code>TextInput</code> underline.</p>
+<h3 class="propTitle" id="clearbuttonmode">
+<span class="platform">ios</span>clearButtonMode?: <code class="propType">enum('never', 'while-editing', 'unless-editing', 'always')</code> </h3>
+<p>When the clear button should appear on the right side of the text view.</p>
+<h3 class="propTitle" id="cleartextonfocus">
+<span class="platform">ios</span>clearTextOnFocus?: <code class="propType">bool</code> </h3>
+<p>If <code>true</code>, clears the text field automatically when editing begins.</p>
+<h3 class="propTitle" id="datadetectortypes">
+<span class="platform">ios</span>dataDetectorTypes?: <code class="propType">enum('phoneNumber', 'link', 'address', 'calendarEvent', 'none', 'all'), [enum('phoneNumber', 'link', 'address', 'calendarEvent', 'none', 'all')]</code> </h3>
+<p>Determines the types of data converted to clickable URLs in the text input. Only valid if <code>multiline={true}</code> and <code>editable={false}</code>. By default no data types are detected.</p>
+<p>You can provide one type or an array of many types.</p>
+<p>Possible values for <code>dataDetectorTypes</code> are:</p>
+<ul>
+<li><code>'phoneNumber'</code></li>
+<li><code>'link'</code></li>
+<li><code>'address'</code></li>
+<li><code>'calendarEvent'</code></li>
+<li><code>'none'</code></li>
+<li><code>'all'</code></li>
+</ul>
+<h3 class="propTitle" id="enablesreturnkeyautomatically">
+<span class="platform">ios</span>enablesReturnKeyAutomatically?: <code class="propType">bool</code> </h3>
+<p>If <code>true</code>, the keyboard disables the return key when there is no text and automatically enables it when there is text. The default value is <code>false</code>.</p>
+<h3 class="propTitle" id="keyboardappearance">
+<span class="platform">ios</span>keyboardAppearance?: <code class="propType">enum('default', 'light', 'dark')</code> </h3>
+<p>Determines the color of the keyboard.</p>
+<h3 class="propTitle" id="onkeypress">
+<span class="platform">ios</span>onKeyPress?: <code class="propType">function</code> </h3>
+<p>Callback that is called when a key is pressed. This will be called with <code>{ nativeEvent: { key: keyValue } }</code> where <code>keyValue</code> is <code>'Enter'</code> or <code>'Backspace'</code> for respective keys and the typed-in character otherwise including <code>' '</code> for space. Fires before <code>onChange</code> callbacks.</p>
+<h3 class="propTitle" id="selectionstate">
+<span class="platform">ios</span>selectionState?: <code class="propType">DocumentSelectionState</code> </h3>
+<p>An instance of <code>DocumentSelectionState</code>, this is some state that is responsible for maintaining selection information for a document.</p>
+<p>Some functionality that can be performed with this instance is:</p>
+<ul>
+<li><code>blur()</code></li>
+<li><code>focus()</code></li>
+<li><code>update()</code></li>
+</ul>
+<blockquote><p>You can reference <code>DocumentSelectionState</code> in <a href="https://github.com/facebook/react-native/blob/master/Libraries/vendor/document/selection/DocumentSelectionState.js" target="_blank"><code>vendor/document/selection/DocumentSelectionState.js</code></a></p></blockquote>
+<h3 class="propTitle" id="spellcheck">
+<span class="platform">ios</span>spellCheck?: <code class="propType">bool</code> </h3>
+<p>If <code>false</code>, disables spell-check style (i.e. red underlines). The default value is inherited from <code>autoCorrect</code>.</p>
+<h2 id="methods">
+Methods </h2>
+<h3 class="methodTitle" id="isfocused">
+isFocused<span class="methodType">(): </span> </h3>
+<p>Returns <code>true</code> if the input is currently focused; <code>false</code> otherwise.</p>
+<h3 class="methodTitle" id="clear">
+clear<span class="methodType">()</span> </h3>
+<p>Removes all text from the <code>TextInput</code>.</p>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2015–2017 Facebook Inc.<br>Licensed under the Creative Commons Attribution 4.0 International Public License.<br>
+    <a href="https://facebook.github.io/react-native/docs/textinput.html" class="_attribution-link" target="_blank">https://facebook.github.io/react-native/docs/textinput.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>
