@@ -1,0 +1,227 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>contrib.gan.estimator.GANEstimator - TensorFlow Python - W3cubDocs</title>
+  
+  <meta name="description" content=" Inherits From&#58; Estimator ">
+  <meta name="keywords" content="tf, contrib, gan, estimator, ganestimator, -, tensorflow, python, tensorflow~python">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/tensorflow~python/tf/contrib/gan/estimator/ganestimator/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/tensorflow~python.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/tensorflow~python/" class="_nav-link" title="" style="margin-left:0;">TensorFlow Python</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _tensorflow">
+				
+<h1 itemprop="name" class="devsite-page-title"> tf.contrib.gan.estimator.GANEstimator </h1>     <div itemscope itemtype="http://developers.google.com/ReferenceObject"> <meta itemprop="name" content="tf.contrib.gan.estimator.GANEstimator"> <meta itemprop="path" content="r1.4"> <meta itemprop="property" content="config"> <meta itemprop="property" content="model_dir"> <meta itemprop="property" content="model_fn"> <meta itemprop="property" content="params"> <meta itemprop="property" content="__init__"> <meta itemprop="property" content="evaluate"> <meta itemprop="property" content="export_savedmodel"> <meta itemprop="property" content="get_variable_names"> <meta itemprop="property" content="get_variable_value"> <meta itemprop="property" content="latest_checkpoint"> <meta itemprop="property" content="predict"> <meta itemprop="property" content="train"> </div> <h2 id="class_ganestimator">Class <code>GANEstimator</code>
+</h2> <p>Inherits From: <a href="../../../../estimator/estimator/"><code>Estimator</code></a></p> <h3 id="aliases">Aliases:</h3> <ul> <li>Class <code>tf.contrib.gan.estimator.GANEstimator</code>
+</li> <li>Class <code>tf.contrib.gan.estimator.gan_estimator.GANEstimator</code>
+</li> </ul> <p>Defined in <a href="https://www.github.com/tensorflow/tensorflow/blob/r1.4/tensorflow/contrib/gan/python/estimator/python/gan_estimator_impl.py" target="_blank"><code>tensorflow/contrib/gan/python/estimator/python/gan_estimator_impl.py</code></a>.</p> <p>An estimator for Generative Adversarial Networks (GANs).</p> <p>This Estimator is backed by TFGAN.</p> <p>Example:</p> <pre class="prettyprint lang-python" data-language="python">    import tensorflow as tf
+    tfgan = tf.contrib.gan
+
+    # See TFGAN's `train.py` for a description of the generator and
+    # discriminator API.
+    def generator_fn(generator_inputs):
+      ...
+      return generated_data
+
+    def discriminator_fn(data, conditioning):
+      ...
+      return logits
+
+    # Create GAN estimator.
+    gan_estimator = estimator.GANEstimator(
+        model_dir,
+        generator_fn=generator_fn,
+        discriminator_fn=discriminator_fn,
+        generator_loss_fn=tfgan.losses.wasserstein_generator_loss,
+        discriminator_loss_fn=tfgan.losses.wasserstein_discriminator_loss,
+        generator_optimizer=tf.train.AdamOptimizier(0.1, 0.5),
+        discriminator_optimizer=tf.train.AdamOptimizier(0.1, 0.5))
+
+    # Train estimator.
+    gan_estimator.train(train_input_fn, steps)
+
+    # Evaluate resulting estimator.
+    gan_estimator.evaluate(eval_input_fn)
+
+    # Generate samples from generator.
+    predictions = np.array([
+        x for x in gan_estimator.predict(predict_input_fn)])
+
+## Properties
+
+&lt;h3 id="config"&gt;&lt;code&gt;config&lt;/code&gt;&lt;/h3&gt;
+
+&lt;h3 id="model_dir"&gt;&lt;code&gt;model_dir&lt;/code&gt;&lt;/h3&gt;
+
+&lt;h3 id="model_fn"&gt;&lt;code&gt;model_fn&lt;/code&gt;&lt;/h3&gt;
+
+Returns the model_fn which is bound to self.params.
+
+#### Returns:
+
+The model_fn with following signature:
+  `def model_fn(features, labels, mode, config)`
+
+&lt;h3 id="params"&gt;&lt;code&gt;params&lt;/code&gt;&lt;/h3&gt;
+
+## Methods
+
+&lt;h3 id="__init__"&gt;&lt;code&gt;__init__&lt;/code&gt;&lt;/h3&gt;
+
+``` python
+__init__(
+    model_dir=None,
+    generator_fn=None,
+    discriminator_fn=None,
+    generator_loss_fn=None,
+    discriminator_loss_fn=None,
+    generator_optimizer=None,
+    discriminator_optimizer=None,
+    add_summaries=None,
+    use_loss_summaries=True,
+    config=None
+)
+</pre> <p>Initializes a GANEstimator instance.</p> <h4 id="args">Args:</h4> <ul> <li>
+<b><code>model_dir</code></b>: Directory to save model parameters, graph and etc. This can also be used to load checkpoints from the directory into a estimator to continue training a previously saved model.</li> <li>
+<b><code>generator_fn</code></b>: A python function that takes a Tensor, Tensor list, or Tensor dictionary as inputs and returns the outputs of the GAN generator. See <code>TFGAN</code> for more details and examples.</li> <li>
+<b><code>discriminator_fn</code></b>: A python function that takes the output of <code>generator_fn</code> or real data in the GAN setup, and <code>generator_inputs</code>. Outputs a Tensor in the range [-inf, inf]. See <code>TFGAN</code> for more details and examples.</li> <li>
+<b><code>generator_loss_fn</code></b>: The loss function on the generator. Takes a <code>GANModel</code> tuple.</li> <li>
+<b><code>discriminator_loss_fn</code></b>: The loss function on the discriminator. Takes a <code>GANModel</code> tuple.</li> <li>
+<b><code>generator_optimizer</code></b>: The optimizer for generator updates, or a function that takes no arguments and returns an optimizer. This function will be called when the default graph is the <code>GANEstimator</code>'s graph, so utilities like <code>tf.contrib.framework.get_or_create_global_step</code> will work.</li> <li>
+<b><code>discriminator_optimizer</code></b>: Same as <code>generator_optimizer</code>, but for the discriminator updates.</li> <li>
+<b><code>add_summaries</code></b>: <code>None</code>, a single <code>SummaryType</code>, or a list of <code>SummaryType</code>.</li> <li>
+<b><code>use_loss_summaries</code></b>: If <code>True</code>, add loss summaries. If <code>False</code>, does not. If <code>None</code>, uses defaults.</li> <li>
+<b><code>config</code></b>: <code>RunConfig</code> object to configure the runtime settings.</li> </ul> <h3 id="evaluate"><code>evaluate</code></h3> <pre class="prettyprint lang-python" data-language="python">evaluate(
+    input_fn,
+    steps=None,
+    hooks=None,
+    checkpoint_path=None,
+    name=None
+)
+</pre> <p>Evaluates the model given evaluation data input_fn.</p> <p>For each step, calls <code>input_fn</code>, which returns one batch of data. Evaluates until: - <code>steps</code> batches are processed, or - <code>input_fn</code> raises an end-of-input exception (<code>OutOfRangeError</code> or <code>StopIteration</code>).</p> <h4 id="args_1">Args:</h4> <ul> <li>
+<b><code>input_fn</code></b>: Input function returning a tuple of: features - Dictionary of string feature name to <code>Tensor</code> or <code>SparseTensor</code>. labels - <code>Tensor</code> or dictionary of <code>Tensor</code> with labels.</li> <li>
+<b><code>steps</code></b>: Number of steps for which to evaluate model. If <code>None</code>, evaluates until <code>input_fn</code> raises an end-of-input exception.</li> <li>
+<b><code>hooks</code></b>: List of <code>SessionRunHook</code> subclass instances. Used for callbacks inside the evaluation call.</li> <li>
+<b><code>checkpoint_path</code></b>: Path of a specific checkpoint to evaluate. If <code>None</code>, the latest checkpoint in <code>model_dir</code> is used.</li> <li>
+<b><code>name</code></b>: Name of the evaluation if user needs to run multiple evaluations on different data sets, such as on training data vs test data. Metrics for different evaluations are saved in separate folders, and appear separately in tensorboard.</li> </ul> <h4 id="returns">Returns:</h4> <p>A dict containing the evaluation metrics specified in <code>model_fn</code> keyed by name, as well as an entry <code>global_step</code> which contains the value of the global step for which this evaluation was performed.</p> <h4 id="raises">Raises:</h4> <ul> <li>
+<b><code>ValueError</code></b>: If <code>steps &lt;= 0</code>.</li> <li>
+<b><code>ValueError</code></b>: If no model has been trained, namely <code>model_dir</code>, or the given <code>checkpoint_path</code> is empty.</li> </ul> <h3 id="export_savedmodel"><code>export_savedmodel</code></h3> <pre class="prettyprint lang-python" data-language="python">export_savedmodel(
+    export_dir_base,
+    serving_input_receiver_fn,
+    assets_extra=None,
+    as_text=False,
+    checkpoint_path=None
+)
+</pre> <p>Exports inference graph as a SavedModel into given dir.</p> <p>This method builds a new graph by first calling the serving_input_receiver_fn to obtain feature <code>Tensor</code>s, and then calling this <code>Estimator</code>'s model_fn to generate the model graph based on those features. It restores the given checkpoint (or, lacking that, the most recent checkpoint) into this graph in a fresh session. Finally it creates a timestamped export directory below the given export_dir_base, and writes a <code>SavedModel</code> into it containing a single <code>MetaGraphDef</code> saved from this session.</p> <p>The exported <code>MetaGraphDef</code> will provide one <code>SignatureDef</code> for each element of the export_outputs dict returned from the model_fn, named using the same keys. One of these keys is always signature_constants.DEFAULT_SERVING_SIGNATURE_DEF_KEY, indicating which signature will be served when a serving request does not specify one. For each signature, the outputs are provided by the corresponding <code>ExportOutput</code>s, and the inputs are always the input receivers provided by the serving_input_receiver_fn.</p> <p>Extra assets may be written into the SavedModel via the extra_assets argument. This should be a dict, where each key gives a destination path (including the filename) relative to the assets.extra directory. The corresponding value gives the full path of the source file to be copied. For example, the simple case of copying a single file without renaming it is specified as <code>{'my_asset_file.txt': '/path/to/my_asset_file.txt'}</code>.</p> <h4 id="args_2">Args:</h4> <ul> <li>
+<b><code>export_dir_base</code></b>: A string containing a directory in which to create timestamped subdirectories containing exported SavedModels.</li> <li>
+<b><code>serving_input_receiver_fn</code></b>: A function that takes no argument and returns a <code>ServingInputReceiver</code>.</li> <li>
+<b><code>assets_extra</code></b>: A dict specifying how to populate the assets.extra directory within the exported SavedModel, or <code>None</code> if no extra assets are needed.</li> <li>
+<b><code>as_text</code></b>: whether to write the SavedModel proto in text format.</li> <li>
+<b><code>checkpoint_path</code></b>: The checkpoint path to export. If <code>None</code> (the default), the most recent checkpoint found within the model directory is chosen.</li> </ul> <h4 id="returns_1">Returns:</h4> <p>The string path to the exported directory.</p> <h4 id="raises_1">Raises:</h4> <ul> <li>
+<b><code>ValueError</code></b>: if no serving_input_receiver_fn is provided, no export_outputs are provided, or no checkpoint can be found.</li> </ul> <h3 id="get_variable_names"><code>get_variable_names</code></h3> <pre class="prettyprint lang-python" data-language="python">get_variable_names()
+</pre> <p>Returns list of all variable names in this model.</p> <h4 id="returns_2">Returns:</h4> <p>List of names.</p> <h4 id="raises_2">Raises:</h4> <ul> <li>
+<b><code>ValueError</code></b>: If the Estimator has not produced a checkpoint yet.</li> </ul> <h3 id="get_variable_value"><code>get_variable_value</code></h3> <pre class="prettyprint lang-python" data-language="python">get_variable_value(name)
+</pre> <p>Returns value of the variable given by name.</p> <h4 id="args_3">Args:</h4> <ul> <li>
+<b><code>name</code></b>: string or a list of string, name of the tensor.</li> </ul> <h4 id="returns_3">Returns:</h4> <p>Numpy array - value of the tensor.</p> <h4 id="raises_3">Raises:</h4> <ul> <li>
+<b><code>ValueError</code></b>: If the Estimator has not produced a checkpoint yet.</li> </ul> <h3 id="latest_checkpoint"><code>latest_checkpoint</code></h3> <pre class="prettyprint lang-python" data-language="python">latest_checkpoint()
+</pre> <p>Finds the filename of latest saved checkpoint file in <code>model_dir</code>.</p> <h4 id="returns_4">Returns:</h4> <p>The full path to the latest checkpoint or <code>None</code> if no checkpoint was found.</p> <h3 id="predict"><code>predict</code></h3> <pre class="prettyprint lang-python" data-language="python">predict(
+    input_fn,
+    predict_keys=None,
+    hooks=None,
+    checkpoint_path=None
+)
+</pre> <p>Yields predictions for given features.</p> <h4 id="args_4">Args:</h4> <ul> <li>
+<b><code>input_fn</code></b>: Input function returning features which is a dictionary of string feature name to <code>Tensor</code> or <code>SparseTensor</code>. If it returns a tuple, first item is extracted as features. Prediction continues until <code>input_fn</code> raises an end-of-input exception (<code>OutOfRangeError</code> or <code>StopIteration</code>).</li> <li>
+<b><code>predict_keys</code></b>: list of <code>str</code>, name of the keys to predict. It is used if the <code>EstimatorSpec.predictions</code> is a <code>dict</code>. If <code>predict_keys</code> is used then rest of the predictions will be filtered from the dictionary. If <code>None</code>, returns all.</li> <li>
+<b><code>hooks</code></b>: List of <code>SessionRunHook</code> subclass instances. Used for callbacks inside the prediction call.</li> <li>
+<b><code>checkpoint_path</code></b>: Path of a specific checkpoint to predict. If <code>None</code>, the latest checkpoint in <code>model_dir</code> is used.</li> </ul> <h4 id="yields">Yields:</h4> <p>Evaluated values of <code>predictions</code> tensors.</p> <h4 id="raises_4">Raises:</h4> <ul> <li>
+<b><code>ValueError</code></b>: Could not find a trained model in model_dir.</li> <li>
+<b><code>ValueError</code></b>: if batch length of predictions are not same.</li> <li>
+<b><code>ValueError</code></b>: If there is a conflict between <code>predict_keys</code> and <code>predictions</code>. For example if <code>predict_keys</code> is not <code>None</code> but <code>EstimatorSpec.predictions</code> is not a <code>dict</code>.</li> </ul> <h3 id="train"><code>train</code></h3> <pre class="prettyprint lang-python" data-language="python">train(
+    input_fn,
+    hooks=None,
+    steps=None,
+    max_steps=None,
+    saving_listeners=None
+)
+</pre> <p>Trains a model given training data input_fn.</p> <h4 id="args_5">Args:</h4> <ul> <li>
+<b><code>input_fn</code></b>: Input function returning a tuple of: features - <code>Tensor</code> or dictionary of string feature name to <code>Tensor</code>. labels - <code>Tensor</code> or dictionary of <code>Tensor</code> with labels.</li> <li>
+<b><code>hooks</code></b>: List of <code>SessionRunHook</code> subclass instances. Used for callbacks inside the training loop.</li> <li>
+<b><code>steps</code></b>: Number of steps for which to train model. If <code>None</code>, train forever or train until input_fn generates the <code>OutOfRange</code> error or <code>StopIteration</code> exception. 'steps' works incrementally. If you call two times train(steps=10) then training occurs in total 20 steps. If <code>OutOfRange</code> or <code>StopIteration</code> occurs in the middle, training stops before 20 steps. If you don't want to have incremental behavior please set <code>max_steps</code> instead. If set, <code>max_steps</code> must be <code>None</code>.</li> <li>
+<b><code>max_steps</code></b>: Number of total steps for which to train model. If <code>None</code>, train forever or train until input_fn generates the <code>OutOfRange</code> error or <code>StopIteration</code> exception. If set, <code>steps</code> must be <code>None</code>. If <code>OutOfRange</code> or <code>StopIteration</code> occurs in the middle, training stops before <code>max_steps</code> steps. Two calls to <code>train(steps=100)</code> means 200 training iterations. On the other hand, two calls to <code>train(max_steps=100)</code> means that the second call will not do any iteration since first call did all 100 steps.</li> <li>
+<b><code>saving_listeners</code></b>: list of <code>CheckpointSaverListener</code> objects. Used for callbacks that run immediately before or after checkpoint savings.</li> </ul> <h4 id="returns_5">Returns:</h4> <p><code>self</code>, for chaining.</p> <h4 id="raises_5">Raises:</h4> <ul> <li>
+<b><code>ValueError</code></b>: If both <code>steps</code> and <code>max_steps</code> are not <code>None</code>.</li> <li>
+<b><code>ValueError</code></b>: If either <code>steps</code> or <code>max_steps</code> is &lt;= 0.</li> </ul>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2017 The TensorFlow Authors. All rights reserved.<br>Licensed under the Creative Commons Attribution License 3.0.<br>Code samples licensed under the Apache 2.0 License.<br>
+    <a href="https://www.tensorflow.org/api_docs/python/tf/contrib/gan/estimator/GANEstimator" class="_attribution-link" target="_blank">https://www.tensorflow.org/api_docs/python/tf/contrib/gan/estimator/GANEstimator</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

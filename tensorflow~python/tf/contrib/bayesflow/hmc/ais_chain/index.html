@@ -1,0 +1,142 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>contrib.bayesflow.hmc.ais_chain - TensorFlow Python - W3cubDocs</title>
+  
+  <meta name="description" content=" Defined in tensorflow&#47;contrib&#47;bayesflow&#47;python&#47;ops&#47;hmc_impl.py. ">
+  <meta name="keywords" content="tf, contrib, bayesflow, hmc, ais, chain, -, tensorflow, python, tensorflow~python">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/tensorflow~python/tf/contrib/bayesflow/hmc/ais_chain/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/tensorflow~python.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/tensorflow~python/" class="_nav-link" title="" style="margin-left:0;">TensorFlow Python</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _tensorflow">
+				
+<h1 itemprop="name" class="devsite-page-title"> tf.contrib.bayesflow.hmc.ais_chain </h1>     <div itemscope itemtype="http://developers.google.com/ReferenceObject"> <meta itemprop="name" content="tf.contrib.bayesflow.hmc.ais_chain"> <meta itemprop="path" content="r1.4"> </div> <pre class="prettyprint lang-python" data-language="python">ais_chain(
+    n_iterations,
+    step_size,
+    n_leapfrog_steps,
+    initial_x,
+    target_log_prob_fn,
+    proposal_log_prob_fn,
+    event_dims=(),
+    name=None
+)
+</pre> <p>Defined in <a href="https://www.github.com/tensorflow/tensorflow/blob/r1.4/tensorflow/contrib/bayesflow/python/ops/hmc_impl.py" target="_blank"><code>tensorflow/contrib/bayesflow/python/ops/hmc_impl.py</code></a>.</p> <p>Runs annealed importance sampling (AIS) to estimate normalizing constants.</p> <p>This routine uses Hamiltonian Monte Carlo to sample from a series of distributions that slowly interpolates between an initial "proposal" distribution</p> <p><code>exp(proposal_log_prob_fn(x) - proposal_log_normalizer)</code></p> <p>and the target distribution</p> <p><code>exp(target_log_prob_fn(x) - target_log_normalizer)</code>,</p> <p>accumulating importance weights along the way. The product of these importance weights gives an unbiased estimate of the ratio of the normalizing constants of the initial distribution and the target distribution:</p> <p>E[exp(w)] = exp(target_log_normalizer - proposal_log_normalizer).</p> <h4 id="args">Args:</h4> <ul> <li>
+<b><code>n_iterations</code></b>: Integer number of Markov chain updates to run. More iterations means more expense, but smoother annealing between q and p, which in turn means exponentially lower variance for the normalizing constant estimator.</li> <li>
+<b><code>step_size</code></b>: Scalar step size or array of step sizes for the leapfrog integrator. Broadcasts to the shape of <code>initial_x</code>. Larger step sizes lead to faster progress, but too-large step sizes make rejection exponentially more likely. When possible, it's often helpful to match per-variable step sizes to the standard deviations of the target distribution in each variable.</li> <li>
+<b><code>n_leapfrog_steps</code></b>: Integer number of steps to run the leapfrog integrator for. Total progress per HMC step is roughly proportional to step_size * n_leapfrog_steps.</li> <li>
+<b><code>initial_x</code></b>: Tensor of initial state(s) of the Markov chain(s). Must be a sample from q, or results will be incorrect.</li> <li>
+<b><code>target_log_prob_fn</code></b>: Python callable which takes an argument like <code>initial_x</code> and returns its (possibly unnormalized) log-density under the target distribution.</li> <li>
+<b><code>proposal_log_prob_fn</code></b>: Python callable that returns the log density of the initial distribution.</li> <li>
+<b><code>event_dims</code></b>: List of dimensions that should not be treated as independent. This allows for multiple chains to be run independently in parallel. Default is (), i.e., all dimensions are independent.</li> <li>
+<b><code>name</code></b>: Python <code>str</code> name prefixed to Ops created by this function.</li> </ul> <h4 id="returns">Returns:</h4> <ul> <li>
+<b><code>ais_weights</code></b>: Tensor with the estimated weight(s). Has shape matching <code>target_log_prob_fn(initial_x)</code>.</li> <li>
+<b><code>chain_states</code></b>: Tensor with the state(s) of the Markov chain(s) the final iteration. Has shape matching <code>initial_x</code>.</li> <li>
+<b><code>acceptance_probs</code></b>: Tensor with the acceptance probabilities for the final iteration. Has shape matching <code>target_log_prob_fn(initial_x)</code>.</li> </ul> <h4 id="examples">Examples:</h4> <pre class="prettyprint lang-python" data-language="python"># Estimating the normalizing constant of a log-gamma distribution:
+def proposal_log_prob(x):
+  # Standard normal log-probability. This is properly normalized.
+  return tf.reduce_sum(-0.5 * tf.square(x) - 0.5 * np.log(2 * np.pi), 1)
+def target_log_prob(x):
+  # Unnormalized log-gamma(2, 3) distribution.
+  # True normalizer is (lgamma(2) - 2 * log(3)) * x.shape[1]
+  return tf.reduce_sum(2. * x - 3. * tf.exp(x), 1)
+# Run 100 AIS chains in parallel
+initial_x = tf.random_normal([100, 20])
+w, _, _ = hmc.ais_chain(1000, 0.2, 2, initial_x, target_log_prob,
+                        proposal_log_prob, event_dims=[1])
+log_normalizer_estimate = tf.reduce_logsumexp(w) - np.log(100)
+</pre> <pre class="prettyprint lang-python" data-language="python"># Estimating the marginal likelihood of a Bayesian regression model:
+base_measure = -0.5 * np.log(2 * np.pi)
+def proposal_log_prob(x):
+  # Standard normal log-probability. This is properly normalized.
+  return tf.reduce_sum(-0.5 * tf.square(x) + base_measure, 1)
+def regression_log_joint(beta, x, y):
+  # This function returns a vector whose ith element is log p(beta[i], y | x).
+  # Each row of beta corresponds to the state of an independent Markov chain.
+  log_prior = tf.reduce_sum(-0.5 * tf.square(beta) + base_measure, 1)
+  means = tf.matmul(beta, x, transpose_b=True)
+  log_likelihood = tf.reduce_sum(-0.5 * tf.square(y - means) +
+                                 base_measure, 1)
+  return log_prior + log_likelihood
+def log_joint_partial(beta):
+  return regression_log_joint(beta, x, y)
+# Run 100 AIS chains in parallel
+initial_beta = tf.random_normal([100, x.shape[1]])
+w, beta_samples, _ = hmc.ais_chain(1000, 0.1, 2, initial_beta,
+                                   log_joint_partial, proposal_log_prob,
+                                   event_dims=[1])
+log_normalizer_estimate = tf.reduce_logsumexp(w) - np.log(100)
+</pre>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2017 The TensorFlow Authors. All rights reserved.<br>Licensed under the Creative Commons Attribution License 3.0.<br>Code samples licensed under the Apache 2.0 License.<br>
+    <a href="https://www.tensorflow.org/api_docs/python/tf/contrib/bayesflow/hmc/ais_chain" class="_attribution-link" target="_blank">https://www.tensorflow.org/api_docs/python/tf/contrib/bayesflow/hmc/ais_chain</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

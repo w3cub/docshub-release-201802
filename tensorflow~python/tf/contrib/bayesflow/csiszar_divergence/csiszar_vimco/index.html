@@ -1,0 +1,118 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>contrib.bayesflow.csiszar_divergence.csiszar_vimco - TensorFlow Python - W3cubDocs</title>
+  
+  <meta name="description" content=" Defined in tensorflow&#47;contrib&#47;bayesflow&#47;python&#47;ops&#47;csiszar_divergence_impl.py. ">
+  <meta name="keywords" content="tf, contrib, bayesflow, csiszar, divergence, vimco, -, tensorflow, python, tensorflow~python">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/tensorflow~python/tf/contrib/bayesflow/csiszar_divergence/csiszar_vimco/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/tensorflow~python.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/tensorflow~python/" class="_nav-link" title="" style="margin-left:0;">TensorFlow Python</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _tensorflow">
+				
+<h1 itemprop="name" class="devsite-page-title"> tf.contrib.bayesflow.csiszar_divergence.csiszar_vimco </h1>     <div itemscope itemtype="http://developers.google.com/ReferenceObject"> <meta itemprop="name" content="tf.contrib.bayesflow.csiszar_divergence.csiszar_vimco"> <meta itemprop="path" content="r1.4"> </div> <pre class="prettyprint lang-python" data-language="python">csiszar_vimco(
+    f,
+    p_log_prob,
+    q,
+    num_draws,
+    num_batch_draws=1,
+    seed=None,
+    name=None
+)
+</pre> <p>Defined in <a href="https://www.github.com/tensorflow/tensorflow/blob/r1.4/tensorflow/contrib/bayesflow/python/ops/csiszar_divergence_impl.py" target="_blank"><code>tensorflow/contrib/bayesflow/python/ops/csiszar_divergence_impl.py</code></a>.</p> <p>Use VIMCO to lower the variance of gradient[csiszar_function(Avg(logu))].</p> <p>This function generalizes "Variational Inference for Monte Carlo Objectives" (VIMCO), i.e., https://arxiv.org/abs/1602.06725, to Csiszar f-Divergences.</p> <blockquote class="note">
+<strong>Note:</strong><span> if <code>q.reparameterization_type = distribution.FULLY_REPARAMETERIZED</code>, consider using <code>monte_carlo_csiszar_f_divergence</code>.</span>
+</blockquote> <p>The VIMCO loss is:</p> <pre class="prettyprint lang-none" data-language="python">vimco = f(Avg{logu[i] : i=0,...,m-1})
+where,
+  logu[i] = log( p(x, h[i]) / q(h[i] | x) )
+  h[i] iid~ q(H | x)
+</pre> <p>Interestingly, the VIMCO gradient is not the naive gradient of <code>vimco</code>. Rather, it is characterized by:</p> <pre class="prettyprint lang-none" data-language="python">grad[vimco] - variance_reducing_term
+where,
+  variance_reducing_term = Sum{ grad[log q(h[i] | x)] *
+                                  (vimco - f(log Avg{h[j;i] : j=0,...,m-1}))
+                               : i=0, ..., m-1 }
+  h[j;i] = { u[j]                             j!=i
+           { GeometricAverage{ u[k] : k!=i}   j==i
+</pre> <p>(We omitted <code>stop_gradient</code> for brevity. See implementation for more details.)</p> <p>The <code>Avg{h[j;i] : j}</code> term is a kind of "swap-out average" where the <code>i</code>-th element has been replaced by the leave-<code>i</code>-out Geometric-average.</p> <p>This implementation prefers numerical precision over efficiency, i.e., <code>O(num_draws * num_batch_draws * prod(batch_shape) * prod(event_shape))</code>. (The constant may be fairly large, perhaps around 12.)</p> <h4 id="args">Args:</h4> <ul> <li>
+<b><code>f</code></b>: Python <code>callable</code> representing a Csiszar-function in log-space.</li> <li>
+<b><code>p_log_prob</code></b>: Python <code>callable</code> representing the natural-log of the probability under distribution <code>p</code>. (In variational inference <code>p</code> is the joint distribution.)</li> <li>
+<b><code>q</code></b>: <code>tf.Distribution</code>-like instance; must implement: <code>sample(n, seed)</code>, and <code>log_prob(x)</code>. (In variational inference <code>q</code> is the approximate posterior distribution.)</li> <li>
+<b><code>num_draws</code></b>: Integer scalar number of draws used to approximate the f-Divergence expectation.</li> <li>
+<b><code>num_batch_draws</code></b>: Integer scalar number of draws used to approximate the f-Divergence expectation.</li> <li>
+<b><code>seed</code></b>: Python <code>int</code> seed for <code>q.sample</code>.</li> <li>
+<b><code>name</code></b>: Python <code>str</code> name prefixed to Ops created by this function.</li> </ul> <h4 id="returns">Returns:</h4> <ul> <li>
+<b><code>vimco</code></b>: The Csiszar f-Divergence generalized VIMCO objective.</li> </ul> <h4 id="raises">Raises:</h4> <ul> <li>
+<b><code>ValueError</code></b>: if <code>num_draws &lt; 2</code>.</li> </ul>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2017 The TensorFlow Authors. All rights reserved.<br>Licensed under the Creative Commons Attribution License 3.0.<br>Code samples licensed under the Apache 2.0 License.<br>
+    <a href="https://www.tensorflow.org/api_docs/python/tf/contrib/bayesflow/csiszar_divergence/csiszar_vimco" class="_attribution-link" target="_blank">https://www.tensorflow.org/api_docs/python/tf/contrib/bayesflow/csiszar_divergence/csiszar_vimco</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

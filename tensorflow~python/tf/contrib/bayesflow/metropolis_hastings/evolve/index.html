@@ -1,0 +1,156 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>contrib.bayesflow.metropolis_hastings.evolve - TensorFlow Python - W3cubDocs</title>
+  
+  <meta name="description" content=" Defined in tensorflow&#47;contrib&#47;bayesflow&#47;python&#47;ops&#47;metropolis_hastings_impl.py. ">
+  <meta name="keywords" content="tf, contrib, bayesflow, metropolis, hastings, evolve, -, tensorflow, python, tensorflow~python">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/tensorflow~python/tf/contrib/bayesflow/metropolis_hastings/evolve/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/tensorflow~python.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/tensorflow~python/" class="_nav-link" title="" style="margin-left:0;">TensorFlow Python</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _tensorflow">
+				
+<h1 itemprop="name" class="devsite-page-title"> tf.contrib.bayesflow.metropolis_hastings.evolve </h1>     <div itemscope itemtype="http://developers.google.com/ReferenceObject"> <meta itemprop="name" content="tf.contrib.bayesflow.metropolis_hastings.evolve"> <meta itemprop="path" content="r1.4"> </div> <pre class="prettyprint lang-python" data-language="python">evolve(
+    initial_sample,
+    initial_log_density,
+    initial_log_accept_ratio,
+    log_unnormalized_prob_fn,
+    proposal_fn,
+    n_steps=1,
+    seed=None,
+    name=None
+)
+</pre> <p>Defined in <a href="https://www.github.com/tensorflow/tensorflow/blob/r1.4/tensorflow/contrib/bayesflow/python/ops/metropolis_hastings_impl.py" target="_blank"><code>tensorflow/contrib/bayesflow/python/ops/metropolis_hastings_impl.py</code></a>.</p> <p>Performs <code>n_steps</code> of the Metropolis-Hastings update.</p> <p>Given a probability density function, <code>f(x)</code> and a proposal scheme which generates new points from old, this <code>Op</code> returns a tensor which may be used to generate approximate samples from the target distribution using the Metropolis-Hastings algorithm. These samples are from a Markov chain whose equilibrium distribution matches the target distribution.</p> <p>The probability distribution may have an unknown normalization constan. We parameterize the probability density as follows:</p> <blockquote> <pre class="prettyprint notranslate" translate="no" data-language="python">f(x) = exp(L(x) + constant)
+</pre> <p>Here <code>L(x)</code> is any continuous function with an (possibly unknown but finite) upper bound, i.e. there exists a number beta such that <code>L(x)&lt; beta &lt; infinity</code> for all x. The constant is the normalization needed to make <code>f(x)</code> a probability density (as opposed to just a finite measure).</p> </blockquote> <p>Although <code>initial_sample</code> can be arbitrary, a poor choice may result in a slow-to-mix chain. In many cases the best choice is the one that maximizes the target density, i.e., choose <code>initial_sample</code> such that <code>f(initial_sample) &gt;= f(x)</code> for all <code>x</code>.</p> <p>If the support of the distribution is a strict subset of R^n (but of non zero measure), then the unnormalized log-density <code>L(x)</code> should return <code>-infinity</code> outside the support domain. This effectively forces the sampler to only explore points in the regions of finite support.</p> <p>Usage: This function is meant to be wrapped up with some of the common proposal schemes (e.g. random walk, Langevin diffusion etc) to produce a more user friendly interface. However, it may also be used to create bespoke samplers.</p> <p>The following example, demonstrates the use to generate a 1000 uniform random walk Metropolis samplers run in parallel for the normal target distribution.</p> <pre class="prettyprint lang-python" data-language="python">n = 3  # dimension of the problem
+
+# Generate 1000 initial values randomly. Each of these would be an
+# independent starting point for a Markov chain.
+state = tf.get_variable(
+    'state',initializer=tf.random_normal([1000, n], mean=3.0,
+                                         dtype=tf.float64, seed=42))
+
+# Computes the log(p(x)) for the unit normal density and ignores the
+# normalization constant.
+def log_density(x):
+  return  - tf.reduce_sum(x * x, reduction_indices=-1) / 2.0
+
+# Initial log-density value
+state_log_density = tf.get_variable(
+    'state_log_density', initializer=log_density(state.initialized_value()))
+
+# A variable to store the log_acceptance_ratio:
+log_acceptance_ratio = tf.get_variable(
+    'log_acceptance_ratio', initializer=tf.zeros([1000], dtype=tf.float64))
+
+# Generates random proposals by moving each coordinate uniformly and
+# independently in a box of size 2 centered around the current value.
+# Returns the new point and also the log of the Hastings ratio (the
+# ratio of the probability of going from the proposal to origin and the
+# probability of the reverse transition). When this ratio is 1, the value
+# may be omitted and replaced by None.
+def random_proposal(x):
+  return (x + tf.random_uniform(tf.shape(x), minval=-1, maxval=1,
+                                dtype=x.dtype, seed=12)), None
+
+#  Create the op to propagate the chain for 100 steps.
+stepper = mh.evolve(
+    state, state_log_density, log_acceptance_ratio,
+    log_density, random_proposal, n_steps=100, seed=123)
+init = tf.initialize_all_variables()
+with tf.Session() as sess:
+  sess.run(init)
+  # Run the chains for a total of 1000 steps and print out the mean across
+  # the chains every 100 iterations.
+  for n_iter in range(10):
+    # Executing the stepper advances the chain to the next state.
+    sess.run(stepper)
+    # Print out the current value of the mean(sample) for every dimension.
+    print(np.mean(sess.run(state), 0))
+  # Estimated covariance matrix
+  samples = sess.run(state)
+  print('')
+  print(np.cov(samples, rowvar=False))
+</pre> <h4 id="args">Args:</h4> <ul> <li>
+<b><code>initial_sample</code></b>: A float-like <code>tf.Variable</code> of any shape that can be consumed by the <code>log_unnormalized_prob_fn</code> and <code>proposal_fn</code> callables.</li> <li>
+<b><code>initial_log_density</code></b>: Float-like <code>tf.Variable</code> with <code>dtype</code> and shape equivalent to <code>log_unnormalized_prob_fn(initial_sample)</code>, i.e., matching the result of <code>log_unnormalized_prob_fn</code> invoked at <code>current_state</code>.</li> <li>
+<b><code>initial_log_accept_ratio</code></b>: A <code>tf.Variable</code> with <code>dtype</code> and shape matching <code>initial_log_density</code>. Stands for the log of Metropolis-Hastings acceptance ratio after propagating the chain for <code>n_steps</code>.</li> <li>
+<b><code>log_unnormalized_prob_fn</code></b>: A Python callable evaluated at <code>current_state</code> and returning a float-like <code>Tensor</code> of log target-density up to a normalizing constant. In other words, <code>log_unnormalized_prob_fn(x) = log(g(x))</code>, where <code>target_density = g(x)/Z</code> for some constant <code>A</code>. The shape of the input tensor is the same as the shape of the <code>current_state</code>. The shape of the output tensor is either (a). Same as the input shape if the density being sampled is one dimensional, or (b). If the density is defined for <code>events</code> of shape <code>event_shape = [E1, E2, ... Ee]</code>, then the input tensor should be of shape <code>batch_shape + event_shape</code>, here <code>batch_shape = [B1, ..., Bb]</code> and the result must be of shape [B1, ..., Bb]. For example, if the distribution that is being sampled is a 10 dimensional normal, then the input tensor may be of shape [100, 10] or [30, 20, 10]. The last dimension will then be 'consumed' by <code>log_unnormalized_prob_fn</code> and it should return tensors of shape [100] and [30, 20] respectively.</li> <li>
+<b><code>proposal_fn</code></b>: A callable accepting a real valued <code>Tensor</code> of current sample points and returning a tuple of two <code>Tensors</code>. The first element of the pair should be a <code>Tensor</code> containing the proposal state and should have the same shape as the input <code>Tensor</code>. The second element of the pair gives the log of the ratio of the probability of transitioning from the proposal points to the input points and the probability of transitioning from the input points to the proposal points. If the proposal is symmetric, i.e. Probability(Proposal -&gt; Current) = Probability(Current -&gt; Proposal) the second value should be set to None instead of explicitly supplying a tensor of zeros. In addition to being convenient, this also leads to a more efficient graph.</li> <li>
+<b><code>n_steps</code></b>: A positive <code>int</code> or a scalar <code>int32</code> tensor. Sets the number of iterations of the chain.</li> <li>
+<b><code>seed</code></b>: <code>int</code> or None. The random seed for this <code>Op</code>. If <code>None</code>, no seed is applied.</li> <li>
+<b><code>name</code></b>: A string that sets the name for this <code>Op</code>.</li> </ul> <h4 id="returns">Returns:</h4> <ul> <li>
+<b><code>forward_step</code></b>: an <code>Op</code> to step the Markov chain forward for <code>n_steps</code>.</li> </ul>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2017 The TensorFlow Authors. All rights reserved.<br>Licensed under the Creative Commons Attribution License 3.0.<br>Code samples licensed under the Apache 2.0 License.<br>
+    <a href="https://www.tensorflow.org/api_docs/python/tf/contrib/bayesflow/metropolis_hastings/evolve" class="_attribution-link" target="_blank">https://www.tensorflow.org/api_docs/python/tf/contrib/bayesflow/metropolis_hastings/evolve</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

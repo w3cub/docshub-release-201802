@@ -1,0 +1,105 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>contrib.distributions.moving_mean_variance - TensorFlow Python - W3cubDocs</title>
+  
+  <meta name="description" content=" Defined in tensorflow&#47;contrib&#47;distributions&#47;python&#47;ops&#47;moving_stats.py. ">
+  <meta name="keywords" content="tf, contrib, distributions, moving, mean, variance, -, tensorflow, python, tensorflow~python">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/tensorflow~python/tf/contrib/distributions/moving_mean_variance/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/tensorflow~python.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/tensorflow~python/" class="_nav-link" title="" style="margin-left:0;">TensorFlow Python</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _tensorflow">
+				
+<h1 itemprop="name" class="devsite-page-title"> tf.contrib.distributions.moving_mean_variance </h1>     <div itemscope itemtype="http://developers.google.com/ReferenceObject"> <meta itemprop="name" content="tf.contrib.distributions.moving_mean_variance"> <meta itemprop="path" content="r1.4"> </div> <pre class="prettyprint lang-python" data-language="python">moving_mean_variance(
+    value,
+    decay,
+    collections=None,
+    name=None
+)
+</pre> <p>Defined in <a href="https://www.github.com/tensorflow/tensorflow/blob/r1.4/tensorflow/contrib/distributions/python/ops/moving_stats.py" target="_blank"><code>tensorflow/contrib/distributions/python/ops/moving_stats.py</code></a>.</p> <p>Compute exponentially weighted moving {mean,variance} of a streaming value.</p> <p>The exponentially-weighting moving <code>mean_var</code> and <code>variance_var</code> are updated by <code>value</code> according to the following recurrence:</p> <pre class="prettyprint lang-python" data-language="python">variance_var = decay * (variance_var + (1-decay) * (value - mean_var)**2)
+mean_var     = decay * mean_var + (1 - decay) * value
+</pre> <blockquote class="note">
+<strong>Note:</strong><span> <code>mean_var</code> is updated <em>after</em> <code>variance_var</code>, i.e., <code>variance_var</code> uses the lag-<code>1</code> mean.</span>
+</blockquote> <p>For derivation justification, see equation 143 of: T. Finch, Feb 2009. "Incremental calculation of weighted mean and variance". http://people.ds.cam.ac.uk/fanf2/hermes/doc/antiforgery/stats.pdf</p> <p>Unlike <code>assign_moving_mean_variance</code>, this function handles variable creation.</p> <h4 id="args">Args:</h4> <ul> <li>
+<b><code>value</code></b>: <code>float</code>-like <code>Tensor</code>. Same shape as <code>mean_var</code> and <code>variance_var</code>.</li> <li>
+<b><code>decay</code></b>: A <code>float</code>-like <code>Tensor</code>. The moving mean decay. Typically close to <code>1.</code>, e.g., <code>0.999</code>.</li> <li>
+<b><code>collections</code></b>: Python list of graph-collections keys to which the internal variables <code>mean_var</code> and <code>variance_var</code> are added. Default value is <code>[GraphKeys.GLOBAL_VARIABLES]</code>.</li> <li>
+<b><code>name</code></b>: Optional name of the returned operation.</li> </ul> <h4 id="returns">Returns:</h4> <ul> <li>
+<b><code>mean_var</code></b>: <code>Variable</code> representing the <code>value</code>-updated exponentially weighted moving mean.</li> <li>
+<b><code>variance_var</code></b>: <code>Variable</code> representing the <code>value</code>-updated exponentially weighted moving variance.</li> </ul> <h4 id="raises">Raises:</h4> <ul> <li>
+<b><code>TypeError</code></b>: if <code>value_var</code> does not have float type <code>dtype</code>.</li> <li>
+<b><code>TypeError</code></b>: if <code>value</code>, <code>decay</code> have different <code>base_dtype</code>.</li> </ul>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2017 The TensorFlow Authors. All rights reserved.<br>Licensed under the Creative Commons Attribution License 3.0.<br>Code samples licensed under the Apache 2.0 License.<br>
+    <a href="https://www.tensorflow.org/api_docs/python/tf/contrib/distributions/moving_mean_variance" class="_attribution-link" target="_blank">https://www.tensorflow.org/api_docs/python/tf/contrib/distributions/moving_mean_variance</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

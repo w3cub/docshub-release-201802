@@ -1,0 +1,128 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>contrib.cudnn_rnn.CudnnRNNRelu - TensorFlow Python - W3cubDocs</title>
+  
+  <meta name="description" content=" Defined in tensorflow&#47;contrib&#47;cudnn_rnn&#47;python&#47;ops&#47;cudnn_rnn_ops.py. ">
+  <meta name="keywords" content="tf, contrib, cudnn, rnn, cudnnrnnrelu, -, tensorflow, python, tensorflow~python">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/tensorflow~python/tf/contrib/cudnn_rnn/cudnnrnnrelu/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/tensorflow~python.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/tensorflow~python/" class="_nav-link" title="" style="margin-left:0;">TensorFlow Python</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _tensorflow">
+				
+<h1 itemprop="name" class="devsite-page-title"> tf.contrib.cudnn_rnn.CudnnRNNRelu </h1>     <div itemscope itemtype="http://developers.google.com/ReferenceObject"> <meta itemprop="name" content="tf.contrib.cudnn_rnn.CudnnRNNRelu"> <meta itemprop="path" content="r1.4"> <meta itemprop="property" content="direction"> <meta itemprop="property" content="input_mode"> <meta itemprop="property" content="input_size"> <meta itemprop="property" content="num_layers"> <meta itemprop="property" content="num_units"> <meta itemprop="property" content="rnn_mode"> <meta itemprop="property" content="__call__"> <meta itemprop="property" content="__init__"> <meta itemprop="property" content="canonical_to_params"> <meta itemprop="property" content="params_size"> <meta itemprop="property" content="params_to_canonical"> </div> <h2 id="class_cudnnrnnrelu">Class <code>CudnnRNNRelu</code>
+</h2> <p>Defined in <a href="https://www.github.com/tensorflow/tensorflow/blob/r1.4/tensorflow/contrib/cudnn_rnn/python/ops/cudnn_rnn_ops.py" target="_blank"><code>tensorflow/contrib/cudnn_rnn/python/ops/cudnn_rnn_ops.py</code></a>.</p> <p>Cudnn implementation of the RNN-relu model. Cudnn RNN has an opaque parameter buffer that can be used for inference and training. But it is possible that the layout of the parameter buffers changes between generations. So it is highly recommended to use CudnnOpaqueParamsSaveable to save and restore weights and biases in a canonical format.</p> <p>This is a typical use case:</p> <ul> <li>The user creates a CudnnRNN model.</li> <li>The user query that parameter buffer size.</li> <li>The user creates a variable of that size that serves as the parameter buffers.</li> <li>The user either initialize the parameter buffer, or load the canonical weights into the parameter buffer.</li> <li>The user calls the model with the parameter buffer for inference, or training.</li> <li>If training, the user creates a Saver object.</li> <li>If training, the user creates a CudnnOpaqueParamsSaveable object from the parameter buffer for it to be later saved in the canonical format. When creating a CudnnOpaqueParamsSaveable object, a name could be provided, which is useful in distinguishing the names of multiple CudnnOpaqueParamsSaveable objects (e.g. for an encoder-decoder model).</li> <li>Once a while, the user saves the parameter buffer into model checkpoints with Saver.save().</li> <li>When restoring, the user creates a CudnnOpaqueParamsSaveable object and uses Saver.restore() to restore the parameter buffer from the canonical format to a user-defined format, as well as to restore other savable objects in the checkpoint file.</li> </ul> <h2 id="properties">Properties</h2> <h3 id="direction"><code>direction</code></h3> <h3 id="input_mode"><code>input_mode</code></h3> <h3 id="input_size"><code>input_size</code></h3> <h3 id="num_layers"><code>num_layers</code></h3> <h3 id="num_units"><code>num_units</code></h3> <h3 id="rnn_mode"><code>rnn_mode</code></h3> <h2 id="methods">Methods</h2> <h3 id="__init__"><code>__init__</code></h3> <pre class="prettyprint lang-python" data-language="python">__init__(
+    num_layers,
+    num_units,
+    input_size,
+    input_mode=CUDNN_INPUT_LINEAR_MODE,
+    direction=CUDNN_RNN_UNIDIRECTION,
+    dtype=tf.float32,
+    dropout=0.0,
+    seed=0
+)
+</pre> <p>Creates a Cudnn RNN model from model without hidden-state C.</p> <h4 id="args">Args:</h4> <ul> <li>
+<b><code>num_layers</code></b>: the number of layers for the RNN model.</li> <li>
+<b><code>num_units</code></b>: the number of units within the RNN model.</li> <li>
+<b><code>input_size</code></b>: the size of the input, it could be different from the num_units.</li> <li>
+<b><code>input_mode</code></b>: indicate whether there is a linear projection between the input and The actual computation before the first layer. It could be 'skip_input', 'linear_input' or 'auto_select'. 'skip_input' is only allowed when input_size == num_units; 'auto_select' implies 'skip_input' when input_size == num_units; otherwise, it implies 'linear_input'.</li> <li>
+<b><code>direction</code></b>: the direction model that the model operates. Could be either 'unidirectional' or 'bidirectional'</li> <li>
+<b><code>dtype</code></b>: dtype of params, tf.float32 or tf.float64.</li> <li>
+<b><code>dropout</code></b>: whether to enable dropout. With it is 0, dropout is disabled.</li> <li>
+<b><code>seed</code></b>: the seed used for initializing dropout.</li> </ul> <h4 id="raises">Raises:</h4> <ul> <li>
+<b><code>ValueError</code></b>: if direction is not 'unidirectional' or 'bidirectional'.</li> </ul> <h3 id="__call__"><code>__call__</code></h3> <pre class="prettyprint lang-python" data-language="python">__call__(
+    input_data,
+    input_h,
+    params,
+    is_training=True
+)
+</pre> <p>Runs the forward step for the Cudnn LSTM model.</p> <h4 id="args_1">Args:</h4> <ul> <li>
+<b><code>input_data</code></b>: the input sequence to the RNN model. A Tensor of shape [?, batch_size, input_size].</li> <li>
+<b><code>input_h</code></b>: the initial hidden state for h. A Tensor of shape [num_layers, batch_size, num_units].</li> <li>
+<b><code>params</code></b>: the parameter buffer created for this model.</li> <li>
+<b><code>is_training</code></b>: whether this operation will be used in training or inference.</li> </ul> <h4 id="returns">Returns:</h4> <ul> <li>
+<b><code>output</code></b>: the output sequuence.</li> <li>
+<b><code>output_h</code></b>: the final state for h.</li> </ul> <h3 id="canonical_to_params"><code>canonical_to_params</code></h3> <pre class="prettyprint lang-python" data-language="python">canonical_to_params(
+    weights,
+    biases
+)
+</pre> <p>Converts params from the canonical format to a specific format of cuDNN.</p> <h4 id="args_2">Args:</h4> <ul> <li>
+<b><code>weights</code></b>: a Tensor for weight parameters.</li> <li>
+<b><code>biases</code></b>: a Tensor for bias parameters.</li> </ul> <h4 id="returns_1">Returns:</h4> <p>A function for the canonical-to-params-to-specific conversion..</p> <h3 id="params_size"><code>params_size</code></h3> <pre class="prettyprint lang-python" data-language="python">params_size()
+</pre> <p>Calculates the size of the opaque parameter buffer needed for this model.</p> <h4 id="returns_2">Returns:</h4> <p>The calculated parameter buffer size.</p> <h3 id="params_to_canonical"><code>params_to_canonical</code></h3> <pre class="prettyprint lang-python" data-language="python">params_to_canonical(params)
+</pre> <p>Converts params from a specific format of cuDNN to the canonical format.</p> <h4 id="args_3">Args:</h4> <ul> <li>
+<b><code>params</code></b>: a Variable for weight and bias parameters.</li> </ul> <h4 id="returns_3">Returns:</h4> <p>A function for the specific-to-canonical conversion.</p>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2017 The TensorFlow Authors. All rights reserved.<br>Licensed under the Creative Commons Attribution License 3.0.<br>Code samples licensed under the Apache 2.0 License.<br>
+    <a href="https://www.tensorflow.org/api_docs/python/tf/contrib/cudnn_rnn/CudnnRNNRelu" class="_attribution-link" target="_blank">https://www.tensorflow.org/api_docs/python/tf/contrib/cudnn_rnn/CudnnRNNRelu</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

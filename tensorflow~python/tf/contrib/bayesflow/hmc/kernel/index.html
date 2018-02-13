@@ -1,0 +1,185 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>contrib.bayesflow.hmc.kernel - TensorFlow Python - W3cubDocs</title>
+  
+  <meta name="description" content=" Defined in tensorflow&#47;contrib&#47;bayesflow&#47;python&#47;ops&#47;hmc_impl.py. ">
+  <meta name="keywords" content="tf, contrib, bayesflow, hmc, kernel, -, tensorflow, python, tensorflow~python">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/tensorflow~python/tf/contrib/bayesflow/hmc/kernel/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/tensorflow~python.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/tensorflow~python/" class="_nav-link" title="" style="margin-left:0;">TensorFlow Python</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _tensorflow">
+				
+<h1 itemprop="name" class="devsite-page-title"> tf.contrib.bayesflow.hmc.kernel </h1>     <div itemscope itemtype="http://developers.google.com/ReferenceObject"> <meta itemprop="name" content="tf.contrib.bayesflow.hmc.kernel"> <meta itemprop="path" content="r1.4"> </div> <pre class="prettyprint lang-python" data-language="python">kernel(
+    step_size,
+    n_leapfrog_steps,
+    x,
+    target_log_prob_fn,
+    event_dims=(),
+    x_log_prob=None,
+    x_grad=None,
+    name=None
+)
+</pre> <p>Defined in <a href="https://www.github.com/tensorflow/tensorflow/blob/r1.4/tensorflow/contrib/bayesflow/python/ops/hmc_impl.py" target="_blank"><code>tensorflow/contrib/bayesflow/python/ops/hmc_impl.py</code></a>.</p> <p>Runs one iteration of Hamiltonian Monte Carlo.</p> <p>Hamiltonian Monte Carlo (HMC) is a Markov chain Monte Carlo (MCMC) algorithm that takes a series of gradient-informed steps to produce a Metropolis proposal. This function applies one step of HMC to randomly update the variable <code>x</code>.</p> <p>This function can update multiple chains in parallel. It assumes that all dimensions of <code>x</code> not specified in <code>event_dims</code> are independent, and should therefore be updated independently. The output of <code>target_log_prob_fn()</code> should sum log-probabilities across all event dimensions. Slices along dimensions not in <code>event_dims</code> may have different target distributions; for example, if <code>event_dims == (1,)</code>, then <code>x[0, :]</code> could have a different target distribution from x[1, :]. This is up to <code>target_log_prob_fn()</code>.</p> <h4 id="args">Args:</h4> <ul> <li>
+<b><code>step_size</code></b>: Scalar step size or array of step sizes for the leapfrog integrator. Broadcasts to the shape of <code>x</code>. Larger step sizes lead to faster progress, but too-large step sizes make rejection exponentially more likely. When possible, it's often helpful to match per-variable step sizes to the standard deviations of the target distribution in each variable.</li> <li>
+<b><code>n_leapfrog_steps</code></b>: Integer number of steps to run the leapfrog integrator for. Total progress per HMC step is roughly proportional to step_size * n_leapfrog_steps.</li> <li>
+<b><code>x</code></b>: Tensor containing the value(s) of the random variable(s) to update.</li> <li>
+<b><code>target_log_prob_fn</code></b>: Python callable which takes an argument like <code>initial_x</code> and returns its (possibly unnormalized) log-density under the target distribution.</li> <li>
+<b><code>event_dims</code></b>: List of dimensions that should not be treated as independent. This allows for multiple chains to be run independently in parallel. Default is (), i.e., all dimensions are independent. x_log_prob (optional): Tensor containing the cached output of a previous call to <code>target_log_prob_fn()</code> evaluated at <code>x</code> (such as that provided by a previous call to <code>kernel()</code>). Providing <code>x_log_prob</code> and <code>x_grad</code> saves one gradient computation per call to <code>kernel()</code>. x_grad (optional): Tensor containing the cached gradient of <code>target_log_prob_fn()</code> evaluated at <code>x</code> (such as that provided by a previous call to <code>kernel()</code>). Providing <code>x_log_prob</code> and <code>x_grad</code> saves one gradient computation per call to <code>kernel()</code>.</li> <li>
+<b><code>name</code></b>: Python <code>str</code> name prefixed to Ops created by this function.</li> </ul> <h4 id="returns">Returns:</h4> <ul> <li>
+<b><code>updated_x</code></b>: The updated variable(s) x. Has shape matching <code>initial_x</code>.</li> <li>
+<b><code>acceptance_probs</code></b>: Tensor with the acceptance probabilities for the final iteration. This is useful for diagnosing step size problems etc. Has shape matching <code>target_log_prob_fn(initial_x)</code>.</li> <li>
+<b><code>new_log_prob</code></b>: The value of <code>target_log_prob_fn()</code> evaluated at <code>updated_x</code>.</li> <li>
+<b><code>new_grad</code></b>: The value of the gradient of <code>target_log_prob_fn()</code> evaluated at <code>updated_x</code>.</li> </ul> <h4 id="examples">Examples:</h4> <pre class="prettyprint lang-python" data-language="python"># Tuning acceptance rates:
+target_accept_rate = 0.631
+def target_log_prob(x):
+  # Standard normal
+  return tf.reduce_sum(-0.5 * tf.square(x))
+initial_x = tf.zeros([10])
+initial_log_prob = target_log_prob(initial_x)
+initial_grad = tf.gradients(initial_log_prob, initial_x)[0]
+# Algorithm state
+x = tf.Variable(initial_x, name='x')
+step_size = tf.Variable(1., name='step_size')
+last_log_prob = tf.Variable(initial_log_prob, name='last_log_prob')
+last_grad = tf.Variable(initial_grad, name='last_grad')
+# Compute updates
+new_x, acceptance_prob, log_prob, grad = hmc.kernel(step_size, 3, x,
+                                                    target_log_prob,
+                                                    event_dims=[0],
+                                                    x_log_prob=last_log_prob)
+x_update = tf.assign(x, new_x)
+log_prob_update = tf.assign(last_log_prob, log_prob)
+grad_update = tf.assign(last_grad, grad)
+step_size_update = tf.assign(step_size,
+                             tf.where(acceptance_prob &gt; target_accept_rate,
+                                      step_size * 1.01, step_size / 1.01))
+adaptive_updates = [x_update, log_prob_update, grad_update, step_size_update]
+sampling_updates = [x_update, log_prob_update, grad_update]
+
+sess = tf.Session()
+sess.run(tf.global_variables_initializer())
+# Warm up the sampler and adapt the step size
+for i in xrange(500):
+  sess.run(adaptive_updates)
+# Collect samples without adapting step size
+samples = np.zeros([500, 10])
+for i in xrange(500):
+  x_val, _ = sess.run([new_x, sampling_updates])
+  samples[i] = x_val
+</pre> <pre class="prettyprint lang-python" data-language="python"># Empirical-Bayes estimation of a hyperparameter by MCMC-EM:
+
+# Problem setup
+N = 150
+D = 10
+x = np.random.randn(N, D).astype(np.float32)
+true_sigma = 0.5
+true_beta = true_sigma * np.random.randn(D).astype(np.float32)
+y = x.dot(true_beta) + np.random.randn(N).astype(np.float32)
+
+def log_prior(beta, log_sigma):
+  return tf.reduce_sum(-0.5 / tf.exp(2 * log_sigma) * tf.square(beta) -
+                       log_sigma)
+def regression_log_joint(beta, log_sigma, x, y):
+  # This function returns log p(beta | log_sigma) + log p(y | x, beta).
+  means = tf.matmul(tf.expand_dims(beta, 0), x, transpose_b=True)
+  means = tf.squeeze(means)
+  log_likelihood = tf.reduce_sum(-0.5 * tf.square(y - means))
+  return log_prior(beta, log_sigma) + log_likelihood
+def log_joint_partial(beta):
+  return regression_log_joint(beta, log_sigma, x, y)
+# Our estimate of log(sigma)
+log_sigma = tf.Variable(0., name='log_sigma')
+# The state of the Markov chain
+beta = tf.Variable(tf.random_normal([x.shape[1]]), name='beta')
+new_beta, _, _, _ = hmc.kernel(0.1, 5, beta, log_joint_partial,
+                               event_dims=[0])
+beta_update = tf.assign(beta, new_beta)
+optimizer = tf.train.GradientDescentOptimizer(learning_rate=0.01)
+with tf.control_dependencies([beta_update]):
+  log_sigma_update = optimizer.minimize(-log_prior(beta, log_sigma),
+                                        var_list=[log_sigma])
+
+sess = tf.Session()
+sess.run(tf.global_variables_initializer())
+log_sigma_history = np.zeros(1000)
+for i in xrange(1000):
+  log_sigma_val, _ = sess.run([log_sigma, log_sigma_update])
+  log_sigma_history[i] = log_sigma_val
+# Should converge to something close to true_sigma
+plt.plot(np.exp(log_sigma_history))
+</pre>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2017 The TensorFlow Authors. All rights reserved.<br>Licensed under the Creative Commons Attribution License 3.0.<br>Code samples licensed under the Apache 2.0 License.<br>
+    <a href="https://www.tensorflow.org/api_docs/python/tf/contrib/bayesflow/hmc/kernel" class="_attribution-link" target="_blank">https://www.tensorflow.org/api_docs/python/tf/contrib/bayesflow/hmc/kernel</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

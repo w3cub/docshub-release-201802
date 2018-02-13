@@ -1,0 +1,114 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>contrib.bayesflow.stochastic_tensor.SampleValue - TensorFlow Python - W3cubDocs</title>
+  
+  <meta name="description" content=" Defined in tensorflow&#47;contrib&#47;bayesflow&#47;python&#47;ops&#47;stochastic_tensor_impl.py. ">
+  <meta name="keywords" content="tf, contrib, bayesflow, stochastic, tensor, samplevalue, -, tensorflow, python, tensorflow~python">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/tensorflow~python/tf/contrib/bayesflow/stochastic_tensor/samplevalue/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/tensorflow~python.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/tensorflow~python/" class="_nav-link" title="" style="margin-left:0;">TensorFlow Python</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _tensorflow">
+				
+<h1 itemprop="name" class="devsite-page-title"> tf.contrib.bayesflow.stochastic_tensor.SampleValue </h1>     <div itemscope itemtype="http://developers.google.com/ReferenceObject"> <meta itemprop="name" content="tf.contrib.bayesflow.stochastic_tensor.SampleValue"> <meta itemprop="path" content="r1.4"> <meta itemprop="property" content="shape"> <meta itemprop="property" content="stop_gradient"> <meta itemprop="property" content="__init__"> <meta itemprop="property" content="declare_inputs"> <meta itemprop="property" content="popped_above"> <meta itemprop="property" content="pushed_above"> </div> <h2 id="class_samplevalue">Class <code>SampleValue</code>
+</h2> <p>Defined in <a href="https://www.github.com/tensorflow/tensorflow/blob/r1.4/tensorflow/contrib/bayesflow/python/ops/stochastic_tensor_impl.py" target="_blank"><code>tensorflow/contrib/bayesflow/python/ops/stochastic_tensor_impl.py</code></a>.</p> <p>See the guide: <a href="https://www.tensorflow.org/api_guides/python/contrib.bayesflow.stochastic_tensor#Stochastic_Tensor_Value_Types" target="_blank">BayesFlow Stochastic Tensors (contrib) &gt; Stochastic Tensor Value Types</a></p> <p>Draw samples, possibly adding new outer dimensions along the way.</p> <p>This ValueType draws samples from StochasticTensors run within its context, increasing the rank according to the requested shape.</p> <p>Examples:</p> <pre class="prettyprint lang-python" data-language="python">mu = tf.zeros((2,3))
+sigma = tf.ones((2, 3))
+with sg.value_type(sg.SampleValue()):
+  st = sg.StochasticTensor(
+    tf.contrib.distributions.Normal, mu=mu, sigma=sigma)
+# draws 1 sample and does not reshape
+assertEqual(st.value().get_shape(), (2, 3))
+</pre> <pre class="prettyprint lang-python" data-language="python">mu = tf.zeros((2,3))
+sigma = tf.ones((2, 3))
+with sg.value_type(sg.SampleValue(4)):
+  st = sg.StochasticTensor(
+    tf.contrib.distributions.Normal, mu=mu, sigma=sigma)
+# draws 4 samples each with shape (2, 3) and concatenates
+assertEqual(st.value().get_shape(), (4, 2, 3))
+</pre> <h2 id="properties">Properties</h2> <h3 id="shape"><code>shape</code></h3> <h3 id="stop_gradient"><code>stop_gradient</code></h3> <h2 id="methods">Methods</h2> <h3 id="__init__"><code>__init__</code></h3> <pre class="prettyprint lang-python" data-language="python">__init__(
+    shape=(),
+    stop_gradient=False
+)
+</pre> <p>Sample according to shape.</p> <p>For the given StochasticTensor <code>st</code> using this value type, the shape of <code>st.value()</code> will match that of <code>st.distribution.sample(shape)</code>.</p> <h4 id="args">Args:</h4> <ul> <li>
+<b><code>shape</code></b>: A shape tuple or int32 tensor. The sample shape. Default is a scalar: take one sample and do not change the size.</li> <li>
+<b><code>stop_gradient</code></b>: If <code>True</code>, StochasticTensors' values are wrapped in <code>stop_gradient</code>, to avoid backpropagation through.</li> </ul> <h3 id="declare_inputs"><code>declare_inputs</code></h3> <pre class="prettyprint lang-python" data-language="python">declare_inputs(
+    unused_stochastic_tensor,
+    unused_inputs_dict
+)
+</pre> <h3 id="popped_above"><code>popped_above</code></h3> <pre class="prettyprint lang-python" data-language="python">popped_above(unused_value_type)
+</pre> <h3 id="pushed_above"><code>pushed_above</code></h3> <pre class="prettyprint lang-python" data-language="python">pushed_above(unused_value_type)
+</pre>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2017 The TensorFlow Authors. All rights reserved.<br>Licensed under the Creative Commons Attribution License 3.0.<br>Code samples licensed under the Apache 2.0 License.<br>
+    <a href="https://www.tensorflow.org/api_docs/python/tf/contrib/bayesflow/stochastic_tensor/SampleValue" class="_attribution-link" target="_blank">https://www.tensorflow.org/api_docs/python/tf/contrib/bayesflow/stochastic_tensor/SampleValue</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>
