@@ -1,0 +1,126 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Lint Rule Reference - Flow - W3cubDocs</title>
+  
+  <meta name="description" content=" Want a lint that isn’t here? We’re looking to our community to add lints that leverage Flow’s type system. (Tutorial blog post coming soon!) ">
+  <meta name="keywords" content="lint, rule, reference, -, flow">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/flow/linting/rule-reference/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/flow.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/flow/" class="_nav-link" title="" style="margin-left:0;">Flow</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _flow">
+				
+<h1>Lint Rule Reference</h1> <blockquote> <p><strong>Want a lint that isn’t here?</strong> We’re looking to our community to <a href="https://github.com/facebook/flow" target="_blank">add lints</a> that leverage Flow’s type system. (Tutorial blog post coming soon!)</p> </blockquote> <h2 id="toc-available-lint-rules">Available Lint Rules </h2> <ul> <li><a href="#toc-all"><code>all</code></a></li> <li><a href="#toc-sketchy-null"><code>sketchy-null</code></a></li> <li><a href="#toc-untyped-type-import"><code>untyped-type-import</code></a></li> <li><a href="#toc-untyped-import"><code>untyped-import</code></a></li> <li><a href="#toc-unclear-type"><code>unclear-type</code></a></li> <li><a href="#toc-unsafe-getters-setters"><code>unsafe-getters-setters</code></a></li> <li><a href="#toc-deprecated-declare-exports"><code>deprecated-declare-exports</code></a></li> </ul> <h3 id="toc-all">
+<code>all</code> </h3> <p>While <code>all</code> isn’t technically a lint rule, it’s worth mentioning here. <code>all</code> sets the default level for lint rules that don’t have a level set explicitly. <code>all</code> can only occur as the first entry in a <code>.flowconfig</code> or as the first rule in a –lints flag. It’s not allowed in comments at all because it would have different semantics than would be expected. (A different form of comment with the expected semantics is in the works.)</p> <h3 id="toc-sketchy-null">
+<code>sketchy-null</code> </h3> <p>Triggers when you do an existence check on a value that can be either null/undefined or falsey.</p> <p>For example:</p> <pre data-language="javascript">const x: ?number = 5;
+if (x) {} // sketchy because x could be either null or 0.
+
+const y: number = 5;
+if (y) {} // not sketchy because y can't be null, only 0.
+
+const z: ?{foo: number} = {foo: 5};
+if (z) {} // not sketchy, because z can't be falsey, only null/undefined.
+</pre> <p>Setting <code>sketchy-null</code> sets the level for all sketchy null checks, but there are more granular rules for particular types. These are:</p> <ul> <li><code>sketchy-null-bool</code></li> <li><code>sketchy-null-number</code></li> <li><code>sketchy-null-string</code></li> <li><code>sketchy-null-mixed</code></li> </ul> <p>The type-specific variants are useful for specifying that some types of sketchy null checks are acceptable while others should be errors/warnings. For example, if you want to allow boolean sketchy null checks (for the pattern of treating undefined optional booleans as false) but forbid other types of sketchy null checks, you can do so with this <code>.flowconfig</code> <code>[lints]</code> section:</p> <pre data-language="">[lints]
+sketchy-null=warn
+sketchy-null-bool=off</pre> <p>and now</p> <pre data-language="javascript">function foo (bar: ?bool): void {
+  if (bar) {
+    ...
+  } else {
+    ...
+  }
+}
+</pre> <p>doesn’t report a warning.</p> <p>Suppressing one type of sketchy null check only suppresses that type, so, for example</p> <pre data-language="javascript">// flowlint sketchy-null:warn, sketchy-null-bool:off
+const x: ?(number | bool) = 0;
+if (x) {}
+</pre> <p>would still have a sketchy-null-number warning on line 3.</p> <h3 id="toc-untyped-type-import">
+<code>untyped-type-import</code> </h3> <p>Triggers when you import a type from an untyped file. Importing a type from an untyped file results in an <code>any</code> alias, which is typically not the intended behavior. Enabling this lint brings extra attention to this case and can help improve Flow coverage of typed files by limiting the spread of implicit <code>any</code> types.</p> <h3 id="toc-untyped-import">
+<code>untyped-import</code> </h3> <p>Triggers when you import from an untyped file. Importing from an untyped file results in those imports being typed as <code>any</code>, which is unsafe.</p> <h3 id="toc-unclear-type">
+<code>unclear-type</code> </h3> <p>Triggers when you use <code>any</code>, <code>Object</code>, or <code>Function</code> as type annotations. These types are unsafe.</p> <h3 id="toc-unsafe-getters-setters">
+<code>unsafe-getters-setters</code> </h3> <p>Triggers when you use getters or setters. Getters and setters can have side effects and are unsafe.</p> <p>For example:</p> <pre data-language="javascript">const o = {
+  get a() { return 4; }, // Error: unsafe-getters-setters
+  set b(x: number) { this.c = x; }, // Error: unsafe-getters-setters
+  c: 10,
+};
+</pre> <h3 id="toc-deprecated-declare-exports">
+<code>deprecated-declare-exports</code> </h3> <p>Triggers when the deprecated syntax is used to declare the default export of a <a href="https://flow.org/en/libdefs/creation/#toc-declaring-a-commonjs-module" target="_blank">declared CommonJS module</a>.</p> <p>Before Flow version 0.25, the way to declare the default exports looked like this:</p> <pre data-language="javascript">declare module "foo" {
+  declare var exports: number; // old, deprecated syntax
+}
+</pre> <p>In version 0.25, we introduced an alternative syntax:</p> <pre data-language="javascript">declare module "foo" {
+  declare module.exports: number;
+}
+</pre> <p>The new syntax is simpler and less magical. The old syntax will be removed in a future version of Flow.</p> <p>This lint is enabled by default. If you see an error, you should try to rewrite the offending declaration. If you are unable to rewrite the declaration (for example, if it’s part of a node_module dependency), you can disable the lint in your <code>.flowconfig</code>.</p> <p>To disable this lint, add a line to the <code>[lints]</code> section of your project’s <code>.flowconfig</code> file.</p> <pre data-language="">[lints]
+deprecated-declare-exports=off</pre> <p>However, note that this syntax will be removed soon, so you should file issues with any projects that still use it.</p>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2013–present Facebook Inc.<br>Licensed under the BSD License.<br>
+    <a href="https://flow.org/en/docs/linting/rule-reference" class="_attribution-link" target="_blank">https://flow.org/en/docs/linting/rule-reference</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

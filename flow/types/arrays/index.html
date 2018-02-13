@@ -1,0 +1,127 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Array Types - Flow - W3cubDocs</title>
+  
+  <meta name="description" content=" Note&#58; Arrays are also sometimes used as tuples in JavaScript, these are annotated differently in Flow. See the Tuple docs for more information. ">
+  <meta name="keywords" content="array, types, -, flow">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/flow/types/arrays/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/flow.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/flow/" class="_nav-link" title="" style="margin-left:0;">Flow</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _flow">
+				
+<h1>Array Types</h1> <blockquote> <p><strong>Note:</strong> Arrays are also sometimes used as tuples in JavaScript, these are annotated differently in Flow. See the Tuple docs for more information.</p> </blockquote> <p>Arrays are a special list-like type of object in JavaScript. You can create arrays a couple different ways.</p> <pre data-language="javascript">new Array(1, 2, 3); // [1, 2, 3];
+new Array(3);       // [undefined, undefined, undefined]
+[1, 2, 3];          // [1, 2, 3];
+</pre> <p>You can also create arrays and add values to them later on:</p> <pre data-language="javascript">let arr = []; // []
+arr[0] = 1;   // [1]
+arr[1] = 2;   // [1, 2]
+arr[2] = 3;   // [1, 2, 3]
+</pre> <h2 id="toc-array-type">
+<code>Array</code> Type </h2> <p>To create an array type you can use <code>Array&lt;Type&gt;</code> type where <code>Type</code> is the type of elements in the array. For example, to create a type for an array of numbers you use <code>Array&lt;number&gt;</code>.</p> <pre data-language="javascript">let arr: Array&lt;number&gt; = [1, 2, 3];
+</pre> <p>You can put any type within <code>Array&lt;Type&gt;</code>.</p> <pre data-language="javascript">let arr1: Array&lt;boolean&gt; = [true, false, true];
+let arr2: Array&lt;string&gt; = ["A", "B", "C"];
+let arr3: Array&lt;mixed&gt; = [1, true, "three"]
+</pre> <h2 id="toc-array-type-shorthand-syntax">
+<code>Array</code> Type Shorthand Syntax </h2> <p>There’s also a slightly shorter form of this syntax: <code>Type[]</code>.</p> <pre data-language="javascript">let arr: number[] = [0, 1, 2, 3];
+</pre> <p>Just note that <code>?Type[]</code> is the equivalent of <code>?Array&lt;T&gt;</code> and not <code>Array&lt;?T&gt;</code>.</p> <pre data-language="javascript">// @flow
+let arr1: ?number[] = null;   // Works!
+let arr2: ?number[] = [1, 2]; // Works!
+let arr3: ?number[] = [null]; // Error!
+</pre> <p>If you want to make it <code>Array&lt;?T&gt;</code> you can use parenthesis like: <code>(?Type)[]</code></p> <pre data-language="javascript">// @flow
+let arr1: (?number)[] = null;   // Error!
+let arr2: (?number)[] = [1, 2]; // Works!
+let arr3: (?number)[] = [null]; // Works!
+</pre> <h2 id="toc-array-access-is-unsafe">Array access is unsafe </h2> <p>When you retrieve an element from an array there is always a possibility that it is <code>undefined</code>. You could have either accessed an index which is out of the bounds of the array, or the element could not exist because it is a “sparse array”.</p> <p>For example, you could be accessing an element that is out of the bounds of the array.</p> <pre data-language="javascript">// @flow
+let array: Array&lt;number&gt; = [0, 1, 2];
+let value: number = array[3]; // Works.
+                       // ^ undefined
+</pre> <p>Or you could be accessing an element that does not exist if it is a “sparse array”.</p> <pre data-language="javascript">// @flow
+let array: Array&lt;number&gt; = [];
+
+array[0] = 0;
+array[2] = 2;
+
+let value: number = array[1]; // Works.
+                       // ^ undefined
+</pre> <p>In order to make this safe, Flow would have to mark every single array access as “<em>possibly undefined”</em>.</p> <p>Flow does not do this because it would be extremely inconvenient to use. You would be forced to refine the type of every value you get when accessing an array.</p> <pre data-language="javascript">let array: Array&lt;number&gt; = [0, 1, 2];
+let value: number | void = array[1];
+
+if (value !== undefined) {
+  // number
+}
+</pre> <p>As Flow is made to be smarter it may be possible in the future to fix this problem, but for now you should be aware of it.</p>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2013–present Facebook Inc.<br>Licensed under the BSD License.<br>
+    <a href="https://flow.org/en/docs/types/arrays" class="_attribution-link" target="_blank">https://flow.org/en/docs/types/arrays</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>
