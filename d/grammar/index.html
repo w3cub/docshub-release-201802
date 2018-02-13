@@ -1,0 +1,1555 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>3. D Grammar - D - W3cubDocs</title>
+  
+  <meta name="description" content=" Refer to the page for lexical syntax. ">
+  <meta name="keywords" content="d, grammar, -">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/d/grammar/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/d.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/d/" class="_nav-link" title="" style="margin-left:0;">D</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _d">
+				
+<h1>D Grammar</h1>     <h2>Lexical Syntax</h2>  <p>Refer to the page for <a href="../lex/">lexical syntax</a>.</p>  <h2 id="type">Type</h2>  <pre>Type:
+    TypeCtorsopt BasicType BasicType2opt
+
+TypeCtors:
+    TypeCtor
+    TypeCtor TypeCtors
+
+TypeCtor:
+    const
+    immutable
+    inout
+    shared
+
+BasicType:
+    BasicTypeX
+    . IdentifierList
+    IdentifierList
+    Typeof
+    Typeof . IdentifierList
+    TypeCtor ( Type )
+    TypeVector
+
+BasicTypeX:
+    bool
+    byte
+    ubyte
+    short
+    ushort
+    int
+    uint
+    long
+    ulong
+    char
+    wchar
+    dchar
+    float
+    double
+    real
+    ifloat
+    idouble
+    ireal
+    cfloat
+    cdouble
+    creal
+    void
+
+BasicType2:
+    BasicType2X BasicType2opt
+
+BasicType2X:
+    *
+    [ ]
+    [ AssignExpression ]
+    [ AssignExpression .. AssignExpression ]
+    [ Type ]
+    delegate Parameters MemberFunctionAttributesopt
+    function Parameters FunctionAttributesopt
+
+IdentifierList:
+    Identifier
+    Identifier . IdentifierList
+    TemplateInstance
+    TemplateInstance . IdentifierList
+    Identifier [ AssignExpression ]. IdentifierList
+
+Typeof:
+    typeof ( Expression )
+    typeof ( return )
+
+TypeVector:
+    __vector ( Type )
+</pre>  <h2 id="expression">Expression</h2>  <pre>Expression:
+    CommaExpression
+
+CommaExpression:
+    AssignExpression
+    AssignExpression , CommaExpression
+</pre>  <pre>AssignExpression:
+    ConditionalExpression
+    ConditionalExpression = AssignExpression
+    ConditionalExpression += AssignExpression
+    ConditionalExpression -= AssignExpression
+    ConditionalExpression *= AssignExpression
+    ConditionalExpression /= AssignExpression
+    ConditionalExpression %= AssignExpression
+    ConditionalExpression &amp;= AssignExpression
+    ConditionalExpression |= AssignExpression
+    ConditionalExpression ^= AssignExpression
+    ConditionalExpression ~= AssignExpression
+    ConditionalExpression &lt;&lt;= AssignExpression
+    ConditionalExpression &gt;&gt;= AssignExpression
+    ConditionalExpression &gt;&gt;&gt;= AssignExpression
+    ConditionalExpression ^^= AssignExpression
+</pre>  <pre>ConditionalExpression:
+    OrOrExpression
+    OrOrExpression ? Expression : ConditionalExpression
+</pre>  <pre>OrOrExpression:
+    AndAndExpression
+    OrOrExpression || AndAndExpression
+</pre>  <pre>AndAndExpression:
+    OrExpression
+    AndAndExpression &amp;&amp; OrExpression
+    CmpExpression
+    AndAndExpression &amp;&amp; CmpExpression
+</pre>  <pre>OrExpression:
+    XorExpression
+    OrExpression | XorExpression
+</pre>  <pre>XorExpression:
+    AndExpression
+    XorExpression ^ AndExpression
+</pre>  <pre>AndExpression:
+    ShiftExpression
+    AndExpression &amp; ShiftExpression
+</pre>  <pre>CmpExpression:
+    ShiftExpression
+    EqualExpression
+    IdentityExpression
+    RelExpression
+    InExpression
+</pre>  <pre>EqualExpression:
+    ShiftExpression == ShiftExpression
+    ShiftExpression != ShiftExpression
+</pre>  <pre>IdentityExpression:
+    ShiftExpression is ShiftExpression
+    ShiftExpression !is ShiftExpression
+</pre>  <pre>RelExpression:
+    ShiftExpression &lt; ShiftExpression
+    ShiftExpression &lt;= ShiftExpression
+    ShiftExpression &gt; ShiftExpression
+    ShiftExpression &gt;= ShiftExpression
+    ShiftExpression !&lt;&gt;= ShiftExpression
+    ShiftExpression !&lt;&gt; ShiftExpression
+    ShiftExpression &lt;&gt; ShiftExpression
+    ShiftExpression &lt;&gt;= ShiftExpression
+    ShiftExpression !&gt; ShiftExpression
+    ShiftExpression !&gt;= ShiftExpression
+    ShiftExpression !&lt; ShiftExpression
+    ShiftExpression !&lt;= ShiftExpression
+</pre>  <pre>InExpression:
+    ShiftExpression in ShiftExpression
+    ShiftExpression !in ShiftExpression
+</pre>  <pre>ShiftExpression:
+    AddExpression
+    ShiftExpression &lt;&lt; AddExpression
+    ShiftExpression &gt;&gt; AddExpression
+    ShiftExpression &gt;&gt;&gt; AddExpression
+</pre>  <pre>AddExpression:
+    MulExpression
+    AddExpression + MulExpression
+    AddExpression - MulExpression
+    CatExpression
+</pre>  <pre>CatExpression:
+    AddExpression ~ MulExpression
+</pre>  <pre>MulExpression:
+    UnaryExpression
+    MulExpression * UnaryExpression
+    MulExpression / UnaryExpression
+    MulExpression % UnaryExpression
+</pre>  <pre>UnaryExpression:
+    &amp; UnaryExpression
+    ++ UnaryExpression
+    -- UnaryExpression
+    * UnaryExpression
+    - UnaryExpression
+    + UnaryExpression
+    ! UnaryExpression
+    ComplementExpression
+    ( Type ) . Identifier
+    ( Type ) . TemplateInstance
+    DeleteExpression
+    CastExpression
+    PowExpression
+</pre>  <pre>ComplementExpression:
+    ~ UnaryExpression
+</pre>  <pre>NewExpression:
+    new AllocatorArgumentsopt Type
+    NewExpressionWithArgs
+
+NewExpressionWithArgs:
+    new AllocatorArgumentsopt Type [ AssignExpression ]
+    new AllocatorArgumentsopt Type ( ArgumentListopt )
+    NewAnonClassExpression
+
+AllocatorArguments:
+    ( ArgumentListopt )
+
+ArgumentList:
+    AssignExpression
+    AssignExpression ,
+    AssignExpression , ArgumentList
+</pre>  <pre>NewAnonClassExpression:
+    new AllocatorArgumentsopt class ClassArgumentsopt SuperClassopt Interfacesopt AggregateBody
+
+ClassArguments:
+    ( ArgumentListopt )
+</pre>  <pre>DeleteExpression:
+    delete UnaryExpression
+</pre>  <pre>CastExpression:
+    cast ( Type ) UnaryExpression
+    cast ( TypeCtorsopt ) UnaryExpression
+</pre>  <pre>PowExpression:
+    PostfixExpression
+    PostfixExpression ^^ UnaryExpression
+</pre>  <pre>PostfixExpression:
+    PrimaryExpression
+    PostfixExpression . Identifier
+    PostfixExpression . TemplateInstance
+    PostfixExpression . NewExpression
+    PostfixExpression ++
+    PostfixExpression --
+    PostfixExpression ( ArgumentListopt )
+    TypeCtorsopt BasicType ( ArgumentListopt )
+    IndexExpression
+    SliceExpression
+</pre>  <pre>IndexExpression:
+    PostfixExpression [ ArgumentList ]
+</pre>  <pre>SliceExpression:
+    PostfixExpression [ ]
+    PostfixExpression [ Slice ,opt ]
+Slice:
+    AssignExpression
+    AssignExpression , Slice
+    AssignExpression .. AssignExpression
+    AssignExpression .. AssignExpression , Slice
+</pre>  <pre>PrimaryExpression:
+    Identifier
+    . Identifier
+    TemplateInstance
+    . TemplateInstance
+    this
+    super
+    null
+    true
+    false
+    $
+    IntegerLiteral
+    FloatLiteral
+    CharacterLiteral
+    StringLiterals
+    ArrayLiteral
+    AssocArrayLiteral
+    FunctionLiteral
+    AssertExpression
+    MixinExpression
+    ImportExpression
+    NewExpressionWithArgs
+    BasicTypeX . Identifier
+    Typeof
+    TypeidExpression
+    IsExpression
+    ( Expression )
+    TraitsExpression
+    SpecialKeyword
+</pre>  <pre>StringLiterals:
+    StringLiteral
+    StringLiterals StringLiteral
+</pre>  <pre>ArrayLiteral:
+    [ ArgumentListopt ]
+</pre>  <pre>AssocArrayLiteral:
+    [ KeyValuePairs ]
+
+KeyValuePairs:
+    KeyValuePair
+    KeyValuePair , KeyValuePairs
+
+KeyValuePair:
+    KeyExpression : ValueExpression
+
+KeyExpression:
+    AssignExpression
+
+ValueExpression:
+    AssignExpression
+</pre>  <pre>FunctionLiteral:
+    function Typeopt ParameterAttributes opt FunctionLiteralBody
+    delegate Typeopt ParameterMemberAttributes opt FunctionLiteralBody
+    ParameterMemberAttributes FunctionLiteralBody
+    FunctionLiteralBody
+    Lambda
+</pre>  <pre>ParameterAttributes:
+    Parameters FunctionAttributesopt
+
+ParameterMemberAttributes:
+    Parameters MemberFunctionAttributesopt
+
+FunctionLiteralBody:
+    BlockStatement
+    FunctionContractsopt BodyStatement
+
+Lambda:
+    function Typeopt ParameterAttributes =&gt; AssignExpression
+    delegate Typeopt ParameterMemberAttributes =&gt; AssignExpression
+    ParameterMemberAttributes =&gt; AssignExpression
+    Identifier =&gt; AssignExpression
+</pre>  <pre>AssertExpression:
+    assert ( AssignExpression ,opt )
+    assert ( AssignExpression , AssignExpression ,opt )
+</pre>  <pre>MixinExpression:
+    mixin ( AssignExpression )
+</pre>  <pre>ImportExpression:
+    import ( AssignExpression )
+</pre>  <pre>TypeidExpression:
+    typeid ( Type )
+    typeid ( Expression )
+</pre>  <pre>IsExpression:
+    is ( Type )
+    is ( Type : TypeSpecialization )
+    is ( Type == TypeSpecialization )
+    is ( Type : TypeSpecialization , TemplateParameterList )
+    is ( Type == TypeSpecialization , TemplateParameterList )
+    is ( Type Identifier )
+    is ( Type Identifier : TypeSpecialization )
+    is ( Type Identifier == TypeSpecialization )
+    is ( Type Identifier : TypeSpecialization , TemplateParameterList )
+    is ( Type Identifier == TypeSpecialization , TemplateParameterList )
+
+TypeSpecialization:
+    Type
+    struct
+    union
+    class
+    interface
+    enum
+    function
+    delegate
+    super
+    const
+    immutable
+    inout
+    shared
+    return
+    __parameters
+</pre>  <pre>TraitsExpression:
+    __traits ( TraitsKeyword , TraitsArguments )
+
+TraitsKeyword:
+    isAbstractClass
+    isArithmetic
+    isAssociativeArray
+    isFinalClass
+    isPOD
+    isNested
+    isFloating
+    isIntegral
+    isScalar
+    isStaticArray
+    isUnsigned
+    isVirtualFunction
+    isVirtualMethod
+    isAbstractFunction
+    isFinalFunction
+    isStaticFunction
+    isOverrideFunction
+    isTemplate
+    isRef
+    isOut
+    isLazy
+    hasMember
+    identifier
+    getAliasThis
+    getAttributes
+    getFunctionAttributes
+    getFunctionVariadicStyle
+    getLinkage
+    getMember
+    getOverloads
+    getParameterStorageClasses
+    getPointerBitmap
+    getProtection
+    getVirtualFunctions
+    getVirtualMethods
+    getUnitTests
+    parent
+    classInstanceSize
+    getVirtualIndex
+    allMembers
+    derivedMembers
+    isSame
+    compiles
+
+TraitsArguments:
+    TraitsArgument
+    TraitsArgument , TraitsArguments
+
+TraitsArgument:
+    AssignExpression
+    Type
+</pre>  <pre>SpecialKeyword:
+    __FILE__
+    __FILE_FULL_PATH__
+    __MODULE__
+    __LINE__
+    __FUNCTION__
+    __PRETTY_FUNCTION__
+</pre>  <h2 id="statement">Statement</h2>  <pre>Statement:
+    ;
+    NonEmptyStatement
+    ScopeBlockStatement
+
+NoScopeNonEmptyStatement:
+    NonEmptyStatement
+    BlockStatement
+
+NoScopeStatement:
+    ;
+    NonEmptyStatement
+    BlockStatement
+
+NonEmptyOrScopeBlockStatement:
+    NonEmptyStatement
+    ScopeBlockStatement
+
+NonEmptyStatement:
+    NonEmptyStatementNoCaseNoDefault
+    CaseStatement
+    CaseRangeStatement
+    DefaultStatement
+
+NonEmptyStatementNoCaseNoDefault:
+    LabeledStatement
+    ExpressionStatement
+    DeclarationStatement
+    IfStatement
+    WhileStatement
+    DoStatement
+    ForStatement
+    ForeachStatement
+    SwitchStatement
+    FinalSwitchStatement
+    ContinueStatement
+    BreakStatement
+    ReturnStatement
+    GotoStatement
+    WithStatement
+    SynchronizedStatement
+    TryStatement
+    ScopeGuardStatement
+    ThrowStatement
+    AsmStatement
+    PragmaStatement
+    MixinStatement
+    ForeachRangeStatement
+    ConditionalStatement
+    StaticAssert
+    TemplateMixin
+    ImportDeclaration
+</pre>  <pre>ScopeStatement:
+    NonEmptyStatement
+    BlockStatement
+</pre>  <pre>ScopeBlockStatement:
+    BlockStatement
+</pre>  <pre>LabeledStatement:
+    Identifier :
+    Identifier : NoScopeStatement
+    Identifier : Statement
+</pre>  <pre>BlockStatement:
+    { }
+    { StatementList }
+
+StatementList:
+    Statement
+    Statement StatementList
+</pre>  <pre>ExpressionStatement:
+    Expression ;
+</pre>  <pre>DeclarationStatement:
+    StorageClassesopt Declaration
+</pre>  <pre>IfStatement:
+    if ( IfCondition ) ThenStatement
+    if ( IfCondition ) ThenStatement else ElseStatement
+
+IfCondition:
+    Expression
+    auto Identifier = Expression
+    TypeCtors Identifier = Expression
+    TypeCtorsopt BasicType Declarator = Expression
+
+ThenStatement:
+    ScopeStatement
+
+ElseStatement:
+    ScopeStatement
+</pre>  <pre>WhileStatement:
+    while ( Expression ) ScopeStatement
+</pre>  <pre>DoStatement:
+    do ScopeStatement  while ( Expression ) ;
+</pre>  <pre>ForStatement:
+    for ( Initialize Testopt ; Incrementopt ) ScopeStatement
+
+Initialize:
+    ;
+    NoScopeNonEmptyStatement
+
+Test:
+    Expression
+
+Increment:
+    Expression
+</pre>  <pre>ForeachStatement:
+    Foreach ( ForeachTypeList ; ForeachAggregate ) NoScopeNonEmptyStatement
+
+Foreach:
+    foreach
+    foreach_reverse
+
+ForeachTypeList:
+    ForeachType
+    ForeachType , ForeachTypeList
+
+ForeachType:
+    ForeachTypeAttributesopt BasicType Declarator
+    ForeachTypeAttributesopt Identifier
+
+ForeachTypeAttributes
+    ForeachTypeAttribute
+    ForeachTypeAttribute ForeachTypeAttributesopt
+
+ForeachTypeAttribute:
+    ref
+    TypeCtor
+
+ForeachAggregate:
+    Expression
+</pre>  <pre>ForeachRangeStatement:
+    Foreach ( ForeachType ; LwrExpression .. UprExpression ) ScopeStatement
+
+LwrExpression:
+    Expression
+
+UprExpression:
+    Expression
+</pre>  <pre>SwitchStatement:
+    switch ( Expression ) ScopeStatement
+
+CaseStatement:
+    case ArgumentList : ScopeStatementList
+
+CaseRangeStatement:
+    case FirstExp : .. case LastExp : ScopeStatementList
+
+FirstExp:
+    AssignExpression
+
+LastExp:
+    AssignExpression
+
+DefaultStatement:
+    default : ScopeStatementList
+
+ScopeStatementList:
+    StatementListNoCaseNoDefault
+
+StatementListNoCaseNoDefault:
+    StatementNoCaseNoDefault
+    StatementNoCaseNoDefault StatementListNoCaseNoDefault
+
+StatementNoCaseNoDefault:
+    ;
+    NonEmptyStatementNoCaseNoDefault
+    ScopeBlockStatement
+</pre>  <pre>FinalSwitchStatement:
+    final switch ( Expression ) ScopeStatement
+</pre>  <pre>ContinueStatement:
+    continue Identifieropt ;
+</pre>  <pre>BreakStatement:
+    break Identifieropt ;
+</pre>  <pre>ReturnStatement:
+    return Expressionopt ;
+</pre>  <pre>GotoStatement:
+    goto Identifier ;
+    goto default ;
+    goto case ;
+    goto case Expression ;
+</pre>  <pre>WithStatement:
+    with ( Expression ) ScopeStatement
+    with ( Symbol ) ScopeStatement
+    with ( TemplateInstance ) ScopeStatement
+</pre>  <pre>SynchronizedStatement:
+    synchronized ScopeStatement
+    synchronized ( Expression ) ScopeStatement
+</pre>  <pre>TryStatement:
+    try ScopeStatement Catches
+    try ScopeStatement Catches FinallyStatement
+    try ScopeStatement FinallyStatement
+
+Catches:
+    Catch
+    Catch Catches
+
+Catch:
+    catch ( CatchParameter ) NoScopeNonEmptyStatement
+
+CatchParameter:
+    BasicType Identifier
+
+FinallyStatement:
+    finally NoScopeNonEmptyStatement
+</pre>  <pre>ThrowStatement:
+    throw Expression ;
+</pre>  <pre>ScopeGuardStatement:
+    scope(exit) NonEmptyOrScopeBlockStatement
+    scope(success) NonEmptyOrScopeBlockStatement
+    scope(failure) NonEmptyOrScopeBlockStatement
+</pre>  <pre>AsmStatement:
+    asm FunctionAttributesopt { AsmInstructionListopt }
+
+AsmInstructionList:
+    AsmInstruction ;
+    AsmInstruction ; AsmInstructionList
+</pre>  <pre>PragmaStatement:
+    Pragma NoScopeStatement
+</pre>  <pre>MixinStatement:
+    mixin ( AssignExpression ) ;
+</pre>  <h2 id="iasm">Iasm</h2>  <pre>AsmInstruction:
+    Identifier : AsmInstruction
+    align IntegerExpression
+    even
+    naked
+    db Operands
+    ds Operands
+    di Operands
+    dl Operands
+    df Operands
+    dd Operands
+    de Operands
+    db StringLiteral
+    ds StringLiteral
+    di StringLiteral
+    dl StringLiteral
+    dw StringLiteral
+    dq StringLiteral
+    Opcode
+    Opcode Operands
+
+Operands:
+    Operand
+    Operand , Operands
+</pre>  <pre>IntegerExpression:
+    IntegerLiteral
+    Identifier
+</pre>  <pre>Register:
+    AL AH AX EAX
+    BL BH BX EBX
+    CL CH CX ECX
+    DL DH DX EDX
+    BP EBP
+    SP ESP
+    DI EDI
+    SI ESI
+    ES CS SS DS GS FS
+    CR0 CR2 CR3 CR4
+    DR0 DR1 DR2 DR3 DR6 DR7
+    TR3 TR4 TR5 TR6 TR7
+    ST
+    ST(0) ST(1) ST(2) ST(3) ST(4) ST(5) ST(6) ST(7)
+    MM0  MM1  MM2  MM3  MM4  MM5  MM6  MM7
+    XMM0 XMM1 XMM2 XMM3 XMM4 XMM5 XMM6 XMM7
+</pre>  <pre>Register64:
+    RAX  RBX  RCX  RDX
+    BPL  RBP
+    SPL  RSP
+    DIL  RDI
+    SIL  RSI
+    R8B  R8W  R8D  R8
+    R9B  R9W  R9D  R9
+    R10B R10W R10D R10
+    R11B R11W R11D R11
+    R12B R12W R12D R12
+    R13B R13W R13D R13
+    R14B R14W R14D R14
+    R15B R15W R15D R15
+    XMM8 XMM9 XMM10 XMM11 XMM12 XMM13 XMM14 XMM15
+    YMM0 YMM1 YMM2  YMM3  YMM4  YMM5  YMM6  YMM7
+    YMM8 YMM9 YMM10 YMM11 YMM12 YMM13 YMM14 YMM15
+</pre>  <pre>Operand:
+    AsmExp
+
+AsmExp:
+    AsmLogOrExp
+    AsmLogOrExp ? AsmExp : AsmExp
+
+AsmLogOrExp:
+    AsmLogAndExp
+    AsmLogOrExp || AsmLogAndExp
+
+AsmLogAndExp:
+    AsmOrExp
+    AsmLogAndExp &amp;&amp; AsmOrExp
+
+AsmOrExp:
+    AsmXorExp
+    AsmOrExp | AsmXorExp
+
+AsmXorExp:
+    AsmAndExp
+    AsmXorExp ^ AsmAndExp
+
+AsmAndExp:
+    AsmEqualExp
+    AsmAndExp &amp; AsmEqualExp
+
+AsmEqualExp:
+    AsmRelExp
+    AsmEqualExp == AsmRelExp
+    AsmEqualExp != AsmRelExp
+
+AsmRelExp:
+    AsmShiftExp
+    AsmRelExp &lt; AsmShiftExp
+    AsmRelExp &lt;= AsmShiftExp
+    AsmRelExp &gt; AsmShiftExp
+    AsmRelExp &gt;= AsmShiftExp
+
+AsmShiftExp:
+    AsmAddExp
+    AsmShiftExp &lt;&lt; AsmAddExp
+    AsmShiftExp &gt;&gt; AsmAddExp
+    AsmShiftExp &gt;&gt;&gt; AsmAddExp
+
+AsmAddExp:
+    AsmMulExp
+    AsmAddExp + AsmMulExp
+    AsmAddExp - AsmMulExp
+
+AsmMulExp:
+    AsmBrExp
+    AsmMulExp * AsmBrExp
+    AsmMulExp / AsmBrExp
+    AsmMulExp % AsmBrExp
+
+AsmBrExp:
+    AsmUnaExp
+    AsmBrExp [ AsmExp ]
+
+AsmUnaExp:
+    AsmTypePrefix AsmExp
+    offsetof AsmExp
+    seg AsmExp
+    + AsmUnaExp
+    - AsmUnaExp
+    ! AsmUnaExp
+    ~ AsmUnaExp
+    AsmPrimaryExp
+
+AsmPrimaryExp:
+    IntegerLiteral
+    FloatLiteral
+    __LOCAL_SIZE
+    $
+    Register
+    Register : AsmExp
+    Register64
+    Register64 : AsmExp
+    DotIdentifier
+    this
+
+DotIdentifier:
+    Identifier
+    Identifier . DotIdentifier
+</pre>  <pre>AsmTypePrefix:
+    near ptr
+    far ptr
+    byte ptr
+    short ptr
+    int ptr
+    word ptr
+    dword ptr
+    qword ptr
+    float ptr
+    double ptr
+    real ptr
+</pre>  <h2 id="declaration">Declaration</h2>  <pre>Declaration:
+    FuncDeclaration
+    VarDeclarations
+    AliasDeclaration
+    AggregateDeclaration
+    EnumDeclaration
+    ImportDeclaration
+</pre>  <pre>AliasDeclaration:
+    alias StorageClassesopt BasicType Declarator ;
+    alias StorageClassesopt BasicType FuncDeclarator ;
+    alias AliasDeclarationX ;
+
+AliasDeclarationX:
+    AliasDeclarationY
+    AliasDeclarationX , AliasDeclarationY
+
+AliasDeclarationY:
+    Identifier TemplateParametersopt = StorageClassesopt Type
+    Identifier TemplateParametersopt = FunctionLiteral
+</pre>  <pre>AutoDeclaration:
+    StorageClasses AutoDeclarationX ;
+
+AutoDeclarationX:
+    AutoDeclarationY
+    AutoDeclarationX , AutoDeclarationY
+
+AutoDeclarationY:
+    Identifier TemplateParametersopt = Initializer
+</pre>  <pre>VarDeclarations:
+    StorageClassesopt BasicType Declarators ;
+    AutoDeclaration
+
+Declarators:
+    DeclaratorInitializer
+    DeclaratorInitializer , DeclaratorIdentifierList
+
+DeclaratorInitializer:
+    VarDeclarator
+    VarDeclarator TemplateParametersopt = Initializer
+    AltDeclarator
+    AltDeclarator = Initializer
+
+DeclaratorIdentifierList:
+    DeclaratorIdentifier
+    DeclaratorIdentifier , DeclaratorIdentifierList
+
+DeclaratorIdentifier:
+    VarDeclaratorIdentifier
+    AltDeclaratorIdentifier
+
+VarDeclaratorIdentifier:
+    Identifier
+    Identifier TemplateParametersopt = Initializer
+
+AltDeclaratorIdentifier:
+    BasicType2 Identifier AltDeclaratorSuffixesopt
+    BasicType2 Identifier AltDeclaratorSuffixesopt = Initializer
+    BasicType2opt Identifier AltDeclaratorSuffixes
+    BasicType2opt Identifier AltDeclaratorSuffixes = Initializer
+
+Declarator:
+    VarDeclarator
+    AltDeclarator
+
+VarDeclarator:
+    BasicType2opt Identifier
+
+AltDeclarator:
+    BasicType2opt Identifier AltDeclaratorSuffixes
+    BasicType2opt ( AltDeclaratorX )
+    BasicType2opt ( AltDeclaratorX ) AltFuncDeclaratorSuffix
+    BasicType2opt ( AltDeclaratorX ) AltDeclaratorSuffixes
+
+AltDeclaratorX:
+    BasicType2opt Identifier
+    BasicType2opt Identifier AltFuncDeclaratorSuffix
+    AltDeclarator
+
+AltDeclaratorSuffixes:
+    AltDeclaratorSuffix
+    AltDeclaratorSuffix AltDeclaratorSuffixes
+
+AltDeclaratorSuffix:
+    [ ]
+    [ AssignExpression ]
+    [ Type ]
+
+AltFuncDeclaratorSuffix:
+    Parameters MemberFunctionAttributesopt
+</pre>  <pre>StorageClasses:
+    StorageClass
+    StorageClass StorageClasses
+
+StorageClass:
+    LinkageAttribute
+    AlignAttribute
+    deprecated
+    enum
+    static
+    extern
+    abstract
+    final
+    override
+    synchronized
+    auto
+    scope
+    const
+    immutable
+    inout
+    shared
+    __gshared
+    Property
+    nothrow
+    pure
+    ref
+</pre>  <pre>Initializer:
+    VoidInitializer
+    NonVoidInitializer
+
+VoidInitializer:
+    void
+
+NonVoidInitializer:
+    ExpInitializer:
+    ArrayInitializer
+    StructInitializer
+
+ExpInitializer:
+    AssignExpression
+
+ArrayInitializer:
+    [ ArrayMemberInitializationsopt ]
+
+ArrayMemberInitializations:
+    ArrayMemberInitialization
+    ArrayMemberInitialization ,
+    ArrayMemberInitialization , ArrayMemberInitializations
+
+ArrayMemberInitialization:
+    NonVoidInitializer
+    AssignExpression : NonVoidInitializer
+
+StructInitializer:
+    { StructMemberInitializersopt }
+
+StructMemberInitializers:
+    StructMemberInitializer
+    StructMemberInitializer ,
+    StructMemberInitializer , StructMemberInitializers
+
+StructMemberInitializer:
+    NonVoidInitializer
+    Identifier : NonVoidInitializer
+</pre>  <h2 id="function">Function</h2>  <pre>FuncDeclaration:
+    StorageClassesopt BasicType FuncDeclarator FunctionBody
+    AutoFuncDeclaration
+
+AutoFuncDeclaration:
+    StorageClasses Identifier FuncDeclaratorSuffix FunctionBody
+
+FuncDeclarator:
+    BasicType2opt Identifier FuncDeclaratorSuffix
+
+FuncDeclaratorSuffix:
+    Parameters MemberFunctionAttributesopt
+    TemplateParameters Parameters MemberFunctionAttributesopt Constraintopt
+</pre>  <pre>Parameters:
+    ( ParameterListopt )
+
+ParameterList:
+    Parameter
+    Parameter , ParameterList
+    ...
+
+Parameter:
+    InOutopt BasicType Declarator
+    InOutopt BasicType Declarator ...
+    InOutopt BasicType Declarator = AssignExpression
+    InOutopt Type
+    InOutopt Type ...
+
+InOut:
+    InOutX
+    InOut InOutX
+
+InOutX:
+    auto
+    TypeCtor
+    final
+    in
+    lazy
+    out
+    ref
+    return ref
+    scope
+
+FunctionAttributes:
+    FunctionAttribute
+    FunctionAttribute FunctionAttributes
+
+FunctionAttribute:
+    nothrow
+    pure
+    Property
+
+MemberFunctionAttributes:
+    MemberFunctionAttribute
+    MemberFunctionAttribute MemberFunctionAttributes
+
+MemberFunctionAttribute:
+    const
+    immutable
+    inout
+    return
+    shared
+    FunctionAttribute
+</pre>  <pre>FunctionBody:
+    BlockStatement
+    FunctionContractsopt BodyStatement
+    FunctionContracts
+
+FunctionContracts:
+    InStatement OutStatementopt
+    OutStatement InStatementopt
+
+InStatement:
+    in BlockStatement
+
+OutStatement:
+    out BlockStatement
+    out ( Identifier ) BlockStatement
+
+BodyStatement:
+    body BlockStatement
+    do BlockStatement
+</pre>  <pre>Constructor:
+    this Parameters MemberFunctionAttributesopt ;
+    this Parameters MemberFunctionAttributesopt FunctionBody
+    ConstructorTemplate
+
+ConstructorTemplate:
+    this TemplateParameters Parameters MemberFunctionAttributesopt Constraintopt ;
+    this TemplateParameters Parameters MemberFunctionAttributesopt Constraintopt FunctionBody
+
+Destructor:
+    ~ this ( ) MemberFunctionAttributesopt ;
+    ~ this ( ) MemberFunctionAttributesopt FunctionBody
+
+Postblit:
+    this ( this ) MemberFunctionAttributesopt ;
+    this ( this ) MemberFunctionAttributesopt FunctionBody
+
+Allocator:
+    new Parameters ;
+    new Parameters FunctionBody
+
+Deallocator:
+    delete Parameters ;
+    delete Parameters FunctionBody
+
+Invariant:
+    invariant ( ) BlockStatement
+    invariant BlockStatement
+
+UnitTest:
+    unittest BlockStatement
+</pre>  <pre>StaticConstructor:
+    static this ( ) MemberFunctionAttributesopt ;
+    static this ( ) MemberFunctionAttributesopt FunctionBody
+
+StaticDestructor:
+    static ~ this ( ) MemberFunctionAttributesopt ;
+    static ~ this ( ) MemberFunctionAttributesopt FunctionBody
+
+SharedStaticConstructor:
+    shared static this ( ) MemberFunctionAttributesopt ;
+    shared static this ( ) MemberFunctionAttributesopt FunctionBody
+
+SharedStaticDestructor:
+    shared static ~ this ( ) MemberFunctionAttributesopt ;
+    shared static ~ this ( ) MemberFunctionAttributesopt FunctionBody
+</pre>  <h2 id="aggregate">Aggregate</h2>  <pre>AggregateDeclaration:
+    ClassDeclaration
+    InterfaceDeclaration
+    StructDeclaration
+    UnionDeclaration
+
+ClassDeclaration:
+    class Identifier ;
+    class Identifier BaseClassListopt AggregateBody
+    ClassTemplateDeclaration
+
+ClassTemplateDeclaration:
+    class Identifier TemplateParameters Constraintopt BaseClassListopt AggregateBody
+    class Identifier TemplateParameters BaseClassList Constraint AggregateBody
+
+InterfaceDeclaration:
+    interface Identifier ;
+    interface Identifier BaseInterfaceListopt AggregateBody
+    InterfaceTemplateDeclaration
+
+InterfaceTemplateDeclaration:
+    interface Identifier TemplateParameters Constraintopt BaseInterfaceListopt AggregateBody
+    interface Identifier TemplateParameters BaseInterfaceList Constraint AggregateBody
+
+StructDeclaration:
+    struct Identifier ;
+    struct Identifier AggregateBody
+    StructTemplateDeclaration
+    AnonStructDeclaration
+
+StructTemplateDeclaration:
+    struct Identifier TemplateParameters Constraintopt AggregateBody
+
+AnonStructDeclaration:
+    struct AggregateBody
+
+UnionDeclaration:
+    union Identifier ;
+    union Identifier AggregateBody
+    UnionTemplateDeclaration
+    AnonUnionDeclaration
+
+UnionTemplateDeclaration:
+    union Identifier TemplateParameters Constraintopt AggregateBody
+
+AnonUnionDeclaration:
+    union AggregateBody
+
+AggregateBody:
+    { DeclDefsopt }
+</pre>  <pre>BaseClassList:
+    : SuperClass
+    : SuperClass , Interfaces
+    : Interfaces
+
+BaseInterfaceList:
+    : Interfaces
+
+SuperClass:
+    BasicType
+
+Interfaces:
+    Interface
+    Interface , Interfaces
+
+Interface:
+    BasicType
+</pre>  <pre>AliasThis:
+    alias Identifier this ;
+</pre>  <h2 id="enum">Enum</h2>  <pre>EnumDeclaration:
+    enum Identifier EnumBody
+    enum Identifier : EnumBaseType EnumBody
+    AnonymousEnumDeclaration
+
+EnumBaseType:
+    Type
+
+EnumBody:
+    { EnumMembers }
+    ;
+
+EnumMembers:
+    EnumMember
+    EnumMember ,
+    EnumMember , EnumMembers
+
+EnumMember:
+    Identifier
+    Identifier = AssignExpression
+
+AnonymousEnumDeclaration:
+    enum : EnumBaseType { EnumMembers }
+    enum { EnumMembers }
+    enum { AnonymousEnumMembers }
+
+AnonymousEnumMembers:
+    AnonymousEnumMember
+    AnonymousEnumMember ,
+    AnonymousEnumMember , AnonymousEnumMembers
+
+AnonymousEnumMember:
+    EnumMember
+    Type Identifier = AssignExpression
+</pre>  <h2 id="template">Template</h2>  <pre>TemplateDeclaration:
+    template Identifier TemplateParameters Constraintopt { DeclDefsopt }
+
+TemplateParameters:
+    ( TemplateParameterListopt )
+
+TemplateParameterList:
+    TemplateParameter
+    TemplateParameter ,
+    TemplateParameter , TemplateParameterList
+
+TemplateParameter:
+    TemplateTypeParameter
+    TemplateValueParameter
+    TemplateAliasParameter
+    TemplateTupleParameter
+    TemplateThisParameter
+
+Constraint:
+    if ( Expression )
+</pre>  <pre>TemplateInstance:
+    Identifier TemplateArguments
+
+TemplateArguments:
+    ! ( TemplateArgumentListopt )
+    ! TemplateSingleArgument
+
+TemplateArgumentList:
+    TemplateArgument
+    TemplateArgument ,
+    TemplateArgument , TemplateArgumentList
+
+TemplateArgument:
+    Type
+    AssignExpression
+    Symbol
+
+Symbol:
+    SymbolTail
+    . SymbolTail
+
+SymbolTail:
+    Identifier
+    Identifier . SymbolTail
+    TemplateInstance
+    TemplateInstance . SymbolTail
+
+TemplateSingleArgument:
+    Identifier
+    BasicTypeX
+    CharacterLiteral
+    StringLiteral
+    IntegerLiteral
+    FloatLiteral
+    true
+    false
+    null
+    this
+    SpecialKeyword
+</pre>  <pre>TemplateTypeParameter:
+    Identifier
+    Identifier TemplateTypeParameterSpecialization
+    Identifier TemplateTypeParameterDefault
+    Identifier TemplateTypeParameterSpecialization TemplateTypeParameterDefault
+
+TemplateTypeParameterSpecialization:
+    : Type
+
+TemplateTypeParameterDefault:
+    = Type
+</pre>  <pre>TemplateThisParameter:
+    this TemplateTypeParameter
+</pre>  <pre>TemplateValueParameter:
+    BasicType Declarator
+    BasicType Declarator TemplateValueParameterSpecialization
+    BasicType Declarator TemplateValueParameterDefault
+    BasicType Declarator TemplateValueParameterSpecialization TemplateValueParameterDefault
+
+TemplateValueParameterSpecialization:
+    : ConditionalExpression
+
+TemplateValueParameterDefault:
+    = AssignExpression
+    = SpecialKeyword
+</pre>  <pre>TemplateAliasParameter:
+    alias Identifier TemplateAliasParameterSpecializationopt TemplateAliasParameterDefaultopt
+    alias BasicType Declarator TemplateAliasParameterSpecializationopt TemplateAliasParameterDefaultopt
+
+TemplateAliasParameterSpecialization:
+    : Type
+    : ConditionalExpression
+
+TemplateAliasParameterDefault:
+    = Type
+    = ConditionalExpression
+</pre>  <pre>TemplateTupleParameter:
+    Identifier ...
+</pre>  <pre>TemplateMixinDeclaration:
+    mixin template Identifier TemplateParameters Constraintopt { DeclDefsopt }
+
+TemplateMixin:
+    mixin MixinTemplateName TemplateArgumentsopt Identifieropt ;
+
+MixinTemplateName:
+    . QualifiedIdentifierList
+    QualifiedIdentifierList
+    Typeof . QualifiedIdentifierList
+
+QualifiedIdentifierList:
+    Identifier
+    Identifier . QualifiedIdentifierList
+    TemplateInstance . QualifiedIdentifierList
+</pre>  <h2 id="attribute">Attribute</h2>  <pre>AttributeSpecifier:
+    Attribute :
+    Attribute DeclarationBlock
+
+Attribute:
+    LinkageAttribute
+    AlignAttribute
+    DeprecatedAttribute
+    ProtectionAttribute
+    Pragma
+    static
+    extern
+    abstract
+    final
+    override
+    synchronized
+    auto
+    scope
+    const
+    immutable
+    inout
+    shared
+    __gshared
+    Property
+    nothrow
+    pure
+    ref
+
+DeclarationBlock:
+    DeclDef
+    { DeclDefsopt }
+</pre>  <pre>LinkageAttribute:
+    extern ( LinkageType )
+    extern ( C++, IdentifierList )
+    extern ( C++, CppAggregateType )
+
+LinkageType:
+    C
+    C++
+    D
+    Windows
+    Pascal
+    System
+    Objective-C
+
+CppAggregateType:
+    class
+    struct
+</pre>  <pre>AlignAttribute:
+    align
+    align ( AssignExpression )
+</pre>  <pre>DeprecatedAttribute:
+    deprecated
+    deprecated ( AssignExpression )
+</pre>  <pre>ProtectionAttribute:
+    private
+    package
+    package ( IdentifierList )
+    protected
+    public
+    export
+</pre>  <pre>Property:
+    @ PropertyIdentifier
+    UserDefinedAttribute
+
+PropertyIdentifier:
+    property
+    safe
+    trusted
+    system
+    disable
+    nogc
+
+UserDefinedAttribute:
+    @ ( ArgumentList )
+    @ Identifier
+    @ Identifier ( ArgumentListopt )
+    @ TemplateInstance
+    @ TemplateInstance ( ArgumentListopt )
+</pre>  <pre>Pragma:
+    pragma ( Identifier )
+    pragma ( Identifier , ArgumentList )
+</pre>  <h2 id="conditional">Conditional</h2>  <pre>ConditionalDeclaration:
+    Condition DeclarationBlock
+    Condition DeclarationBlock else DeclarationBlock
+    Condition : DeclDefsopt
+    Condition DeclarationBlock else : DeclDefsopt
+
+ConditionalStatement:
+    Condition NoScopeNonEmptyStatement
+    Condition NoScopeNonEmptyStatement else NoScopeNonEmptyStatement
+</pre>  <pre>Condition:
+    VersionCondition
+    DebugCondition
+    StaticIfCondition
+
+VersionCondition:
+    version ( IntegerLiteral )
+    version ( Identifier )
+    version ( unittest )
+    version ( assert )
+
+DebugCondition:
+    debug
+    debug ( IntegerLiteral )
+    debug ( Identifier )
+
+StaticIfCondition:
+    static if ( AssignExpression )
+</pre>  <pre>VersionSpecification:
+    version = Identifier ;
+    version = IntegerLiteral ;
+
+DebugSpecification:
+    debug = Identifier ;
+    debug = IntegerLiteral ;
+</pre>  <pre>StaticAssert:
+    static assert ( AssignExpression ,opt );
+    static assert ( AssignExpression , AssignExpression ,opt );
+</pre>  <h2 id="module">Module</h2>  <pre>Module:
+    ModuleDeclaration DeclDefs
+    DeclDefs
+
+DeclDefs:
+    DeclDef
+    DeclDef DeclDefs
+
+DeclDef:
+    AttributeSpecifier
+    Declaration
+    Constructor
+    Destructor
+    Postblit
+    Allocator
+    Deallocator
+    Invariant
+    UnitTest
+    AliasThis
+    StaticConstructor
+    StaticDestructor
+    SharedStaticConstructor
+    SharedStaticDestructor
+    ConditionalDeclaration
+    DebugSpecification
+    VersionSpecification
+    StaticAssert
+    TemplateDeclaration
+    TemplateMixinDeclaration
+    TemplateMixin
+    MixinDeclaration
+    ;
+</pre>  <pre>ModuleDeclaration:
+    ModuleAttributesopt module ModuleFullyQualifiedName ;
+
+ModuleAttributes:
+    ModuleAttribute
+    ModuleAttribute ModuleAttributes
+
+ModuleAttribute:
+    DeprecatedAttribute
+    UserDefinedAttribute
+
+ModuleFullyQualifiedName:
+    ModuleName
+    Packages . ModuleName
+
+ModuleName:
+    Identifier
+
+Packages:
+    PackageName
+    Packages . PackageName
+
+PackageName:
+    Identifier
+</pre>  <pre>ImportDeclaration:
+    import ImportList ;
+    static import ImportList ;
+
+ImportList:
+    Import
+    ImportBindings
+    Import , ImportList
+
+Import:
+    ModuleFullyQualifiedName
+    ModuleAliasIdentifier = ModuleFullyQualifiedName
+
+ImportBindings:
+    Import : ImportBindList
+
+ImportBindList:
+    ImportBind
+    ImportBind , ImportBindList
+
+ImportBind:
+    Identifier
+    Identifier = Identifier
+
+ModuleAliasIdentifier:
+    Identifier
+</pre>  <pre>MixinDeclaration:
+    mixin ( AssignExpression ) ;
+</pre>     <div class="_attribution">
+  <p class="_attribution-p">
+    © 1999–2017 The D Language Foundation<br>Licensed under the Boost License 1.0.<br>
+    <a href="https://dlang.org/spec/grammar.html" class="_attribution-link" target="_blank">https://dlang.org/spec/grammar.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

@@ -1,0 +1,245 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>std.datetime - D - W3cubDocs</title>
+  
+  <meta name="description" content=" Module containing Date&#47;Time functionality. ">
+  <meta name="keywords" content="std, datetime, -, d">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/d/std_datetime/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/d.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/d/" class="_nav-link" title="" style="margin-left:0;">D</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _d">
+				
+<h1>std.datetime</h1>  <p>Module containing Date/Time functionality. </p>
+<p> This module provides: </p>
+<ul> <li>Types to represent points in time: <a href="../std_datetime_systime/#SysTime"><code>std.datetime.systime.SysTime</code></a>, <a href="../std_datetime_date/#Date"><code>std.datetime.date.Date</code></a>, <a href="../std_datetime_date/#TimeOfDay"><code>std.datetime.date.TimeOfDay</code></a>, <a href="../std_datetime_date/#DateTime"><code>std.datetime.date.DateTime</code></a>.</li> <li>Types to represent intervals of time.</li> <li>Types to represent ranges over intervals of time.</li> <li>Types to represent time zones (used by <a href="../std_datetime_systime/#SysTime"><code>std.datetime.systime.SysTime</code></a>).</li> <li>A platform-independent, high precision stopwatch type: <a href="#StopWatch"><code>StopWatch</code></a>
+</li> <li>Benchmarking functions.</li> <li>Various helper functions.</li> </ul> <br><br> Closely related to std.<code>datetime</code> is <a href="../core_time/"><code>core.time</code></a>, and some of the time types used in std.<code>datetime</code> come from there - such as <a href="../core_time/#Duration"><code>core.time.Duration</code></a>, <a href="../core_time/#TickDuration"><code>core.time.TickDuration</code></a>, and <a href="../core_time/#FracSec"><code>core.time.FracSec</code></a>. core.time is publically imported into std.<code>datetime</code>, it isn't necessary to import it separately. <br><br> Three of the main concepts used in this module are time points, time durations, and time intervals. <br><br> A time point is a specific point in time. e.g. January 5th, 2010 or 5:00. <br><br> A time duration is a length of time with units. e.g. 5 days or 231 seconds. <br><br> A time interval indicates a period of time associated with a fixed point in time. It is either two time points associated with each other, indicating the time starting at the first point up to, but not including, the second point - e.g. [January 5th, 2010 - March 10th, 2010) - or it is a time point and a time duration associated with one another. e.g. January 5th, 2010 and 5 days, indicating [January 5th, 2010 - January 10th, 2010). <br><br> Various arithmetic operations are supported between time points and durations (e.g. the difference between two time points is a time duration), and ranges can be gotten from time intervals, so range-based operations may be done on a series of time points. <br><br> The types that the typical user is most likely to be interested in are <a href="../std_datetime_date/#Date"><code>std.datetime.date.Date</code></a> (if they want dates but don't care about time), <a href="../std_datetime_date/#DateTime"><code>std.datetime.date.DateTime</code></a> (if they want dates and times but don't care about time zones), <a href="../std_datetime_systime/#SysTime"><code>std.datetime.systime.SysTime</code></a> (if they want the date and time from the OS and/or do care about time zones), and StopWatch (a platform-independent, high precision stop watch). <a href="../std_datetime_date/#Date"><code>std.datetime.date.Date</code></a> and <a href="../std_datetime_date/#DateTime"><code>std.datetime.date.DateTime</code></a> are optimized for calendar-based operations, while <a href="../std_datetime_systime/#SysTime"><code>std.datetime.systime.SysTime</code></a> is designed for dealing with time from the OS. Check out their specific documentation for more details. <br><br> To get the current time, use <a href="../std_datetime_systime/#Clock.currTime"><code>std.datetime.systime.Clock.currTime</code></a>. It will return the current time as a <a href="../std_datetime_systime/#SysTime"><code>std.datetime.systime.SysTime</code></a>. To print it, <code>toString</code> is sufficient, but if using <code>toISOString</code>, <code>toISOExtString</code>, or <code>toSimpleString</code>, use the corresponding <code>fromISOString</code>, <code>fromISOExtString</code>, or <code>fromSimpleString</code> to create a <a href="../std_datetime_systime/#SysTime"><code>std.datetime.systime.SysTime</code></a> from the string. <br><br> <pre data-language="d">auto currentTime = Clock.currTime();
+auto timeString = currentTime.toISOExtString();
+auto restoredTime = SysTime.fromISOExtString(timeString);
+</pre> <br><br> Various functions take a string (or strings) to represent a unit of time (e.g. <code>convert!("days", "hours")(numDays)</code>). The valid strings to use with such functions are <code>"years"</code>, <code>"months"</code>, <code>"weeks"</code>, <code>"days"</code>, <code>"hours"</code>, <code>"minutes"</code>, <code>"seconds"</code>, <code>"msecs"</code> (milliseconds), <code>"usecs"</code> (microseconds), <code>"hnsecs"</code> (hecto-nanoseconds - i.e. 100 ns), or some subset thereof. There are a few functions in core.time which take <code>"nsecs"</code>, but because nothing in std.<code>datetime</code> has precision greater than hnsecs, and very little in core.time does, no functions in std.<code>datetime</code> accept <code>"nsecs"</code>. To remember which units are abbreviated and which aren't, all units seconds and greater use their full names, and all sub-second units are abbreviated (since they'd be rather long if they weren't).  <dl>
+<dt>Note</dt>
+<dd> <a href="../std_datetime_date/#DateTimeException"><code>std.datetime.date.DateTimeException</code></a> is an alias for <a href="../core_time/#TimeException"><code>core.time.TimeException</code></a>, so you don't need to worry about core.time functions and std.<code>datetime</code> functions throwing different exception types (except in the rare case that they throw something other than <a href="../core_time/#TimeException"><code>core.time.TimeException</code></a> or <a href="../std_datetime_date/#DateTimeException"><code>std.datetime.date.DateTimeException</code></a>). </dd>
+</dl> <dl>
+<dt>See Also:</dt>
+<dd>
+<a href="https://dlang.org/intro-to-datetime.html" target="_blank"> Introduction to std.datetime</a><br> <a href="http://en.wikipedia.org/wiki/ISO_8601" target="_blank">ISO 8601</a><br> <a href="http://en.wikipedia.org/wiki/Tz_database" target="_blank"> Wikipedia entry on TZ Database</a><br> <a href="http://en.wikipedia.org/wiki/List_of_tz_database_time_zones" target="_blank"> List of Time Zones</a><br> </dd>
+</dl> <dl>
+<dt>License:</dt>
+<dd>
+<a href="http://www.boost.org/LICENSE_1_0.txt" target="_blank">Boost License 1.0</a>. </dd>
+</dl> <dl>
+<dt>Authors:</dt>
+<dd>Jonathan M Davis and Kato Shoichi </dd>
+</dl> <dl>
+<dt>Source</dt>
+<dd> <span class="phobos_src"><a class="https" href="https://github.com/dlang/phobos/blob/master/std/datetime/package.d" target="_blank">std/datetime/package.d</a></span>
+</dd>
+</dl> <dl>
+<dt class="d_decl" id="AutoStart">alias AutoStart = std.typecons.Flag!"autoStart".Flag</dt> <dd>
+<p>Used by StopWatch to indicate whether it should start immediately upon construction. </p>
+<p>If set to <code>AutoStart.no</code>, then the stopwatch is not started when it is constructed. <br><br> Otherwise, if set to <code>AutoStart.yes</code>, then the stopwatch is started when it is constructed.</p> </dd> <dt class="d_decl" id="StopWatch">struct StopWatch</dt> <dd>
+<p><span class="red">This will be deprecated in 2.076. Please use </span><code>StopWatch</code>"&gt;<code>std.datetime.stopwatch.StopWatch</code> instead. It uses <a href="../core_time/#Monotime"><code>core.time.Monotime</code></a> and <a href="../core_time/#Duration"><code>core.time.Duration</code></a> rather than <a href="../core_time/#TickDuration"><code>core.time.TickDuration</code></a>, which will also be deprecated in 2.076. </p>
+<p><code>StopWatch</code> measures time as precisely as possible. <br><br> This class uses a high-performance counter. On Windows systems, it uses <code>QueryPerformanceCounter</code>, and on Posix systems, it uses <code>clock_gettime</code> if available, and <code>gettimeofday</code> otherwise. <br><br> But the precision of <code>StopWatch</code> differs from system to system. It is impossible to for it to be the same from system to system since the precision of the system clock varies from system to system, and other system-dependent and situation-dependent stuff (such as the overhead of a context switch between threads) can also affect <code>StopWatch</code>'s accuracy.</p> <dl>
+<dt>Examples:</dt>
+<dd>
+<pre data-language="d">void writeln(S...)(S args){}
+static void bar() {}
+
+StopWatch sw;
+enum n = 100;
+TickDuration[n] times;
+TickDuration last = TickDuration.from!"seconds"(0);
+foreach (i; 0 .. n)
+{
+   sw.start(); //start/resume mesuring.
+   foreach (unused; 0 .. 1_000_000)
+       bar();
+   sw.stop();  //stop/pause measuring.
+   //Return value of peek() after having stopped are the always same.
+   writeln((i + 1) * 1_000_000, " times done, lap time: ",
+           sw.peek().msecs, "[ms]");
+   times[i] = sw.peek() - last;
+   last = sw.peek();
+}
+real sum = 0;
+// To get the number of seconds,
+// use properties of TickDuration.
+// (seconds, msecs, usecs, hnsecs)
+foreach (t; times)
+   sum += t.hnsecs;
+writeln("Average time: ", sum/n, " hnsecs");
+</pre> </dd>
+</dl> <dl>
+<dt class="d_decl" id="StopWatch.this">@nogc @safe this(AutoStart autostart)</dt> <dd>
+<p>Auto start with constructor.</p> </dd> <dt class="d_decl" id="StopWatch.opEquals">const pure nothrow @nogc @safe bool opEquals(const StopWatch rhs)<br>const pure nothrow @nogc @safe bool opEquals(ref const StopWatch rhs)</dt>  <dt class="d_decl" id="StopWatch.reset">@nogc @safe void reset()</dt> <dd>
+<p>Resets the stop watch.</p>
+<dl>
+<dt>Examples:</dt>
+<dd>
+<pre data-language="d">StopWatch sw;
+sw.start();
+sw.stop();
+sw.reset();
+writeln(sw.peek().to!("seconds", real)()); // 0
+</pre> </dd>
+</dl> </dd> <dt class="d_decl" id="StopWatch.start">@nogc @safe void start()</dt> <dd>
+<p>Starts the stop watch.</p> </dd> <dt class="d_decl" id="StopWatch.stop">@nogc @safe void stop()</dt> <dd>
+<p>Stops the <code>stop</code> watch.</p> </dd> <dt class="d_decl" id="StopWatch.peek">const @nogc @safe TickDuration peek()</dt> <dd>
+<p>Peek at the amount of time which has passed since the stop watch was started.</p> </dd> <dt class="d_decl" id="StopWatch.setMeasured">@nogc @safe void setMeasured(TickDuration d)</dt> <dd>
+<p>Set the amount of time which has been measured since the stop watch was started.</p> </dd> <dt class="d_decl" id="StopWatch.running">const pure nothrow @nogc @property @safe bool running()</dt> <dd>
+<p>Confirm whether this stopwatch is measuring time.</p> </dd> </dl> </dd> <dt class="d_decl" id="benchmark">TickDuration[fun.length] benchmark(fun...)(uint n)</dt> <dd>
+<p><span class="red">This will be deprecated in 2.076. Please use </span><code>benchmark</code>"&gt;<code>std.datetime.stopwatch.benchmark</code> instead. It uses <a href="../core_time/#Monotime"><code>core.time.Monotime</code></a> and <a href="../core_time/#Duration"><code>core.time.Duration</code></a> rather than <a href="../core_time/#TickDuration"><code>core.time.TickDuration</code></a>, which will also be deprecated in 2.076. </p>
+<p>Benchmarks code for speed assessment and comparison. </p> <dl>
+<dt>Parameters:</dt>
+<dd><table>
+<tr>
+<td>fun</td> <td>aliases of callable objects (e.g. function names). Each should take no arguments.</td>
+</tr> <tr>
+<td>uint <code>n</code>
+</td> <td>The number of times each function is to be executed.</td>
+</tr> </table></dd>
+</dl> <dl>
+<dt>Returns:</dt>
+<dd>The amount of time (as a <a href="../core_time/#TickDuration"><code>core.time.TickDuration</code></a>) that it took to call each function <code>n</code> times. The first value is the length of time that it took to call <code>fun[0]</code> <code>n</code> times. The second value is the length of time it took to call <code>fun[1]</code> <code>n</code> times. Etc.  Note that casting the TickDurations to <a href="../core_time/#Duration"><code>core.time.Duration</code></a>s will make the results easier to deal with (and it may change in the future that <code>benchmark</code> will return an array of Durations rather than TickDurations). </dd>
+</dl> <dl>
+<dt>See Also:</dt>
+<dd><a href="#measureTime"><code>measureTime</code></a></dd>
+</dl> <dl>
+<dt>Examples:</dt>
+<dd>
+<pre data-language="d">import std.conv : to;
+int a;
+void f0() {}
+void f1() {auto b = a;}
+void f2() {auto b = to!string(a);}
+auto r = benchmark!(f0, f1, f2)(10_000);
+auto f0Result = to!Duration(r[0]); // time f0 took to run 10,000 times
+auto f1Result = to!Duration(r[1]); // time f1 took to run 10,000 times
+auto f2Result = to!Duration(r[2]); // time f2 took to run 10,000 times
+</pre> </dd>
+</dl> </dd> <dt class="d_decl" id="ComparingBenchmarkResult">struct ComparingBenchmarkResult</dt> <dd>
+<p>Return value of benchmark with two functions comparing.</p> <dl>
+<dt class="d_decl" id="ComparingBenchmarkResult.point">const pure nothrow @property @safe real point()</dt> <dd>
+<p>Evaluation value </p>
+<p>This returns the evaluation value of performance as the ratio of baseFunc's time over targetFunc's time. If performance is high, this returns a high value.</p> </dd> <dt class="d_decl" id="ComparingBenchmarkResult.baseTime">const pure nothrow @property @safe TickDuration baseTime()</dt> <dd>
+<p>The time required of the base function</p> </dd> <dt class="d_decl" id="ComparingBenchmarkResult.targetTime">const pure nothrow @property @safe TickDuration targetTime()</dt> <dd>
+<p>The time required of the target function</p> </dd> </dl> </dd> <dt class="d_decl" id="comparingBenchmark">ComparingBenchmarkResult comparingBenchmark(alias baseFunc, alias targetFunc, int times = 4095)()</dt> <dd>
+<p><span class="red">This will be deprecated in 2.076. Please use <a href="../std_datetime_stopwatch/#benchmark"><code>std.datetime.stopwatch.benchmark</code></a> instead. This function has not been ported to <a href="../core_time/#Monotime"><code>core.time.Monotime</code></a> and <a href="../core_time/#Duration"><code>core.time.Duration</code></a>, because it is a trivial wrapper around benchmark.</span> </p>
+<p>Benchmark with two functions comparing. </p> <dl>
+<dt>Parameters:</dt>
+<dd><table>
+<tr>
+<td>baseFunc</td> <td>The function to become the base of the speed.</td>
+</tr> <tr>
+<td>targetFunc</td> <td>The function that wants to measure speed.</td>
+</tr> <tr>
+<td>times</td> <td>The number of times each function is to be executed.</td>
+</tr> </table></dd>
+</dl> <dl>
+<dt>Examples:</dt>
+<dd>
+<pre data-language="d">void f1x() {}
+void f2x() {}
+@safe void f1o() {}
+@safe void f2o() {}
+auto b1 = comparingBenchmark!(f1o, f2o, 1)(); // OK
+//writeln(b1.point);
+</pre> </dd>
+</dl> </dd> <dt class="d_decl" id="measureTime">@safe auto measureTime(alias func)()<br><br>  Constraints:<br>    if (isSafe!(() { StopWatch sw; unaryFun!func(sw.peek()); } ))</dt> <dd>
+<p><span class="red">This will be deprecated in 2.076. Please use <a href="../std_datetime_stopwatch/#StopWatch"><code>std.datetime.stopwatch.StopWatch</code></a> instead. This function has not been ported to <a href="../core_time/#Monotime"><code>core.time.Monotime</code></a> and <a href="../core_time/#Duration"><code>core.time.Duration</code></a>, because it is a trivial wrapper around StopWatch.</span> </p>
+<p>Function for starting to a stop watch time when the function is called and stopping it when its return value goes out of scope and is destroyed. <br><br> When the value that is returned by this function is destroyed, <code>func</code> will run. <code>func</code> is a unary function that takes a <a href="../core_time/#TickDuration"><code>core.time.TickDuration</code></a>. </p> <dl>
+<dt>Example</dt>
+
+</dl>
+<pre data-language="d">{
+    auto mt = measureTime!((TickDuration a)
+        { /+ do something when the scope is exited +/ });
+    // do something that needs to be timed
+}
+</pre>  which is functionally equivalent to  <pre data-language="d">{
+    auto sw = StopWatch(Yes.autoStart);
+    scope(exit)
+    {
+        TickDuration a = sw.peek();
+        /+ do something when the scope is exited +/
+    }
+    // do something that needs to be timed
+}
+</pre>  <dl>
+<dt>See Also:</dt>
+<dd><a href="#benchmark"><code>benchmark</code></a></dd>
+</dl> </dd> </dl>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 1999–2017 The D Language Foundation<br>Licensed under the Boost License 1.0.<br>
+    <a href="https://dlang.org/phobos/std_datetime.html" class="_attribution-link" target="_blank">https://dlang.org/phobos/std_datetime.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

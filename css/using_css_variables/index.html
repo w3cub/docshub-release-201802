@@ -1,0 +1,217 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Using CSS Variables - CSS - W3cubDocs</title>
+  
+  <meta name="description" content="CSS variables are entities defined by CSS authors that contain specific values to be reused throughout a document. They are set using custom &hellip;">
+  <meta name="keywords" content="using, css, variables, -">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/css/using_css_variables/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/css.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/css/" class="_nav-link" title="" style="margin-left:0;">CSS</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _mdn">
+				
+<h1>Using CSS variables</h1>
+<p><strong>CSS variables</strong> are entities defined by CSS authors that contain specific values to be reused throughout a document. They are set using custom property notation (e.g. <code>--main-color: black;</code>) and are accessed using the <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/var()" target="_blank"><code>var()</code></a> function (e.g., <code>color: <strong>var(--main-color)</strong>;</code>) .</p> <p>Complex websites have very large amounts of CSS, often with a lot of repeated values. For example, the same colour might be used in hundreds of different places, requiring global search and replace if that colour needs to change. CSS variables allow a value to be stored in one place, then referenced in multiple other places. An additional benefit is semantic identifiers. For example <code>--main-text-color</code> is easier to understand than <code>#00ff00</code>, especially if this same color is also used in another context.</p> <p>CSS Variables are subject to the cascade, and inherit their value from their parent.</p> <h2 id="Basic_usage">Basic usage</h2> <p>Declaring a variable:</p> <pre data-language="css">element {
+  --main-bg-color: brown;
+}
+</pre> <p>Using the variable:</p> <pre data-language="css">element {
+  background-color: var(--main-bg-color);
+}
+</pre> <div class="note"> <p><strong>Note:</strong> The custom property prefix was <code>var-</code> in the earlier spec, but later changed to <code>--</code>. Firefox 31 and above follow the new spec. (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=985838" target="_blank">bug 985838</a>)</p> </div> <h2 id="First_steps_with_CSS_Variables">First steps with CSS Variables</h2> <p>Let's start with this simple CSS that colors elements of different classes with the same color:</p>  <pre data-language="css">.one {
+  color: white;
+  background-color: brown;
+  margin: 10px;
+  width: 50px;
+  height: 50px;
+  display: inline-block;
+}
+
+.two {
+  color: white;
+  background-color: black;
+  margin: 10px;
+  width: 150px;
+  height: 70px;
+  display: inline-block;
+}
+.three {
+  color: white;
+  background-color: brown;
+  margin: 10px;
+  width: 75px;
+}
+.four {
+  color: white;
+  background-color: brown;
+  margin: 10px;
+  width: 100px;
+}
+
+.five {
+  background-color: brown;
+}
+
+</pre> <p>We'll apply it to this HTML:</p> <pre data-language="html">&lt;div&gt;
+  &lt;div class="one"&gt;1:&lt;/div&gt;
+  &lt;div class="two"&gt;2: Text &lt;span class="five"&gt;5 - more text&lt;/span&gt;&lt;/div&gt;
+  &lt;input class="three"&gt;
+  &lt;textarea class="four"&gt;4: Lorem Ipsum&lt;/textarea&gt;
+&lt;/div&gt;
+</pre> <p>which leads us to this:</p> <p><iframe class="live-sample-frame sample-code-frame" width="600" height="180" id="frame_sample1" src="https://mdn.mozillademos.org/en-US/docs/Web/CSS/Using_CSS_variables%24samples/sample1?revision=1339055" frameborder="0"></iframe></p> <p><br> Notice the repetition in the CSS. The background color is set to <code>brown</code> in several places. For some CSS declarations, it is possible to declare this higher in the cascade and let CSS inheritance solve this problem naturally. For non-trivial projects, this is not always possible. By declaring a variable on the :root pseudo-class, a CSS author can halt some instances of repetition by using the variable.</p>   <pre data-language="css">:root {
+  --main-bg-color: brown;
+}
+
+.one {
+  color: white;
+  background-color: var(--main-bg-color);
+  margin: 10px;
+  width: 50px;
+  height: 50px;
+  display: inline-block;
+}
+
+.two {
+  color: white;
+  background-color: black;
+  margin: 10px;
+  width: 150px;
+  height: 70px;
+  display: inline-block;
+}
+.three {
+  color: white;
+  background-color: var(--main-bg-color);
+  margin: 10px;
+  width: 75px;
+}
+.four {
+  color: white;
+  background-color: var(--main-bg-color);
+  margin: 10px;
+  width: 100px;
+}
+
+.five {
+  background-color: var(--main-bg-color);
+}
+
+</pre>  <pre data-language="html">&lt;div&gt;
+    &lt;div class="one"&gt;&lt;/div&gt;
+    &lt;div class="two"&gt;Text &lt;span class="five"&gt;- more text&lt;/span&gt;&lt;/div&gt;
+    &lt;input class="three"&gt;
+    &lt;textarea class="four"&gt;Lorem Ipsum&lt;/textarea&gt;
+&lt;/div&gt;
+</pre>  <p>This leads to the same result as the previous example yet allows for one canonical declaration of the desired property.</p> <h2 id="Inheritance_of_CSS_Variables">Inheritance of CSS Variables</h2> <p>Custom properties do inherit. Which means that if no value is set for a custom property on a given element, the value of its parent is used:</p> <pre data-language="html">&lt;div class="one"&gt;
+  &lt;div class="two"&gt;
+    &lt;div class="three"&gt;&lt;/div&gt;
+    &lt;div class="four"&gt;&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</pre>  <p>with the following CSS:</p> <pre data-language="css">.two {
+  --test: 10px;
+}
+
+.three {
+  --test: 2em;
+}
+</pre> <p>In this case, the results of <code>var(--test)</code> are:</p> <ul> <li>for the <code>class="two"</code> element: <code>10px</code>
+</li> <li>for the <code>class="three"</code> element: <code>2em</code>
+</li> <li>for the <code>class="four"</code> element: <code>10px</code> (inherited from its parent)</li> <li>for the <code>class="one"</code> element: <em>invalid value</em>, which is the default value of any custom property.</li> </ul> <p>Keep in mind that these are custom properties, not actual CSS variables. The value is computed where it is needed, not stored for use in other rules. For instance, you cannot set a property for an element and expect to retrieve it in a sibling's descendant's rule. The property is only set for the matching selector and its descendants, like any normal CSS.</p> <h2 id="Custom_Property_fallback_values">Custom Property fallback values</h2> <p>Using <a href="../var()/">var()</a> you can define mutiple <strong>fallback values</strong> when the given variable is not yet defined, this can be useful when working with Custom Elements and Shadow DOM.</p> <p>The first argument to the function is the name of the <a href="https://www.w3.org/TR/css-variables/#custom-property" target="_blank">custom property</a> to be substituted. The second argument to the function, if provided, is a fallback value, which is used as the substitution value when the referenced <a href="https://www.w3.org/TR/css-variables/#custom-property" target="_blank">custom property</a> is invalid. E.g:</p> <pre data-language="css">.two {
+  color: var(--my-var, red); /* Red if --my-var is not defined */
+}
+
+.three {
+  background-color: var(--my-var, var(--my-background, pink)); /* pink if my-var and --my-background are not defined */
+}
+
+.three {
+  background-color: var(--my-var, --my-background, pink); /* Invalid: "--my-background, pink" */
+}</pre> <div class="note"> <p>The syntax of the fallback, like that of <a href="https://www.w3.org/TR/css-variables/#custom-property" target="_blank">custom properties</a>, allows commas. For example, var(--foo, red, blue) defines a fallback of red, blue; that is, anything between the first comma and the end of the function is considered a fallback value.</p> </div> <div class="note">This method also has been seen to cause performance issues. It makes browsers render pages more slowly than normal as it takes more time to parse through the variables.</div> <h2 id="Validity_and_values">Validity and values</h2> <p>The classical CSS concept of validity, tied to each property, is not very useful in regard to custom properties. When the values of the custom properties are parsed, the browser doesn't know where they will be used, so must therefore consider nearly all values as <em>valid</em>.</p> <p>Unfortunately, these valid values can be used, via the <code>var()</code> functional notation, in a context where they might not make sense. Properties and custom variables can lead to invalid CSS statements, leading to the new concept of <em>valid at computed time.</em></p> <h2 id="Values_in_JavaScript">Values in JavaScript</h2> <p>To use the values of custom properties in JavaScript, it is just like standard properties.</p> <pre data-language="js">// get variable from inline style
+element.style.getPropertyValue("--my-var");
+
+// get variable from wherever
+getComputedStyle(element).getPropertyValue("--my-var");
+
+// set variable on inline style
+element.style.setProperty("--my-var", jsVar + 4);
+</pre> <h2 id="Browser_compatibility">Browser compatibility</h2>   <div class="_table"><table class="compat-table"> <tbody> <tr> <th>Feature</th> <th>Chrome</th> <th>Edge</th> <th>Firefox (Gecko)</th> <th>Internet Explorer</th> <th>Opera</th> <th>Safari (WebKit)</th> </tr> <tr> <td>Basic support</td> <td>49.0</td> <td><span style="color: #888;">(Yes)</span></td> <td>
+<a href="https://developer.mozilla.org/en-US/Firefox/Releases/42" target="_blank">42</a> (42)</td> <td><span style="color: #f00;">No support</span></td> <td>36.0</td> <td>9.1</td> </tr> </tbody> </table></div>   <div class="_table"><table class="compat-table"> <tbody> <tr> <th>Feature</th> <th>Edge</th> <th>Firefox Mobile (Gecko)</th> <th>IE Phone</th> <th>Opera Mobile</th> <th>Safari Mobile</th> <th>Chrome for Android</th> </tr> <tr> <td>Basic support</td> <td><span style="color: #888;">(Yes)</span></td> <td>
+<a href="https://developer.mozilla.org/en-US/Firefox/Releases/29" target="_blank">29</a> (29)</td> <td><span style="color: rgb(255, 153, 0);">?</span></td> <td><span style="color: rgb(255, 153, 0);">?</span></td> <td>9.1</td> <td>49.0</td> </tr> </tbody> </table></div>   <h2 id="See_also">See also</h2> <ul> <li><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/--*" target="_blank"><code>custom properties</code></a></li> </ul>
+<div class="_attribution">
+  <p class="_attribution-p">
+    <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Using_CSS_variables%24edit" class="_attribution-link" target="_blank">Edit this page on MDN</a>
+  </p>
+</div>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2005–2018 Mozilla Developer Network and individual contributors.<br>Licensed under the Creative Commons Attribution-ShareAlike License v2.5 or later.<br>
+    <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Using_CSS_variables" class="_attribution-link" target="_blank">https://developer.mozilla.org/en-US/docs/Web/CSS/Using_CSS_variables</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

@@ -1,0 +1,165 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>core.atomic - D - W3cubDocs</title>
+  
+  <meta name="description" content=" The atomic module provides basic support for lock-free concurrent programming. ">
+  <meta name="keywords" content="core, atomic, -, d">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/d/core_atomic/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/d.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/d/" class="_nav-link" title="" style="margin-left:0;">D</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _d">
+				
+<h1>core.atomic</h1>  <p>The <code>atomic</code> module provides basic support for lock-free concurrent programming. </p>
+<dl>
+<dt>License:</dt>
+<dd>
+<a href="http://www.boost.org/LICENSE_1_0.txt" target="_blank">Boost License 1.0</a> </dd>
+</dl> <dl>
+<dt>Authors:</dt>
+<dd>Sean Kelly, Alex Rønne Petersen </dd>
+</dl> <dl>
+<dt>Source</dt>
+<dd> <a href="https://github.com/dlang/druntime/blob/master/src/core/atomic.d" target="_blank">core/atomic.d</a>
+</dd>
+</dl> <dl>
+<dt class="d_decl" id="atomicOp">pure nothrow @nogc @safe HeadUnshared!T atomicOp(string op, T, V1)(ref shared T val, V1 mod)<br><br>  Constraints:<br>    if (__traits(compiles, mixin("*cast(T*)&amp;val" ~ op ~ "mod")))</dt> <dd>
+<p>Performs the binary operation 'op' on <code>val</code> using '<code>mod</code>' as the modifier. </p>
+<dl>
+<dt>Parameters:</dt>
+<dd><table>
+<tr>
+<td>T <code>val</code>
+</td> <td>The target variable.</td>
+</tr> <tr>
+<td>V1 <code>mod</code>
+</td> <td>The modifier to apply.</td>
+</tr> </table></dd>
+</dl> <dl>
+<dt>Returns:</dt>
+<dd>The result of the operation.</dd>
+</dl> </dd> <dt class="d_decl" id="cas">pure nothrow @nogc @safe bool cas(T, V1, V2)(shared(T)* here, const V1 ifThis, V2 writeThis)<br>pure nothrow @nogc @safe bool cas(T, V1, V2)(shared(T)* here, const shared(V1) ifThis, shared(V2) writeThis)<br>pure nothrow @nogc @safe bool cas(T, V1, V2)(shared(T)* here, const shared(V1)* ifThis, shared(V2)* writeThis)<br><br>  Constraints:<br>    if (!is(T == class) &amp;&amp; !is(T U : U*) &amp;&amp; __traits(compiles, () { *here = writeThis; } ))<br>    if (is(T == class) &amp;&amp; __traits(compiles, () { *here = writeThis; } ))<br>    if (is(T U : U*) &amp;&amp; __traits(compiles, () { *here = writeThis; } ))</dt> <dd>
+<p>Stores '<code>writeThis</code>' to the memory referenced by '<code>here</code>' if the value referenced by '<code>here</code>' is equal to '<code>ifThis</code>'. This operation is both lock-free and atomic. </p>
+<dl>
+<dt>Parameters:</dt>
+<dd><table>
+<tr>
+<td>shared(T)* <code>here</code>
+</td> <td>The address of the destination variable.</td>
+</tr> <tr>
+<td>V2 <code>writeThis</code>
+</td> <td>The value to store.</td>
+</tr> <tr>
+<td>V1 <code>ifThis</code>
+</td> <td>The comparison value.</td>
+</tr> </table></dd>
+</dl> <dl>
+<dt>Returns:</dt>
+<dd>
+<code>true</code> if the store occurred, <code>false</code> if not.</dd>
+</dl> </dd> <dt class="d_decl" id="atomicLoad">pure nothrow @nogc @safe HeadUnshared!T atomicLoad(MemoryOrder ms = MemoryOrder.seq, T)(ref const shared T val)</dt> <dd>
+<p>Loads '<code>val</code>' from memory and returns it. The memory barrier specified by 'ms' is applied to the operation, which is fully sequenced by default. Valid memory orders are MemoryOrder.raw, MemoryOrder.acq, and MemoryOrder.seq. </p>
+<dl>
+<dt>Parameters:</dt>
+<dd><table>
+<tr>
+<td>T <code>val</code>
+</td> <td>The target variable.</td>
+</tr> </table></dd>
+</dl> <dl>
+<dt>Returns:</dt>
+<dd>The value of '<code>val</code>'.</dd>
+</dl> </dd> <dt class="d_decl" id="atomicStore">pure nothrow @nogc @safe void atomicStore(MemoryOrder ms = MemoryOrder.seq, T, V1)(ref shared T val, V1 newval)<br><br>  Constraints:<br>    if (__traits(compiles, () { val = newval; } ))</dt> <dd>
+<p>Writes '<code>newval</code>' into '<code>val</code>'. The memory barrier specified by 'ms' is applied to the operation, which is fully sequenced by default. Valid memory orders are MemoryOrder.raw, MemoryOrder.rel, and MemoryOrder.seq. </p>
+<dl>
+<dt>Parameters:</dt>
+<dd><table>
+<tr>
+<td>T <code>val</code>
+</td> <td>The target variable.</td>
+</tr> <tr>
+<td>V1 <code>newval</code>
+</td> <td>The value to store.</td>
+</tr> </table></dd>
+</dl> </dd> <dt class="d_decl" id="MemoryOrder">enum MemoryOrder: int</dt> <dd>
+<p>Specifies the memory ordering semantics of an atomic operation.</p> <dl>
+<dt class="d_decl" id="MemoryOrder.raw">raw</dt> <dd>
+<p>Not sequenced.</p> </dd> <dt class="d_decl" id="MemoryOrder.acq">acq</dt> <dd>
+<p>Hoist-load + hoist-store barrier.</p> </dd> <dt class="d_decl" id="MemoryOrder.rel">rel</dt> <dd>
+<p>Sink-load + sink-store barrier.</p> </dd> <dt class="d_decl" id="MemoryOrder.seq">seq</dt> <dd>
+<p>Fully sequenced (acquire + release).</p> </dd> </dl> </dd> <dt class="d_decl" id="atomicFence">nothrow @nogc void atomicFence()</dt> <dd>
+<p>Inserts a full load/store memory fence (on platforms that need it). This ensures that all loads and stores before a call to this function are executed before any loads and stores after the call.</p> </dd> </dl>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 1999–2017 The D Language Foundation<br>Licensed under the Boost License 1.0.<br>
+    <a href="https://dlang.org/phobos/core_atomic.html" class="_attribution-link" target="_blank">https://dlang.org/phobos/core_atomic.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

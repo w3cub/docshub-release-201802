@@ -1,0 +1,97 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>40. Better C - D - W3cubDocs</title>
+  
+  <meta name="description" content=" © 1999–2017 The D Language FoundationLicensed under the Boost License 1.0. https&#58;&#47;&#47;dlang.org&#47;spec&#47;betterc.html ">
+  <meta name="keywords" content="better, c, -, d">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/d/betterc/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/d.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/d/" class="_nav-link" title="" style="margin-left:0;">D</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _d">
+				
+<h1>Better C</h1>     <code>-betterC</code> is a command-line flag for <code>dmd</code>, which restricts the compiler's support of certain runtime features. Notably, D programs or libraries compiled with <code>betterC</code> aren't linked with Druntime. The use of compile-time features is not restricted in any way.  Limiting a program or library to this subset of runtime features is useful when targeting constrained environments where the use of such features is not practical or possible. Additionally, this also makes embedding D libraries in larger projects easier by:  <ol> <li>Simplifying the process of integration at the build-system level</li> <li>Removing the need to ensure that Druntime is properly initialized on calls to the library, when an initialization step is not performed before the library is used.</li> <li>Mixing memory management strategies (GC + manual memory management) can sometimes be tricky, hence removing D's GC from the equation may be a good solution</li> </ol>  <pre data-language="d">extern(C) void main()
+{
+    import core.stdc.stdio : printf;
+    printf("Hello betterC\n");
+}
+</pre>  <pre>&gt; dmd -betterC hello.d &amp;&amp; ./hello
+Hello betterC
+</pre>  <h2 id="consequences">Consequences</h2>  As no Druntime is available, many D features won't work. For example:  <ol> <li>Garbage Collection</li> <li>Thread-local storage</li> <li>TypeInfo and ModuleInfo</li> <li>Classes</li> <li>Built-in threading (e.g. <a href="https://dlang.org/phobos/core_thread.html" target="_blank"><code>core.thread</code></a>)</li> <li>Dynamic arrays (but not slices) and associative arrays</li> <li>Exceptions</li> <li>
+<code>switch</code> with strings</li> <li><code>final switch</code></li> <li>
+<code>synchronized</code> and <a href="https://dlang.org/phobos/core_sync.html" target="_blank"><code>core.sync</code></a>
+</li> <li>Static module constructors or deconstructors</li> <li>Struct deconstructors</li> <li>
+<code>unittest</code> (testing can be as usual with the <code>-betterC</code> flag)</li> </ol>  <div class="_attribution">
+  <p class="_attribution-p">
+    © 1999–2017 The D Language Foundation<br>Licensed under the Boost License 1.0.<br>
+    <a href="https://dlang.org/spec/betterc.html" class="_attribution-link" target="_blank">https://dlang.org/spec/betterc.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

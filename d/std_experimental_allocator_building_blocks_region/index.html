@@ -1,0 +1,247 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>std.experimental.allocator.building_blocks.region - D - W3cubDocs</title>
+  
+  <meta name="description" content="A Region allocator allocates memory straight from one contiguous chunk. There is no deallocation, and once the region is full, allocation requests &hellip;">
+  <meta name="keywords" content="std, experimental, allocator, building, blocks, region, -, d">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/d/std_experimental_allocator_building_blocks_region/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/d.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/d/" class="_nav-link" title="" style="margin-left:0;">D</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _d">
+				
+<h1>std.experimental.allocator.building_blocks.region</h1>  <dl>
+<dt class="d_decl" id="Region">struct Region(ParentAllocator = NullAllocator, uint minAlign = platformAlignment, Flag!"growDownwards" growDownwards = No.growDownwards)</dt> <dd>
+<p>A <code>Region</code> allocator allocates memory straight from one contiguous chunk. There is no deallocation, and once the region is full, allocation requests return <code>null</code>. Therefore, <code>Region</code>s are often used (a) in conjunction with more sophisticated allocators; or (b) for batch-style very fast allocations that deallocate everything at once. </p>
+<p>The region only stores three pointers, corresponding to the current position in the store and the limits. One allocation entails rounding up the allocation size for alignment purposes, bumping the current pointer, and comparing it against the limit. <br><br> If <code>ParentAllocator</code> is different from <code>NullAllocator</code>, <code>Region</code> deallocates the chunk of memory during destruction. <br><br> The <code>minAlign</code> parameter establishes alignment. If <code>minAlign &gt; 1</code>, the sizes of all allocation requests are rounded up to a multiple of <code>minAlign</code>. Applications aiming at maximum speed may want to choose <code>minAlign = 1</code> and control alignment externally.</p> <dl>
+<dt>Examples:</dt>
+<dd>
+<pre data-language="d">import std.algorithm.comparison : max;
+import std.experimental.allocator.building_blocks.allocator_list
+    : AllocatorList;
+import std.experimental.allocator.mallocator : Mallocator;
+// Create a scalable list of regions. Each gets at least 1MB at a time by
+// using malloc.
+auto batchAllocator = AllocatorList!(
+    (size_t n) =&gt; Region!Mallocator(max(n, 1024 * 1024))
+)();
+auto b = batchAllocator.allocate(101);
+writeln(b.length); // 101
+// This will cause a second allocation
+b = batchAllocator.allocate(2 * 1024 * 1024);
+writeln(b.length); // 2 * 1024 * 1024
+// Destructor will free the memory
+</pre> </dd>
+</dl> <dl>
+<dt class="d_decl" id="Region.parent">ParentAllocator parent</dt> <dd>
+<p>The parent allocator. Depending on whether <code>ParentAllocator</code> holds state or not, this is a member variable or an alias for <code>ParentAllocator.instance</code>.</p> </dd> <dt class="d_decl" id="Region.this">this(ubyte[] store)<br>this(size_t n)</dt> <dd>
+<p>Constructs a region backed by a user-provided <code>store</code>. Assumes <code>store</code> is aligned at <code>minAlign</code>. Also assumes the memory was allocated with <code> ParentAllocator</code> (if different from <code>NullAllocator</code>). </p>
+<dl>
+<dt>Parameters:</dt>
+<dd><table>
+<tr>
+<td>ubyte[] <code>store</code>
+</td> <td>User-provided <code>store</code> backing up the region. <code>store</code> must be aligned at <code>minAlign</code> (enforced with <code>assert</code>). If <code> ParentAllocator</code> is different from <code>NullAllocator</code>, memory is assumed to have been allocated with <code>ParentAllocator</code>.</td>
+</tr> <tr>
+<td>size_t <code>n</code>
+</td> <td>Bytes to allocate using <code>ParentAllocator</code>. This constructor is only defined If <code>ParentAllocator</code> is different from <code>NullAllocator</code>. If <code>parent.allocate(n)</code> returns <code>null</code>, the region will be initialized as empty (correctly initialized but unable to allocate).</td>
+</tr> </table></dd>
+</dl> </dd> <dt class="d_decl" id="Region.alignment">alias alignment = minAlign</dt> <dd>
+<p>Alignment offered.</p> </dd> <dt class="d_decl" id="Region.allocate">void[] allocate(size_t n)</dt> <dd>
+<p>Allocates <code>n</code> bytes of memory. The shortest path involves an alignment adjustment (if <code>alignment &gt; 1</code>), an increment, and a comparison. </p>
+<dl>
+<dt>Parameters:</dt>
+<dd><table>
+<tr>
+<td>size_t <code>n</code>
+</td> <td>number of bytes to <code>allocate</code>
+</td>
+</tr> </table></dd>
+</dl> <dl>
+<dt>Returns:</dt>
+<dd>A properly-aligned buffer of size <code>n</code> or <code>null</code> if request could not be satisfied.</dd>
+</dl> </dd> <dt class="d_decl" id="Region.alignedAllocate">void[] alignedAllocate(size_t n, uint a)</dt> <dd>
+<p>Allocates <code>n</code> bytes of memory aligned at alignment <code>a</code>. </p>
+<dl>
+<dt>Parameters:</dt>
+<dd><table>
+<tr>
+<td>size_t <code>n</code>
+</td> <td>number of bytes to allocate</td>
+</tr> <tr>
+<td>uint <code>a</code>
+</td> <td>alignment for the allocated block</td>
+</tr> </table></dd>
+</dl> <dl>
+<dt>Returns:</dt>
+<dd>Either <code>a</code> suitable block of <code>n</code> bytes aligned at <code>a</code>, or <code>null</code>.</dd>
+</dl> </dd> <dt class="d_decl" id="Region.allocateAll">void[] allocateAll()</dt> <dd>
+<p>Allocates and returns all memory available to this region.</p> </dd> <dt class="d_decl" id="Region.expand">bool expand(ref void[] b, size_t delta)</dt> <dd>
+<p>Expands an allocated block in place. Expansion will succeed only if the block is the last allocated. Defined only if <code>growDownwards</code> is <code>No.growDownwards</code>.</p> </dd> <dt class="d_decl" id="Region.deallocate">bool deallocate(void[] b)</dt> <dd>
+<p>Deallocates <code>b</code>. This works only if <code>b</code> was obtained as the last call to <code>allocate</code>; otherwise (i.e. another allocation has occurred since) it does nothing. This semantics is tricky and therefore <code>deallocate</code> is defined only if <code>Region</code> is instantiated with <code>Yes.defineDeallocate</code> as the third template argument. </p>
+<dl>
+<dt>Parameters:</dt>
+<dd><table>
+<tr>
+<td>void[] <code>b</code>
+</td> <td>Block previously obtained by a call to <code>allocate</code> against this allocator (<code>null</code> is allowed).</td>
+</tr> </table></dd>
+</dl> </dd> <dt class="d_decl" id="Region.deallocateAll">bool deallocateAll()</dt> <dd>
+<p>Deallocates all memory allocated by this region, which can be subsequently reused for new allocations.</p> </dd> <dt class="d_decl" id="Region.owns">const Ternary owns(void[] b)</dt> <dd>
+<p>Queries whether <code>b</code> has been allocated with this region. </p>
+<dl>
+<dt>Parameters:</dt>
+<dd><table>
+<tr>
+<td>void[] <code>b</code>
+</td> <td>Arbitrary block of memory (<code>null</code> is allowed; <code>owns(null)</code> returns <code>false</code>).</td>
+</tr> </table></dd>
+</dl> <dl>
+<dt>Returns:</dt>
+<dd>
+<code>true</code> if <code>b</code> has been allocated with this region, <code>false</code> otherwise.</dd>
+</dl> </dd> <dt class="d_decl" id="Region.empty">const Ternary empty()</dt> <dd>
+<p>Returns <code>Ternary.yes</code> if no memory has been allocated in this region, <code>Ternary.no</code> otherwise. (Never returns <code>Ternary.unknown</code>.)</p> </dd> <dt class="d_decl" id="Region.available">const size_t available()</dt> <dd>
+<p>Nonstandard property that returns bytes <code>available</code> for allocation.</p> </dd> </dl> </dd> <dt class="d_decl" id="InSituRegion">struct InSituRegion(size_t size, size_t minAlign = platformAlignment)</dt> <dd>
+<p><code>InSituRegion</code> is a convenient region that carries its storage within itself (in the form of a statically-sized array). </p>
+<p>The first template argument is the size of the region and the second is the needed alignment. Depending on the alignment requested and platform details, the actual available storage may be smaller than the compile-time parameter. To make sure that at least <code>n</code> bytes are available in the region, use <code>InSituRegion!(n + a - 1, a)</code>. <br><br> Given that the most frequent use of <code>InSituRegion</code> is as a stack allocator, it allocates starting at the end on systems where stack grows downwards, such that hot memory is used first.</p> <dl>
+<dt>Examples:</dt>
+<dd>
+<pre data-language="d">// 128KB region, allocated to x86's cache line
+InSituRegion!(128 * 1024, 16) r1;
+auto a1 = r1.allocate(101);
+writeln(a1.length); // 101
+
+// 128KB region, with fallback to the garbage collector.
+import std.experimental.allocator.building_blocks.fallback_allocator
+    : FallbackAllocator;
+import std.experimental.allocator.building_blocks.free_list
+    : FreeList;
+import std.experimental.allocator.building_blocks.bitmapped_block
+    : BitmappedBlock;
+import std.experimental.allocator.gc_allocator : GCAllocator;
+FallbackAllocator!(InSituRegion!(128 * 1024), GCAllocator) r2;
+const a2 = r2.allocate(102);
+writeln(a2.length); // 102
+
+// Reap with GC fallback.
+InSituRegion!(128 * 1024, 8) tmp3;
+FallbackAllocator!(BitmappedBlock!(64, 8), GCAllocator) r3;
+r3.primary = BitmappedBlock!(64, 8)(cast(ubyte[])(tmp3.allocateAll()));
+const a3 = r3.allocate(103);
+writeln(a3.length); // 103
+
+// Reap/GC with a freelist for small objects up to 16 bytes.
+InSituRegion!(128 * 1024, 64) tmp4;
+FreeList!(FallbackAllocator!(BitmappedBlock!(64, 64), GCAllocator), 0, 16) r4;
+r4.parent.primary = BitmappedBlock!(64, 64)(cast(ubyte[])(tmp4.allocateAll()));
+const a4 = r4.allocate(104);
+writeln(a4.length); // 104
+</pre> </dd>
+</dl> <dl>
+<dt class="d_decl" id="InSituRegion.alignment">alias alignment = minAlign</dt> <dd>
+<p>An alias for <code>minAlign</code>, which must be a valid <code>alignment</code> (nonzero power of 2). The start of the region and all allocation requests will be rounded up to a multiple of the <code>alignment</code>. </p>
+<p></p>
+<pre data-language="d">InSituRegion!(4096) a1;
+assert(a1.alignment == platformAlignment);
+InSituRegion!(4096, 64) a2;
+assert(a2.alignment == 64);
+</pre>  </dd> <dt class="d_decl" id="InSituRegion.allocate">void[] allocate(size_t n)</dt> <dd>
+<p>Allocates <code>bytes</code> and returns them, or <code>null</code> if the region cannot accommodate the request. For efficiency reasons, if <code>bytes == 0</code> the function returns an empty non-<code>null</code> slice.</p> </dd> <dt class="d_decl" id="InSituRegion.alignedAllocate">void[] alignedAllocate(size_t n, uint a)</dt> <dd>
+<p>As above, but the memory allocated is aligned at <code>a</code> bytes.</p> </dd> <dt class="d_decl" id="InSituRegion.deallocate">bool deallocate(void[] b)</dt> <dd>
+<p>Deallocates <code>b</code>. This works only if <code>b</code> was obtained as the last call to <code>allocate</code>; otherwise (i.e. another allocation has occurred since) it does nothing. This semantics is tricky and therefore <code>deallocate</code> is defined only if <code>Region</code> is instantiated with <code>Yes.defineDeallocate</code> as the third template argument. </p>
+<dl>
+<dt>Parameters:</dt>
+<dd><table>
+<tr>
+<td>void[] <code>b</code>
+</td> <td>Block previously obtained by a call to <code>allocate</code> against this allocator (<code>null</code> is allowed).</td>
+</tr> </table></dd>
+</dl> </dd> <dt class="d_decl" id="InSituRegion.owns">Ternary owns(void[] b)</dt> <dd>
+<p>Returns <code>Ternary.yes</code> if <code>b</code> is the result of a previous allocation, <code>Ternary.no</code> otherwise.</p> </dd> <dt class="d_decl" id="InSituRegion.expand">bool expand(ref void[] b, size_t delta)</dt> <dd>
+<p>Expands an allocated block in place. Expansion will succeed only if the block is the last allocated.</p> </dd> <dt class="d_decl" id="InSituRegion.deallocateAll">bool deallocateAll()</dt> <dd>
+<p>Deallocates all memory allocated with this allocator.</p> </dd> <dt class="d_decl" id="InSituRegion.allocateAll">void[] allocateAll()</dt> <dd>
+<p>Allocates all memory available with this allocator.</p> </dd> <dt class="d_decl" id="InSituRegion.available">size_t available()</dt> <dd>
+<p>Nonstandard function that returns the bytes <code>available</code> for allocation.</p> </dd> </dl> </dd> <dt class="d_decl" id="SbrkRegion">struct SbrkRegion(uint minAlign = platformAlignment)</dt> <dd>
+<p>Allocator backed by <code><a href="https://en.wikipedia.org/wiki/Sbrk" target="_blank">sbrk</a></code> for Posix systems. Due to the fact that <code>sbrk</code> is not thread-safe <a href="http://lifecs.likai.org/2010/02/sbrk-is-not-thread-safe.html" target="_blank">by design</a>, <code>SbrkRegion</code> uses a mutex internally. This implies that uncontrolled calls to <code>brk</code> and <code>sbrk</code> may affect the workings of <code>SbrkRegion</code> adversely. </p> <dl>
+<dt class="d_decl" id="SbrkRegion.instance">static shared SbrkRegion instance</dt> <dd>
+<p>Instance shared by all callers.</p> </dd> <dt class="d_decl" id="SbrkRegion.alignment">enum uint alignment<br>shared void[] allocate(size_t bytes)<br>shared void[] alignedAllocate(size_t bytes, uint a)</dt> <dd>
+<p>Standard allocator primitives.</p> </dd> <dt class="d_decl" id="SbrkRegion.expand">shared bool expand(ref void[] b, size_t delta)<br>shared Ternary owns(void[] b)</dt> <dd>
+<p>The <code>expand</code> method may only succeed if the argument is the last block allocated. In that case, <code>expand</code> attempts to push the break pointer to the right. </p> </dd> <dt class="d_decl" id="SbrkRegion.deallocate">shared bool deallocate(void[] b)</dt> <dd>
+<p>The <code>deallocate</code> method only works (and returns <code>true</code>) on systems that support reducing the break address (i.e. accept calls to <code>sbrk</code> with negative offsets). OSX does not accept such. In addition the argument must be the last block allocated. </p> </dd> <dt class="d_decl" id="SbrkRegion.deallocateAll">shared bool deallocateAll()</dt> <dd>
+<p>The <code>deallocateAll</code> method only works (and returns <code>true</code>) on systems that support reducing the break address (i.e. accept calls to <code>sbrk</code> with negative offsets). OSX does not accept such.</p> </dd> <dt class="d_decl" id="SbrkRegion.empty">Ternary empty()</dt> <dd>
+<p>Standard allocator API.</p> </dd> </dl> </dd> </dl>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 1999–2017 The D Language Foundation<br>Licensed under the Boost License 1.0.<br>
+    <a href="https://dlang.org/phobos/std_experimental_allocator_building_blocks_region.html" class="_attribution-link" target="_blank">https://dlang.org/phobos/std_experimental_allocator_building_blocks_region.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

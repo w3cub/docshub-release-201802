@@ -1,0 +1,774 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>std.exception - D - W3cubDocs</title>
+  
+  <meta name="description" content=" This module defines functions related to exceptions and general error handling. It also defines functions intended to aid in unit testing. ">
+  <meta name="keywords" content="std, exception, -, d">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/d/std_exception/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/d.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/d/" class="_nav-link" title="" style="margin-left:0;">D</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _d">
+				
+<h1>std.exception</h1>  <p>This module defines functions related to exceptions and general error handling. It also defines functions intended to aid in unit testing. </p>
+<p> </p>
+<table>
+
+<tr>
+<th scope="col">Category</th> <th scope="col">Functions</th>
+</tr> <tr>
+<td>Assumptions</td> <td> <a href="#assertNotThrown"><code>assertNotThrown</code></a> <a href="#assertThrown"><code>assertThrown</code></a> <a href="#assumeUnique"><code>assumeUnique</code></a> <a href="#assumeWontThrow"><code>assumeWontThrow</code></a> <a href="#mayPointTo"><code>mayPointTo</code></a> </td>
+</tr> <tr>
+<td>Enforce</td> <td> <a href="#doesPointTo"><code>doesPointTo</code></a> <a href="#enforce"><code>enforce</code></a> <a href="#enforceEx"><code>enforceEx</code></a> <a href="#errnoEnforce"><code>errnoEnforce</code></a> </td>
+</tr> <tr>
+<td>Handlers</td> <td> <a href="#collectException"><code>collectException</code></a> <a href="#collectExceptionMsg"><code>collectExceptionMsg</code></a> <a href="#ifThrown"><code>ifThrown</code></a> <a href="#handle"><code>handle</code></a> </td>
+</tr> <tr>
+<td>Other</td> <td> <a href="#basicExceptionCtors"><code>basicExceptionCtors</code></a> <a href="#emptyExceptionMsg"><code>emptyExceptionMsg</code></a> <a href="#ErrnoException"><code>ErrnoException</code></a> <a href="#RangePrimitive"><code>RangePrimitive</code></a> </td>
+</tr> </table> <br><br> Synopsis of some of std.<code>exception</code>'s functions: <pre data-language="d">string synopsis()
+{
+    FILE* f = enforce(fopen("some/file"));
+    // f is not null from here on
+    FILE* g = enforce!WriteException(fopen("some/other/file", "w"));
+    // g is not null from here on
+
+    Exception e = collectException(write(g, readln(f)));
+    if (e)
+    {
+        ... an exception occurred...
+        ... We have the exception to play around with...
+    }
+
+    string msg = collectExceptionMsg(write(g, readln(f)));
+    if (msg)
+    {
+        ... an exception occurred...
+        ... We have the message from the exception but not the exception...
+    }
+
+    char[] line;
+    enforce(readln(f, line));
+    return assumeUnique(line);
+}
+</pre>  <dl>
+<dt>License:</dt>
+<dd>
+<a href="http://boost.org/LICENSE_1_0.txt" target="_blank">Boost License 1.0</a> </dd>
+</dl> <dl>
+<dt>Authors:</dt>
+<dd>
+<a href="http://erdani.org" target="_blank">Andrei Alexandrescu</a> and Jonathan M Davis </dd>
+</dl> <dl>
+<dt>Source</dt>
+<dd> <span class="phobos_src"><a class="https" href="https://github.com/dlang/phobos/blob/master/std/exception.d" target="_blank">std/exception.d</a></span>
+</dd>
+</dl> <dl>
+<dt class="d_decl" id="assertNotThrown">auto assertNotThrown(T : Throwable = Exception, E)(lazy E expression, string msg = null, string file = __FILE__, size_t line = __LINE__)</dt> <dd>
+<p>Asserts that the given <code>expression</code> does <i>not</i> throw the given type of <code>Throwable</code>. If a <code>Throwable</code> of the given type is thrown, it is caught and does not escape <code>assertNotThrown</code>. Rather, an <code>AssertError</code> is thrown. However, any other <code>Throwable</code>s will escape. </p>
+<dl>
+<dt>Parameters:</dt>
+<dd><table>
+<tr>
+<td>T</td> <td>The <code>Throwable</code> to test for.</td>
+</tr> <tr>
+<td>E <code>expression</code>
+</td> <td>The <code>expression</code> to test.</td>
+</tr> <tr>
+<td>string <code>msg</code>
+</td> <td>Optional message to output on test failure. If <code>msg</code> is empty, and the thrown exception has a non-empty <code>msg</code> field, the exception's <code>msg</code> field will be output on test failure.</td>
+</tr> <tr>
+<td>string <code>file</code>
+</td> <td>The <code>file</code> where the error occurred. Defaults to <code>__FILE__</code>.</td>
+</tr> <tr>
+<td>size_t <code>line</code>
+</td> <td>The <code>line</code> where the error occurred. Defaults to <code>__LINE__</code>.</td>
+</tr> </table></dd>
+</dl> <dl>
+<dt>Throws:</dt>
+<dd>
+<code>AssertError</code> if the given <code>Throwable</code> is thrown. </dd>
+</dl> <dl>
+<dt>Returns:</dt>
+<dd>the result of <code>expression</code>.</dd>
+</dl> <dl>
+<dt>Examples:</dt>
+<dd>
+<pre data-language="d">import core.exception : AssertError;
+
+import std.string;
+assertNotThrown!StringException(enforce!StringException(true, "Error!"));
+
+//Exception is the default.
+assertNotThrown(enforce!StringException(true, "Error!"));
+
+assert(collectExceptionMsg!AssertError(assertNotThrown!StringException(
+           enforce!StringException(false, "Error!"))) ==
+       `assertNotThrown failed: StringException was thrown: Error!`);
+</pre> </dd>
+</dl> </dd> <dt class="d_decl" id="assertThrown">void assertThrown(T : Throwable = Exception, E)(lazy E expression, string msg = null, string file = __FILE__, size_t line = __LINE__)</dt> <dd>
+<p>Asserts that the given <code>expression</code> throws the given type of <code>Throwable</code>. The <code>Throwable</code> is caught and does not escape <code>assertThrown</code>. However, any other <code>Throwable</code>s <i>will</i> escape, and if no <code>Throwable</code> of the given type is thrown, then an <code>AssertError</code> is thrown. </p>
+<dl>
+<dt>Parameters:</dt>
+<dd><table>
+<tr>
+<td>T</td> <td>The <code>Throwable</code> to test for.</td>
+</tr> <tr>
+<td>E <code>expression</code>
+</td> <td>The <code>expression</code> to test.</td>
+</tr> <tr>
+<td>string <code>msg</code>
+</td> <td>Optional message to output on test failure.</td>
+</tr> <tr>
+<td>string <code>file</code>
+</td> <td>The <code>file</code> where the error occurred. Defaults to <code>__FILE__</code>.</td>
+</tr> <tr>
+<td>size_t <code>line</code>
+</td> <td>The <code>line</code> where the error occurred. Defaults to <code>__LINE__</code>.</td>
+</tr> </table></dd>
+</dl> <dl>
+<dt>Throws:</dt>
+<dd>
+<code>AssertError</code> if the given <code>Throwable</code> is not thrown.</dd>
+</dl> <dl>
+<dt>Examples:</dt>
+<dd>
+<pre data-language="d">import core.exception : AssertError;
+import std.string;
+
+assertThrown!StringException(enforce!StringException(false, "Error!"));
+
+//Exception is the default.
+assertThrown(enforce!StringException(false, "Error!"));
+
+assert(collectExceptionMsg!AssertError(assertThrown!StringException(
+           enforce!StringException(true, "Error!"))) ==
+       `assertThrown failed: No StringException was thrown.`);
+</pre> </dd>
+</dl> </dd> <dt class="d_decl" id="enforce">T enforce(E : Throwable = Exception, T)(T value, lazy const(char)[] msg = null, string file = __FILE__, size_t line = __LINE__)<br><br>  Constraints:<br>    if (is(typeof(() { if (!value) { } } )))</dt> <dd>
+<p>Enforces that the given <code>value</code> is <code>true</code>. </p>
+<dl>
+<dt>Parameters:</dt>
+<dd><table>
+<tr>
+<td>T <code>value</code>
+</td> <td>The <code>value</code> to test.</td>
+</tr> <tr>
+<td>E</td> <td>Exception type to throw if the <code>value</code> evalues to <code>false</code>.</td>
+</tr> <tr>
+<td>const(char)[] <code>msg</code>
+</td> <td>The error message to put in the exception if it is thrown.</td>
+</tr> <tr>
+<td>string <code>file</code>
+</td> <td>The source <code>file</code> of the caller.</td>
+</tr> <tr>
+<td>size_t <code>line</code>
+</td> <td>The <code>line</code> number of the caller.</td>
+</tr> </table></dd>
+</dl> <dl>
+<dt>Returns:</dt>
+<dd>
+<code>value</code>, if <code>cast(bool) value</code> is <code>true</code>. Otherwise, <code>new Exception(msg)</code> is thrown. </dd>
+</dl> <dl>
+<dt>Note</dt>
+<dd> <code>enforce</code> is used to throw exceptions and is therefore intended to aid in error handling. It is <i>not</i> intended for verifying the logic of your program. That is what <code>assert</code> is for. Also, do not use <code>enforce</code> inside of contracts (i.e. inside of <code>in</code> and <code>out</code> blocks and <code>invariant</code>s), because they will be compiled out when compiling with <i>-release</i>. Use <code>assert</code> in contracts. </dd>
+</dl> <dl>
+<dt>Example</dt>
+
+</dl>
+<pre data-language="d">auto f = enforce(fopen("data.txt"));
+auto line = readln(f);
+enforce(line.length, "Expected a non-empty line.");
+</pre>  </dd> <dt class="d_decl" id="enforce.2">T enforce(T, Dg, string file = __FILE__, size_t line = __LINE__)(T value, scope Dg dg)<br><br>  Constraints:<br>    if (isSomeFunction!Dg &amp;&amp; is(typeof(dg())) &amp;&amp; is(typeof(() { if (!value) { } } )))</dt> <dd>
+<p>Enforces that the given <code>value</code> is <code>true</code>. </p>
+<dl>
+<dt>Parameters:</dt>
+<dd><table>
+<tr>
+<td>T <code>value</code>
+</td> <td>The <code>value</code> to test.</td>
+</tr> <tr>
+<td>Dg <code>dg</code>
+</td> <td>The delegate to be called if the <code>value</code> evaluates to <code>false</code>.</td>
+</tr> <tr>
+<td>file</td> <td>The source file of the caller.</td>
+</tr> <tr>
+<td>line</td> <td>The line number of the caller.</td>
+</tr> </table></dd>
+</dl> <dl>
+<dt>Returns:</dt>
+<dd>
+<code>value</code>, if <code>cast(bool) value</code> is <code>true</code>. Otherwise, the given delegate is called.  The safety and purity of this function are inferred from <code>Dg</code>'s safety and purity.</dd>
+</dl> </dd> <dt class="d_decl" id="enforce.3">T enforce(T)(T value, lazy Throwable ex)</dt> <dd>
+<p>Enforces that the given <code>value</code> is <code>true</code>. </p>
+<dl>
+<dt>Parameters:</dt>
+<dd><table>
+<tr>
+<td>T <code>value</code>
+</td> <td>The <code>value</code> to test.</td>
+</tr> <tr>
+<td>Throwable <code>ex</code>
+</td> <td>The exception to throw if the <code>value</code> evaluates to <code>false</code>.</td>
+</tr> </table></dd>
+</dl> <dl>
+<dt>Returns:</dt>
+<dd>
+<code>value</code>, if <code>cast(bool) value</code> is <code>true</code>. Otherwise, <code>ex</code> is thrown. </dd>
+</dl> <dl>
+<dt>Example</dt>
+
+</dl>
+<pre data-language="d">auto f = enforce(fopen("data.txt"));
+auto line = readln(f);
+enforce(line.length, new IOException); // expect a non-empty line
+</pre>  </dd> <dt class="d_decl" id="errnoEnforce">T errnoEnforce(T, string file = __FILE__, size_t line = __LINE__)(T value, lazy string msg = null)</dt> <dd>
+<p>Enforces that the given <code>value</code> is <code>true</code>, throwing an <code>ErrnoException</code> if it is not. </p>
+<dl>
+<dt>Parameters:</dt>
+<dd><table>
+<tr>
+<td>T <code>value</code>
+</td> <td>The <code>value</code> to test.</td>
+</tr> <tr>
+<td>string <code>msg</code>
+</td> <td>The message to include in the <code>ErrnoException</code> if it is thrown.</td>
+</tr> </table></dd>
+</dl> <dl>
+<dt>Returns:</dt>
+<dd>
+<code>value</code>, if <code>cast(bool) value</code> is <code>true</code>. Otherwise, <code>new ErrnoException(msg)</code> is thrown. It is assumed that the last operation set <code>errno</code> to an error code corresponding with the failed condition. </dd>
+</dl> <dl>
+<dt>Example</dt>
+
+</dl>
+<pre data-language="d">auto f = errnoEnforce(fopen("data.txt"));
+auto line = readln(f);
+enforce(line.length); // expect a non-empty line
+</pre>  </dd> <dt class="d_decl" id="enforceEx">template enforceEx(E : Throwable) if (is(typeof(new E("", "std/exception.d", 610))))template enforceEx(E : Throwable) if (is(typeof(new E("std/exception.d", 622))) &amp;amp<br>&amp;amp<br>!is(typeof(new E("", "std/exception.d", 622))))</dt> <dd>
+<p>If <code>!value</code> is <code>false</code>, <code>value</code> is returned. Otherwise, <code>new E(msg, file, line)</code> is thrown. Or if <code>E</code> doesn't take a message and can be constructed with <code>new E(file, line)</code>, then <code>new E(file, line)</code> will be thrown. </p>
+<p>This is legacy name, it is recommended to use <code>enforce!E</code> instead. </p> <dl>
+<dt>Example</dt>
+
+</dl>
+<pre data-language="d">auto f = enforceEx!FileMissingException(fopen("data.txt"));
+auto line = readln(f);
+enforceEx!DataCorruptionException(line.length);
+</pre>  <dl>
+<dt class="d_decl" id="enforceEx.enforceEx">T enforceEx(T)(T value, lazy string msg = "", string file = __FILE__, size_t line = __LINE__)</dt> <dd>
+<p>Ditto</p> </dd> </dl> </dd> <dt class="d_decl" id="collectException">T collectException(T = Exception, E)(lazy E expression, ref E result)</dt> <dd>
+<p>Catches and returns the exception thrown from the given <code>expression</code>. If no exception is thrown, then <code>null</code> is returned and <code>result</code> is set to the <code>result</code> of the <code>expression</code>. </p>
+<p>Note that while <code>collectException</code> <i>can</i> be used to collect any <code>Throwable</code> and not just <code>Exception</code>s, it is generally ill-advised to catch anything that is neither an <code>Exception</code> nor a type derived from <code>Exception</code>. So, do not use <code>collectException</code> to collect non-<code>Exception</code>s unless you're sure that that's what you really want to do. </p> <dl>
+<dt>Parameters:</dt>
+<dd><table>
+<tr>
+<td>T</td> <td>The type of exception to catch.</td>
+</tr> <tr>
+<td>E <code>expression</code>
+</td> <td>The <code>expression</code> which may throw an exception.</td>
+</tr> <tr>
+<td>E <code>result</code>
+</td> <td>The <code>result</code> of the <code>expression</code> if no exception is thrown.</td>
+</tr> </table></dd>
+</dl> <dl>
+<dt>Examples:</dt>
+<dd>
+<pre data-language="d">int b;
+int foo() { throw new Exception("blah"); }
+assert(collectException(foo(), b));
+
+int[] a = new int[3];
+import core.exception : RangeError;
+assert(collectException!RangeError(a[4], b));
+</pre> </dd>
+</dl> </dd> <dt class="d_decl" id="collectException.2">T collectException(T : Throwable = Exception, E)(lazy E expression)</dt> <dd>
+<p>Catches and returns the exception thrown from the given <code>expression</code>. If no exception is thrown, then <code>null</code> is returned. <code>E</code> can be <code>void</code>. </p>
+<p>Note that while <code>collectException</code> <i>can</i> be used to collect any <code>Throwable</code> and not just <code>Exception</code>s, it is generally ill-advised to catch anything that is neither an <code>Exception</code> nor a type derived from <code>Exception</code>. So, do not use <code>collectException</code> to collect non-<code>Exception</code>s unless you're sure that that's what you really want to do. </p> <dl>
+<dt>Parameters:</dt>
+<dd><table>
+<tr>
+<td>T</td> <td>The type of exception to catch.</td>
+</tr> <tr>
+<td>E <code>expression</code>
+</td> <td>The <code>expression</code> which may throw an exception.</td>
+</tr> </table></dd>
+</dl> </dd> <dt class="d_decl" id="collectExceptionMsg">string collectExceptionMsg(T = Exception, E)(lazy E expression)</dt> <dd>
+<p>Catches the exception thrown from the given <code>expression</code> and returns the msg property of that exception. If no exception is thrown, then <code>null</code> is returned. <code>E</code> can be <code>void</code>. </p>
+<p>If an exception is thrown but it has an empty message, then <code>emptyExceptionMsg</code> is returned. <br><br> Note that while <code>collectExceptionMsg</code> <i>can</i> be used to collect any <code>Throwable</code> and not just <code>Exception</code>s, it is generally ill-advised to catch anything that is neither an <code>Exception</code> nor a type derived from <code>Exception</code>. So, do not use <code>collectExceptionMsg</code> to collect non-<code>Exception</code>s unless you're sure that that's what you really want to do. </p> <dl>
+<dt>Parameters:</dt>
+<dd><table>
+<tr>
+<td>T</td> <td>The type of exception to catch.</td>
+</tr> <tr>
+<td>E <code>expression</code>
+</td> <td>The <code>expression</code> which may throw an exception.</td>
+</tr> </table></dd>
+</dl> <dl>
+<dt>Examples:</dt>
+<dd>
+<pre data-language="d">void throwFunc() { throw new Exception("My Message."); }
+writeln(collectExceptionMsg(throwFunc())); // "My Message."
+
+void nothrowFunc() {}
+assert(collectExceptionMsg(nothrowFunc()) is null);
+
+void throwEmptyFunc() { throw new Exception(""); }
+writeln(collectExceptionMsg(throwEmptyFunc())); // emptyExceptionMsg
+</pre> </dd>
+</dl> </dd> <dt class="d_decl" id="emptyExceptionMsg">enum string emptyExceptionMsg</dt> <dd>
+<p>Value that collectExceptionMsg returns when it catches an exception with an empty exception message.</p> </dd> <dt class="d_decl" id="assumeUnique">pure nothrow immutable(T)[] assumeUnique(T)(T[] array)<br>pure nothrow immutable(T)[] assumeUnique(T)(ref T[] array)<br>pure nothrow immutable(T[U]) assumeUnique(T, U)(ref T[U] array)</dt> <dd>
+<p>Casts a mutable <code>array</code> to an immutable <code>array</code> in an idiomatic manner. Technically, <code>assumeUnique</code> just inserts a cast, but its name documents assumptions on the part of the caller. <code>assumeUnique(arr)</code> should only be called when there are no more active mutable aliases to elements of <code> arr</code>. To strengthen this assumption, <code>assumeUnique(arr)</code> also clears <code>arr</code> before returning. Essentially <code> assumeUnique(arr)</code> indicates commitment from the caller that there is no more mutable access to any of <code>arr</code>'s elements (transitively), and that all future accesses will be done through the immutable <code>array</code> returned by <code>assumeUnique</code>. </p>
+<p>Typically, <code>assumeUnique</code> is used to return arrays from functions that have allocated and built them. </p> <dl>
+<dt>Parameters:</dt>
+<dd><table>
+<tr>
+<td>T[] <code>array</code>
+</td> <td>The <code>array</code> to cast to immutable.</td>
+</tr> </table></dd>
+</dl> <dl>
+<dt>Returns:</dt>
+<dd>The immutable <code>array</code>. </dd>
+</dl> <dl>
+<dt>Example</dt>
+
+</dl>
+<pre data-language="d">string letters()
+{
+  char[] result = new char['z' - 'a' + 1];
+  foreach (i, ref e; result)
+  {
+    e = cast(char)('a' + i);
+  }
+  return assumeUnique(result);
+}
+</pre>  The use in the example above is correct because <code>result</code> was private to <code>letters</code> and is inaccessible in writing after the function returns. The following example shows an incorrect use of <code>assumeUnique</code>.  <dl>
+<dt>Bad</dt>
+
+</dl>
+<pre data-language="d">private char[] buffer;
+string letters(char first, char last)
+{
+  if (first &gt;= last) return null; // fine
+  auto sneaky = buffer;
+  sneaky.length = last - first + 1;
+  foreach (i, ref e; sneaky)
+  {
+    e = cast(char)('a' + i);
+  }
+  return assumeUnique(sneaky); // BAD
+}
+</pre>  The example above wreaks havoc on client code because it is modifying arrays that callers considered immutable. To obtain an immutable <code>array</code> from the writable <code>array</code> <code>buffer</code>, replace the last line with: <pre data-language="d">return to!(string)(sneaky); // not that sneaky anymore
+</pre>  The call will duplicate the <code>array</code> appropriately.  Note that checking for uniqueness during compilation is possible in certain cases, especially when a function is marked as a pure function. The following example does not need to call <code>assumeUnique</code> because the compiler can infer the uniqueness of the <code>array</code> in the pure function: <pre data-language="d">string letters() pure
+{
+  char[] result = new char['z' - 'a' + 1];
+  foreach (i, ref e; result)
+  {
+    e = cast(char)('a' + i);
+  }
+  return result;
+}
+</pre>  For more on infering uniqueness see the <b>unique</b> and <b>lent</b> keywords in the <a href="http://archjava.fluid.cs.cmu.edu/papers/oopsla02.pdf" target="_blank">ArchJava</a> language.  The downside of using <code>assumeUnique</code>'s convention-based usage is that at this time there is no formal checking of the correctness of the assumption; on the upside, the idiomatic use of <code>assumeUnique</code> is simple and rare enough to be tolerable. </dd> <dt class="d_decl" id="assumeWontThrow">nothrow T assumeWontThrow(T)(lazy T expr, string msg = null, string file = __FILE__, size_t line = __LINE__)</dt> <dd>
+<p>Wraps a possibly-throwing expression in a <code>nothrow</code> wrapper so that it can be called by a <code>nothrow</code> function. </p>
+<p>This wrapper function documents commitment on the part of the caller that the appropriate steps have been taken to avoid whatever conditions may trigger an exception during the evaluation of <code>expr</code>. If it turns out that the expression <i>does</i> throw at runtime, the wrapper will throw an <code>AssertError</code>. <br><br> (Note that <code>Throwable</code> objects such as <code>AssertError</code> that do not subclass <code>Exception</code> may be thrown even from <code>nothrow</code> functions, since they are considered to be serious runtime problems that cannot be recovered from.) </p> <dl>
+<dt>Parameters:</dt>
+<dd><table>
+<tr>
+<td>T <code>expr</code>
+</td> <td>The expression asserted not to throw.</td>
+</tr> <tr>
+<td>string <code>msg</code>
+</td> <td>The message to include in the <code>AssertError</code> if the assumption turns out to be <code>false</code>.</td>
+</tr> <tr>
+<td>string <code>file</code>
+</td> <td>The source <code>file</code> name of the caller.</td>
+</tr> <tr>
+<td>size_t <code>line</code>
+</td> <td>The <code>line</code> number of the caller.</td>
+</tr> </table></dd>
+</dl> <dl>
+<dt>Returns:</dt>
+<dd>The value of <code>expr</code>, if any.</dd>
+</dl> <dl>
+<dt>Examples:</dt>
+<dd>
+<pre data-language="d">import std.math : sqrt;
+
+// This function may throw.
+int squareRoot(int x)
+{
+    if (x &lt; 0)
+        throw new Exception("Tried to take root of negative number");
+    return cast(int) sqrt(cast(double) x);
+}
+
+// This function never throws.
+int computeLength(int x, int y) nothrow
+{
+    // Since x*x + y*y is always positive, we can safely assume squareRoot
+    // won't throw, and use it to implement this nothrow function. If it
+    // does throw (e.g., if x*x + y*y overflows a 32-bit value), then the
+    // program will terminate.
+    return assumeWontThrow(squareRoot(x*x + y*y));
+}
+
+writeln(computeLength(3, 4)); // 5
+</pre> </dd>
+</dl> </dd> <dt class="d_decl" id="doesPointTo">pure nothrow @trusted bool doesPointTo(S, T, Tdummy = void)(auto ref const S source, ref const T target)<br>pure nothrow @trusted bool doesPointTo(S, T)(auto ref const shared S source, ref const shared T target)<br>pure nothrow @trusted bool mayPointTo(S, T, Tdummy = void)(auto ref const S source, ref const T target)<br>pure nothrow @trusted bool mayPointTo(S, T)(auto ref const shared S source, ref const shared T target)<br><br>  Constraints:<br>    if (__traits(isRef, source) || isDynamicArray!S || isPointer!S || is(S == class))<br>    if (__traits(isRef, source) || isDynamicArray!S || isPointer!S || is(S == class))</dt> <dd>
+<p>Checks whether a given <code>source</code> object contains pointers or references to a given <code>target</code> object. </p>
+<dl>
+<dt>Parameters:</dt>
+<dd><table>
+<tr>
+<td>S <code>source</code>
+</td> <td>The <code>source</code> object</td>
+</tr> <tr>
+<td>T <code>target</code>
+</td> <td>The <code>target</code> object</td>
+</tr> </table></dd>
+</dl> <dl>
+<dt>Returns:</dt>
+<dd>
+<code>true</code> if <code>source</code>'s representation embeds a pointer that points to <code>target</code>'s representation or somewhere inside it.  If <code>source</code> is or contains a dynamic array, then, then these functions will check if there is overlap between the dynamic array and <code>target</code>'s representation.  If <code>source</code> is a class, then it will be handled as a pointer.  If <code>target</code> is a pointer, a dynamic array or a class, then these functions will only check if <code>source</code> points to <code>target</code>, <i>not</i> what <code>target</code> references.  If <code>source</code> is or contains a union, then there may be either <code>false</code> positives or <code>false</code> negatives:  <code>doesPointTo</code> will return <code>true</code> if it is absolutely certain <code>source</code> points to <code>target</code>. It may produce <code>false</code> negatives, but never <code>false</code> positives. This function should be prefered when trying to validate input data.  <code>mayPointTo</code> will return <code>false</code> if it is absolutely certain <code>source</code> does not point to <code>target</code>. It may produce <code>false</code> positives, but never <code>false</code> negatives. This function should be prefered for defensively choosing a code path. </dd>
+</dl> <dl>
+<dt>Note</dt>
+<dd> Evaluating <code>doesPointTo(x, x)</code> checks whether <code>x</code> has internal pointers. This should only be done as an assertive test, as the language is free to assume objects don't have internal pointers (TDPL 7.1.3.5).</dd>
+</dl> <dl>
+<dt>Examples:</dt>
+<dd>Pointers <pre data-language="d">int  i = 0;
+int* p = null;
+assert(!p.doesPointTo(i));
+p = &amp;i;
+assert( p.doesPointTo(i));
+</pre> </dd>
+</dl> <dl>
+<dt>Examples:</dt>
+<dd>Structs and Unions <pre data-language="d">struct S
+{
+    int v;
+    int* p;
+}
+int i;
+auto s = S(0, &amp;i);
+
+// structs and unions "own" their members
+// pointsTo will answer true if one of the members pointsTo.
+assert(!s.doesPointTo(s.v)); //s.v is just v member of s, so not pointed.
+assert( s.p.doesPointTo(i)); //i is pointed by s.p.
+assert( s  .doesPointTo(i)); //which means i is pointed by s itself.
+
+// Unions will behave exactly the same. Points to will check each "member"
+// individually, even if they share the same memory
+</pre> </dd>
+</dl> <dl>
+<dt>Examples:</dt>
+<dd>Arrays (dynamic and static) <pre data-language="d">int i;
+int[]  slice = [0, 1, 2, 3, 4];
+int[5] arr   = [0, 1, 2, 3, 4];
+int*[]  slicep = [&amp;i];
+int*[1] arrp   = [&amp;i];
+
+// A slice points to all of its members:
+assert( slice.doesPointTo(slice[3]));
+assert(!slice[0 .. 2].doesPointTo(slice[3])); // Object 3 is outside of the
+                                              // slice [0 .. 2]
+
+// Note that a slice will not take into account what its members point to.
+assert( slicep[0].doesPointTo(i));
+assert(!slicep   .doesPointTo(i));
+
+// static arrays are objects that own their members, just like structs:
+assert(!arr.doesPointTo(arr[0])); // arr[0] is just a member of arr, so not
+                                  // pointed.
+assert( arrp[0].doesPointTo(i));  // i is pointed by arrp[0].
+assert( arrp   .doesPointTo(i));  // which means i is pointed by arrp
+                                  // itself.
+
+// Notice the difference between static and dynamic arrays:
+assert(!arr  .doesPointTo(arr[0]));
+assert( arr[].doesPointTo(arr[0]));
+assert( arrp  .doesPointTo(i));
+assert(!arrp[].doesPointTo(i));
+</pre> </dd>
+</dl> <dl>
+<dt>Examples:</dt>
+<dd>Classes <pre data-language="d">class C
+{
+    this(int* p){this.p = p;}
+    int* p;
+}
+int i;
+C a = new C(&amp;i);
+C b = a;
+
+// Classes are a bit particular, as they are treated like simple pointers
+// to a class payload.
+assert( a.p.doesPointTo(i)); // a.p points to i.
+assert(!a  .doesPointTo(i)); // Yet a itself does not point i.
+
+//To check the class payload itself, iterate on its members:
+()
+{
+    import std.traits : Fields;
+
+    foreach (index, _; Fields!C)
+        if (doesPointTo(a.tupleof[index], i))
+            return;
+    assert(0);
+}();
+
+// To check if a class points a specific payload, a direct memmory check
+// can be done:
+auto aLoc = cast(ubyte[__traits(classInstanceSize, C)]*) a;
+assert(b.doesPointTo(*aLoc)); // b points to where a is pointing
+</pre> </dd>
+</dl> </dd> <dt class="d_decl" id="ErrnoException">class ErrnoException: object.Exception</dt> <dd>
+<p>Thrown if errors that set <code>errno</code> occur.</p> <dl>
+<dt class="d_decl" id="ErrnoException.errno">final @property uint errno()</dt> <dd>
+<p>Operating system error code.</p> </dd> <dt class="d_decl" id="ErrnoException.this">@trusted this(string msg, string file = null, size_t line = 0)</dt> <dd>
+<p>Constructor which takes an error message. The current global <a href="../core_stdc_errno/#errno"><code>core.stdc.errno.errno</code></a> value is used as error code.</p> </dd> <dt class="d_decl" id="ErrnoException.this.2">@trusted this(string msg, int errno, string file = null, size_t line = 0)</dt> <dd>
+<p>Constructor which takes an error message and error code.</p> </dd> </dl> </dd> <dt class="d_decl" id="ifThrown">CommonType!(T1, T2) ifThrown(E : Throwable = Exception, T1, T2)(lazy scope T1 expression, lazy scope T2 errorHandler)<br>CommonType!(T1, T2) ifThrown(E : Throwable, T1, T2)(lazy scope T1 expression, scope T2 delegate(E) errorHandler)<br>CommonType!(T1, T2) ifThrown(T1, T2)(lazy scope T1 expression, scope T2 delegate(Exception) errorHandler)</dt> <dd>
+<p>ML-style functional exception handling. Runs the supplied <code>expression</code> and returns its result. If the <code>expression</code> throws a <code>Throwable</code>, runs the supplied error handler instead and return its result. The error handler's type must be the same as the <code>expression</code>'s type. </p>
+<dl>
+<dt>Parameters:</dt>
+<dd><table>
+<tr>
+<td>E</td> <td>The type of <code>Throwable</code>s to catch. Defaults to <code>Exception</code>
+</td>
+</tr> <tr>
+<td>T1</td> <td>The type of the <code>expression</code>.</td>
+</tr> <tr>
+<td>T2</td> <td>The return type of the error handler.</td>
+</tr> <tr>
+<td>T1 <code>expression</code>
+</td> <td>The <code>expression</code> to run and return its result.</td>
+</tr> <tr>
+<td>T2 <code>errorHandler</code>
+</td> <td>The handler to run if the <code>expression</code> throwed.</td>
+</tr> </table></dd>
+</dl> <dl>
+<dt>Returns:</dt>
+<dd>
+<code>expression</code>, if it does not throw. Otherwise, returns the result of <code>errorHandler</code>. </dd>
+</dl> <dl>
+<dt>Example</dt>
+
+</dl>
+<pre data-language="d">//Revert to a default value upon an error:
+assert("x".to!int().ifThrown(0) == 0);
+</pre>  You can also chain multiple calls to <code>ifThrown</code>, each capturing errors from the entire preceding <code>expression</code>.  <dl>
+<dt>Example</dt>
+
+</dl>
+<pre data-language="d">//Chaining multiple calls to ifThrown to attempt multiple things in a row:
+string s="true";
+assert(s.to!int().
+        ifThrown(cast(int) s.to!double()).
+        ifThrown(cast(int) s.to!bool())
+        == 1);
+
+//Respond differently to different types of errors
+assert(enforce("x".to!int() &lt; 1).to!string()
+        .ifThrown!ConvException("not a number")
+        .ifThrown!Exception("number too small")
+        == "not a number");
+</pre>  The <code>expression</code> and the <code>errorHandler</code> must have a common type they can both be implicitly casted to, and that type will be the type of the compound <code>expression</code>.  <dl>
+<dt>Example</dt>
+
+</dl>
+<pre data-language="d">//null and new Object have a common type(Object).
+static assert(is(typeof(null.ifThrown(new Object())) == Object));
+static assert(is(typeof((new Object()).ifThrown(null)) == Object));
+
+//1 and new Object do not have a common type.
+static assert(!__traits(compiles, 1.ifThrown(new Object())));
+static assert(!__traits(compiles, (new Object()).ifThrown(1)));
+</pre>  If you need to use the actual thrown exception, you can use a delegate.  <dl>
+<dt>Example</dt>
+
+</dl>
+<pre data-language="d">//Use a lambda to get the thrown object.
+assert("%s".format().ifThrown!Exception(e =&gt; e.classinfo.name) == "std.format.FormatException");
+</pre>  </dd> <dt class="d_decl" id="RangePrimitive">enum RangePrimitive: int</dt> <dd>
+<p>This <code>enum</code> is used to select the primitives of the range to handle by the <a href="#handle"><code>handle</code></a> range wrapper. The values of the <code>enum</code> can be <code>OR</code>'d to select multiple primitives to be handled. </p>
+<p><code>RangePrimitive.access</code> is a shortcut for the access primitives; <code>front</code>, <code>back</code> and <code>opIndex</code>. <br><br> <code>RangePrimitive.pop</code> is a shortcut for the mutating primitives; <code>popFront</code> and <code>popBack</code>.</p> <dl>
+<dt class="d_decl" id="RangePrimitive.front">frontbackpopFrontpopBackemptysavelengthopDollaropIndexopSliceaccesspop</dt>  </dl> </dd> <dt class="d_decl" id="handle">auto handle(E : Throwable, RangePrimitive primitivesToHandle, alias handler, Range)(Range input)<br><br>  Constraints:<br>    if (isInputRange!Range)</dt> <dd>
+<p>Handle exceptions thrown from range primitives. </p>
+<p>Use the <a href="#RangePrimitive"><code>RangePrimitive</code></a> enum to specify which primitives to handle. Multiple range primitives can be handled at once by using the <code>OR</code> operator or the pseudo-primitives <code>RangePrimitive.access</code> and <code>RangePrimitive.pop</code>. All handled primitives must have return types or values compatible with the user-supplied handler. </p> <dl>
+<dt>Parameters:</dt>
+<dd><table>
+<tr>
+<td>E</td> <td>The type of <code>Throwable</code> to handle.</td>
+</tr> <tr>
+<td>primitivesToHandle</td> <td>Set of range primitives to handle.</td>
+</tr> <tr>
+<td>handler</td> <td>The callable that is called when a handled primitive throws a <code>Throwable</code> of type <code>E</code>. The handler must accept arguments of the form <code>E, ref IRange</code> and its return value is used as the primitive's return value whenever <code>E</code> is thrown. For <code>opIndex</code>, the handler can optionally recieve a third argument; the index that caused the exception.</td>
+</tr> <tr>
+<td>Range <code>input</code>
+</td> <td>The range to handle.</td>
+</tr> </table></dd>
+</dl> <dl>
+<dt>Returns:</dt>
+<dd>A wrapper <code>struct</code> that preserves the range interface of <code>input</code>. </dd>
+</dl> <dl>
+<dt>Note</dt>
+<dd> Infinite ranges with slicing support must return an instance of <a href="../std_range/#Take"><code>std.range.Take</code></a> when sliced with a specific lower and upper bound (see <a href="../std_range_primitives/#hasSlicing"><code>std.range.primitives.hasSlicing</code></a>); <code>handle</code> deals with this by <code>take</code>ing 0 from the return value of the handler function and returning that when an exception is caught.</dd>
+</dl> <dl>
+<dt>Examples:</dt>
+<dd>
+<pre data-language="d">import std.algorithm.comparison : equal;
+import std.algorithm.iteration : map, splitter;
+import std.conv : to, ConvException;
+
+auto s = "12,1337z32,54,2,7,9,1z,6,8";
+
+// The next line composition will throw when iterated
+// as some elements of the input do not convert to integer
+auto r = s.splitter(',').map!(a =&gt; to!int(a));
+
+// Substitute 0 for cases of ConvException
+auto h = r.handle!(ConvException, RangePrimitive.front, (e, r) =&gt; 0);
+assert(h.equal([12, 0, 54, 2, 7, 9, 0, 6, 8]));
+</pre> </dd>
+</dl> <dl>
+<dt>Examples:</dt>
+<dd>
+<pre data-language="d">import std.algorithm.comparison : equal;
+import std.range : retro;
+import std.utf : UTFException;
+
+auto str = "hello\xFFworld"; // 0xFF is an invalid UTF-8 code unit
+
+auto handled = str.handle!(UTFException, RangePrimitive.access,
+        (e, r) =&gt; ' '); // Replace invalid code points with spaces
+
+assert(handled.equal("hello world")); // `front` is handled,
+assert(handled.retro.equal("dlrow olleh")); // as well as `back`
+</pre> </dd>
+</dl> </dd> <dt class="d_decl" id="basicExceptionCtors">template basicExceptionCtors()</dt> <dd>
+<p>Convenience mixin for trivially sub-classing exceptions </p>
+<p>Even trivially sub-classing an exception involves writing boilerplate code for the constructor to: 1) correctly pass in the source file and line number the exception was thrown from; 2) be usable with <a href="#enforce"><code>enforce</code></a> which expects exception constructors to take arguments in a fixed order. This mixin provides that boilerplate code. <br><br> Note however that you need to mark the <b>mixin</b> line with at least a minimal (i.e. just <b>///</b>) DDoc comment if you want the mixed-in constructors to be documented in the newly created Exception subclass. <br><br> <span class="red">Current limitation</span>: Due to <a href="https://issues.dlang.org/show_bug.cgi?id=11500" target="_blank">bug #11500</a>, currently the constructors specified in this mixin cannot be overloaded with any other custom constructors. Thus this mixin can currently only be used when no such custom constructors need to be explicitly specified.</p> <dl>
+<dt>Examples:</dt>
+<dd>
+<pre data-language="d">class MeaCulpa: Exception
+{
+    ///
+    mixin basicExceptionCtors;
+}
+
+try
+    throw new MeaCulpa("test");
+catch (MeaCulpa e)
+{
+    writeln(e.msg); // "test"
+    writeln(e.file); // __FILE__
+    writeln(e.line); // __LINE__ - 5
+}
+</pre> </dd>
+</dl> <dl>
+<dt class="d_decl" id="basicExceptionCtors.this">pure nothrow @nogc @safe this(string msg, string file = __FILE__, size_t line = __LINE__, Throwable next = null)</dt> <dd>
+<dl>
+<dt>Parameters:</dt>
+<dd><table>
+<tr>
+<td>string <code>msg</code>
+</td> <td>The message for the exception.</td>
+</tr> <tr>
+<td>string <code>file</code>
+</td> <td>The <code>file</code> where the exception occurred.</td>
+</tr> <tr>
+<td>size_t <code>line</code>
+</td> <td>The <code>line</code> number where the exception occurred.</td>
+</tr> <tr>
+<td>Throwable <code>next</code>
+</td> <td>The previous exception in the chain of exceptions, if any.</td>
+</tr> </table></dd>
+</dl> </dd> <dt class="d_decl" id="basicExceptionCtors.this.2">pure nothrow @nogc @safe this(string msg, Throwable next, string file = __FILE__, size_t line = __LINE__)</dt> <dd>
+<dl>
+<dt>Parameters:</dt>
+<dd><table>
+<tr>
+<td>string <code>msg</code>
+</td> <td>The message for the exception.</td>
+</tr> <tr>
+<td>Throwable <code>next</code>
+</td> <td>The previous exception in the chain of exceptions.</td>
+</tr> <tr>
+<td>string <code>file</code>
+</td> <td>The <code>file</code> where the exception occurred.</td>
+</tr> <tr>
+<td>size_t <code>line</code>
+</td> <td>The <code>line</code> number where the exception occurred.</td>
+</tr> </table></dd>
+</dl> </dd> </dl> </dd> </dl>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 1999–2017 The D Language Foundation<br>Licensed under the Boost License 1.0.<br>
+    <a href="https://dlang.org/phobos/std_exception.html" class="_attribution-link" target="_blank">https://dlang.org/phobos/std_exception.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

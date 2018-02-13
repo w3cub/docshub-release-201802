@@ -1,0 +1,151 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>ddmd.statement - D - W3cubDocs</title>
+  
+  <meta name="description" content=" Compiler implementation of the D programming language. ">
+  <meta name="keywords" content="ddmd, statement, -, d">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/d/ddmd_statement/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/d.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/d/" class="_nav-link" title="" style="margin-left:0;">D</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _d">
+				
+<h1>ddmd.statement</h1>  <p>Compiler implementation of the <a href="http://www.dlang.org" target="_blank">D programming language</a>. </p> <dl>
+<dt>Authors:</dt>
+<dd>
+<a href="http://www.digitalmars.com" target="_blank">Walter Bright</a> </dd>
+</dl> <dl>
+<dt>License:</dt>
+<dd>
+<a href="http://www.boost.org/LICENSE_1_0.txt" target="_blank">Boost License 1.0</a> </dd>
+</dl> <dl>
+<dt>Source:</dt>
+<dd> <a href="https://github.com/dlang/dmd/blob/master/src/ddmd/statement.d" target="_blank">statement.d</a>
+</dd>
+</dl> <dl>
+<dt class="d_decl" id="checkAssignmentAsCondition">Expression checkAssignmentAsCondition(Expression e)</dt> <dd>
+<p>Check an assignment is used as a condition. Intended to be use before the <code>semantic</code> call on <code>e</code>. </p> <dl>
+<dt>Parameters:</dt>
+<dd><table>
+<tr>
+<td>Expression <code>e</code>
+</td> <td>condition expression which is not yet run semantic analysis.</td>
+</tr> </table></dd>
+</dl> <dl>
+<dt>Returns:</dt>
+<dd>
+<code>e</code> or ErrorExp.</dd>
+</dl> </dd> <dt class="d_decl" id="getThrowable">TypeIdentifier getThrowable()</dt> <dd>
+<p>Return a type identifier reference to 'object.Throwable'</p> </dd> <dt class="d_decl" id="Statement">abstract class Statement: ddmd.root.rootobject.RootObject</dt> <dd> <dl>
+<dt class="d_decl" id="Statement.scopeCode">Statement scopeCode(Scope* sc, Statement* sentry, Statement* sexception, Statement* sfinally)</dt> <dd>
+<p>If this statement has code that needs to run in a finally clause at the end of the current scope, return that code in the form of a Statement. </p> <dl>
+<dt>Output:</dt>
+<dd> *<code>sentry</code> code executed upon entry to the scope *<code>sexception</code> code executed upon exit from the scope via exception *<code>sfinally</code> code executed in finally block</dd>
+</dl> </dd> <dt class="d_decl" id="Statement.flatten">Statements* flatten(Scope* sc)</dt> <dd>
+<p>Flatten out the scope by presenting the statement as an array of statements. Returns NULL if no flattening necessary.</p> </dd> </dl> </dd> <dt class="d_decl" id="ErrorStatement">class ErrorStatement: ddmd.statement.Statement</dt> <dd>
+<p>Any Statement that fails semantic() or has a component that is an ErrorExp or a TypeError should return an <code>ErrorStatement</code> from semantic().</p> </dd> <dt class="d_decl" id="PeelStatement">class PeelStatement: ddmd.statement.Statement</dt>  <dt class="d_decl" id="toStatement">Statement toStatement(Dsymbol s)</dt> <dd>
+<p>Convert TemplateMixin members (== Dsymbols) to Statements.</p> </dd> <dt class="d_decl" id="ExpStatement">class ExpStatement: ddmd.statement.Statement</dt>  <dt class="d_decl" id="DtorExpStatement">class DtorExpStatement: ddmd.statement.ExpStatement</dt>  <dt class="d_decl" id="CompileStatement">class CompileStatement: ddmd.statement.Statement</dt>  <dt class="d_decl" id="CompoundStatement">class CompoundStatement: ddmd.statement.Statement</dt> <dd> <dl>
+<dt class="d_decl" id="CompoundStatement.this">final this(Loc loc, Statements* s)</dt> <dd>
+<p>Construct a <code>CompoundStatement</code> using an already existing array of <code>Statement</code><code>s</code> </p> <dl>
+<dt>Parameters:</dt>
+<dd><table>
+<tr>
+<td>Loc <code>loc</code>
+</td> <td>Instantiation information</td>
+</tr> <tr>
+<td>Statements* <code>s</code>
+</td> <td>An array of <code>Statement</code><code>s</code>, that will referenced by this class</td>
+</tr> </table></dd>
+</dl> </dd> <dt class="d_decl" id="CompoundStatement.this.2">final this(Loc loc, Statement[] sts...)</dt> <dd>
+<p>Construct a <code>CompoundStatement</code> from an array of <code>Statement</code>s </p> <dl>
+<dt>Parameters:</dt>
+<dd><table>
+<tr>
+<td>Loc <code>loc</code>
+</td> <td>Instantiation information</td>
+</tr> <tr>
+<td>s</td> <td>A variadic array of <code>Statement</code>s, that will copied in this class The entries themselves will not be copied.</td>
+</tr> </table></dd>
+</dl> </dd> </dl> </dd> <dt class="d_decl" id="CompoundDeclarationStatement">class CompoundDeclarationStatement: ddmd.statement.CompoundStatement</dt>  <dt class="d_decl" id="UnrolledLoopStatement">class UnrolledLoopStatement: ddmd.statement.Statement</dt> <dd>
+<p>The purpose of this is so that continue will go to the next of the statements, and break will go to the end of the statements.</p> </dd> <dt class="d_decl" id="ScopeStatement">class ScopeStatement: ddmd.statement.Statement</dt>  <dt class="d_decl" id="ForwardingStatement">class ForwardingStatement: ddmd.statement.Statement</dt> <dd>
+<p>Statement whose symbol table contains foreach index variables in a local scope and forwards other members to the parent scope. This wraps a statement. </p> <p>Also see: <code>ddmd.attrib.ForwardingAttribDeclaration</code></p> <dl>
+<dt class="d_decl" id="ForwardingStatement.sym">ForwardingScopeDsymbol sym</dt> <dd>
+<p>The symbol containing the <code>static foreach</code> variables.</p> </dd> <dt class="d_decl" id="ForwardingStatement.statement">Statement statement</dt> <dd>
+<p>The wrapped <code>statement</code>.</p> </dd> <dt class="d_decl" id="ForwardingStatement.flatten">Statements* flatten(Scope* sc)</dt> <dd>
+<p>ForwardingStatements are distributed over the flattened sequence of statements. This prevents flattening to be "blocked" by a ForwardingStatement and is necessary, for example, to support generating scope guards with `static foreach`: </p> <p>static foreach(i; 0 .. 10) scope(exit) writeln(i); writeln("this is printed first"); // then, it prints 10, 9, 8, 7, ...</p> </dd> </dl> </dd> <dt class="d_decl" id="WhileStatement">class WhileStatement: ddmd.statement.Statement</dt>  <dt class="d_decl" id="DoStatement">class DoStatement: ddmd.statement.Statement</dt>  <dt class="d_decl" id="ForStatement">class ForStatement: ddmd.statement.Statement</dt>  <dt class="d_decl" id="ForeachStatement">class ForeachStatement: ddmd.statement.Statement</dt>  <dt class="d_decl" id="ForeachRangeStatement">class ForeachRangeStatement: ddmd.statement.Statement</dt>  <dt class="d_decl" id="IfStatement">class IfStatement: ddmd.statement.Statement</dt>  <dt class="d_decl" id="ConditionalStatement">class ConditionalStatement: ddmd.statement.Statement</dt>  <dt class="d_decl" id="StaticForeachStatement">class StaticForeachStatement: ddmd.statement.Statement</dt> <dd>
+<p>Static foreach statements, like: void main() { static foreach(i; 0 .. 10) { pragma(msg, i); } }</p> </dd> <dt class="d_decl" id="PragmaStatement">class PragmaStatement: ddmd.statement.Statement</dt>  <dt class="d_decl" id="StaticAssertStatement">class StaticAssertStatement: ddmd.statement.Statement</dt>  <dt class="d_decl" id="SwitchStatement">class SwitchStatement: ddmd.statement.Statement</dt>  <dt class="d_decl" id="CaseStatement">class CaseStatement: ddmd.statement.Statement</dt>  <dt class="d_decl" id="CaseRangeStatement">class CaseRangeStatement: ddmd.statement.Statement</dt>  <dt class="d_decl" id="DefaultStatement">class DefaultStatement: ddmd.statement.Statement</dt>  <dt class="d_decl" id="GotoDefaultStatement">class GotoDefaultStatement: ddmd.statement.Statement</dt>  <dt class="d_decl" id="GotoCaseStatement">class GotoCaseStatement: ddmd.statement.Statement</dt>  <dt class="d_decl" id="SwitchErrorStatement">class SwitchErrorStatement: ddmd.statement.Statement</dt>  <dt class="d_decl" id="ReturnStatement">class ReturnStatement: ddmd.statement.Statement</dt>  <dt class="d_decl" id="BreakStatement">class BreakStatement: ddmd.statement.Statement</dt>  <dt class="d_decl" id="ContinueStatement">class ContinueStatement: ddmd.statement.Statement</dt>  <dt class="d_decl" id="SynchronizedStatement">class SynchronizedStatement: ddmd.statement.Statement</dt>  <dt class="d_decl" id="WithStatement">class WithStatement: ddmd.statement.Statement</dt>  <dt class="d_decl" id="TryCatchStatement">class TryCatchStatement: ddmd.statement.Statement</dt>  <dt class="d_decl" id="Catch">class Catch: ddmd.root.rootobject.RootObject</dt>  <dt class="d_decl" id="TryFinallyStatement">class TryFinallyStatement: ddmd.statement.Statement</dt>  <dt class="d_decl" id="OnScopeStatement">class OnScopeStatement: ddmd.statement.Statement</dt>  <dt class="d_decl" id="ThrowStatement">class ThrowStatement: ddmd.statement.Statement</dt>  <dt class="d_decl" id="DebugStatement">class DebugStatement: ddmd.statement.Statement</dt>  <dt class="d_decl" id="GotoStatement">class GotoStatement: ddmd.statement.Statement</dt>  <dt class="d_decl" id="LabelStatement">class LabelStatement: ddmd.statement.Statement</dt>  <dt class="d_decl" id="LabelDsymbol">class LabelDsymbol: ddmd.dsymbol.Dsymbol</dt>  <dt class="d_decl" id="AsmStatement">class AsmStatement: ddmd.statement.Statement</dt>  <dt class="d_decl" id="CompoundAsmStatement">class CompoundAsmStatement: ddmd.statement.CompoundStatement</dt> <dd>
+<p>a complete asm {} block</p> </dd> <dt class="d_decl" id="ImportStatement">class ImportStatement: ddmd.statement.Statement</dt>  </dl>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 1999–2017 The D Language Foundation<br>Licensed under the Boost License 1.0.<br>
+    <a href="https://dlang.org/phobos/ddmd_statement.html" class="_attribution-link" target="_blank">https://dlang.org/phobos/ddmd_statement.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

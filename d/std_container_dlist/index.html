@@ -1,0 +1,267 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>std.container.dlist - D - W3cubDocs</title>
+  
+  <meta name="description" content=" This module implements a generic doubly-linked list container. It can be used as a queue, dequeue or stack. ">
+  <meta name="keywords" content="std, container, dlist, -, d">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/d/std_container_dlist/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/d.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/d/" class="_nav-link" title="" style="margin-left:0;">D</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _d">
+				
+<h1>std.container.dlist</h1>  <p>This module implements a generic doubly-linked list container. It can be used as a queue, dequeue or stack. </p>
+<p>This module is a submodule of <a href="../std_container/"><code>std.container</code></a>. </p> <dl>
+<dt>Source</dt>
+<dd> <span class="phobos_src"><a class="https" href="https://github.com/dlang/phobos/blob/master/std/container/dlist.d" target="_blank">std/container/dlist.d</a></span> </dd>
+</dl> <dl>
+<dt>License:</dt>
+<dd>Distributed under the Boost Software License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at <a href="http://boost.org/LICENSE_1_0.txt" target="_blank">boost.org/LICENSE_1_0.txt</a>). </dd>
+</dl> <dl>
+<dt>Authors:</dt>
+<dd>
+<a href="http://erdani.com" target="_blank">Andrei Alexandrescu</a>  </dd>
+</dl> <dl>
+<dt>Examples:</dt>
+<dd>
+<pre data-language="d">import std.algorithm.comparison : equal;
+import std.container : DList;
+
+auto s = DList!int(1, 2, 3);
+assert(equal(s[], [1, 2, 3]));
+
+s.removeFront();
+assert(equal(s[], [2, 3]));
+s.removeBack();
+assert(equal(s[], [2]));
+
+s.insertFront([4, 5]);
+assert(equal(s[], [4, 5, 2]));
+s.insertBack([6, 7]);
+assert(equal(s[], [4, 5, 2, 6, 7]));
+
+// If you want to apply range operations, simply slice it.
+import std.algorithm.searching : countUntil;
+import std.range : popFrontN, popBackN, walkLength;
+
+auto sl = DList!int([1, 2, 3, 4, 5]);
+writeln(countUntil(sl[], 2)); // 1
+
+auto r = sl[];
+popFrontN(r, 2);
+popBackN(r, 2);
+assert(r.equal([3]));
+writeln(walkLength(r)); // 1
+
+// DList.Range can be used to remove elements from the list it spans
+auto nl = DList!int([1, 2, 3, 4, 5]);
+for (auto rn = nl[]; !rn.empty;)
+    if (rn.front % 2 == 0)
+        nl.popFirstOf(rn);
+    else
+        rn.popFront();
+assert(equal(nl[], [1, 3, 5]));
+auto rs = nl[];
+rs.popFront();
+nl.remove(rs);
+assert(equal(nl[], [1]));
+</pre> </dd>
+</dl> <dl>
+<dt class="d_decl" id="DList">struct DList(T)</dt> <dd>
+<p>Implements a doubly-linked list. </p>
+<p><code>DList</code> uses reference semantics.</p> <dl>
+<dt class="d_decl" id="DList.this">this(U)(U[] values...)<br><br>  Constraints:<br>    if (isImplicitlyConvertible!(U, T))</dt> <dd>
+<p>Constructor taking a number of nodes</p> </dd> <dt class="d_decl" id="DList.this.2">this(Stuff)(Stuff stuff)<br><br>  Constraints:<br>    if (isInputRange!Stuff &amp;&amp; isImplicitlyConvertible!(ElementType!Stuff, T))</dt> <dd>
+<p>Constructor taking an input range</p> </dd> <dt class="d_decl" id="DList.opEquals">const bool opEquals()(ref const DList rhs)<br><br>  Constraints:<br>    if (is(typeof(front == front)))</dt> <dd>
+<p>Comparison for equality. </p>
+<dl>
+<dt>Complexity</dt>
+<dd> <span class="bigoh">Ο(<code>min(n, n1)</code>)</span> where <code>n1</code> is the number of elements in <code>rhs</code>.</dd>
+</dl> </dd> <dt class="d_decl" id="DList.Range">struct Range</dt> <dd>
+<p>Defines the container's primary range, which embodies a bidirectional range.</p> </dd> <dt class="d_decl" id="DList.empty">const nothrow @property bool empty()</dt> <dd>
+<p>Property returning <code>true</code> if and only if the container has no elements. </p>
+<dl>
+<dt>Complexity</dt>
+<dd> <span class="bigoh">Ο(<code>1</code>)</span>
+</dd>
+</dl> </dd> <dt class="d_decl" id="DList.clear">void clear()</dt> <dd>
+<p>Removes all contents from the <code>DList</code>. </p>
+<dl>
+<dt>Postcondition</dt>
+<dd> <code>empty</code> </dd>
+</dl> <dl>
+<dt>Complexity</dt>
+<dd> <span class="bigoh">Ο(<code>1</code>)</span>
+</dd>
+</dl> </dd> <dt class="d_decl" id="DList.dup">@property DList dup()</dt> <dd>
+<p>Duplicates the container. The elements themselves are not transitively duplicated. </p>
+<dl>
+<dt>Complexity</dt>
+<dd> <span class="bigoh">Ο(<code>n</code>)</span>.</dd>
+</dl> </dd> <dt class="d_decl" id="DList.opSlice">Range opSlice()</dt> <dd>
+<p>Returns a range that iterates over all elements of the container, in forward order. </p>
+<dl>
+<dt>Complexity</dt>
+<dd> <span class="bigoh">Ο(<code>1</code>)</span>
+</dd>
+</dl> </dd> <dt class="d_decl" id="DList.front">inout @property ref inout(T) front()</dt> <dd>
+<p>Forward to <code>opSlice().front</code>. </p>
+<dl>
+<dt>Complexity</dt>
+<dd> <span class="bigoh">Ο(<code>1</code>)</span>
+</dd>
+</dl> </dd> <dt class="d_decl" id="DList.back">inout @property ref inout(T) back()</dt> <dd>
+<p>Forward to <code>opSlice().back</code>. </p>
+<dl>
+<dt>Complexity</dt>
+<dd> <span class="bigoh">Ο(<code>1</code>)</span>
+</dd>
+</dl> </dd> <dt class="d_decl" id="DList.opBinary">DList opBinary(string op, Stuff)(Stuff rhs)<br><br>  Constraints:<br>    if (op == "~" &amp;&amp; is(typeof(insertBack(rhs))))</dt> <dd>
+<p>Returns a new <code>DList</code> that's the concatenation of <code>this</code> and its argument <code>rhs</code>.</p> </dd> <dt class="d_decl" id="DList.opBinaryRight">DList opBinaryRight(string op, Stuff)(Stuff lhs)<br><br>  Constraints:<br>    if (op == "~" &amp;&amp; is(typeof(insertFront(lhs))))</dt> <dd>
+<p>Returns a new <code>DList</code> that's the concatenation of the argument <code>lhs</code> and <code>this</code>.</p> </dd> <dt class="d_decl" id="DList.opOpAssign">DList opOpAssign(string op, Stuff)(Stuff rhs)<br><br>  Constraints:<br>    if (op == "~" &amp;&amp; is(typeof(insertBack(rhs))))</dt> <dd>
+<p>Appends the contents of the argument <code>rhs</code> into <code>this</code>.</p> </dd> <dt class="d_decl" id="DList.insertFront">size_t insertFront(Stuff)(Stuff stuff)<br>size_t insertBack(Stuff)(Stuff stuff)<br>alias insert = insertBack<br>alias stableInsert = insert<br>alias stableInsertFront = insertFront<br>alias stableInsertBack = insertBack</dt> <dd>
+<p>Inserts <code>stuff</code> to the front/back of the container. <code>stuff</code> can be a value convertible to <code>T</code> or a range of objects convertible to <code>T</code>. The stable version behaves the same, but guarantees that ranges iterating over the container are never invalidated. </p>
+<dl>
+<dt>Returns:</dt>
+<dd>The number of elements inserted </dd>
+</dl> <dl>
+<dt>Complexity</dt>
+<dd> <span class="bigoh">Ο(<code>log(n)</code>)</span>
+</dd>
+</dl> </dd> <dt class="d_decl" id="DList.insertBefore">size_t insertBefore(Stuff)(Range r, Stuff stuff)<br>alias stableInsertBefore = insertBefore<br>size_t insertAfter(Stuff)(Range r, Stuff stuff)<br>alias stableInsertAfter = insertAfter</dt> <dd>
+<p>Inserts <code>stuff</code> after range <code>r</code>, which must be a non-empty range previously extracted from this container. </p>
+<p><code>stuff</code> can be a value convertible to <code>T</code> or a range of objects convertible to <code>T</code>. The stable version behaves the same, but guarantees that ranges iterating over the container are never invalidated. </p> <dl>
+<dt>Returns:</dt>
+<dd>The number of values inserted. </dd>
+</dl> <dl>
+<dt>Complexity</dt>
+<dd> <span class="bigoh">Ο(<code>k + m</code>)</span>, where <code>k</code> is the number of elements in <code>r</code> and <code>m</code> is the length of <code>stuff</code>.</dd>
+</dl> </dd> <dt class="d_decl" id="DList.removeAny">T removeAny()<br>alias stableRemoveAny = removeAny</dt> <dd>
+<p>Picks one value in an unspecified position in the container, removes it from the container, and returns it. The stable version behaves the same, but guarantees that ranges iterating over the container are never invalidated. </p>
+<dl>
+<dt>Precondition</dt>
+<dd> <code>!empty</code> </dd>
+</dl> <dl>
+<dt>Returns:</dt>
+<dd>The element removed. </dd>
+</dl> <dl>
+<dt>Complexity</dt>
+<dd> <span class="bigoh">Ο(<code>1</code>)</span>.</dd>
+</dl> </dd> <dt class="d_decl" id="DList.removeFront">void removeFront()<br>alias stableRemoveFront = removeFront<br>void removeBack()<br>alias stableRemoveBack = removeBack</dt> <dd>
+<p>Removes the value at the front/back of the container. The stable version behaves the same, but guarantees that ranges iterating over the container are never invalidated. </p>
+<dl>
+<dt>Precondition</dt>
+<dd> <code>!empty</code> </dd>
+</dl> <dl>
+<dt>Complexity</dt>
+<dd> <span class="bigoh">Ο(<code>1</code>)</span>.</dd>
+</dl> </dd> <dt class="d_decl" id="DList.removeFront.2">size_t removeFront(size_t howMany)<br>alias stableRemoveFront = removeFront<br>size_t removeBack(size_t howMany)<br>alias stableRemoveBack = removeBack</dt> <dd>
+<p>Removes <code>howMany</code> values at the front or back of the container. Unlike the unparameterized versions above, these functions do not throw if they could not remove <code>howMany</code> elements. Instead, if <code>howMany &gt; n</code>, all elements are removed. The returned value is the effective number of elements removed. The stable version behaves the same, but guarantees that ranges iterating over the container are never invalidated. </p>
+<dl>
+<dt>Returns:</dt>
+<dd>The number of elements removed </dd>
+</dl> <dl>
+<dt>Complexity</dt>
+<dd> <span class="bigoh">Ο(<code>howMany</code>)</span>.</dd>
+</dl> </dd> <dt class="d_decl" id="DList.remove">Range remove(Range r)<br>Range linearRemove(Range r)</dt> <dd>
+<p>Removes all elements belonging to <code>r</code>, which must be a range obtained originally from this container. </p>
+<dl>
+<dt>Returns:</dt>
+<dd>A range spanning the remaining elements in the container that initially were right after <code>r</code>. </dd>
+</dl> <dl>
+<dt>Complexity</dt>
+<dd> <span class="bigoh">Ο(<code>1</code>)</span>
+</dd>
+</dl> </dd> <dt class="d_decl" id="DList.popFirstOf">void popFirstOf(ref Range r)</dt> <dd>
+<p>Removes first element of <code>r</code>, wich must be a range obtained originally from this container, from both DList instance and range <code>r</code>. </p>
+<dl>
+<dt>Compexity</dt>
+<dd> <span class="bigoh">Ο(<code>1</code>)</span>
+</dd>
+</dl> </dd> <dt class="d_decl" id="DList.popLastOf">void popLastOf(ref Range r)</dt> <dd>
+<p>Removes last element of <code>r</code>, wich must be a range obtained originally from this container, from both DList instance and range <code>r</code>. </p>
+<dl>
+<dt>Compexity</dt>
+<dd> <span class="bigoh">Ο(<code>1</code>)</span>
+</dd>
+</dl> </dd> <dt class="d_decl" id="DList.linearRemove.2">Range linearRemove(Take!Range r)<br>alias stableRemove = remove<br>alias stableLinearRemove = linearRemove</dt> <dd>
+<p><code>linearRemove</code> functions as <code>remove</code>, but also accepts ranges that are result the of a <code>take</code> operation. This is a convenient way to remove a fixed amount of elements from the range. </p>
+<dl>
+<dt>Complexity</dt>
+<dd> <span class="bigoh">Ο(<code>r.walkLength</code>)</span>
+</dd>
+</dl> </dd> </dl> </dd> </dl>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 1999–2017 The D Language Foundation<br>Licensed under the Boost License 1.0.<br>
+    <a href="https://dlang.org/phobos/std_container_dlist.html" class="_attribution-link" target="_blank">https://dlang.org/phobos/std_container_dlist.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

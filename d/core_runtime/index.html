@@ -1,0 +1,331 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>core.runtime - D - W3cubDocs</title>
+  
+  <meta name="description" content=" The runtime module exposes information specific to the D runtime code. ">
+  <meta name="keywords" content="core, runtime, -, d">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/d/core_runtime/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/d.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/d/" class="_nav-link" title="" style="margin-left:0;">D</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _d">
+				
+<h1>core.runtime</h1>  <p>The <code>runtime</code> module exposes information specific to the D <code>runtime</code> code. </p>
+<dl>
+<dt>License:</dt>
+<dd>
+<a href="http://www.boost.org/LICENSE_1_0.txt" target="_blank">Boost License 1.0</a> </dd>
+</dl> <dl>
+<dt>Authors:</dt>
+<dd>Sean Kelly </dd>
+</dl> <dl>
+<dt>Source</dt>
+<dd> <a href="https://github.com/dlang/druntime/blob/master/src/core/runtime.d" target="_blank">core/runtime.d</a>
+</dd>
+</dl> <dl>
+<dt class="d_decl" id="rt_loadLibrary">void* rt_loadLibrary(const char* name)</dt> <dd>
+<p>C interface for Runtime.loadLibrary</p> </dd> <dt class="d_decl" id="rt_unloadLibrary">int rt_unloadLibrary(void* ptr)</dt> <dd>
+<p>C interface for Runtime.unloadLibrary, returns 1/0 instead of bool</p> </dd> <dt class="d_decl" id="rt_init">int rt_init()</dt> <dd>
+<p>C interface for Runtime.initialize, returns 1/0 instead of bool</p> </dd> <dt class="d_decl" id="rt_term">int rt_term()</dt> <dd>
+<p>C interface for Runtime.terminate, returns 1/0 instead of bool</p> </dd> <dt class="d_decl" id="CArgs">struct CArgs</dt> <dd>
+<p>Stores the unprocessed arguments supplied when the process was started.</p> <dl>
+<dt class="d_decl" id="CArgs.argc">int argc</dt> <dd>
+<p>The argument count.</p> </dd> <dt class="d_decl" id="CArgs.argv">char** argv</dt> <dd>
+<p>The arguments as a C array of strings.</p> </dd> </dl> </dd> <dt class="d_decl" id="Runtime">struct Runtime</dt> <dd>
+<p>This struct encapsulates all functionality related to the underlying runtime module for the calling context.</p> <dl>
+<dt class="d_decl" id="Runtime.initialize">static bool initialize()</dt> <dd>
+<p>Initializes the runtime. This call is to be used in instances where the standard program initialization process is not executed. This is most often in shared libraries or in libraries linked to a C program. If the runtime was already successfully initialized this returns <code>true</code>. Each call to <code>initialize</code> must be paired by a call to <a href="#terminate"><code>terminate</code></a>. </p>
+<dl>
+<dt>Returns:</dt>
+<dd>
+<code>true</code> if initialization succeeded or <code>false</code> if initialization failed.</dd>
+</dl> </dd> <dt class="d_decl" id="Runtime.terminate">static bool terminate()</dt> <dd>
+<p>Terminates the runtime. This call is to be used in instances where the standard program termination process will not be not executed. This is most often in shared libraries or in libraries linked to a C program. If the runtime was not successfully initialized the function returns <code>false</code>. </p>
+<dl>
+<dt>Returns:</dt>
+<dd>
+<code>true</code> if termination succeeded or <code>false</code> if termination failed.</dd>
+</dl> </dd> <dt class="d_decl" id="Runtime.args">static @property string[] args()</dt> <dd>
+<p>Returns the arguments supplied when the process was started. </p>
+<dl>
+<dt>Returns:</dt>
+<dd>The arguments supplied when this process was started.</dd>
+</dl> </dd> <dt class="d_decl" id="Runtime.cArgs">static @nogc @property CArgs cArgs()</dt> <dd>
+<p>Returns the unprocessed C arguments supplied when the process was started. Use this when you need to supply argc and argv to C libraries. </p>
+<dl>
+<dt>Returns:</dt>
+<dd>A <a href="#CArgs"><code>CArgs</code></a> struct with the arguments supplied when this process was started. </dd>
+</dl> <dl>
+<dt>Example</dt>
+
+</dl>
+<pre data-language="d">import core.runtime;
+
+// A C library function requiring char** arguments
+extern(C) void initLibFoo(int argc, char** argv);
+
+void main()
+{
+    auto args = Runtime.cArgs;
+    initLibFoo(args.argc, args.argv);
+}
+</pre>  </dd> <dt class="d_decl" id="Runtime.loadLibrary">void* loadLibrary()(in char[] name)</dt> <dd>
+<p>Locates a dynamic library with the supplied library <code>name</code> and dynamically loads it into the caller's address space. If the library contains a D runtime it will be integrated with the current runtime. </p>
+<dl>
+<dt>Parameters:</dt>
+<dd><table>
+<tr>
+<td>char[] <code>name</code>
+</td> <td>The <code>name</code> of the dynamic library to load.</td>
+</tr> </table></dd>
+</dl> <dl>
+<dt>Returns:</dt>
+<dd>A reference to the library or <code>null</code> on error.</dd>
+</dl> </dd> <dt class="d_decl" id="Runtime.unloadLibrary">bool unloadLibrary()(void* p)</dt> <dd>
+<p>Unloads the dynamic library referenced by <code>p</code>. If this library contains a D runtime then any necessary finalization or cleanup of that runtime will be performed. </p>
+<dl>
+<dt>Parameters:</dt>
+<dd><table>
+<tr>
+<td>void* <code>p</code>
+</td> <td>A reference to the library to unload.</td>
+</tr> </table></dd>
+</dl> </dd> <dt class="d_decl" id="Runtime.traceHandler">static @property void traceHandler(TraceHandler h)</dt> <dd>
+<p>Overrides the default trace mechanism with a user-supplied version. A trace represents the context from which an exception was thrown, and the trace handler will be called when this occurs. The pointer supplied to this routine indicates the base address from which tracing should occur. If the supplied pointer is <code>null</code> then the trace routine should determine an appropriate calling context from which to begin the trace. </p>
+<dl>
+<dt>Parameters:</dt>
+<dd><table>
+<tr>
+<td>TraceHandler <code>h</code>
+</td> <td>The new trace handler. Set to <code>null</code> to use the default handler.</td>
+</tr> </table></dd>
+</dl> </dd> <dt class="d_decl" id="Runtime.traceHandler.2">static @property TraceHandler traceHandler()</dt> <dd>
+<p>Gets the current trace handler. </p>
+<dl>
+<dt>Returns:</dt>
+<dd>The current trace handler or <code>null</code> if none has been set.</dd>
+</dl> </dd> <dt class="d_decl" id="Runtime.collectHandler">static @property void collectHandler(CollectHandler h)</dt> <dd>
+<p>Overrides the default collect hander with a user-supplied version. This routine will be called for each resource object that is finalized in a non-deterministic manner--typically during a garbage collection cycle. If the supplied routine returns <code>true</code> then the object's dtor will called as normal, but if the routine returns <code>false</code> than the dtor will not be called. The default behavior is for all object dtors to be called. </p>
+<dl>
+<dt>Parameters:</dt>
+<dd><table>
+<tr>
+<td>CollectHandler <code>h</code>
+</td> <td>The new collect handler. Set to <code>null</code> to use the default handler.</td>
+</tr> </table></dd>
+</dl> </dd> <dt class="d_decl" id="Runtime.collectHandler.2">static @property CollectHandler collectHandler()</dt> <dd>
+<p>Gets the current collect handler. </p>
+<dl>
+<dt>Returns:</dt>
+<dd>The current collect handler or <code>null</code> if none has been set.</dd>
+</dl> </dd> <dt class="d_decl" id="Runtime.moduleUnitTester">static @property void moduleUnitTester(ModuleUnitTester h)</dt> <dd>
+<p>Overrides the default module unit tester with a user-supplied version. This routine will be called once on program initialization. The return value of this routine indicates to the runtime whether the tests ran without error. </p>
+<dl>
+<dt>Parameters:</dt>
+<dd><table>
+<tr>
+<td>ModuleUnitTester <code>h</code>
+</td> <td>The new unit tester. Set to <code>null</code> to use the default unit tester.</td>
+</tr> </table></dd>
+</dl> <dl>
+<dt>Example</dt>
+
+</dl>
+<pre data-language="d">version (unittest) shared static this()
+{
+    import core.runtime;
+
+    Runtime.moduleUnitTester = &amp;customModuleUnitTester;
+}
+
+bool customModuleUnitTester()
+{
+    import std.stdio;
+
+    writeln("Using customModuleUnitTester");
+
+    // Do the same thing as the default moduleUnitTester:
+    size_t failed = 0;
+    foreach (m; ModuleInfo)
+    {
+        if (m)
+        {
+            auto fp = m.unitTest;
+
+            if (fp)
+            {
+                try
+                {
+                    fp();
+                }
+                catch (Throwable e)
+                {
+                    writeln(e);
+                    failed++;
+                }
+            }
+        }
+    }
+    return failed == 0;
+}
+</pre>  </dd> <dt class="d_decl" id="Runtime.moduleUnitTester.2">static @property ModuleUnitTester moduleUnitTester()</dt> <dd>
+<p>Gets the current module unit tester. </p>
+<dl>
+<dt>Returns:</dt>
+<dd>The current module unit tester handler or <code>null</code> if none has been set.</dd>
+</dl> </dd> </dl> </dd> <dt class="d_decl" id="dmd_coverSourcePath">void dmd_coverSourcePath(string path)</dt> <dd>
+<p>Set source file <code>path</code> for coverage reports. </p>
+<dl>
+<dt>Parameters:</dt>
+<dd><table>
+<tr>
+<td>string <code>path</code>
+</td> <td>The new <code>path</code> name.</td>
+</tr> </table></dd>
+</dl> <dl>
+<dt>Note</dt>
+<dd> This is a dmd specific setting.</dd>
+</dl> </dd> <dt class="d_decl" id="dmd_coverDestPath">void dmd_coverDestPath(string path)</dt> <dd>
+<p>Set output <code>path</code> for coverage reports. </p>
+<dl>
+<dt>Parameters:</dt>
+<dd><table>
+<tr>
+<td>string <code>path</code>
+</td> <td>The new <code>path</code> name.</td>
+</tr> </table></dd>
+</dl> <dl>
+<dt>Note</dt>
+<dd> This is a dmd specific setting.</dd>
+</dl> </dd> <dt class="d_decl" id="dmd_coverSetMerge">void dmd_coverSetMerge(bool flag)</dt> <dd>
+<p>Enable merging of coverage reports with existing data. </p>
+<dl>
+<dt>Parameters:</dt>
+<dd><table>
+<tr>
+<td>bool <code>flag</code>
+</td> <td>enable/disable coverage merge mode</td>
+</tr> </table></dd>
+</dl> <dl>
+<dt>Note</dt>
+<dd> This is a dmd specific setting.</dd>
+</dl> </dd> <dt class="d_decl" id="trace_setlogfilename">void trace_setlogfilename(string name)</dt> <dd>
+<p>Set the output file <code>name</code> for profile reports (-profile switch). An empty <code>name</code> will set the output to stdout. </p>
+<dl>
+<dt>Parameters:</dt>
+<dd><table>
+<tr>
+<td>string <code>name</code>
+</td> <td>file <code>name</code>
+</td>
+</tr> </table></dd>
+</dl> <dl>
+<dt>Note</dt>
+<dd> This is a dmd specific setting.</dd>
+</dl> </dd> <dt class="d_decl" id="trace_setdeffilename">void trace_setdeffilename(string name)</dt> <dd>
+<p>Set the output file <code>name</code> for the optimized profile linker DEF file (-profile switch). An empty <code>name</code> will set the output to stdout. </p>
+<dl>
+<dt>Parameters:</dt>
+<dd><table>
+<tr>
+<td>string <code>name</code>
+</td> <td>file <code>name</code>
+</td>
+</tr> </table></dd>
+</dl> <dl>
+<dt>Note</dt>
+<dd> This is a dmd specific setting.</dd>
+</dl> </dd> <dt class="d_decl" id="profilegc_setlogfilename">void profilegc_setlogfilename(string name)</dt> <dd>
+<p>Set the output file <code>name</code> for memory profile reports (-profile=gc switch). An empty <code>name</code> will set the output to stdout. </p>
+<dl>
+<dt>Parameters:</dt>
+<dd><table>
+<tr>
+<td>string <code>name</code>
+</td> <td>file <code>name</code>
+</td>
+</tr> </table></dd>
+</dl> <dl>
+<dt>Note</dt>
+<dd> This is a dmd specific setting.</dd>
+</dl> </dd> <dt class="d_decl" id="runModuleUnitTests">bool runModuleUnitTests()</dt> <dd>
+<p>This routine is called by the runtime to run module unit tests on startup. The user-supplied unit tester will be called if one has been supplied, otherwise all unit tests will be run in sequence. </p>
+<dl>
+<dt>Returns:</dt>
+<dd>
+<code>true</code> if execution should continue after testing is complete and <code>false</code> if not. Default behavior is to return <code>true</code>.</dd>
+</dl> </dd> <dt class="d_decl" id="defaultTraceHandler">Throwable.TraceInfo defaultTraceHandler(void* ptr = null)</dt>  </dl>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 1999–2017 The D Language Foundation<br>Licensed under the Boost License 1.0.<br>
+    <a href="https://dlang.org/phobos/core_runtime.html" class="_attribution-link" target="_blank">https://dlang.org/phobos/core_runtime.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

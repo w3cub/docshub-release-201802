@@ -1,0 +1,280 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>ddmd.func - D - W3cubDocs</title>
+  
+  <meta name="description" content=" Compiler implementation of the D programming language. ">
+  <meta name="keywords" content="ddmd, func, -, d">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/d/ddmd_func/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/d.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/d/" class="_nav-link" title="" style="margin-left:0;">D</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _d">
+				
+<h1>ddmd.func</h1>  <p>Compiler implementation of the <a href="http://www.dlang.org" target="_blank">D programming language</a>. </p> <dl>
+<dt>Authors:</dt>
+<dd>
+<a href="http://www.digitalmars.com" target="_blank">Walter Bright</a> </dd>
+</dl> <dl>
+<dt>License:</dt>
+<dd>
+<a href="http://www.boost.org/LICENSE_1_0.txt" target="_blank">Boost License 1.0</a> </dd>
+</dl> <dl>
+<dt>Source:</dt>
+<dd> <a href="https://github.com/dlang/dmd/blob/master/src/ddmd/func.d" target="_blank">func.d</a>
+</dd>
+</dl> <dl>
+<dt class="d_decl" id="ILS">enum ILS: int</dt> <dd>
+<p>Inline Status</p> <dl>
+<dt class="d_decl" id="ILS.ILSuninitialized">ILSuninitialized</dt> <dd>
+<p>not computed yet</p> </dd> <dt class="d_decl" id="ILS.ILSno">ILSno</dt> <dd>
+<p>cannot inline</p> </dd> <dt class="d_decl" id="ILS.ILSyes">ILSyes</dt> <dd>
+<p>can inline</p> </dd> </dl> </dd> <dt class="d_decl" id="FUNCFLAGpurityInprocess">enum int FUNCFLAGpurityInprocess</dt> <dd>
+<p>working on determining purity</p> </dd> <dt class="d_decl" id="FUNCFLAGsafetyInprocess">enum int FUNCFLAGsafetyInprocess</dt> <dd>
+<p>working on determining safety</p> </dd> <dt class="d_decl" id="FUNCFLAGnothrowInprocess">enum int FUNCFLAGnothrowInprocess</dt> <dd>
+<p>working on determining nothrow</p> </dd> <dt class="d_decl" id="FUNCFLAGnogcInprocess">enum int FUNCFLAGnogcInprocess</dt> <dd>
+<p>working on determining @nogc</p> </dd> <dt class="d_decl" id="FUNCFLAGreturnInprocess">enum int FUNCFLAGreturnInprocess</dt> <dd>
+<p>working on inferring 'return' for parameters</p> </dd> <dt class="d_decl" id="FUNCFLAGinlineScanned">enum int FUNCFLAGinlineScanned</dt> <dd>
+<p>function has been scanned for inline possibilities</p> </dd> <dt class="d_decl" id="FUNCFLAGinferScope">enum int FUNCFLAGinferScope</dt> <dd>
+<p>infer 'scope' for parameters</p> </dd> <dt class="d_decl" id="FuncDeclaration">class FuncDeclaration: ddmd.declaration.Declaration</dt> <dd> <dl>
+<dt class="d_decl" id="FuncDeclaration.fthrows">Types* fthrows</dt> <dd>
+<p>Array of Type's of exceptions (not used)</p> </dd> <dt class="d_decl" id="FuncDeclaration.frequire">Statement frequire</dt> <dd>
+<p>in contract body</p> </dd> <dt class="d_decl" id="FuncDeclaration.fensure">Statement fensure</dt> <dd>
+<p>out contract body</p> </dd> <dt class="d_decl" id="FuncDeclaration.fbody">Statement fbody</dt> <dd>
+<p>function body</p> </dd> <dt class="d_decl" id="FuncDeclaration.foverrides">FuncDeclarations foverrides</dt> <dd>
+<p>functions this function overrides</p> </dd> <dt class="d_decl" id="FuncDeclaration.fdrequire">FuncDeclaration fdrequire</dt> <dd>
+<p>function that does the in contract</p> </dd> <dt class="d_decl" id="FuncDeclaration.fdensure">FuncDeclaration fdensure</dt> <dd>
+<p>function that does the out contract</p> </dd> <dt class="d_decl" id="FuncDeclaration.mangleString">const(char)* mangleString</dt> <dd>
+<p>mangled symbol created from mangleExact()</p> </dd> <dt class="d_decl" id="FuncDeclaration.outId">Identifier outId</dt> <dd>
+<p>identifier for out statement</p> </dd> <dt class="d_decl" id="FuncDeclaration.vresult">VarDeclaration vresult</dt> <dd>
+<p>variable corresponding to outId</p> </dd> <dt class="d_decl" id="FuncDeclaration.returnLabel">LabelDsymbol returnLabel</dt> <dd>
+<p>where the return goes</p> </dd> <dt class="d_decl" id="FuncDeclaration.vthis">VarDeclaration vthis</dt> <dd>
+<p>'this' parameter (member and nested)</p> </dd> <dt class="d_decl" id="FuncDeclaration.v_arguments">VarDeclaration v_arguments</dt> <dd>
+<p>'arguments' parameter</p> </dd> <dt class="d_decl" id="FuncDeclaration.selector">ObjcSelector* selector</dt> <dd>
+<p>Objective-C method <code>selector</code> (member function only)</p> </dd> <dt class="d_decl" id="FuncDeclaration.v_argptr">VarDeclaration v_argptr</dt> <dd>
+<p>'argptr' variable</p> </dd> <dt class="d_decl" id="FuncDeclaration.parameters">VarDeclarations* parameters</dt> <dd>
+<p>Array of VarDeclaration's for <code>parameters</code></p> </dd> <dt class="d_decl" id="FuncDeclaration.labtab">DsymbolTable labtab</dt> <dd>
+<p>statement label symbol table</p> </dd> <dt class="d_decl" id="FuncDeclaration.overnext">Dsymbol overnext</dt> <dd>
+<p>next in overload list</p> </dd> <dt class="d_decl" id="FuncDeclaration.overnext0">FuncDeclaration overnext0</dt> <dd>
+<p>next in overload list (only used during IFTI)</p> </dd> <dt class="d_decl" id="FuncDeclaration.endloc">Loc endloc</dt> <dd>
+<p>location of closing curly bracket</p> </dd> <dt class="d_decl" id="FuncDeclaration.vtblIndex">int vtblIndex</dt> <dd>
+<p>for member functions, index into vtbl[]</p> </dd> <dt class="d_decl" id="FuncDeclaration.naked">bool naked</dt> <dd>
+<p><code>true</code> if <code>naked</code></p> </dd> <dt class="d_decl" id="FuncDeclaration.generated">bool generated</dt> <dd>
+<p><code>true</code> if function was <code>generated</code> by the compiler rather than</p> </dd> <dt class="d_decl" id="FuncDeclaration.inlineStatusStmt">ILS inlineStatusStmt</dt> <dd>
+<p>supplied by the user</p> </dd> <dt class="d_decl" id="FuncDeclaration.ctfeCode">CompiledCtfeFunction* ctfeCode</dt> <dd>
+<p>Compiled code for interpreter (not actually)</p> </dd> <dt class="d_decl" id="FuncDeclaration.inlineNest">int inlineNest</dt> <dd>
+<p>!=0 if nested inline</p> </dd> <dt class="d_decl" id="FuncDeclaration.isArrayOp">bool isArrayOp</dt> <dd>
+<p><code>true</code> if array operation</p> </dd> <dt class="d_decl" id="FuncDeclaration.semantic3Errors">bool semantic3Errors</dt> <dd>
+<p><code>true</code> if errors in semantic3 this function's frame ptr</p> </dd> <dt class="d_decl" id="FuncDeclaration.fes">ForeachStatement fes</dt> <dd>
+<p>if foreach body, this is the foreach</p> </dd> <dt class="d_decl" id="FuncDeclaration.interfaceVirtual">BaseClass* interfaceVirtual</dt> <dd>
+<p>if virtual, but only appears in base interface vtbl[]</p> </dd> <dt class="d_decl" id="FuncDeclaration.introducing">bool introducing</dt> <dd>
+<p><code>true</code> if '<code>introducing</code>' function</p> </dd> <dt class="d_decl" id="FuncDeclaration.tintro">Type tintro</dt> <dd>
+<p>if !=NULL, then this is the type of the 'introducing' function this one is overriding</p> </dd> <dt class="d_decl" id="FuncDeclaration.inferRetType">bool inferRetType</dt> <dd>
+<p><code>true</code> if return type is to be inferred</p> </dd> <dt class="d_decl" id="FuncDeclaration.storage_class2">StorageClass storage_class2</dt> <dd>
+<p>storage class for template onemember's</p> </dd> <dt class="d_decl" id="FuncDeclaration.hasReturnExp">int hasReturnExp</dt> <dd>
+<p>1 if there's a return exp; statement </p> <p>2 if there's a throw statement <br><br> 4 if there's an assert(0) <br><br> 8 if there's inline asm <br><br> 16 if there are multiple return statements</p> </dd> <dt class="d_decl" id="FuncDeclaration.nrvo_can">bool nrvo_can</dt> <dd>
+<p><code>true</code> means we can do NRVO</p> </dd> <dt class="d_decl" id="FuncDeclaration.nrvo_var">VarDeclaration nrvo_var</dt> <dd>
+<p>variable to replace with shidden</p> </dd> <dt class="d_decl" id="FuncDeclaration.shidden">Symbol* shidden</dt> <dd>
+<p>hidden pointer passed to function</p> </dd> <dt class="d_decl" id="FuncDeclaration.gotos">GotoStatements* gotos</dt> <dd>
+<p>Gotos with forward references</p> </dd> <dt class="d_decl" id="FuncDeclaration.builtin">BUILTIN builtin</dt> <dd>
+<p>set if this is a known, <code>builtin</code> function we can evaluate at compile time</p> </dd> <dt class="d_decl" id="FuncDeclaration.tookAddressOf">int tookAddressOf</dt> <dd>
+<p>set if someone took the address of this function</p> </dd> <dt class="d_decl" id="FuncDeclaration.closureVars">VarDeclarations closureVars</dt> <dd>
+<p>local variables in this function which are referenced by nested functions</p> </dd> <dt class="d_decl" id="FuncDeclaration.siblingCallers">FuncDeclarations siblingCallers</dt> <dd>
+<p>Sibling nested functions which called this one</p> </dd> <dt class="d_decl" id="FuncDeclaration.flags">uint flags</dt> <dd>
+<p>FUNCFLAGxxxxx</p> </dd> <dt class="d_decl" id="FuncDeclaration.semantic">void semantic(Scope* sc)</dt> <dd>
+<p>Do the <code>semantic</code> analysis on the external interface to the function.</p> </dd> <dt class="d_decl" id="FuncDeclaration.functionSemantic">final bool functionSemantic()</dt> <dd>
+<p>Resolve forward reference of function signature - parameter types, return type, and attributes. Returns <code>false</code> if any errors exist in the signature.</p> </dd> <dt class="d_decl" id="FuncDeclaration.functionSemantic3">final bool functionSemantic3()</dt> <dd>
+<p>Resolve forward reference of function body. Returns <code>false</code> if any errors exist in the body.</p> </dd> <dt class="d_decl" id="FuncDeclaration.checkForwardRef">final bool checkForwardRef(Loc loc)</dt> <dd>
+<p>Check that this function type is properly resolved. If not, report "forward reference error" and return <code>true</code>.</p> </dd> <dt class="d_decl" id="FuncDeclaration.overrides">final int overrides(FuncDeclaration fd)</dt> <dd>
+<p>Determine if 'this' <code>overrides</code> <code>fd</code>. Return !=0 if it does.</p> </dd> <dt class="d_decl" id="FuncDeclaration.findVtblIndex">final int findVtblIndex(Dsymbols* vtbl, int dim, bool fix17349 = true)</dt> <dd>
+<p>Find index of function in <code>vtbl</code>[0..<code>dim</code>] that this function overrides. Prefer an exact match to a covariant one. </p> <dl>
+<dt>Parameters:</dt>
+<dd><table>
+<tr>
+<td>bool <code>fix17349</code>
+</td> <td>enable fix https://issues.dlang.org/show_bug.cgi?id=17349</td>
+</tr> </table></dd>
+</dl> <dl>
+<dt>Returns:</dt>
+<dd> -1 didn't find one -2 can't determine because of forward references</dd>
+</dl> </dd> <dt class="d_decl" id="FuncDeclaration.overrideInterface">final BaseClass* overrideInterface()</dt> <dd>
+<p>If function a function in a base class, return that base class. </p> <dl>
+<dt>Parameters:</dt>
+<dd><table>
+<tr>
+<td>cd</td> <td>class that function is in</td>
+</tr> </table></dd>
+</dl> <dl>
+<dt>Returns:</dt>
+<dd>base class if overriding, <code>null</code> if not</dd>
+</dl> </dd> <dt class="d_decl" id="FuncDeclaration.overloadInsert">bool overloadInsert(Dsymbol s)</dt> <dd>
+<p>Overload this FuncDeclaration with the new one f. Return <code>true</code> if successful; i.e. no conflict.</p> </dd> <dt class="d_decl" id="FuncDeclaration.overloadExactMatch">final FuncDeclaration overloadExactMatch(Type t)</dt> <dd>
+<p>Find function in overload list that exactly matches <code>t</code>.</p> </dd> <dt class="d_decl" id="FuncDeclaration.overloadModMatch">final FuncDeclaration overloadModMatch(Loc loc, Type tthis, ref bool hasOverloads)</dt> <dd>
+<p>Find function in overload list that matches to the 'this' modifier. There's four result types. </p> <p>1. If the '<code>tthis</code>' matches only one candidate, it's an "exact match". Returns the function and '<code>hasOverloads</code>' is set to <code>false</code>. eg. If '<code>tthis</code>" is mutable and there's only one mutable method. 2. If there's two or more match candidates, but a candidate function will be a "better match". Returns the better match function but '<code>hasOverloads</code>' is set to <code>true</code>. eg. If '<code>tthis</code>' is mutable, and there's both mutable and const methods, the mutable method will be a better match. 3. If there's two or more match candidates, but there's no better match, Returns <code>null</code> and '<code>hasOverloads</code>' is set to <code>true</code> to represent "ambiguous match". eg. If '<code>tthis</code>' is mutable, and there's two or more mutable methods. 4. If there's no candidates, it's "no match" and returns <code>null</code> with error report. e.g. If '<code>tthis</code>' is const but there's no const methods.</p> </dd> <dt class="d_decl" id="FuncDeclaration.findTemplateDeclRoot">final TemplateDeclaration findTemplateDeclRoot()</dt> <dd>
+<p>find function template root in overload list</p> </dd> <dt class="d_decl" id="FuncDeclaration.inUnittest">final bool inUnittest()</dt> <dd>
+<p>Returns <code>true</code> if function was declared directly or indirectly in a unittest block</p> </dd> <dt class="d_decl" id="FuncDeclaration.leastAsSpecialized">final MATCH leastAsSpecialized(FuncDeclaration g)</dt> <dd>
+<p>Determine partial specialization order of 'this' vs <code>g</code>. This is very similar to TemplateDeclaration::<code>leastAsSpecialized</code>(). </p> <dl>
+<dt>Returns:</dt>
+<dd>match 'this' is at least as specialized as <code>g</code> 0 <code>g</code> is more specialized than 'this'</dd>
+</dl> </dd> <dt class="d_decl" id="FuncDeclaration.searchLabel">final LabelDsymbol searchLabel(Identifier ident)</dt> <dd>
+<p>Labels are in a separate scope, one per function.</p> </dd> <dt class="d_decl" id="FuncDeclaration.getLevel">final int getLevel(Loc loc, Scope* sc, FuncDeclaration fd)</dt> <dd>
+<p>Determine lexical level difference from 'this' to nested function '<code>fd</code>'. Error if this cannot call <code>fd</code>. </p> <dl>
+<dt>Returns:</dt>
+<dd> 0 same level &gt;0 decrease nesting by number -1 increase nesting by 1 (<code>fd</code> is nested within 'this') -2 error</dd>
+</dl> </dd> <dt class="d_decl" id="FuncDeclaration.toFullSignature">final const(char)* toFullSignature()</dt> <dd>
+<p>for diagnostics, e.g. 'int foo(int x, int y) pure'</p> </dd> <dt class="d_decl" id="FuncDeclaration.setImpure">final bool setImpure()</dt> <dd>
+<p>The function is doing something impure, so mark it as impure. If there's a purity error, return <code>true</code>.</p> </dd> <dt class="d_decl" id="FuncDeclaration.setUnsafe">final bool setUnsafe()</dt> <dd>
+<p>The function is doing something unsave, so mark it as unsafe. If there's a safe error, return <code>true</code>.</p> </dd> <dt class="d_decl" id="FuncDeclaration.setGC">final bool setGC()</dt> <dd>
+<p>The function is doing something that may allocate with the GC, so mark it as not nogc (not no-how). </p> <dl>
+<dt>Returns:</dt>
+<dd>
+<code>true</code> if function is marked as @nogc, meaning a user error occurred</dd>
+</dl> </dd> <dt class="d_decl" id="FuncDeclaration.isolateReturn">final bool isolateReturn()</dt> <dd>
+<p>Returns <code>true</code> if the function return value has no indirection which comes from the parameters.</p> </dd> <dt class="d_decl" id="FuncDeclaration.parametersIntersect">final bool parametersIntersect(Type t)</dt> <dd>
+<p>Returns <code>true</code> if an object typed <code>t</code> can have indirections which come from the parameters.</p> </dd> <dt class="d_decl" id="FuncDeclaration.isNested">bool isNested()</dt> <dd>
+<p>Determine if function needs a static frame pointer. </p> <dl>
+<dt>Returns:</dt>
+<dd>
+<code>true</code> if function is really nested within other function. </dd>
+</dl> <dl>
+<dt>Contracts:</dt>
+<dd> If <code>isNested</code>() returns <code>true</code>, isThis() should return <code>false</code>.</dd>
+</dl> </dd> <dt class="d_decl" id="FuncDeclaration.isThis">AggregateDeclaration isThis()</dt> <dd>
+<p>Determine if function is a non-static member function that has an implicit 'this' expression. </p> <dl>
+<dt>Returns:</dt>
+<dd>The aggregate it is a member of, or <code>null</code>. </dd>
+</dl> <dl>
+<dt>Contracts:</dt>
+<dd> If <code>isThis</code>() returns <code>true</code>, isNested() should return <code>false</code>.</dd>
+</dl> </dd> <dt class="d_decl" id="FuncDeclaration.isUnique">final FuncDeclaration isUnique()</dt> <dd>
+<p>If there are no overloads of function f, return that function, otherwise return NULL.</p> </dd> <dt class="d_decl" id="FuncDeclaration.checkNestedReference">final bool checkNestedReference(Scope* sc, Loc loc)</dt> <dd>
+<p>In the current function, we are calling 'this' function. 1. Check to see if the current function can call 'this' function, issue error if not. 2. If the current function is not the parent of 'this' function, then add the current function to the list of siblings of 'this' function. 3. If the current function is a literal, and it's accessing an uplevel scope, then mark it as a delegate. Returns <code>true</code> if error occurs.</p> </dd> <dt class="d_decl" id="FuncDeclaration.needsClosure">final bool needsClosure()</dt> <dd>
+<p>Look at all the variables in this function that are referenced by nested functions, and determine if a closure needs to be created for them.</p> </dd> <dt class="d_decl" id="FuncDeclaration.checkClosure">final bool checkClosure()</dt> <dd>
+<p>Check that the function contains any closure. If it's @nogc, report suitable errors. This is mostly consistent with FuncDeclaration::needsClosure(). </p> <dl>
+<dt>Returns:</dt>
+<dd>
+<code>true</code> if any errors occur.</dd>
+</dl> </dd> <dt class="d_decl" id="FuncDeclaration.hasNestedFrameRefs">final bool hasNestedFrameRefs()</dt> <dd>
+<p>Determine if function's variables are referenced by a function nested within it.</p> </dd> <dt class="d_decl" id="FuncDeclaration.buildResultVar">final void buildResultVar(Scope* sc, Type tret)</dt> <dd>
+<p>Declare result variable lazily.</p> </dd> <dt class="d_decl" id="FuncDeclaration.mergeFrequire">final Statement mergeFrequire(Statement sf)</dt> <dd>
+<p>Merge into this function the 'in' contracts of all it overrides. 'in's are OR'd together, i.e. only one of them needs to pass.</p> </dd> <dt class="d_decl" id="FuncDeclaration.mergeFensure">final Statement mergeFensure(Statement sf, Identifier oid)</dt> <dd>
+<p>Merge into this function the 'out' contracts of all it overrides. 'out's are AND'd together, i.e. all of them need to pass.</p> </dd> <dt class="d_decl" id="FuncDeclaration.getParameters">final Parameters* getParameters(int* pvarargs)</dt> <dd>
+<p>Return the function's parameter list, and whether it is variadic or not.</p> </dd> <dt class="d_decl" id="FuncDeclaration.genCfunc">static FuncDeclaration genCfunc(Parameters* fparams, Type treturn, const(char)* name, StorageClass stc = 0)</dt> <dd>
+<p>Generate a FuncDeclaration for a runtime library function.</p> </dd> <dt class="d_decl" id="FuncDeclaration.checkDmain">final void checkDmain()</dt> <dd>
+<p>Check parameters and return type of D main() function. Issue error messages.</p> </dd> </dl> </dd> <dt class="d_decl" id="addInvariant">Expression addInvariant(Loc loc, Scope* sc, AggregateDeclaration ad, VarDeclaration vthis, bool direct)</dt> <dd>
+<p>Generate Expression to call the invariant. </p> <dl>
+<dt>Input:</dt>
+<dd> <code>ad</code> aggregate with the invariant <code>vthis</code> variable with 'this' <code>direct</code> call invariant directly </dd>
+</dl> <dl>
+<dt>Returns:</dt>
+<dd>void expression that calls the invariant</dd>
+</dl> </dd> <dt class="d_decl" id="overloadApply">int overloadApply(Dsymbol fstart, scope int delegate(Dsymbol) dg)</dt> <dd>
+<p>Visit each overloaded function/template in turn, and call <code>dg</code>(s) on it. Exit when no more, or <code>dg</code>(s) returns nonzero. </p> <dl>
+<dt>Returns:</dt>
+<dd>==0 continue !=0 done</dd>
+</dl> </dd> <dt class="d_decl" id="resolveFuncCall">FuncDeclaration resolveFuncCall(Loc loc, Scope* sc, Dsymbol s, Objects* tiargs, Type tthis, Expressions* fargs, int flags = 0)</dt> <dd>
+<p>Given a symbol that could be either a FuncDeclaration or a function template, resolve it to a function symbol. </p> <dl>
+<dt>Parameters:</dt>
+<dd><table>
+<tr>
+<td>Loc <code>loc</code>
+</td> <td>instantiation location</td>
+</tr> <tr>
+<td>Scope* <code>sc</code>
+</td> <td>instantiation scope</td>
+</tr> <tr>
+<td>Objects* <code>tiargs</code>
+</td> <td>initial list of template arguments</td>
+</tr> <tr>
+<td>Type <code>tthis</code>
+</td> <td>if !NULL, the <code>this</code> argument type</td>
+</tr> <tr>
+<td>Expressions* <code>fargs</code>
+</td> <td>arguments to function</td>
+</tr> <tr>
+<td>int <code>flags</code>
+</td> <td>1: do not issue error message on no match, just return NULL 2: overloadResolve only</td>
+</tr> </table></dd>
+</dl> <dl>
+<dt>Returns:</dt>
+<dd>if match is found, then function symbol, else <code>null</code>
+</dd>
+</dl> </dd> <dt class="d_decl" id="getIndirection">Type getIndirection(Type t)</dt> <dd>
+<p>Returns an indirect type one step from <code>t</code>.</p> </dd> <dt class="d_decl" id="FuncAliasDeclaration">class FuncAliasDeclaration: ddmd.func.FuncDeclaration</dt> <dd>
+<p>Used as a way to import a set of functions from another scope into this one.</p> </dd> <dt class="d_decl" id="FuncLiteralDeclaration">class FuncLiteralDeclaration: ddmd.func.FuncDeclaration</dt> <dd> <dl>
+<dt class="d_decl" id="FuncLiteralDeclaration.modifyReturns">void modifyReturns(Scope* sc, Type tret)</dt> <dd>
+<p>Modify all expression type of return statements to <code>tret</code>. </p> <p>On function literals, return type may be modified based on the context type after its semantic3 is done, in FuncExp::implicitCastTo. <br><br> A function() dg = (){ return new B(); } // OK if is(B : A) == <code>true</code> <br><br> If B to A conversion is convariant that requires offseet adjusting, all return statements should be adjusted to return expressions typed A.</p> </dd> </dl> </dd> <dt class="d_decl" id="CtorDeclaration">class CtorDeclaration: ddmd.func.FuncDeclaration</dt>  <dt class="d_decl" id="PostBlitDeclaration">class PostBlitDeclaration: ddmd.func.FuncDeclaration</dt>  <dt class="d_decl" id="DtorDeclaration">class DtorDeclaration: ddmd.func.FuncDeclaration</dt>  <dt class="d_decl" id="StaticCtorDeclaration">class StaticCtorDeclaration: ddmd.func.FuncDeclaration</dt>  <dt class="d_decl" id="SharedStaticCtorDeclaration">class SharedStaticCtorDeclaration: ddmd.func.StaticCtorDeclaration</dt>  <dt class="d_decl" id="StaticDtorDeclaration">class StaticDtorDeclaration: ddmd.func.FuncDeclaration</dt>  <dt class="d_decl" id="SharedStaticDtorDeclaration">class SharedStaticDtorDeclaration: ddmd.func.StaticDtorDeclaration</dt>  <dt class="d_decl" id="InvariantDeclaration">class InvariantDeclaration: ddmd.func.FuncDeclaration</dt>  <dt class="d_decl" id="unitTestId">static Identifier unitTestId(Loc loc)</dt> <dd>
+<p>Generate unique unittest function Id so we can have multiple instances per module.</p> </dd> <dt class="d_decl" id="UnitTestDeclaration">class UnitTestDeclaration: ddmd.func.FuncDeclaration</dt>  <dt class="d_decl" id="NewDeclaration">class NewDeclaration: ddmd.func.FuncDeclaration</dt>  <dt class="d_decl" id="DeleteDeclaration">class DeleteDeclaration: ddmd.func.FuncDeclaration</dt>  </dl>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 1999–2017 The D Language Foundation<br>Licensed under the Boost License 1.0.<br>
+    <a href="https://dlang.org/phobos/ddmd_func.html" class="_attribution-link" target="_blank">https://dlang.org/phobos/ddmd_func.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

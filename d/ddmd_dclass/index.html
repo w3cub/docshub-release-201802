@@ -1,0 +1,155 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>ddmd.dclass - D - W3cubDocs</title>
+  
+  <meta name="description" content=" Compiler implementation of the D programming language. ">
+  <meta name="keywords" content="ddmd, dclass, -, d">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/d/ddmd_dclass/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/d.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/d/" class="_nav-link" title="" style="margin-left:0;">D</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _d">
+				
+<h1>ddmd.dclass</h1>  <p>Compiler implementation of the <a href="http://www.dlang.org" target="_blank">D programming language</a>. </p> <dl>
+<dt>Authors:</dt>
+<dd>
+<a href="http://www.digitalmars.com" target="_blank">Walter Bright</a> </dd>
+</dl> <dl>
+<dt>License:</dt>
+<dd>
+<a href="http://www.boost.org/LICENSE_1_0.txt" target="_blank">Boost License 1.0</a> </dd>
+</dl> <dl>
+<dt>Source:</dt>
+<dd> <a href="https://github.com/dlang/dmd/blob/master/src/ddmd/dclass.d" target="_blank">dclass.d</a>
+</dd>
+</dl> <dl>
+<dt class="d_decl" id="BaseClass">struct BaseClass</dt> <dd> <dl>
+<dt class="d_decl" id="BaseClass.fillVtbl">bool fillVtbl(ClassDeclaration cd, FuncDeclarations* vtbl, int newinstance)</dt> <dd>
+<p>Fill in <code>vtbl</code>[] for base class based on member functions of class <code>cd</code>. </p> <dl>
+<dt>Input:</dt>
+<dd> <code>vtbl</code> if !=NULL, fill it in <code>newinstance</code> !=0 means all entries must be filled in by members of <code>cd</code>, not members of any base classes of <code>cd</code>. </dd>
+</dl> <dl>
+<dt>Returns:</dt>
+<dd>
+<code>true</code> if any entries were filled in by members of <code>cd</code> (not exclusively by base classes)</dd>
+</dl> </dd> </dl> </dd> <dt class="d_decl" id="ClassDeclaration">class ClassDeclaration: ddmd.aggregate.AggregateDeclaration</dt> <dd> <dl>
+<dt class="d_decl" id="ClassDeclaration.isBaseOf2">final bool isBaseOf2(ClassDeclaration cd)</dt> <dd>
+<p>Determine if 'this' is a base class of <code>cd</code>. This is used to detect circular inheritance only.</p> </dd> <dt class="d_decl" id="ClassDeclaration.isBaseOf">bool isBaseOf(ClassDeclaration cd, int* poffset)</dt> <dd>
+<p>Determine if 'this' is a base class of <code>cd</code>.</p> </dd> <dt class="d_decl" id="ClassDeclaration.isBaseInfoComplete">final const bool isBaseInfoComplete()</dt> <dd>
+<p>Determine if 'this' has complete base class information. This is used to detect forward references in covariant overloads.</p> </dd> <dt class="d_decl" id="ClassDeclaration.searchBase">final ClassDeclaration searchBase(Identifier ident)</dt> <dd>
+<p>Search base classes in depth-first, left-to-right order for a class or interface named '<code>ident</code>'. Stops at first found. Does not look for additional matches. </p> <dl>
+<dt>Parameters:</dt>
+<dd><table>
+<tr>
+<td>Identifier <code>ident</code>
+</td> <td>identifier to search for</td>
+</tr> </table></dd>
+</dl> <dl>
+<dt>Returns:</dt>
+<dd>ClassDeclaration if found, <code>null</code> if not</dd>
+</dl> </dd> <dt class="d_decl" id="ClassDeclaration.findFunc">final FuncDeclaration findFunc(Identifier ident, TypeFunction tf)</dt> <dd>
+<p>Find virtual function matching identifier and type. Used to build virtual function tables for interface implementations. </p> <dl>
+<dt>Parameters:</dt>
+<dd><table>
+<tr>
+<td>Identifier <code>ident</code>
+</td> <td>function's identifier</td>
+</tr> <tr>
+<td>TypeFunction <code>tf</code>
+</td> <td>function's type</td>
+</tr> </table></dd>
+</dl> <dl>
+<dt>Returns:</dt>
+<dd>function symbol if found, <code>null</code> if not </dd>
+</dl> <dl>
+<dt>Errors:</dt>
+<dd> prints error message if more than one match</dd>
+</dl> </dd> <dt class="d_decl" id="ClassDeclaration.isCOMclass">final const bool isCOMclass()</dt>  <dt class="d_decl" id="ClassDeclaration.isAbstract">final bool isAbstract()</dt>  <dt class="d_decl" id="ClassDeclaration.vtblOffset">const int vtblOffset()</dt> <dd>
+<p>Determine if slot 0 of the vtbl[] is reserved for something else. For class objects, yes, this is where the classinfo ptr goes. For COM interfaces, no. For non-COM interfaces, yes, this is where the Interface ptr goes. </p> <dl>
+<dt>Returns:</dt>
+<dd>0 vtbl[0] is first virtual function pointer 1 vtbl[0] is classinfo/interfaceinfo pointer</dd>
+</dl> </dd> <dt class="d_decl" id="ClassDeclaration.kind">const const(char)* kind()</dt>  <dt class="d_decl" id="ClassDeclaration.addLocalClass">final void addLocalClass(ClassDeclarations* aclasses)</dt>  </dl> </dd> <dt class="d_decl" id="InterfaceDeclaration">class InterfaceDeclaration: ddmd.dclass.ClassDeclaration</dt> <dd> <dl>
+<dt class="d_decl" id="InterfaceDeclaration.isBaseOf">bool isBaseOf(ClassDeclaration cd, int* poffset)</dt> <dd>
+<p>Determine if 'this' is a base class of <code>cd</code>. (Actually, if it is an interface supported by <code>cd</code>) </p> <dl>
+<dt>Output:</dt>
+<dd> *<code>poffset</code> offset to start of class OFFSET_RUNTIME must determine offset at runtime </dd>
+</dl> <dl>
+<dt>Returns:</dt>
+<dd>
+<code>false</code> not a base <code>true</code> is a base</dd>
+</dl> </dd> <dt class="d_decl" id="InterfaceDeclaration.kind">const const(char)* kind()</dt>  <dt class="d_decl" id="InterfaceDeclaration.vtblOffset">const int vtblOffset()</dt> <dd>
+<p>Determine if slot 0 of the vtbl[] is reserved for something else. For class objects, yes, this is where the ClassInfo ptr goes. For COM interfaces, no. For non-COM interfaces, yes, this is where the Interface ptr goes.</p> </dd> </dl> </dd> </dl>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 1999–2017 The D Language Foundation<br>Licensed under the Boost License 1.0.<br>
+    <a href="https://dlang.org/phobos/ddmd_dclass.html" class="_attribution-link" target="_blank">https://dlang.org/phobos/ddmd_dclass.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

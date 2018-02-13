@@ -1,0 +1,648 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>25. Traits - D - W3cubDocs</title>
+  
+  <meta name="description" content="Traits are extensions to the language to enable programs, at compile time, to get at information internal to the compiler. This is also known as &hellip;">
+  <meta name="keywords" content="traits, -, d">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/d/traits/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/d.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/d/" class="_nav-link" title="" style="margin-left:0;">D</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _d">
+				
+<h1>Traits</h1>     <p>Traits are extensions to the language to enable programs, at compile time, to get at information internal to the compiler. This is also known as compile time reflection. It is done as a special, easily extended syntax (similar to Pragmas) so that new capabilities can be added as required. </p>  <pre>TraitsExpression:
+    __traits ( TraitsKeyword , TraitsArguments )
+
+TraitsKeyword:
+    isAbstractClass
+    isArithmetic
+    isAssociativeArray
+    isFinalClass
+    isPOD
+    isNested
+    isFloating
+    isIntegral
+    isScalar
+    isStaticArray
+    isUnsigned
+    isVirtualFunction
+    isVirtualMethod
+    isAbstractFunction
+    isFinalFunction
+    isStaticFunction
+    isOverrideFunction
+    isTemplate
+    isRef
+    isOut
+    isLazy
+    hasMember
+    identifier
+    getAliasThis
+    getAttributes
+    getFunctionAttributes
+    getFunctionVariadicStyle
+    getLinkage
+    getMember
+    getOverloads
+    getParameterStorageClasses
+    getPointerBitmap
+    getProtection
+    getVirtualFunctions
+    getVirtualMethods
+    getUnitTests
+    parent
+    classInstanceSize
+    getVirtualIndex
+    allMembers
+    derivedMembers
+    isSame
+    compiles
+
+TraitsArguments:
+    TraitsArgument
+    TraitsArgument , TraitsArguments
+
+TraitsArgument:
+    AssignExpression
+    Type
+</pre>  <p>Additionally special keywords are provided for debugging purposes:</p>  <pre>SpecialKeyword:
+    __FILE__
+    __FILE_FULL_PATH__
+    __MODULE__
+    __LINE__
+    __FUNCTION__
+    __PRETTY_FUNCTION__
+</pre>  <h2><a id="isArithmetic"><span class="gname">isArithmetic</span></a></h2>  <p>If the arguments are all either types that are arithmetic types, or expressions that are typed as arithmetic types, then <code>true</code> is returned. Otherwise, <code>false</code> is returned. If there are no arguments, <code>false</code> is returned.</p>  <pre data-language="d">import std.stdio;
+
+void main()
+{
+    int i;
+    writeln(__traits(isArithmetic, int));
+    writeln(__traits(isArithmetic, i, i+1, int));
+    writeln(__traits(isArithmetic));
+    writeln(__traits(isArithmetic, int*));
+}
+</pre>  Prints:  <pre>true
+true
+false
+false
+</pre>  <h2><a id="isFloating"><span class="gname">isFloating</span></a></h2>  <p>Works like <code>isArithmetic</code>, except it's for floating point types (including imaginary and complex types).</p>  <h2><a id="isIntegral"><span class="gname">isIntegral</span></a></h2>  <p>Works like <code>isArithmetic</code>, except it's for integral types (including character types).</p>  <h2><a id="isScalar"><span class="gname">isScalar</span></a></h2>  <p>Works like <code>isArithmetic</code>, except it's for scalar types.</p>  <h2><a id="isUnsigned"><span class="gname">isUnsigned</span></a></h2>  <p>Works like <code>isArithmetic</code>, except it's for unsigned types.</p>  <h2><a id="isStaticArray"><span class="gname">isStaticArray</span></a></h2>  <p>Works like <code>isArithmetic</code>, except it's for static array types.</p>  <h2><a id="isAssociativeArray"><span class="gname">isAssociativeArray</span></a></h2>  <p>Works like <code>isArithmetic</code>, except it's for associative array types.</p>  <h2><a id="isAbstractClass"><span class="gname">isAbstractClass</span></a></h2>  <p>If the arguments are all either types that are abstract classes, or expressions that are typed as abstract classes, then <code>true</code> is returned. Otherwise, <code>false</code> is returned. If there are no arguments, <code>false</code> is returned.</p>  <pre data-language="d">import std.stdio;
+
+abstract class C { int foo(); }
+
+void main()
+{
+    C c;
+    writeln(__traits(isAbstractClass, C));
+    writeln(__traits(isAbstractClass, c, C));
+    writeln(__traits(isAbstractClass));
+    writeln(__traits(isAbstractClass, int*));
+}
+</pre>  Prints:  <pre>true
+true
+false
+false
+</pre>  <h2><a id="isFinalClass"><span class="gname">isFinalClass</span></a></h2>  <p>Works like <code>isAbstractClass</code>, except it's for final classes.</p>  <h2><a id="isPOD"><span class="gname">isPOD</span></a></h2>  <p>Takes one argument, which must be a type. It returns <code>true</code> if the type is a <a href="https://dlang.org/glossary.html#pod" target="_blank">POD</a> type, otherwise <code>false</code>.</p>  <h2><a id="isNested"><span class="gname">isNested</span></a></h2>  <p>Takes one argument. It returns <code>true</code> if the argument is a nested type which internally stores a context pointer, otherwise it returns <code>false</code>. Nested types can be <a href="../class/#nested">classes</a>, <a href="../struct/#nested">structs</a>, and <a href="../function/#variadicnested">functions</a>.</p>  <h2><a id="isVirtualFunction"><span class="gname">isVirtualFunction</span></a></h2>  <p>The same as <a href="#isVirtualMethod"><i>isVirtualMethod</i></a>, except that final functions that don't override anything return true. </p>  <h2><a id="isVirtualMethod"><span class="gname">isVirtualMethod</span></a></h2>  <p>Takes one argument. If that argument is a virtual function, <code>true</code> is returned, otherwise <code>false</code>. Final functions that don't override anything return false. </p>  <pre data-language="d">import std.stdio;
+
+struct S
+{
+    void bar() { }
+}
+
+class C
+{
+    void bar() { }
+}
+
+void main()
+{
+    writeln(__traits(isVirtualMethod, C.bar));  // true
+    writeln(__traits(isVirtualMethod, S.bar));  // false
+}
+</pre>  <h2><a id="isAbstractFunction"><span class="gname">isAbstractFunction</span></a></h2>  <p>Takes one argument. If that argument is an abstract function, <code>true</code> is returned, otherwise <code>false</code>. </p>  <pre data-language="d">import std.stdio;
+
+struct S
+{
+    void bar() { }
+}
+
+class C
+{
+    void bar() { }
+}
+
+class AC
+{
+    abstract void foo();
+}
+
+void main()
+{
+    writeln(__traits(isAbstractFunction, C.bar));   // false
+    writeln(__traits(isAbstractFunction, S.bar));   // false
+    writeln(__traits(isAbstractFunction, AC.foo));  // true
+}
+</pre>  <h2><a id="isFinalFunction"><span class="gname">isFinalFunction</span></a></h2>  <p>Takes one argument. If that argument is a final function, <code>true</code> is returned, otherwise <code>false</code>. </p>  <pre data-language="d">import std.stdio;
+
+struct S
+{
+    void bar() { }
+}
+
+class C
+{
+    void bar() { }
+    final void foo();
+}
+
+final class FC
+{
+    void foo();
+}
+
+void main()
+{
+    writeln(__traits(isFinalFunction, C.bar));  // false
+    writeln(__traits(isFinalFunction, S.bar));  // false
+    writeln(__traits(isFinalFunction, C.foo));  // true
+    writeln(__traits(isFinalFunction, FC.foo)); // true
+}
+</pre>  <h2><a id="isOverrideFunction"><span class="gname">isOverrideFunction</span></a></h2>  <p>Takes one argument. If that argument is a function marked with <span class="d_keyword">override</span>, <code>true</code> is returned, otherwise <code>false</code>. </p>  <pre data-language="d">import std.stdio;
+
+class Base
+{
+    void foo() { }
+}
+
+class Foo : Base
+{
+    override void foo() { }
+    void bar() { }
+}
+
+void main()
+{
+    writeln(__traits(isOverrideFunction, Base.foo)); // false
+    writeln(__traits(isOverrideFunction, Foo.foo));  // true
+    writeln(__traits(isOverrideFunction, Foo.bar));  // false
+}
+</pre>  <h2><a id="isStaticFunction"><span class="gname">isStaticFunction</span></a></h2>  <p>Takes one argument. If that argument is a static function, meaning it has no context pointer, <code>true</code> is returned, otherwise <code>false</code>. </p>   <h2>
+<a id="isRef"><span class="gname">isRef</span></a>, <a id="isOut"><span class="gname">isOut</span></a>, <a id="isLazy"><span class="gname">isLazy</span></a>
+</h2>  <p>Takes one argument. If that argument is a declaration, <code>true</code> is returned if it is <span class="d_keyword">ref</span>, <span class="d_keyword">out</span>, or <span class="d_keyword">lazy</span>, otherwise <code>false</code>. </p>  <pre data-language="d">void fooref(ref int x)
+{
+    static assert(__traits(isRef, x));
+    static assert(!__traits(isOut, x));
+    static assert(!__traits(isLazy, x));
+}
+
+void fooout(out int x)
+{
+    static assert(!__traits(isRef, x));
+    static assert(__traits(isOut, x));
+    static assert(!__traits(isLazy, x));
+}
+
+void foolazy(lazy int x)
+{
+    static assert(!__traits(isRef, x));
+    static assert(!__traits(isOut, x));
+    static assert(__traits(isLazy, x));
+}
+</pre>  <h2><a id="isTemplate"><span class="gname">isTemplate</span></a></h2>  <p>Takes one argument. If that argument is a template then <code>true</code> is returned, otherwise <code>false</code>. </p>  <pre data-language="d">void foo(T)(){}
+static assert(__traits(isTemplate,foo));
+static assert(!__traits(isTemplate,foo!int()));
+static assert(!__traits(isTemplate,"string"));
+</pre>  <h2><a id="hasMember"><span class="gname">hasMember</span></a></h2>  <p>The first argument is a type that has members, or is an expression of a type that has members. The second argument is a string. If the string is a valid property of the type, <code>true</code> is returned, otherwise <code>false</code>. </p>  <pre data-language="d">import std.stdio;
+
+struct S
+{
+    int m;
+}
+
+void main()
+{
+    S s;
+
+    writeln(__traits(hasMember, S, "m")); // true
+    writeln(__traits(hasMember, s, "m")); // true
+    writeln(__traits(hasMember, S, "y")); // false
+    writeln(__traits(hasMember, int, "sizeof")); // true
+}
+</pre>  <h2><a id="identifier"><span class="gname">identifier</span></a></h2>  <p>Takes one argument, a symbol. Returns the identifier for that symbol as a string literal. </p>  <h2><a id="getAliasThis"><span class="gname">getAliasThis</span></a></h2>  <p>Takes one argument, a symbol of aggregate type. If the given aggregate type has <code>alias this</code>, returns a list of <code>alias this</code> names, by a tuple of <code>string</code>s. Otherwise returns an empty tuple. </p>  <h2><a id="getAttributes"><span class="gname">getAttributes</span></a></h2> <p> Takes one argument, a symbol. Returns a tuple of all attached user defined attributes. If no UDA's exist it will return an empty tuple. </p>  <p> For more information, see: <a href="../attribute/#uda">User Defined Attributes</a> </p>  <pre data-language="d">@(3) int a;
+@("string", 7) int b;
+
+enum Foo;
+@Foo int c;
+
+pragma(msg, __traits(getAttributes, a));
+pragma(msg, __traits(getAttributes, b));
+pragma(msg, __traits(getAttributes, c));
+</pre>  Prints:  <pre>tuple(3)
+tuple("string", 7)
+tuple((Foo))
+</pre>  <h2><a id="getFunctionVariadicStyle"><span class="gname">getFunctionVariadicStyle</span></a></h2> <p> Takes one argument which must either be a function symbol, or a type that is a function, delegate or a function pointer. It returns a string identifying the kind of <a href="../function/#variadic">variadic arguments</a> that are supported. </p>  <table>
+<caption>getFunctionVariadicStyle</caption> <tr>
+<th class="donthyphenate"><b>string returned</b></th>
+<th class="donthyphenate"><b>kind</b></th>
+<th class="donthyphenate"><b>access</b></th>
+<th class="donthyphenate"><b>example</b></th>
+</tr> <tr>
+<td><code>"none"</code></td>
+<td>not a variadic function</td>
+<td> </td>
+<td><code>void foo();</code></td>
+</tr> <tr>
+<td><code>"argptr"</code></td>
+<td>D style variadic function</td>
+<td>
+<code>_argptr</code> and <code>_arguments</code>
+</td>
+<td><code>void bar(...)</code></td>
+</tr> <tr>
+<td><code>"stdarg"</code></td>
+<td>C style variadic function</td>
+<td><a href="https://dlang.org/phobos/core_stdc_stdarg.html" target="_blank"><code>core.stdc.stdarg</code></a></td>
+<td><code>extern (C) void abc(int, ...)</code></td>
+</tr> <tr>
+<td><code>"typesafe"</code></td>
+<td>typesafe variadic function</td>
+<td>array on stack</td>
+<td><code>void def(int[] ...)</code></td>
+</tr> </table>  <pre data-language="d">import core.stdc.stdarg;
+
+void novar() {}
+extern(C) void cstyle(int, ...) {}
+extern(C++) void cppstyle(int, ...) {}
+void dstyle(...) {}
+void typesafe(int[]...) {}
+
+static assert(__traits(getFunctionVariadicStyle, novar) == "none");
+static assert(__traits(getFunctionVariadicStyle, cstyle) == "stdarg");
+static assert(__traits(getFunctionVariadicStyle, cppstyle) == "stdarg");
+static assert(__traits(getFunctionVariadicStyle, dstyle) == "argptr");
+static assert(__traits(getFunctionVariadicStyle, typesafe) == "typesafe");
+
+static assert(__traits(getFunctionVariadicStyle, (int[] a...) {}) == "typesafe");
+static assert(__traits(getFunctionVariadicStyle, typeof(cstyle)) == "stdarg");
+</pre>  <h2><a id="getFunctionAttributes"><span class="gname">getFunctionAttributes</span></a></h2> <p> Takes one argument which must either be a function symbol, function literal, or a function pointer. It returns a string tuple of all the attributes of that function <b>excluding</b> any user defined attributes (UDAs can be retrieved with the <a href="#get-attributes">getAttributes</a> trait). If no attributes exist it will return an empty tuple. </p>   <b>Note:</b> The order of the attributes in the returned tuple is implementation-defined and should not be relied upon.  <p> A list of currently supported attributes are:</p> <ul><li>
+<code>pure</code>, <code>nothrow</code>, <code>@nogc</code>, <code>@property</code>, <code>@system</code>, <code>@trusted</code>, <code>@safe</code>, and <code>ref</code>
+</li></ul> <b>Note:</b> <code>ref</code> is a function attribute even though it applies to the return type.  <p> Additionally the following attributes are only valid for non-static member functions:</p> <ul><li>
+<code>const</code>, <code>immutable</code>, <code>inout</code>, <code>shared</code>
+</li></ul>  For example:  <pre data-language="d">int sum(int x, int y) pure nothrow { return x + y; }
+
+// prints ("pure", "nothrow", "@system")
+pragma(msg, __traits(getFunctionAttributes, sum));
+
+struct S
+{
+    void test() const @system { }
+}
+
+// prints ("const", "@system")
+pragma(msg, __traits(getFunctionAttributes, S.test));
+</pre>  <p>Note that some attributes can be inferred. For example:</p>  <pre data-language="d">// prints ("pure", "nothrow", "@nogc", "@trusted")
+pragma(msg, __traits(getFunctionAttributes, (int x) @trusted { return x * 2; }));
+</pre>  <h2><a id="getLinkage"><span class="gname">getLinkage</span></a></h2>  <p>Takes one argument, which is a declaration symbol, or the type of a function, delegate, or pointer to function. Returns a string representing the <a href="../attribute/#LinkageAttribute">LinkageAttribute</a> of the declaration. The string is one of: </p>  <ul> <li><code>"D"</code></li> <li><code>"C"</code></li> <li><code>"C++"</code></li> <li><code>"Windows"</code></li> <li><code>"Pascal"</code></li> <li><code>"Objective-C"</code></li> <li><code>"System"</code></li> </ul>  <pre data-language="d">extern (C) int fooc();
+alias aliasc = fooc;
+
+static assert(__traits(getLinkage, fooc) == "C");
+static assert(__traits(getLinkage, aliasc) == "C");
+</pre>  <h2><a id="getMember"><span class="gname">getMember</span></a></h2>  <p>Takes two arguments, the second must be a string. The result is an expression formed from the first argument, followed by a ‘.’, followed by the second argument as an identifier. </p>  <pre data-language="d">import std.stdio;
+
+struct S
+{
+    int mx;
+    static int my;
+}
+
+void main()
+{
+    S s;
+
+    __traits(getMember, s, "mx") = 1;  // same as s.mx=1;
+    writeln(__traits(getMember, s, "m" ~ "x")); // 1
+
+    __traits(getMember, S, "mx") = 1;  // error, no this for S.mx
+    __traits(getMember, S, "my") = 2;  // ok
+}
+</pre>  <h2><a id="getOverloads"><span class="gname">getOverloads</span></a></h2>  <p>The first argument is an aggregate (e.g. struct/class/module). The second argument is a string that matches the name of one of the functions in that aggregate. The result is a tuple of all the overloads of that function. </p>  <pre data-language="d">import std.stdio;
+
+class D
+{
+    this() { }
+    ~this() { }
+    void foo() { }
+    int foo(int) { return 2; }
+}
+
+void main()
+{
+    D d = new D();
+
+    foreach (t; __traits(getOverloads, D, "foo"))
+        writeln(typeid(typeof(t)));
+
+    alias b = typeof(__traits(getOverloads, D, "foo"));
+    foreach (t; b)
+        writeln(typeid(t));
+
+    auto i = __traits(getOverloads, d, "foo")[1](1);
+    writeln(i);
+}
+</pre>  Prints:  <pre>void()
+int()
+void()
+int()
+2
+</pre>  <h2><a id="getParameterStorageClasses"><span class="gname">getParameterStorageClasses</span></a></h2>  <p> Takes two arguments. The first must either be a function symbol, or a type that is a function, delegate or a function pointer. The second is an integer identifying which parameter, where the first parameter is 0. It returns a tuple of strings representing the storage classes of that parameter. </p>  <pre data-language="d">ref int foo(return ref const int* p, scope int* a, out int b, lazy int c);
+
+static assert(__traits(getParameterStorageClasses, foo, 0)[0] == "return");
+static assert(__traits(getParameterStorageClasses, foo, 0)[1] == "ref");
+
+static assert(__traits(getParameterStorageClasses, foo, 1)[0] == "scope");
+static assert(__traits(getParameterStorageClasses, foo, 2)[0] == "out");
+static assert(__traits(getParameterStorageClasses, typeof(&amp;foo), 3)[0] == "lazy");
+</pre>  <h2><a id="getPointerBitmap"><span class="gname">getPointerBitmap</span></a></h2>  <p>The argument is a type. The result is an array of <code>size_t</code> describing the memory used by an instance of the given type. </p> <p>The first element of the array is the size of the type (for classes it is the <a href="#classInstanceSize"><code>classInstanceSize</code></a>).</p> <p>The following elements describe the locations of GC managed pointers within the memory occupied by an instance of the type. For type T, there are <code>T.sizeof / size_t.sizeof</code> possible pointers represented by the bits of the array values.</p> <p>This array can be used by a precise GC to avoid false pointers.</p> <pre data-language="d">class C
+{
+    // implicit virtual function table pointer not marked
+    // implicit monitor field not marked, usually managed manually
+    C next;
+    size_t sz;
+    void* p;
+    void function () fn; // not a GC managed pointer
+}
+
+struct S
+{
+    size_t val1;
+    void* p;
+    C c;
+    byte[] arr;          // { length, ptr }
+    void delegate () dg; // { context, func }
+}
+
+static assert (__traits(getPointerBitmap, C) == [6*size_t.sizeof, 0b010100]);
+static assert (__traits(getPointerBitmap, S) == [7*size_t.sizeof, 0b0110110]);
+</pre>   <h2><a id="getProtection"><span class="gname">getProtection</span></a></h2>  <p>The argument is a symbol. The result is a string giving its protection level: "public", "private", "protected", "export", or "package". </p>  <pre data-language="d">import std.stdio;
+
+class D
+{
+    export void foo() { }
+    public int bar;
+}
+
+void main()
+{
+    D d = new D();
+
+    auto i = __traits(getProtection, d.foo);
+    writeln(i);
+
+    auto j = __traits(getProtection, d.bar);
+    writeln(j);
+}
+</pre>  Prints:  <pre>export
+public
+</pre>   <h2><a id="getVirtualFunctions"><span class="gname">getVirtualFunctions</span></a></h2>  <p>The same as <a href="#getVirtualMethods"><i>getVirtualMethods</i></a>, except that final functions that do not override anything are included. </p>  <h2><a id="getVirtualMethods"><span class="gname">getVirtualMethods</span></a></h2>  <p>The first argument is a class type or an expression of class type. The second argument is a string that matches the name of one of the functions of that class. The result is a tuple of the virtual overloads of that function. It does not include final functions that do not override anything. </p>  <pre data-language="d">import std.stdio;
+
+class D
+{
+    this() { }
+    ~this() { }
+    void foo() { }
+    int foo(int) { return 2; }
+}
+
+void main()
+{
+    D d = new D();
+
+    foreach (t; __traits(getVirtualMethods, D, "foo"))
+        writeln(typeid(typeof(t)));
+
+    alias b = typeof(__traits(getVirtualMethods, D, "foo"));
+    foreach (t; b)
+        writeln(typeid(t));
+
+    auto i = __traits(getVirtualMethods, d, "foo")[1](1);
+    writeln(i);
+}
+</pre>  Prints:  <pre>void()
+int()
+void()
+int()
+2
+</pre>  <h2><a id="getUnitTests"><span class="gname">getUnitTests</span></a></h2>  <p> Takes one argument, a symbol of an aggregate (e.g. struct/class/module). The result is a tuple of all the unit test functions of that aggregate. The functions returned are like normal nested static functions, <a href="https://dlang.org/glossary.html#ctfe" target="_blank">CTFE</a> will work and <a href="../attribute/#uda">UDA's</a> will be accessible. </p>  <h3>Note:</h3>  <p> The -unittest flag needs to be passed to the compiler. If the flag is not passed <code>__traits(getUnitTests)</code> will always return an empty tuple. </p>  <pre data-language="d">module foo;
+
+import core.runtime;
+import std.stdio;
+
+struct name { string name; }
+
+class Foo
+{
+    unittest
+    {
+        writeln("foo.Foo.unittest");
+    }
+}
+
+@name("foo") unittest
+{
+    writeln("foo.unittest");
+}
+
+template Tuple (T...)
+{
+    alias Tuple = T;
+}
+
+shared static this()
+{
+  // Override the default unit test runner to do nothing. After that, "main" will
+  // be called.
+  Runtime.moduleUnitTester = { return true; };
+}
+
+void main()
+{
+    writeln("start main");
+
+    alias tests = Tuple!(__traits(getUnitTests, foo));
+    static assert(tests.length == 1);
+
+    alias attributes = Tuple!(__traits(getAttributes, tests[0]));
+    static assert(attributes.length == 1);
+
+    foreach (test; tests)
+        test();
+
+    foreach (test; __traits(getUnitTests, Foo))
+        test();
+}
+</pre>  <p>By default, the above will print:</p>  <pre>start main
+foo.unittest
+foo.Foo.unittest
+</pre>  <h2><a id="parent"><span class="gname">parent</span></a></h2>  <p>Takes a single argument which must evaluate to a symbol. The result is the symbol that is the parent of it. </p>  <h2><a id="classInstanceSize"><span class="gname">classInstanceSize</span></a></h2>  <p>Takes a single argument, which must evaluate to either a class type or an expression of class type. The result is of type <code>size_t</code>, and the value is the number of bytes in the runtime instance of the class type. It is based on the static type of a class, not the polymorphic type. </p>  <h2><a id="getVirtualIndex"><span class="gname">getVirtualIndex</span></a></h2>  <p>Takes a single argument which must evaluate to a function. The result is a <code>ptrdiff_t</code> containing the index of that function within the vtable of the parent type. If the function passed in is final and does not override a virtual function, <code>-1</code> is returned instead. </p>  <h2><a id="allMembers"><span class="gname">allMembers</span></a></h2>  <p>Takes a single argument, which must evaluate to either a type or an expression of type. A tuple of string literals is returned, each of which is the name of a member of that type combined with all of the members of the base classes (if the type is a class). No name is repeated. Builtin properties are not included. </p>  <pre data-language="d">import std.stdio;
+
+class D
+{
+    this() { }
+    ~this() { }
+    void foo() { }
+    int foo(int) { return 0; }
+}
+
+void main()
+{
+    auto b = [ __traits(allMembers, D) ];
+    writeln(b);
+    // ["__ctor", "__dtor", "foo", "toString", "toHash", "opCmp", "opEquals", "Monitor", "factory"]
+}
+</pre>  <p>The order in which the strings appear in the result is not defined.</p>  <h2><a id="derivedMembers"><span class="gname">derivedMembers</span></a></h2>  <p>Takes a single argument, which must evaluate to either a type or an expression of type. A tuple of string literals is returned, each of which is the name of a member of that type. No name is repeated. Base class member names are not included. Builtin properties are not included. </p>  <pre data-language="d">import std.stdio;
+
+class D
+{
+    this() { }
+    ~this() { }
+    void foo() { }
+    int foo(int) { return 0; }
+}
+
+void main()
+{
+    auto a = [__traits(derivedMembers, D)];
+    writeln(a);    // ["__ctor", "__dtor", "foo"]
+}
+</pre>  <p>The order in which the strings appear in the result is not defined.</p>  <h2><a id="isSame"><span class="gname">isSame</span></a></h2>  <p>Takes two arguments and returns bool <code>true</code> if they are the same symbol, <code>false</code> if not.</p>  <pre data-language="d">import std.stdio;
+
+struct S { }
+
+int foo();
+int bar();
+
+void main()
+{
+    writeln(__traits(isSame, foo, foo)); // true
+    writeln(__traits(isSame, foo, bar)); // false
+    writeln(__traits(isSame, foo, S));   // false
+    writeln(__traits(isSame, S, S));     // true
+    writeln(__traits(isSame, std, S));   // false
+    writeln(__traits(isSame, std, std)); // true
+}
+</pre>  <p>If the two arguments are expressions made up of literals or enums that evaluate to the same value, true is returned.</p>  <h2><a id="compiles"><span class="gname">compiles</span></a></h2>  <p>Returns a bool <code>true</code> if all of the arguments compile (are semantically correct). The arguments can be symbols, types, or expressions that are syntactically correct. The arguments cannot be statements or declarations. </p>  <p>If there are no arguments, the result is <code>false</code>.</p>  <pre data-language="d">import std.stdio;
+
+struct S
+{
+    static int s1;
+    int s2;
+}
+
+int foo();
+int bar();
+
+void main()
+{
+    writeln(__traits(compiles));                      // false
+    writeln(__traits(compiles, foo));                 // true
+    writeln(__traits(compiles, foo + 1));             // true
+    writeln(__traits(compiles, &amp;foo + 1));            // false
+    writeln(__traits(compiles, typeof(1)));           // true
+    writeln(__traits(compiles, S.s1));                // true
+    writeln(__traits(compiles, S.s3));                // false
+    writeln(__traits(compiles, 1,2,3,int,long,std));  // true
+    writeln(__traits(compiles, 3[1]));                // false
+    writeln(__traits(compiles, 1,2,3,int,long,3[1])); // false
+}
+</pre>  <p>This is useful for:</p>  <ul> <li>Giving better error messages inside generic code than the sometimes hard to follow compiler ones.</li> <li>Doing a finer grained specialization than template partial specialization allows for.</li> </ul>   <h2 id="specialkeywords">Special Keywords</h2>  <p><code>__FILE__</code> and <code>__LINE__</code> expand to the source file name and line number at the point of instantiation. The path of the source file is left up to the compiler. </p>  <p><code>__FILE_FULL_PATH__</code> expands to the absolute source file name at the point of instantiation.</p>  <p><code>__MODULE__</code> expands to the module name at the point of instantiation.</p>  <p><code>__FUNCTION__</code> expands to the fully qualified name of the function at the point of instantiation.</p>  <p><code>__PRETTY_FUNCTION__</code> is similar to <code>__FUNCTION__</code>, but also expands the function return type, its parameter types, and its attributes.</p>  <p>Example usage:</p>  <pre data-language="d">module test;
+import std.stdio;
+
+void test(string file = __FILE__, size_t line = __LINE__, string mod = __MODULE__,
+          string func = __FUNCTION__, string pretty = __PRETTY_FUNCTION__, string fileFullPath = __FILE_FULL_PATH__)
+{
+    writefln("file: '%s', line: '%s', module: '%s',\nfunction: '%s', pretty function: '%s',\nfile full path: '%s'",
+             file, line, mod, func, pretty, fileFullPath);
+}
+
+int main(string[] args)
+{
+    test();
+    return 0;
+}
+</pre>  <p>Assuming the file was at /example/test.d, this will output:</p>  <pre>file: 'test.d', line: '13', module: 'test',
+function: 'test.main', pretty function: 'int test.main(string[] args)',
+file full path: '/example/test.d'
+</pre>     <div class="_attribution">
+  <p class="_attribution-p">
+    © 1999–2017 The D Language Foundation<br>Licensed under the Boost License 1.0.<br>
+    <a href="https://dlang.org/spec/traits.html" class="_attribution-link" target="_blank">https://dlang.org/spec/traits.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

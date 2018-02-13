@@ -1,0 +1,498 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>std.bitmanip - D - W3cubDocs</title>
+  
+  <meta name="description" content=" Bit-level manipulation facilities. ">
+  <meta name="keywords" content="std, bitmanip, -, d">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/d/std_bitmanip/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/d.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/d/" class="_nav-link" title="" style="margin-left:0;">D</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _d">
+				
+<h1>std.bitmanip</h1>  <p>Bit-level manipulation facilities. </p>
+<p> </p>
+<table>
+
+<tr>
+<th scope="col">Category</th> <th scope="col">Functions</th>
+</tr> <tr>
+<td>Bit constructs</td> <td> <a href="#BitArray"><code>BitArray</code></a> <a href="#bitfields"><code>bitfields</code></a> <a href="#bitsSet"><code>bitsSet</code></a> </td>
+</tr> <tr>
+<td>Endianness conversion</td> <td> <a href="#bigEndianToNative"><code>bigEndianToNative</code></a> <a href="#littleEndianToNative"><code>littleEndianToNative</code></a> <a href="#nativeToBigEndian"><code>nativeToBigEndian</code></a> <a href="#nativeToLittleEndian"><code>nativeToLittleEndian</code></a> <a href="#swapEndian"><code>swapEndian</code></a> </td>
+</tr> <tr>
+<td>Integral ranges</td> <td> <a href="#append"><code>append</code></a> <a href="#peek"><code>peek</code></a> <a href="#read"><code>read</code></a> <a href="#write"><code>write</code></a> </td>
+</tr> <tr>
+<td>Floating-Point manipulation</td> <td> <a href="#DoubleRep"><code>DoubleRep</code></a> <a href="#FloatRep"><code>FloatRep</code></a> </td>
+</tr> <tr>
+<td>Tagging</td> <td> <a href="#taggedClassRef"><code>taggedClassRef</code></a> <a href="#taggedPointer"><code>taggedPointer</code></a> </td>
+</tr> </table>  <dl>
+<dt>License:</dt>
+<dd>
+<a href="http://www.boost.org/LICENSE_1_0.txt" target="_blank">Boost License 1.0</a>. </dd>
+</dl> <dl>
+<dt>Authors:</dt>
+<dd>
+<a href="http://digitalmars.com" target="_blank">Walter Bright</a>, <a href="http://erdani.org" target="_blank">Andrei Alexandrescu</a>, Jonathan M Davis, Alex Rønne Petersen, Damian Ziemba, Amaury SECHET </dd>
+</dl> <dl>
+<dt>Source</dt>
+<dd> <span class="phobos_src"><a class="https" href="https://github.com/dlang/phobos/blob/master/std/bitmanip.d" target="_blank">std/bitmanip.d</a></span>
+</dd>
+</dl> <dl>
+<dt class="d_decl" id="bitfields">template bitfields(T...)</dt> <dd>
+<p>Allows creating bit fields inside <span class="d_param">struct</span>s and <span class="d_param">class</span>es. </p>
+<dl>
+<dt>Example</dt>
+
+</dl>
+<pre data-language="d">struct A
+{
+    int a;
+    mixin(bitfields!(
+        uint, "x",    2,
+        int,  "y",    3,
+        uint, "z",    2,
+        bool, "flag", 1));
+}
+A obj;
+obj.x = 2;
+obj.z = obj.x;
+</pre>  The example above creates a bitfield pack of eight bits, which fit in one <span class="d_param">ubyte</span>. The <code>bitfields</code> are allocated starting from the least significant bit, i.e. x occupies the two least significant bits of the <code>bitfields</code> storage.  The sum of all bit lengths in one <span class="d_param">bitfield</span> instantiation must be exactly 8, 16, 32, or 64. If padding is needed, just allocate one bitfield with an empty name.  <dl>
+<dt>Example</dt>
+
+</dl>
+<pre data-language="d">struct A
+{
+    mixin(bitfields!(
+        bool, "flag1",    1,
+        bool, "flag2",    1,
+        uint, "",         6));
+}
+</pre>  The type of a bit field can be any integral type or enumerated type. The most efficient type to store in <code>bitfields</code> is <span class="d_param">bool</span>, followed by unsigned types, followed by signed types. </dd> <dt class="d_decl" id="taggedPointer">enum auto taggedPointer(T : T*, string name, Ts...)</dt> <dd>
+<p>This string mixin generator allows one to create tagged pointers inside <span class="d_param">struct</span>s and <span class="d_param">class</span>es. </p>
+<p>A tagged pointer uses the bits known to be zero in a normal pointer or class reference to store extra information. For example, a pointer to an integer must be 4-byte aligned, so there are 2 bits that are always known to be zero. One can store a 2-bit integer there. <br><br> The example above creates a tagged pointer in the struct A. The pointer is of type <code>uint*</code> as specified by the first argument, and is named x, as specified by the second argument. <br><br> Following arguments works the same way as <code>bitfield</code>'s. The bitfield must fit into the bits known to be zero because of the pointer alignment.</p> <dl>
+<dt>Examples:</dt>
+<dd>
+<pre data-language="d">struct A
+{
+    int a;
+    mixin(taggedPointer!(
+        uint*, "x",
+        bool, "b1", 1,
+        bool, "b2", 1));
+}
+A obj;
+obj.x = new uint;
+obj.b1 = true;
+obj.b2 = false;
+</pre> </dd>
+</dl> </dd> <dt class="d_decl" id="taggedClassRef">template taggedClassRef(T, string name, Ts...) if (is(T == class))</dt> <dd>
+<p>This string mixin generator allows one to create tagged class reference inside <span class="d_param">struct</span>s and <span class="d_param">class</span>es. </p>
+<p>A tagged class reference uses the bits known to be zero in a normal class reference to store extra information. For example, a pointer to an integer must be 4-byte aligned, so there are 2 bits that are always known to be zero. One can store a 2-bit integer there. <br><br> The example above creates a tagged reference to an Object in the struct A. This expects the same parameters as <code>taggedPointer</code>, except the first argument which must be a class type instead of a pointer type.</p> <dl>
+<dt>Examples:</dt>
+<dd>
+<pre data-language="d">struct A
+{
+    int a;
+    mixin(taggedClassRef!(
+        Object, "o",
+        uint, "i", 2));
+}
+A obj;
+obj.o = new Object();
+obj.i = 3;
+</pre> </dd>
+</dl> </dd> <dt class="d_decl" id="FloatRep">struct FloatRep</dt> <dd>
+<p>Allows manipulating the fraction, exponent, and sign parts of a <span class="d_param">float</span> separately. The definition is: </p>
+<p></p>
+<pre data-language="d">struct FloatRep
+{
+    union
+    {
+        float value;
+        mixin(bitfields!(
+                  uint,  "fraction", 23,
+                  ubyte, "exponent",  8,
+                  bool,  "sign",      1));
+    }
+    enum uint bias = 127, fractionBits = 23, exponentBits = 8, signBits = 1;
+}
+</pre>  </dd> <dt class="d_decl" id="DoubleRep">struct DoubleRep</dt> <dd>
+<p>Allows manipulating the fraction, exponent, and sign parts of a <span class="d_param">double</span> separately. The definition is: </p>
+<p></p>
+<pre data-language="d">struct DoubleRep
+{
+    union
+    {
+        double value;
+        mixin(bitfields!(
+                  ulong,   "fraction", 52,
+                  ushort,  "exponent", 11,
+                  bool,    "sign",      1));
+    }
+    enum uint bias = 1023, signBits = 1, fractionBits = 52, exponentBits = 11;
+}
+</pre>  </dd> <dt class="d_decl" id="BitArray">struct BitArray</dt> <dd>
+<p>An array of bits.</p> <dl>
+<dt class="d_decl" id="BitArray.dim">const pure nothrow @nogc @property @safe size_t dim()</dt> <dd>
+<p>Gets the amount of native words backing this <code>BitArray</code>.</p> </dd> <dt class="d_decl" id="BitArray.length">const pure nothrow @nogc @property @safe size_t length()</dt> <dd>
+<p>Gets the amount of bits in the <code>BitArray</code>.</p> </dd> <dt class="d_decl" id="BitArray.length.2">pure nothrow @property @system size_t length(size_t newlen)</dt> <dd>
+<p>Sets the amount of bits in the <code>BitArray</code>. <span class="red">Warning: increasing <code>length</code> may overwrite bits in final word up to the next word boundary. i.e. D dynamic array extension semantics are not followed.</span></p> </dd> <dt class="d_decl" id="BitArray.opIndex">const pure nothrow @nogc bool opIndex(size_t i)</dt> <dd>
+<p>Gets the <code>i</code>'th bit in the <code>BitArray</code>.</p> </dd> <dt class="d_decl" id="BitArray.opIndexAssign">pure nothrow @nogc bool opIndexAssign(bool b, size_t i)</dt> <dd>
+<p>Sets the <code>i</code>'th bit in the <code>BitArray</code>.</p> </dd> <dt class="d_decl" id="BitArray.dup">const pure nothrow @property BitArray dup()</dt> <dd>
+<p>Duplicates the <code>BitArray</code> and its contents.</p> </dd> <dt class="d_decl" id="BitArray.opApply">int opApply(scope int delegate(ref bool) dg)<br>const int opApply(scope int delegate(bool) dg)<br>int opApply(scope int delegate(size_t, ref bool) dg)<br>const int opApply(scope int delegate(size_t, bool) dg)</dt> <dd>
+<p>Support for <code>foreach</code> loops for <code>BitArray</code>.</p> </dd> <dt class="d_decl" id="BitArray.reverse">pure nothrow @nogc @property BitArray reverse()</dt> <dd>
+<p>Reverses the bits of the <code>BitArray</code>.</p> </dd> <dt class="d_decl" id="BitArray.sort">pure nothrow @nogc @property BitArray sort()</dt> <dd>
+<p>Sorts the <code>BitArray</code>'s elements.</p> </dd> <dt class="d_decl" id="BitArray.opEquals">const pure nothrow @nogc bool opEquals(ref const BitArray a2)</dt> <dd>
+<p>Support for operators == and != for <code>BitArray</code>.</p> </dd> <dt class="d_decl" id="BitArray.opCmp">const pure nothrow @nogc int opCmp(BitArray a2)</dt> <dd>
+<p>Supports comparison operators for <code>BitArray</code>.</p> </dd> <dt class="d_decl" id="BitArray.toHash">const pure nothrow @nogc size_t toHash()</dt> <dd>
+<p>Support for hashing for <code>BitArray</code>.</p> </dd> <dt class="d_decl" id="BitArray.this">pure nothrow @system this(bool[] ba)</dt> <dd>
+<p>Set this <code>BitArray</code> to the contents of <code>ba</code>.</p> </dd> <dt class="d_decl" id="BitArray.this.2">pure nothrow this(void[] v, size_t numbits)</dt> <dd>
+<p>Map the <code>BitArray</code> onto <code>v</code>, with <code>numbits</code> being the number of bits in the array. Does not copy the data. <code>v.length</code> must be a multiple of <code>size_t.sizeof</code>. If there are unmapped bits in the final mapped word then these will be set to 0. </p>
+<p>This is the inverse of <code>opCast</code>.</p> </dd> <dt class="d_decl" id="BitArray.opCast">pure nothrow @nogc void[] opCast(T : void[])()</dt> <dd>
+<p>Convert to <code>void[]</code>.</p> </dd> <dt class="d_decl" id="BitArray.opCast.2">pure nothrow @nogc size_t[] opCast(T : size_t[])()</dt> <dd>
+<p>Convert to <code>size_t[]</code>.</p> </dd> <dt class="d_decl" id="BitArray.opCom">const pure nothrow BitArray opCom()</dt> <dd>
+<p>Support for unary operator ~ for <code>BitArray</code>.</p> </dd> <dt class="d_decl" id="BitArray.opBinary">const pure nothrow BitArray opBinary(string op)(const BitArray e2)<br><br>  Constraints:<br>    if (op == "-" || op == "&amp;" || op == "|" || op == "^")</dt> <dd>
+<p>Support for binary bitwise operators for <code>BitArray</code>.</p> </dd> <dt class="d_decl" id="BitArray.opOpAssign">pure nothrow @nogc BitArray opOpAssign(string op)(const BitArray e2)<br><br>  Constraints:<br>    if (op == "-" || op == "&amp;" || op == "|" || op == "^")</dt> <dd>
+<p>Support for operator op= for <code>BitArray</code>.</p> </dd> <dt class="d_decl" id="BitArray.opCatAssign">pure nothrow BitArray opCatAssign(bool b)<br>pure nothrow BitArray opCatAssign(BitArray b)</dt> <dd>
+<p>Support for operator ~= for <code>BitArray</code>. <span class="red">Warning: This will overwrite a bit in the final word of the current underlying data regardless of whether it is shared between BitArray objects. i.e. D dynamic array concatenation semantics are not followed</span></p> </dd> <dt class="d_decl" id="BitArray.opCat">const pure nothrow BitArray opCat(bool b)<br>const pure nothrow BitArray opCat_r(bool b)<br>const pure nothrow BitArray opCat(BitArray b)</dt> <dd>
+<p>Support for binary operator ~ for <code>BitArray</code>.</p> </dd> <dt class="d_decl" id="BitArray.opOpAssign.2">pure nothrow @nogc void opOpAssign(string op)(size_t nbits)<br><br>  Constraints:<br>    if (op == "&lt;</dt> <dd>
+<p>Operator <code>&lt;&lt;=</code> support. </p>
+<p>Shifts all the bits in the array to the left by the given number of bits. The leftmost bits are dropped, and 0's are appended to the end to fill up the vacant bits. <br><br> <span class="red">Warning: unused bits in the final word up to the next word boundary may be overwritten by this operation. It does not attempt to preserve bits past the end of the array.</span></p> </dd> <dt class="d_decl" id="BitArray.opOpAssign.3">pure nothrow @nogc void opOpAssign(string op)(size_t nbits)<br><br>  Constraints:<br>    if (op == "&gt;&gt;")</dt> <dd>
+<p>Operator <code>&gt;&gt;=</code> support. </p>
+<p>Shifts all the bits in the array to the right by the given number of bits. The rightmost bits are dropped, and 0's are inserted at the back to fill up the vacant bits. <br><br> <span class="red">Warning: unused bits in the final word up to the next word boundary may be overwritten by this operation. It does not attempt to preserve bits past the end of the array.</span></p> </dd> <dt class="d_decl" id="BitArray.toString">const void toString(scope void delegate(const(char)[]) sink, FormatSpec!char fmt)</dt> <dd>
+<p>Return a string representation of this BitArray. </p>
+<p>Two format specifiers are supported: </p>
+<li>
+<b>%s</b> which prints the bits as an array, and</li> <li>
+<b>%b</b> which prints the bits as 8-bit byte packets</li> separated with an underscore. <dl>
+<dt>Examples:</dt>
+<dd>
+<pre data-language="d">import std.format : format;
+
+debug(bitarray) printf("BitArray.toString unittest\n");
+auto b = BitArray([0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1]);
+
+auto s1 = format("%s", b);
+writeln(s1); // "[0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1]"
+
+auto s2 = format("%b", b);
+writeln(s2); // "00001111_00001111"
+</pre> </dd>
+</dl> </dd> <dt class="d_decl" id="BitArray.bitsSet">const nothrow @property auto bitsSet()</dt> <dd>
+<p>Return a lazy range of the indices of set bits.</p>
+<dl>
+<dt>Examples:</dt>
+<dd>
+<pre data-language="d">import std.algorithm.comparison : equal;
+
+auto b1 = BitArray([0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1]);
+assert(b1.bitsSet.equal([4, 5, 6, 7, 12, 13, 14, 15]));
+
+BitArray b2;
+b2.length = 1000;
+b2[333] = true;
+b2[666] = true;
+b2[999] = true;
+assert(b2.bitsSet.equal([333, 666, 999]));
+</pre> </dd>
+</dl> </dd> </dl> </dd> <dt class="d_decl" id="swapEndian">pure nothrow @nogc @safe T swapEndian(T)(T val)<br><br>  Constraints:<br>    if (isIntegral!T || isSomeChar!T || isBoolean!T)</dt> <dd>
+<p>Swaps the endianness of the given integral value or character.</p> </dd> <dt class="d_decl" id="nativeToBigEndian">pure nothrow @nogc @safe auto nativeToBigEndian(T)(T val)<br><br>  Constraints:<br>    if (canSwapEndianness!T)</dt> <dd>
+<p>Converts the given value from the native endianness to big endian and returns it as a <code>ubyte[n]</code> where <code>n</code> is the size of the given type. </p>
+<p>Returning a <code>ubyte[n]</code> helps prevent accidentally using a swapped value as a regular one (and in the case of floating point values, it's necessary, because the FPU will mess up any swapped floating point values. So, you can't actually have swapped floating point values as floating point values). <br><br> <code>real</code> is not supported, because its size is implementation-dependent and therefore could vary from machine to machine (which could make it unusable if you tried to transfer it to another machine).</p> <dl>
+<dt>Examples:</dt>
+<dd>
+<pre data-language="d">int i = 12345;
+ubyte[4] swappedI = nativeToBigEndian(i);
+writeln(i); // bigEndianToNative!int(swappedI)
+
+double d = 123.45;
+ubyte[8] swappedD = nativeToBigEndian(d);
+writeln(d); // bigEndianToNative!double(swappedD)
+</pre> </dd>
+</dl> </dd> <dt class="d_decl" id="bigEndianToNative">pure nothrow @nogc @safe T bigEndianToNative(T, size_t n)(ubyte[n] val)<br><br>  Constraints:<br>    if (canSwapEndianness!T &amp;&amp; n == T.sizeof)</dt> <dd>
+<p>Converts the given value from big endian to the native endianness and returns it. The value is given as a <code>ubyte[n]</code> where <code>n</code> is the size of the target type. You must give the target type as a template argument, because there are multiple types with the same size and so the type of the argument is not enough to determine the return type. </p>
+<p>Taking a <code>ubyte[n]</code> helps prevent accidentally using a swapped value as a regular one (and in the case of floating point values, it's necessary, because the FPU will mess up any swapped floating point values. So, you can't actually have swapped floating point values as floating point values).</p> <dl>
+<dt>Examples:</dt>
+<dd>
+<pre data-language="d">ushort i = 12345;
+ubyte[2] swappedI = nativeToBigEndian(i);
+writeln(i); // bigEndianToNative!ushort(swappedI)
+
+dchar c = 'D';
+ubyte[4] swappedC = nativeToBigEndian(c);
+writeln(c); // bigEndianToNative!dchar(swappedC)
+</pre> </dd>
+</dl> </dd> <dt class="d_decl" id="nativeToLittleEndian">pure nothrow @nogc @safe auto nativeToLittleEndian(T)(T val)<br><br>  Constraints:<br>    if (canSwapEndianness!T)</dt> <dd>
+<p>Converts the given value from the native endianness to little endian and returns it as a <code>ubyte[n]</code> where <code>n</code> is the size of the given type. </p>
+<p>Returning a <code>ubyte[n]</code> helps prevent accidentally using a swapped value as a regular one (and in the case of floating point values, it's necessary, because the FPU will mess up any swapped floating point values. So, you can't actually have swapped floating point values as floating point values).</p> <dl>
+<dt>Examples:</dt>
+<dd>
+<pre data-language="d">int i = 12345;
+ubyte[4] swappedI = nativeToLittleEndian(i);
+writeln(i); // littleEndianToNative!int(swappedI)
+
+double d = 123.45;
+ubyte[8] swappedD = nativeToLittleEndian(d);
+writeln(d); // littleEndianToNative!double(swappedD)
+</pre> </dd>
+</dl> </dd> <dt class="d_decl" id="littleEndianToNative">pure nothrow @nogc @safe T littleEndianToNative(T, size_t n)(ubyte[n] val)<br><br>  Constraints:<br>    if (canSwapEndianness!T &amp;&amp; n == T.sizeof)</dt> <dd>
+<p>Converts the given value from little endian to the native endianness and returns it. The value is given as a <code>ubyte[n]</code> where <code>n</code> is the size of the target type. You must give the target type as a template argument, because there are multiple types with the same size and so the type of the argument is not enough to determine the return type. </p>
+<p>Taking a <code>ubyte[n]</code> helps prevent accidentally using a swapped value as a regular one (and in the case of floating point values, it's necessary, because the FPU will mess up any swapped floating point values. So, you can't actually have swapped floating point values as floating point values). <br><br> <code>real</code> is not supported, because its size is implementation-dependent and therefore could vary from machine to machine (which could make it unusable if you tried to transfer it to another machine).</p> <dl>
+<dt>Examples:</dt>
+<dd>
+<pre data-language="d">ushort i = 12345;
+ubyte[2] swappedI = nativeToLittleEndian(i);
+writeln(i); // littleEndianToNative!ushort(swappedI)
+
+dchar c = 'D';
+ubyte[4] swappedC = nativeToLittleEndian(c);
+writeln(c); // littleEndianToNative!dchar(swappedC)
+</pre> </dd>
+</dl> </dd> <dt class="d_decl" id="peek">T peek(T, Endian endianness = Endian.bigEndian, R)(R range)<br>T peek(T, Endian endianness = Endian.bigEndian, R)(R range, size_t index)<br>T peek(T, Endian endianness = Endian.bigEndian, R)(R range, size_t* index)<br><br>  Constraints:<br>    if (canSwapEndianness!T &amp;&amp; isForwardRange!R &amp;&amp; is(ElementType!R : const(ubyte)))<br>    if (canSwapEndianness!T &amp;&amp; isForwardRange!R &amp;&amp; hasSlicing!R &amp;&amp; is(ElementType!R : const(ubyte)))<br>    if (canSwapEndianness!T &amp;&amp; isForwardRange!R &amp;&amp; hasSlicing!R &amp;&amp; is(ElementType!R : const(ubyte)))</dt> <dd>
+<p>Takes a <code>range</code> of <code>ubyte</code>s and converts the first <code>T.sizeof</code> bytes to <code>T</code>. The value returned is converted from the given endianness to the native endianness. The <code>range</code> is not consumed. </p>
+<dl>
+<dt>Parameters:</dt>
+<dd><table>
+<tr>
+<td>T</td> <td>The integral type to convert the first <code>T.sizeof</code> bytes to.</td>
+</tr> <tr>
+<td>endianness</td> <td>The endianness that the bytes are assumed to be in.</td>
+</tr> <tr>
+<td>R <code>range</code>
+</td> <td>The <code>range</code> to read from.</td>
+</tr> <tr>
+<td>size_t <code>index</code>
+</td> <td>The <code>index</code> to start reading from (instead of starting at the front). If <code>index</code> is a pointer, then it is updated to the <code>index</code> after the bytes read. The overloads with <code>index</code> are only available if <code>hasSlicing!R</code> is <code>true</code>.</td>
+</tr> </table></dd>
+</dl> <dl>
+<dt>Examples:</dt>
+<dd>
+<pre data-language="d">ubyte[] buffer = [1, 5, 22, 9, 44, 255, 8];
+writeln(buffer.peek!uint()); // 17110537
+writeln(buffer.peek!ushort()); // 261
+writeln(buffer.peek!ubyte()); // 1
+
+writeln(buffer.peek!uint(2)); // 369700095
+writeln(buffer.peek!ushort(2)); // 5641
+writeln(buffer.peek!ubyte(2)); // 22
+
+size_t index = 0;
+writeln(buffer.peek!ushort(&amp;index)); // 261
+writeln(index); // 2
+
+writeln(buffer.peek!uint(&amp;index)); // 369700095
+writeln(index); // 6
+
+writeln(buffer.peek!ubyte(&amp;index)); // 8
+writeln(index); // 7
+</pre> </dd>
+</dl> </dd> <dt class="d_decl" id="read">T read(T, Endian endianness = Endian.bigEndian, R)(ref R range)<br><br>  Constraints:<br>    if (canSwapEndianness!T &amp;&amp; isInputRange!R &amp;&amp; is(ElementType!R : const(ubyte)))</dt> <dd>
+<p>Takes a <code>range</code> of <code>ubyte</code>s and converts the first <code>T.sizeof</code> bytes to <code>T</code>. The value returned is converted from the given endianness to the native endianness. The <code>T.sizeof</code> bytes which are <code>read</code> are consumed from the <code>range</code>. </p>
+<dl>
+<dt>Parameters:</dt>
+<dd><table>
+<tr>
+<td>T</td> <td>The integral type to convert the first <code>T.sizeof</code> bytes to.</td>
+</tr> <tr>
+<td>endianness</td> <td>The endianness that the bytes are assumed to be in.</td>
+</tr> <tr>
+<td>R <code>range</code>
+</td> <td>The <code>range</code> to <code>read</code> from.</td>
+</tr> </table></dd>
+</dl> <dl>
+<dt>Examples:</dt>
+<dd>
+<pre data-language="d">import std.range.primitives : empty;
+ubyte[] buffer = [1, 5, 22, 9, 44, 255, 8];
+writeln(buffer.length); // 7
+
+writeln(buffer.read!ushort()); // 261
+writeln(buffer.length); // 5
+
+writeln(buffer.read!uint()); // 369700095
+writeln(buffer.length); // 1
+
+writeln(buffer.read!ubyte()); // 8
+assert(buffer.empty);
+</pre> </dd>
+</dl> </dd> <dt class="d_decl" id="write">void write(T, Endian endianness = Endian.bigEndian, R)(R range, T value, size_t index)<br>void write(T, Endian endianness = Endian.bigEndian, R)(R range, T value, size_t* index)<br><br>  Constraints:<br>    if (canSwapEndianness!T &amp;&amp; isForwardRange!R &amp;&amp; hasSlicing!R &amp;&amp; is(ElementType!R : ubyte))<br>    if (canSwapEndianness!T &amp;&amp; isForwardRange!R &amp;&amp; hasSlicing!R &amp;&amp; is(ElementType!R : ubyte))</dt> <dd>
+<p>Takes an integral <code>value</code>, converts it to the given endianness, and writes it to the given <code>range</code> of <code>ubyte</code>s as a sequence of <code>T.sizeof</code> <code>ubyte</code>s starting at <code>index</code>. <code>hasSlicing!R</code> must be <code>true</code>. </p>
+<dl>
+<dt>Parameters:</dt>
+<dd><table>
+<tr>
+<td>T</td> <td>The integral type to convert the first <code>T.sizeof</code> bytes to.</td>
+</tr> <tr>
+<td>endianness</td> <td>The endianness to write the bytes in.</td>
+</tr> <tr>
+<td>R <code>range</code>
+</td> <td>The <code>range</code> to write to.</td>
+</tr> <tr>
+<td>T <code>value</code>
+</td> <td>The <code>value</code> to write.</td>
+</tr> <tr>
+<td>size_t <code>index</code>
+</td> <td>The <code>index</code> to start writing to. If <code>index</code> is a pointer, then it is updated to the <code>index</code> after the bytes read.</td>
+</tr> </table></dd>
+</dl> <dl>
+<dt>Examples:</dt>
+<dd>
+<pre data-language="d">{
+    ubyte[] buffer = [0, 0, 0, 0, 0, 0, 0, 0];
+    buffer.write!uint(29110231u, 0);
+    writeln(buffer); // [1, 188, 47, 215, 0, 0, 0, 0]
+
+    buffer.write!ushort(927, 0);
+    writeln(buffer); // [3, 159, 47, 215, 0, 0, 0, 0]
+
+    buffer.write!ubyte(42, 0);
+    writeln(buffer); // [42, 159, 47, 215, 0, 0, 0, 0]
+}
+
+{
+    ubyte[] buffer = [0, 0, 0, 0, 0, 0, 0, 0, 0];
+    buffer.write!uint(142700095u, 2);
+    writeln(buffer); // [0, 0, 8, 129, 110, 63, 0, 0, 0]
+
+    buffer.write!ushort(19839, 2);
+    writeln(buffer); // [0, 0, 77, 127, 110, 63, 0, 0, 0]
+
+    buffer.write!ubyte(132, 2);
+    writeln(buffer); // [0, 0, 132, 127, 110, 63, 0, 0, 0]
+}
+
+{
+    ubyte[] buffer = [0, 0, 0, 0, 0, 0, 0, 0];
+    size_t index = 0;
+    buffer.write!ushort(261, &amp;index);
+    writeln(buffer); // [1, 5, 0, 0, 0, 0, 0, 0]
+    writeln(index); // 2
+
+    buffer.write!uint(369700095u, &amp;index);
+    writeln(buffer); // [1, 5, 22, 9, 44, 255, 0, 0]
+    writeln(index); // 6
+
+    buffer.write!ubyte(8, &amp;index);
+    writeln(buffer); // [1, 5, 22, 9, 44, 255, 8, 0]
+    writeln(index); // 7
+}
+</pre> </dd>
+</dl> </dd> <dt class="d_decl" id="append">void append(T, Endian endianness = Endian.bigEndian, R)(R range, T value)<br><br>  Constraints:<br>    if (canSwapEndianness!T &amp;&amp; isOutputRange!(R, ubyte))</dt> <dd>
+<p>Takes an integral <code>value</code>, converts it to the given endianness, and appends it to the given <code>range</code> of <code>ubyte</code>s (using <code>put</code>) as a sequence of <code>T.sizeof</code> <code>ubyte</code>s starting at index. <code>hasSlicing!R</code> must be <code>true</code>. </p>
+<dl>
+<dt>Parameters:</dt>
+<dd><table>
+<tr>
+<td>T</td> <td>The integral type to convert the first <code>T.sizeof</code> bytes to.</td>
+</tr> <tr>
+<td>endianness</td> <td>The endianness to write the bytes in.</td>
+</tr> <tr>
+<td>R <code>range</code>
+</td> <td>The <code>range</code> to append to.</td>
+</tr> <tr>
+<td>T <code>value</code>
+</td> <td>The <code>value</code> to append.</td>
+</tr> </table></dd>
+</dl> <dl>
+<dt>Examples:</dt>
+<dd>
+<pre data-language="d">import std.array;
+auto buffer = appender!(const ubyte[])();
+buffer.append!ushort(261);
+writeln(buffer.data); // [1, 5]
+
+buffer.append!uint(369700095u);
+writeln(buffer.data); // [1, 5, 22, 9, 44, 255]
+
+buffer.append!ubyte(8);
+writeln(buffer.data); // [1, 5, 22, 9, 44, 255, 8]
+</pre> </dd>
+</dl> </dd> <dt class="d_decl" id="bitsSet">pure nothrow @nogc auto bitsSet(T)(T value)<br><br>  Constraints:<br>    if (isIntegral!T)</dt> <dd>
+<p>Range that iterates the indices of the set bits in <code>value</code>. Index 0 corresponds to the least significant bit. For signed integers, the highest index corresponds to the sign bit.</p>
+<dl>
+<dt>Examples:</dt>
+<dd>
+<pre data-language="d">import std.algorithm.comparison : equal;
+import std.range : iota;
+
+assert(bitsSet(1).equal([0]));
+assert(bitsSet(5).equal([0, 2]));
+assert(bitsSet(-1).equal(iota(32)));
+assert(bitsSet(int.min).equal([31]));
+</pre> </dd>
+</dl> </dd> </dl>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 1999–2017 The D Language Foundation<br>Licensed under the Boost License 1.0.<br>
+    <a href="https://dlang.org/phobos/std_bitmanip.html" class="_attribution-link" target="_blank">https://dlang.org/phobos/std_bitmanip.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

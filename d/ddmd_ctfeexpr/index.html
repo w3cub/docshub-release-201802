@@ -1,0 +1,142 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>ddmd.ctfeexpr - D - W3cubDocs</title>
+  
+  <meta name="description" content=" Compiler implementation of the D programming language. ">
+  <meta name="keywords" content="ddmd, ctfeexpr, -, d">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/d/ddmd_ctfeexpr/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/d.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/d/" class="_nav-link" title="" style="margin-left:0;">D</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _d">
+				
+<h1>ddmd.ctfeexpr</h1>  <p>Compiler implementation of the <a href="http://www.dlang.org" target="_blank">D programming language</a>. </p> <dl>
+<dt>Authors:</dt>
+<dd>
+<a href="http://www.digitalmars.com" target="_blank">Walter Bright</a> </dd>
+</dl> <dl>
+<dt>License:</dt>
+<dd>
+<a href="http://www.boost.org/LICENSE_1_0.txt" target="_blank">Boost License 1.0</a> </dd>
+</dl> <dl>
+<dt>Source:</dt>
+<dd> <a href="https://github.com/dlang/dmd/blob/master/src/ddmd/ctfeexpr.d" target="_blank">ctfeexpr.d</a>
+</dd>
+</dl> <dl>
+<dt class="d_decl" id="CtfeStatus">struct CtfeStatus</dt> <dd>
+<p>Global status of the CTFE engine. Mostly used for performance diagnostics</p> </dd> <dt class="d_decl" id="ClassReferenceExp">class ClassReferenceExp: ddmd.expression.Expression</dt> <dd>
+<p>A reference to a class, or an interface. We need this when we point to a base class (we must record what the type is).</p> </dd> <dt class="d_decl" id="VoidInitExp">class VoidInitExp: ddmd.expression.Expression</dt> <dd>
+<p>An uninitialized value</p> </dd> <dt class="d_decl" id="ThrownExceptionExp">class ThrownExceptionExp: ddmd.expression.Expression</dt> <dd>
+<p>Fake class which holds the thrown exception. Used for implementing exception handling.</p> </dd> <dt class="d_decl" id="CTFEExp">class CTFEExp: ddmd.expression.Expression</dt> <dd>
+<p>This type is only used by the interpreter.</p> </dd> <dt class="d_decl" id="needToCopyLiteral">bool needToCopyLiteral(Expression expr)</dt> <dd>
+<p>Aggregate literals (AA/string/array/struct)</p> </dd> <dt class="d_decl" id="createBlockDuplicatedArrayLiteral">ArrayLiteralExp createBlockDuplicatedArrayLiteral(Loc loc, Type type, Expression elem, size_t dim)</dt> <dd>
+<p>Helper for NewExp Create an array literal consisting of '<code>elem</code>' duplicated '<code>dim</code>' times. </p> <dl>
+<dt>Parameters:</dt>
+<dd><table>
+<tr>
+<td>Loc <code>loc</code>
+</td> <td>source location where the interpretation occurs</td>
+</tr> <tr>
+<td>Type <code>type</code>
+</td> <td>target <code>type</code> of the result</td>
+</tr> <tr>
+<td>Expression <code>elem</code>
+</td> <td>the source of array element, it will be owned by the result</td>
+</tr> <tr>
+<td>size_t <code>dim</code>
+</td> <td>element number of the result</td>
+</tr> </table></dd>
+</dl> <dl>
+<dt>Returns:</dt>
+<dd>Constructed ArrayLiteralExp</dd>
+</dl> </dd> <dt class="d_decl" id="createBlockDuplicatedStringLiteral">StringExp createBlockDuplicatedStringLiteral(Loc loc, Type type, dchar value, size_t dim, ubyte sz)</dt> <dd>
+<p>Helper for NewExp Create a string literal consisting of '<code>value</code>' duplicated '<code>dim</code>' times.</p> </dd> <dt class="d_decl" id="isTypeInfo_Class">bool isTypeInfo_Class(Type type)</dt> <dd>
+<p>TypeInfo operations</p> </dd> <dt class="d_decl" id="isPointer">bool isPointer(Type t)</dt> <dd>
+<p>Pointer operations</p> </dd> <dt class="d_decl" id="pointToSameMemoryBlock">bool pointToSameMemoryBlock(Expression agg1, Expression agg2)</dt> <dd>
+<p>Return <code>true</code> if <code>agg1</code> and <code>agg2</code> are pointers to the same memory block</p> </dd> <dt class="d_decl" id="isCtfeComparable">bool isCtfeComparable(Expression e)</dt> <dd>
+<p>Constant folding, with support for CTFE </p> <p>Return <code>true</code> if non-pointer expression <code>e</code> can be compared <br><br> with &gt;,is, ==, etc, using ctfeCmp, ctfeEqual, ctfeIdentity</p> </dd> <dt class="d_decl" id="specificCmp">int specificCmp(TOK op, int rawCmp)</dt> <dd>
+<p>Returns cmp OP 0; where OP is ==, !=, &lt;, &gt;=, etc. Result is 0 or 1</p> </dd> <dt class="d_decl" id="intUnsignedCmp">int intUnsignedCmp(TOK op, dinteger_t n1, dinteger_t n2)</dt> <dd>
+<p>Returns e1 OP e2; where OP is ==, !=, &lt;, &gt;=, etc. Result is 0 or 1</p> </dd> <dt class="d_decl" id="intSignedCmp">int intSignedCmp(TOK op, sinteger_t n1, sinteger_t n2)</dt> <dd>
+<p>Returns e1 OP e2; where OP is ==, !=, &lt;, &gt;=, etc. Result is 0 or 1</p> </dd> <dt class="d_decl" id="realCmp">int realCmp(TOK op, real_t r1, real_t r2)</dt> <dd>
+<p>Returns e1 OP e2; where OP is ==, !=, &lt;, &gt;=, etc. Result is 0 or 1</p> </dd> <dt class="d_decl" id="ctfeEqual">int ctfeEqual(Loc loc, TOK op, Expression e1, Expression e2)</dt> <dd>
+<p>Evaluate ==, !=. Resolves slices before comparing. Returns 0 or 1</p> </dd> <dt class="d_decl" id="ctfeIdentity">int ctfeIdentity(Loc loc, TOK op, Expression e1, Expression e2)</dt> <dd>
+<p>Evaluate is, !is. Resolves slices before comparing. Returns 0 or 1</p> </dd> <dt class="d_decl" id="ctfeCmp">int ctfeCmp(Loc loc, TOK op, Expression e1, Expression e2)</dt> <dd>
+<p>Evaluate &gt;,&lt;=, etc. Resolves slices before comparing. Returns 0 or 1</p> </dd> <dt class="d_decl" id="assignInPlace">void assignInPlace(Expression dest, Expression src)</dt> <dd>
+<p>Assignment helper functions</p> </dd> <dt class="d_decl" id="changeArrayLiteralLength">UnionExp changeArrayLiteralLength(Loc loc, TypeArray arrayType, Expression oldval, size_t oldlen, size_t newlen)</dt> <dd>
+<p>Given array literal <code>oldval</code> of type ArrayLiteralExp or StringExp, of length </p> <p><code>oldlen</code>, change its length to <code>newlen</code>. If the <code>newlen</code> is longer than <code>oldlen</code>, <br><br> all new elements will be set to the default initializer for the element type.</p> </dd> <dt class="d_decl" id="isCtfeValueValid">bool isCtfeValueValid(Expression newval)</dt> <dd>
+<p>CTFE Sanity Checks</p> </dd> <dt class="d_decl" id="voidInitLiteral">UnionExp voidInitLiteral(Type t, VarDeclaration var)</dt> <dd>
+<p>Void initialization</p> </dd> </dl>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 1999–2017 The D Language Foundation<br>Licensed under the Boost License 1.0.<br>
+    <a href="https://dlang.org/phobos/ddmd_ctfeexpr.html" class="_attribution-link" target="_blank">https://dlang.org/phobos/ddmd_ctfeexpr.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

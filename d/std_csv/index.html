@@ -1,0 +1,290 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>std.csv - D - W3cubDocs</title>
+  
+  <meta name="description" content=" Implements functionality to read Comma Separated Values and its variants from an input range of dchar. ">
+  <meta name="keywords" content="std, csv, -, d">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/d/std_csv/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/d.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/d/" class="_nav-link" title="" style="margin-left:0;">D</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _d">
+				
+<h1>std.csv</h1>  <p>Implements functionality to read Comma Separated Values and its variants from an input range of <code>dchar</code>. </p>
+<p>Comma Separated Values provide a simple means to transfer and store tabular data. It has been common for programs to use their own variant of the CSV format. This parser will loosely follow the <a href="http://tools.ietf.org/html/rfc4180" target="_blank">RFC-4180</a>. CSV input should adhere to the following criteria (differences from RFC-4180 in parentheses): <br><br> </p>
+<ul> <li>A record is separated by a new line (CRLF,LF,CR)</li> <li>A final record may end with a new line</li> <li>A header may be provided as the first record in input</li> <li>A record has fields separated by a comma (customizable)</li> <li>A field containing new lines, commas, or double quotes should be enclosed in double quotes (customizable)</li> <li>Double quotes in a field are escaped with a double quote</li> <li>Each record should contain the same number of fields</li> </ul>  <dl>
+<dt>Example</dt>
+
+</dl>
+<pre data-language="d">import std.algorithm;
+import std.array;
+import std.csv;
+import std.stdio;
+import std.typecons;
+
+void main()
+{
+    auto text = "Joe,Carpenter,300000\nFred,Blacksmith,400000\r\n";
+
+    foreach (record; csvReader!(Tuple!(string, string, int))(text))
+    {
+        writefln("%s works as a %s and earns $%d per year",
+                 record[0], record[1], record[2]);
+    }
+
+    // To read the same string from the file "filename.csv":
+
+    auto file = File("filename.csv", "r");
+    foreach (record;
+        file.byLine.joiner("\n").csvReader!(Tuple!(string, string, int)))
+    {
+        writefln("%s works as a %s and earns $%d per year",
+                 record[0], record[1], record[2]);
+    }
+}
+}
+</pre>  When an input contains a header the <code>Contents</code> can be specified as an associative array. Passing <code>null</code> to signify that a header is present.  <pre data-language="d">auto text = "Name,Occupation,Salary\r"
+    "Joe,Carpenter,300000\nFred,Blacksmith,400000\r\n";
+
+foreach (record; csvReader!(string[string])
+        (text, null))
+{
+    writefln("%s works as a %s and earns $%s per year.",
+             record["Name"], record["Occupation"],
+             record["Salary"]);
+}
+</pre>  This module allows content to be iterated by record stored in a struct, class, associative array, or as a range of fields. Upon detection of an error an CSVException is thrown (can be disabled). csvNextToken has been made public to allow for attempted recovery.  Disabling exceptions will lift many restrictions specified above. A quote can appear in a field if the field was not quoted. If in a quoted field any quote by itself, not at the end of a field, will end processing for that field. The field is ended when there is no input, even if the quote was not closed.  <dl>
+<dt>See Also:</dt>
+<dd>
+<a href="http://en.wikipedia.org/wiki/Comma-separated_values" target="_blank">Wikipedia Comma-separated values</a> </dd>
+</dl> <dl>
+<dt>License:</dt>
+<dd>
+<a href="http://www.boost.org/LICENSE_1_0.txt" target="_blank">Boost License 1.0</a>. </dd>
+</dl> <dl>
+<dt>Authors:</dt>
+<dd>Jesse Phillips </dd>
+</dl> <dl>
+<dt>Source</dt>
+<dd> <span class="phobos_src"><a class="https" href="https://github.com/dlang/phobos/blob/master/std/csv.d" target="_blank">std/csv.d</a></span>
+</dd>
+</dl> <dl>
+<dt class="d_decl" id="CSVException">class CSVException: object.Exception</dt> <dd>
+<p>Exception containing the row and column for when an exception was thrown. </p>
+<p>Numbering of both row and col start at one and corresponds to the location in the file rather than any specified header. Special consideration should be made when there is failure to match the header see <a href="#%20HeaderMismatchException"><code> HeaderMismatchException</code></a> for details. <br><br> When performing type conversions, <a href="../std_conv/#ConvException"><code>std.conv.ConvException</code></a> is stored in the <code>next</code> field.</p> <dl>
+<dt class="d_decl" id="CSVException.row">size_t row</dt>  <dt class="d_decl" id="CSVException.col">size_t col</dt>  </dl> </dd> <dt class="d_decl" id="IncompleteCellException">class IncompleteCellException: std.csv.CSVException</dt> <dd>
+<p>Exception thrown when a Token is identified to not be completed: a quote is found in an unquoted field, data continues after a closing quote, or the quoted field was not closed before data was empty.</p> <dl>
+<dt class="d_decl" id="IncompleteCellException.partialData">dstring partialData</dt> <dd>
+<p>Data pulled from input before finding a problem </p>
+<p>This field is populated when using <a href="#csvReader"><code>csvReader</code></a> but not by <a href="#csvNextToken"><code>csvNextToken</code></a> as this data will have already been fed to the output range.</p> </dd> </dl> </dd> <dt class="d_decl" id="HeaderMismatchException">class HeaderMismatchException: std.csv.CSVException</dt> <dd>
+<p>Exception thrown under different conditions based on the type of <code> Contents</code>. </p>
+<p>Structure, Class, and Associative Array </p>
+<ul> <li>When a header is provided but a matching column is not found</li> </ul> <br><br> Other <ul> <li>When a header is provided but a matching column is not found</li> <li>Order did not match that found in the input</li> </ul> <br><br> Since a row and column is not meaningful when a column specified by the header is not found in the data, both row and col will be zero. Otherwise row is always one and col is the first instance found in header that occurred before the previous starting at one. </dd> <dt class="d_decl" id="Malformed">enum Malformed: int</dt> <dd>
+<p>Determines the behavior for when an error is detected. </p>
+<p>Disabling exception will follow these rules: </p>
+<ul> <li>A quote can appear in a field if the field was not quoted.</li> <li>If in a quoted field any quote by itself, not at the end of a field, will end processing for that field.</li> <li>The field is ended when there is no input, even if the quote was not closed.</li> <li>If the given header does not match the order in the input, the content will return as it is found in the input.</li> <li>If the given header contains columns not found in the input they will be ignored.</li> </ul> <dl>
+<dt class="d_decl" id="Malformed.ignore">ignore</dt> <dd>
+<p>No exceptions are thrown due to incorrect CSV.</p> </dd> <dt class="d_decl" id="Malformed.throwException">throwException</dt> <dd>
+<p>Use exceptions when input has incorrect CSV.</p> </dd> </dl> </dd> <dt class="d_decl" id="csvReader">auto csvReader(Contents = string, Malformed ErrorLevel = Malformed.throwException, Range, Separator = char)(Range input, Separator delimiter = ',', Separator quote = '"')<br><br>  Constraints:<br>    if (isInputRange!Range &amp;&amp; is(Unqual!(ElementType!Range) == dchar) &amp;&amp; isSomeChar!Separator &amp;&amp; !is(Contents T : T[U], U : string))</dt> <dd>
+<p>Returns an <code>input</code> range for iterating over records found in <code> input</code>. </p>
+<p> The <code>Contents</code> of the <code>input</code> can be provided if all the records are the same type such as all integer data: <br><br> </p>
+<pre data-language="d">string str = `76,26,22`;
+int[] ans = [76,26,22];
+auto records = csvReader!int(str);
+
+foreach (record; records)
+{
+    assert(equal(record, ans));
+}
+</pre> <br><br> Example using a struct with modified <code>delimiter</code>: <br><br> <pre data-language="d">string str = "Hello;65;63.63\nWorld;123;3673.562";
+struct Layout
+{
+    string name;
+    int value;
+    double other;
+}
+
+auto records = csvReader!Layout(str,';');
+
+foreach (record; records)
+{
+    writeln(record.name);
+    writeln(record.value);
+    writeln(record.other);
+}
+</pre> <br><br> Specifying <code>ErrorLevel</code> as Malformed.ignore will lift restrictions on the format. This example shows that an exception is not thrown when finding a <code>quote</code> in a field not quoted. <br><br> <pre data-language="d">string str = "A \" is now part of the data";
+auto records = csvReader!(string,Malformed.ignore)(str);
+auto record = records.front;
+
+assert(record.front == str);
+</pre>  <dl>
+<dt>Returns:</dt>
+<dd>An <code>input</code> range R as defined by <a href="../std_range_primitives/#isInputRange"><code>std.range.primitives.isInputRange</code></a>. When <code>Contents</code> is a struct, class, or an associative array, the element type of R is <code>Contents</code>, otherwise the element type of R is itself a range with element type <code>Contents</code>. </dd>
+</dl> <dl>
+<dt>Throws:</dt>
+<dd>
+<a href="#CSVException"><code>CSVException</code></a> When a <code>quote</code> is found in an unquoted field, data continues after a closing <code>quote</code>, the quoted field was not closed before data was empty, a conversion failed, or when the row's length does not match the previous length.  <a href="#HeaderMismatchException"><code>HeaderMismatchException</code></a> when a header is provided but a matching column is not found or the order did not match that found in the <code>input</code>. Read the exception documentation for specific details of when the exception is thrown for different types of <code>Contents</code>.</dd>
+</dl> </dd> <dt class="d_decl" id="csvReader.2">auto csvReader(Contents = string, Malformed ErrorLevel = Malformed.throwException, Range, Header, Separator = char)(Range input, Header header, Separator delimiter = ',', Separator quote = '"')<br><br>  Constraints:<br>    if (isInputRange!Range &amp;&amp; is(Unqual!(ElementType!Range) == dchar) &amp;&amp; isSomeChar!Separator &amp;&amp; isForwardRange!Header &amp;&amp; isSomeString!(ElementType!Header))</dt> <dd>
+<p>An optional <code>header</code> can be provided. The first record will be read in as the <code>header</code>. If <code>Contents</code> is a struct then the <code>header</code> provided is expected to correspond to the fields in the struct. When <code>Contents</code> is not a type which can contain the entire record, the <code>header</code> must be provided in the same order as the <code>input</code> or an exception is thrown. </p>
+<p> Read only column "b": <br><br> </p>
+<pre data-language="d">string str = "a,b,c\nHello,65,63.63\nWorld,123,3673.562";
+auto records = csvReader!int(str, ["b"]);
+
+auto ans = [[65],[123]];
+foreach (record; records)
+{
+    assert(equal(record, ans.front));
+    ans.popFront();
+}
+</pre> <br><br> Read from <code>header</code> of different order: <br><br> <pre data-language="d">string str = "a,b,c\nHello,65,63.63\nWorld,123,3673.562";
+struct Layout
+{
+    int value;
+    double other;
+    string name;
+}
+
+auto records = csvReader!Layout(str, ["b","c","a"]);
+</pre> <br><br> The <code>header</code> can also be left empty if the <code>input</code> contains a <code>header</code> but all columns should be iterated. The <code>header</code> from the <code>input</code> can always be accessed from the <code>header</code> field. <br><br> <pre data-language="d">string str = "a,b,c\nHello,65,63.63\nWorld,123,3673.562";
+auto records = csvReader(str, null);
+
+assert(records.header == ["a","b","c"]);
+</pre>  <dl>
+<dt>Returns:</dt>
+<dd> An <code>input</code> range R as defined by <a href="../std_range_primitives/#isInputRange"><code>std.range.primitives.isInputRange</code></a>. When <code>Contents</code> is a struct, class, or an associative array, the element type of R is <code>Contents</code>, otherwise the element type of R is itself a range with element type <code>Contents</code>.  The returned range provides a <code>header</code> field for accessing the <code>header</code> from the <code>input</code> in array form.  <pre data-language="d">string str = "a,b,c\nHello,65,63.63";
+auto records = csvReader(str, ["a"]);
+
+assert(records.header == ["a","b","c"]);
+</pre> </dd>
+</dl> <dl>
+<dt>Throws:</dt>
+<dd>
+<a href="#CSVException"><code>CSVException</code></a> When a <code>quote</code> is found in an unquoted field, data continues after a closing <code>quote</code>, the quoted field was not closed before data was empty, a conversion failed, or when the row's length does not match the previous length.  <a href="#HeaderMismatchException"><code>HeaderMismatchException</code></a> when a <code>header</code> is provided but a matching column is not found or the order did not match that found in the <code>input</code>. Read the exception documentation for specific details of when the exception is thrown for different types of <code>Contents</code>.</dd>
+</dl> </dd> <dt class="d_decl" id="csvReader.3">auto csvReader(Contents = string, Malformed ErrorLevel = Malformed.throwException, Range, Header, Separator = char)(Range input, Header header, Separator delimiter = ',', Separator quote = '"')<br><br>  Constraints:<br>    if (isInputRange!Range &amp;&amp; is(Unqual!(ElementType!Range) == dchar) &amp;&amp; isSomeChar!Separator &amp;&amp; is(Header : typeof(null)))</dt>  <dt class="d_decl" id="csvNextToken">void csvNextToken(Range, Malformed ErrorLevel = Malformed.throwException, Separator, Output)(ref Range input, ref Output ans, Separator sep, Separator quote, bool startQuoted = false)<br><br>  Constraints:<br>    if (isSomeChar!Separator &amp;&amp; isInputRange!Range &amp;&amp; is(Unqual!(ElementType!Range) == dchar) &amp;&amp; isOutputRange!(Output, dchar))</dt> <dd>
+<p>Lower level control over parsing CSV </p>
+<p>This function consumes the <code>input</code>. After each call the <code>input</code> will start with either a delimiter or record break (\n, \r\n, \r) which must be removed for subsequent calls. </p> <dl>
+<dt>Parameters:</dt>
+<dd><table>
+<tr>
+<td>Range <code>input</code>
+</td> <td>Any CSV <code>input</code>
+</td>
+</tr> <tr>
+<td>Output <code>ans</code>
+</td> <td>The first field in the <code>input</code>
+</td>
+</tr> <tr>
+<td>Separator <code>sep</code>
+</td> <td>The character to represent a comma in the specification</td>
+</tr> <tr>
+<td>Separator <code>quote</code>
+</td> <td>The character to represent a <code>quote</code> in the specification</td>
+</tr> <tr>
+<td>bool <code>startQuoted</code>
+</td> <td>Whether the <code>input</code> should be considered to already be in quotes</td>
+</tr> </table></dd>
+</dl> <dl>
+<dt>Throws:</dt>
+<dd>
+<a href="#IncompleteCellException"><code>IncompleteCellException</code></a> When a <code>quote</code> is found in an unquoted field, data continues after a closing <code>quote</code>, or the quoted field was not closed before data was empty.</dd>
+</dl> <dl>
+<dt>Examples:</dt>
+<dd>
+<pre data-language="d">import std.array : appender;
+import std.range.primitives : popFront;
+
+string str = "65,63\n123,3673";
+
+auto a = appender!(char[])();
+
+csvNextToken(str,a,',','"');
+writeln(a.data); // "65"
+writeln(str); // ",63\n123,3673"
+
+str.popFront();
+a.shrinkTo(0);
+csvNextToken(str,a,',','"');
+writeln(a.data); // "63"
+writeln(str); // "\n123,3673"
+
+str.popFront();
+a.shrinkTo(0);
+csvNextToken(str,a,',','"');
+writeln(a.data); // "123"
+writeln(str); // ",3673"
+</pre> </dd>
+</dl> </dd> </dl>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 1999–2017 The D Language Foundation<br>Licensed under the Boost License 1.0.<br>
+    <a href="https://dlang.org/phobos/std_csv.html" class="_attribution-link" target="_blank">https://dlang.org/phobos/std_csv.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

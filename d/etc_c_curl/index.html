@@ -1,0 +1,1006 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>etc.c.curl - D - W3cubDocs</title>
+  
+  <meta name="description" content=" This is an interface to the libcurl library. ">
+  <meta name="keywords" content="etc, c, curl, -, d">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/d/etc_c_curl/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/d.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/d/" class="_nav-link" title="" style="margin-left:0;">D</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _d">
+				
+<h1>etc.c.curl</h1>  <p>This is an interface to the libcurl library. </p>
+<p>Converted to D from <code>curl</code> headers by <a href="http://www.digitalmars.com/d/2.0/htod.html" target="_blank">htod</a> and cleaned up by Jonas Drewsen (jdrewsen) <br><br> Windows x86 note: A DMD compatible libcurl static library can be downloaded from the dlang.org <a href="http://dlang.org/download.html" target="_blank">download page</a>. <br><br> Copyright (C) 1998 - 2010, Daniel Stenberg, &lt;daniel@haxx.se&gt;, et al. <br><br> This software is licensed as described in the file COPYING, which you should have received as part of this distribution. The terms are also available at <a href="http://curl.haxx.se/docs/copyright.html" target="_blank">http://curl.haxx.se/docs/copyright.html</a>. <br><br> You may opt to use, copy, modify, merge, publish, distribute and/or sell copies of the Software, and permit persons to whom the Software is furnished to do so, under the terms of the COPYING file. <br><br> This software is distributed on an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or implied.</p> <dl>
+<dt class="d_decl" id="LIBCURL_COPYRIGHT">enum string LIBCURL_COPYRIGHT</dt> <dd>
+<p>This is the global package copyright</p> </dd> <dt class="d_decl" id="LIBCURL_VERSION">enum string LIBCURL_VERSION</dt> <dd>
+<p>This is the version number of the libcurl package from which this header file origins:</p> </dd> <dt class="d_decl" id="LIBCURL_VERSION_MAJOR">enum int LIBCURL_VERSION_MAJOR<br>enum int LIBCURL_VERSION_MINOR<br>enum int LIBCURL_VERSION_PATCH</dt> <dd>
+<p>The numeric version number is also available "in parts" by using these constants</p> </dd> <dt class="d_decl" id="LIBCURL_VERSION_NUM">enum int LIBCURL_VERSION_NUM</dt> <dd>
+<p>This is the numeric version of the libcurl version number, meant for easier parsing and comparions by programs. The <code>LIBCURL_VERSION_NUM</code> define will always follow this syntax: </p>
+<p>0xXXYYZZ <br><br> Where XX, YY and ZZ are the main version, release and patch numbers in hexadecimal (using 8 bits each). All three numbers are always represented using two digits. 1.2 would appear as "0x010200" while version 9.11.7 appears as "0x090b07". <br><br> This 6-digit (24 bits) hexadecimal number does not show pre-release number, and it is always a greater number in a more recent release. It makes comparisons with greater than and less than work.</p> </dd> <dt class="d_decl" id="LIBCURL_TIMESTAMP">enum string LIBCURL_TIMESTAMP</dt> <dd>
+<p>This is the date and time when the full source package was created. The timestamp is not stored in git, as the timestamp is properly set in the tarballs by the maketgz script. </p>
+<p>The format of the date should follow this template: <br><br> "Mon Feb 12 11:35:33 UTC 2007"</p> </dd> <dt class="d_decl" id="curl_off_t">alias curl_off_t = long</dt> <dd>
+<p>Data type definition of <code>curl_off_t</code>. </p>
+<p>jdrewsen - Always 64bit signed and that is what long is in D. <br><br> Comment below is from curlbuild.h: <br><br> NOTE 2: <br><br> For any given platform/compiler <code>curl_off_t</code> must be typedef'ed to a 64-bit wide signed integral data type. The width of this data type must remain constant and independent of any possible large file support settings. <br><br> As an exception to the above, <code>curl_off_t</code> shall be typedef'ed to a 32-bit wide signed integral data type if there is no 64-bit type.</p> </dd> <dt class="d_decl" id="CURL">alias CURL = void</dt>  <dt class="d_decl" id="curl_socket_t">alias curl_socket_t = std.socket.socket_t</dt> <dd>
+<p>jdrewsen - Get socket alias from std.socket</p> </dd> <dt class="d_decl" id="curl_httppost">struct curl_httppost</dt> <dd> <dl>
+<dt class="d_decl" id="curl_httppost.next">curl_httppost* next</dt> <dd>
+<p><code>next</code> entry in the list</p> </dd> <dt class="d_decl" id="curl_httppost.name">char* name</dt> <dd>
+<p>pointer to allocated <code>name</code></p> </dd> <dt class="d_decl" id="curl_httppost.namelength">c_long namelength</dt> <dd>
+<p>length of name length</p> </dd> <dt class="d_decl" id="curl_httppost.contents">char* contents</dt> <dd>
+<p>pointer to allocated data <code>contents</code></p> </dd> <dt class="d_decl" id="curl_httppost.contentslength">c_long contentslength</dt> <dd>
+<p>length of contents field</p> </dd> <dt class="d_decl" id="curl_httppost.buffer">char* buffer</dt> <dd>
+<p>pointer to allocated <code>buffer</code> contents</p> </dd> <dt class="d_decl" id="curl_httppost.bufferlength">c_long bufferlength</dt> <dd>
+<p>length of buffer field</p> </dd> <dt class="d_decl" id="curl_httppost.contenttype">char* contenttype</dt> <dd>
+<p>Content-Type</p> </dd> <dt class="d_decl" id="curl_httppost.contentheader">curl_slist* contentheader</dt> <dd>
+<p>list of extra headers for this form</p> </dd> <dt class="d_decl" id="curl_httppost.more">curl_httppost* more</dt> <dd>
+<p>if one field name has <code>more</code> than one file, this link should link to following files</p> </dd> <dt class="d_decl" id="curl_httppost.flags">c_long flags</dt> <dd>
+<p>as defined below</p> </dd> <dt class="d_decl" id="curl_httppost.showfilename">char* showfilename</dt> <dd>
+<p>The file name to show. If not set, the actual file name will be used (if this is a file part)</p> </dd> <dt class="d_decl" id="curl_httppost.userp">void* userp</dt> <dd>
+<p>custom pointer used for HTTPPOST_CALLBACK posts</p> </dd> </dl> </dd> <dt class="d_decl" id="HTTPPOST_FILENAME">enum int HTTPPOST_FILENAME</dt> <dd>
+<p>specified content is a file name</p> </dd> <dt class="d_decl" id="HTTPPOST_READFILE">enum int HTTPPOST_READFILE</dt> <dd>
+<p>specified content is a file name</p> </dd> <dt class="d_decl" id="HTTPPOST_PTRNAME">enum int HTTPPOST_PTRNAME</dt> <dd>
+<p>name is only stored pointer do not free in formfree</p> </dd> <dt class="d_decl" id="HTTPPOST_PTRCONTENTS">enum int HTTPPOST_PTRCONTENTS</dt> <dd>
+<p>contents is only stored pointer do not free in formfree</p> </dd> <dt class="d_decl" id="HTTPPOST_BUFFER">enum int HTTPPOST_BUFFER</dt> <dd>
+<p>upload file from buffer</p> </dd> <dt class="d_decl" id="HTTPPOST_PTRBUFFER">enum int HTTPPOST_PTRBUFFER</dt> <dd>
+<p>upload file from pointer contents</p> </dd> <dt class="d_decl" id="HTTPPOST_CALLBACK">enum int HTTPPOST_CALLBACK</dt> <dd>
+<p>upload file contents by using the regular read callback to get the data and pass the given pointer as custom pointer</p> </dd> <dt class="d_decl" id="curl_progress_callback">alias curl_progress_callback = int function(void* clientp, double dltotal, double dlnow, double ultotal, double ulnow)</dt>  <dt class="d_decl" id="CURL_MAX_WRITE_SIZE">enum int CURL_MAX_WRITE_SIZE</dt> <dd>
+<p>Tests have proven that 20K is a very bad buffer size for uploads on Windows, while 16K for some odd reason performed a lot better. We do the ifndef check to allow this value to easier be changed at build time for those who feel adventurous. The practical minimum is about 400 bytes since libcurl uses a buffer of this size as a scratch area (unrelated to network send operations).</p> </dd> <dt class="d_decl" id="CURL_MAX_HTTP_HEADER">enum int CURL_MAX_HTTP_HEADER</dt> <dd>
+<p>The only reason to have a max limit for this is to avoid the risk of a bad server feeding libcurl with a never-ending header that will cause reallocs infinitely</p> </dd> <dt class="d_decl" id="CURL_WRITEFUNC_PAUSE">enum int CURL_WRITEFUNC_PAUSE</dt> <dd>
+<p>This is a magic return code for the write callback that, when returned, will signal libcurl to pause receiving on the current transfer.</p> </dd> <dt class="d_decl" id="curl_write_callback">alias curl_write_callback = ulong function(char* buffer, ulong size, ulong nitems, void* outstream)</dt>  <dt class="d_decl" id="CurlFileType">enum CurlFileType: int</dt> <dd>
+<p>enumeration of file types</p> <dl>
+<dt class="d_decl" id="CurlFileType.file">file</dt>  <dt class="d_decl" id="CurlFileType.directory">directory</dt>  <dt class="d_decl" id="CurlFileType.symlink">symlink</dt>  <dt class="d_decl" id="CurlFileType.device_block">device_block</dt>  <dt class="d_decl" id="CurlFileType.device_char">device_char</dt>  <dt class="d_decl" id="CurlFileType.namedpipe">namedpipe</dt>  <dt class="d_decl" id="CurlFileType.socket">socket</dt>  <dt class="d_decl" id="CurlFileType.door">door</dt>  <dt class="d_decl" id="CurlFileType.unknown">unknown</dt> <dd>
+<p>is possible only on Sun Solaris now</p> </dd> </dl> </dd> <dt class="d_decl" id="curlfiletype">alias curlfiletype = int</dt>  <dt class="d_decl" id="CurlFInfoFlagKnown">enum CurlFInfoFlagKnown: int</dt> <dd> <dl>
+<dt class="d_decl" id="CurlFInfoFlagKnown.filename">filename</dt>  <dt class="d_decl" id="CurlFInfoFlagKnown.filetype">filetype</dt>  <dt class="d_decl" id="CurlFInfoFlagKnown.time">time</dt>  <dt class="d_decl" id="CurlFInfoFlagKnown.perm">perm</dt>  <dt class="d_decl" id="CurlFInfoFlagKnown.uid">uid</dt>  <dt class="d_decl" id="CurlFInfoFlagKnown.gid">gid</dt>  <dt class="d_decl" id="CurlFInfoFlagKnown.size">size</dt>  <dt class="d_decl" id="CurlFInfoFlagKnown.hlinkcount">hlinkcount</dt>  </dl> </dd> <dt class="d_decl" id="_N2">struct _N2</dt> <dd>
+<p>Content of this structure depends on information which is known and is achievable (e.g. by FTP LIST parsing). Please see the url_easy_setopt(3) man page for callbacks returning this structure -- some fields are mandatory, some others are optional. The FLAG field has special meaning. </p>
+<p>If some of these fields is not NULL, it is a pointer to b_data.</p> <dl>
+<dt class="d_decl" id="_N2.time">char* time</dt>  <dt class="d_decl" id="_N2.perm">char* perm</dt>  <dt class="d_decl" id="_N2.user">char* user</dt>  <dt class="d_decl" id="_N2.group">char* group</dt>  <dt class="d_decl" id="_N2.target">char* target</dt> <dd>
+<p>pointer to the <code>target</code> filename of a symlink</p> </dd> </dl> </dd> <dt class="d_decl" id="curl_fileinfo">struct curl_fileinfo</dt> <dd>
+<p>Content of this structure depends on information which is known and is achievable (e.g. by FTP LIST parsing). Please see the url_easy_setopt(3) man page for callbacks returning this structure -- some fields are mandatory, some others are optional. The FLAG field has special meaning.</p> <dl>
+<dt class="d_decl" id="curl_fileinfo.filename">char* filename</dt>  <dt class="d_decl" id="curl_fileinfo.filetype">curlfiletype filetype</dt>  <dt class="d_decl" id="curl_fileinfo.time">time_t time</dt>  <dt class="d_decl" id="curl_fileinfo.perm">uint perm</dt>  <dt class="d_decl" id="curl_fileinfo.uid">int uid</dt>  <dt class="d_decl" id="curl_fileinfo.gid">int gid</dt>  <dt class="d_decl" id="curl_fileinfo.size">curl_off_t size</dt>  <dt class="d_decl" id="curl_fileinfo.hardlinks">c_long hardlinks</dt>  <dt class="d_decl" id="curl_fileinfo.strings">_N2 strings</dt>  <dt class="d_decl" id="curl_fileinfo.flags">uint flags</dt>  <dt class="d_decl" id="curl_fileinfo.b_data">char* b_data</dt>  <dt class="d_decl" id="curl_fileinfo.b_size">size_t b_size</dt>  <dt class="d_decl" id="curl_fileinfo.b_used">size_t b_used</dt>  </dl> </dd> <dt class="d_decl" id="CurlChunkBgnFunc">enum CurlChunkBgnFunc: int</dt> <dd>
+<p>return codes for CURLOPT_CHUNK_BGN_FUNCTION</p> <dl>
+<dt class="d_decl" id="CurlChunkBgnFunc.ok">ok</dt>  <dt class="d_decl" id="CurlChunkBgnFunc.fail">fail</dt> <dd>
+<p>tell the lib to end the task</p> </dd> <dt class="d_decl" id="CurlChunkBgnFunc.skip">skip</dt> <dd>
+<p><code>skip</code> this chunk over</p> </dd> </dl> </dd> <dt class="d_decl" id="curl_chunk_bgn_callback">alias curl_chunk_bgn_callback = long function(void* transfer_info, void* ptr, int remains)</dt> <dd>
+<p>if splitting of data transfer is enabled, this callback is called before download of an individual chunk started. Note that parameter "remains" works only for FTP wildcard downloading (for now), otherwise is not used</p> </dd> <dt class="d_decl" id="CurlChunkEndFunc">enum CurlChunkEndFunc: int</dt> <dd>
+<p>return codes for CURLOPT_CHUNK_END_FUNCTION</p> <dl>
+<dt class="d_decl" id="CurlChunkEndFunc.ok">ok</dt>  <dt class="d_decl" id="CurlChunkEndFunc.fail">fail</dt>  </dl> </dd> <dt class="d_decl" id="curl_chunk_end_callback">alias curl_chunk_end_callback = long function(void* ptr)</dt> <dd>
+<p>If splitting of data transfer is enabled this callback is called after download of an individual chunk finished. Note! After this callback was set then it have to be called FOR ALL chunks. Even if downloading of this chunk was skipped in CHUNK_BGN_FUNC. This is the reason why we don't need "transfer_info" parameter in this callback and we are not interested in "remains" parameter too.</p> </dd> <dt class="d_decl" id="CurlFnMAtchFunc">enum CurlFnMAtchFunc: int</dt> <dd>
+<p>return codes for FNMATCHFUNCTION</p> <dl>
+<dt class="d_decl" id="CurlFnMAtchFunc.match">match</dt>  <dt class="d_decl" id="CurlFnMAtchFunc.nomatch">nomatch</dt>  <dt class="d_decl" id="CurlFnMAtchFunc.fail">fail</dt>  </dl> </dd> <dt class="d_decl" id="curl_fnmatch_callback">alias curl_fnmatch_callback = int function(void* ptr, const(char*) pattern, const(char*) string)</dt> <dd>
+<p>callback type for wildcard downloading pattern matching. If the string matches the pattern, return CURL_FNMATCHFUNC_MATCH value, etc.</p> </dd> <dt class="d_decl" id="CurlSeekPos">enum CurlSeekPos: int</dt> <dd>
+<p>seek whence...</p> <dl>
+<dt class="d_decl" id="CurlSeekPos.set">set</dt>  <dt class="d_decl" id="CurlSeekPos.current">current</dt>  <dt class="d_decl" id="CurlSeekPos.end">end</dt>  </dl> </dd> <dt class="d_decl" id="CurlSeek">enum CurlSeek: int</dt> <dd>
+<p>These are the return codes for the seek callbacks</p> <dl>
+<dt class="d_decl" id="CurlSeek.ok">ok</dt>  <dt class="d_decl" id="CurlSeek.fail">fail</dt> <dd>
+<p><code>fail</code> the entire transfer</p> </dd> <dt class="d_decl" id="CurlSeek.cantseek">cantseek</dt> <dd>
+<p>tell libcurl seeking can't be done, so libcurl might try other means instead</p> </dd> </dl> </dd> <dt class="d_decl" id="curl_seek_callback">alias curl_seek_callback = int function(void* instream, long offset, int origin)</dt>  <dt class="d_decl" id="CurlReadFunc">enum CurlReadFunc: int</dt> <dd> <dl>
+<dt class="d_decl" id="CurlReadFunc.abort">abort</dt> <dd>
+<p>This is a return code for the read callback that, when returned, will signal libcurl to immediately <code>abort</code> the current transfer.</p> </dd> <dt class="d_decl" id="CurlReadFunc.pause">pause</dt> <dd>
+<p>This is a return code for the read callback that, when returned, will const signal libcurl to <code>pause</code> sending data on the current transfer.</p> </dd> </dl> </dd> <dt class="d_decl" id="curl_read_callback">alias curl_read_callback = ulong function(char* buffer, ulong size, ulong nitems, void* instream)</dt>  <dt class="d_decl" id="CurlSockType">enum CurlSockType: int</dt> <dd> <dl>
+<dt class="d_decl" id="CurlSockType.ipcxn">ipcxn</dt> <dd>
+<p>socket created for a specific IP connection</p> </dd> <dt class="d_decl" id="CurlSockType.last">last</dt> <dd>
+<p>never use</p> </dd> </dl> </dd> <dt class="d_decl" id="curlsocktype">alias curlsocktype = int</dt>  <dt class="d_decl" id="curl_sockopt_callback">alias curl_sockopt_callback = int function(void* clientp, socket_t curlfd, int purpose)</dt>  <dt class="d_decl" id="curl_sockaddr">struct curl_sockaddr</dt> <dd>
+<p>addrlen was a socklen_t type before 7.18.0 but it turned really ugly and painful on the systems that lack this type</p> <dl>
+<dt class="d_decl" id="curl_sockaddr.family">int family</dt>  <dt class="d_decl" id="curl_sockaddr.socktype">int socktype</dt>  <dt class="d_decl" id="curl_sockaddr.protocol">int protocol</dt>  <dt class="d_decl" id="curl_sockaddr.addrlen">uint addrlen</dt> <dd>
+<p><code>addrlen</code> was a socklen_t type before 7.18.0 but it turned really ugly and painful on the systems that lack this type</p> </dd> <dt class="d_decl" id="curl_sockaddr.addr">sockaddr addr</dt>  </dl> </dd> <dt class="d_decl" id="curl_opensocket_callback">alias curl_opensocket_callback = socket_t function(void* clientp, int purpose, curl_sockaddr* address)</dt>  <dt class="d_decl" id="CurlIoError">enum CurlIoError: int</dt> <dd> <dl>
+<dt class="d_decl" id="CurlIoError.ok">ok</dt> <dd>
+<p>I/O operation successful</p> </dd> <dt class="d_decl" id="CurlIoError.unknowncmd">unknowncmd</dt> <dd>
+<p>command was unknown to callback</p> </dd> <dt class="d_decl" id="CurlIoError.failrestart">failrestart</dt> <dd>
+<p>failed to restart the read</p> </dd> <dt class="d_decl" id="CurlIoError.last">last</dt> <dd>
+<p>never use</p> </dd> </dl> </dd> <dt class="d_decl" id="curlioerr">alias curlioerr = int</dt>  <dt class="d_decl" id="CurlIoCmd">enum CurlIoCmd: int</dt> <dd> <dl>
+<dt class="d_decl" id="CurlIoCmd.nop">nop</dt> <dd>
+<p>command was unknown to callback</p> </dd> <dt class="d_decl" id="CurlIoCmd.restartread">restartread</dt> <dd>
+<p>failed to restart the read</p> </dd> <dt class="d_decl" id="CurlIoCmd.last">last</dt> <dd>
+<p>never use</p> </dd> </dl> </dd> <dt class="d_decl" id="curliocmd">alias curliocmd = int</dt>  <dt class="d_decl" id="curl_ioctl_callback">alias curl_ioctl_callback = int function(void* handle, int cmd, void* clientp)</dt>  <dt class="d_decl" id="curl_malloc_callback">alias curl_malloc_callback = void* function(ulong size)<br>alias curl_free_callback = void function(void* ptr)<br>alias curl_realloc_callback = void* function(void* ptr, ulong size)<br>alias curl_strdup_callback = char* function(const(char*) str)<br>alias curl_calloc_callback = void* function(ulong nmemb, ulong size)</dt> <dd>
+<p>The following typedef's are signatures of malloc, free, realloc, strdup and calloc respectively. Function pointers of these types can be passed to the curl_global_init_mem() function to set user defined memory management callback routines.</p> </dd> <dt class="d_decl" id="CurlCallbackInfo">enum CurlCallbackInfo: int</dt> <dd>
+<p>the kind of data that is passed to information_callback</p> <dl>
+<dt class="d_decl" id="CurlCallbackInfo.text">text</dt>  <dt class="d_decl" id="CurlCallbackInfo.header_in">header_in</dt>  <dt class="d_decl" id="CurlCallbackInfo.header_out">header_out</dt>  <dt class="d_decl" id="CurlCallbackInfo.data_in">data_in</dt>  <dt class="d_decl" id="CurlCallbackInfo.data_out">data_out</dt>  <dt class="d_decl" id="CurlCallbackInfo.ssl_data_in">ssl_data_in</dt>  <dt class="d_decl" id="CurlCallbackInfo.ssl_data_out">ssl_data_out</dt>  <dt class="d_decl" id="CurlCallbackInfo.end">end</dt>  </dl> </dd> <dt class="d_decl" id="curl_infotype">alias curl_infotype = int</dt>  <dt class="d_decl" id="curl_debug_callback">alias curl_debug_callback = int function(void* handle, int type, char* data, ulong size, void* userptr)</dt>  <dt class="d_decl" id="CurlError">enum CurlError: int</dt> <dd>
+<p>All possible error codes from all sorts of curl functions. Future versions may return other values, stay prepared. </p>
+<p>Always add new return codes last. Never *EVER* remove any. The return codes must remain the same!</p> <dl>
+<dt class="d_decl" id="CurlError.ok">ok</dt>  <dt class="d_decl" id="CurlError.unsupported_protocol">unsupported_protocol</dt> <dd>
+<p>1</p> </dd> <dt class="d_decl" id="CurlError.failed_init">failed_init</dt> <dd>
+<p>2</p> </dd> <dt class="d_decl" id="CurlError.url_malformat">url_malformat</dt> <dd>
+<p>3</p> </dd> <dt class="d_decl" id="CurlError.not_built_in">not_built_in</dt> <dd>
+<p>4 - [was obsoleted in August 2007 for 7.17.0, reused in April 2011 for 7.21.5]</p> </dd> <dt class="d_decl" id="CurlError.couldnt_resolve_proxy">couldnt_resolve_proxy</dt> <dd>
+<p>5</p> </dd> <dt class="d_decl" id="CurlError.couldnt_resolve_host">couldnt_resolve_host</dt> <dd>
+<p>6</p> </dd> <dt class="d_decl" id="CurlError.couldnt_connect">couldnt_connect</dt> <dd>
+<p>7</p> </dd> <dt class="d_decl" id="CurlError.ftp_weird_server_reply">ftp_weird_server_reply</dt> <dd>
+<p>8</p> </dd> <dt class="d_decl" id="CurlError.remote_access_denied">remote_access_denied</dt> <dd>
+<p>9 a service was denied by the server due to lack of access - when login fails this is not returned.</p> </dd> <dt class="d_decl" id="CurlError.obsolete10">obsolete10</dt> <dd>
+<p>10 - NOT USED</p> </dd> <dt class="d_decl" id="CurlError.ftp_weird_pass_reply">ftp_weird_pass_reply</dt> <dd>
+<p>11</p> </dd> <dt class="d_decl" id="CurlError.obsolete12">obsolete12</dt> <dd>
+<p>12 - NOT USED</p> </dd> <dt class="d_decl" id="CurlError.ftp_weird_pasv_reply">ftp_weird_pasv_reply</dt> <dd>
+<p>13</p> </dd> <dt class="d_decl" id="CurlError.ftp_weird_227_format">ftp_weird_227_format</dt> <dd>
+<p>14</p> </dd> <dt class="d_decl" id="CurlError.ftp_cant_get_host">ftp_cant_get_host</dt> <dd>
+<p>15</p> </dd> <dt class="d_decl" id="CurlError.obsolete16">obsolete16</dt> <dd>
+<p>16 - NOT USED</p> </dd> <dt class="d_decl" id="CurlError.ftp_couldnt_set_type">ftp_couldnt_set_type</dt> <dd>
+<p>17</p> </dd> <dt class="d_decl" id="CurlError.partial_file">partial_file</dt> <dd>
+<p>18</p> </dd> <dt class="d_decl" id="CurlError.ftp_couldnt_retr_file">ftp_couldnt_retr_file</dt> <dd>
+<p>19</p> </dd> <dt class="d_decl" id="CurlError.obsolete20">obsolete20</dt> <dd>
+<p>20 - NOT USED</p> </dd> <dt class="d_decl" id="CurlError.quote_error">quote_error</dt> <dd>
+<p>21 - quote command failure</p> </dd> <dt class="d_decl" id="CurlError.http_returned_error">http_returned_error</dt> <dd>
+<p>22</p> </dd> <dt class="d_decl" id="CurlError.write_error">write_error</dt> <dd>
+<p>23</p> </dd> <dt class="d_decl" id="CurlError.obsolete24">obsolete24</dt> <dd>
+<p>24 - NOT USED</p> </dd> <dt class="d_decl" id="CurlError.upload_failed">upload_failed</dt> <dd>
+<p>25 - failed upload "command"</p> </dd> <dt class="d_decl" id="CurlError.read_error">read_error</dt> <dd>
+<p>26 - couldn't open/read from file</p> </dd> <dt class="d_decl" id="CurlError.out_of_memory">out_of_memory</dt> <dd>
+<p>27</p> </dd> <dt class="d_decl" id="CurlError.operation_timedout">operation_timedout</dt> <dd>
+<dl>
+<dt>Note</dt>
+<dd> CURLE_OUT_OF_MEMORY may sometimes indicate a conversion error instead of a memory allocation error if CURL_DOES_CONVERSIONS is defined </dd>
+</dl> 28 - the timeout time was reached </dd> <dt class="d_decl" id="CurlError.obsolete29">obsolete29</dt> <dd>
+<p>29 - NOT USED</p> </dd> <dt class="d_decl" id="CurlError.ftp_port_failed">ftp_port_failed</dt> <dd>
+<p>30 - FTP PORT operation failed</p> </dd> <dt class="d_decl" id="CurlError.ftp_couldnt_use_rest">ftp_couldnt_use_rest</dt> <dd>
+<p>31 - the REST command failed</p> </dd> <dt class="d_decl" id="CurlError.obsolete32">obsolete32</dt> <dd>
+<p>32 - NOT USED</p> </dd> <dt class="d_decl" id="CurlError.range_error">range_error</dt> <dd>
+<p>33 - RANGE "command" didn't work</p> </dd> <dt class="d_decl" id="CurlError.http_post_error">http_post_error</dt> <dd>
+<p>34</p> </dd> <dt class="d_decl" id="CurlError.ssl_connect_error">ssl_connect_error</dt> <dd>
+<p>35 - wrong when connecting with SSL</p> </dd> <dt class="d_decl" id="CurlError.bad_download_resume">bad_download_resume</dt> <dd>
+<p>36 - couldn't resume download</p> </dd> <dt class="d_decl" id="CurlError.file_couldnt_read_file">file_couldnt_read_file</dt> <dd>
+<p>37</p> </dd> <dt class="d_decl" id="CurlError.ldap_cannot_bind">ldap_cannot_bind</dt> <dd>
+<p>38</p> </dd> <dt class="d_decl" id="CurlError.ldap_search_failed">ldap_search_failed</dt> <dd>
+<p>39</p> </dd> <dt class="d_decl" id="CurlError.obsolete40">obsolete40</dt> <dd>
+<p>40 - NOT USED</p> </dd> <dt class="d_decl" id="CurlError.function_not_found">function_not_found</dt> <dd>
+<p>41</p> </dd> <dt class="d_decl" id="CurlError.aborted_by_callback">aborted_by_callback</dt> <dd>
+<p>42</p> </dd> <dt class="d_decl" id="CurlError.bad_function_argument">bad_function_argument</dt> <dd>
+<p>43</p> </dd> <dt class="d_decl" id="CurlError.obsolete44">obsolete44</dt> <dd>
+<p>44 - NOT USED</p> </dd> <dt class="d_decl" id="CurlError.interface_failed">interface_failed</dt> <dd>
+<p>45 - CURLOPT_INTERFACE failed</p> </dd> <dt class="d_decl" id="CurlError.obsolete46">obsolete46</dt> <dd>
+<p>46 - NOT USED</p> </dd> <dt class="d_decl" id="CurlError.too_many_redirects">too_many_redirects</dt> <dd>
+<p>47 - catch endless re-direct loops</p> </dd> <dt class="d_decl" id="CurlError.unknown_option">unknown_option</dt> <dd>
+<p>48 - User specified an unknown option</p> </dd> <dt class="d_decl" id="CurlError.telnet_option_syntax">telnet_option_syntax</dt> <dd>
+<p>49 - Malformed telnet option</p> </dd> <dt class="d_decl" id="CurlError.obsolete50">obsolete50</dt> <dd>
+<p>50 - NOT USED</p> </dd> <dt class="d_decl" id="CurlError.peer_failed_verification">peer_failed_verification</dt> <dd>
+<p>51 - peer's certificate or fingerprint wasn't verified fine</p> </dd> <dt class="d_decl" id="CurlError.got_nothing">got_nothing</dt> <dd>
+<p>52 - when this is a specific error</p> </dd> <dt class="d_decl" id="CurlError.ssl_engine_notfound">ssl_engine_notfound</dt> <dd>
+<p>53 - SSL crypto engine not found</p> </dd> <dt class="d_decl" id="CurlError.ssl_engine_setfailed">ssl_engine_setfailed</dt> <dd>
+<p>54 - can not set SSL crypto engine as default</p> </dd> <dt class="d_decl" id="CurlError.send_error">send_error</dt> <dd>
+<p>55 - failed sending network data</p> </dd> <dt class="d_decl" id="CurlError.recv_error">recv_error</dt> <dd>
+<p>56 - failure in receiving network data</p> </dd> <dt class="d_decl" id="CurlError.obsolete57">obsolete57</dt> <dd>
+<p>57 - NOT IN USE</p> </dd> <dt class="d_decl" id="CurlError.ssl_certproblem">ssl_certproblem</dt> <dd>
+<p>58 - problem with the local certificate</p> </dd> <dt class="d_decl" id="CurlError.ssl_cipher">ssl_cipher</dt> <dd>
+<p>59 - couldn't use specified cipher</p> </dd> <dt class="d_decl" id="CurlError.ssl_cacert">ssl_cacert</dt> <dd>
+<p>60 - problem with the CA cert (path?)</p> </dd> <dt class="d_decl" id="CurlError.bad_content_encoding">bad_content_encoding</dt> <dd>
+<p>61 - Unrecognized transfer encoding</p> </dd> <dt class="d_decl" id="CurlError.ldap_invalid_url">ldap_invalid_url</dt> <dd>
+<p>62 - Invalid LDAP URL</p> </dd> <dt class="d_decl" id="CurlError.filesize_exceeded">filesize_exceeded</dt> <dd>
+<p>63 - Maximum file size exceeded</p> </dd> <dt class="d_decl" id="CurlError.use_ssl_failed">use_ssl_failed</dt> <dd>
+<p>64 - Requested FTP SSL level failed</p> </dd> <dt class="d_decl" id="CurlError.send_fail_rewind">send_fail_rewind</dt> <dd>
+<p>65 - Sending the data requires a rewind that failed</p> </dd> <dt class="d_decl" id="CurlError.ssl_engine_initfailed">ssl_engine_initfailed</dt> <dd>
+<p>66 - failed to initialise ENGINE</p> </dd> <dt class="d_decl" id="CurlError.login_denied">login_denied</dt> <dd>
+<p>67 - user, password or similar was not accepted and we failed to login</p> </dd> <dt class="d_decl" id="CurlError.tftp_notfound">tftp_notfound</dt> <dd>
+<p>68 - file not found on server</p> </dd> <dt class="d_decl" id="CurlError.tftp_perm">tftp_perm</dt> <dd>
+<p>69 - permission problem on server</p> </dd> <dt class="d_decl" id="CurlError.remote_disk_full">remote_disk_full</dt> <dd>
+<p>70 - out of disk space on server</p> </dd> <dt class="d_decl" id="CurlError.tftp_illegal">tftp_illegal</dt> <dd>
+<p>71 - Illegal TFTP operation</p> </dd> <dt class="d_decl" id="CurlError.tftp_unknownid">tftp_unknownid</dt> <dd>
+<p>72 - Unknown transfer ID</p> </dd> <dt class="d_decl" id="CurlError.remote_file_exists">remote_file_exists</dt> <dd>
+<p>73 - File already exists</p> </dd> <dt class="d_decl" id="CurlError.tftp_nosuchuser">tftp_nosuchuser</dt> <dd>
+<p>74 - No such user</p> </dd> <dt class="d_decl" id="CurlError.conv_failed">conv_failed</dt> <dd>
+<p>75 - conversion failed</p> </dd> <dt class="d_decl" id="CurlError.conv_reqd">conv_reqd</dt> <dd>
+<p>76 - caller must register conversion callbacks using curl_easy_setopt options CURLOPT_CONV_FROM_NETWORK_FUNCTION, CURLOPT_CONV_TO_NETWORK_FUNCTION, and CURLOPT_CONV_FROM_UTF8_FUNCTION</p> </dd> <dt class="d_decl" id="CurlError.ssl_cacert_badfile">ssl_cacert_badfile</dt> <dd>
+<p>77 - could not load CACERT file, missing or wrong format</p> </dd> <dt class="d_decl" id="CurlError.remote_file_not_found">remote_file_not_found</dt> <dd>
+<p>78 - remote file not found</p> </dd> <dt class="d_decl" id="CurlError.ssh">ssh</dt> <dd>
+<p>79 - error from the SSH layer, somewhat generic so the error message will be of interest when this has happened</p> </dd> <dt class="d_decl" id="CurlError.ssl_shutdown_failed">ssl_shutdown_failed</dt> <dd>
+<p>80 - Failed to shut down the SSL connection</p> </dd> <dt class="d_decl" id="CurlError.again">again</dt> <dd>
+<p>81 - socket is not ready for send/recv, wait till it's ready and try <code>again</code> (Added in 7.18.2)</p> </dd> <dt class="d_decl" id="CurlError.ssl_crl_badfile">ssl_crl_badfile</dt> <dd>
+<p>82 - could not load CRL file, missing or wrong format (Added in 7.19.0)</p> </dd> <dt class="d_decl" id="CurlError.ssl_issuer_error">ssl_issuer_error</dt> <dd>
+<p>83 - Issuer check failed. (Added in 7.19.0)</p> </dd> <dt class="d_decl" id="CurlError.ftp_pret_failed">ftp_pret_failed</dt> <dd>
+<p>84 - a PRET command failed</p> </dd> <dt class="d_decl" id="CurlError.rtsp_cseq_error">rtsp_cseq_error</dt> <dd>
+<p>85 - mismatch of RTSP CSeq numbers</p> </dd> <dt class="d_decl" id="CurlError.rtsp_session_error">rtsp_session_error</dt> <dd>
+<p>86 - mismatch of RTSP Session Identifiers</p> </dd> <dt class="d_decl" id="CurlError.ftp_bad_file_list">ftp_bad_file_list</dt> <dd>
+<p>87 - unable to parse FTP file list</p> </dd> <dt class="d_decl" id="CurlError.chunk_failed">chunk_failed</dt> <dd>
+<p>88 - chunk callback reported error</p> </dd> <dt class="d_decl" id="CurlError.curl_last">curl_last</dt> <dd>
+<p>never use!</p> </dd> </dl> </dd> <dt class="d_decl" id="CURLcode">alias CURLcode = int</dt>  <dt class="d_decl" id="curl_conv_callback">alias curl_conv_callback = int function(char* buffer, ulong length)</dt> <dd>
+<p>This prototype applies to all conversion callbacks</p> </dd> <dt class="d_decl" id="curl_ssl_ctx_callback">alias curl_ssl_ctx_callback = int function(void* curl, void* ssl_ctx, void* userptr)</dt> <dd>
+<p>actually an OpenSSL SSL_CTX</p> </dd> <dt class="d_decl" id="CurlProxy">enum CurlProxy: int</dt> <dd> <dl>
+<dt class="d_decl" id="CurlProxy.http">http</dt> <dd>
+<p>added in 7.10, new in 7.19.4 default is to use CONNECT HTTP/1.1</p> </dd> <dt class="d_decl" id="CurlProxy.http_1_0">http_1_0</dt> <dd>
+<p>added in 7.19.4, force to use CONNECT HTTP/1.0</p> </dd> <dt class="d_decl" id="CurlProxy.socks4">socks4</dt> <dd>
+<p>support added in 7.15.2, enum existed already in 7.10</p> </dd> <dt class="d_decl" id="CurlProxy.socks5">socks5</dt> <dd>
+<p>added in 7.10</p> </dd> <dt class="d_decl" id="CurlProxy.socks4a">socks4a</dt> <dd>
+<p>added in 7.18.0</p> </dd> <dt class="d_decl" id="CurlProxy.socks5_hostname">socks5_hostname</dt> <dd>
+<p>Use the SOCKS5 protocol but pass along the host name rather than the IP address. added in 7.18.0</p> </dd> </dl> </dd> <dt class="d_decl" id="curl_proxytype">alias curl_proxytype = int</dt>  <dt class="d_decl" id="CurlAuth">enum CurlAuth: long</dt> <dd> <dl>
+<dt class="d_decl" id="CurlAuth.basic">basic</dt> <dd>
+<p>Basic (default)</p> </dd> <dt class="d_decl" id="CurlAuth.digest">digest</dt> <dd>
+<p>Digest</p> </dd> <dt class="d_decl" id="CurlAuth.gssnegotiate">gssnegotiate</dt> <dd>
+<p>GSS-Negotiate</p> </dd> <dt class="d_decl" id="CurlAuth.ntlm">ntlm</dt> <dd>
+<p>NTLM</p> </dd> <dt class="d_decl" id="CurlAuth.digest_ie">digest_ie</dt> <dd>
+<p>Digest with IE flavour</p> </dd> <dt class="d_decl" id="CurlAuth.only">only</dt> <dd>
+<p>used together with a single other type to force no auth or just that single type</p> </dd> <dt class="d_decl" id="CurlAuth.any">any</dt> <dd>
+<p>all fine types set</p> </dd> <dt class="d_decl" id="CurlAuth.anysafe">anysafe</dt>  </dl> </dd> <dt class="d_decl" id="CurlSshAuth">enum CurlSshAuth: int</dt> <dd> <dl>
+<dt class="d_decl" id="CurlSshAuth.any">any</dt> <dd>
+<p>all types supported by the server</p> </dd> <dt class="d_decl" id="CurlSshAuth.none">none</dt> <dd>
+<p><code>none</code> allowed, silly but complete</p> </dd> <dt class="d_decl" id="CurlSshAuth.publickey">publickey</dt> <dd>
+<p>public/private key files</p> </dd> <dt class="d_decl" id="CurlSshAuth.password">password</dt> <dd>
+<p><code>password</code></p> </dd> <dt class="d_decl" id="CurlSshAuth.host">host</dt> <dd>
+<p><code>host</code> key files</p> </dd> <dt class="d_decl" id="CurlSshAuth.keyboard">keyboard</dt> <dd>
+<p><code>keyboard</code> interactive</p> </dd> </dl> </dd> <dt class="d_decl" id="CURL_ERROR_SIZE">enum int CURL_ERROR_SIZE</dt>  <dt class="d_decl" id="CurlKHType">enum CurlKHType: int</dt> <dd>
+<p>points to a zero-terminated string encoded with base64 if len is zero, otherwise to the "raw" data</p> <dl>
+<dt class="d_decl" id="CurlKHType.unknown">unknown</dt>  <dt class="d_decl" id="CurlKHType.rsa1">rsa1</dt>  <dt class="d_decl" id="CurlKHType.rsa">rsa</dt>  <dt class="d_decl" id="CurlKHType.dss">dss</dt>  </dl> </dd> <dt class="d_decl" id="curl_khkey">struct curl_khkey</dt> <dd> <dl>
+<dt class="d_decl" id="curl_khkey.key">const(char)* key</dt> <dd>
+<p>points to a zero-terminated string encoded with base64 if len is zero, otherwise to the "raw" data</p> </dd> <dt class="d_decl" id="curl_khkey.len">size_t len</dt>  <dt class="d_decl" id="curl_khkey.keytype">CurlKHType keytype</dt>  </dl> </dd> <dt class="d_decl" id="CurlKHStat">enum CurlKHStat: int</dt> <dd>
+<p>this is the set of return values expected from the curl_sshkeycallback callback</p> <dl>
+<dt class="d_decl" id="CurlKHStat.fine_add_to_file">fine_add_to_file</dt>  <dt class="d_decl" id="CurlKHStat.fine">fine</dt>  <dt class="d_decl" id="CurlKHStat.reject">reject</dt> <dd>
+<p><code>reject</code> the connection, return an error</p> </dd> <dt class="d_decl" id="CurlKHStat.defer">defer</dt> <dd>
+<p>do not accept it, but we can't answer right now so this causes a CURLE_DEFER error but otherwise the connection will be left intact etc</p> </dd> <dt class="d_decl" id="CurlKHStat.last">last</dt> <dd>
+<p>not for use, only a marker for <code>last</code>-in-list</p> </dd> </dl> </dd> <dt class="d_decl" id="CurlKHMatch">enum CurlKHMatch: int</dt> <dd>
+<p>this is the set of status codes pass in to the callback</p> <dl>
+<dt class="d_decl" id="CurlKHMatch.ok">ok</dt> <dd>
+<p>match</p> </dd> <dt class="d_decl" id="CurlKHMatch.mismatch">mismatch</dt> <dd>
+<p>host found, key <code>mismatch</code>!</p> </dd> <dt class="d_decl" id="CurlKHMatch.missing">missing</dt> <dd>
+<p>no matching host/key found</p> </dd> <dt class="d_decl" id="CurlKHMatch.last">last</dt> <dd>
+<p>not for use, only a marker for <code>last</code>-in-list</p> </dd> </dl> </dd> <dt class="d_decl" id="curl_sshkeycallback">alias curl_sshkeycallback = int function(void* easy, curl_khkey* knownkey, curl_khkey* foundkey, CurlKHMatch m, void* clientp)</dt>  <dt class="d_decl" id="CurlUseSSL">enum CurlUseSSL: int</dt> <dd>
+<p>parameter for the CURLOPT_USE_SSL option</p> <dl>
+<dt class="d_decl" id="CurlUseSSL.none">none</dt> <dd>
+<p>do not attempt to use SSL</p> </dd> <dt class="d_decl" id="CurlUseSSL.tryssl">tryssl</dt> <dd>
+<p>try using SSL, proceed anyway otherwise</p> </dd> <dt class="d_decl" id="CurlUseSSL.control">control</dt> <dd>
+<p>SSL for the <code>control</code> connection or fail</p> </dd> <dt class="d_decl" id="CurlUseSSL.all">all</dt> <dd>
+<p>SSL for <code>all</code> communication or fail</p> </dd> <dt class="d_decl" id="CurlUseSSL.last">last</dt> <dd>
+<p>not an option, never use</p> </dd> </dl> </dd> <dt class="d_decl" id="curl_usessl">alias curl_usessl = int</dt>  <dt class="d_decl" id="CurlFtpSSL">enum CurlFtpSSL: int</dt> <dd>
+<p>parameter for the CURLOPT_FTP_SSL_CCC option</p> <dl>
+<dt class="d_decl" id="CurlFtpSSL.ccc_none">ccc_none</dt> <dd>
+<p>do not send CCC</p> </dd> <dt class="d_decl" id="CurlFtpSSL.ccc_passive">ccc_passive</dt> <dd>
+<p>Let the server initiate the shutdown</p> </dd> <dt class="d_decl" id="CurlFtpSSL.ccc_active">ccc_active</dt> <dd>
+<p>Initiate the shutdown</p> </dd> <dt class="d_decl" id="CurlFtpSSL.ccc_last">ccc_last</dt> <dd>
+<p>not an option, never use</p> </dd> </dl> </dd> <dt class="d_decl" id="curl_ftpccc">alias curl_ftpccc = int</dt>  <dt class="d_decl" id="CurlFtpAuth">enum CurlFtpAuth: int</dt> <dd>
+<p>parameter for the CURLOPT_FTPSSLAUTH option</p> <dl>
+<dt class="d_decl" id="CurlFtpAuth.defaultauth">defaultauth</dt> <dd>
+<p>let libcurl decide</p> </dd> <dt class="d_decl" id="CurlFtpAuth.ssl">ssl</dt> <dd>
+<p>use "AUTH SSL"</p> </dd> <dt class="d_decl" id="CurlFtpAuth.tls">tls</dt> <dd>
+<p>use "AUTH TLS"</p> </dd> <dt class="d_decl" id="CurlFtpAuth.last">last</dt> <dd>
+<p>not an option, never use</p> </dd> </dl> </dd> <dt class="d_decl" id="curl_ftpauth">alias curl_ftpauth = int</dt>  <dt class="d_decl" id="CurlFtp">enum CurlFtp: int</dt> <dd>
+<p>parameter for the CURLOPT_FTP_CREATE_MISSING_DIRS option</p> <dl>
+<dt class="d_decl" id="CurlFtp.create_dir_none">create_dir_none</dt> <dd>
+<p>do NOT create missing dirs!</p> </dd> <dt class="d_decl" id="CurlFtp.create_dir">create_dir</dt> <dd>
+<p>(FTP/SFTP) if CWD fails, try MKD and then CWD again if MKD succeeded, for SFTP this does similar magic</p> </dd> <dt class="d_decl" id="CurlFtp.create_dir_retry">create_dir_retry</dt> <dd>
+<p>(FTP only) if CWD fails, try MKD and then CWD again even if MKD failed!</p> </dd> <dt class="d_decl" id="CurlFtp.create_dir_last">create_dir_last</dt> <dd>
+<p>not an option, never use</p> </dd> </dl> </dd> <dt class="d_decl" id="curl_ftpcreatedir">alias curl_ftpcreatedir = int</dt>  <dt class="d_decl" id="CurlFtpMethod">enum CurlFtpMethod: int</dt> <dd>
+<p>parameter for the CURLOPT_FTP_FILEMETHOD option</p> <dl>
+<dt class="d_decl" id="CurlFtpMethod.defaultmethod">defaultmethod</dt> <dd>
+<p>let libcurl pick</p> </dd> <dt class="d_decl" id="CurlFtpMethod.multicwd">multicwd</dt> <dd>
+<p>single CWD operation for each path part</p> </dd> <dt class="d_decl" id="CurlFtpMethod.nocwd">nocwd</dt> <dd>
+<p>no CWD at all</p> </dd> <dt class="d_decl" id="CurlFtpMethod.singlecwd">singlecwd</dt> <dd>
+<p>one CWD to full dir, then work on file</p> </dd> <dt class="d_decl" id="CurlFtpMethod.last">last</dt> <dd>
+<p>not an option, never use</p> </dd> </dl> </dd> <dt class="d_decl" id="curl_ftpmethod">alias curl_ftpmethod = int</dt>  <dt class="d_decl" id="CurlProto">enum CurlProto: int</dt> <dd>
+<p>CURLPROTO_ defines are for the CURLOPT_*PROTOCOLS options</p> <dl>
+<dt class="d_decl" id="CurlProto.http">http</dt>  <dt class="d_decl" id="CurlProto.https">https</dt>  <dt class="d_decl" id="CurlProto.ftp">ftp</dt>  <dt class="d_decl" id="CurlProto.ftps">ftps</dt>  <dt class="d_decl" id="CurlProto.scp">scp</dt>  <dt class="d_decl" id="CurlProto.sftp">sftp</dt>  <dt class="d_decl" id="CurlProto.telnet">telnet</dt>  <dt class="d_decl" id="CurlProto.ldap">ldap</dt>  <dt class="d_decl" id="CurlProto.ldaps">ldaps</dt>  <dt class="d_decl" id="CurlProto.dict">dict</dt>  <dt class="d_decl" id="CurlProto.file">file</dt>  <dt class="d_decl" id="CurlProto.tftp">tftp</dt>  <dt class="d_decl" id="CurlProto.imap">imap</dt>  <dt class="d_decl" id="CurlProto.imaps">imaps</dt>  <dt class="d_decl" id="CurlProto.pop3">pop3</dt>  <dt class="d_decl" id="CurlProto.pop3s">pop3s</dt>  <dt class="d_decl" id="CurlProto.smtp">smtp</dt>  <dt class="d_decl" id="CurlProto.smtps">smtps</dt>  <dt class="d_decl" id="CurlProto.rtsp">rtsp</dt>  <dt class="d_decl" id="CurlProto.rtmp">rtmp</dt>  <dt class="d_decl" id="CurlProto.rtmpt">rtmpt</dt>  <dt class="d_decl" id="CurlProto.rtmpe">rtmpe</dt>  <dt class="d_decl" id="CurlProto.rtmpte">rtmpte</dt>  <dt class="d_decl" id="CurlProto.rtmps">rtmps</dt>  <dt class="d_decl" id="CurlProto.rtmpts">rtmpts</dt>  <dt class="d_decl" id="CurlProto.gopher">gopher</dt>  <dt class="d_decl" id="CurlProto.all">all</dt> <dd>
+<p>enable everything</p> </dd> </dl> </dd> <dt class="d_decl" id="CURLOPTTYPE_LONG">enum int CURLOPTTYPE_LONG<br>enum int CURLOPTTYPE_OBJECTPOINT<br>enum int CURLOPTTYPE_FUNCTIONPOINT<br>enum int CURLOPTTYPE_OFF_T</dt> <dd>
+<p>long may be 32 or 64 bits, but we should never depend on anything else but 32</p> </dd> <dt class="d_decl" id="LONG">alias LONG = CURLOPTTYPE_LONG<br>alias OBJECTPOINT = CURLOPTTYPE_OBJECTPOINT<br>alias FUNCTIONPOINT = CURLOPTTYPE_FUNCTIONPOINT<br>alias OFF_T = CURLOPTTYPE_OFF_T</dt> <dd>
+<p>name is uppercase CURLOPT_&lt;name&gt;, type is one of the defined CURLOPTTYPE_&lt;type&gt; number is unique identifier </p>
+<p>The macro "##" is ISO C, we assume pre-ISO C doesn't support it.</p> </dd> <dt class="d_decl" id="CurlOption">enum CurlOption: int</dt> <dd> <dl>
+<dt class="d_decl" id="CurlOption.file">file</dt> <dd>
+<p>This is the FILE * or void * the regular output should be written to.</p> </dd> <dt class="d_decl" id="CurlOption.url">url</dt> <dd>
+<p>The full URL to get/put</p> </dd> <dt class="d_decl" id="CurlOption.port">port</dt> <dd>
+<p>Port number to connect to, if other than default.</p> </dd> <dt class="d_decl" id="CurlOption.proxy">proxy</dt> <dd>
+<p>Name of <code>proxy</code> to use.</p> </dd> <dt class="d_decl" id="CurlOption.userpwd">userpwd</dt> <dd>
+<p>"name:password" to use when fetching.</p> </dd> <dt class="d_decl" id="CurlOption.proxyuserpwd">proxyuserpwd</dt> <dd>
+<p>"name:password" to use with proxy.</p> </dd> <dt class="d_decl" id="CurlOption.range">range</dt> <dd>
+<p>Range to get, specified as an ASCII string.</p> </dd> <dt class="d_decl" id="CurlOption.infile">infile</dt> <dd>
+<p>not used </p>
+<p>Specified file stream to upload from (use as input):</p> </dd> <dt class="d_decl" id="CurlOption.errorbuffer">errorbuffer</dt> <dd>
+<p>Buffer to receive error messages in, must be at least CURL_ERROR_SIZE bytes big. If this is not used, error messages go to stderr instead:</p> </dd> <dt class="d_decl" id="CurlOption.writefunction">writefunction</dt> <dd>
+<p>Function that will be called to store the output (instead of fwrite). The parameters will use fwrite() syntax, make sure to follow them.</p> </dd> <dt class="d_decl" id="CurlOption.readfunction">readfunction</dt> <dd>
+<p>Function that will be called to read the input (instead of fread). The parameters will use fread() syntax, make sure to follow them.</p> </dd> <dt class="d_decl" id="CurlOption.timeout">timeout</dt> <dd>
+<p>Time-out the read operation after this amount of seconds</p> </dd> <dt class="d_decl" id="CurlOption.infilesize">infilesize</dt> <dd>
+<p>If the CURLOPT_INFILE is used, this can be used to inform libcurl about how large the file being sent really is. That allows better error checking and better verifies that the upload was successful. -1 means unknown size. </p>
+<p>For large file support, there is also a LARGE version of the key which takes an off_t type, allowing platforms with larger off_t sizes to handle larger files. See below for INFILESIZE_LARGE.</p> </dd> <dt class="d_decl" id="CurlOption.postfields">postfields</dt> <dd>
+<p>POST static input fields.</p> </dd> <dt class="d_decl" id="CurlOption.referer">referer</dt> <dd>
+<p>Set the referrer page (needed by some CGIs)</p> </dd> <dt class="d_decl" id="CurlOption.ftpport">ftpport</dt> <dd>
+<p>Set the FTP PORT string (interface name, named or numerical IP address) Use i.e '-' to use default address.</p> </dd> <dt class="d_decl" id="CurlOption.useragent">useragent</dt> <dd>
+<p>Set the User-Agent string (examined by some CGIs)</p> </dd> <dt class="d_decl" id="CurlOption.low_speed_limit">low_speed_limit</dt> <dd>
+<p>If the download receives less than "low speed limit" bytes/second during "low speed time" seconds, the operations is aborted. You could i.e if you have a pretty high speed connection, abort if it is less than 2000 bytes/sec during 20 seconds. </p>
+<p>Set the "low speed limit"</p> </dd> <dt class="d_decl" id="CurlOption.low_speed_time">low_speed_time</dt> <dd>
+<p>Set the "low speed time"</p> </dd> <dt class="d_decl" id="CurlOption.resume_from">resume_from</dt> <dd>
+<p>Set the continuation offset. </p>
+<p>Note there is also a LARGE version of this key which uses off_t types, allowing for large file offsets on platforms which use larger-than-32-bit off_t's. Look below for RESUME_FROM_LARGE.</p> </dd> <dt class="d_decl" id="CurlOption.cookie">cookie</dt> <dd>
+<p>Set <code>cookie</code> in request:</p> </dd> <dt class="d_decl" id="CurlOption.httpheader">httpheader</dt> <dd>
+<p>This points to a linked list of headers, struct curl_slist kind</p> </dd> <dt class="d_decl" id="CurlOption.httppost">httppost</dt> <dd>
+<p>This points to a linked list of post entries, struct curl_httppost</p> </dd> <dt class="d_decl" id="CurlOption.sslcert">sslcert</dt> <dd>
+<p>name of the file keeping your private SSL-certificate</p> </dd> <dt class="d_decl" id="CurlOption.keypasswd">keypasswd</dt> <dd>
+<p>password for the SSL or SSH private key</p> </dd> <dt class="d_decl" id="CurlOption.crlf">crlf</dt> <dd>
+<p>send TYPE parameter?</p> </dd> <dt class="d_decl" id="CurlOption.quote">quote</dt> <dd>
+<p>send linked-list of QUOTE commands</p> </dd> <dt class="d_decl" id="CurlOption.writeheader">writeheader</dt> <dd>
+<p>send FILE * or void * to store headers to, if you use a callback it is simply passed to the callback unmodified</p> </dd> <dt class="d_decl" id="CurlOption.cookiefile">cookiefile</dt> <dd>
+<p>point to a file to read the initial cookies from, also enables "cookie awareness"</p> </dd> <dt class="d_decl" id="CurlOption.sslversion">sslversion</dt> <dd>
+<p>What version to specifically try to use. See CURL_SSLVERSION defines below.</p> </dd> <dt class="d_decl" id="CurlOption.timecondition">timecondition</dt> <dd>
+<p>What kind of HTTP time condition to use, see defines</p> </dd> <dt class="d_decl" id="CurlOption.timevalue">timevalue</dt> <dd>
+<p>Time to use with the above condition. Specified in number of seconds since 1 Jan 1970</p> </dd> <dt class="d_decl" id="CurlOption.customrequest">customrequest</dt> <dd>
+<p>Custom request, for customizing the get command like </p>
+<dl>
+<dt>HTTP</dt>
+<dd> DELETE, TRACE and others </dd>
+</dl> <dl>
+<dt>FTP</dt>
+<dd> to use a different list command</dd>
+</dl> </dd> <dt class="d_decl" id="CurlOption.stderr">stderr</dt> <dd>
+<p>HTTP request, for odd commands like DELETE, TRACE and others</p> </dd> <dt class="d_decl" id="CurlOption.postquote">postquote</dt> <dd>
+<p>send linked-list of post-transfer QUOTE commands</p> </dd> <dt class="d_decl" id="CurlOption.writeinfo">writeinfo</dt> <dd>
+<p>Pass a pointer to string of the output using full variable-replacement as described elsewhere.</p> </dd> <dt class="d_decl" id="CurlOption.verbose">verbose</dt> <dd>
+<p>talk a lot</p> </dd> <dt class="d_decl" id="CurlOption.header">header</dt> <dd>
+<p>throw the <code>header</code> out too</p> </dd> <dt class="d_decl" id="CurlOption.noprogress">noprogress</dt> <dd>
+<p>shut off the progress meter</p> </dd> <dt class="d_decl" id="CurlOption.nobody">nobody</dt> <dd>
+<p>use HEAD to get http document</p> </dd> <dt class="d_decl" id="CurlOption.failonerror">failonerror</dt> <dd>
+<p>no output on http error codes &gt;= 300</p> </dd> <dt class="d_decl" id="CurlOption.upload">upload</dt> <dd>
+<p>this is an <code>upload</code></p> </dd> <dt class="d_decl" id="CurlOption.post">post</dt> <dd>
+<p>HTTP POST method</p> </dd> <dt class="d_decl" id="CurlOption.dirlistonly">dirlistonly</dt> <dd>
+<p>return bare names when listing directories</p> </dd> <dt class="d_decl" id="CurlOption.append">append</dt> <dd>
+<p>Append instead of overwrite on upload!</p> </dd> <dt class="d_decl" id="CurlOption.netrc">netrc</dt> <dd>
+<p>Specify whether to read the user+password from the .<code>netrc</code> or the URL. This must be one of the CURL_NETRC_* enums below.</p> </dd> <dt class="d_decl" id="CurlOption.followlocation">followlocation</dt> <dd>
+<p>use Location: Luke!</p> </dd> <dt class="d_decl" id="CurlOption.transfertext">transfertext</dt> <dd>
+<p>transfer data in text/ASCII format</p> </dd> <dt class="d_decl" id="CurlOption.put">put</dt> <dd>
+<p>HTTP PUT</p> </dd> <dt class="d_decl" id="CurlOption.progressfunction">progressfunction</dt> <dd>
+<p>Function that will be called instead of the internal progress display function. This function should be defined as the curl_progress_callback prototype defines.</p> </dd> <dt class="d_decl" id="CurlOption.progressdata">progressdata</dt> <dd>
+<p>Data passed to the progress callback</p> </dd> <dt class="d_decl" id="CurlOption.autoreferer">autoreferer</dt> <dd>
+<p>We want the referrer field set automatically when following locations</p> </dd> <dt class="d_decl" id="CurlOption.proxyport">proxyport</dt> <dd>
+<p>Port of the proxy, can be set in the proxy string as well with: "[host]:[port]"</p> </dd> <dt class="d_decl" id="CurlOption.postfieldsize">postfieldsize</dt> <dd>
+<p>size of the POST input data, if strlen() is not good to use</p> </dd> <dt class="d_decl" id="CurlOption.httpproxytunnel">httpproxytunnel</dt> <dd>
+<p>tunnel non-http operations through a HTTP proxy</p> </dd> <dt class="d_decl" id="CurlOption.intrface">intrface</dt> <dd>
+<p>Set the interface string to use as outgoing network interface</p> </dd> <dt class="d_decl" id="CurlOption.krblevel">krblevel</dt> <dd>
+<p>Set the krb4/5 security level, this also enables krb4/5 awareness. This is a string, 'clear', 'safe', 'confidential' or 'private'. If the string is set but doesn't match one of these, 'private' will be used.</p> </dd> <dt class="d_decl" id="CurlOption.ssl_verifypeer">ssl_verifypeer</dt> <dd>
+<p>Set if we should verify the peer in ssl handshake, set 1 to verify.</p> </dd> <dt class="d_decl" id="CurlOption.cainfo">cainfo</dt> <dd>
+<p>The CApath or CAfile used to validate the peer certificate this option is used only if SSL_VERIFYPEER is <code>true</code></p> </dd> <dt class="d_decl" id="CurlOption.maxredirs">maxredirs</dt> <dd>
+<p>Maximum number of http redirects to follow</p> </dd> <dt class="d_decl" id="CurlOption.filetime">filetime</dt> <dd>
+<p>Pass a long set to 1 to get the date of the requested document (if possible)! Pass a zero to shut it off.</p> </dd> <dt class="d_decl" id="CurlOption.telnetoptions">telnetoptions</dt> <dd>
+<p>This points to a linked list of telnet options</p> </dd> <dt class="d_decl" id="CurlOption.maxconnects">maxconnects</dt> <dd>
+<p>Max amount of cached alive connections</p> </dd> <dt class="d_decl" id="CurlOption.closepolicy">closepolicy</dt> <dd>
+<p>What policy to use when closing connections when the cache is filled up</p> </dd> <dt class="d_decl" id="CurlOption.fresh_connect">fresh_connect</dt> <dd>
+<p>Set to explicitly use a new connection for the upcoming transfer. Do not use this unless you're absolutely sure of this, as it makes the operation slower and is less friendly for the network.</p> </dd> <dt class="d_decl" id="CurlOption.forbid_reuse">forbid_reuse</dt> <dd>
+<p>Set to explicitly forbid the upcoming transfer's connection to be re-used when done. Do not use this unless you're absolutely sure of this, as it makes the operation slower and is less friendly for the network.</p> </dd> <dt class="d_decl" id="CurlOption.random_file">random_file</dt> <dd>
+<p>Set to a file name that contains random data for libcurl to use to seed the random engine when doing SSL connects.</p> </dd> <dt class="d_decl" id="CurlOption.egdsocket">egdsocket</dt> <dd>
+<p>Set to the Entropy Gathering Daemon socket pathname</p> </dd> <dt class="d_decl" id="CurlOption.connecttimeout">connecttimeout</dt> <dd>
+<p>Time-out connect operations after this amount of seconds, if connects are OK within this time, then fine... This only aborts the connect phase. [Only works on unix-style/SIGALRM operating systems]</p> </dd> <dt class="d_decl" id="CurlOption.headerfunction">headerfunction</dt> <dd>
+<p>Function that will be called to store headers (instead of fwrite). The parameters will use fwrite() syntax, make sure to follow them.</p> </dd> <dt class="d_decl" id="CurlOption.httpget">httpget</dt> <dd>
+<p>Set this to force the HTTP request to get back to GET. Only really usable if POST, PUT or a custom request have been used first.</p> </dd> <dt class="d_decl" id="CurlOption.ssl_verifyhost">ssl_verifyhost</dt> <dd>
+<p>Set if we should verify the Common name from the peer certificate in ssl handshake, set 1 to check existence, 2 to ensure that it matches the provided hostname.</p> </dd> <dt class="d_decl" id="CurlOption.cookiejar">cookiejar</dt> <dd>
+<p>Specify which file name to write all known cookies in after completed operation. Set file name to "-" (dash) to make it go to stdout.</p> </dd> <dt class="d_decl" id="CurlOption.ssl_cipher_list">ssl_cipher_list</dt> <dd>
+<p>Specify which SSL ciphers to use</p> </dd> <dt class="d_decl" id="CurlOption.http_version">http_version</dt> <dd>
+<p>Specify which HTTP version to use! This must be set to one of the CURL_HTTP_VERSION* enums set below.</p> </dd> <dt class="d_decl" id="CurlOption.ftp_use_epsv">ftp_use_epsv</dt> <dd>
+<p>Specifically switch on or off the FTP engine's use of the EPSV command. By default, that one will always be attempted before the more traditional PASV command.</p> </dd> <dt class="d_decl" id="CurlOption.sslcerttype">sslcerttype</dt> <dd>
+<p>type of the file keeping your SSL-certificate ("DER", "PEM", "ENG")</p> </dd> <dt class="d_decl" id="CurlOption.sslkey">sslkey</dt> <dd>
+<p>name of the file keeping your private SSL-key</p> </dd> <dt class="d_decl" id="CurlOption.sslkeytype">sslkeytype</dt> <dd>
+<p>type of the file keeping your private SSL-key ("DER", "PEM", "ENG")</p> </dd> <dt class="d_decl" id="CurlOption.sslengine">sslengine</dt> <dd>
+<p>crypto engine for the SSL-sub system</p> </dd> <dt class="d_decl" id="CurlOption.sslengine_default">sslengine_default</dt> <dd>
+<p>set the crypto engine for the SSL-sub system as default the param has no meaning...</p> </dd> <dt class="d_decl" id="CurlOption.dns_use_global_cache">dns_use_global_cache</dt> <dd>
+<p>Non-zero value means to use the global dns cache</p> </dd> <dt class="d_decl" id="CurlOption.dns_cache_timeout">dns_cache_timeout</dt> <dd>
+<p>DNS cache timeout</p> </dd> <dt class="d_decl" id="CurlOption.prequote">prequote</dt> <dd>
+<p>send linked-list of pre-transfer QUOTE commands</p> </dd> <dt class="d_decl" id="CurlOption.debugfunction">debugfunction</dt> <dd>
+<p>set the debug function</p> </dd> <dt class="d_decl" id="CurlOption.debugdata">debugdata</dt> <dd>
+<p>set the data for the debug function</p> </dd> <dt class="d_decl" id="CurlOption.cookiesession">cookiesession</dt> <dd>
+<p>mark this as start of a cookie session</p> </dd> <dt class="d_decl" id="CurlOption.capath">capath</dt> <dd>
+<p>The CApath directory used to validate the peer certificate this option is used only if SSL_VERIFYPEER is <code>true</code></p> </dd> <dt class="d_decl" id="CurlOption.buffersize">buffersize</dt> <dd>
+<p>Instruct libcurl to use a smaller receive buffer</p> </dd> <dt class="d_decl" id="CurlOption.nosignal">nosignal</dt> <dd>
+<p>Instruct libcurl to not use any signal/alarm handlers, even when using timeouts. This option is useful for multi-threaded applications. See libcurl-the-guide for more background information.</p> </dd> <dt class="d_decl" id="CurlOption.share">share</dt> <dd>
+<p>Provide a CURLShare for mutexing non-ts data</p> </dd> <dt class="d_decl" id="CurlOption.proxytype">proxytype</dt> <dd>
+<p>indicates type of proxy. accepted values are CURLPROXY_HTTP (default), CURLPROXY_SOCKS4, CURLPROXY_SOCKS4A and CURLPROXY_SOCKS5.</p> </dd> <dt class="d_decl" id="CurlOption.encoding">encoding</dt> <dd>
+<p>Set the Accept-Encoding string. Use this to tell a server you would like the response to be compressed.</p> </dd> <dt class="d_decl" id="CurlOption.private_opt">private_opt</dt> <dd>
+<p>Set pointer to private data</p> </dd> <dt class="d_decl" id="CurlOption.http200aliases">http200aliases</dt> <dd>
+<p>Set aliases for HTTP 200 in the HTTP Response header</p> </dd> <dt class="d_decl" id="CurlOption.unrestricted_auth">unrestricted_auth</dt> <dd>
+<p>Continue to send authentication (user+password) when following locations, even when hostname changed. This can potentially send off the name and password to whatever host the server decides.</p> </dd> <dt class="d_decl" id="CurlOption.ftp_use_eprt">ftp_use_eprt</dt> <dd>
+<p>Specifically switch on or off the FTP engine's use of the EPRT command ( it also disables the LPRT attempt). By default, those ones will always be attempted before the good old traditional PORT command.</p> </dd> <dt class="d_decl" id="CurlOption.httpauth">httpauth</dt> <dd>
+<p>Set this to a bitmask value to enable the particular authentications methods you like. Use this in combination with CURLOPT_USERPWD. Note that setting multiple bits may cause extra network round-trips.</p> </dd> <dt class="d_decl" id="CurlOption.ssl_ctx_function">ssl_ctx_function</dt> <dd>
+<p>Set the ssl context callback function, currently only for OpenSSL ssl_ctx in second argument. The function must be matching the curl_ssl_ctx_callback proto.</p> </dd> <dt class="d_decl" id="CurlOption.ssl_ctx_data">ssl_ctx_data</dt> <dd>
+<p>Set the userdata for the ssl context callback function's third argument</p> </dd> <dt class="d_decl" id="CurlOption.ftp_create_missing_dirs">ftp_create_missing_dirs</dt> <dd>
+<p>FTP Option that causes missing dirs to be created on the remote server. In 7.19.4 we introduced the convenience enums for this option using the CURLFTP_CREATE_DIR prefix.</p> </dd> <dt class="d_decl" id="CurlOption.proxyauth">proxyauth</dt> <dd>
+<p>Set this to a bitmask value to enable the particular authentications methods you like. Use this in combination with CURLOPT_PROXYUSERPWD. Note that setting multiple bits may cause extra network round-trips.</p> </dd> <dt class="d_decl" id="CurlOption.ftp_response_timeout">ftp_response_timeout</dt> <dd>
+<p>FTP option that changes the timeout, in seconds, associated with getting a response. This is different from transfer timeout time and essentially places a demand on the FTP server to acknowledge commands in a timely manner.</p> </dd> <dt class="d_decl" id="CurlOption.ipresolve">ipresolve</dt> <dd>
+<p>Set this option to one of the CURL_IPRESOLVE_* defines (see below) to tell libcurl to resolve names to those IP versions only. This only has affect on systems with support for more than one, i.e IPv4 and_ IPv6.</p> </dd> <dt class="d_decl" id="CurlOption.maxfilesize">maxfilesize</dt> <dd>
+<p>Set this option to limit the size of a file that will be downloaded from an HTTP or FTP server. </p>
+<p>Note there is also LARGE version which adds large file support for platforms which have larger off_t sizes. See MAXFILESIZE_LARGE below.</p> </dd> <dt class="d_decl" id="CurlOption.infilesize_large">infilesize_large</dt> <dd>
+<p>See the comment for INFILESIZE above, but in short, specifies the size of the file being uploaded. -1 means unknown.</p> </dd> <dt class="d_decl" id="CurlOption.resume_from_large">resume_from_large</dt> <dd>
+<p>Sets the continuation offset. There is also a LONG version of this; look above for RESUME_FROM.</p> </dd> <dt class="d_decl" id="CurlOption.maxfilesize_large">maxfilesize_large</dt> <dd>
+<p>Sets the maximum size of data that will be downloaded from an HTTP or FTP server. See MAXFILESIZE above for the LONG version.</p> </dd> <dt class="d_decl" id="CurlOption.netrc_file">netrc_file</dt> <dd>
+<p>Set this option to the file name of your .netrc file you want libcurl to parse (using the CURLOPT_NETRC option). If not set, libcurl will do a poor attempt to find the user's home directory and check for a .netrc file in there.</p> </dd> <dt class="d_decl" id="CurlOption.use_ssl">use_ssl</dt> <dd>
+<p>Enable SSL/TLS for FTP, pick one of: CURLFTPSSL_TRY - try using SSL, proceed anyway otherwise CURLFTPSSL_CONTROL - SSL for the control connection or fail CURLFTPSSL_ALL - SSL for all communication or fail</p> </dd> <dt class="d_decl" id="CurlOption.postfieldsize_large">postfieldsize_large</dt> <dd>
+<p>The LARGE version of the standard POSTFIELDSIZE option</p> </dd> <dt class="d_decl" id="CurlOption.tcp_nodelay">tcp_nodelay</dt> <dd>
+<p>Enable/disable the TCP Nagle algorithm</p> </dd> <dt class="d_decl" id="CurlOption.ftpsslauth">ftpsslauth</dt> <dd>
+<p>When FTP over SSL/TLS is selected (with CURLOPT_USE_SSL), this option can be used to change libcurl's default action which is to first try "AUTH SSL" and then "AUTH TLS" in this order, and proceed when a OK response has been received. </p>
+<p>Available parameters are: CURLFTPAUTH_DEFAULT - let libcurl decide CURLFTPAUTH_SSL - try "AUTH SSL" first, then TLS CURLFTPAUTH_TLS - try "AUTH TLS" first, then SSL</p> </dd> <dt class="d_decl" id="CurlOption.ioctlfunction">ioctlfunction</dt>  <dt class="d_decl" id="CurlOption.ioctldata">ioctldata</dt>  <dt class="d_decl" id="CurlOption.ftp_account">ftp_account</dt> <dd>
+<p>zero terminated string for pass on to the FTP server when asked for "account" info</p> </dd> <dt class="d_decl" id="CurlOption.cookielist">cookielist</dt> <dd>
+<p>feed cookies into cookie engine</p> </dd> <dt class="d_decl" id="CurlOption.ignore_content_length">ignore_content_length</dt> <dd>
+<p>ignore Content-Length</p> </dd> <dt class="d_decl" id="CurlOption.ftp_skip_pasv_ip">ftp_skip_pasv_ip</dt> <dd>
+<p>Set to non-zero to skip the IP address received in a 227 PASV FTP server response. Typically used for FTP-SSL purposes but is not restricted to that. libcurl will then instead use the same IP address it used for the control connection.</p> </dd> <dt class="d_decl" id="CurlOption.ftp_filemethod">ftp_filemethod</dt> <dd>
+<p>Select "file method" to use when doing FTP, see the curl_ftpmethod above.</p> </dd> <dt class="d_decl" id="CurlOption.localport">localport</dt> <dd>
+<p>Local port number to bind the socket to</p> </dd> <dt class="d_decl" id="CurlOption.localportrange">localportrange</dt> <dd>
+<p>Number of ports to try, including the first one set with LOCALPORT. Thus, setting it to 1 will make no additional attempts but the first.</p> </dd> <dt class="d_decl" id="CurlOption.connect_only">connect_only</dt> <dd>
+<p>no transfer, set up connection and let application use the socket by extracting it with CURLINFO_LASTSOCKET</p> </dd> <dt class="d_decl" id="CurlOption.conv_from_network_function">conv_from_network_function</dt> <dd>
+<p>Function that will be called to convert from the network encoding (instead of using the iconv calls in libcurl)</p> </dd> <dt class="d_decl" id="CurlOption.conv_to_network_function">conv_to_network_function</dt> <dd>
+<p>Function that will be called to convert to the network encoding (instead of using the iconv calls in libcurl)</p> </dd> <dt class="d_decl" id="CurlOption.conv_from_utf8_function">conv_from_utf8_function</dt> <dd>
+<p>Function that will be called to convert from UTF8 (instead of using the iconv calls in libcurl) Note that this is used only for SSL certificate processing</p> </dd> <dt class="d_decl" id="CurlOption.max_send_speed_large">max_send_speed_largemax_recv_speed_large</dt> <dd>
+<p>If the connection proceeds too quickly then need to slow it down </p>
+<p>limit-rate: maximum number of bytes per second to send or receive</p> </dd> <dt class="d_decl" id="CurlOption.ftp_alternative_to_user">ftp_alternative_to_user</dt> <dd>
+<p>Pointer to command string to send if USER/PASS fails.</p> </dd> <dt class="d_decl" id="CurlOption.sockoptfunction">sockoptfunction</dt> <dd>
+<p>callback function for setting socket options</p> </dd> <dt class="d_decl" id="CurlOption.ssl_sessionid_cache">ssl_sessionid_cache</dt> <dd>
+<p>set to 0 to disable session ID re-use for this transfer, default is enabled (== 1)</p> </dd> <dt class="d_decl" id="CurlOption.ssh_auth_types">ssh_auth_types</dt> <dd>
+<p>allowed SSH authentication methods</p> </dd> <dt class="d_decl" id="CurlOption.ssh_public_keyfile">ssh_public_keyfile</dt> <dd>
+<p>Used by scp/sftp to do public/private key authentication</p> </dd> <dt class="d_decl" id="CurlOption.ftp_ssl_ccc">ftp_ssl_ccc</dt> <dd>
+<p>Send CCC (Clear Command Channel) after authentication</p> </dd> <dt class="d_decl" id="CurlOption.timeout_ms">timeout_ms</dt> <dd>
+<p>Same as TIMEOUT and CONNECTTIMEOUT, but with ms resolution</p> </dd> <dt class="d_decl" id="CurlOption.http_transfer_decoding">http_transfer_decodinghttp_content_decoding</dt> <dd>
+<p>set to zero to disable the libcurl's decoding and thus pass the raw body data to the application even when it is encoded/compressed</p> </dd> <dt class="d_decl" id="CurlOption.new_file_perms">new_file_permsnew_directory_perms</dt> <dd>
+<p>Permission used when creating new files and directories on the remote server for protocols that support it, SFTP/SCP/FILE</p> </dd> <dt class="d_decl" id="CurlOption.postredir">postredir</dt> <dd>
+<p>Set the behaviour of POST when redirecting. Values must be set to one of CURL_REDIR* defines below. This used to be called CURLOPT_POST301</p> </dd> <dt class="d_decl" id="CurlOption.ssh_host_public_key_md5">ssh_host_public_key_md5</dt> <dd>
+<p>used by scp/sftp to verify the host's public key</p> </dd> <dt class="d_decl" id="CurlOption.opensocketfunction">opensocketfunctionopensocketdata</dt> <dd>
+<p>Callback function for opening socket (instead of socket(2)). Optionally, callback is able change the address or refuse to connect returning CURL_SOCKET_BAD. The callback should have type curl_opensocket_callback</p> </dd> <dt class="d_decl" id="CurlOption.copypostfields">copypostfields</dt> <dd>
+<p>POST volatile input fields.</p> </dd> <dt class="d_decl" id="CurlOption.proxy_transfer_mode">proxy_transfer_mode</dt> <dd>
+<p>set transfer mode (;type=&lt;a|i&gt;) when doing FTP via an HTTP proxy</p> </dd> <dt class="d_decl" id="CurlOption.seekfunction">seekfunctionseekdata</dt> <dd>
+<p>Callback function for seeking in the input stream</p> </dd> <dt class="d_decl" id="CurlOption.crlfile">crlfile</dt> <dd>
+<p>CRL file</p> </dd> <dt class="d_decl" id="CurlOption.issuercert">issuercert</dt> <dd>
+<p>Issuer certificate</p> </dd> <dt class="d_decl" id="CurlOption.address_scope">address_scope</dt> <dd>
+<p>(IPv6) Address scope</p> </dd> <dt class="d_decl" id="CurlOption.certinfo">certinfo</dt> <dd>
+<p>Collect certificate chain info and allow it to get retrievable with CURLINFO_CERTINFO after the transfer is complete. (Unfortunately) only working with OpenSSL-powered builds.</p> </dd> <dt class="d_decl" id="CurlOption.username">usernamepassword</dt> <dd>
+<p>"name" and "pwd" to use when fetching.</p> </dd> <dt class="d_decl" id="CurlOption.proxyusername">proxyusernameproxypassword</dt> <dd>
+<p>"name" and "pwd" to use with Proxy when fetching.</p> </dd> <dt class="d_decl" id="CurlOption.noproxy">noproxy</dt> <dd>
+<p>Comma separated list of hostnames defining no-proxy zones. These should match both hostnames directly, and hostnames within a domain. For example, local.com will match local.com and www.local.com, but NOT notlocal.com or www.notlocal.com. For compatibility with other implementations of this, .local.com will be considered to be the same as local.com. A single * is the only valid wildcard, and effectively disables the use of proxy.</p> </dd> <dt class="d_decl" id="CurlOption.tftp_blksize">tftp_blksize</dt> <dd>
+<p>block size for TFTP transfers</p> </dd> <dt class="d_decl" id="CurlOption.socks5_gssapi_service">socks5_gssapi_service</dt> <dd>
+<p>Socks Service</p> </dd> <dt class="d_decl" id="CurlOption.socks5_gssapi_nec">socks5_gssapi_nec</dt> <dd>
+<p>Socks Service</p> </dd> <dt class="d_decl" id="CurlOption.protocols">protocols</dt> <dd>
+<p>set the bitmask for the <code>protocols</code> that are allowed to be used for the transfer, which thus helps the app which takes URLs from users or other external inputs and want to restrict what protocol(s) to deal with. Defaults to CURLPROTO_ALL.</p> </dd> <dt class="d_decl" id="CurlOption.redir_protocols">redir_protocols</dt> <dd>
+<p>set the bitmask for the protocols that libcurl is allowed to follow to, as a subset of the CURLOPT_PROTOCOLS ones. That means the protocol needs to be set in both bitmasks to be allowed to get redirected to. Defaults to all protocols except FILE and SCP.</p> </dd> <dt class="d_decl" id="CurlOption.ssh_knownhosts">ssh_knownhosts</dt> <dd>
+<p>set the SSH knownhost file name to use</p> </dd> <dt class="d_decl" id="CurlOption.ssh_keyfunction">ssh_keyfunction</dt> <dd>
+<p>set the SSH host key callback, must point to a curl_sshkeycallback function</p> </dd> <dt class="d_decl" id="CurlOption.ssh_keydata">ssh_keydata</dt> <dd>
+<p>set the SSH host key callback custom pointer</p> </dd> <dt class="d_decl" id="CurlOption.mail_from">mail_from</dt> <dd>
+<p>set the SMTP mail originator</p> </dd> <dt class="d_decl" id="CurlOption.mail_rcpt">mail_rcpt</dt> <dd>
+<p>set the SMTP mail receiver(s)</p> </dd> <dt class="d_decl" id="CurlOption.ftp_use_pret">ftp_use_pret</dt> <dd>
+<dl>
+<dt>FTP</dt>
+<dd> send PRET before PASV</dd>
+</dl> </dd> <dt class="d_decl" id="CurlOption.rtsp_request">rtsp_request</dt> <dd>
+<p>RTSP request method (OPTIONS, SETUP, PLAY, etc...)</p> </dd> <dt class="d_decl" id="CurlOption.rtsp_session_id">rtsp_session_id</dt> <dd>
+<p>The RTSP session identifier</p> </dd> <dt class="d_decl" id="CurlOption.rtsp_stream_uri">rtsp_stream_uri</dt> <dd>
+<p>The RTSP stream URI</p> </dd> <dt class="d_decl" id="CurlOption.rtsp_transport">rtsp_transport</dt> <dd>
+<p>The Transport: header to use in RTSP requests</p> </dd> <dt class="d_decl" id="CurlOption.rtsp_client_cseq">rtsp_client_cseq</dt> <dd>
+<p>Manually initialize the client RTSP CSeq for this handle</p> </dd> <dt class="d_decl" id="CurlOption.rtsp_server_cseq">rtsp_server_cseq</dt> <dd>
+<p>Manually initialize the server RTSP CSeq for this handle</p> </dd> <dt class="d_decl" id="CurlOption.interleavedata">interleavedata</dt> <dd>
+<p>The stream to pass to INTERLEAVEFUNCTION.</p> </dd> <dt class="d_decl" id="CurlOption.interleavefunction">interleavefunction</dt> <dd>
+<p>Let the application define a custom write method for RTP data</p> </dd> <dt class="d_decl" id="CurlOption.wildcardmatch">wildcardmatch</dt> <dd>
+<p>Turn on wildcard matching</p> </dd> <dt class="d_decl" id="CurlOption.chunk_bgn_function">chunk_bgn_function</dt> <dd>
+<p>Directory matching callback called before downloading of an individual file (chunk) started</p> </dd> <dt class="d_decl" id="CurlOption.chunk_end_function">chunk_end_function</dt> <dd>
+<p>Directory matching callback called after the file (chunk) was downloaded, or skipped</p> </dd> <dt class="d_decl" id="CurlOption.fnmatch_function">fnmatch_function</dt> <dd>
+<p>Change match (fnmatch-like) callback for wildcard matching</p> </dd> <dt class="d_decl" id="CurlOption.chunk_data">chunk_data</dt> <dd>
+<p>Let the application define custom chunk data pointer</p> </dd> <dt class="d_decl" id="CurlOption.fnmatch_data">fnmatch_data</dt> <dd>
+<p>FNMATCH_FUNCTION user pointer</p> </dd> <dt class="d_decl" id="CurlOption.resolve">resolve</dt> <dd>
+<p>send linked-list of name:port:address sets</p> </dd> <dt class="d_decl" id="CurlOption.tlsauth_username">tlsauth_username</dt> <dd>
+<p>Set a username for authenticated TLS</p> </dd> <dt class="d_decl" id="CurlOption.tlsauth_password">tlsauth_password</dt> <dd>
+<p>Set a password for authenticated TLS</p> </dd> <dt class="d_decl" id="CurlOption.tlsauth_type">tlsauth_type</dt> <dd>
+<p>Set authentication type for authenticated TLS</p> </dd> <dt class="d_decl" id="CurlOption.lastentry">lastentry</dt> <dd>
+<p>the last unused</p> </dd> <dt class="d_decl" id="CurlOption.writedata">writedatareaddataheaderdatartspheader</dt> <dd>
+<p>convenient alias</p> </dd> </dl> </dd> <dt class="d_decl" id="CURLoption">alias CURLoption = int</dt>  <dt class="d_decl" id="CURLOPT_SERVER_RESPONSE_TIMEOUT">enum CurlOption CURLOPT_SERVER_RESPONSE_TIMEOUT</dt>  <dt class="d_decl" id="CurlIpResolve">enum CurlIpResolve: int</dt> <dd>
+<p>Below here follows defines for the CURLOPT_IPRESOLVE option. If a host name resolves addresses using more than one IP protocol version, this option might be handy to force libcurl to use a specific IP version.</p> <dl>
+<dt class="d_decl" id="CurlIpResolve.whatever">whatever</dt> <dd>
+<p>default, resolves addresses to all IP versions that your system allows</p> </dd> <dt class="d_decl" id="CurlIpResolve.v4">v4</dt> <dd>
+<p>resolve to ipv4 addresses</p> </dd> <dt class="d_decl" id="CurlIpResolve.v6">v6</dt> <dd>
+<p>resolve to ipv6 addresses</p> </dd> </dl> </dd> <dt class="d_decl" id="CURLOPT_WRITEDATA">enum CurlOption CURLOPT_WRITEDATA<br>enum CurlOption CURLOPT_READDATA<br>enum CurlOption CURLOPT_HEADERDATA<br>enum CurlOption CURLOPT_RTSPHEADER</dt> <dd>
+<p>three convenient "aliases" that follow the name scheme better</p> </dd> <dt class="d_decl" id="CurlHttpVersion">enum CurlHttpVersion: int</dt> <dd>
+<p>These enums are for use with the CURLOPT_HTTP_VERSION option.</p> <dl>
+<dt class="d_decl" id="CurlHttpVersion.none">none</dt> <dd>
+<p>setting this means we don't care, and that we'd like the library to choose the best possible for us!</p> </dd> <dt class="d_decl" id="CurlHttpVersion.v1_0">v1_0</dt> <dd>
+<p>please use HTTP 1.0 in the request</p> </dd> <dt class="d_decl" id="CurlHttpVersion.v1_1">v1_1</dt> <dd>
+<p>please use HTTP 1.1 in the request</p> </dd> <dt class="d_decl" id="CurlHttpVersion.last">last</dt> <dd>
+<p>*ILLEGAL* http version</p> </dd> </dl> </dd> <dt class="d_decl" id="CurlRtspReq">enum CurlRtspReq: int</dt> <dd>
+<p>Public API enums for RTSP requests</p> <dl>
+<dt class="d_decl" id="CurlRtspReq.none">none</dt>  <dt class="d_decl" id="CurlRtspReq.options">options</dt>  <dt class="d_decl" id="CurlRtspReq.describe">describe</dt>  <dt class="d_decl" id="CurlRtspReq.announce">announce</dt>  <dt class="d_decl" id="CurlRtspReq.setup">setup</dt>  <dt class="d_decl" id="CurlRtspReq.play">play</dt>  <dt class="d_decl" id="CurlRtspReq.pause">pause</dt>  <dt class="d_decl" id="CurlRtspReq.teardown">teardown</dt>  <dt class="d_decl" id="CurlRtspReq.get_parameter">get_parameter</dt>  <dt class="d_decl" id="CurlRtspReq.set_parameter">set_parameter</dt>  <dt class="d_decl" id="CurlRtspReq.record">record</dt>  <dt class="d_decl" id="CurlRtspReq.receive">receive</dt>  <dt class="d_decl" id="CurlRtspReq.last">last</dt>  </dl> </dd> <dt class="d_decl" id="CurlNetRcOption">enum CurlNetRcOption: int</dt> <dd>
+<p>These enums are for use with the CURLOPT_NETRC option.</p> <dl>
+<dt class="d_decl" id="CurlNetRcOption.ignored">ignored</dt> <dd>
+<p>The .netrc will never be read. This is the default.</p> </dd> <dt class="d_decl" id="CurlNetRcOption.optional">optional</dt> <dd>
+<p>A user:password in the URL will be preferred to one in the .netrc.</p> </dd> <dt class="d_decl" id="CurlNetRcOption.required">required</dt> <dd>
+<p>A user:password in the URL will be ignored. Unless one is set programmatically, the .netrc will be queried.</p> </dd> <dt class="d_decl" id="CurlNetRcOption.last">last</dt>  </dl> </dd> <dt class="d_decl" id="CurlSslVersion">enum CurlSslVersion: int</dt> <dd> <dl>
+<dt class="d_decl" id="CurlSslVersion.default_version">default_version</dt>  <dt class="d_decl" id="CurlSslVersion.tlsv1">tlsv1</dt>  <dt class="d_decl" id="CurlSslVersion.sslv2">sslv2</dt>  <dt class="d_decl" id="CurlSslVersion.sslv3">sslv3</dt>  <dt class="d_decl" id="CurlSslVersion.last">last</dt> <dd>
+<p>never use</p> </dd> </dl> </dd> <dt class="d_decl" id="CurlTlsAuth">enum CurlTlsAuth: int</dt> <dd> <dl>
+<dt class="d_decl" id="CurlTlsAuth.none">none</dt>  <dt class="d_decl" id="CurlTlsAuth.srp">srp</dt>  <dt class="d_decl" id="CurlTlsAuth.last">last</dt> <dd>
+<p>never use</p> </dd> </dl> </dd> <dt class="d_decl" id="CurlRedir">enum CurlRedir: int</dt> <dd>
+<p>symbols to use with CURLOPT_POSTREDIR. CURL_REDIR_POST_301 and CURL_REDIR_POST_302 can be bitwise ORed so that CURL_REDIR_POST_301 | CURL_REDIR_POST_302 == CURL_REDIR_POST_ALL</p> <dl>
+<dt class="d_decl" id="CurlRedir.get_all">get_all</dt>  <dt class="d_decl" id="CurlRedir.post_301">post_301</dt>  <dt class="d_decl" id="CurlRedir.post_302">post_302</dt>  <dt class="d_decl" id="CurlRedir.post_all">post_all</dt>  </dl> </dd> <dt class="d_decl" id="CurlTimeCond">enum CurlTimeCond: int</dt> <dd> <dl>
+<dt class="d_decl" id="CurlTimeCond.none">none</dt>  <dt class="d_decl" id="CurlTimeCond.ifmodsince">ifmodsince</dt>  <dt class="d_decl" id="CurlTimeCond.ifunmodsince">ifunmodsince</dt>  <dt class="d_decl" id="CurlTimeCond.lastmod">lastmod</dt>  <dt class="d_decl" id="CurlTimeCond.last">last</dt>  </dl> </dd> <dt class="d_decl" id="curl_TimeCond">alias curl_TimeCond = int</dt>  <dt class="d_decl" id="curl_strequal">int curl_strequal(in char* s1, in char* s2)</dt> <dd>
+<p><code>curl_strequal</code>() and curl_strnequal() are subject for removal in a future libcurl, see lib/README.curlx for details</p> </dd> <dt class="d_decl" id="curl_strnequal">int curl_strnequal(in char* s1, in char* s2, size_t n)</dt> <dd>
+<p>ditto </p>
+<p>curl_strequal() and <code>curl_strnequal</code>() are subject for removal in a future libcurl, see lib/README.curlx for details</p> </dd> <dt class="d_decl" id="curl_forms">struct curl_forms</dt> <dd>
+<p>structure to be used as parameter for CURLFORM_ARRAY</p> <dl>
+<dt class="d_decl" id="curl_forms.option">CURLformoption option</dt>  <dt class="d_decl" id="curl_forms.value">const(char)* value</dt>  </dl> </dd> <dt class="d_decl" id="CurlFormAdd">enum CurlFormAdd: int</dt> <dd>
+<p>Use this for multipart formpost building </p>
+<p>Returns code for curl_formadd() </p> <dl>
+<dt>Returns:</dt>
+<dd><ul> <li>CURL_FORMADD_OK on success </li> <li>CURL_FORMADD_MEMORY if the FormInfo allocation fails </li> <li>CURL_FORMADD_OPTION_TWICE if one option is given twice for one Form </li> <li>CURL_FORMADD_NULL if a <code>null</code> pointer was given for a char </li> <li>CURL_FORMADD_MEMORY if the allocation of a FormInfo struct failed </li> <li>CURL_FORMADD_UNKNOWN_OPTION if an unknown option was used </li> <li>CURL_FORMADD_INCOMPLETE if the some FormInfo is not complete (or error) </li> <li>CURL_FORMADD_MEMORY if a curl_httppost struct cannot be allocated </li> <li>CURL_FORMADD_MEMORY if some allocation for string copying failed. </li> <li>CURL_FORMADD_ILLEGAL_ARRAY if an illegal option is used in an array </li> </ul></dd>
+</dl> <dl>
+<dt class="d_decl" id="CurlFormAdd.ok">ok</dt> <dd>
+<p>first, no error</p> </dd> <dt class="d_decl" id="CurlFormAdd.memory">memory</dt>  <dt class="d_decl" id="CurlFormAdd.option_twice">option_twice</dt>  <dt class="d_decl" id="CurlFormAdd.null_ptr">null_ptr</dt>  <dt class="d_decl" id="CurlFormAdd.unknown_option">unknown_option</dt>  <dt class="d_decl" id="CurlFormAdd.incomplete">incomplete</dt>  <dt class="d_decl" id="CurlFormAdd.illegal_array">illegal_array</dt>  <dt class="d_decl" id="CurlFormAdd.disabled">disabled</dt> <dd>
+<p>libcurl was built with this <code>disabled</code></p> </dd> <dt class="d_decl" id="CurlFormAdd.last">last</dt>  </dl> </dd> <dt class="d_decl" id="CURLFORMcode">alias CURLFORMcode = int</dt>  <dt class="d_decl" id="curl_formadd">CURLFORMcode curl_formadd(curl_httppost** httppost, curl_httppost** last_post, ...)</dt> <dd>
+<dl>
+<dt>Name</dt>
+<dd> <code>curl_formadd</code>() </dd>
+</dl> <dl>
+<dt>Description</dt>
+<dd> Pretty advanced function for building multi-part formposts. Each invoke adds one part that together construct a full post. Then use CURLOPT_HTTPPOST to send it off to libcurl.</dd>
+</dl> </dd> <dt class="d_decl" id="curl_formget_callback">alias curl_formget_callback = extern (C) ulong function(void* arg, const(char*) buf, ulong len)</dt> <dd>
+<p>callback function for curl_formget() The void *arg pointer will be the one passed as second argument to curl_formget(). The character buffer passed to it must not be freed. Should return the buffer length passed to it as the argument "len" on success.</p> </dd> <dt class="d_decl" id="curl_formget">int curl_formget(curl_httppost* form, void* arg, curl_formget_callback append)</dt> <dd>
+<dl>
+<dt>Name</dt>
+<dd> <code>curl_formget</code>() </dd>
+</dl> <dl>
+<dt>Description</dt>
+<dd> Serialize a curl_httppost struct built with curl_formadd(). Accepts a void pointer as second argument which will be passed to the curl_formget_callback function. Returns 0 on success.</dd>
+</dl> </dd> <dt class="d_decl" id="curl_formfree">void curl_formfree(curl_httppost* form)</dt> <dd>
+<dl>
+<dt>Name</dt>
+<dd> <code>curl_formfree</code>() </dd>
+</dl> <dl>
+<dt>Description</dt>
+<dd> Free a multipart formpost previously built with curl_formadd().</dd>
+</dl> </dd> <dt class="d_decl" id="curl_getenv">char* curl_getenv(in char* variable)</dt> <dd>
+<dl>
+<dt>Name</dt>
+<dd> <code>curl_getenv</code>() </dd>
+</dl> <dl>
+<dt>Description</dt>
+<dd> Returns a malloc()'ed string that MUST be curl_free()ed after usage is complete. DEPRECATED - see lib/README.curlx</dd>
+</dl> </dd> <dt class="d_decl" id="curl_version">char* curl_version()</dt> <dd>
+<dl>
+<dt>Name</dt>
+<dd> <code>curl_version</code>() </dd>
+</dl> <dl>
+<dt>Description</dt>
+<dd> Returns a static ascii string of the libcurl version.</dd>
+</dl> </dd> <dt class="d_decl" id="curl_easy_escape">char* curl_easy_escape(CURL* handle, in char* string, int length)</dt> <dd>
+<dl>
+<dt>Name</dt>
+<dd> <code>curl_easy_escape</code>() </dd>
+</dl> <dl>
+<dt>Description</dt>
+<dd> Escapes URL strings (converts all letters consider illegal in URLs to their %XX versions). This function returns a new allocated <code>string</code> or NULL if an error occurred.</dd>
+</dl> </dd> <dt class="d_decl" id="curl_escape">char* curl_escape(in char* string, int length)</dt> <dd>
+<p>the previous version:</p> </dd> <dt class="d_decl" id="curl_easy_unescape">char* curl_easy_unescape(CURL* handle, in char* string, int length, int* outlength)</dt> <dd>
+<dl>
+<dt>Name</dt>
+<dd> <code>curl_easy_unescape</code>() </dd>
+</dl> <dl>
+<dt>Description</dt>
+<dd> Unescapes URL encoding in strings (converts all %XX codes to their 8bit versions). This function returns a new allocated <code>string</code> or NULL if an error occurred. Conversion Note: On non-ASCII platforms the ASCII %XX codes are converted into the host encoding.</dd>
+</dl> </dd> <dt class="d_decl" id="curl_unescape">char* curl_unescape(in char* string, int length)</dt> <dd>
+<p>the previous version</p> </dd> <dt class="d_decl" id="curl_free">void curl_free(void* p)</dt> <dd>
+<dl>
+<dt>Name</dt>
+<dd> <code>curl_free</code>() </dd>
+</dl> <dl>
+<dt>Description</dt>
+<dd> Provided for de-allocation in the same translation unit that did the allocation. Added in libcurl 7.10</dd>
+</dl> </dd> <dt class="d_decl" id="curl_global_init">CURLcode curl_global_init(c_long flags)</dt> <dd>
+<dl>
+<dt>Name</dt>
+<dd> <code>curl_global_init</code>() </dd>
+</dl> <dl>
+<dt>Description</dt>
+<dd> <code>curl_global_init</code>() should be invoked exactly once for each application that uses libcurl and before any call of other libcurl functions. </dd>
+</dl> This function is not thread-safe! </dd> <dt class="d_decl" id="curl_global_init_mem">CURLcode curl_global_init_mem(c_long flags, curl_malloc_callback m, curl_free_callback f, curl_realloc_callback r, curl_strdup_callback s, curl_calloc_callback c)</dt> <dd>
+<dl>
+<dt>Name</dt>
+<dd> <code>curl_global_init_mem</code>() </dd>
+</dl> <dl>
+<dt>Description</dt>
+<dd> curl_global_init() or <code>curl_global_init_mem</code>() should be invoked exactly once for each application that uses libcurl. This function can be used to initialize libcurl and set user defined memory management callback functions. Users can implement memory management routines to check for memory leaks, check for mis-use of the curl library etc. User registered callback routines with be invoked by this library instead of the system memory management routines like malloc, free etc.</dd>
+</dl> </dd> <dt class="d_decl" id="curl_global_cleanup">void curl_global_cleanup()</dt> <dd>
+<dl>
+<dt>Name</dt>
+<dd> <code>curl_global_cleanup</code>() </dd>
+</dl> <dl>
+<dt>Description</dt>
+<dd> <code>curl_global_cleanup</code>() should be invoked exactly once for each application that uses libcurl</dd>
+</dl> </dd> <dt class="d_decl" id="curl_slist">struct curl_slist</dt> <dd>
+<p>linked-list structure for the CURLOPT_QUOTE option (and other)</p> </dd> <dt class="d_decl" id="curl_slist_append">curl_slist* curl_slist_append(curl_slist*, in char*)</dt> <dd>
+<dl>
+<dt>Name</dt>
+<dd> <code>curl_slist_append</code>() </dd>
+</dl> <dl>
+<dt>Description</dt>
+<dd> Appends a string to a linked list. If no list exists, it will be created first. Returns the new list, after appending. </dd>
+</dl> linked-list structure for the CURLOPT_QUOTE option (and other) </dd> <dt class="d_decl" id="curl_slist_free_all">void curl_slist_free_all(curl_slist*)</dt> <dd>
+<dl>
+<dt>Name</dt>
+<dd> <code>curl_slist_free_all</code>() </dd>
+</dl> <dl>
+<dt>Description</dt>
+<dd> free a previously built curl_slist. </dd>
+</dl> linked-list structure for the CURLOPT_QUOTE option (and other) </dd> <dt class="d_decl" id="curl_getdate">time_t curl_getdate(char* p, time_t* unused)</dt> <dd>
+<dl>
+<dt>Name</dt>
+<dd> <code>curl_getdate</code>() </dd>
+</dl> <dl>
+<dt>Description</dt>
+<dd> Returns the time, in seconds since 1 Jan 1970 of the time string given in the first argument. The time argument in the second parameter is <code>unused</code> and should be set to NULL. </dd>
+</dl> linked-list structure for the CURLOPT_QUOTE option (and other) </dd> <dt class="d_decl" id="curl_certinfo">struct curl_certinfo</dt> <dd>
+<p>info about the certificate chain, only for OpenSSL builds. Asked for with CURLOPT_CERTINFO / CURLINFO_CERTINFO </p>
+<p>linked-list structure for the CURLOPT_QUOTE option (and other)</p> <dl>
+<dt class="d_decl" id="curl_certinfo.num_of_certs">int num_of_certs</dt> <dd>
+<p>number of certificates with information</p> </dd> <dt class="d_decl" id="curl_certinfo.certinfo">curl_slist** certinfo</dt> <dd>
+<p>for each index in this array, there's a linked list with textual information in the format "name: value"</p> </dd> </dl> </dd> <dt class="d_decl" id="CURLINFO_STRING">enum int CURLINFO_STRING</dt>  <dt class="d_decl" id="CURLINFO_LONG">enum int CURLINFO_LONG</dt>  <dt class="d_decl" id="CURLINFO_DOUBLE">enum int CURLINFO_DOUBLE</dt>  <dt class="d_decl" id="CURLINFO_SLIST">enum int CURLINFO_SLIST</dt>  <dt class="d_decl" id="CURLINFO_MASK">enum int CURLINFO_MASK</dt>  <dt class="d_decl" id="CURLINFO_TYPEMASK">enum int CURLINFO_TYPEMASK</dt>  <dt class="d_decl" id="CurlInfo">enum CurlInfo: int</dt> <dd> <dl>
+<dt class="d_decl" id="CurlInfo.none">none</dt>  <dt class="d_decl" id="CurlInfo.effective_url">effective_url</dt>  <dt class="d_decl" id="CurlInfo.response_code">response_code</dt>  <dt class="d_decl" id="CurlInfo.total_time">total_time</dt>  <dt class="d_decl" id="CurlInfo.namelookup_time">namelookup_time</dt>  <dt class="d_decl" id="CurlInfo.connect_time">connect_time</dt>  <dt class="d_decl" id="CurlInfo.pretransfer_time">pretransfer_time</dt>  <dt class="d_decl" id="CurlInfo.size_upload">size_upload</dt>  <dt class="d_decl" id="CurlInfo.size_download">size_download</dt>  <dt class="d_decl" id="CurlInfo.speed_download">speed_download</dt>  <dt class="d_decl" id="CurlInfo.speed_upload">speed_upload</dt>  <dt class="d_decl" id="CurlInfo.header_size">header_size</dt>  <dt class="d_decl" id="CurlInfo.request_size">request_size</dt>  <dt class="d_decl" id="CurlInfo.ssl_verifyresult">ssl_verifyresult</dt>  <dt class="d_decl" id="CurlInfo.filetime">filetime</dt>  <dt class="d_decl" id="CurlInfo.content_length_download">content_length_download</dt>  <dt class="d_decl" id="CurlInfo.content_length_upload">content_length_upload</dt>  <dt class="d_decl" id="CurlInfo.starttransfer_time">starttransfer_time</dt>  <dt class="d_decl" id="CurlInfo.content_type">content_type</dt>  <dt class="d_decl" id="CurlInfo.redirect_time">redirect_time</dt>  <dt class="d_decl" id="CurlInfo.redirect_count">redirect_count</dt>  <dt class="d_decl" id="CurlInfo.private_info">private_info</dt>  <dt class="d_decl" id="CurlInfo.http_connectcode">http_connectcode</dt>  <dt class="d_decl" id="CurlInfo.httpauth_avail">httpauth_avail</dt>  <dt class="d_decl" id="CurlInfo.proxyauth_avail">proxyauth_avail</dt>  <dt class="d_decl" id="CurlInfo.os_errno">os_errno</dt>  <dt class="d_decl" id="CurlInfo.num_connects">num_connects</dt>  <dt class="d_decl" id="CurlInfo.ssl_engines">ssl_engines</dt>  <dt class="d_decl" id="CurlInfo.cookielist">cookielist</dt>  <dt class="d_decl" id="CurlInfo.lastsocket">lastsocket</dt>  <dt class="d_decl" id="CurlInfo.ftp_entry_path">ftp_entry_path</dt>  <dt class="d_decl" id="CurlInfo.redirect_url">redirect_url</dt>  <dt class="d_decl" id="CurlInfo.primary_ip">primary_ip</dt>  <dt class="d_decl" id="CurlInfo.appconnect_time">appconnect_time</dt>  <dt class="d_decl" id="CurlInfo.certinfo">certinfo</dt>  <dt class="d_decl" id="CurlInfo.condition_unmet">condition_unmet</dt>  <dt class="d_decl" id="CurlInfo.rtsp_session_id">rtsp_session_id</dt>  <dt class="d_decl" id="CurlInfo.rtsp_client_cseq">rtsp_client_cseq</dt>  <dt class="d_decl" id="CurlInfo.rtsp_server_cseq">rtsp_server_cseq</dt>  <dt class="d_decl" id="CurlInfo.rtsp_cseq_recv">rtsp_cseq_recv</dt>  <dt class="d_decl" id="CurlInfo.primary_port">primary_port</dt>  <dt class="d_decl" id="CurlInfo.local_ip">local_ip</dt>  <dt class="d_decl" id="CurlInfo.local_port">local_port</dt>  <dt class="d_decl" id="CurlInfo.lastone">lastone</dt> <dd>
+<p>Fill in new entries below here!</p> </dd> </dl> </dd> <dt class="d_decl" id="CURLINFO">alias CURLINFO = int</dt>  <dt class="d_decl" id="CURLINFO_HTTP_CODE">enum CurlInfo CURLINFO_HTTP_CODE</dt> <dd>
+<p>CURLINFO_RESPONSE_CODE is the new name for the option previously known as <code>CURLINFO_HTTP_CODE</code></p> </dd> <dt class="d_decl" id="CurlClosePolicy">enum CurlClosePolicy: int</dt> <dd> <dl>
+<dt class="d_decl" id="CurlClosePolicy.none">none</dt>  <dt class="d_decl" id="CurlClosePolicy.oldest">oldest</dt>  <dt class="d_decl" id="CurlClosePolicy.least_recently_used">least_recently_used</dt>  <dt class="d_decl" id="CurlClosePolicy.least_traffic">least_traffic</dt>  <dt class="d_decl" id="CurlClosePolicy.slowest">slowest</dt>  <dt class="d_decl" id="CurlClosePolicy.callback">callback</dt>  <dt class="d_decl" id="CurlClosePolicy.last">last</dt>  </dl> </dd> <dt class="d_decl" id="curl_closepolicy">alias curl_closepolicy = int</dt>  <dt class="d_decl" id="CurlGlobal">enum CurlGlobal: int</dt> <dd> <dl>
+<dt class="d_decl" id="CurlGlobal.ssl">ssl</dt>  <dt class="d_decl" id="CurlGlobal.win32">win32</dt>  <dt class="d_decl" id="CurlGlobal.all">all</dt>  <dt class="d_decl" id="CurlGlobal.nothing">nothing</dt>  <dt class="d_decl" id="CurlGlobal.default_">default_</dt> <dd>
+<p>all</p> </dd> </dl> </dd> <dt class="d_decl" id="CurlLockData">enum CurlLockData: int</dt> <dd>
+<p>Setup defines, protos etc for the sharing stuff. </p>
+<p>Different data locks for a single share</p> <dl>
+<dt class="d_decl" id="CurlLockData.none">none</dt>  <dt class="d_decl" id="CurlLockData.share">share</dt> <dd>
+<p>CURL_LOCK_DATA_SHARE is used internally to say that the locking is just made to change the internal state of the <code>share</code> itself.</p> </dd> <dt class="d_decl" id="CurlLockData.cookie">cookie</dt>  <dt class="d_decl" id="CurlLockData.dns">dns</dt>  <dt class="d_decl" id="CurlLockData.ssl_session">ssl_session</dt>  <dt class="d_decl" id="CurlLockData.connect">connect</dt>  <dt class="d_decl" id="CurlLockData.last">last</dt>  </dl> </dd> <dt class="d_decl" id="curl_lock_data">alias curl_lock_data = int</dt>  <dt class="d_decl" id="CurlLockAccess">enum CurlLockAccess: int</dt> <dd>
+<p>Different lock access types</p> <dl>
+<dt class="d_decl" id="CurlLockAccess.none">none</dt> <dd>
+<p>unspecified action</p> </dd> <dt class="d_decl" id="CurlLockAccess.shared_access">shared_access</dt> <dd>
+<p>for read perhaps</p> </dd> <dt class="d_decl" id="CurlLockAccess.single">single</dt> <dd>
+<p>for write perhaps</p> </dd> <dt class="d_decl" id="CurlLockAccess.last">last</dt> <dd>
+<p>never use</p> </dd> </dl> </dd> <dt class="d_decl" id="curl_lock_access">alias curl_lock_access = int</dt>  <dt class="d_decl" id="curl_lock_function">alias curl_lock_function = void function(void* handle, int data, int locktype, void* userptr)</dt>  <dt class="d_decl" id="curl_unlock_function">alias curl_unlock_function = void function(void* handle, int data, void* userptr)</dt>  <dt class="d_decl" id="CURLSH">alias CURLSH = void</dt>  <dt class="d_decl" id="CurlShError">enum CurlShError: int</dt> <dd> <dl>
+<dt class="d_decl" id="CurlShError.ok">ok</dt> <dd>
+<p>all is fine</p> </dd> <dt class="d_decl" id="CurlShError.bad_option">bad_option</dt> <dd>
+<p>1</p> </dd> <dt class="d_decl" id="CurlShError.in_use">in_use</dt> <dd>
+<p>2</p> </dd> <dt class="d_decl" id="CurlShError.invalid">invalid</dt> <dd>
+<p>3</p> </dd> <dt class="d_decl" id="CurlShError.nomem">nomem</dt> <dd>
+<p>out of memory</p> </dd> <dt class="d_decl" id="CurlShError.last">last</dt> <dd>
+<p>never use</p> </dd> </dl> </dd> <dt class="d_decl" id="CURLSHcode">alias CURLSHcode = int</dt>  <dt class="d_decl" id="CurlShOption">enum CurlShOption: int</dt> <dd>
+<p>pass in a user data pointer used in the lock/unlock callback functions</p> <dl>
+<dt class="d_decl" id="CurlShOption.none">none</dt> <dd>
+<p>don't use</p> </dd> <dt class="d_decl" id="CurlShOption.share">share</dt> <dd>
+<p>specify a data type to <code>share</code></p> </dd> <dt class="d_decl" id="CurlShOption.unshare">unshare</dt> <dd>
+<p>specify which data type to stop sharing</p> </dd> <dt class="d_decl" id="CurlShOption.lockfunc">lockfunc</dt> <dd>
+<p>pass in a 'curl_lock_function' pointer</p> </dd> <dt class="d_decl" id="CurlShOption.unlockfunc">unlockfunc</dt> <dd>
+<p>pass in a 'curl_unlock_function' pointer</p> </dd> <dt class="d_decl" id="CurlShOption.userdata">userdata</dt> <dd>
+<p>pass in a user data pointer used in the lock/unlock callback functions</p> </dd> <dt class="d_decl" id="CurlShOption.last">last</dt> <dd>
+<p>never use</p> </dd> </dl> </dd> <dt class="d_decl" id="CURLSHoption">alias CURLSHoption = int</dt>  <dt class="d_decl" id="curl_share_init">CURLSH* curl_share_init()</dt>  <dt class="d_decl" id="curl_share_setopt">CURLSHcode curl_share_setopt(CURLSH*, CURLSHoption option, ...)</dt>  <dt class="d_decl" id="curl_share_cleanup">CURLSHcode curl_share_cleanup(CURLSH*)</dt>  <dt class="d_decl" id="CurlVer">enum CurlVer: int</dt> <dd>
+<p>Structures for querying information about the curl library at runtime.</p> <dl>
+<dt class="d_decl" id="CurlVer.first">first</dt>  <dt class="d_decl" id="CurlVer.second">second</dt>  <dt class="d_decl" id="CurlVer.third">third</dt>  <dt class="d_decl" id="CurlVer.fourth">fourth</dt>  <dt class="d_decl" id="CurlVer.last">last</dt>  </dl> </dd> <dt class="d_decl" id="CURLversion">alias CURLversion = int</dt>  <dt class="d_decl" id="CURLVERSION_NOW">enum CurlVer CURLVERSION_NOW</dt> <dd>
+<p>The '<code>CURLVERSION_NOW</code>' is the symbolic name meant to be used by basically all programs ever that want to get version information. It is meant to be a built-in version number for what kind of struct the caller expects. If the struct ever changes, we redefine the NOW to another enum from above.</p> </dd> <dt class="d_decl" id="_N28">struct _N28</dt> <dd> <dl>
+<dt class="d_decl" id="_N28.age">CURLversion age</dt> <dd>
+<p><code>age</code> of the returned struct</p> </dd> <dt class="d_decl" id="_N28.version_">const(char)* version_</dt> <dd>
+<p>LIBCURL_VERSION</p> </dd> <dt class="d_decl" id="_N28.version_num">uint version_num</dt> <dd>
+<p>LIBCURL_VERSION_NUM</p> </dd> <dt class="d_decl" id="_N28.host">const(char)* host</dt> <dd>
+<p>OS/<code>host</code>/cpu/machine when configured</p> </dd> <dt class="d_decl" id="_N28.features">int features</dt> <dd>
+<p>bitmask, see defines below</p> </dd> <dt class="d_decl" id="_N28.ssl_version">const(char)* ssl_version</dt> <dd>
+<p>human readable string</p> </dd> <dt class="d_decl" id="_N28.ssl_version_num">c_long ssl_version_num</dt> <dd>
+<p>not used anymore, always 0</p> </dd> <dt class="d_decl" id="_N28.libz_version">const(char)* libz_version</dt> <dd>
+<p>human readable string</p> </dd> <dt class="d_decl" id="_N28.protocols">const(char)** protocols</dt> <dd>
+<p><code>protocols</code> is terminated by an entry with a NULL protoname</p> </dd> <dt class="d_decl" id="_N28.ares">const(char)* ares</dt> <dd>
+<p>The fields below this were added in CURLVERSION_SECOND</p> </dd> <dt class="d_decl" id="_N28.libidn">const(char)* libidn</dt> <dd>
+<p>This field was added in CURLVERSION_THIRD</p> </dd> <dt class="d_decl" id="_N28.iconv_ver_num">int iconv_ver_num</dt> <dd>
+<p>These field were added in CURLVERSION_FOURTH. Same as 'libiconv_version' if built with HAVE_ICONV</p> </dd> <dt class="d_decl" id="_N28.libssh_version">const(char)* libssh_version</dt> <dd>
+<p>human readable string</p> </dd> </dl> </dd> <dt class="d_decl" id="curl_version_info_data">alias curl_version_info_data = _N28</dt>  <dt class="d_decl" id="CurlVersion">enum CurlVersion: int</dt> <dd> <dl>
+<dt class="d_decl" id="CurlVersion.ipv6">ipv6</dt> <dd>
+<p>IPv6-enabled</p> </dd> <dt class="d_decl" id="CurlVersion.kerberos4">kerberos4</dt> <dd>
+<p>kerberos auth is supported</p> </dd> <dt class="d_decl" id="CurlVersion.ssl">ssl</dt> <dd>
+<p>SSL options are present</p> </dd> <dt class="d_decl" id="CurlVersion.libz">libz</dt> <dd>
+<p><code>libz</code> features are present</p> </dd> <dt class="d_decl" id="CurlVersion.ntlm">ntlm</dt> <dd>
+<p>NTLM auth is supported</p> </dd> <dt class="d_decl" id="CurlVersion.gssnegotiate">gssnegotiate</dt> <dd>
+<p>Negotiate auth support</p> </dd> <dt class="d_decl" id="CurlVersion.dbg">dbg</dt> <dd>
+<p>built with debug capabilities</p> </dd> <dt class="d_decl" id="CurlVersion.asynchdns">asynchdns</dt> <dd>
+<p>asynchronous dns resolves</p> </dd> <dt class="d_decl" id="CurlVersion.spnego">spnego</dt> <dd>
+<p>SPNEGO auth</p> </dd> <dt class="d_decl" id="CurlVersion.largefile">largefile</dt> <dd>
+<p>supports files bigger than 2GB</p> </dd> <dt class="d_decl" id="CurlVersion.idn">idn</dt> <dd>
+<p>International Domain Names support</p> </dd> <dt class="d_decl" id="CurlVersion.sspi">sspi</dt> <dd>
+<p>SSPI is supported</p> </dd> <dt class="d_decl" id="CurlVersion.conv">conv</dt> <dd>
+<p>character conversions supported</p> </dd> <dt class="d_decl" id="CurlVersion.curldebug">curldebug</dt> <dd>
+<p>debug memory tracking supported</p> </dd> <dt class="d_decl" id="CurlVersion.tlsauth_srp">tlsauth_srp</dt> <dd>
+<p>TLS-SRP auth is supported</p> </dd> </dl> </dd> <dt class="d_decl" id="curl_version_info">curl_version_info_data* curl_version_info(CURLversion)</dt> <dd>
+<dl>
+<dt>Name</dt>
+<dd> <code>curl_version_info</code>() </dd>
+</dl> <dl>
+<dt>Description</dt>
+<dd> This function returns a pointer to a static copy of the version info struct. See above.</dd>
+</dl> </dd> <dt class="d_decl" id="curl_easy_strerror">const(char)* curl_easy_strerror(CURLcode)</dt> <dd>
+<dl>
+<dt>Name</dt>
+<dd> <code>curl_easy_strerror</code>() </dd>
+</dl> <dl>
+<dt>Description</dt>
+<dd> The <code>curl_easy_strerror</code> function may be used to turn a CURLcode value into the equivalent human readable error string. This is useful for printing meaningful error messages.</dd>
+</dl> </dd> <dt class="d_decl" id="curl_share_strerror">const(char)* curl_share_strerror(CURLSHcode)</dt> <dd>
+<dl>
+<dt>Name</dt>
+<dd> <code>curl_share_strerror</code>() </dd>
+</dl> <dl>
+<dt>Description</dt>
+<dd> The <code>curl_share_strerror</code> function may be used to turn a CURLSHcode value into the equivalent human readable error string. This is useful for printing meaningful error messages.</dd>
+</dl> </dd> <dt class="d_decl" id="curl_easy_pause">CURLcode curl_easy_pause(CURL* handle, int bitmask)</dt> <dd>
+<dl>
+<dt>Name</dt>
+<dd> <code>curl_easy_pause</code>() </dd>
+</dl> <dl>
+<dt>Description</dt>
+<dd> The <code>curl_easy_pause</code> function pauses or unpauses transfers. Select the new state by setting the <code>bitmask</code>, use the convenience defines below.</dd>
+</dl> </dd> <dt class="d_decl" id="CurlPause">enum CurlPause: int</dt> <dd> <dl>
+<dt class="d_decl" id="CurlPause.recv">recv</dt>  <dt class="d_decl" id="CurlPause.recv_cont">recv_cont</dt>  <dt class="d_decl" id="CurlPause.send">send</dt>  <dt class="d_decl" id="CurlPause.send_cont">send_cont</dt>  <dt class="d_decl" id="CurlPause.all">all</dt>  <dt class="d_decl" id="CurlPause.cont">cont</dt>  </dl> </dd> <dt class="d_decl" id="curl_easy_init">CURL* curl_easy_init()</dt>  <dt class="d_decl" id="curl_easy_setopt">CURLcode curl_easy_setopt(CURL* curl, CURLoption option, ...)</dt>  <dt class="d_decl" id="curl_easy_perform">CURLcode curl_easy_perform(CURL* curl)</dt>  <dt class="d_decl" id="curl_easy_cleanup">void curl_easy_cleanup(CURL* curl)</dt>  <dt class="d_decl" id="curl_easy_getinfo">CURLcode curl_easy_getinfo(CURL* curl, CURLINFO info, ...)</dt> <dd>
+<dl>
+<dt>Name</dt>
+<dd> <code>curl_easy_getinfo</code>() </dd>
+</dl> <dl>
+<dt>Description</dt>
+<dd> Request internal information from the <code>curl</code> session with this function. The third argument MUST be a pointer to a long, a pointer to a char * or a pointer to a double (as the documentation describes elsewhere). The data pointed to will be filled in accordingly and can be relied upon only if the function returns CURLE_OK. This function is intended to get used *AFTER* a performed transfer, all results from this function are undefined until the transfer is completed.</dd>
+</dl> </dd> <dt class="d_decl" id="curl_easy_duphandle">CURL* curl_easy_duphandle(CURL* curl)</dt> <dd>
+<dl>
+<dt>Name</dt>
+<dd> <code>curl_easy_duphandle</code>() </dd>
+</dl> <dl>
+<dt>Description</dt>
+<dd> Creates a new <code>curl</code> session handle with the same options set for the handle passed in. Duplicating a handle could only be a matter of cloning data and options, internal state info and things like persistant connections cannot be transfered. It is useful in multithreaded applications when you can run <code>curl_easy_duphandle</code>() for each new thread to avoid a series of identical curl_easy_setopt() invokes in every thread.</dd>
+</dl> </dd> <dt class="d_decl" id="curl_easy_reset">void curl_easy_reset(CURL* curl)</dt> <dd>
+<dl>
+<dt>Name</dt>
+<dd> <code>curl_easy_reset</code>() </dd>
+</dl> <dl>
+<dt>Description</dt>
+<dd> Re-initializes a CURL handle to the default values. This puts back the handle to the same state as it was in when it was just created. </dd>
+</dl> It does keep: live connections, the Session ID cache, the DNS cache and the cookies. </dd> <dt class="d_decl" id="curl_easy_recv">CURLcode curl_easy_recv(CURL* curl, void* buffer, size_t buflen, size_t* n)</dt> <dd>
+<dl>
+<dt>Name</dt>
+<dd> <code>curl_easy_recv</code>() </dd>
+</dl> <dl>
+<dt>Description</dt>
+<dd> Receives data from the connected socket. Use after successful curl_easy_perform() with CURLOPT_CONNECT_ONLY option.</dd>
+</dl> </dd> <dt class="d_decl" id="curl_easy_send">CURLcode curl_easy_send(CURL* curl, void* buffer, size_t buflen, size_t* n)</dt> <dd>
+<dl>
+<dt>Name</dt>
+<dd> <code>curl_easy_send</code>() </dd>
+</dl> <dl>
+<dt>Description</dt>
+<dd> Sends data over the connected socket. Use after successful curl_easy_perform() with CURLOPT_CONNECT_ONLY option.</dd>
+</dl> </dd> <dt class="d_decl" id="CURLM">alias CURLM = void</dt>  <dt class="d_decl" id="CurlM">enum CurlM: int</dt> <dd> <dl>
+<dt class="d_decl" id="CurlM.call_multi_perform">call_multi_perform</dt> <dd>
+<p>please call curl_multi_perform() or curl_multi_socket*() soon</p> </dd> <dt class="d_decl" id="CurlM.ok">ok</dt>  <dt class="d_decl" id="CurlM.bad_handle">bad_handle</dt> <dd>
+<p>the passed-in handle is not a valid CURLM handle</p> </dd> <dt class="d_decl" id="CurlM.bad_easy_handle">bad_easy_handle</dt> <dd>
+<p>an easy handle was not good/valid</p> </dd> <dt class="d_decl" id="CurlM.out_of_memory">out_of_memory</dt> <dd>
+<p>if you ever get this, you're in deep sh*t</p> </dd> <dt class="d_decl" id="CurlM.internal_error">internal_error</dt> <dd>
+<p>this is a libcurl bug</p> </dd> <dt class="d_decl" id="CurlM.bad_socket">bad_socket</dt> <dd>
+<p>the passed in socket argument did not match</p> </dd> <dt class="d_decl" id="CurlM.unknown_option">unknown_option</dt> <dd>
+<p>curl_multi_setopt() with unsupported option</p> </dd> <dt class="d_decl" id="CurlM.last">last</dt>  </dl> </dd> <dt class="d_decl" id="CURLMcode">alias CURLMcode = int</dt>  <dt class="d_decl" id="CURLM_CALL_MULTI_SOCKET">enum CurlM CURLM_CALL_MULTI_SOCKET</dt> <dd>
+<p>just to make code nicer when using curl_multi_socket() you can now check for <code>CURLM_CALL_MULTI_SOCKET</code> too in the same style it works for curl_multi_perform() and CURLM_CALL_MULTI_PERFORM</p> </dd> <dt class="d_decl" id="CurlMsg">enum CurlMsg: int</dt> <dd> <dl>
+<dt class="d_decl" id="CurlMsg.none">none</dt>  <dt class="d_decl" id="CurlMsg.done">done</dt> <dd>
+<p>This easy handle has completed. 'result' contains the CURLcode of the transfer</p> </dd> <dt class="d_decl" id="CurlMsg.last">last</dt> <dd>
+<p>no used</p> </dd> </dl> </dd> <dt class="d_decl" id="CURLMSG">alias CURLMSG = int</dt>  <dt class="d_decl" id="_N31">union _N31</dt> <dd> <dl>
+<dt class="d_decl" id="_N31.whatever">void* whatever</dt> <dd>
+<p>message-specific data</p> </dd> <dt class="d_decl" id="_N31.result">CURLcode result</dt> <dd>
+<p>return code for transfer</p> </dd> </dl> </dd> <dt class="d_decl" id="CURLMsg">struct CURLMsg</dt> <dd> <dl>
+<dt class="d_decl" id="CURLMsg.msg">CURLMSG msg</dt> <dd>
+<p>what this message means</p> </dd> <dt class="d_decl" id="CURLMsg.easy_handle">CURL* easy_handle</dt> <dd>
+<p>the handle it concerns</p> </dd> <dt class="d_decl" id="CURLMsg.data">_N31 data</dt>  </dl> </dd> <dt class="d_decl" id="curl_multi_init">CURLM* curl_multi_init()</dt> <dd>
+<dl>
+<dt>Name</dt>
+<dd> <code>curl_multi_init</code>() </dd>
+</dl> <dl>
+<dt>Desc</dt>
+<dd> inititalize multi-style curl usage </dd>
+</dl> <dl>
+<dt>Returns:</dt>
+<dd>a new CURLM handle to use in all 'curl_multi' functions.</dd>
+</dl> </dd> <dt class="d_decl" id="curl_multi_add_handle">CURLMcode curl_multi_add_handle(CURLM* multi_handle, CURL* curl_handle)</dt> <dd>
+<dl>
+<dt>Name</dt>
+<dd> <code>curl_multi_add_handle</code>() </dd>
+</dl> <dl>
+<dt>Desc</dt>
+<dd> add a standard curl handle to the multi stack </dd>
+</dl> <dl>
+<dt>Returns:</dt>
+<dd>CURLMcode type, general multi error code.</dd>
+</dl> </dd> <dt class="d_decl" id="curl_multi_remove_handle">CURLMcode curl_multi_remove_handle(CURLM* multi_handle, CURL* curl_handle)</dt> <dd>
+<dl>
+<dt>Name</dt>
+<dd> <code>curl_multi_remove_handle</code>() </dd>
+</dl> <dl>
+<dt>Desc</dt>
+<dd> removes a curl handle from the multi stack again </dd>
+</dl> <dl>
+<dt>Returns:</dt>
+<dd>CURLMcode type, general multi error code.</dd>
+</dl> </dd> <dt class="d_decl" id="fd_set">alias fd_set = int</dt> <dd>
+<dl>
+<dt>Name</dt>
+<dd> curl_multi_fdset() </dd>
+</dl> <dl>
+<dt>Desc</dt>
+<dd> Ask curl for its <code>fd_set</code> sets. The app can use these to select() or poll() on. We want curl_multi_perform() called as soon as one of them are ready. </dd>
+</dl> <dl>
+<dt>Returns:</dt>
+<dd>CURLMcode type, general multi error code.  tmp decl</dd>
+</dl> </dd> <dt class="d_decl" id="curl_multi_fdset">CURLMcode curl_multi_fdset(CURLM* multi_handle, fd_set* read_fd_set, fd_set* write_fd_set, fd_set* exc_fd_set, int* max_fd)</dt>  <dt class="d_decl" id="curl_multi_perform">CURLMcode curl_multi_perform(CURLM* multi_handle, int* running_handles)</dt> <dd>
+<dl>
+<dt>Name</dt>
+<dd> <code>curl_multi_perform</code>() </dd>
+</dl> <dl>
+<dt>Desc</dt>
+<dd> When the app thinks there's data available for curl it calls this function to read/write whatever there is right now. This returns as soon as the reads and writes are done. This function does not require that there actually is data available for reading or that data can be written, it can be called just in case. It returns the number of handles that still transfer data in the second argument's integer-pointer. </dd>
+</dl> <dl>
+<dt>Returns:</dt>
+<dd>CURLMcode type, general multi error code. *NOTE* that this only returns errors etc regarding the whole multi stack. There might still have occurred problems on invidual transfers even when this returns OK.</dd>
+</dl> </dd> <dt class="d_decl" id="curl_multi_cleanup">CURLMcode curl_multi_cleanup(CURLM* multi_handle)</dt> <dd>
+<dl>
+<dt>Name</dt>
+<dd> <code>curl_multi_cleanup</code>() </dd>
+</dl> <dl>
+<dt>Desc</dt>
+<dd> Cleans up and removes a whole multi stack. It does not free or touch any individual easy handles in any way. We need to define in what state those handles will be if this function is called in the middle of a transfer. </dd>
+</dl> <dl>
+<dt>Returns:</dt>
+<dd>CURLMcode type, general multi error code.</dd>
+</dl> </dd> <dt class="d_decl" id="curl_multi_info_read">CURLMsg* curl_multi_info_read(CURLM* multi_handle, int* msgs_in_queue)</dt> <dd>
+<dl>
+<dt>Name</dt>
+<dd> <code>curl_multi_info_read</code>() </dd>
+</dl> <dl>
+<dt>Desc</dt>
+<dd> Ask the multi handle if there's any messages/informationals from the individual transfers. Messages include informationals such as error code from the transfer or just the fact that a transfer is completed. More details on these should be written down as well. </dd>
+</dl> Repeated calls to this function will return a new struct each time, until a special "end of msgs" struct is returned as a signal that there is no more to get at this point.  The data the returned pointer points to will not survive calling curl_multi_cleanup().  The 'CURLMsg' struct is meant to be very simple and only contain very basic informations. If more involved information is wanted, we will provide the particular "transfer handle" in that struct and that should/could/would be used in subsequent curl_easy_getinfo() calls (or similar). The point being that we must never expose complex structs to applications, as then we'll undoubtably get backwards compatibility problems in the future.  <dl>
+<dt>Returns:</dt>
+<dd>A pointer to a filled-in struct, or NULL if it failed or ran out of structs. It also writes the number of messages left in the queue (after this read) in the integer the second argument points to.</dd>
+</dl> </dd> <dt class="d_decl" id="curl_multi_strerror">const(char)* curl_multi_strerror(CURLMcode)</dt> <dd>
+<dl>
+<dt>Name</dt>
+<dd> <code>curl_multi_strerror</code>() </dd>
+</dl> <dl>
+<dt>Desc</dt>
+<dd> The <code>curl_multi_strerror</code> function may be used to turn a CURLMcode value into the equivalent human readable error string. This is useful for printing meaningful error messages. </dd>
+</dl> <dl>
+<dt>Returns:</dt>
+<dd>A pointer to a zero-terminated error message.</dd>
+</dl> </dd> <dt class="d_decl" id="CurlPoll">enum CurlPoll: int</dt> <dd>
+<dl>
+<dt>Name</dt>
+<dd> curl_multi_socket() and curl_multi_socket_all() </dd>
+</dl> <dl>
+<dt>Desc</dt>
+<dd> An alternative version of curl_multi_perform() that allows the application to pass in one of the file descriptors that have been detected to have "action" on them and let libcurl perform. See man page for details.</dd>
+</dl> <dl>
+<dt class="d_decl" id="CurlPoll.none_">none_</dt> <dd>
+<p>jdrewsen - underscored in order not to clash with reserved D symbols</p> </dd> <dt class="d_decl" id="CurlPoll.in_">in_</dt>  <dt class="d_decl" id="CurlPoll.out_">out_</dt>  <dt class="d_decl" id="CurlPoll.inout_">inout_</dt>  <dt class="d_decl" id="CurlPoll.remove_">remove_</dt>  </dl> </dd> <dt class="d_decl" id="CURL_SOCKET_TIMEOUT">alias CURL_SOCKET_TIMEOUT = CURL_SOCKET_BAD</dt>  <dt class="d_decl" id="CurlCSelect">enum CurlCSelect: int</dt> <dd> <dl>
+<dt class="d_decl" id="CurlCSelect.in_">in_</dt> <dd>
+<p>jdrewsen - underscored in order not to clash with reserved D symbols</p> </dd> <dt class="d_decl" id="CurlCSelect.out_">out_</dt>  <dt class="d_decl" id="CurlCSelect.err_">err_</dt>  </dl> </dd> <dt class="d_decl" id="curl_socket_callback">alias curl_socket_callback = extern (C) int function(void* easy, socket_t s, int what, void* userp, void* socketp)</dt> <dd>
+<p>private socket pointer</p> </dd> <dt class="d_decl" id="curl_multi_timer_callback">alias curl_multi_timer_callback = extern (C) int function(void* multi, long timeout_ms, void* userp)</dt> <dd>
+<p>private callback pointer </p>
+<dl>
+<dt>Name</dt>
+<dd> <code>curl_multi_timer_callback</code> </dd>
+</dl> <dl>
+<dt>Desc</dt>
+<dd> Called by libcurl whenever the library detects a change in the maximum number of milliseconds the app is allowed to wait before curl_multi_socket() or curl_multi_perform() must be called (to allow libcurl's timed events to take place). </dd>
+</dl> <dl>
+<dt>Returns:</dt>
+<dd>The callback should return zero.</dd>
+</dl> </dd> <dt class="d_decl" id="curl_multi_socket">CURLMcode curl_multi_socket(CURLM* multi_handle, curl_socket_t s, int* running_handles)</dt> <dd>
+<p>ditto </p>
+<dl>
+<dt>Name</dt>
+<dd> curl_multi_timer_callback </dd>
+</dl> <dl>
+<dt>Desc</dt>
+<dd> Called by libcurl whenever the library detects a change in the maximum number of milliseconds the app is allowed to wait before <code>curl_multi_socket</code>() or curl_multi_perform() must be called (to allow libcurl'<code>s</code> timed events to take place). </dd>
+</dl> <dl>
+<dt>Returns:</dt>
+<dd>The callback should return zero.</dd>
+</dl> </dd> <dt class="d_decl" id="curl_multi_socket_action">CURLMcode curl_multi_socket_action(CURLM* multi_handle, curl_socket_t s, int ev_bitmask, int* running_handles)</dt> <dd>
+<p>ditto </p>
+<dl>
+<dt>Name</dt>
+<dd> curl_multi_timer_callback </dd>
+</dl> <dl>
+<dt>Desc</dt>
+<dd> Called by libcurl whenever the library detects a change in the maximum number of milliseconds the app is allowed to wait before curl_multi_socket() or curl_multi_perform() must be called (to allow libcurl'<code>s</code> timed events to take place). </dd>
+</dl> <dl>
+<dt>Returns:</dt>
+<dd>The callback should return zero.</dd>
+</dl> </dd> <dt class="d_decl" id="curl_multi_socket_all">CURLMcode curl_multi_socket_all(CURLM* multi_handle, int* running_handles)</dt> <dd>
+<p>ditto </p>
+<dl>
+<dt>Name</dt>
+<dd> curl_multi_timer_callback </dd>
+</dl> <dl>
+<dt>Desc</dt>
+<dd> Called by libcurl whenever the library detects a change in the maximum number of milliseconds the app is allowed to wait before curl_multi_socket() or curl_multi_perform() must be called (to allow libcurl's timed events to take place). </dd>
+</dl> <dl>
+<dt>Returns:</dt>
+<dd>The callback should return zero.</dd>
+</dl> </dd> <dt class="d_decl" id="curl_multi_timeout">CURLMcode curl_multi_timeout(CURLM* multi_handle, c_long* milliseconds)</dt> <dd>
+<p>This macro below was added in 7.16.3 to push users who recompile to use the new curl_multi_socket_action() instead of the old curl_multi_socket() </p>
+<dl>
+<dt>Name</dt>
+<dd> <code>curl_multi_timeout</code>() </dd>
+</dl> <dl>
+<dt>Desc</dt>
+<dd> Returns the maximum number of <code>milliseconds</code> the app is allowed to wait before curl_multi_socket() or curl_multi_perform() must be called (to allow libcurl's timed events to take place). </dd>
+</dl> <dl>
+<dt>Returns:</dt>
+<dd>CURLM error code.</dd>
+</dl> </dd> <dt class="d_decl" id="CurlMOption">enum CurlMOption: int</dt> <dd> <dl>
+<dt class="d_decl" id="CurlMOption.socketfunction">socketfunction</dt> <dd>
+<p>This is the socket callback function pointer</p> </dd> <dt class="d_decl" id="CurlMOption.socketdata">socketdata</dt> <dd>
+<p>This is the argument passed to the socket callback</p> </dd> <dt class="d_decl" id="CurlMOption.pipelining">pipelining</dt> <dd>
+<p>set to 1 to enable <code>pipelining</code> for this multi handle</p> </dd> <dt class="d_decl" id="CurlMOption.timerfunction">timerfunction</dt> <dd>
+<p>This is the timer callback function pointer</p> </dd> <dt class="d_decl" id="CurlMOption.timerdata">timerdata</dt> <dd>
+<p>This is the argument passed to the timer callback</p> </dd> <dt class="d_decl" id="CurlMOption.maxconnects">maxconnects</dt> <dd>
+<p>maximum number of entries in the connection cache</p> </dd> <dt class="d_decl" id="CurlMOption.lastentry">lastentry</dt>  </dl> </dd> <dt class="d_decl" id="CURLMoption">alias CURLMoption = int</dt>  <dt class="d_decl" id="curl_multi_setopt">CURLMcode curl_multi_setopt(CURLM* multi_handle, CURLMoption option, ...)</dt> <dd>
+<dl>
+<dt>Name</dt>
+<dd> <code>curl_multi_setopt</code>() </dd>
+</dl> <dl>
+<dt>Desc</dt>
+<dd> Sets options for the multi handle. </dd>
+</dl> <dl>
+<dt>Returns:</dt>
+<dd>CURLM error code.</dd>
+</dl> </dd> <dt class="d_decl" id="curl_multi_assign">CURLMcode curl_multi_assign(CURLM* multi_handle, curl_socket_t sockfd, void* sockp)</dt> <dd>
+<dl>
+<dt>Name</dt>
+<dd> <code>curl_multi_assign</code>() </dd>
+</dl> <dl>
+<dt>Desc</dt>
+<dd> This function sets an association in the multi handle between the given socket and a private pointer of the application. This is (only) useful for curl_multi_socket uses. </dd>
+</dl> <dl>
+<dt>Returns:</dt>
+<dd>CURLM error code.</dd>
+</dl> </dd> </dl>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 1999–2017 The D Language Foundation<br>Licensed under the Boost License 1.0.<br>
+    <a href="https://dlang.org/phobos/etc_c_curl.html" class="_attribution-link" target="_blank">https://dlang.org/phobos/etc_c_curl.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

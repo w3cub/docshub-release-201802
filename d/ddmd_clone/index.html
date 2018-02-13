@@ -1,0 +1,126 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>ddmd.clone - D - W3cubDocs</title>
+  
+  <meta name="description" content=" Compiler implementation of the D programming language. ">
+  <meta name="keywords" content="ddmd, clone, -, d">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/d/ddmd_clone/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/d.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/d/" class="_nav-link" title="" style="margin-left:0;">D</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _d">
+				
+<h1>ddmd.clone</h1>  <p>Compiler implementation of the <a href="http://www.dlang.org" target="_blank">D programming language</a>. </p> <dl>
+<dt>Authors:</dt>
+<dd>
+<a href="http://www.digitalmars.com" target="_blank">Walter Bright</a> </dd>
+</dl> <dl>
+<dt>License:</dt>
+<dd>
+<a href="http://www.boost.org/LICENSE_1_0.txt" target="_blank">Boost License 1.0</a> </dd>
+</dl> <dl>
+<dt>Source:</dt>
+<dd> <a href="https://github.com/dlang/dmd/blob/master/src/ddmd/clone.d" target="_blank">clone.d</a>
+</dd>
+</dl> <dl>
+<dt class="d_decl" id="mergeFuncAttrs">StorageClass mergeFuncAttrs(StorageClass s1, FuncDeclaration f)</dt> <dd>
+<p>Merge function attributes pure, nothrow, @safe, @nogc, and @disable</p> </dd> <dt class="d_decl" id="hasIdentityOpAssign">FuncDeclaration hasIdentityOpAssign(AggregateDeclaration ad, Scope* sc)</dt> <dd>
+<p>Check given aggregate actually has an identity opAssign or not. </p> <dl>
+<dt>Parameters:</dt>
+<dd><table>
+<tr>
+<td>AggregateDeclaration <code>ad</code>
+</td> <td>struct or class</td>
+</tr> <tr>
+<td>Scope* <code>sc</code>
+</td> <td>current scope</td>
+</tr> </table></dd>
+</dl> <dl>
+<dt>Returns:</dt>
+<dd>if found, returns FuncDeclaration of opAssign, otherwise <code>null</code>
+</dd>
+</dl> </dd> <dt class="d_decl" id="buildOpAssign">FuncDeclaration buildOpAssign(StructDeclaration sd, Scope* sc)</dt> <dd>
+<p>Build opAssign for struct. ref S opAssign(S s) { ... } </p> <p>Note that s will be constructed onto the stack, and probably copy-constructed in caller site. <br><br> If S has copy copy construction and/or destructor, the body will make bit-wise object swap: S _swap = this; // bit copy this = s; // bit copy _swap.dtor(); Instead of running the destructor on s, run it on tmp instead. <br><br> Otherwise, the body will make member-wise assignments: Then, the body is: this.field1 = s.field1; this.field2 = s.field2; ...;</p> </dd> <dt class="d_decl" id="needOpEquals">bool needOpEquals(StructDeclaration sd)</dt> <dd>
+<p>We need an opEquals for the struct if any fields has an opEquals. Generate one if a user-specified one does not exist.</p> </dd> <dt class="d_decl" id="hasIdentityOpEquals">FuncDeclaration hasIdentityOpEquals(AggregateDeclaration ad, Scope* sc)</dt> <dd>
+<p>Check given aggregate actually has an identity opEquals or not.</p> </dd> <dt class="d_decl" id="buildOpEquals">FuncDeclaration buildOpEquals(StructDeclaration sd, Scope* sc)</dt> <dd>
+<p>Build opEquals for struct. const bool opEquals(const S s) { ... } </p> <p>By fixing https://issues.dlang.org/show_bug.cgi?id=3789 opEquals is changed to be never implicitly generated. Now, struct objects comparison s1 == s2 is translated to: s1.tupleof == s2.tupleof to calculate structural equality. See EqualExp.op_overload.</p> </dd> <dt class="d_decl" id="buildXopEquals">FuncDeclaration buildXopEquals(StructDeclaration sd, Scope* sc)</dt> <dd>
+<p>Build __xopEquals for TypeInfo_Struct static bool __xopEquals(ref const S p, ref const S q) { return p == q; } </p> <p>This is called by TypeInfo.equals(p1, p2). If the struct does not support const objects comparison, it will throw "not implemented" Error in runtime.</p> </dd> <dt class="d_decl" id="buildXopCmp">FuncDeclaration buildXopCmp(StructDeclaration sd, Scope* sc)</dt> <dd>
+<p>Build __xopCmp for TypeInfo_Struct static bool __xopCmp(ref const S p, ref const S q) { return p.opCmp(q); } </p> <p>This is called by TypeInfo.compare(p1, p2). If the struct does not support const objects comparison, it will throw "not implemented" Error in runtime.</p> </dd> <dt class="d_decl" id="buildXtoHash">FuncDeclaration buildXtoHash(StructDeclaration sd, Scope* sc)</dt> <dd>
+<p>Build _xtoHash for non-bitwise hashing static hash_t xtoHash(ref const S p) nothrow @trusted;</p> </dd> <dt class="d_decl" id="buildPostBlit">FuncDeclaration buildPostBlit(StructDeclaration sd, Scope* sc)</dt> <dd>
+<p>Create inclusive postblit for struct by aggregating all the postblits in postblits[] with the postblits for all the members. Note the close similarity with AggregateDeclaration::buildDtor(), and the ordering changes (runs forward instead of backwards).</p> </dd> <dt class="d_decl" id="buildDtor">FuncDeclaration buildDtor(AggregateDeclaration ad, Scope* sc)</dt> <dd>
+<p>Create inclusive destructor for struct/class by aggregating all the destructors in dtors[] with the destructors for all the members. Note the close similarity with StructDeclaration::buildPostBlit(), and the ordering changes (runs backward instead of forwards).</p> </dd> <dt class="d_decl" id="buildInv">FuncDeclaration buildInv(AggregateDeclaration ad, Scope* sc)</dt> <dd>
+<p>Create inclusive invariant for struct/class by aggregating all the invariants in invs[]. void __invariant() const [pure nothrow @trusted] { invs[0](), invs[1](), ...; }</p> </dd> </dl>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 1999–2017 The D Language Foundation<br>Licensed under the Boost License 1.0.<br>
+    <a href="https://dlang.org/phobos/ddmd_clone.html" class="_attribution-link" target="_blank">https://dlang.org/phobos/ddmd_clone.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

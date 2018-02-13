@@ -1,0 +1,127 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>ddmd.doc - D - W3cubDocs</title>
+  
+  <meta name="description" content=" Compiler implementation of the D programming language. ">
+  <meta name="keywords" content="ddmd, doc, -, d">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/d/ddmd_doc/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/d.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/d/" class="_nav-link" title="" style="margin-left:0;">D</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _d">
+				
+<h1>ddmd.doc</h1>  <p>Compiler implementation of the <a href="http://www.dlang.org" target="_blank">D programming language</a>. </p> <dl>
+<dt>Authors:</dt>
+<dd>
+<a href="http://www.digitalmars.com" target="_blank">Walter Bright</a> </dd>
+</dl> <dl>
+<dt>License:</dt>
+<dd>
+<a href="http://www.boost.org/LICENSE_1_0.txt" target="_blank">Boost License 1.0</a> </dd>
+</dl> <dl>
+<dt>Source:</dt>
+<dd> <a href="https://github.com/dlang/dmd/blob/master/src/ddmd/doc.d" target="_blank">doc.d</a>
+</dd>
+</dl> <dl>
+<dt class="d_decl" id="Section">class Section</dt>  <dt class="d_decl" id="ParamSection">class ParamSection: ddmd.doc.Section</dt>  <dt class="d_decl" id="MacroSection">class MacroSection: ddmd.doc.Section</dt>  <dt class="d_decl" id="gendocfile">void gendocfile(Module m)</dt>  <dt class="d_decl" id="escapeDdocString">void escapeDdocString(OutBuffer* buf, size_t start)</dt> <dd>
+<p>Having unmatched parentheses can hose the output of Ddoc, as the macros depend on properly nested parentheses. This function replaces all ( with ( and ) with ) to preserve text literally. This also means macros in the text won't be expanded.</p> </dd> <dt class="d_decl" id="escapeStrayParenthesis">void escapeStrayParenthesis(Loc loc, OutBuffer* buf, size_t start)</dt> <dd>
+<p>Having unmatched parentheses can hose the output of Ddoc, as the macros depend on properly nested parentheses. </p> <p>Fix by replacing unmatched ( with ( and unmatched ) with ).</p> </dd> <dt class="d_decl" id="getCodeIndent">static size_t getCodeIndent(const(char)* src)</dt> <dd>
+<p>emitComment </p> <p>Get leading indentation from '<code>src</code>' which represents lines of code.</p> </dd> <dt class="d_decl" id="expandTemplateMixinComments">static void expandTemplateMixinComments(TemplateMixin tm, OutBuffer* buf, Scope* sc)</dt> <dd>
+<p>Recursively expand template mixin member docs into the scope.</p> </dd> <dt class="d_decl" id="DocComment">struct DocComment</dt> <dd> <dl>
+<dt class="d_decl" id="DocComment.parseMacros">static void parseMacros(Escape** pescapetable, Macro** pmacrotable, const(char)* m, size_t mlen)</dt> <dd>
+<p>Parse macros out of Macros: section. Macros are of the form: name1 = value1 </p> <p>name2 = value2</p> </dd> <dt class="d_decl" id="DocComment.parseEscapes">static void parseEscapes(Escape** pescapetable, const(char)* textstart, size_t textlen)</dt> <dd>
+<p>Parse escapes of the form: /c/string/ where c is a single character. Multiple escapes can be separated by whitespace and/or commas.</p> </dd> <dt class="d_decl" id="DocComment.parseSections">void parseSections(const(char)* comment)</dt> <dd>
+<p>Parse next paragraph out of *pcomment. Update *pcomment to point past paragraph. Returns NULL if no more paragraphs. If paragraph ends in 'identifier:', then (*pcomment)[0 .. idlen] is the identifier.</p> </dd> </dl> </dd> <dt class="d_decl" id="cmp">int cmp(const(char)* stringz, const(void)* s, size_t slen)</dt> <dd>
+<p>Compare 0-terminated string with length terminated string. Return &lt; 0, ==0, &gt; 0</p> </dd> <dt class="d_decl" id="isDitto">bool isDitto(const(char)* comment)</dt> <dd>
+<p>Return <code>true</code> if <code>comment</code> consists entirely of "ditto".</p> </dd> <dt class="d_decl" id="skipwhitespace">const(char)* skipwhitespace(const(char)* p)</dt> <dd>
+<p>Skip white space.</p> </dd> <dt class="d_decl" id="skiptoident">size_t skiptoident(OutBuffer* buf, size_t i)</dt> <dd>
+<p>Scan forward to one of: start of identifier beginning of next line end of <code>buf</code></p> </dd> <dt class="d_decl" id="skippastident">size_t skippastident(OutBuffer* buf, size_t i)</dt> <dd>
+<p>Scan forward past end of identifier.</p> </dd> <dt class="d_decl" id="skippastURL">size_t skippastURL(OutBuffer* buf, size_t i)</dt> <dd>
+<p>Scan forward past URL starting at <code>i</code>. We don't want to highlight parts of a URL. </p> <dl>
+<dt>Returns:</dt>
+<dd>
+<code>i</code> if not a URL index just past it if it is a URL</dd>
+</dl> </dd> <dt class="d_decl" id="isIdentifier">bool isIdentifier(Dsymbols* a, const(char)* p, size_t len)</dt>  <dt class="d_decl" id="isKeyword">bool isKeyword(const(char)* p, size_t len)</dt>  <dt class="d_decl" id="isTypeFunction">TypeFunction isTypeFunction(Dsymbol s)</dt>  <dt class="d_decl" id="isFunctionParameter">Parameter isFunctionParameter(Dsymbols* a, const(char)* p, size_t len)</dt>  <dt class="d_decl" id="isTemplateParameter">TemplateParameter isTemplateParameter(Dsymbols* a, const(char)* p, size_t len)</dt>  <dt class="d_decl" id="isReservedName">bool isReservedName(const(char)* str, size_t len)</dt> <dd>
+<p>Return <code>true</code> if <code>str</code> is a reserved symbol name that starts with a double underscore.</p> </dd> <dt class="d_decl" id="highlightText">void highlightText(Scope* sc, Dsymbols* a, OutBuffer* buf, size_t offset)</dt> <dd>
+<p>Highlight text section.</p> </dd> <dt class="d_decl" id="highlightCode">void highlightCode(Scope* sc, Dsymbol s, OutBuffer* buf, size_t offset)</dt> <dd>
+<p>Highlight code for DDOC section.</p> </dd> <dt class="d_decl" id="highlightCode.2">void highlightCode(Scope* sc, Dsymbols* a, OutBuffer* buf, size_t offset)</dt>  <dt class="d_decl" id="highlightCode3">void highlightCode3(Scope* sc, OutBuffer* buf, const(char)* p, const(char)* pend)</dt>  <dt class="d_decl" id="highlightCode2">void highlightCode2(Scope* sc, Dsymbols* a, OutBuffer* buf, size_t offset)</dt> <dd>
+<p>Highlight code for CODE section.</p> </dd> <dt class="d_decl" id="isCVariadicArg">bool isCVariadicArg(const(char)* p, size_t len)</dt> <dd>
+<p>Determine if <code>p</code> points to the start of a "..." parameter identifier.</p> </dd> <dt class="d_decl" id="isIdStart">bool isIdStart(const(char)* p)</dt> <dd>
+<p>Determine if <code>p</code> points to the start of an identifier.</p> </dd> <dt class="d_decl" id="isIdTail">bool isIdTail(const(char)* p)</dt> <dd>
+<p>Determine if <code>p</code> points to the rest of an identifier.</p> </dd> <dt class="d_decl" id="isIndentWS">bool isIndentWS(const(char)* p)</dt> <dd>
+<p>Determine if <code>p</code> points to the indentation space.</p> </dd> <dt class="d_decl" id="utfStride">int utfStride(const(char)* p)</dt> <dd>
+<p>Return number of bytes in UTF character.</p> </dd> </dl>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 1999–2017 The D Language Foundation<br>Licensed under the Boost License 1.0.<br>
+    <a href="https://dlang.org/phobos/ddmd_doc.html" class="_attribution-link" target="_blank">https://dlang.org/phobos/ddmd_doc.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

@@ -1,0 +1,502 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>ddmd.expression - D - W3cubDocs</title>
+  
+  <meta name="description" content=" Compiler implementation of the D programming language. ">
+  <meta name="keywords" content="ddmd, expression, -, d">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/d/ddmd_expression/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/d.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/d/" class="_nav-link" title="" style="margin-left:0;">D</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _d">
+				
+<h1>ddmd.expression</h1>  <p>Compiler implementation of the <a href="http://www.dlang.org" target="_blank">D programming language</a>. </p> <dl>
+<dt>Authors:</dt>
+<dd>
+<a href="http://www.digitalmars.com" target="_blank">Walter Bright</a> </dd>
+</dl> <dl>
+<dt>License:</dt>
+<dd>
+<a href="http://www.boost.org/LICENSE_1_0.txt" target="_blank">Boost License 1.0</a> </dd>
+</dl> <dl>
+<dt>Source:</dt>
+<dd> <a href="https://github.com/dlang/dmd/blob/master/src/ddmd/expression.d" target="_blank">expression.d</a>
+</dd>
+</dl> <dl>
+<dt class="d_decl" id="getRightThis">Expression getRightThis(Loc loc, Scope* sc, AggregateDeclaration ad, Expression e1, Declaration var, int flag = 0)</dt> <dd>
+<p>Given <code>var</code>, get the right <code>this</code> pointer if <code>var</code> is in an outer class, but our existing <code>this</code> pointer is in an inner class. </p> <dl>
+<dt>Parameters:</dt>
+<dd><table>
+<tr>
+<td>Expression <code>e1</code>
+</td> <td>existing <code>this</code>
+</td>
+</tr> <tr>
+<td>AggregateDeclaration <code>ad</code>
+</td> <td>struct or class we need the correct <code>this</code> for</td>
+</tr> <tr>
+<td>Declaration <code>var</code>
+</td> <td>the specific member of <code>ad</code> we're accessing</td>
+</tr> </table></dd>
+</dl> <dl>
+<dt>Returns:</dt>
+<dd>Expression representing the <code>this</code> for the <code>var</code>
+</dd>
+</dl> </dd> <dt class="d_decl" id="resolve">Expression resolve(Loc loc, Scope* sc, Dsymbol s, bool hasOverloads)</dt> <dd>
+<p>Resolve a symbol <code>s</code> and wraps it in an expression object. </p> <dl>
+<dt>Parameters:</dt>
+<dd><table>
+<tr>
+<td>bool <code>hasOverloads</code>
+</td> <td>works if the aliased symbol is a function.</td>
+</tr> </table></dd>
+</dl> <dl>
+<dt>true:</dt>
+<dd> it'<code>s</code> overloaded and will be resolved later. </dd>
+</dl> <dl>
+<dt>false:</dt>
+<dd> it'<code>s</code> exact function symbol.</dd>
+</dl> </dd> <dt class="d_decl" id="hasThis">FuncDeclaration hasThis(Scope* sc)</dt> <dd>
+<p>Determine if <code>this</code> is available by walking up the enclosing scopes until a function is found. </p> <dl>
+<dt>Parameters:</dt>
+<dd><table>
+<tr>
+<td>Scope* <code>sc</code>
+</td> <td>context</td>
+</tr> </table></dd>
+</dl> <dl>
+<dt>Returns:</dt>
+<dd>Found function if it satisfies <code>isThis()</code>, otherwise <code>null</code>
+</dd>
+</dl> </dd> <dt class="d_decl" id="isNeedThisScope">bool isNeedThisScope(Scope* sc, Declaration d)</dt>  <dt class="d_decl" id="resolvePropertiesX">Expression resolvePropertiesX(Scope* sc, Expression e1, Expression e2 = null)</dt> <dd>
+<p>Pull out any properties.</p> </dd> <dt class="d_decl" id="checkPropertyCall">bool checkPropertyCall(Expression e, Expression emsg)</dt> <dd>
+<p>Check the tail CallExp is really property function call. </p> <dl>
+<dt>Bugs:</dt>
+<dd>This doesn't appear to do anything.</dd>
+</dl> </dd> <dt class="d_decl" id="resolvePropertiesOnly">Expression resolvePropertiesOnly(Scope* sc, Expression e1)</dt> <dd>
+<p>If <code>e1</code> is a property function (template), resolve it.</p> </dd> <dt class="d_decl" id="searchUFCS">Expression searchUFCS(Scope* sc, UnaExp ue, Identifier ident)</dt> <dd>
+<p>Find symbol in accordance with the UFCS name look up rule</p> </dd> <dt class="d_decl" id="isDotOpDispatch">bool isDotOpDispatch(Expression e)</dt> <dd>
+<p>check <code>e</code> is exp.opDispatch!(tiargs) or not It's used to switch to UFCS the semantic analysis path</p> </dd> <dt class="d_decl" id="resolveUFCS">Expression resolveUFCS(Scope* sc, CallExp ce)</dt> <dd>
+<p>Pull out callable entity with UFCS.</p> </dd> <dt class="d_decl" id="resolveUFCSProperties">Expression resolveUFCSProperties(Scope* sc, Expression e1, Expression e2 = null)</dt> <dd>
+<p>Pull out property with UFCS.</p> </dd> <dt class="d_decl" id="arrayExpressionSemantic">bool arrayExpressionSemantic(Expressions* exps, Scope* sc, bool preserveErrors = false)</dt> <dd>
+<p>Perform semantic() on an array of Expressions.</p> </dd> <dt class="d_decl" id="expandTuples">void expandTuples(Expressions* exps)</dt> <dd>
+<p>Expand tuples. </p> <dl>
+<dt>Input:</dt>
+<dd> <code>exps</code> aray of Expressions </dd>
+</dl> <dl>
+<dt>Output:</dt>
+<dd> <code>exps</code> rewritten in place</dd>
+</dl> </dd> <dt class="d_decl" id="isAliasThisTuple">TupleDeclaration isAliasThisTuple(Expression e)</dt> <dd>
+<p>Expand alias this tuples.</p> </dd> <dt class="d_decl" id="arrayExpressionToCommonType">bool arrayExpressionToCommonType(Scope* sc, Expressions* exps, Type* pt)</dt> <dd>
+<p>The common type is determined by applying ?: to each pair. </p> <dl>
+<dt>Output:</dt>
+<dd> <code>exps</code>[] properties resolved, implicitly cast to common type, rewritten in place *<code>pt</code> if <code>pt</code> is not NULL, set to the common type </dd>
+</dl> <dl>
+<dt>Returns:</dt>
+<dd>
+<code>true</code> a semantic error was detected</dd>
+</dl> </dd> <dt class="d_decl" id="getFuncTemplateDecl">TemplateDeclaration getFuncTemplateDecl(Dsymbol s)</dt> <dd>
+<p>Get TemplateDeclaration enclosing FuncDeclaration.</p> </dd> <dt class="d_decl" id="preFunctionParameters">bool preFunctionParameters(Loc loc, Scope* sc, Expressions* exps)</dt> <dd>
+<p>Preprocess arguments to function. </p> <dl>
+<dt>Output:</dt>
+<dd> <code>exps</code>[] tuples expanded, properties resolved, rewritten in place </dd>
+</dl> <dl>
+<dt>Returns:</dt>
+<dd>
+<code>true</code> a semantic error occurred</dd>
+</dl> </dd> <dt class="d_decl" id="valueNoDtor">Expression valueNoDtor(Expression e)</dt> <dd>
+<p>If we want the value of this expression, but do not want to call the destructor on it.</p> </dd> <dt class="d_decl" id="checkDefCtor">bool checkDefCtor(Loc loc, Type t)</dt> <dd>
+<p>Issue an error if default construction is disabled for type <code>t</code>. Default construction is required for arrays and 'out' parameters. </p> <dl>
+<dt>Returns:</dt>
+<dd>
+<code>true</code> an error was issued</dd>
+</dl> </dd> <dt class="d_decl" id="callCpCtor">Expression callCpCtor(Scope* sc, Expression e)</dt> <dd>
+<p>If <code>e</code> is an instance of a struct, and that struct has a copy constructor, rewrite <code>e</code> as: (tmp = <code>e</code>),tmp </p> <dl>
+<dt>Input:</dt>
+<dd> <code>sc</code> just used to specify the scope of created temporary variable</dd>
+</dl> </dd> <dt class="d_decl" id="doCopyOrMove">Expression doCopyOrMove(Scope* sc, Expression e)</dt> <dd>
+<p>Handle the postblit call on lvalue, or the move of rvalue.</p> </dd> <dt class="d_decl" id="functionParameters">bool functionParameters(Loc loc, Scope* sc, TypeFunction tf, Type tthis, Expressions* arguments, FuncDeclaration fd, Type* prettype, Expression* peprefix)</dt> <dd>
+<p>Now that we know the exact type of the function we're calling, the <code>arguments</code>[] need to be adjusted: 1. implicitly convert argument to the corresponding parameter type 2. add default <code>arguments</code> for any missing <code>arguments</code> 3. do default promotions on <code>arguments</code> corresponding to ... 4. add hidden arguments[] argument 5. call copy constructor for struct value <code>arguments</code> </p> <dl>
+<dt>Input:</dt>
+<dd> <code>tf</code> type of the function <code>fd</code> the function being called, NULL if called indirectly </dd>
+</dl> <dl>
+<dt>Output:</dt>
+<dd> *<code>prettype</code> return type of function *<code>peprefix</code> expression to execute before <code>arguments</code>[] are evaluated, NULL if none </dd>
+</dl> <dl>
+<dt>Returns:</dt>
+<dd>
+<code>true</code> errors happened</dd>
+</dl> </dd> <dt class="d_decl" id="UnionExp">struct UnionExp</dt>  <dt class="d_decl" id="RealEquals">int RealEquals(real_t x1, real_t x2)</dt> <dd>
+<p>Test to see if two reals are the same. Regard NaN's as equivalent. Regard +0 and -0 as different.</p> </dd> <dt class="d_decl" id="typeDotIdExp">DotIdExp typeDotIdExp(Loc loc, Type type, Identifier ident)</dt> <dd>
+<p>TypeDotIdExp</p> </dd> <dt class="d_decl" id="modifyFieldVar">int modifyFieldVar(Loc loc, Scope* sc, VarDeclaration var, Expression e1)</dt> <dd>
+<p>Mark variable v as modified if it is inside a constructor that <code>var</code> is a field in.</p> </dd> <dt class="d_decl" id="extractOpDollarSideEffect">Expression extractOpDollarSideEffect(Scope* sc, UnaExp ue)</dt>  <dt class="d_decl" id="resolveOpDollar">Expression resolveOpDollar(Scope* sc, ArrayExp ae, Expression* pe0)</dt> <dd>
+<p>Runs semantic on <code>ae</code>.arguments. Declares temporary variables if '$' was used.</p> </dd> <dt class="d_decl" id="resolveOpDollar.2">Expression resolveOpDollar(Scope* sc, ArrayExp ae, IntervalExp ie, Expression* pe0)</dt> <dd>
+<p>Runs semantic on se.lwr and se.upr. Declares a temporary variable if '$' was used.</p> </dd> <dt class="d_decl" id="semanticString">StringExp semanticString(Scope* sc, Expression exp, const char* s)</dt> <dd>
+<p>Resolve <code>exp</code> as a compile-time known string. </p> <dl>
+<dt>Parameters:</dt>
+<dd><table>
+<tr>
+<td>Scope* <code>sc</code>
+</td> <td>scope</td>
+</tr> <tr>
+<td>Expression <code>exp</code>
+</td> <td>Expression which expected as a string</td>
+</tr> <tr>
+<td>char* <code>s</code>
+</td> <td>What the string is expected for, will be used in error diagnostic.</td>
+</tr> </table></dd>
+</dl> <dl>
+<dt>Returns:</dt>
+<dd>String literal, or <code>null</code> if error happens.</dd>
+</dl> </dd> <dt class="d_decl" id="Expression">abstract class Expression: ddmd.root.rootobject.RootObject</dt> <dd>
+<dl>
+<dt>http:</dt>
+<dd> //dlang.org/spec/expression.html#expression</dd>
+</dl> <dl>
+<dt class="d_decl" id="Expression.copy">final Expression copy()</dt> <dd>
+<p>Does *not* do a deep <code>copy</code>.</p> </dd> <dt class="d_decl" id="Expression.combine">static Expression combine(Expression e1, Expression e2)</dt> <dd>
+<p>Combine <code>e1</code> and <code>e2</code> by CommaExp if both are not NULL.</p> </dd> <dt class="d_decl" id="Expression.extractLast">static Expression extractLast(Expression e, Expression* pe0)</dt> <dd>
+<p>If '<code>e</code>' is a tree of commas, returns the leftmost expression by stripping off it from the tree. The remained part of the tree is returned via *<code>pe0</code>. Otherwise '<code>e</code>' is directly returned and *<code>pe0</code> is set to NULL.</p> </dd> <dt class="d_decl" id="Expression.isLvalue">bool isLvalue()</dt> <dd>
+<p>Return !=0 if expression is an lvalue.</p> </dd> <dt class="d_decl" id="Expression.toLvalue">Expression toLvalue(Scope* sc, Expression e)</dt> <dd>
+<p>Give error if we're not an lvalue. If we can, convert expression to be an lvalue.</p> </dd> <dt class="d_decl" id="Expression.resolveLoc">Expression resolveLoc(Loc loc, Scope* sc)</dt> <dd>
+<p>Resolve __FILE__, __LINE__, __MODULE__, __FUNCTION__, __PRETTY_FUNCTION__ to <code>loc</code>.</p> </dd> <dt class="d_decl" id="Expression.checkType">bool checkType()</dt> <dd>
+<p>Check that the expression has a valid type. If not, generates an error "... has no type". </p> <dl>
+<dt>Returns:</dt>
+<dd>
+<code>true</code> if the expression is not valid. </dd>
+</dl> <dl>
+<dt>Note:</dt>
+<dd> When this function returns <code>true</code>, <code>checkValue()</code> should also return <code>true</code>.</dd>
+</dl> </dd> <dt class="d_decl" id="Expression.checkValue">bool checkValue()</dt> <dd>
+<p>Check that the expression has a valid value. If not, generates an error "... has no value". </p> <dl>
+<dt>Returns:</dt>
+<dd>
+<code>true</code> if the expression is not valid or has void type.</dd>
+</dl> </dd> <dt class="d_decl" id="Expression.checkPurity">final bool checkPurity(Scope* sc, FuncDeclaration f)</dt> <dd>
+<p>Calling function <code>f</code>. Check the purity, i.e. if we're in a pure function we can only call other pure functions. Returns <code>true</code> if error occurs.</p> </dd> <dt class="d_decl" id="Expression.checkPurity.2">final bool checkPurity(Scope* sc, VarDeclaration v)</dt> <dd>
+<p>Accessing variable <code>v</code>. Check for purity and safety violations. Returns <code>true</code> if error occurs.</p> </dd> <dt class="d_decl" id="Expression.checkSafety">final bool checkSafety(Scope* sc, FuncDeclaration f)</dt> <dd>
+<p>Calling function <code>f</code>. Check the safety, i.e. if we're in a @safe function we can only call @safe or @trusted functions. Returns <code>true</code> if error occurs.</p> </dd> <dt class="d_decl" id="Expression.checkNogc">final bool checkNogc(Scope* sc, FuncDeclaration f)</dt> <dd>
+<p>Calling function <code>f</code>. Check the @nogc-ness, i.e. if we're in a @nogc function we can only call other @nogc functions. Returns <code>true</code> if error occurs.</p> </dd> <dt class="d_decl" id="Expression.checkPostblit">final bool checkPostblit(Scope* sc, Type t)</dt> <dd>
+<p>Check that the postblit is callable if <code>t</code> is an array of structs. Returns <code>true</code> if error happens.</p> </dd> <dt class="d_decl" id="Expression.checkReadModifyWrite">final bool checkReadModifyWrite(TOK rmwOp, Expression ex = null)</dt> <dd>
+<p>Check whether the expression allows RMW operations, error with rmw operator diagnostic if not. <code>ex</code> is the RHS expression, or NULL if ++/-- is used (for diagnostics) Returns <code>true</code> if error occurs.</p> </dd> <dt class="d_decl" id="Expression.checkModifiable">int checkModifiable(Scope* sc, int flag = 0)</dt> <dd>
+<dl>
+<dt>Parameters:</dt>
+
+</dl> <dl>
+<dt>sc:</dt>
+<dd> scope </dd>
+</dl> <dl>
+<dt>flag:</dt>
+<dd> 1: do not issue error message for invalid modification </dd>
+</dl> <dl>
+<dt>Returns:</dt>
+<dd>0: is not modifiable 1: is modifiable in default == being related to type.isMutable() 2: is modifiable, because this is a part of initializing.</dd>
+</dl> </dd> <dt class="d_decl" id="Expression.toBoolean">Expression toBoolean(Scope* sc)</dt> <dd>
+<p>If expression can be tested for <code>true</code> or <code>false</code>, returns the modified expression. Otherwise returns ErrorExp.</p> </dd> <dt class="d_decl" id="Expression.addDtorHook">Expression addDtorHook(Scope* sc)</dt> <dd>
+<p>Destructors are attached to VarDeclarations. Hence, if expression returns a temp that needs a destructor, make sure and create a VarDeclaration for that temp.</p> </dd> <dt class="d_decl" id="Expression.addressOf">final Expression addressOf()</dt> <dd>
+<p>Take address of expression.</p> </dd> <dt class="d_decl" id="Expression.deref">final Expression deref()</dt> <dd>
+<p>If this is a reference, dereference it.</p> </dd> <dt class="d_decl" id="Expression.isBool">bool isBool(bool result)</dt> <dd>
+<p>Does this expression statically evaluate to a boolean '<code>result</code>' (<code>true</code> or <code>false</code>)?</p> </dd> </dl> </dd> <dt class="d_decl" id="IntegerExp">class IntegerExp: ddmd.expression.Expression</dt>  <dt class="d_decl" id="ErrorExp">class ErrorExp: ddmd.expression.Expression</dt> <dd>
+<p>Use this expression for error recovery. It should behave as a 'sink' to prevent further cascaded error messages.</p> </dd> <dt class="d_decl" id="RealExp">class RealExp: ddmd.expression.Expression</dt>  <dt class="d_decl" id="ComplexExp">class ComplexExp: ddmd.expression.Expression</dt>  <dt class="d_decl" id="IdentifierExp">class IdentifierExp: ddmd.expression.Expression</dt>  <dt class="d_decl" id="DollarExp">class DollarExp: ddmd.expression.IdentifierExp</dt>  <dt class="d_decl" id="DsymbolExp">class DsymbolExp: ddmd.expression.Expression</dt> <dd>
+<p>Won't be generated by parser.</p> </dd> <dt class="d_decl" id="ThisExp">class ThisExp: ddmd.expression.Expression</dt> <dd>
+<dl>
+<dt>http:</dt>
+<dd> //dlang.org/spec/expression.html#this</dd>
+</dl> </dd> <dt class="d_decl" id="SuperExp">class SuperExp: ddmd.expression.ThisExp</dt> <dd>
+<dl>
+<dt>http:</dt>
+<dd> //dlang.org/spec/expression.html#super</dd>
+</dl> </dd> <dt class="d_decl" id="NullExp">class NullExp: ddmd.expression.Expression</dt> <dd>
+<dl>
+<dt>http:</dt>
+<dd> //dlang.org/spec/expression.html#<code>null</code>
+</dd>
+</dl> </dd> <dt class="d_decl" id="StringExp">class StringExp: ddmd.expression.Expression</dt> <dd>
+<dl>
+<dt>http:</dt>
+<dd> //dlang.org/spec/expression.html#string_literals</dd>
+</dl> <dl>
+<dt class="d_decl" id="StringExp.numberOfCodeUnits">final const size_t numberOfCodeUnits(int tynto = 0)</dt> <dd>
+<p>Return the number of code units the string would be if it were re-encoded as <code>tynto</code>. </p> <dl>
+<dt>Parameters:</dt>
+<dd><table>
+<tr>
+<td>int <code>tynto</code>
+</td> <td>code unit type of the target encoding</td>
+</tr> </table></dd>
+</dl> <dl>
+<dt>Returns:</dt>
+<dd>number of code units</dd>
+</dl> </dd> <dt class="d_decl" id="StringExp.writeTo">const void writeTo(void* dest, bool zero, int tyto = 0)</dt> <dd>
+<p>Write the contents of the string to <code>dest</code>. Use numberOfCodeUnits() to determine size of result. </p> <dl>
+<dt>Parameters:</dt>
+<dd><table>
+<tr>
+<td>void* <code>dest</code>
+</td> <td>destination</td>
+</tr> <tr>
+<td>int <code>tyto</code>
+</td> <td>encoding type of the result</td>
+</tr> <tr>
+<td>bool <code>zero</code>
+</td> <td>add terminating 0</td>
+</tr> </table></dd>
+</dl> </dd> <dt class="d_decl" id="StringExp.getCodeUnit">final const pure dchar getCodeUnit(size_t i)</dt> <dd>
+<p>Get the code unit at index <code>i</code> </p> <dl>
+<dt>Parameters:</dt>
+<dd><table>
+<tr>
+<td>size_t <code>i</code>
+</td> <td>index</td>
+</tr> </table></dd>
+</dl> <dl>
+<dt>Returns:</dt>
+<dd>code unit at index <code>i</code>
+</dd>
+</dl> </dd> <dt class="d_decl" id="StringExp.setCodeUnit">final void setCodeUnit(size_t i, dchar c)</dt> <dd>
+<p>Set the code unit at index <code>i</code> to <code>c</code> </p> <dl>
+<dt>Parameters:</dt>
+<dd><table>
+<tr>
+<td>size_t <code>i</code>
+</td> <td>index</td>
+</tr> <tr>
+<td>dchar <code>c</code>
+</td> <td>code unit to set it to</td>
+</tr> </table></dd>
+</dl> </dd> <dt class="d_decl" id="StringExp.toPtr">char* toPtr()</dt> <dd>
+<p>If the string data is UTF-8 and can be accessed directly, return a pointer to it. Do not assume a terminating 0. </p> <dl>
+<dt>Returns:</dt>
+<dd>pointer to string data if possible, <code>null</code> if not</dd>
+</dl> </dd> <dt class="d_decl" id="StringExp.toUTF8">StringExp toUTF8(Scope* sc)</dt> <dd>
+<p>Convert string to char[].</p> </dd> <dt class="d_decl" id="StringExp.toStringz">final const const(char)[] toStringz()</dt> <dd>
+<p>Convert string contents to a 0 terminated string, allocated by mem.xmalloc().</p> </dd> </dl> </dd> <dt class="d_decl" id="TupleExp">class TupleExp: ddmd.expression.Expression</dt>  <dt class="d_decl" id="ArrayLiteralExp">class ArrayLiteralExp: ddmd.expression.Expression</dt> <dd>
+<p>[ e1, e2, e3, ... ] </p> <dl>
+<dt>http:</dt>
+<dd> //dlang.org/spec/expression.html#array_literals</dd>
+</dl> <dl>
+<dt class="d_decl" id="ArrayLiteralExp.basis">Expression basis</dt> <dd>
+<p>If !is <code>null</code>, elements[] can be sparse and <code>basis</code> is used for the "default" element value. In other words, non-<code>null</code> elements[i] overrides this '<code>basis</code>' value.</p> </dd> <dt class="d_decl" id="ArrayLiteralExp.copyElements">static Expressions* copyElements(Expression e1, Expression e2 = null)</dt> <dd>
+<p>Copy element <code>Expressions</code> in the parameters when they're <code>ArrayLiteralExp</code>s. </p> <dl>
+<dt>Parameters:</dt>
+<dd><table>
+<tr>
+<td>Expression <code>e1</code>
+</td> <td>If it's ArrayLiteralExp, its <code>elements</code> will be copied. Otherwise, <code>e1</code> itself will be pushed into the new <code>Expressions</code>.</td>
+</tr> <tr>
+<td>Expression <code>e2</code>
+</td> <td>If it's not <code>null</code>, it will be pushed/appended to the new <code>Expressions</code> by the same way with <code>e1</code>.</td>
+</tr> </table></dd>
+</dl> <dl>
+<dt>Returns:</dt>
+<dd>Newly allocated <code>Expressions</code>. Note that it points to the original <code>Expression</code> values in <code>e1</code> and <code>e2</code>.</dd>
+</dl> </dd> </dl> </dd> <dt class="d_decl" id="AssocArrayLiteralExp">class AssocArrayLiteralExp: ddmd.expression.Expression</dt> <dd>
+<p>[ key0 : value0, key1 : value1, ... ] </p> <dl>
+<dt>http:</dt>
+<dd> //dlang.org/spec/expression.html#associative_array_literals</dd>
+</dl> </dd> <dt class="d_decl" id="stageScrub">enum int stageScrub</dt> <dd>
+<p>scrubReturnValue is running</p> </dd> <dt class="d_decl" id="stageSearchPointers">enum int stageSearchPointers</dt> <dd>
+<p>hasNonConstPointers is running</p> </dd> <dt class="d_decl" id="stageOptimize">enum int stageOptimize</dt> <dd>
+<p>optimize is running</p> </dd> <dt class="d_decl" id="stageApply">enum int stageApply</dt> <dd>
+<p>apply is running</p> </dd> <dt class="d_decl" id="stageInlineScan">enum int stageInlineScan</dt> <dd>
+<p>inlineScan is running</p> </dd> <dt class="d_decl" id="stageToCBuffer">enum int stageToCBuffer</dt> <dd>
+<p>toCBuffer is running</p> </dd> <dt class="d_decl" id="StructLiteralExp">class StructLiteralExp: ddmd.expression.Expression</dt> <dd>
+<p>sd( e1, e2, e3, ... )</p> <dl>
+<dt class="d_decl" id="StructLiteralExp.sd">StructDeclaration sd</dt> <dd>
+<p>which aggregate this is for</p> </dd> <dt class="d_decl" id="StructLiteralExp.elements">Expressions* elements</dt> <dd>
+<p>parallels sd.fields[] with <code>null</code> entries for fields to skip</p> </dd> <dt class="d_decl" id="StructLiteralExp.stype">Type stype</dt> <dd>
+<p>final type of result (can be different from sd's type)</p> </dd> <dt class="d_decl" id="StructLiteralExp.useStaticInit">bool useStaticInit</dt> <dd>
+<p>if this is <code>true</code>, use the StructDeclaration's init symbol</p> </dd> <dt class="d_decl" id="StructLiteralExp.sym">Symbol* sym</dt> <dd>
+<p>back end symbol to initialize with literal</p> </dd> <dt class="d_decl" id="StructLiteralExp.origin">StructLiteralExp origin</dt> <dd>
+<p>pointer to the <code>origin</code> instance of the expression. once a new expression is created, <code>origin</code> is set to 'this'. anytime when an expression copy is created, '<code>origin</code>' pointer is set to '<code>origin</code>' pointer value of the original expression.</p> </dd> <dt class="d_decl" id="StructLiteralExp.inlinecopy">StructLiteralExp inlinecopy</dt> <dd>
+<p>those fields need to prevent a infinite recursion when one field of struct initialized with 'this' pointer.</p> </dd> <dt class="d_decl" id="StructLiteralExp.stageflags">int stageflags</dt> <dd>
+<p>anytime when recursive function is calling, '<code>stageflags</code>' marks with bit flag of current stage and unmarks before return from this function. 'inlinecopy' uses similar '<code>stageflags</code>' and from multiple evaluation 'doInline' (with infinite recursion) of this expression.</p> </dd> <dt class="d_decl" id="StructLiteralExp.getField">Expression getField(Type type, uint offset)</dt> <dd>
+<p>Gets expression at <code>offset</code> of <code>type</code>. Returns NULL if not found.</p> </dd> <dt class="d_decl" id="StructLiteralExp.getFieldIndex">int getFieldIndex(Type type, uint offset)</dt> <dd>
+<p>Get index of field. Returns -1 if not found.</p> </dd> </dl> </dd> <dt class="d_decl" id="TypeExp">class TypeExp: ddmd.expression.Expression</dt> <dd>
+<p>Mainly just a placeholder</p> </dd> <dt class="d_decl" id="ScopeExp">class ScopeExp: ddmd.expression.Expression</dt> <dd>
+<p>Mainly just a placeholder of Package, Module, Nspace, and TemplateInstance (including TemplateMixin) </p> <p>A template instance that requires IFTI: foo!tiargs(fargs) // foo!tiargs is left until CallExp::semantic() or resolveProperties()</p> </dd> <dt class="d_decl" id="TemplateExp">class TemplateExp: ddmd.expression.Expression</dt> <dd>
+<p>Mainly just a placeholder</p> </dd> <dt class="d_decl" id="NewExp">class NewExp: ddmd.expression.Expression</dt> <dd>
+<p>thisexp.new(newargs) newtype(arguments)</p> </dd> <dt class="d_decl" id="NewAnonClassExp">class NewAnonClassExp: ddmd.expression.Expression</dt> <dd>
+<p>thisexp.new(newargs) class baseclasses { } (arguments)</p> </dd> <dt class="d_decl" id="SymbolExp">class SymbolExp: ddmd.expression.Expression</dt>  <dt class="d_decl" id="SymOffExp">class SymOffExp: ddmd.expression.SymbolExp</dt> <dd>
+<p>Offset from symbol</p> </dd> <dt class="d_decl" id="VarExp">class VarExp: ddmd.expression.SymbolExp</dt> <dd>
+<p>Variable</p> </dd> <dt class="d_decl" id="OverExp">class OverExp: ddmd.expression.Expression</dt> <dd>
+<p>Overload Set</p> </dd> <dt class="d_decl" id="FuncExp">class FuncExp: ddmd.expression.Expression</dt> <dd>
+<p>Function/Delegate literal</p> </dd> <dt class="d_decl" id="DeclarationExp">class DeclarationExp: ddmd.expression.Expression</dt> <dd>
+<p>Declaration of a symbol </p> <p>D grammar allows declarations only as statements. However in AST representation it can be part of any expression. This is used, for example, during internal syntax re-writes to inject hidden symbols.</p> </dd> <dt class="d_decl" id="TypeidExp">class TypeidExp: ddmd.expression.Expression</dt> <dd>
+<p>typeid(int)</p> </dd> <dt class="d_decl" id="TraitsExp">class TraitsExp: ddmd.expression.Expression</dt> <dd>
+<p>_traits(identifier, args...)</p> </dd> <dt class="d_decl" id="HaltExp">class HaltExp: ddmd.expression.Expression</dt>  <dt class="d_decl" id="IsExp">class IsExp: ddmd.expression.Expression</dt> <dd>
+<p>is(targ id tok tspec) is(targ id == tok2)</p> </dd> <dt class="d_decl" id="UnaExp">class UnaExp: ddmd.expression.Expression</dt> <dd> <dl>
+<dt class="d_decl" id="UnaExp.incompatibleTypes">final Expression incompatibleTypes()</dt> <dd>
+<p>The type for a unary expression is incompatible. Print error message. </p> <dl>
+<dt>Returns:</dt>
+<dd>ErrorExp</dd>
+</dl> </dd> <dt class="d_decl" id="UnaExp.setNoderefOperand">final void setNoderefOperand()</dt> <dd>
+<p>Mark the operand as will never be dereferenced, which is useful info for @safe checks. Do before semantic() on operands rewrites them.</p> </dd> </dl> </dd> <dt class="d_decl" id="BinExp">abstract class BinExp: ddmd.expression.Expression</dt> <dd> <dl>
+<dt class="d_decl" id="BinExp.incompatibleTypes">final Expression incompatibleTypes()</dt> <dd>
+<p>The types for a binary expression are incompatible. Print error message. </p> <dl>
+<dt>Returns:</dt>
+<dd>ErrorExp</dd>
+</dl> </dd> <dt class="d_decl" id="BinExp.setNoderefOperands">final void setNoderefOperands()</dt> <dd>
+<p>Mark the operands as will never be dereferenced, which is useful info for @safe checks. Do before semantic() on operands rewrites them.</p> </dd> </dl> </dd> <dt class="d_decl" id="BinAssignExp">class BinAssignExp: ddmd.expression.BinExp</dt>  <dt class="d_decl" id="CompileExp">class CompileExp: ddmd.expression.UnaExp</dt>  <dt class="d_decl" id="ImportExp">class ImportExp: ddmd.expression.UnaExp</dt>  <dt class="d_decl" id="AssertExp">class AssertExp: ddmd.expression.UnaExp</dt>  <dt class="d_decl" id="DotIdExp">class DotIdExp: ddmd.expression.UnaExp</dt>  <dt class="d_decl" id="DotTemplateExp">class DotTemplateExp: ddmd.expression.UnaExp</dt> <dd>
+<p>Mainly just a placeholder</p> </dd> <dt class="d_decl" id="DotVarExp">class DotVarExp: ddmd.expression.UnaExp</dt>  <dt class="d_decl" id="DotTemplateInstanceExp">class DotTemplateInstanceExp: ddmd.expression.UnaExp</dt> <dd>
+<p>foo.bar!(args)</p> </dd> <dt class="d_decl" id="DelegateExp">class DelegateExp: ddmd.expression.UnaExp</dt>  <dt class="d_decl" id="DotTypeExp">class DotTypeExp: ddmd.expression.UnaExp</dt>  <dt class="d_decl" id="CallExp">class CallExp: ddmd.expression.UnaExp</dt>  <dt class="d_decl" id="AddrExp">class AddrExp: ddmd.expression.UnaExp</dt>  <dt class="d_decl" id="PtrExp">class PtrExp: ddmd.expression.UnaExp</dt>  <dt class="d_decl" id="NegExp">class NegExp: ddmd.expression.UnaExp</dt>  <dt class="d_decl" id="UAddExp">class UAddExp: ddmd.expression.UnaExp</dt>  <dt class="d_decl" id="ComExp">class ComExp: ddmd.expression.UnaExp</dt>  <dt class="d_decl" id="NotExp">class NotExp: ddmd.expression.UnaExp</dt>  <dt class="d_decl" id="DeleteExp">class DeleteExp: ddmd.expression.UnaExp</dt>  <dt class="d_decl" id="CastExp">class CastExp: ddmd.expression.UnaExp</dt> <dd>
+<p>Possible to cast to one type while painting to another type</p> </dd> <dt class="d_decl" id="VectorExp">class VectorExp: ddmd.expression.UnaExp</dt>  <dt class="d_decl" id="SliceExp">class SliceExp: ddmd.expression.UnaExp</dt> <dd>
+<p>e1 [lwr .. upr] </p> <dl>
+<dt>http:</dt>
+<dd> //dlang.org/spec/expression.html#slice_expressions</dd>
+</dl> <dl>
+<dt class="d_decl" id="SliceExp.this">this(Loc loc, Expression e1, IntervalExp ie)</dt>  </dl> </dd> <dt class="d_decl" id="ArrayLengthExp">class ArrayLengthExp: ddmd.expression.UnaExp</dt> <dd> <dl>
+<dt class="d_decl" id="ArrayLengthExp.rewriteOpAssign">static Expression rewriteOpAssign(BinExp exp)</dt> <dd>
+<dl>
+<dt>Rewrite:</dt>
+<dd> array.length op= e2 </dd>
+</dl> <dl>
+<dt>as:</dt>
+<dd> array.length = array.length op e2 </dd>
+</dl> <dl>
+<dt>or:</dt>
+<dd> auto tmp = &amp;array; (*tmp).length = (*tmp).length op e2</dd>
+</dl> </dd> </dl> </dd> <dt class="d_decl" id="ArrayExp">class ArrayExp: ddmd.expression.UnaExp</dt> <dd>
+<p>e1 [ a0, a1, a2, a3 ,... ] </p> <dl>
+<dt>http:</dt>
+<dd> //dlang.org/spec/expression.html#index_expressions</dd>
+</dl> </dd> <dt class="d_decl" id="DotExp">class DotExp: ddmd.expression.BinExp</dt>  <dt class="d_decl" id="CommaExp">class CommaExp: ddmd.expression.BinExp</dt> <dd> <dl>
+<dt class="d_decl" id="CommaExp.isGenerated">const bool isGenerated</dt> <dd>
+<p>This is needed because AssignExp rewrites CommaExp, hence it needs </p> <p>to trigger the deprecation.</p> </dd> <dt class="d_decl" id="CommaExp.allowCommaExp">bool allowCommaExp</dt> <dd>
+<p>Temporary variable to enable / disable deprecation of comma expression </p> <p>depending on the context. <br><br> Since most constructor calls are rewritting, the only place where <br><br> <code>false</code> will be passed will be from the parser.</p> </dd> <dt class="d_decl" id="CommaExp.allow">static void allow(Expression exp)</dt> <dd>
+<p>If the argument is a CommaExp, set a flag to prevent deprecation messages </p> <p>It's impossible to know from CommaExp.semantic if the result will be used, hence when there is a result (type != void), a deprecation message is always emitted. However, some construct can produce a result but won't use it (ExpStatement and for loop increment). Those should call this function to prevent unwanted deprecations to be emitted. </p> <dl>
+<dt>Parameters:</dt>
+<dd><table>
+<tr>
+<td>Expression <code>exp</code>
+</td> <td>An expression that discards its result. If the argument is <code>null</code> or not a CommaExp, nothing happens.</td>
+</tr> </table></dd>
+</dl> </dd> </dl> </dd> <dt class="d_decl" id="IntervalExp">class IntervalExp: ddmd.expression.Expression</dt> <dd>
+<p>Mainly just a placeholder</p> </dd> <dt class="d_decl" id="DelegateFuncptrExp">class DelegateFuncptrExp: ddmd.expression.UnaExp</dt>  <dt class="d_decl" id="IndexExp">class IndexExp: ddmd.expression.BinExp</dt> <dd>
+<p>e1 [ e2 ]</p> </dd> <dt class="d_decl" id="PostExp">class PostExp: ddmd.expression.BinExp</dt> <dd>
+<p>For both i++ and i--</p> </dd> <dt class="d_decl" id="PreExp">class PreExp: ddmd.expression.UnaExp</dt> <dd>
+<p>For both ++i and --i</p> </dd> <dt class="d_decl" id="AssignExp">class AssignExp: ddmd.expression.BinExp</dt> <dd> <dl>
+<dt class="d_decl" id="AssignExp.this">final this(Loc loc, Expression e1, Expression e2)</dt>  </dl> </dd> <dt class="d_decl" id="ConstructExp">class ConstructExp: ddmd.expression.AssignExp</dt>  <dt class="d_decl" id="BlitExp">class BlitExp: ddmd.expression.AssignExp</dt>  <dt class="d_decl" id="AddAssignExp">class AddAssignExp: ddmd.expression.BinAssignExp</dt>  <dt class="d_decl" id="MinAssignExp">class MinAssignExp: ddmd.expression.BinAssignExp</dt>  <dt class="d_decl" id="MulAssignExp">class MulAssignExp: ddmd.expression.BinAssignExp</dt>  <dt class="d_decl" id="DivAssignExp">class DivAssignExp: ddmd.expression.BinAssignExp</dt>  <dt class="d_decl" id="ModAssignExp">class ModAssignExp: ddmd.expression.BinAssignExp</dt>  <dt class="d_decl" id="AndAssignExp">class AndAssignExp: ddmd.expression.BinAssignExp</dt>  <dt class="d_decl" id="OrAssignExp">class OrAssignExp: ddmd.expression.BinAssignExp</dt>  <dt class="d_decl" id="XorAssignExp">class XorAssignExp: ddmd.expression.BinAssignExp</dt>  <dt class="d_decl" id="PowAssignExp">class PowAssignExp: ddmd.expression.BinAssignExp</dt>  <dt class="d_decl" id="ShlAssignExp">class ShlAssignExp: ddmd.expression.BinAssignExp</dt>  <dt class="d_decl" id="ShrAssignExp">class ShrAssignExp: ddmd.expression.BinAssignExp</dt>  <dt class="d_decl" id="UshrAssignExp">class UshrAssignExp: ddmd.expression.BinAssignExp</dt>  <dt class="d_decl" id="CatAssignExp">class CatAssignExp: ddmd.expression.BinAssignExp</dt>  <dt class="d_decl" id="AddExp">class AddExp: ddmd.expression.BinExp</dt> <dd>
+<dl>
+<dt>http:</dt>
+<dd> //dlang.org/spec/expression.html#add_expressions</dd>
+</dl> </dd> <dt class="d_decl" id="MinExp">class MinExp: ddmd.expression.BinExp</dt>  <dt class="d_decl" id="CatExp">class CatExp: ddmd.expression.BinExp</dt> <dd>
+<dl>
+<dt>http:</dt>
+<dd> //dlang.org/spec/expression.html#cat_expressions</dd>
+</dl> </dd> <dt class="d_decl" id="MulExp">class MulExp: ddmd.expression.BinExp</dt> <dd>
+<dl>
+<dt>http:</dt>
+<dd> //dlang.org/spec/expression.html#mul_expressions</dd>
+</dl> </dd> <dt class="d_decl" id="DivExp">class DivExp: ddmd.expression.BinExp</dt> <dd>
+<dl>
+<dt>http:</dt>
+<dd> //dlang.org/spec/expression.html#mul_expressions</dd>
+</dl> </dd> <dt class="d_decl" id="ModExp">class ModExp: ddmd.expression.BinExp</dt> <dd>
+<dl>
+<dt>http:</dt>
+<dd> //dlang.org/spec/expression.html#mul_expressions</dd>
+</dl> </dd> <dt class="d_decl" id="PowExp">class PowExp: ddmd.expression.BinExp</dt> <dd>
+<dl>
+<dt>http:</dt>
+<dd> //dlang.org/spec/expression.html#pow_expressions</dd>
+</dl> </dd> <dt class="d_decl" id="ShlExp">class ShlExp: ddmd.expression.BinExp</dt>  <dt class="d_decl" id="ShrExp">class ShrExp: ddmd.expression.BinExp</dt>  <dt class="d_decl" id="UshrExp">class UshrExp: ddmd.expression.BinExp</dt>  <dt class="d_decl" id="AndExp">class AndExp: ddmd.expression.BinExp</dt>  <dt class="d_decl" id="OrExp">class OrExp: ddmd.expression.BinExp</dt>  <dt class="d_decl" id="XorExp">class XorExp: ddmd.expression.BinExp</dt>  <dt class="d_decl" id="OrOrExp">class OrOrExp: ddmd.expression.BinExp</dt> <dd>
+<dl>
+<dt>http:</dt>
+<dd> //dlang.org/spec/expression.html#oror_expressions</dd>
+</dl> </dd> <dt class="d_decl" id="AndAndExp">class AndAndExp: ddmd.expression.BinExp</dt> <dd>
+<dl>
+<dt>http:</dt>
+<dd> //dlang.org/spec/expression.html#andand_expressions</dd>
+</dl> </dd> <dt class="d_decl" id="CmpExp">class CmpExp: ddmd.expression.BinExp</dt> <dd>
+<p><code>op</code> is one of: TOKlt, TOKle, TOKgt, TOKge, TOKunord, TOKlg, TOKleg, TOKule, TOKul, TOKuge, TOKug, TOKue </p> <dl>
+<dt>http:</dt>
+<dd> //dlang.org/spec/expression.html#relation_expressions</dd>
+</dl> </dd> <dt class="d_decl" id="InExp">class InExp: ddmd.expression.BinExp</dt>  <dt class="d_decl" id="RemoveExp">class RemoveExp: ddmd.expression.BinExp</dt> <dd>
+<p>This deletes the key e1 from the associative array e2</p> </dd> <dt class="d_decl" id="EqualExp">class EqualExp: ddmd.expression.BinExp</dt> <dd>
+<p><code>==</code> and <code>!=</code> </p> <p>TOKequal and TOKnotequal </p> <dl>
+<dt>http:</dt>
+<dd> //dlang.org/spec/expression.html#equality_expressions</dd>
+</dl> </dd> <dt class="d_decl" id="IdentityExp">class IdentityExp: ddmd.expression.BinExp</dt> <dd>
+<p><code>is</code> and <code>!is</code> </p> <p>TOKidentity and TOKnotidentity </p> <dl>
+<dt>http:</dt>
+<dd> //dlang.org/spec/expression.html#identity_expressions</dd>
+</dl> </dd> <dt class="d_decl" id="CondExp">class CondExp: ddmd.expression.BinExp</dt> <dd>
+<p><code>econd ? e1 : e2</code> </p> <dl>
+<dt>http:</dt>
+<dd> //dlang.org/spec/expression.html#conditional_expressions</dd>
+</dl> </dd> <dt class="d_decl" id="DefaultInitExp">class DefaultInitExp: ddmd.expression.Expression</dt>  <dt class="d_decl" id="FileInitExp">class FileInitExp: ddmd.expression.DefaultInitExp</dt>  <dt class="d_decl" id="LineInitExp">class LineInitExp: ddmd.expression.DefaultInitExp</dt>  <dt class="d_decl" id="ModuleInitExp">class ModuleInitExp: ddmd.expression.DefaultInitExp</dt>  <dt class="d_decl" id="FuncInitExp">class FuncInitExp: ddmd.expression.DefaultInitExp</dt>  <dt class="d_decl" id="PrettyFuncInitExp">class PrettyFuncInitExp: ddmd.expression.DefaultInitExp</dt>  </dl>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 1999–2017 The D Language Foundation<br>Licensed under the Boost License 1.0.<br>
+    <a href="https://dlang.org/phobos/ddmd_expression.html" class="_attribution-link" target="_blank">https://dlang.org/phobos/ddmd_expression.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

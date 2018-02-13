@@ -1,0 +1,889 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>std.file - D - W3cubDocs</title>
+  
+  <meta name="description" content="Utilities for manipulating files and scanning directories. Functions in this module handle files as a unit, e.g., read or write one file at a time. &hellip;">
+  <meta name="keywords" content="std, file, -, d">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/d/std_file/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/d.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/d/" class="_nav-link" title="" style="margin-left:0;">D</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _d">
+				
+<h1>std.file</h1>  <p>Utilities for manipulating files and scanning directories. Functions in this module handle files as a unit, e.g., read or write one file at a time. For opening files and manipulating them via handles refer to module <a href="../std_stdio/"><code>std.stdio</code></a>. </p>
+<p> </p>
+<table>
+
+<tr>
+<th scope="col">Category</th> <th scope="col">Functions</th>
+</tr> <tr>
+<td>General</td> <td> <a href="#exists"><code>exists</code></a> <a href="#isDir"><code>isDir</code></a> <a href="#isFile"><code>isFile</code></a> <a href="#isSymlink"><code>isSymlink</code></a> <a href="#rename"><code>rename</code></a> <a href="#thisExePath"><code>thisExePath</code></a> </td>
+</tr> <tr>
+<td>Directories</td> <td> <a href="#chdir"><code>chdir</code></a> <a href="#dirEntries"><code>dirEntries</code></a> <a href="#getcwd"><code>getcwd</code></a> <a href="#mkdir"><code>mkdir</code></a> <a href="#mkdirRecurse"><code>mkdirRecurse</code></a> <a href="#rmdir"><code>rmdir</code></a> <a href="#rmdirRecurse"><code>rmdirRecurse</code></a> <a href="#tempDir"><code>tempDir</code></a> </td>
+</tr> <tr>
+<td>Files</td> <td> <a href="#append"><code>append</code></a> <a href="#copy"><code>copy</code></a> <a href="#read"><code>read</code></a> <a href="#readText"><code>readText</code></a> <a href="#remove"><code>remove</code></a> <a href="#slurp"><code>slurp</code></a> <a href="#write"><code>write</code></a> </td>
+</tr> <tr>
+<td>Symlinks</td> <td> <a href="#symlink"><code>symlink</code></a> <a href="#readLink"><code>readLink</code></a> </td>
+</tr> <tr>
+<td>Attributes</td> <td> <a href="#attrIsDir"><code>attrIsDir</code></a> <a href="#attrIsFile"><code>attrIsFile</code></a> <a href="#attrIsSymlink"><code>attrIsSymlink</code></a> <a href="#getAttributes"><code>getAttributes</code></a> <a href="#getLinkAttributes"><code>getLinkAttributes</code></a> <a href="#getSize"><code>getSize</code></a> <a href="#setAttributes"><code>setAttributes</code></a> </td>
+</tr> <tr>
+<td>Timestamp</td> <td> <a href="#getTimes"><code>getTimes</code></a> <a href="#getTimesWin"><code>getTimesWin</code></a> <a href="#setTimes"><code>setTimes</code></a> <a href="#timeLastModified"><code>timeLastModified</code></a> </td>
+</tr> <tr>
+<td>Other</td> <td> <a href="#DirEntry"><code>DirEntry</code></a> <a href="#FileException"><code>FileException</code></a> <a href="#PreserveAttributes"><code>PreserveAttributes</code></a> <a href="#SpanMode"><code>SpanMode</code></a> </td>
+</tr> </table> <br><br>  <dl>
+<dt>See Also:</dt>
+<dd>The <a href="http://ddili.org/ders/d.en/files.html" target="_blank">official tutorial</a> for an introduction to working with files in D, module <a href="../std_stdio/"><code>std.stdio</code></a> for opening files and manipulating them via handles, and module <a href="../std_path/"><code>std.path</code></a> for manipulating path strings. </dd>
+</dl> <dl>
+<dt>License:</dt>
+<dd>
+<a href="http://boost.org/LICENSE_1_0.txt" target="_blank">Boost License 1.0</a>. </dd>
+</dl> <dl>
+<dt>Authors:</dt>
+<dd>
+<a href="http://digitalmars.com" target="_blank">Walter Bright</a>, <a href="http://erdani.org" target="_blank">Andrei Alexandrescu</a>, Jonathan M Davis </dd>
+</dl> <dl>
+<dt>Source</dt>
+<dd> <span class="phobos_src"><a class="https" href="https://github.com/dlang/phobos/blob/master/std/file.d" target="_blank">std/file.d</a></span>
+</dd>
+</dl> <dl>
+<dt class="d_decl" id="FileException">class FileException: object.Exception</dt> <dd>
+<p>Exception thrown for file I/O errors.</p> <dl>
+<dt class="d_decl" id="FileException.errno">immutable uint errno</dt> <dd>
+<p>OS error code.</p> </dd> <dt class="d_decl" id="FileException.this">pure @safe this(in char[] name, in char[] msg, string file = __FILE__, size_t line = __LINE__)</dt> <dd>
+<p>Constructor which takes an error message. </p>
+<dl>
+<dt>Parameters:</dt>
+<dd><table>
+<tr>
+<td>char[] <code>name</code>
+</td> <td>Name of <code>file</code> for which the error occurred.</td>
+</tr> <tr>
+<td>char[] <code>msg</code>
+</td> <td>Message describing the error.</td>
+</tr> <tr>
+<td>string <code>file</code>
+</td> <td>The file where the error occurred.</td>
+</tr> <tr>
+<td>size_t <code>line</code>
+</td> <td>The line where the error occurred.</td>
+</tr> </table></dd>
+</dl> </dd> <dt class="d_decl" id="FileException.this.2">@trusted this(in char[] name, uint errno = .errno, string file = __FILE__, size_t line = __LINE__)</dt> <dd>
+<p>Constructor which takes the error number (<a href="https://google.com/search?btnI=I%27m+Feeling+Lucky&amp;ie=UTF-8&amp;oe=UTF-8&amp;q=GetLastError" target="_blank">GetLastError</a> in Windows, <span class="d_param"><code>errno</code></span> in Posix). </p>
+<dl>
+<dt>Parameters:</dt>
+<dd><table>
+<tr>
+<td>char[] <code>name</code>
+</td> <td>Name of <code>file</code> for which the error occurred.</td>
+</tr> <tr>
+<td>uint <code>errno</code>
+</td> <td>The error number.</td>
+</tr> <tr>
+<td>string <code>file</code>
+</td> <td>The file where the error occurred. Defaults to <code>__FILE__</code>.</td>
+</tr> <tr>
+<td>size_t <code>line</code>
+</td> <td>The line where the error occurred. Defaults to <code>__LINE__</code>.</td>
+</tr> </table></dd>
+</dl> </dd> </dl> </dd> <dt class="d_decl" id="read">void[] read(R)(R name, size_t upTo = size_t.max)<br>void[] read(R)(auto ref R name, size_t upTo = size_t.max)<br><br>  Constraints:<br>    if (isInputRange!R &amp;&amp; isSomeChar!(ElementEncodingType!R) &amp;&amp; !isInfinite!R &amp;&amp; !isConvertibleToString!R)<br>    if (isConvertibleToString!R)</dt> <dd>
+<p>Read entire contents of file <code>name</code> and returns it as an untyped array. If the file size is larger than <code>upTo</code>, only <code>upTo</code> bytes are read. </p>
+<dl>
+<dt>Parameters:</dt>
+<dd><table>
+<tr>
+<td>R <code>name</code>
+</td> <td>string or range of characters representing the file name</td>
+</tr> <tr>
+<td>size_t <code>upTo</code>
+</td> <td>if present, the maximum number of bytes to read</td>
+</tr> </table></dd>
+</dl> <dl>
+<dt>Returns:</dt>
+<dd>Untyped array of bytes read. </dd>
+</dl> <dl>
+<dt>Throws:</dt>
+<dd>
+<a href="#FileException"><code>FileException</code></a> on error.</dd>
+</dl> <dl>
+<dt>Examples:</dt>
+<dd>
+<pre data-language="d">import std.utf : byChar;
+scope(exit)
+{
+    assert(exists(deleteme));
+    remove(deleteme);
+}
+
+write(deleteme, "1234"); // deleteme is the name of a temporary file
+writeln(read(deleteme, 2)); // "12"
+writeln(read(deleteme.byChar)); // "1234"
+writeln((cast(const(ubyte)[])read(deleteme)).length); // 4
+</pre> </dd>
+</dl> </dd> <dt class="d_decl" id="readText">S readText(S = string, R)(R name)<br>S readText(S = string, R)(auto ref R name)<br><br>  Constraints:<br>    if (isSomeString!S &amp;&amp; (isInputRange!R &amp;&amp; !isInfinite!R &amp;&amp; isSomeChar!(ElementEncodingType!R) || isSomeString!R) &amp;&amp; !isConvertibleToString!R)<br>    if (isConvertibleToString!R)</dt> <dd>
+<p>Read and validates (using <a href="../std_utf/#validate"><code>std.utf.validate</code></a>) a text file. <code>S</code> can be a type of array of characters of any width and constancy. No width conversion is performed; if the width of the characters in file <code>name</code> is different from the width of elements of <code>S</code>, validation will fail. </p>
+<dl>
+<dt>Parameters:</dt>
+<dd><table>
+<tr>
+<td>R <code>name</code>
+</td> <td>string or range of characters representing the file name</td>
+</tr> </table></dd>
+</dl> <dl>
+<dt>Returns:</dt>
+<dd>Array of characters read. </dd>
+</dl> <dl>
+<dt>Throws:</dt>
+<dd>
+<code>FileException</code> on file error, <code>UTFException</code> on UTF decoding error.</dd>
+</dl> <dl>
+<dt>Examples:</dt>
+<dd>
+<pre data-language="d">import std.exception : enforce;
+write(deleteme, "abc"); // deleteme is the name of a temporary file
+scope(exit) remove(deleteme);
+string content = readText(deleteme);
+enforce(content == "abc");
+</pre> </dd>
+</dl> </dd> <dt class="d_decl" id="write">void write(R)(R name, const void[] buffer)<br>void write(R)(auto ref R name, const void[] buffer)<br><br>  Constraints:<br>    if ((isInputRange!R &amp;&amp; !isInfinite!R &amp;&amp; isSomeChar!(ElementEncodingType!R) || isSomeString!R) &amp;&amp; !isConvertibleToString!R)<br>    if (isConvertibleToString!R)</dt> <dd>
+<p>Write <code>buffer</code> to file <code>name</code>. </p>
+<p>Creates the file if it does not already exist. </p> <dl>
+<dt>Parameters:</dt>
+<dd><table>
+<tr>
+<td>R <code>name</code>
+</td> <td>string or range of characters representing the file name</td>
+</tr> <tr>
+<td>void[] <code>buffer</code>
+</td> <td>data to be written to file</td>
+</tr> </table></dd>
+</dl> <dl>
+<dt>Throws:</dt>
+<dd>
+<code>FileException</code> on error. </dd>
+</dl> <dl>
+<dt>See Also:</dt>
+<dd><a href="../std_stdio/#toFile"><code>std.stdio.toFile</code></a></dd>
+</dl> <dl>
+<dt>Examples:</dt>
+<dd>
+<pre data-language="d">scope(exit)
+{
+    assert(exists(deleteme));
+    remove(deleteme);
+}
+
+int[] a = [ 0, 1, 1, 2, 3, 5, 8 ];
+write(deleteme, a); // deleteme is the name of a temporary file
+writeln(cast(int[])read(deleteme)); // a
+</pre> </dd>
+</dl> </dd> <dt class="d_decl" id="append">void append(R)(R name, const void[] buffer)<br>void append(R)(auto ref R name, const void[] buffer)<br><br>  Constraints:<br>    if ((isInputRange!R &amp;&amp; !isInfinite!R &amp;&amp; isSomeChar!(ElementEncodingType!R) || isSomeString!R) &amp;&amp; !isConvertibleToString!R)<br>    if (isConvertibleToString!R)</dt> <dd>
+<p>Appends <code>buffer</code> to file <code>name</code>. </p>
+<p>Creates the file if it does not already exist. </p> <dl>
+<dt>Parameters:</dt>
+<dd><table>
+<tr>
+<td>R <code>name</code>
+</td> <td>string or range of characters representing the file name</td>
+</tr> <tr>
+<td>void[] <code>buffer</code>
+</td> <td>data to be appended to file</td>
+</tr> </table></dd>
+</dl> <dl>
+<dt>Throws:</dt>
+<dd>
+<code>FileException</code> on error.</dd>
+</dl> <dl>
+<dt>Examples:</dt>
+<dd>
+<pre data-language="d">scope(exit)
+{
+    assert(exists(deleteme));
+    remove(deleteme);
+}
+
+int[] a = [ 0, 1, 1, 2, 3, 5, 8 ];
+write(deleteme, a); // deleteme is the name of a temporary file
+int[] b = [ 13, 21 ];
+append(deleteme, b);
+writeln(cast(int[])read(deleteme)); // a ~ b
+</pre> </dd>
+</dl> </dd> <dt class="d_decl" id="rename">void rename(RF, RT)(RF from, RT to)<br>void rename(RF, RT)(auto ref RF from, auto ref RT to)<br><br>  Constraints:<br>    if ((isInputRange!RF &amp;&amp; !isInfinite!RF &amp;&amp; isSomeChar!(ElementEncodingType!RF) || isSomeString!RF) &amp;&amp; !isConvertibleToString!RF &amp;&amp; (isInputRange!RT &amp;&amp; !isInfinite!RT &amp;&amp; isSomeChar!(ElementEncodingType!RT) || isSomeString!RT) &amp;&amp; !isConvertibleToString!RT)<br>    if (isConvertibleToString!RF || isConvertibleToString!RT)</dt> <dd>
+<p>Rename file <code>from</code> to <code>to</code>. If the target file exists, it is overwritten. </p>
+<dl>
+<dt>Parameters:</dt>
+<dd><table>
+<tr>
+<td>RF <code>from</code>
+</td> <td>string or range of characters representing the existing file name</td>
+</tr> <tr>
+<td>RT <code>to</code>
+</td> <td>string or range of characters representing the target file name</td>
+</tr> </table></dd>
+</dl> <dl>
+<dt>Throws:</dt>
+<dd>
+<code>FileException</code> on error.</dd>
+</dl> </dd> <dt class="d_decl" id="remove">void remove(R)(R name)<br>void remove(R)(auto ref R name)<br><br>  Constraints:<br>    if (isInputRange!R &amp;&amp; !isInfinite!R &amp;&amp; isSomeChar!(ElementEncodingType!R) &amp;&amp; !isConvertibleToString!R)<br>    if (isConvertibleToString!R)</dt> <dd>
+<p>Delete file <code>name</code>. </p>
+<dl>
+<dt>Parameters:</dt>
+<dd><table>
+<tr>
+<td>R <code>name</code>
+</td> <td>string or range of characters representing the file name</td>
+</tr> </table></dd>
+</dl> <dl>
+<dt>Throws:</dt>
+<dd>
+<code>FileException</code> on error.</dd>
+</dl> </dd> <dt class="d_decl" id="getSize">ulong getSize(R)(R name)<br>ulong getSize(R)(auto ref R name)<br><br>  Constraints:<br>    if (isInputRange!R &amp;&amp; !isInfinite!R &amp;&amp; isSomeChar!(ElementEncodingType!R) &amp;&amp; !isConvertibleToString!R)<br>    if (isConvertibleToString!R)</dt> <dd>
+<p>Get size of file <code>name</code> in bytes. </p>
+<dl>
+<dt>Parameters:</dt>
+<dd><table>
+<tr>
+<td>R <code>name</code>
+</td> <td>string or range of characters representing the file name</td>
+</tr> </table></dd>
+</dl> <dl>
+<dt>Throws:</dt>
+<dd>
+<code>FileException</code> on error (e.g., file not found).</dd>
+</dl> </dd> <dt class="d_decl" id="getTimes">void getTimes(R)(R name, out SysTime accessTime, out SysTime modificationTime)<br>void getTimes(R)(auto ref R name, out SysTime accessTime, out SysTime modificationTime)<br><br>  Constraints:<br>    if (isInputRange!R &amp;&amp; !isInfinite!R &amp;&amp; isSomeChar!(ElementEncodingType!R) &amp;&amp; !isConvertibleToString!R)<br>    if (isConvertibleToString!R)</dt> <dd>
+<p>Get the access and modified times of file or folder <code>name</code>. </p>
+<dl>
+<dt>Parameters:</dt>
+<dd><table>
+<tr>
+<td>R <code>name</code>
+</td> <td>File/Folder name to get times for.</td>
+</tr> <tr>
+<td>SysTime <code>accessTime</code>
+</td> <td>Time the file/folder was last accessed.</td>
+</tr> <tr>
+<td>SysTime <code>modificationTime</code>
+</td> <td>Time the file/folder was last modified.</td>
+</tr> </table></dd>
+</dl> <dl>
+<dt>Throws:</dt>
+<dd>
+<code>FileException</code> on error.</dd>
+</dl> </dd> <dt class="d_decl" id="getTimesWin">void getTimesWin(R)(R name, out SysTime fileCreationTime, out SysTime fileAccessTime, out SysTime fileModificationTime)<br><br>  Constraints:<br>    if (isInputRange!R &amp;&amp; !isInfinite!R &amp;&amp; isSomeChar!(ElementEncodingType!R) &amp;&amp; !isConvertibleToString!R)</dt> <dd>
+<p><span class="blue">This function is Windows-Only.</span> </p>
+<p>Get creation/access/modified times of file <code>name</code>. <br><br> This is the same as <code>getTimes</code> except that it also gives you the file creation time - which isn't possible on Posix systems. </p> <dl>
+<dt>Parameters:</dt>
+<dd><table>
+<tr>
+<td>R <code>name</code>
+</td> <td>File name to get times for.</td>
+</tr> <tr>
+<td>SysTime <code>fileCreationTime</code>
+</td> <td>Time the file was created.</td>
+</tr> <tr>
+<td>SysTime <code>fileAccessTime</code>
+</td> <td>Time the file was last accessed.</td>
+</tr> <tr>
+<td>SysTime <code>fileModificationTime</code>
+</td> <td>Time the file was last modified.</td>
+</tr> </table></dd>
+</dl> <dl>
+<dt>Throws:</dt>
+<dd>
+<code>FileException</code> on error.</dd>
+</dl> </dd> <dt class="d_decl" id="setTimes">void setTimes(R)(R name, SysTime accessTime, SysTime modificationTime)<br>void setTimes(R)(auto ref R name, SysTime accessTime, SysTime modificationTime)<br><br>  Constraints:<br>    if (isInputRange!R &amp;&amp; !isInfinite!R &amp;&amp; isSomeChar!(ElementEncodingType!R) &amp;&amp; !isConvertibleToString!R)<br>    if (isConvertibleToString!R)</dt> <dd>
+<p>Set access/modified times of file or folder <code>name</code>. </p>
+<dl>
+<dt>Parameters:</dt>
+<dd><table>
+<tr>
+<td>R <code>name</code>
+</td> <td>File/Folder name to get times for.</td>
+</tr> <tr>
+<td>SysTime <code>accessTime</code>
+</td> <td>Time the file/folder was last accessed.</td>
+</tr> <tr>
+<td>SysTime <code>modificationTime</code>
+</td> <td>Time the file/folder was last modified.</td>
+</tr> </table></dd>
+</dl> <dl>
+<dt>Throws:</dt>
+<dd>
+<code>FileException</code> on error.</dd>
+</dl> </dd> <dt class="d_decl" id="timeLastModified">SysTime timeLastModified(R)(R name)<br>SysTime timeLastModified(R)(auto ref R name)<br><br>  Constraints:<br>    if (isInputRange!R &amp;&amp; !isInfinite!R &amp;&amp; isSomeChar!(ElementEncodingType!R) &amp;&amp; !isConvertibleToString!R)<br>    if (isConvertibleToString!R)</dt> <dd>
+<p>Returns the time that the given file was last modified. </p>
+<dl>
+<dt>Throws:</dt>
+<dd>
+<code>FileException</code> if the given file does not exist.</dd>
+</dl> </dd> <dt class="d_decl" id="timeLastModified.2">SysTime timeLastModified(R)(R name, SysTime returnIfMissing)<br><br>  Constraints:<br>    if (isInputRange!R &amp;&amp; !isInfinite!R &amp;&amp; isSomeChar!(ElementEncodingType!R))</dt> <dd>
+<p>Returns the time that the given file was last modified. If the file does not exist, returns <code>returnIfMissing</code>. </p>
+<p>A frequent usage pattern occurs in build automation tools such as <a href="http://gnu.org/software/make" target="_blank">make</a> or <a href="http://%20%20%20%20en.wikipedia.org/wiki/Apache_Ant" target="_blank">ant</a>. To check whether file <code> target</code> must be rebuilt from file <code>source</code> (i.e., <code>target</code> is older than <code>source</code> or does not exist), use the comparison below. The code throws a <code>FileException</code> if <code>source</code> does not exist (as it should). On the other hand, the <code>SysTime.min</code> default makes a non-existing <code>target</code> seem infinitely old so the test correctly prompts building it. </p> <dl>
+<dt>Parameters:</dt>
+<dd><table>
+<tr>
+<td>R <code>name</code>
+</td> <td>The name of the file to get the modification time for.</td>
+</tr> <tr>
+<td>SysTime <code>returnIfMissing</code>
+</td> <td>The time to return if the given file does not exist.</td>
+</tr> </table></dd>
+</dl> <dl>
+<dt>Example</dt>
+
+</dl>
+<pre data-language="d">if (timeLastModified(source) &gt;= timeLastModified(target, SysTime.min))
+{
+    // must (re)build
+}
+else
+{
+    // target is up-to-date
+}
+</pre>  </dd> <dt class="d_decl" id="exists">bool exists(R)(R name)<br>bool exists(R)(auto ref R name)<br><br>  Constraints:<br>    if (isInputRange!R &amp;&amp; !isInfinite!R &amp;&amp; isSomeChar!(ElementEncodingType!R) &amp;&amp; !isConvertibleToString!R)<br>    if (isConvertibleToString!R)</dt> <dd>
+<p>Determine whether the given file (or directory) exists. </p>
+<dl>
+<dt>Parameters:</dt>
+<dd><table>
+<tr>
+<td>R <code>name</code>
+</td> <td>string or range of characters representing the file name</td>
+</tr> </table></dd>
+</dl> <dl>
+<dt>Returns:</dt>
+<dd>
+<code>true</code> if the file name specified as input exists</dd>
+</dl> </dd> <dt class="d_decl" id="getAttributes">uint getAttributes(R)(R name)<br>uint getAttributes(R)(auto ref R name)<br><br>  Constraints:<br>    if (isInputRange!R &amp;&amp; !isInfinite!R &amp;&amp; isSomeChar!(ElementEncodingType!R) &amp;&amp; !isConvertibleToString!R)<br>    if (isConvertibleToString!R)</dt> <dd>
+<p>Returns the attributes of the given file. </p>
+<p>Note that the file attributes on Windows and Posix systems are completely different. On Windows, they're what is returned by <a href="http://msdn.microsoft.com/en-us/library/aa364944(v=vs.85).aspx" target="_blank"> GetFileAttributes</a>, whereas on Posix systems, they're the <a href="https://google.com/search?btnI=I%27m+Feeling+Lucky&amp;ie=UTF-8&amp;oe=UTF-8&amp;q=%20st_mode" target="_blank"> st_mode</a> value which is part of the <code>stat struct</code> gotten by calling the <a href="http://en.wikipedia.org/wiki/Stat_%28Unix%29" target="_blank"><code>stat</code></a> function. <br><br> On Posix systems, if the given file is a symbolic link, then attributes are the attributes of the file pointed to by the symbolic link. </p> <dl>
+<dt>Parameters:</dt>
+<dd><table>
+<tr>
+<td>R <code>name</code>
+</td> <td>The file to get the attributes of.</td>
+</tr> </table></dd>
+</dl> <dl>
+<dt>Throws:</dt>
+<dd>
+<code>FileException</code> on error.</dd>
+</dl> </dd> <dt class="d_decl" id="getLinkAttributes">uint getLinkAttributes(R)(R name)<br>uint getLinkAttributes(R)(auto ref R name)<br><br>  Constraints:<br>    if (isInputRange!R &amp;&amp; !isInfinite!R &amp;&amp; isSomeChar!(ElementEncodingType!R) &amp;&amp; !isConvertibleToString!R)<br>    if (isConvertibleToString!R)</dt> <dd>
+<p>If the given file is a symbolic link, then this returns the attributes of the symbolic link itself rather than file that it points to. If the given file is <i>not</i> a symbolic link, then this function returns the same result as getAttributes. </p>
+<p>On Windows, <code>getLinkAttributes</code> is identical to getAttributes. It exists on Windows so that you don't have to special-case code for Windows when dealing with symbolic links. </p> <dl>
+<dt>Parameters:</dt>
+<dd><table>
+<tr>
+<td>R <code>name</code>
+</td> <td>The file to get the symbolic link attributes of.</td>
+</tr> </table></dd>
+</dl> <dl>
+<dt>Returns:</dt>
+<dd>the attributes </dd>
+</dl> <dl>
+<dt>Throws:</dt>
+<dd>
+<code>FileException</code> on error.</dd>
+</dl> </dd> <dt class="d_decl" id="setAttributes">void setAttributes(R)(R name, uint attributes)<br>void setAttributes(R)(auto ref R name, uint attributes)<br><br>  Constraints:<br>    if (isInputRange!R &amp;&amp; !isInfinite!R &amp;&amp; isSomeChar!(ElementEncodingType!R) &amp;&amp; !isConvertibleToString!R)<br>    if (isConvertibleToString!R)</dt> <dd>
+<p>Set the attributes of the given file. </p>
+<dl>
+<dt>Parameters:</dt>
+<dd><table>
+<tr>
+<td>R <code>name</code>
+</td> <td>the file name</td>
+</tr> <tr>
+<td>uint <code>attributes</code>
+</td> <td>the attributes to set the file to</td>
+</tr> </table></dd>
+</dl> <dl>
+<dt>Throws:</dt>
+<dd>
+<code>FileException</code> if the given file does not exist.</dd>
+</dl> </dd> <dt class="d_decl" id="isDir">@property bool isDir(R)(R name)<br>@property bool isDir(R)(auto ref R name)<br><br>  Constraints:<br>    if (isInputRange!R &amp;&amp; !isInfinite!R &amp;&amp; isSomeChar!(ElementEncodingType!R) &amp;&amp; !isConvertibleToString!R)<br>    if (isConvertibleToString!R)</dt> <dd>
+<p>Returns whether the given file is a directory. </p>
+<dl>
+<dt>Parameters:</dt>
+<dd><table>
+<tr>
+<td>R <code>name</code>
+</td> <td>The path to the file.</td>
+</tr> </table></dd>
+</dl> <dl>
+<dt>Returns:</dt>
+<dd>
+<code>true</code> if <code>name</code> specifies a directory </dd>
+</dl> <dl>
+<dt>Throws:</dt>
+<dd>
+<code>FileException</code> if the given file does not exist. </dd>
+</dl> <dl>
+<dt>Example</dt>
+
+</dl>
+<pre data-language="d">assert(!"/etc/fonts/fonts.conf".isDir);
+assert("/usr/share/include".isDir);
+</pre>  </dd> <dt class="d_decl" id="attrIsDir">pure nothrow @nogc @safe bool attrIsDir(uint attributes)</dt> <dd>
+<p>Returns whether the given file attributes are for a directory. </p>
+<dl>
+<dt>Parameters:</dt>
+<dd><table>
+<tr>
+<td>uint <code>attributes</code>
+</td> <td>The file attributes.</td>
+</tr> </table></dd>
+</dl> <dl>
+<dt>Returns:</dt>
+<dd>
+<code>true</code> if <code>attributes</code> specifies a directory </dd>
+</dl> <dl>
+<dt>Example</dt>
+
+</dl>
+<pre data-language="d">assert(!attrIsDir(getAttributes("/etc/fonts/fonts.conf")));
+assert(!attrIsDir(getLinkAttributes("/etc/fonts/fonts.conf")));
+</pre>  </dd> <dt class="d_decl" id="isFile">@property bool isFile(R)(R name)<br>@property bool isFile(R)(auto ref R name)<br><br>  Constraints:<br>    if (isInputRange!R &amp;&amp; !isInfinite!R &amp;&amp; isSomeChar!(ElementEncodingType!R) &amp;&amp; !isConvertibleToString!R)<br>    if (isConvertibleToString!R)</dt> <dd>
+<p>Returns whether the given file (or directory) is a file. </p>
+<p>On Windows, if a file is not a directory, then it's a file. So, either <code>isFile</code> or <code>isDir</code> will return <code>true</code> for any given file. <br><br> On Posix systems, if <code>isFile</code> is <code>true</code>, that indicates that the file is a regular file (e.g. not a block not device). So, on Posix systems, it's possible for both <code>isFile</code> and <code>isDir</code> to be <code>false</code> for a particular file (in which case, it's a special file). You can use <code>getAttributes</code> to get the attributes to figure out what type of special it is, or you can use <code>DirEntry</code> to get at its <code>statBuf</code>, which is the result from <code>stat</code>. In either case, see the man page for <code>stat</code> for more information. </p> <dl>
+<dt>Parameters:</dt>
+<dd><table>
+<tr>
+<td>R <code>name</code>
+</td> <td>The path to the file.</td>
+</tr> </table></dd>
+</dl> <dl>
+<dt>Returns:</dt>
+<dd>
+<code>true</code> if <code>name</code> specifies a file </dd>
+</dl> <dl>
+<dt>Throws:</dt>
+<dd>
+<code>FileException</code> if the given file does not exist. </dd>
+</dl> <dl>
+<dt>Example</dt>
+
+</dl>
+<pre data-language="d">assert("/etc/fonts/fonts.conf".isFile);
+assert(!"/usr/share/include".isFile);
+</pre>  </dd> <dt class="d_decl" id="attrIsFile">pure nothrow @nogc @safe bool attrIsFile(uint attributes)</dt> <dd>
+<p>Returns whether the given file attributes are for a file. </p>
+<p>On Windows, if a file is not a directory, it's a file. So, either <code>attrIsFile</code> or <code>attrIsDir</code> will return <code>true</code> for the attributes of any given file. <br><br> On Posix systems, if <code>attrIsFile</code> is <code>true</code>, that indicates that the file is a regular file (e.g. not a block not device). So, on Posix systems, it's possible for both <code>attrIsFile</code> and <code>attrIsDir</code> to be <code>false</code> for a particular file (in which case, it's a special file). If a file is a special file, you can use the attributes to check what type of special file it is (see the man page for <code>stat</code> for more information). </p> <dl>
+<dt>Parameters:</dt>
+<dd><table>
+<tr>
+<td>uint <code>attributes</code>
+</td> <td>The file attributes.</td>
+</tr> </table></dd>
+</dl> <dl>
+<dt>Returns:</dt>
+<dd>
+<code>true</code> if the given file attributes are for a file </dd>
+</dl> <dl>
+<dt>Example</dt>
+
+</dl>
+<pre data-language="d">assert(attrIsFile(getAttributes("/etc/fonts/fonts.conf")));
+assert(attrIsFile(getLinkAttributes("/etc/fonts/fonts.conf")));
+</pre>  </dd> <dt class="d_decl" id="isSymlink">@property bool isSymlink(R)(R name)<br>@property bool isSymlink(R)(auto ref R name)<br><br>  Constraints:<br>    if (isInputRange!R &amp;&amp; !isInfinite!R &amp;&amp; isSomeChar!(ElementEncodingType!R) &amp;&amp; !isConvertibleToString!R)<br>    if (isConvertibleToString!R)</dt> <dd>
+<p>Returns whether the given file is a symbolic link. </p>
+<p>On Windows, returns <code>true</code> when the file is either a symbolic link or a junction point. </p> <dl>
+<dt>Parameters:</dt>
+<dd><table>
+<tr>
+<td>R <code>name</code>
+</td> <td>The path to the file.</td>
+</tr> </table></dd>
+</dl> <dl>
+<dt>Returns:</dt>
+<dd>
+<code>true</code> if <code>name</code> is a symbolic link </dd>
+</dl> <dl>
+<dt>Throws:</dt>
+<dd>
+<code>FileException</code> if the given file does not exist.</dd>
+</dl> </dd> <dt class="d_decl" id="attrIsSymlink">pure nothrow @nogc @safe bool attrIsSymlink(uint attributes)</dt> <dd>
+<p>Returns whether the given file <code>attributes</code> are for a symbolic link. </p>
+<p>On Windows, return <code>true</code> when the file is either a symbolic link or a junction point. </p> <dl>
+<dt>Parameters:</dt>
+<dd><table>
+<tr>
+<td>uint <code>attributes</code>
+</td> <td>The file <code>attributes</code>.</td>
+</tr> </table></dd>
+</dl> <dl>
+<dt>Returns:</dt>
+<dd>
+<code>true</code> if <code>attributes</code> are for a symbolic link </dd>
+</dl> <dl>
+<dt>Example</dt>
+
+</dl>
+<pre data-language="d">core.sys.posix.unistd.symlink("/etc/fonts/fonts.conf", "/tmp/alink");
+
+assert(!getAttributes("/tmp/alink").isSymlink);
+assert(getLinkAttributes("/tmp/alink").isSymlink);
+</pre>  </dd> <dt class="d_decl" id="chdir">void chdir(R)(R pathname)<br>void chdir(R)(auto ref R pathname)<br><br>  Constraints:<br>    if (isInputRange!R &amp;&amp; !isInfinite!R &amp;&amp; isSomeChar!(ElementEncodingType!R) &amp;&amp; !isConvertibleToString!R)<br>    if (isConvertibleToString!R)</dt> <dd>
+<p>Change directory to <code>pathname</code>. </p>
+<dl>
+<dt>Throws:</dt>
+<dd>
+<code>FileException</code> on error.</dd>
+</dl> </dd> <dt class="d_decl" id="mkdir">void mkdir(R)(R pathname)<br>void mkdir(R)(auto ref R pathname)<br><br>  Constraints:<br>    if (isInputRange!R &amp;&amp; !isInfinite!R &amp;&amp; isSomeChar!(ElementEncodingType!R) &amp;&amp; !isConvertibleToString!R)<br>    if (isConvertibleToString!R)</dt> <dd>
+<p>Make directory <code>pathname</code>. </p>
+<dl>
+<dt>Throws:</dt>
+<dd>
+<code>FileException</code> on Posix or <code>WindowsException</code> on Windows if an error occured.</dd>
+</dl> </dd> <dt class="d_decl" id="mkdirRecurse">@safe void mkdirRecurse(in char[] pathname)</dt> <dd>
+<p>Make directory and all parent directories as needed. </p>
+<p>Does nothing if the directory specified by <code>pathname</code> already exists. </p> <dl>
+<dt>Throws:</dt>
+<dd>
+<code>FileException</code> on error.</dd>
+</dl> </dd> <dt class="d_decl" id="rmdir">void rmdir(R)(R pathname)<br>void rmdir(R)(auto ref R pathname)<br><br>  Constraints:<br>    if (isInputRange!R &amp;&amp; !isInfinite!R &amp;&amp; isSomeChar!(ElementEncodingType!R) &amp;&amp; !isConvertibleToString!R)<br>    if (isConvertibleToString!R)</dt> <dd>
+<p>Remove directory <code>pathname</code>. </p>
+<dl>
+<dt>Parameters:</dt>
+<dd><table>
+<tr>
+<td>R <code>pathname</code>
+</td> <td>Range or string specifying the directory name</td>
+</tr> </table></dd>
+</dl> <dl>
+<dt>Throws:</dt>
+<dd>
+<code>FileException</code> on error.</dd>
+</dl> </dd> <dt class="d_decl" id="symlink">void symlink(RO, RL)(RO original, RL link)<br><br>  Constraints:<br>    if ((isInputRange!RO &amp;&amp; !isInfinite!RO &amp;&amp; isSomeChar!(ElementEncodingType!RO) || isConvertibleToString!RO) &amp;&amp; (isInputRange!RL &amp;&amp; !isInfinite!RL &amp;&amp; isSomeChar!(ElementEncodingType!RL) || isConvertibleToString!RL))</dt> <dd>
+<p><span class="blue">This function is Posix-Only.</span> </p>
+<p>Creates a symbolic link (symlink). </p> <dl>
+<dt>Parameters:</dt>
+<dd><table>
+<tr>
+<td>RO <code>original</code>
+</td> <td>The file that is being linked. This is the target path that's stored in the symlink. A relative path is relative to the created symlink.</td>
+</tr> <tr>
+<td>RL <code>link</code>
+</td> <td>The symlink to create. A relative path is relative to the current working directory.</td>
+</tr> </table></dd>
+</dl> <dl>
+<dt>Throws:</dt>
+<dd>
+<code>FileException</code> on error (which includes if the symlink already exists).</dd>
+</dl> </dd> <dt class="d_decl" id="readLink">string readLink(R)(R link)<br><br>  Constraints:<br>    if (isInputRange!R &amp;&amp; !isInfinite!R &amp;&amp; isSomeChar!(ElementEncodingType!R) || isConvertibleToString!R)</dt> <dd>
+<p><span class="blue">This function is Posix-Only.</span> </p>
+<p>Returns the path to the file pointed to by a symlink. Note that the path could be either relative or absolute depending on the symlink. If the path is relative, it's relative to the symlink, not the current working directory. </p> <dl>
+<dt>Throws:</dt>
+<dd>
+<code>FileException</code> on error.</dd>
+</dl> </dd> <dt class="d_decl" id="getcwd">string getcwd()</dt> <dd>
+<p>Get the current working directory. </p>
+<dl>
+<dt>Throws:</dt>
+<dd>
+<code>FileException</code> on error.</dd>
+</dl> </dd> <dt class="d_decl" id="thisExePath">@trusted string thisExePath()</dt> <dd>
+<p>Returns the full path of the current executable. </p>
+<dl>
+<dt>Throws:</dt>
+<dd><a href="../object/#Exception"><code>object</code></a></dd>
+</dl> </dd> <dt class="d_decl" id="DirEntry">struct DirEntry</dt> <dd>
+<p>Info on a file, similar to what you'd get from stat on a Posix system.</p> <dl>
+<dt class="d_decl" id="DirEntry.this">this(string path)</dt> <dd>
+<p>Constructs a <code>DirEntry</code> for the given file (or directory). </p>
+<dl>
+<dt>Parameters:</dt>
+<dd><table>
+<tr>
+<td>string <code>path</code>
+</td> <td>The file (or directory) to get a DirEntry for.</td>
+</tr> </table></dd>
+</dl> <dl>
+<dt>Throws:</dt>
+<dd>
+<code>FileException</code> if the file does not exist.</dd>
+</dl> </dd> <dt class="d_decl" id="DirEntry.name">const @property string name()</dt> <dd>
+<p>Returns the path to the file represented by this <code>DirEntry</code>. </p>
+<dl>
+<dt>Example</dt>
+
+</dl>
+<pre data-language="d">auto de1 = DirEntry("/etc/fonts/fonts.conf");
+assert(de1.name == "/etc/fonts/fonts.conf");
+
+auto de2 = DirEntry("/usr/share/include");
+assert(de2.name == "/usr/share/include");
+</pre>  </dd> <dt class="d_decl" id="DirEntry.isDir">@property bool isDir()</dt> <dd>
+<p>Returns whether the file represented by this <code>DirEntry</code> is a directory. </p>
+<dl>
+<dt>Example</dt>
+
+</dl>
+<pre data-language="d">auto de1 = DirEntry("/etc/fonts/fonts.conf");
+assert(!de1.isDir);
+
+auto de2 = DirEntry("/usr/share/include");
+assert(de2.isDir);
+</pre>  </dd> <dt class="d_decl" id="DirEntry.isFile">@property bool isFile()</dt> <dd>
+<p>Returns whether the file represented by this <code>DirEntry</code> is a file. </p>
+<p>On Windows, if a file is not a directory, then it's a file. So, either <code>isFile</code> or <code>isDir</code> will return <code>true</code>. <br><br> On Posix systems, if <code>isFile</code> is <code>true</code>, that indicates that the file is a regular file (e.g. not a block not device). So, on Posix systems, it's possible for both <code>isFile</code> and <code>isDir</code> to be <code>false</code> for a particular file (in which case, it's a special file). You can use <code>attributes</code> or <code>statBuf</code> to get more information about a special file (see the stat man page for more details). </p> <dl>
+<dt>Example</dt>
+
+</dl>
+<pre data-language="d">auto de1 = DirEntry("/etc/fonts/fonts.conf");
+assert(de1.isFile);
+
+auto de2 = DirEntry("/usr/share/include");
+assert(!de2.isFile);
+</pre>  </dd> <dt class="d_decl" id="DirEntry.isSymlink">@property bool isSymlink()</dt> <dd>
+<p>Returns whether the file represented by this <code>DirEntry</code> is a symbolic link. </p>
+<p>On Windows, return <code>true</code> when the file is either a symbolic link or a junction point.</p> </dd> <dt class="d_decl" id="DirEntry.size">@property ulong size()</dt> <dd>
+<p>Returns the <code>size</code> of the the file represented by this <code>DirEntry</code> in bytes.</p> </dd> <dt class="d_decl" id="DirEntry.timeCreated">const @property SysTime timeCreated()</dt> <dd>
+<p><span class="blue">This function is Windows-Only.</span> </p>
+<p>Returns the creation time of the file represented by this <code>DirEntry</code>.</p> </dd> <dt class="d_decl" id="DirEntry.timeLastAccessed">@property SysTime timeLastAccessed()</dt> <dd>
+<p>Returns the time that the file represented by this <code>DirEntry</code> was last accessed. </p>
+<p>Note that many file systems do not update the access time for files (generally for performance reasons), so there's a good chance that <code>timeLastAccessed</code> will return the same value as <code>timeLastModified</code>.</p> </dd> <dt class="d_decl" id="DirEntry.timeLastModified">@property SysTime timeLastModified()</dt> <dd>
+<p>Returns the time that the file represented by this <code>DirEntry</code> was last modified.</p> </dd> <dt class="d_decl" id="DirEntry.attributes">@property uint attributes()</dt> <dd>
+<p>Returns the attributes of the file represented by this <code>DirEntry</code>. </p>
+<p>Note that the file attributes on Windows and Posix systems are completely different. On, Windows, they're what is returned by <code>GetFileAttributes</code> <a href="http://msdn.microsoft.com/en-us/library/aa364944(v=vs.85).aspx" target="_blank">GetFileAttributes</a> Whereas, an Posix systems, they're the <code>st_mode</code> value which is part of the <code>stat</code> struct gotten by calling <code>stat</code>. <br><br> On Posix systems, if the file represented by this <code>DirEntry</code> is a symbolic link, then attributes are the attributes of the file pointed to by the symbolic link.</p> </dd> <dt class="d_decl" id="DirEntry.linkAttributes">@property uint linkAttributes()</dt> <dd>
+<p>On Posix systems, if the file represented by this <code>DirEntry</code> is a symbolic link, then <code>linkAttributes</code> are the attributes of the symbolic link itself. Otherwise, <code>linkAttributes</code> is identical to <code>attributes</code>. </p>
+<p>On Windows, <code>linkAttributes</code> is identical to <code>attributes</code>. It exists on Windows so that you don't have to special-case code for Windows when dealing with symbolic links.</p> </dd> <dt class="d_decl" id="DirEntry.statBuf">@property stat_t statBuf()</dt> <dd>
+<p><span class="blue">This function is Posix-Only.</span> </p>
+<p>The <code>stat</code> struct gotten from calling <code>stat</code>.</p> </dd> </dl> </dd> <dt class="d_decl" id="preserveAttributesDefault">PreserveAttributes preserveAttributesDefault</dt> <dd>
+<p>Defaults to <code>Yes.preserveAttributes</code> on Windows, and the opposite on all other platforms.</p> </dd> <dt class="d_decl" id="copy">void copy(RF, RT)(RF from, RT to, PreserveAttributes preserve = preserveAttributesDefault)<br>void copy(RF, RT)(auto ref RF from, auto ref RT to, PreserveAttributes preserve = preserveAttributesDefault)<br><br>  Constraints:<br>    if (isInputRange!RF &amp;&amp; !isInfinite!RF &amp;&amp; isSomeChar!(ElementEncodingType!RF) &amp;&amp; !isConvertibleToString!RF &amp;&amp; isInputRange!RT &amp;&amp; !isInfinite!RT &amp;&amp; isSomeChar!(ElementEncodingType!RT) &amp;&amp; !isConvertibleToString!RT)<br>    if (isConvertibleToString!RF || isConvertibleToString!RT)</dt> <dd>
+<p>Copy file <code>from</code> to file <code>to</code>. File timestamps are preserved. File attributes are preserved, if <code>preserve</code> equals <code>Yes.preserveAttributes</code>. On Windows only <code>Yes.preserveAttributes</code> (the default on Windows) is supported. If the target file exists, it is overwritten. </p>
+<dl>
+<dt>Parameters:</dt>
+<dd><table>
+<tr>
+<td>RF <code>from</code>
+</td> <td>string or range of characters representing the existing file name</td>
+</tr> <tr>
+<td>RT <code>to</code>
+</td> <td>string or range of characters representing the target file name</td>
+</tr> <tr>
+<td>PreserveAttributes <code>preserve</code>
+</td> <td>whether <code>to</code> preserve the file attributes</td>
+</tr> </table></dd>
+</dl> <dl>
+<dt>Throws:</dt>
+<dd>
+<code>FileException</code> on error.</dd>
+</dl> </dd> <dt class="d_decl" id="rmdirRecurse">void rmdirRecurse(in char[] pathname)</dt> <dd>
+<p>Remove directory and all of its content and subdirectories, recursively. </p>
+<dl>
+<dt>Throws:</dt>
+<dd>
+<code>FileException</code> if there is an error (including if the given file is not a directory).</dd>
+</dl> </dd> <dt class="d_decl" id="rmdirRecurse.2">void rmdirRecurse(ref DirEntry de)<br>void rmdirRecurse(DirEntry de)</dt> <dd>
+<p>Remove directory and all of its content and subdirectories, recursively. </p>
+<dl>
+<dt>Throws:</dt>
+<dd>
+<code>FileException</code> if there is an error (including if the given file is not a directory).</dd>
+</dl> </dd> <dt class="d_decl" id="SpanMode">enum SpanMode: int</dt> <dd>
+<p>Dictates directory spanning policy for <span class="d_param">dirEntries</span> (see below).</p> <dl>
+<dt class="d_decl" id="SpanMode.shallow">shallow</dt> <dd>
+<p>Only spans one directory.</p> </dd> <dt class="d_decl" id="SpanMode.depth">depth</dt> <dd>
+<p>Spans the directory in <a href="https://en.wikipedia.org/wiki/Tree_traversal#Post-order" target="_blank"> depth-first <b>post</b>-order</a>, i.e. the content of any subdirectory is spanned before that subdirectory itself. Useful e.g. when recursively deleting files.</p> </dd> <dt class="d_decl" id="SpanMode.breadth">breadth</dt> <dd>
+<p>Spans the directory in <a href="https://en.wikipedia.org/wiki/Tree_traversal#Pre-order" target="_blank">depth-first <b>pre</b>-order</a>, i.e. the content of any subdirectory is spanned right after that subdirectory itself. </p>
+<p>Note that <code>SpanMode.breadth</code> will not result in all directory members occurring before any subdirectory members, i.e. it is not true <a href="https://en.wikipedia.org/wiki/Tree_traversal#Breadth-first_search" target="_blank"> breadth-first traversal</a>.</p> </dd> </dl> </dd> <dt class="d_decl" id="dirEntries">auto dirEntries(string path, SpanMode mode, bool followSymlink = true)<br>auto dirEntries(string path, string pattern, SpanMode mode, bool followSymlink = true)</dt> <dd>
+<p>Returns an input range of <code>DirEntry</code> that lazily iterates a given directory, also provides two ways of foreach iteration. The iteration variable can be of type <code>string</code> if only the name is needed, or <code>DirEntry</code> if additional details are needed. The span mode dictates how the directory is traversed. The name of each iterated directory entry contains the absolute path. </p>
+<dl>
+<dt>Parameters:</dt>
+<dd><table>
+<tr>
+<td>string <code>path</code>
+</td> <td>The directory to iterate over. If empty, the current directory will be iterated.</td>
+</tr> <tr>
+<td>string <code>pattern</code>
+</td> <td>Optional string with wildcards, such as <span class="red"> "*.d"</span>. When present, it is used to filter the results by their file name. The supported wildcard strings are described under <a href="../std_path/#globMatch"><code> std.path.globMatch</code></a>.</td>
+</tr> <tr>
+<td>SpanMode <code>mode</code>
+</td> <td>Whether the directory's sub-directories should be iterated in depth-first port-order (<a href="#depth"><code>depth</code></a>), depth-first pre-order (<a href="#breadth"><code>breadth</code></a>), or not at all (<a href="#shallow"><code>shallow</code></a>).</td>
+</tr> <tr>
+<td>bool <code>followSymlink</code>
+</td> <td>Whether symbolic links which point to directories should be treated as directories and their contents iterated over.</td>
+</tr> </table></dd>
+</dl> <dl>
+<dt>Throws:</dt>
+<dd>
+<code>FileException</code> if the directory does not exist. </dd>
+</dl> <dl>
+<dt>Example</dt>
+
+</dl>
+<pre data-language="d">// Iterate a directory in depth
+foreach (string name; dirEntries("destroy/me", SpanMode.depth))
+{
+    remove(name);
+}
+
+// Iterate the current directory in breadth
+foreach (string name; dirEntries("", SpanMode.breadth))
+{
+    writeln(name);
+}
+
+// Iterate a directory and get detailed info about it
+foreach (DirEntry e; dirEntries("dmd-testing", SpanMode.breadth))
+{
+    writeln(e.name, "\t", e.size);
+}
+
+// Iterate over all *.d files in current directory and all its subdirectories
+auto dFiles = dirEntries("", SpanMode.depth).filter!(f =&gt; f.name.endsWith(".d"));
+foreach (d; dFiles)
+    writeln(d.name);
+
+// Hook it up with std.parallelism to compile them all in parallel:
+foreach (d; parallel(dFiles, 1)) //passes by 1 file to each thread
+{
+    string cmd = "dmd -c "  ~ d.name;
+    writeln(cmd);
+    std.process.system(cmd);
+}
+
+// Iterate over all D source files in current directory and all its
+// subdirectories
+auto dFiles = dirEntries("","*.{d,di}",SpanMode.depth);
+foreach (d; dFiles)
+    writeln(d.name);
+</pre>  <dl>
+<dt>Examples:</dt>
+<dd>Duplicate functionality of D1's <code>std.file.listdir()</code>: <pre data-language="d">string[] listdir(string pathname)
+{
+    import std.algorithm;
+    import std.array;
+    import std.file;
+    import std.path;
+
+    return std.file.dirEntries(pathname, SpanMode.shallow)
+        .filter!(a =&gt; a.isFile)
+        .map!(a =&gt; std.path.baseName(a.name))
+        .array;
+}
+
+void main(string[] args)
+{
+    import std.stdio;
+
+    string[] files = listdir(args[1]);
+    writefln("%s", files);
+ }
+</pre> </dd>
+</dl> </dd> <dt class="d_decl" id="slurp">Select!(Types.length == 1, Types[0][], Tuple!Types[]) slurp(Types...)(string filename, in char[] format)</dt> <dd>
+<p>Reads a file line by line and parses the line into a single value or a <a href="../std_typecons/#Tuple"><code>std.typecons.Tuple</code></a> of values depending on the length of <code>Types</code>. The lines are parsed using the specified <code>format</code> string. The <code>format</code> string is passed to <a href="../std_format/#formattedRead"><code>std.format.formattedRead</code></a>, and therefore must conform to the format string specification outlined in <a href="../std_format/"><code>std.format</code></a>. </p>
+<dl>
+<dt>Parameters:</dt>
+<dd><table>
+<tr>
+<td>Types</td> <td>the types that each of the elements in the line should be returned as</td>
+</tr> <tr>
+<td>string <code>filename</code>
+</td> <td>the name of the file to read</td>
+</tr> <tr>
+<td>char[] <code>format</code>
+</td> <td>the format string to use when reading</td>
+</tr> </table></dd>
+</dl> <dl>
+<dt>Returns:</dt>
+<dd>If only one type is passed, then an array of that type. Otherwise, an array of <a href="../std_typecons/#Tuple"><code>std.typecons.Tuple</code></a>s. </dd>
+</dl> <dl>
+<dt>Throws:</dt>
+<dd>
+<code>Exception</code> if the <code>format</code> string is malformed. Also, throws <code>Exception</code> if any of the lines in the file are not fully consumed by the call to <a href="../std_format/#formattedRead"><code>std.format.formattedRead</code></a>. Meaning that no empty lines or lines with extra characters are allowed.</dd>
+</dl> <dl>
+<dt>Examples:</dt>
+<dd>
+<pre data-language="d">import std.typecons : tuple;
+
+scope(exit)
+{
+    assert(exists(deleteme));
+    remove(deleteme);
+}
+
+write(deleteme, "12 12.25\n345 1.125"); // deleteme is the name of a temporary file
+
+// Load file; each line is an int followed by comma, whitespace and a
+// double.
+auto a = slurp!(int, double)(deleteme, "%s %s");
+writeln(a.length); // 2
+writeln(a[0]); // tuple(12, 12.25)
+writeln(a[1]); // tuple(345, 1.125)
+</pre> </dd>
+</dl> </dd> <dt class="d_decl" id="tempDir">@trusted string tempDir()</dt> <dd>
+<p>Returns the path to a directory for temporary files. </p>
+<p>On Windows, this function returns the result of calling the Windows API function <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/aa364992.aspx" target="_blank"><code>GetTempPath</code></a>. <br><br> On POSIX platforms, it searches through the following list of directories and returns the first one which is found to exist: </p>
+<ol> <li>The directory given by the <code>TMPDIR</code> environment variable.</li> <li>The directory given by the <code>TEMP</code> environment variable.</li> <li>The directory given by the <code>TMP</code> environment variable.</li> <li><code>/tmp</code></li> <li><code>/var/tmp</code></li> <li><code>/usr/tmp</code></li> </ol> <br><br> On all platforms, <code>tempDir</code> returns <code>"."</code> on failure, representing the current working directory. <br><br> The return value of the function is cached, so the procedures described above will only be performed the first time the function is called. All subsequent runs will return the same string, regardless of whether environment variables and directory structures have changed in the meantime. <br><br> The POSIX <code>tempDir</code> algorithm is inspired by Python's <a href="http://docs.python.org/library/tempfile.html#tempfile.tempdir" target="_blank"><code>tempfile.tempdir</code></a>. </dd> </dl>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 1999–2017 The D Language Foundation<br>Licensed under the Boost License 1.0.<br>
+    <a href="https://dlang.org/phobos/std_file.html" class="_attribution-link" target="_blank">https://dlang.org/phobos/std_file.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

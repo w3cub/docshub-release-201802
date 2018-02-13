@@ -1,0 +1,271 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>&#64;media - CSS - W3cubDocs</title>
+  
+  <meta name="description" content="The &#64;media CSS at-rule can be used to apply styles based on the result of one or more media queries, which test a device&#39;s type, specific &hellip;">
+  <meta name="keywords" content="media, -, css">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/css/@media/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/css.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/css/" class="_nav-link" title="" style="margin-left:0;">CSS</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _mdn">
+				
+<h1>@media</h1> <p>The <code>@media</code> <a href="https://developer.mozilla.org/en/CSS" target="_blank">CSS</a> <a href="https://developer.mozilla.org/en/CSS/At-rule" target="_blank">at-rule </a>can be used to apply styles based on the result of one or more media queries, which test a device's type, specific characteristics, and environment.</p> <p>In CSS, the <code>@media</code> rule may be placed at the top level of your code or nested inside any other <a href="https://developer.mozilla.org/en/CSS/At-rule#Conditional_Group_Rules" target="_blank">conditional group at-rule</a>.</p> <pre data-language="css">/* Media query */
+@media screen and (min-width: 900px) {
+  article {
+    padding: 1rem 3rem;
+  }
+}
+
+/* Nested media query */
+@supports (display: flex) {
+  @media screen and (min-width: 900px) {
+    article {
+      display: flex;
+    }
+  }
+}
+</pre> <p>Besides its use in the <code>@media</code> rule, a media query may also be applied to an HTML <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/link" target="_blank"><code>&lt;link&gt;</code></a> element to restrict an entire style sheet to certain media.</p> <pre data-language="html">&lt;!-- Media-dependent style sheet included in HTML --&gt;
+&lt;link rel="stylesheet" media="screen and (min-width: 900px)" href="widescreen-styles.css" /&gt;</pre> <div class="note"> <p><strong>Note:</strong> In JavaScript, <code>@media</code> can be accessed via the <a href="https://developer.mozilla.org/en-US/docs/Web/API/CSSMediaRule" target="_blank"><code>CSSMediaRule</code></a> CSS object model interface.</p> </div> <h2 name="Syntax" id="Syntax">Syntax</h2> <p>The <code>@media</code> at-rule is composed of one or more media queries, each of which consists of an optional <a href="#Media_types">media type</a> and any number of <a href="#Media_features">media feature</a> expressions. Multiple queries can be combined in various ways by using <a href="#Logical_operators">logical operators</a>, and are case-insensitive.</p> <p>Corresponding styles are applied only if a media query computes to true, i.e., when the specified media type matches the type of device the document is being displayed on <em>and</em> all media feature expressions compute as true. Queries involving unknown media types are always false.</p> <div class="note"> <p><strong>Note:</strong> A style sheet with a media query attached to its <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/link" target="_blank"><code>&lt;link&gt;</code></a> tag <a href="http://scottjehl.github.com/CSS-Download-Tests/" target="_blank">will still download</a> even if the query returns false. Nevertheless, its contents will not apply unless and until the result of the query changes to true.</p> </div> <h3 name="Media_types" id="Media_types">Media types</h3> <p><em>Media types</em> describe the general category of a device. Unless you use the <code>not</code> or <code>only</code> logical operators, the media type is optional and the <code>all</code> type will be implied.</p> <dl> <dt><code><a name="all" id="all">all</a></code></dt> <dd>Suitable for all devices.</dd> <dt><code><a name="print" id="print">print</a></code></dt> <dd>Intended for paged material and for documents viewed on screen in print preview mode. Please consult the section on <a href="https://developer.mozilla.org/en/CSS/Paged_Media" target="_blank">paged media</a>, and the <a href="https://developer.mozilla.org/en/CSS/Getting_Started/Media" target="_blank">media section of the Getting Started tutorial</a> for information about formatting issues that are specific to paged media.</dd> <dt><code><a name="screen" id="screen">screen</a></code></dt> <dd>Intended primarily for color computer screens.</dd> <dt><code><a name="speech" id="speech">speech</a></code></dt> <dd>Intended for speech synthesizers.</dd> </dl> <div class="note">
+<strong>Deprecated media types:</strong> CSS2.1 and <a href="https://drafts.csswg.org/mediaqueries-3/#background" target="_blank">Media Queries 3</a> defined several additional media types (<code>tty</code>, <code>tv</code>, <code>projection</code>, <code>handheld</code>, <code>braille</code>, <code>embossed</code>, and <code>aural</code>), but they were deprecated in <a href="http://dev.w3.org/csswg/mediaqueries/#media-types" target="_blank">Media Queries 4</a> and shouldn't be used. The <code>aural</code> type has been replaced by <code>speech</code>, which is similar.</div> <h3 name="Media_features" id="Media_features">Media features</h3> <p><em>Media feature expressions</em> test for specific characteristics of the <a href="https://developer.mozilla.org/en-US/docs/Glossary/user_agent" target="_blank">user agent</a>, output device, or environment. They are entirely optional. Each media feature expression must be surrounded by parentheses.</p> <div class="_table"><table> <thead> <tr> <th>Name</th> <th>Summary</th> <th>Notes</th> </tr> </thead> <tbody> <tr> <td><a href="../@media/width/"><code>width</code></a></td> <td>Width of the viewport</td> <td> </td> </tr> <tr> <td><a href="../@media/height/"><code>height</code></a></td> <td>Height of the viewport</td> <td> </td> </tr> <tr> <td><a href="../@media/aspect-ratio/"><code>aspect-ratio</code></a></td> <td>Width-to-height aspect ratio of the viewport</td> <td> </td> </tr> <tr> <td><a href="../@media/orientation/"><code>orientation</code></a></td> <td>Orientation of the viewport</td> <td> </td> </tr> <tr> <td><a href="../@media/resolution/"><code>resolution</code></a></td> <td>Pixel density of the output device</td> <td> </td> </tr> <tr> <td><a href="../@media/scan/"><code>scan</code></a></td> <td>Scanning process of the output device</td> <td> </td> </tr> <tr> <td><a href="../@media/grid/"><code>grid</code></a></td> <td>Does the device use a grid or bitmap screen?</td> <td> </td> </tr> <tr> <td><a href="../@media/update-frequency/"><code>update</code></a></td> <td>How frequently the output device can modify the appearance of content</td> <td>Added in Media Queries Level 4.</td> </tr> <tr> <td><a href="../@media/overflow-block/"><code>overflow-block</code></a></td> <td>How does the output device handle content that overflows the viewport along the block axis?</td> <td>Added in Media Queries Level 4.</td> </tr> <tr> <td><a href="../@media/overflow-inline/"><code>overflow-inline</code></a></td> <td>Can content that overflows the viewport along the inline axis be scrolled?</td> <td>Added in Media Queries Level 4.</td> </tr> <tr> <td><a href="../@media/color/"><code>color</code></a></td> <td>Number of bits per color component of the output device, or zero if the device isn't color</td> <td> </td> </tr> <tr> <td><code><a href="../@media/color-gamut/">color-gamut</a></code></td> <td>Approximate range of colors that are supported by the user agent and output device</td> <td>Added in Media Queries Level 4.</td> </tr> <tr> <td><a href="../@media/color-index/"><code>color-index</code></a></td> <td>Number of entries in the output device's color lookup table, or zero if the device does not use such a table</td> <td> </td> </tr> <tr> <td><code><a href="../@media/display-mode/">display-mode</a></code></td> <td>The display mode of the application, as specified in the web app manifest's <a href="https://developer.mozilla.org/en-US/docs/Web/Manifest#display" target="_blank"><code>display</code></a> member</td> <td>Defined in the <a href="http://w3c.github.io/manifest/#the-display-mode-media-feature" target="_blank">Web App Manifest spec</a>.</td> </tr> <tr> <td><a href="../@media/monochrome/"><code>monochrome</code></a></td> <td>Bits per pixel in the output device's monochrome frame buffer, or zero if the device isn't monochrome</td> <td> </td> </tr> <tr> <td><a href="../@media/inverted-colors/"><code>inverted-colors</code></a></td> <td>Is the user agent or underlying OS inverting colors?</td> <td>Deferred to Media Queries Level 5.</td> </tr> <tr> <td><a href="../@media/pointer/"><code>pointer</code></a></td> <td>Is the primary input mechanism a pointing device, and if so, how accurate is it?</td> <td>Added in Media Queries Level 4.</td> </tr> <tr> <td><a href="../@media/hover/"><code>hover</code></a></td> <td>Does the primary input mechanism allow the user to hover over elements?</td> <td>Added in Media Queries Level 4.</td> </tr> <tr> <td><a href="../@media/any-pointer/"><code>any-pointer</code></a></td> <td>Is any available input mechanism a pointing device, and if so, how accurate is it?</td> <td>Added in Media Queries Level 4.</td> </tr> <tr> <td><a href="../@media/any-hover/"><code>any-hover</code></a></td> <td>Does any available input mechanism allow the user to hover over elements?</td> <td>Added in Media Queries Level 4.</td> </tr> <tr> <td><a href="../@media/light-level/"><code>light-level</code></a></td> <td>Light level of the environment</td> <td>Deferred to Media Queries Level 5.</td> </tr> <tr> <td><a href="../@media/scripting/"><code>scripting</code></a></td> <td>Is scripting (e.g., JavaScript) available?</td> <td>Deferred to Media Queries Level 5.</td> </tr> <tr> <td>
+<a href="../@media/device-width/"><code>device-width</code></a> 
+</td> <td>Width of the rendering surface of the output device</td> <td>Deprecated in Media Queries Level 4.</td> </tr> <tr> <td>
+<a href="../@media/device-height/"><code>device-height</code></a> 
+</td> <td>Height of the rendering surface of the output device</td> <td>Deprecated in Media Queries Level 4.</td> </tr> <tr> <td>
+<a href="../@media/device-aspect-ratio/"><code>device-aspect-ratio</code></a> 
+</td> <td>Width-to-height aspect ratio of the output device</td> <td>Deprecated in Media Queries Level 4.</td> </tr> </tbody> </table></div> <h3 id="Logical_operators">Logical operators</h3> <p>The <em>logical operators</em> <code>not</code>, <code>and</code>, and <code>only</code> can be used to compose a complex media query. You can also combine multiple media queries into a single rule using a comma-separated list.</p> <h4 id="and"><code>and</code></h4> <p>The <code>and</code> operator is used for combining multiple media features together into a single media query, requiring each chained feature to return true in order for the query to be true. It is also used for joining media features with media types.</p> <h4 id="not"><code>not</code></h4> <p>The <code>not</code> operator is used to negate a media query, returning true if the query would otherwise return false. If present in a comma-separated list, it will only negate the specific query to which it is applied. If you use the <code>not</code> operator, you <em>must</em> specify an explicit media type.</p> <div class="note"> <p><strong>Note:</strong> The <code>not</code> keyword can't be used to negate an individual feature expression, only an entire media query.</p> </div> <h4 id="only"><code>only</code></h4> <p>The <code>only</code> operator is used to apply a style only if an entire query matches, and is useful for preventing older browsers from applying selected styles. If you use the <code>only</code> operator, you <em>must</em> specify an explicit media type.</p> <h4 id="comma-separated_lists">comma-separated lists</h4> <p>Each query in a comma-separated media query list is treated separately from the others. If any of the queries in a list is true, the entire media statement returns true. In other words, lists behave like the logical operator <code>or</code>.</p> <h3 name="Examples" id="Examples">Formal syntax</h3> <pre class="syntaxbox">@media <a href="#media-query-list">&lt;media-query-list&gt;</a> {
+  &lt;group-rule-body&gt;
+}<p>where <br><span id="media-query-list">&lt;media-query-list&gt;</span> = <a href="#media-query">&lt;media-query&gt;</a><a href="../value_definition_syntax/#Hash_mark_()">#</a></p><p>where <br><span id="media-query">&lt;media-query&gt;</span> = <a href="#media-condition">&lt;media-condition&gt;</a> | <a href="../value_definition_syntax/#Brackets">[</a> not | only <a href="../value_definition_syntax/#Brackets">]</a><a href="../value_definition_syntax/#Question_mark_()">?</a> <a href="#media-type">&lt;media-type&gt;</a> <a href="../value_definition_syntax/#Brackets">[</a> and <a href="#media-condition-without-or">&lt;media-condition-without-or&gt;</a> <a href="../value_definition_syntax/#Brackets">]</a><a href="../value_definition_syntax/#Question_mark_()">?</a></p><p>where <br><span id="media-condition">&lt;media-condition&gt;</span> = <a href="#media-not">&lt;media-not&gt;</a> | <a href="#media-and">&lt;media-and&gt;</a> | <a href="#media-or">&lt;media-or&gt;</a> | <a href="#media-in-parens">&lt;media-in-parens&gt;</a><br><span id="media-type">&lt;media-type&gt;</span> = <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/ident" target="_blank">&lt;ident&gt;</a><br><span id="media-condition-without-or">&lt;media-condition-without-or&gt;</span> = <a href="#media-not">&lt;media-not&gt;</a> | <a href="#media-and">&lt;media-and&gt;</a> | <a href="#media-in-parens">&lt;media-in-parens&gt;</a></p><p>where <br><span id="media-not">&lt;media-not&gt;</span> = not <a href="#media-in-parens">&lt;media-in-parens&gt;</a><br><span id="media-and">&lt;media-and&gt;</span> = <a href="#media-in-parens">&lt;media-in-parens&gt;</a> <a href="../value_definition_syntax/#Brackets">[</a> and <a href="#media-in-parens">&lt;media-in-parens&gt;</a> <a href="../value_definition_syntax/#Brackets">]</a><a href="../value_definition_syntax/#Plus_()">+</a><br><span id="media-or">&lt;media-or&gt;</span> = <a href="#media-in-parens">&lt;media-in-parens&gt;</a> <a href="../value_definition_syntax/#Brackets">[</a> or <a href="#media-in-parens">&lt;media-in-parens&gt;</a> <a href="../value_definition_syntax/#Brackets">]</a><a href="../value_definition_syntax/#Plus_()">+</a><br><span id="media-in-parens">&lt;media-in-parens&gt;</span> = ( <a href="#media-condition">&lt;media-condition&gt;</a> ) | <a href="#media-feature">&lt;media-feature&gt;</a> | <a href="#general-enclosed">&lt;general-enclosed&gt;</a></p><p>where <br><span id="media-feature">&lt;media-feature&gt;</span> = ( <a href="../value_definition_syntax/#Brackets">[</a> <a href="#mf-plain">&lt;mf-plain&gt;</a> | <a href="#mf-boolean">&lt;mf-boolean&gt;</a> | <a href="#mf-range">&lt;mf-range&gt;</a> <a href="../value_definition_syntax/#Brackets">]</a> )<br><span id="general-enclosed">&lt;general-enclosed&gt;</span> = <a href="../value_definition_syntax/#Brackets">[</a> &lt;function-token&gt; &lt;any-value&gt; ) <a href="../value_definition_syntax/#Brackets">]</a> | ( <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/ident" target="_blank">&lt;ident&gt;</a> &lt;any-value&gt; )</p><p>where <br><span id="mf-plain">&lt;mf-plain&gt;</span> = <a href="#mf-name">&lt;mf-name&gt;</a> : <a href="#mf-value">&lt;mf-value&gt;</a><br><span id="mf-boolean">&lt;mf-boolean&gt;</span> = <a href="#mf-name">&lt;mf-name&gt;</a><br><span id="mf-range">&lt;mf-range&gt;</span> = <a href="#mf-name">&lt;mf-name&gt;</a> <a href="../value_definition_syntax/#Brackets">[</a> '&lt;' | '&gt;' <a href="../value_definition_syntax/#Brackets">]</a><a href="../value_definition_syntax/#Question_mark_()">?</a> '='<a href="../value_definition_syntax/#Question_mark_()">?</a> <a href="#mf-value">&lt;mf-value&gt;</a> | <a href="#mf-value">&lt;mf-value&gt;</a> <a href="../value_definition_syntax/#Brackets">[</a> '&lt;' | '&gt;' <a href="../value_definition_syntax/#Brackets">]</a><a href="../value_definition_syntax/#Question_mark_()">?</a> '='<a href="../value_definition_syntax/#Question_mark_()">?</a> <a href="#mf-name">&lt;mf-name&gt;</a> | <a href="#mf-value">&lt;mf-value&gt;</a> '&lt;' '='<a href="../value_definition_syntax/#Question_mark_()">?</a> <a href="#mf-name">&lt;mf-name&gt;</a> '&lt;' '='<a href="../value_definition_syntax/#Question_mark_()">?</a> <a href="#mf-value">&lt;mf-value&gt;</a> | <a href="#mf-value">&lt;mf-value&gt;</a> '&gt;' '='<a href="../value_definition_syntax/#Question_mark_()">?</a> <a href="#mf-name">&lt;mf-name&gt;</a> '&gt;' '='<a href="../value_definition_syntax/#Question_mark_()">?</a> <a href="#mf-value">&lt;mf-value&gt;</a></p><p>where <br><span id="mf-name">&lt;mf-name&gt;</span> = <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/ident" target="_blank">&lt;ident&gt;</a><br><span id="mf-value">&lt;mf-value&gt;</span> = <a href="../number/">&lt;number&gt;</a> | &lt;dimension&gt; | <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/ident" target="_blank">&lt;ident&gt;</a> | &lt;ratio&gt;</p></pre> <h2 name="Examples" id="Examples">Examples</h2> <pre data-language="css">@media print {
+  body { font-size: 10pt; }
+}
+
+@media screen {
+  body { font-size: 13px; }
+}
+
+@media screen, print {
+  body { line-height: 1.2; }
+}
+
+@media only screen 
+  and (min-width: 320px) 
+  and (max-width: 480px)
+  and (resolution: 150dpi) {
+    body { line-height: 1.4; }
+}
+</pre> <p>For more media feature examples, please see the reference page for each specific feature. For more logical operator examples, please see <a href="https://developer.mozilla.org/en/CSS/Media_queries" class="internal" target="_blank">Using media queries</a>.</p> <h2 id="Specifications">Specifications</h2> <div class="_table"><table class="standard-table"> <thead> <tr> <th scope="col">Specification</th> <th scope="col">Status</th> <th scope="col">Comment</th> </tr> </thead> <tbody> <tr> <td><a href="https://drafts.csswg.org/css-conditional-3/#at-media" hreflang="en" target="_blank">CSS Conditional Rules Module Level 3<br><small>The definition of '@media' in that specification.</small></a></td> <td><span class="spec-CR">Candidate Recommendation</span></td> <td>Defines the basic syntax of the <code>@media</code> rule.</td> </tr> <tr> <td><a href="https://drafts.csswg.org/mediaqueries-4/#media" hreflang="en" target="_blank">Media Queries Level 4<br><small>The definition of '@media' in that specification.</small></a></td> <td><span class="spec-WD">Working Draft</span></td> <td> <p>Adds <code>scripting</code>, <code>pointer</code>, <code>hover</code>, <code>light-level</code>, <code>update-frequency</code>, <code>overflow-block</code>, and <code>overflow-inline</code> media features.<br> Deprecates all media types except for <code>screen</code>, <code>print</code>, <code>speech</code>, and <code>all</code>.<br> Makes the syntax more flexible by adding, among other things, the <code>or</code> keyword.</p> </td> </tr> <tr> <td><a href="https://drafts.csswg.org/mediaqueries-3/#media0" hreflang="en" target="_blank">Media Queries<br><small>The definition of '@media' in that specification.</small></a></td> <td><span class="spec-REC">Recommendation</span></td> <td>No change.</td> </tr> <tr> <td><a href="https://www.w3.org/TR/CSS2/media.html#at-media-rule" hreflang="en" target="_blank">CSS Level 2 (Revision 1)<br><small>The definition of '@media' in that specification.</small></a></td> <td><span class="spec-REC">Recommendation</span></td> <td>Initial definition.</td> </tr> </tbody> </table></div> <h2 name="Browser_compatibility" id="Browser_compatibility">Browser compatibility</h2>   <div class="bc-old">
+<div class="_table"><table class="compat-table">
+<thead><tr>
+<th>Feature</th>
+<th>Chrome</th>
+<th>Edge</th>
+<th>Firefox</th>
+<th>Internet Explorer</th>
+<th>Opera</th>
+<th>Safari</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><a href="https://developer.mozilla.org/docs/Web/CSS/@media" target="_blank">Basic support</a></td>
+<td class="full-support">1</td>
+<td class="full-support"><span> Yes</span></td>
+<td class="full-support">1</td>
+<td class="full-support">6</td>
+<td class="full-support">9.2</td>
+<td class="full-support">1.3</td>
+</tr>
+<tr>
+<td>
+<code>speech</code> media type</td>
+<td class="no-support"><span> No</span></td>
+<td class="no-support"><span> No</span></td>
+<td class="no-support"><span> No</span></td>
+<td class="no-support"><span> No</span></td>
+<td class="full-support">9.2</td>
+<td class="no-support"><span> No</span></td>
+</tr>
+<tr>
+<td>Media feature expressions</td>
+<td class="full-support">1</td>
+<td class="full-support"><span> Yes</span></td>
+<td class="full-support">1</td>
+<td class="full-support">9</td>
+<td class="full-support">9.2</td>
+<td class="full-support">1.3</td>
+</tr>
+<tr>
+<td>
+<code>resolution</code> media feature</td>
+<td class="full-support">29</td>
+<td class="unknown-support"><span> ?</span></td>
+<td class="full-support">
+<p>8</p>
+<p>3.5<sup><a href="#compatNote_1">1</a></sup></p>
+</td>
+<td class="unknown-support"><span> ?</span></td>
+<td class="full-support"><span> Yes</span></td>
+<td class="unknown-support"><span> ?</span></td>
+</tr>
+<tr>
+<td>
+<code>display-mode</code> media feature</td>
+<td class="unknown-support"><span> ?</span></td>
+<td class="no-support"><span> No</span></td>
+<td class="full-support">47<sup><a href="#compatNote_2">2</a></sup>
+</td>
+<td class="unknown-support"><span> ?</span></td>
+<td class="unknown-support"><span> ?</span></td>
+<td class="unknown-support"><span> ?</span></td>
+</tr>
+</tbody>
+</table></div>
+<div class="_table"><table class="compat-table">
+<thead><tr>
+<th>Feature</th>
+<th>Android webview</th>
+<th>Chrome for Android</th>
+<th>Edge mobile</th>
+<th>Firefox for Android</th>
+<th>Opera Android</th>
+<th>iOS Safari</th>
+<th>Samsung Internet</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><a href="https://developer.mozilla.org/docs/Web/CSS/@media" target="_blank">Basic support</a></td>
+<td class="full-support">1</td>
+<td class="unknown-support"><span> ?</span></td>
+<td class="full-support"><span> Yes</span></td>
+<td class="full-support">4</td>
+<td class="full-support">9</td>
+<td class="full-support">3.1</td>
+<td class="unknown-support"><span> ?</span></td>
+</tr>
+<tr>
+<td>
+<code>speech</code> media type</td>
+<td class="no-support"><span> No</span></td>
+<td class="unknown-support"><span> ?</span></td>
+<td class="no-support"><span> No</span></td>
+<td class="no-support"><span> No</span></td>
+<td class="full-support">9</td>
+<td class="no-support"><span> No</span></td>
+<td class="unknown-support"><span> ?</span></td>
+</tr>
+<tr>
+<td>Media feature expressions</td>
+<td class="full-support">1</td>
+<td class="unknown-support"><span> ?</span></td>
+<td class="full-support"><span> Yes</span></td>
+<td class="full-support">4</td>
+<td class="full-support">9</td>
+<td class="full-support">3.1</td>
+<td class="unknown-support"><span> ?</span></td>
+</tr>
+<tr>
+<td>
+<code>resolution</code> media feature</td>
+<td class="unknown-support"><span> ?</span></td>
+<td class="unknown-support"><span> ?</span></td>
+<td class="unknown-support"><span> ?</span></td>
+<td class="unknown-support"><span> ?</span></td>
+<td class="unknown-support"><span> ?</span></td>
+<td class="unknown-support"><span> ?</span></td>
+<td class="unknown-support"><span> ?</span></td>
+</tr>
+<tr>
+<td>
+<code>display-mode</code> media feature</td>
+<td class="unknown-support"><span> ?</span></td>
+<td class="unknown-support"><span> ?</span></td>
+<td class="no-support"><span> No</span></td>
+<td class="full-support">47<sup><a href="#compatNote_2">2</a></sup>
+</td>
+<td class="unknown-support"><span> ?</span></td>
+<td class="unknown-support"><span> ?</span></td>
+<td class="unknown-support"><span> ?</span></td>
+</tr>
+</tbody>
+</table></div>
+<p id="compatNote_1">1. Supports <a href="https://developer.mozilla.org/docs/Web/CSS/integer" target="_blank"><code>&lt;integer&gt;</code></a> values only.</p>
+<p id="compatNote_2">2. Firefox 47 and later support <code>display-mode</code> values <code>fullscreen</code> and <code>browser</code>. Firefox 57 added support for <code>minimal-ui</code> and <code>standalone</code> values.</p>
+</div>  <h2 id="See_also">See also</h2> <ul> <li><a href="https://developer.mozilla.org/en/CSS/Media_queries" class="internal" target="_blank">Using media queries</a></li> <li>In JavaScript, <code>@media</code> can be accessed via the CSS object model interface <a href="https://developer.mozilla.org/en-US/docs/Web/API/CSSMediaRule" target="_blank"><code>CSSMediaRule</code></a>.</li> <li><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Mozilla_Extensions#Media_features" target="_blank">Extended Mozilla media features</a></li> <li><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Webkit_Extensions#Media_features" target="_blank">Extended WebKit media features</a></li> </ul>
+<div class="_attribution">
+  <p class="_attribution-p">
+    <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/@media%24edit" class="_attribution-link" target="_blank">Edit this page on MDN</a>
+  </p>
+</div>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2005–2018 Mozilla Developer Network and individual contributors.<br>Licensed under the Creative Commons Attribution-ShareAlike License v2.5 or later.<br>
+    <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/@media" class="_attribution-link" target="_blank">https://developer.mozilla.org/en-US/docs/Web/CSS/@media</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

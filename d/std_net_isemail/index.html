@@ -1,0 +1,235 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>std.net.isemail - D - W3cubDocs</title>
+  
+  <meta name="description" content=" Validates an email address according to RFCs 5321, 5322 and others. ">
+  <meta name="keywords" content="std, net, isemail, -, d">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/d/std_net_isemail/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/d.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/d/" class="_nav-link" title="" style="margin-left:0;">D</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _d">
+				
+<h1>std.net.isemail</h1>  <p>Validates an email address according to RFCs 5321, 5322 and others. </p>
+<dl>
+<dt>Authors:</dt>
+<dd>Dominic Sayers &lt;dominic@sayers.cc&gt;, Jacob Carlborg </dd>
+</dl> <dl>
+<dt>License:</dt>
+<dd>
+<a href="http://www.boost.org/LICENSE_1_0.txt" target="_blank">Boost Software License 1.0</a> </dd>
+</dl> <dl>
+<dt>Version:</dt>
+<dd>3.0.13 - Version 3.0 of the original PHP implementation: <a href="http://www.dominicsayers.com/isemail" target="_blank">http://www.dominicsayers.com/isemail</a> </dd>
+</dl> <dl>
+<dt>Standards:</dt>
+<dd>
+<ul> <li>RFC 5321</li> <li>RFC 5322</li> </ul> </dd>
+</dl> <dl>
+<dt>References</dt>
+
+</dl>
+<ul> <li><a href="http://www.dominicsayers.com/isemail" target="_blank">http://www.dominicsayers.com/isemail</a></li> <li><a href="http://tools.ietf.org/html/rfc5321" target="_blank">http://tools.ietf.org/html/rfc5321</a></li> <li><a href="http://tools.ietf.org/html/rfc5322" target="_blank">http://tools.ietf.org/html/rfc5322</a></li> </ul>  <dl>
+<dt>Source</dt>
+<dd> <span class="phobos_src"><a class="https" href="https://github.com/dlang/phobos/blob/master/std/net/isemail.d" target="_blank">std/net/isemail.d</a></span>
+</dd>
+</dl> <dl>
+<dt class="d_decl" id="isEmail">EmailStatus isEmail(Char)(const(Char)[] email, CheckDns checkDNS = No.checkDns, EmailStatusCode errorLevel = EmailStatusCode.none)<br><br>  Constraints:<br>    if (isSomeChar!Char)</dt> <dd>
+<p>Check that an <code>email</code> address conforms to RFCs 5321, 5322 and others. </p>
+<p>Distinguishes between a Mailbox as defined by RFC 5321 and an addr-spec as defined by RFC 5322. Depending on the context, either can be regarded as a valid <code>email</code> address. </p> <dl>
+<dt>Note</dt>
+<dd> The DNS check is currently not implemented. </dd>
+</dl> <dl>
+<dt>Parameters:</dt>
+<dd><table>
+<tr>
+<td>const<span class="template_param_list" title="Template parameter list">(Char)</span>[] <code>email</code>
+</td> <td>The <code>email</code> address to check</td>
+</tr> <tr>
+<td>CheckDns <code>checkDNS</code>
+</td> <td>If <code>Yes.checkDns</code> then a DNS check for MX records will be made</td>
+</tr> <tr>
+<td>EmailStatusCode <code>errorLevel</code>
+</td> <td>Determines the boundary between valid and invalid addresses. Status codes above this number will be returned as-is, status codes below will be returned as EmailStatusCode.valid. Thus the calling program can simply look for EmailStatusCode.valid if it is only interested in whether an address is valid or not. The <span class="d_param"><code>errorLevel</code></span> will determine how "picky" <code>isEmail</code>() is about the address.  If omitted or passed as EmailStatusCode.none then <code>isEmail</code>() will not perform any finer grained error checking and an address is either considered valid or not. Email status code will either be EmailStatusCode.valid or EmailStatusCode.error.</td>
+</tr> </table></dd>
+</dl> <dl>
+<dt>Returns:</dt>
+<dd>An <a href="#EmailStatus"><code>EmailStatus</code></a>, indicating the status of the <code>email</code> address.</dd>
+</dl> </dd> <dt class="d_decl" id="CheckDns">alias CheckDns = std.typecons.Flag!"checkDns".Flag</dt> <dd>
+<p>Flag for indicating if the isEmail function should perform a DNS check or not. </p>
+<p>If set to <code>CheckDns.no</code>, isEmail does not perform DNS checking. <br><br> Otherwise if set to <code>CheckDns.yes</code>, isEmail performs DNS checking.</p> </dd> <dt class="d_decl" id="EmailStatus">struct EmailStatus</dt> <dd>
+<p>Represents the status of an email address</p> <dl>
+<dt class="d_decl" id="EmailStatus.valid">const pure nothrow @nogc @property @safe bool valid()</dt> <dd>
+<dl>
+<dt>Returns:</dt>
+<dd>If the email address is <code>valid</code> or not.</dd>
+</dl> </dd> <dt class="d_decl" id="EmailStatus.localPart">const pure nothrow @nogc @property @safe string localPart()</dt> <dd>
+<dl>
+<dt>Returns:</dt>
+<dd>The local part of the email address, that is, the part before the @ sign.</dd>
+</dl> </dd> <dt class="d_decl" id="EmailStatus.domainPart">const pure nothrow @nogc @property @safe string domainPart()</dt> <dd>
+<dl>
+<dt>Returns:</dt>
+<dd>The domain part of the email address, that is, the part after the @ sign.</dd>
+</dl> </dd> <dt class="d_decl" id="EmailStatus.statusCode">const pure nothrow @nogc @property @safe EmailStatusCode statusCode()</dt> <dd>
+<dl>
+<dt>Returns:</dt>
+<dd>The email status code</dd>
+</dl> </dd> <dt class="d_decl" id="EmailStatus.status">const pure nothrow @nogc @property @safe string status()</dt> <dd>
+<dl>
+<dt>Returns:</dt>
+<dd>A describing string of the <code>status</code> code</dd>
+</dl> </dd> <dt class="d_decl" id="EmailStatus.toString">const pure @safe string toString()</dt> <dd>
+<dl>
+<dt>Returns:</dt>
+<dd>A textual representation of the email status</dd>
+</dl> </dd> </dl> </dd> <dt class="d_decl" id="statusCodeDescription">pure nothrow @nogc @safe string statusCodeDescription(EmailStatusCode statusCode)</dt> <dd>
+<dl>
+<dt>Parameters:</dt>
+<dd><table>
+<tr>
+<td>EmailStatusCode <code>statusCode</code>
+</td> <td>The <a href="#EmailStatusCode"><code>EmailStatusCode</code></a> to read</td>
+</tr> </table></dd>
+</dl> <dl>
+<dt>Returns:</dt>
+<dd>A detailed string describing the given status code</dd>
+</dl> </dd> <dt class="d_decl" id="EmailStatusCode">enum EmailStatusCode: int</dt> <dd>
+<p>An email status code, indicating if an email address is valid or not. If it is invalid it also indicates why.</p> <dl>
+<dt class="d_decl" id="EmailStatusCode.validCategory">validCategory</dt> <dd>
+<p>Address is valid</p> </dd> <dt class="d_decl" id="EmailStatusCode.dnsWarning">dnsWarning</dt> <dd>
+<p>Address is valid but a DNS check was not successful</p> </dd> <dt class="d_decl" id="EmailStatusCode.rfc5321">rfc5321</dt> <dd>
+<p>Address is valid for SMTP but has unusual elements</p> </dd> <dt class="d_decl" id="EmailStatusCode.cFoldingWhitespace">cFoldingWhitespace</dt> <dd>
+<p>Address is valid within the message but cannot be used unmodified for the envelope</p> </dd> <dt class="d_decl" id="EmailStatusCode.deprecated_">deprecated_</dt> <dd>
+<p>Address contains deprecated elements but may still be valid in restricted contexts</p> </dd> <dt class="d_decl" id="EmailStatusCode.rfc5322">rfc5322</dt> <dd>
+<p>The address is only valid according to the broad definition of RFC 5322. It is otherwise invalid</p> </dd> <dt class="d_decl" id="EmailStatusCode.any">any</dt> <dd>
+<p>All finer grained error checking is turned on. Address containing errors or warnings is considered invalid. A specific email status code will be returned indicating the error/warning of the address.</p> </dd> <dt class="d_decl" id="EmailStatusCode.none">none</dt> <dd>
+<p>Address is either considered valid or not, no finer grained error checking is performed. Returned email status code will be either Error or Valid.</p> </dd> <dt class="d_decl" id="EmailStatusCode.warning">warning</dt> <dd>
+<p>Address containing warnings is considered valid, that is, any status code below 16 is considered valid.</p> </dd> <dt class="d_decl" id="EmailStatusCode.error">error</dt> <dd>
+<p>Address is invalid for any purpose</p> </dd> <dt class="d_decl" id="EmailStatusCode.valid">valid</dt> <dd>
+<p>Address is <code>valid</code></p> </dd> <dt class="d_decl" id="EmailStatusCode.dnsWarningNoMXRecord">dnsWarningNoMXRecord</dt> <dd>
+<p>Could not find an MX record for this domain but an A-record does exist</p> </dd> <dt class="d_decl" id="EmailStatusCode.dnsWarningNoRecord">dnsWarningNoRecord</dt> <dd>
+<p>Could not find an MX record or an A-record for this domain</p> </dd> <dt class="d_decl" id="EmailStatusCode.rfc5321TopLevelDomain">rfc5321TopLevelDomain</dt> <dd>
+<p>Address is valid but at a Top Level Domain</p> </dd> <dt class="d_decl" id="EmailStatusCode.rfc5321TopLevelDomainNumeric">rfc5321TopLevelDomainNumeric</dt> <dd>
+<p>Address is valid but the Top Level Domain begins with a number</p> </dd> <dt class="d_decl" id="EmailStatusCode.rfc5321QuotedString">rfc5321QuotedString</dt> <dd>
+<p>Address is valid but contains a quoted string</p> </dd> <dt class="d_decl" id="EmailStatusCode.rfc5321AddressLiteral">rfc5321AddressLiteral</dt> <dd>
+<p>Address is valid but at a literal address not a domain</p> </dd> <dt class="d_decl" id="EmailStatusCode.rfc5321IpV6Deprecated">rfc5321IpV6Deprecated</dt> <dd>
+<p>Address is valid but contains a :: that only elides one zero group</p> </dd> <dt class="d_decl" id="EmailStatusCode.comment">comment</dt> <dd>
+<p>Address contains comments</p> </dd> <dt class="d_decl" id="EmailStatusCode.foldingWhitespace">foldingWhitespace</dt> <dd>
+<p>Address contains Folding White Space</p> </dd> <dt class="d_decl" id="EmailStatusCode.deprecatedLocalPart">deprecatedLocalPart</dt> <dd>
+<p>The local part is in a deprecated form</p> </dd> <dt class="d_decl" id="EmailStatusCode.deprecatedFoldingWhitespace">deprecatedFoldingWhitespace</dt> <dd>
+<p>Address contains an obsolete form of Folding White Space</p> </dd> <dt class="d_decl" id="EmailStatusCode.deprecatedQuotedText">deprecatedQuotedText</dt> <dd>
+<p>A quoted string contains a deprecated character</p> </dd> <dt class="d_decl" id="EmailStatusCode.deprecatedQuotedPair">deprecatedQuotedPair</dt> <dd>
+<p>A quoted pair contains a deprecated character</p> </dd> <dt class="d_decl" id="EmailStatusCode.deprecatedComment">deprecatedComment</dt> <dd>
+<p>Address contains a comment in a position that is deprecated</p> </dd> <dt class="d_decl" id="EmailStatusCode.deprecatedCommentText">deprecatedCommentText</dt> <dd>
+<p>A comment contains a deprecated character</p> </dd> <dt class="d_decl" id="EmailStatusCode.deprecatedCommentFoldingWhitespaceNearAt">deprecatedCommentFoldingWhitespaceNearAt</dt> <dd>
+<p>Address contains a comment or Folding White Space around the @ sign</p> </dd> <dt class="d_decl" id="EmailStatusCode.rfc5322Domain">rfc5322Domain</dt> <dd>
+<p>Address is RFC 5322 compliant but contains domain characters that are not allowed by DNS</p> </dd> <dt class="d_decl" id="EmailStatusCode.rfc5322TooLong">rfc5322TooLong</dt> <dd>
+<p>Address is too long</p> </dd> <dt class="d_decl" id="EmailStatusCode.rfc5322LocalTooLong">rfc5322LocalTooLong</dt> <dd>
+<p>The local part of the address is too long</p> </dd> <dt class="d_decl" id="EmailStatusCode.rfc5322DomainTooLong">rfc5322DomainTooLong</dt> <dd>
+<p>The domain part is too long</p> </dd> <dt class="d_decl" id="EmailStatusCode.rfc5322LabelTooLong">rfc5322LabelTooLong</dt> <dd>
+<p>The domain part contains an element that is too long</p> </dd> <dt class="d_decl" id="EmailStatusCode.rfc5322DomainLiteral">rfc5322DomainLiteral</dt> <dd>
+<p>The domain literal is not a valid RFC 5321 address literal</p> </dd> <dt class="d_decl" id="EmailStatusCode.rfc5322DomainLiteralObsoleteText">rfc5322DomainLiteralObsoleteText</dt> <dd>
+<p>The domain literal is not a valid RFC 5321 address literal and it contains obsolete characters</p> </dd> <dt class="d_decl" id="EmailStatusCode.rfc5322IpV6GroupCount">rfc5322IpV6GroupCount</dt> <dd>
+<p>The IPv6 literal address contains the wrong number of groups</p> </dd> <dt class="d_decl" id="EmailStatusCode.rfc5322IpV6TooManyDoubleColons">rfc5322IpV6TooManyDoubleColons</dt> <dd>
+<p>The IPv6 literal address contains too many :: sequences</p> </dd> <dt class="d_decl" id="EmailStatusCode.rfc5322IpV6BadChar">rfc5322IpV6BadChar</dt> <dd>
+<p>The IPv6 address contains an illegal group of characters</p> </dd> <dt class="d_decl" id="EmailStatusCode.rfc5322IpV6MaxGroups">rfc5322IpV6MaxGroups</dt> <dd>
+<p>The IPv6 address has too many groups</p> </dd> <dt class="d_decl" id="EmailStatusCode.rfc5322IpV6ColonStart">rfc5322IpV6ColonStart</dt> <dd>
+<p>IPv6 address starts with a single colon</p> </dd> <dt class="d_decl" id="EmailStatusCode.rfc5322IpV6ColonEnd">rfc5322IpV6ColonEnd</dt> <dd>
+<p>IPv6 address ends with a single colon</p> </dd> <dt class="d_decl" id="EmailStatusCode.errorExpectingDomainText">errorExpectingDomainText</dt> <dd>
+<p>A domain literal contains a character that is not allowed</p> </dd> <dt class="d_decl" id="EmailStatusCode.errorNoLocalPart">errorNoLocalPart</dt> <dd>
+<p>Address has no local part</p> </dd> <dt class="d_decl" id="EmailStatusCode.errorNoDomain">errorNoDomain</dt> <dd>
+<p>Address has no domain part</p> </dd> <dt class="d_decl" id="EmailStatusCode.errorConsecutiveDots">errorConsecutiveDots</dt> <dd>
+<p>The address may not contain consecutive dots</p> </dd> <dt class="d_decl" id="EmailStatusCode.errorTextAfterCommentFoldingWhitespace">errorTextAfterCommentFoldingWhitespace</dt> <dd>
+<p>Address contains text after a comment or Folding White Space</p> </dd> <dt class="d_decl" id="EmailStatusCode.errorTextAfterQuotedString">errorTextAfterQuotedString</dt> <dd>
+<p>Address contains text after a quoted string</p> </dd> <dt class="d_decl" id="EmailStatusCode.errorTextAfterDomainLiteral">errorTextAfterDomainLiteral</dt> <dd>
+<p>Extra characters were found after the end of the domain literal</p> </dd> <dt class="d_decl" id="EmailStatusCode.errorExpectingQuotedPair">errorExpectingQuotedPair</dt> <dd>
+<p>The address contains a character that is not allowed in a quoted pair</p> </dd> <dt class="d_decl" id="EmailStatusCode.errorExpectingText">errorExpectingText</dt> <dd>
+<p>Address contains a character that is not allowed</p> </dd> <dt class="d_decl" id="EmailStatusCode.errorExpectingQuotedText">errorExpectingQuotedText</dt> <dd>
+<p>A quoted string contains a character that is not allowed</p> </dd> <dt class="d_decl" id="EmailStatusCode.errorExpectingCommentText">errorExpectingCommentText</dt> <dd>
+<p>A comment contains a character that is not allowed</p> </dd> <dt class="d_decl" id="EmailStatusCode.errorBackslashEnd">errorBackslashEnd</dt> <dd>
+<p>The address cannot end with a backslash</p> </dd> <dt class="d_decl" id="EmailStatusCode.errorDotStart">errorDotStart</dt> <dd>
+<p>Neither part of the address may begin with a dot</p> </dd> <dt class="d_decl" id="EmailStatusCode.errorDotEnd">errorDotEnd</dt> <dd>
+<p>Neither part of the address may end with a dot</p> </dd> <dt class="d_decl" id="EmailStatusCode.errorDomainHyphenStart">errorDomainHyphenStart</dt> <dd>
+<p>A domain or subdomain cannot begin with a hyphen</p> </dd> <dt class="d_decl" id="EmailStatusCode.errorDomainHyphenEnd">errorDomainHyphenEnd</dt> <dd>
+<p>A domain or subdomain cannot end with a hyphen</p> </dd> <dt class="d_decl" id="EmailStatusCode.errorUnclosedQuotedString">errorUnclosedQuotedString</dt> <dd>
+<p>Unclosed quoted string</p> </dd> <dt class="d_decl" id="EmailStatusCode.errorUnclosedComment">errorUnclosedComment</dt> <dd>
+<p>Unclosed comment</p> </dd> <dt class="d_decl" id="EmailStatusCode.errorUnclosedDomainLiteral">errorUnclosedDomainLiteral</dt> <dd>
+<p>Domain literal is missing its closing bracket</p> </dd> <dt class="d_decl" id="EmailStatusCode.errorFoldingWhitespaceCrflX2">errorFoldingWhitespaceCrflX2</dt> <dd>
+<p>Folding White Space contains consecutive CRLF sequences</p> </dd> <dt class="d_decl" id="EmailStatusCode.errorFoldingWhitespaceCrLfEnd">errorFoldingWhitespaceCrLfEnd</dt> <dd>
+<p>Folding White Space ends with a CRLF sequence</p> </dd> <dt class="d_decl" id="EmailStatusCode.errorCrNoLf">errorCrNoLf</dt> <dd>
+<p>Address contains a carriage return that is not followed by a line feed</p> </dd> </dl> </dd> </dl>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 1999–2017 The D Language Foundation<br>Licensed under the Boost License 1.0.<br>
+    <a href="https://dlang.org/phobos/std_net_isemail.html" class="_attribution-link" target="_blank">https://dlang.org/phobos/std_net_isemail.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

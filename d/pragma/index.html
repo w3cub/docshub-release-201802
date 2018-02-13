@@ -1,0 +1,137 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>9. Pragmas - D - W3cubDocs</title>
+  
+  <meta name="description" content="Pragmas are a way to pass special information to the compiler and to add vendor specific extensions to D. Pragmas can be used by themselves &hellip;">
+  <meta name="keywords" content="pragmas, -, d">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/d/pragma/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/d.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/d/" class="_nav-link" title="" style="margin-left:0;">D</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _d">
+				
+<h1>Pragmas</h1>     <pre>Pragma:
+    pragma ( Identifier )
+    pragma ( Identifier , ArgumentList )
+</pre>   <p>Pragmas are a way to pass special information to the compiler and to add vendor specific extensions to D. Pragmas can be used by themselves terminated with a ‘;’, they can influence a statement, a block of statements, a declaration, or a block of declarations. </p>  <p>Pragmas can appear as either declarations, <i>Pragma</i> <a href="../attribute/#DeclarationBlock"><i>DeclarationBlock</i></a>, or as statements, <a href="../statement/#PragmaStatement"><i>PragmaStatement</i></a>. </p>  <pre data-language="d">pragma(ident);        // just by itself
+
+pragma(ident) declaration; // influence one declaration
+
+pragma(ident): // influence subsequent declarations
+    declaration;
+    declaration;
+
+pragma(ident)   // influence block of declarations
+{
+    declaration;
+    declaration;
+}
+
+pragma(ident) statement; // influence one statement
+
+pragma(ident)   // influence block of statements
+{
+    statement;
+    statement;
+}
+</pre>  <p>The kind of pragma it is determined by the <i>Identifier</i>. <i>ExpressionList</i> is a comma-separated list of <a href="../expression/#AssignExpression"><i>AssignExpression</i></a>s. The <a href="../expression/#AssignExpression"><i>AssignExpression</i></a>s must be parsable as expressions, but what they mean semantically is up to the individual pragma semantics. </p>  <h2><span id="Predefined-Pragmas">Predefined Pragmas</span></h2>  <p>All implementations must support these, even if by just ignoring them:</p>  <ul> <li><a href="#inline">pragma inline</a></li> <li><a href="#lib">pragma lib</a></li> <li><a href="#mangle">pragma mangle</a></li> <li><a href="#msg">pragma msg</a></li> <li><a href="#startaddress">pragma startaddress</a></li> </ul>  <dl> <dt id="inline"><code>inline</code></dt> <dd>
+<p>Affects whether functions are inlined or not. If at the declaration level, it affects the functions declared in the block it controls. If inside a function, it affects the function it is enclosed by. If there are multiple pragma inlines in a function, the lexically last one takes effect.</p>  <p>It takes three forms:</p> <ol> <li>
+<pre data-language="d">pragma(inline)
+</pre> Sets the behavior to match the default behavior set by the compiler switch <a href="https://dlang.org/dmd.html#switch-inline" target="_blank"><em class="tt">-inline</em></a>. </li> <li>
+<pre data-language="d">pragma(inline, false)
+</pre> Functions are never inlined. </li> <li>
+<pre data-language="d">pragma(inline, true)
+</pre> If a function cannot be inlined with the <a href="https://dlang.org/dmd.html#switch-inline" target="_blank"><em class="tt">-inline</em></a> switch, an error message is issued. This is expected to be improved in the future to causing functions to always be inlined regardless of compiler switch settings. Whether a compiler can inline a particular function or not is implementation defined. </li> </ol> <pre data-language="d">pragma(inline):
+int foo(int x) // foo() is never inlined
+{
+    pragma(inline, true);
+    ++x;
+    pragma(inline, false); // supercedes the others
+    return x + 3;
+}
+</pre> </dd>   <dt id="lib"><code>lib</code></dt> <dd>Inserts a directive in the object file to link in the library specified by the <a href="../expression/#AssignExpression"><i>AssignExpression</i></a>. The <a href="../expression/#AssignExpression"><i>AssignExpression</i></a>s must be a string literal: <pre data-language="d">pragma(lib, "foo.lib");
+</pre> </dd>   <dt id="mangle"><code>mangle</code></dt> <dd>Overrides the default mangling for a symbol. It's only effective when the symbol is a function declaration or a variable declaration. For example this allows linking to a symbol which is a D keyword, which would normally be disallowed as a symbol name: <pre data-language="d">pragma(mangle, "body")
+extern(C) void body_func();
+</pre> </dd>   <dt id="msg"><code>msg</code></dt> <dd>Constructs a message from the arguments and prints to the standard error stream while compiling: <pre data-language="d">pragma(msg, "compiling...", 1, 1.0);
+</pre> </dd>   <dt id="startaddress"><code>startaddress</code></dt> <dd>Puts a directive into the object file saying that the function specified in the first argument will be the start address for the program: <pre data-language="d">void foo() { ... }
+pragma(startaddress, foo);
+</pre> This is not normally used for application level programming, but is for specialized systems work. For applications code, the start address is taken care of by the runtime library. </dd> </dl>  <h2 id="vendor_specific_pragmas">Vendor Specific Pragmas</h2>  <p>Vendor specific pragma <i>Identifier</i>s can be defined if they are prefixed by the vendor's trademarked name, in a similar manner to version identifiers: </p>  <pre data-language="d">pragma(DigitalMars_funky_extension) { ... }
+</pre>  <p>Compilers must diagnose an error for unrecognized <i>Pragma</i>s, even if they are vendor specific ones. This implies that vendor specific pragmas should be wrapped in version statements: </p>  <pre data-language="d">version (DigitalMars)
+{
+    pragma(DigitalMars_funky_extension)
+    { ... }
+}
+</pre>     <div class="_attribution">
+  <p class="_attribution-p">
+    © 1999–2017 The D Language Foundation<br>Licensed under the Boost License 1.0.<br>
+    <a href="https://dlang.org/spec/pragma.html" class="_attribution-link" target="_blank">https://dlang.org/spec/pragma.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

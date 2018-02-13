@@ -1,0 +1,580 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>14. Structs, Unions - D - W3cubDocs</title>
+  
+  <meta name="description" content="Whereas classes are reference types, structs are value types. Any C struct can be exactly represented as a D struct, except non-static function- &hellip;">
+  <meta name="keywords" content="structs, unions, -, d">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/d/struct/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/d.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/d/" class="_nav-link" title="" style="margin-left:0;">D</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _d">
+				
+<h1>Structs, Unions</h1>     <p>Whereas classes are reference types, structs are value types. Any C struct can be exactly represented as a D struct, except non-static <a href="#nested">function-nested D structs</a> which access the context of their enclosing scope. Structs and unions are meant as simple aggregations of data, or as a way to paint a data structure over hardware or an external type. External types can be defined by the operating system API, or by a file format. Object oriented features are provided with the class data type. </p>  <p>A struct is defined to not have an identity; that is, the implementation is free to make bit copies of the struct as convenient.</p>  <table>
+<caption>Struct, Class Comparison Table</caption> <tr>
+<th class="donthyphenate"><b>Feature</b></th>
+<th class="donthyphenate"><b><code>struct</code></b></th>
+<th class="donthyphenate"><b><code>class</code></b></th>
+<th class="donthyphenate"><b>C <code>struct</code></b></th>
+<th class="donthyphenate"><b>C++ <code>struct</code></b></th>
+<th class="donthyphenate"><b>C++ <code>class</code></b></th>
+</tr>  <tr>
+<td>value type</td>
+<td>✔</td>
+<td></td>
+<td>✔</td>
+<td>✔</td>
+<td>✔</td>
+</tr> <tr>
+<td>reference type</td>
+<td></td>
+<td>✔</td>
+<td></td>
+<td> </td>
+<td></td>
+</tr> <tr>
+<td>data members</td>
+<td>✔</td>
+<td>✔</td>
+<td>✔</td>
+<td>✔</td>
+<td>✔</td>
+</tr> <tr>
+<td>hidden members</td>
+<td>✔</td>
+<td> ✔</td>
+<td></td>
+<td>✔</td>
+<td>✔</td>
+</tr> <tr>
+<td>static members</td>
+<td>✔</td>
+<td>✔</td>
+<td></td>
+<td> ✔</td>
+<td>✔</td>
+</tr> <tr>
+<td>default member initializers</td>
+<td>✔</td>
+<td>✔</td>
+<td> </td>
+<td></td>
+<td></td>
+</tr> <tr>
+<td>bit fields</td>
+<td></td>
+<td></td>
+<td>✔</td>
+<td>✔</td>
+<td> ✔</td>
+</tr> <tr>
+<td>non-virtual member functions</td>
+<td>✔</td>
+<td>✔</td>
+<td> </td>
+<td>✔</td>
+<td>✔</td>
+</tr> <tr>
+<td>virtual member functions</td>
+<td></td>
+<td>✔</td>
+<td> </td>
+<td>✔</td>
+<td>✔</td>
+</tr> <tr>
+<td><a href="#struct-constructor">constructors</a></td>
+<td>✔</td>
+<td> ✔</td>
+<td></td>
+<td>✔</td>
+<td>✔</td>
+</tr> <tr>
+<td>
+<a href="#struct-postblit">postblit</a>/copy constructors</td>
+<td> ✔</td>
+<td></td>
+<td></td>
+<td>✔</td>
+<td>✔</td>
+</tr> <tr>
+<td><a href="#struct-destructor">destructors</a></td>
+<td>✔</td>
+<td> ✔</td>
+<td></td>
+<td>✔</td>
+<td>✔</td>
+</tr> <tr>
+<td>
+<a href="../class/#SharedStaticConstructor"><i>SharedStaticConstructor</i></a>s</td>
+<td>✔</td>
+<td> ✔</td>
+<td></td>
+<td></td>
+<td></td>
+</tr> <tr>
+<td>
+<a href="../class/#SharedStaticDestructor"><i>SharedStaticDestructor</i></a>s</td>
+<td> ✔</td>
+<td> ✔</td>
+<td></td>
+<td></td>
+<td></td>
+</tr> <tr>
+<td>RAII</td>
+<td>✔</td>
+<td>✔</td>
+<td></td>
+<td>✔</td>
+<td>✔</td>
+</tr> <tr>
+<td><a href="#assign-overload">identity assign overload</a></td>
+<td>✔</td>
+<td> </td>
+<td></td>
+<td>✔</td>
+<td>✔</td>
+</tr> <tr>
+<td><a href="#struct-literal">literals</a></td>
+<td>✔</td>
+<td></td>
+<td> </td>
+<td></td>
+<td></td>
+</tr> <tr>
+<td>operator overloading</td>
+<td>✔</td>
+<td>✔</td>
+<td></td>
+<td> ✔</td>
+<td>✔</td>
+</tr> <tr>
+<td>inheritance</td>
+<td></td>
+<td>✔</td>
+<td></td>
+<td> ✔</td>
+<td>✔</td>
+</tr> <tr>
+<td>invariants</td>
+<td>✔</td>
+<td>✔</td>
+<td></td>
+<td></td>
+<td> </td>
+</tr> <tr>
+<td>unit tests</td>
+<td>✔</td>
+<td>✔</td>
+<td></td>
+<td></td>
+<td> </td>
+</tr> <tr>
+<td>synchronizable</td>
+<td></td>
+<td>✔</td>
+<td></td>
+<td></td>
+<td> </td>
+</tr> <tr>
+<td>parameterizable</td>
+<td>✔</td>
+<td>✔</td>
+<td></td>
+<td> ✔</td>
+<td>✔</td>
+</tr> <tr>
+<td>alignment control</td>
+<td>✔</td>
+<td>✔</td>
+<td></td>
+<td> </td>
+<td></td>
+</tr> <tr>
+<td>member protection</td>
+<td>✔</td>
+<td>✔</td>
+<td></td>
+<td>✔</td>
+<td>✔</td>
+</tr> <tr>
+<td>default public</td>
+<td>✔</td>
+<td>✔</td>
+<td>✔</td>
+<td>✔</td>
+<td></td>
+</tr> <tr>
+<td>tag name space</td>
+<td></td>
+<td></td>
+<td>✔</td>
+<td> ✔</td>
+<td>✔</td>
+</tr> <tr>
+<td>anonymous</td>
+<td>✔</td>
+<td></td>
+<td>✔</td>
+<td>✔</td>
+<td>✔</td>
+</tr> <tr>
+<td>static constructor</td>
+<td>✔</td>
+<td>✔</td>
+<td></td>
+<td> </td>
+<td></td>
+</tr> <tr>
+<td>static destructor</td>
+<td>✔</td>
+<td>✔</td>
+<td></td>
+<td> </td>
+<td></td>
+</tr> <tr>
+<td>const/immutable/shared</td>
+<td>✔</td>
+<td>✔</td>
+<td></td>
+<td> </td>
+<td></td>
+</tr> <tr>
+<td>inner nesting</td>
+<td><a href="#nested">✔</a></td>
+<td> <a href="../class/#nested">✔</a>
+</td>
+<td></td>
+<td></td>
+<td></td>
+</tr> </table>  <pre>AggregateDeclaration:
+    ClassDeclaration
+    InterfaceDeclaration
+    StructDeclaration
+    UnionDeclaration
+
+StructDeclaration:
+    struct Identifier ;
+    struct Identifier AggregateBody
+    StructTemplateDeclaration
+    AnonStructDeclaration
+
+AnonStructDeclaration:
+    struct AggregateBody
+
+UnionDeclaration:
+    union Identifier ;
+    union Identifier AggregateBody
+    UnionTemplateDeclaration
+    AnonUnionDeclaration
+
+AnonUnionDeclaration:
+    union AggregateBody
+
+AggregateBody:
+    { DeclDefsopt }
+</pre>  <p>They work like they do in C, with the following exceptions:</p>  <ul> <li>no bit fields</li> <li>alignment can be explicitly specified</li> <li>no separate tag name space - tag names go into the current scope</li> <li>declarations like:  <pre data-language="d">struct ABC x;
+</pre> are not allowed, replace with:  <pre data-language="d">ABC x;
+</pre> </li> <li>anonymous structs/unions are allowed as members of other structs/unions</li> <li>Default initializers for members can be supplied.</li> <li>Member functions and static members are allowed.</li> </ul>   <h2 id="opaque_struct_unions">Opaque Structs and Unions</h2>  <p>Opaque struct and union declarations do not have a <a href="#AggregateBody"><i>AggregateBody</i></a>:</p>  <pre data-language="d">struct S;
+union U;
+</pre>  <p>The members are completely hidden to the user, and so the only operations on those types are ones that do not require any knowledge of the contents of those types. For example:</p>  <pre data-language="d">struct S;
+S.sizeof; // error, size is not known
+S s;      // error, cannot initialize unknown contents
+S* p;     // ok, knowledge of members is not necessary
+</pre>  <p>They can be used to implement the <a href="https://en.wikipedia.org/wiki/Opaque_pointer" target="_blank">PIMPL idiom</a>.</p>   <h2 id="static_struct_init">Static Initialization of Structs</h2>  <p>Static struct members are by default initialized to whatever the default initializer for the member is, and if none supplied, to the default initializer for the member's type. If a static initializer is supplied, the members are initialized by the member name, colon, expression syntax. The members may be initialized in any order. Initializers for statics must be evaluatable at compile time. Members not specified in the initializer list are default initialized.</p>  <pre data-language="d">struct S { int a; int b; int c; int d = 7;}
+static S x = { a:1, b:2};            // c is set to 0, d to 7
+static S z = { c:4, b:5, a:2 , d:5}; // z.a = 2, z.b = 5, z.c = 4, z.d = 5
+</pre>  <p>C-style initialization, based on the order of the members in the struct declaration, is also supported:</p>  <pre data-language="d">static S q = { 1, 2 }; // q.a = 1, q.b = 2, q.c = 0, q.d = 7
+</pre>  <p>Struct literals can also be used to initialize statics, but they must be evaluable at compile time.</p>  <pre data-language="d">static S q = S( 1, 2+3 ); // q.a = 1, q.b = 5, q.c = 0, q.d = 7
+</pre>  <p>The static initializer syntax can also be used to initialize non-static variables, provided that the member names are not given. The initializer need not be evaluatable at compile time.</p>  <pre data-language="d">void test(int i)
+{
+    S q = { 1, i }; // q.a = 1, q.b = i, q.c = 0, q.d = 7
+}
+</pre>   <h2 id="static_union_init">Static Initialization of Unions</h2>  <p>Unions are initialized explicitly.</p>  <pre data-language="d">union U { int a; double b; }
+static U u = { b : 5.0 }; // u.b = 5.0
+</pre>  <p>Other members of the union that overlay the initializer, but occupy more storage, have the extra storage initialized to zero.</p>  <h2 id="dynamic_struct_init">Dynamic Initialization of Structs</h2>  <p>Structs can be dynamically initialized from another value of the same type:</p>  <pre data-language="d">struct S { int a; }
+S t;      // default initialized
+t.a = 3;
+S s = t;  // s.a is set to 3
+</pre>  <p>If <code>opCall</code> is overridden for the struct, and the struct is initialized with a value that is of a different type, then the <code>opCall</code> operator is called:</p>  <pre data-language="d">struct S
+{
+    int a;
+
+    static S opCall(int v)
+    {
+        S s;
+        s.a = v;
+        return s;
+    }
+
+    static S opCall(S v)
+    {
+        S s;
+        s.a = v.a + 1;
+        return s;
+    }
+}
+
+S s = 3; // sets s.a to 3
+S t = s; // sets t.a to 3, S.opCall(s) is not called
+</pre>  <h2><span id="StructLiteral">Struct Literals</span></h2>  <p>Struct literals consist of the name of the struct followed by a parenthesized argument list:</p>  <pre data-language="d">struct S { int x; float y; }
+
+int foo(S s) { return s.x; }
+
+foo( S(1, 2) ); // set field x to 1, field y to 2
+</pre>  <p>Struct literals are syntactically like function calls. If a struct has a member function named <code>opCall</code>, then struct literals for that struct are not possible. See also <a href="../operatoroverloading/#FunctionCall">opCall operator overloading</a> for the issue workaround. It is an error if there are more arguments than fields of the struct. If there are fewer arguments than fields, the remaining fields are initialized with their respective default initializers. If there are anonymous unions in the struct, only the first member of the anonymous union can be initialized with a struct literal, and all subsequent non-overlapping fields are default initialized. </p>  <h2 id="struct_properties">Struct Properties</h2>  <table>
+<caption>Struct Properties</caption>
+<tr>
+<th class="donthyphenate"><b>Name</b></th>
+<th class="donthyphenate"><b>Description</b></th>
+</tr> <tr>
+<td><code>.sizeof</code></td>
+<td>Size in bytes of struct</td>
+</tr> <tr>
+<td><code>.alignof</code></td>
+<td>Size boundary struct needs to be aligned on</td>
+</tr> <tr>
+<td><code>.tupleof</code></td>
+<td>Gets type tuple of fields</td>
+</tr>
+</table>  <h2 id="struct_field_properties">Struct Field Properties</h2>  <table>
+<caption>Struct Field Properties</caption>
+<tr>
+<th class="donthyphenate"><b>Name</b></th>
+<th class="donthyphenate"><b>Description</b></th>
+</tr> <tr>
+<td><code>.offsetof</code></td>
+<td>Offset in bytes of field from beginning of struct</td>
+</tr>
+</table>  <h2><span id="ConstStruct">Const, Immutable and Shared Structs</span></h2>  <p>A struct declaration can have a storage class of <code>const</code>, <code>immutable</code> or <code>shared</code>. It has an equivalent effect as declaring each member of the struct as <code>const</code>, <code>immutable</code> or <code>shared</code>. </p>  <pre data-language="d">const struct S { int a; int b = 2; }
+
+void main()
+{
+    S s = S(3); // initializes s.a to 3
+    S t;        // initializes t.a to 0
+    t = s;      // error, t.a and t.b are const, so cannot modify them.
+    t.a = 4;    // error, t.a is const
+}
+</pre>  <h2><span id="Struct-Constructor">Struct Constructors</span></h2>  <p>Struct constructors are used to initialize an instance of a struct. The <i>ParameterList</i> may not be empty. Struct instances that are not instantiated with a constructor are default initialized to their <code>.init</code> value. </p>  <pre data-language="d">struct S
+{
+    int x, y;
+
+    this()  // error, cannot implement default ctor for structs
+    {
+    }
+
+    this(int a, int b)
+    {
+        x = a;
+        y = b;
+    }
+}
+
+void main()
+{
+    S a = S(4, 5);
+    auto b = S();  // same as auto b = S.init;
+}
+</pre>   <p>A constructor qualifier allows the object to be constructed with that specific qualifier. </p>  <pre data-language="d">struct S1
+{
+    int[] a;
+    this(int n) { a = new int[](n); }
+}
+struct S2
+{
+    int[] a;
+    this(int n) immutable { a = new int[](n); }
+}
+void main()
+{
+    // Mutable constructor creates mutable object.
+    S1 m1 = S1(1);
+
+    // Constructed mutable object is implicitly convertible to const.
+    const S1 c1 = S1(1);
+
+    // Constructed mutable object is not implicitly convertible to immutable.
+    // immutable i1 = S1(1);
+
+    // Mutable constructor cannot construct immutable object.
+    // auto x1 = immutable S1(1);
+
+    // Immutable constructor cannot construct mutable object.
+    // auto x2 = S2(1);
+
+    // Constructed immutable object is not implicitly convertible to mutable.
+    // S2 m2 = immutable S2(1);
+
+    // Constructed immutable object is implicitly convertible to const.
+    const S2 c2 = immutable S2(1);
+
+    // Immutable constructor creates immutable object.
+    immutable i2 = immutable S2(1);
+}
+</pre>  <p>If struct constructor is annotated with <code>@disable</code> and has empty parameter, the struct is disabled construction without calling other constructor. </p> <pre data-language="d">struct S
+{
+    int x;
+
+    // Disables default construction, function body can be empty.
+    @disable this();
+
+    this(int v) { x = v; }
+}
+void main()
+{
+    //S s;        // default construction is disabled
+    //S s = S();  // also disabled
+    S s = S(1);   // construction with calling constructor
+}
+</pre>  <h2><span id="StructPostblit">Struct Postblits</span></h2>  <pre>Postblit:
+    this ( this ) MemberFunctionAttributesopt ;
+    this ( this ) MemberFunctionAttributesopt FunctionBody
+</pre>  <p><i>Copy construction</i> is defined as initializing a struct instance from another struct of the same type. Copy construction is divided into two parts:</p>  <ol> <li>blitting the fields, i.e. copying the bits</li> <li>running <i>postblit</i> on the result</li> </ol>  <p>The first part is done automatically by the language, the second part is done if a postblit function is defined for the struct. The postblit has access only to the destination struct object, not the source. Its job is to ‘fix up’ the destination as necessary, such as making copies of referenced data, incrementing reference counts, etc. For example: </p>  <pre data-language="d">struct S
+{
+    int[] a;    // array is privately owned by this instance
+    this(this)
+    {
+        a = a.dup;
+    }
+}
+</pre>  <p>Disabling struct postblit makes the object not copyable. </p>  <pre data-language="d">struct T
+{
+    @disable this(this);  // disabling makes T not copyable
+}
+struct S
+{
+    T t;   // uncopyable member makes S also not copyable
+}
+
+void main()
+{
+    S s;
+    S t = s; // error, S is not copyable
+}
+</pre>  <p>Unions may not have fields that have postblits.</p>  <h2><span id="StructDestructor">Struct Destructors</span></h2>  <p>Destructors are called when an object goes out of scope. Their purpose is to free up resources owned by the struct object. </p>  <p>Unions may not have fields that have destructors.</p>  <h2><span id="AssignOverload">Identity Assignment Overload</span></h2>  <p>While copy construction takes care of initializing an object from another object of the same type, or elaborate destruction is needed for the type, assignment is defined as copying the contents of one object over another, already initialized, type: </p>  <pre data-language="d">struct S { ... }  // S has postblit or destructor
+S s;      // default construction of s
+S t = s;  // t is copy-constructed from s
+t = s;    // t is assigned from s
+</pre>  <p>Struct assignment <code>t=s</code> is defined to be semantically equivalent to: </p>  <pre data-language="d">t.opAssign(s);
+</pre>  <p>where <code>opAssign</code> is a member function of S:</p>  <pre data-language="d">ref S opAssign(ref S s)
+{
+    S tmp = this;   // bitcopy this into tmp
+    this = s;       // bitcopy s into this
+    tmp.__dtor();   // call destructor on tmp
+    return this;
+}
+</pre>  <p>An identity assignment overload is required for a struct if one or more of these conditions hold:</p>  <ul> <li>it has a <a href="#struct-destructor">destructor</a>
+</li> <li>it has a <a href="#struct-postblit">postblit</a>
+</li> <li>it has a field with an identity assignment overload</li> </ul>  <p>If an identity assignment overload is required and does not exist, an identity assignment overload function of the type <code>ref S opAssign(ref S)</code> will be automatically generated.</p>  <p>A user-defined one can implement the equivalent semantics, but can be more efficient. </p>  <p>One reason a custom <code>opAssign</code> might be more efficient is if the struct has a reference to a local buffer: </p>  <pre data-language="d">struct S
+{
+    int[] buf;
+    int a;
+
+    ref S opAssign(ref const S s)
+    {
+        a = s.a;
+        return this;
+    }
+
+    this(this)
+    {
+        buf = buf.dup;
+    }
+}
+</pre>  <p>Here, <code>S</code> has a temporary workspace <code>buf[]</code>. The normal postblit will pointlessly free and reallocate it. The custom <code>opAssign</code> will reuse the existing storage. </p>  <h2 id="nested">Nested Structs</h2>  <p>A <i>nested struct</i> is a struct that is declared inside the scope of a function or a templated struct that has aliases to local functions as a template argument. Nested structs have member functions. It has access to the context of its enclosing scope (via an added hidden field).</p>  <pre data-language="d">void foo()
+{
+    int i = 7;
+    struct SS
+    {
+        int x,y;
+        int bar() { return x + i + 1; }
+    }
+    SS s;
+    s.x = 3;
+    s.bar(); // returns 11
+}
+</pre>  <p>A struct can be prevented from being nested by using the static attribute, but then of course it will not be able to access variables from its enclosing scope.</p>  <pre data-language="d">void foo()
+{
+    int i = 7;
+    static struct SS
+    {
+        int x, y;
+        int bar()
+        {
+            return i; // error, SS is not a nested struct
+        }
+    }
+}
+</pre>  <h2 id="unions_and_special_memb_funct">Unions and Special Member Functions</h2>  <p>Unions may not have postblits, destructors, or invariants.</p>     <div class="_attribution">
+  <p class="_attribution-p">
+    © 1999–2017 The D Language Foundation<br>Licensed under the Boost License 1.0.<br>
+    <a href="https://dlang.org/spec/struct.html" class="_attribution-link" target="_blank">https://dlang.org/spec/struct.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

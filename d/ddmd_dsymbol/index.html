@@ -1,0 +1,194 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>ddmd.dsymbol - D - W3cubDocs</title>
+  
+  <meta name="description" content=" Compiler implementation of the D programming language. ">
+  <meta name="keywords" content="ddmd, dsymbol, -, d">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/d/ddmd_dsymbol/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/d.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/d/" class="_nav-link" title="" style="margin-left:0;">D</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _d">
+				
+<h1>ddmd.dsymbol</h1>  <p>Compiler implementation of the <a href="http://www.dlang.org" target="_blank">D programming language</a>. </p> <dl>
+<dt>Authors:</dt>
+<dd>
+<a href="http://www.digitalmars.com" target="_blank">Walter Bright</a> </dd>
+</dl> <dl>
+<dt>License:</dt>
+<dd>
+<a href="http://www.boost.org/LICENSE_1_0.txt" target="_blank">Boost License 1.0</a> </dd>
+</dl> <dl>
+<dt>Source:</dt>
+<dd> <a href="https://github.com/dlang/dmd/blob/master/src/ddmd/dsymbol.d" target="_blank">dsymbol.d</a>
+</dd>
+</dl> <dl>
+<dt class="d_decl" id="Dsymbol">class Dsymbol: ddmd.root.rootobject.RootObject</dt> <dd> <dl>
+<dt class="d_decl" id="Dsymbol.getModule">final Module getModule()</dt> <dd>
+<p>Determine which Module a Dsymbol is in.</p> </dd> <dt class="d_decl" id="Dsymbol.getAccessModule">final Module getAccessModule()</dt> <dd>
+<p>Determine which Module a Dsymbol is in, as far as access rights go.</p> </dd> <dt class="d_decl" id="Dsymbol.toParent">final inout inout(Dsymbol) toParent()<br>final inout inout(Dsymbol) toParent2()</dt> <dd>
+<p><code>parent</code> field returns a lexically enclosing scope symbol this is a member of. </p> <p><code>toParent()</code> returns a logically enclosing scope symbol this is a member of. It skips over TemplateMixin's. <br><br> <code>toParent2()</code> returns an enclosing scope symbol this is living at runtime. It skips over both TemplateInstance's and TemplateMixin's. It's used when looking for the 'this' pointer of the enclosing function/class. </p> <dl>
+<dt>Examples:</dt>
+<dd>module mod; template Foo(alias a) { mixin Bar!(); } mixin template Bar() { public { // ProtDeclaration void baz() { a = 2; } } } void test() { int v = 1; alias foo = Foo!(v); foo.baz(); assert(v == 2); }  // s == FuncDeclaration('mod.test.Foo!().Bar!().baz()') // s.parent == TemplateMixin('mod.test.Foo!().Bar!()') // s.<code>toParent</code>() == TemplateInstance('mod.test.Foo!()') // s.<code>toParent2</code>() == FuncDeclaration('mod.test')</dd>
+</dl> </dd> <dt class="d_decl" id="Dsymbol.arraySyntaxCopy">static Dsymbols* arraySyntaxCopy(Dsymbols* a)</dt> <dd>
+<p>Do syntax copy of an array of Dsymbol's.</p> </dd> <dt class="d_decl" id="Dsymbol.toAlias">Dsymbol toAlias()</dt> <dd>
+<p>If this symbol is really an alias for another, return that other. If needed, semantic() is invoked due to resolve forward reference.</p> </dd> <dt class="d_decl" id="Dsymbol.toAlias2">Dsymbol toAlias2()</dt> <dd>
+<p>Resolve recursive tuple expansion in eponymous template.</p> </dd> <dt class="d_decl" id="Dsymbol.apply">int apply(Dsymbol_apply_ft_t fp, void* param)</dt> <dd>
+<p>Iterate this dsymbol or members of this scoped dsymbol, then call <code>fp</code> with the found symbol and <code>param</code>. </p> <dl>
+<dt>Parameters:</dt>
+<dd><table>
+<tr>
+<td>Dsymbol_apply_ft_t <code>fp</code>
+</td> <td>function pointer to process the iterated symbol. If it returns nonzero, the iteration will be aborted.</td>
+</tr> <tr>
+<td>void* <code>param</code>
+</td> <td>a parameter passed to <code>fp</code>.</td>
+</tr> </table></dd>
+</dl> <dl>
+<dt>Returns:</dt>
+<dd>nonzero if the iteration is aborted by the return value of <code>fp</code>, or 0 if it's completed.</dd>
+</dl> </dd> <dt class="d_decl" id="Dsymbol.setScope">void setScope(Scope* sc)</dt> <dd>
+<p>Set scope for future semantic analysis so we can deal better with forward references.</p> </dd> <dt class="d_decl" id="Dsymbol.semantic">void semantic(Scope* sc)</dt> <dd>
+<p>Does <code>semantic</code> analysis on the public face of declarations.</p> </dd> <dt class="d_decl" id="Dsymbol.semantic2">void semantic2(Scope* sc)</dt> <dd>
+<p>Does semantic analysis on initializers and members of aggregates.</p> </dd> <dt class="d_decl" id="Dsymbol.semantic3">void semantic3(Scope* sc)</dt> <dd>
+<p>Does semantic analysis on function bodies.</p> </dd> <dt class="d_decl" id="Dsymbol.search">Dsymbol search(Loc loc, Identifier ident, int flags = IgnoreNone)</dt> <dd>
+<p>Search for <code>ident</code> as member of s. </p> <dl>
+<dt>Parameters:</dt>
+<dd><table>
+<tr>
+<td>Loc <code>loc</code>
+</td> <td>location to print for error messages</td>
+</tr> <tr>
+<td>Identifier <code>ident</code>
+</td> <td>identifier to <code>search</code> for</td>
+</tr> <tr>
+<td>int <code>flags</code>
+</td> <td>IgnoreXXXX</td>
+</tr> </table></dd>
+</dl> <dl>
+<dt>Returns:</dt>
+<dd>
+<code>null</code> if not found</dd>
+</dl> </dd> <dt class="d_decl" id="Dsymbol.searchX">final Dsymbol searchX(Loc loc, Scope* sc, RootObject id)</dt> <dd>
+<p>Search for identifier <code>id</code> as a member of 'this'. <code>id</code> may be a template instance. </p> <dl>
+<dt>Returns:</dt>
+<dd>symbol found, NULL if not</dd>
+</dl> </dd> <dt class="d_decl" id="Dsymbol.size">d_uns64 size(Loc loc)</dt> <dd>
+<dl>
+<dt>Returns:</dt>
+<dd>SIZE_INVALID when the <code>size</code> cannot be determined</dd>
+</dl> </dd> <dt class="d_decl" id="Dsymbol.isMember">final AggregateDeclaration isMember()</dt> <dd>
+<p>Returns an AggregateDeclaration when toParent() is that.</p> </dd> <dt class="d_decl" id="Dsymbol.isMember2">final AggregateDeclaration isMember2()</dt> <dd>
+<p>Returns an AggregateDeclaration when toParent2() is that.</p> </dd> <dt class="d_decl" id="Dsymbol.prot">Prot prot()</dt>  <dt class="d_decl" id="Dsymbol.syntaxCopy">Dsymbol syntaxCopy(Dsymbol s)</dt> <dd>
+<p>Copy the syntax. Used for template instantiations. If <code>s</code> is NULL, allocate the new object, otherwise fill it in.</p> </dd> <dt class="d_decl" id="Dsymbol.oneMember">bool oneMember(Dsymbol* ps, Identifier ident)</dt> <dd>
+<p>Determine if this symbol is only one. </p> <dl>
+<dt>Returns:</dt>
+<dd>
+<code>false</code>, *<code>ps</code> = NULL: There are 2 or more symbols <code>true</code>, *<code>ps</code> = NULL: There are zero symbols <code>true</code>, *<code>ps</code> = symbol: The one and only one symbol</dd>
+</dl> </dd> <dt class="d_decl" id="Dsymbol.oneMembers">static bool oneMembers(Dsymbols* members, Dsymbol* ps, Identifier ident)</dt> <dd>
+<p>Same as Dsymbol::oneMember(), but look at an array of Dsymbols.</p> </dd> <dt class="d_decl" id="Dsymbol.hasPointers">bool hasPointers()</dt> <dd>
+<p>Is Dsymbol a variable that contains pointers?</p> </dd> <dt class="d_decl" id="Dsymbol.addComment">void addComment(const(char)* comment)</dt> <dd>
+<p>Add documentation <code>comment</code> to Dsymbol. Ignore NULL comments.</p> </dd> <dt class="d_decl" id="Dsymbol.inNonRoot">final bool inNonRoot()</dt> <dd>
+<p>Returns <code>true</code> if this symbol is defined in a non-root module without instantiation.</p> </dd> <dt class="d_decl" id="Dsymbol.accept">void accept(Visitor v)</dt>  </dl> </dd> <dt class="d_decl" id="ScopeDsymbol">class ScopeDsymbol: ddmd.dsymbol.Dsymbol</dt> <dd>
+<p>Dsymbol that generates a scope</p> <dl>
+<dt class="d_decl" id="ScopeDsymbol.search">Dsymbol search(Loc loc, Identifier ident, int flags = SearchLocalsOnly)</dt> <dd>
+<p>This function is #1 on the list of functions that eat cpu time. Be very, very careful about slowing it down.</p> </dd> <dt class="d_decl" id="ScopeDsymbol.findGetMembers">final FuncDeclaration findGetMembers()</dt> <dd>
+<p>Look for member of the form: const(MemberInfo)[] getMembers(string); Returns NULL if not found</p> </dd> <dt class="d_decl" id="ScopeDsymbol.symtabLookup">Dsymbol symtabLookup(Dsymbol s, Identifier id)</dt> <dd>
+<p>Look up identifier in symbol table.</p> </dd> <dt class="d_decl" id="ScopeDsymbol.hasStaticCtorOrDtor">bool hasStaticCtorOrDtor()</dt> <dd>
+<p>Return <code>true</code> if any of the members are static ctors or static dtors, or if any members have members that are.</p> </dd> <dt class="d_decl" id="ScopeDsymbol.dim">static size_t dim(Dsymbols* members)</dt> <dd>
+<p>Determine number of Dsymbols, folding in AttribDeclaration <code>members</code>.</p> </dd> <dt class="d_decl" id="ScopeDsymbol.getNth">static Dsymbol getNth(Dsymbols* members, size_t nth, size_t* pn = null)</dt> <dd>
+<p>Get <code>nth</code> Dsymbol, folding in AttribDeclaration <code>members</code>. </p> <dl>
+<dt>Returns:</dt>
+<dd>Dsymbol* <code>nth</code> Dsymbol NULL not found, *<code>pn</code> gets incremented by the number of Dsymbols</dd>
+</dl> </dd> <dt class="d_decl" id="ScopeDsymbol._foreach">static int _foreach(Scope* sc, Dsymbols* members, scope ForeachDg dg, size_t* pn = null)</dt> <dd>
+<p>Expands attribute declarations in <code>members</code> in depth first order. Calls <code>dg</code>(size_t symidx, Dsymbol *sym) for each member. If <code>dg</code> returns !=0, stops and returns that value else returns 0. Use this function to avoid the O(N + N^2/2) complexity of calculating dim and calling N times getNth. </p> <dl>
+<dt>Returns:</dt>
+<dd>last value returned by <code>dg</code>()</dd>
+</dl> </dd> </dl> </dd> <dt class="d_decl" id="WithScopeSymbol">class WithScopeSymbol: ddmd.dsymbol.ScopeDsymbol</dt> <dd>
+<p>With statement scope</p> </dd> <dt class="d_decl" id="ArrayScopeSymbol">class ArrayScopeSymbol: ddmd.dsymbol.ScopeDsymbol</dt> <dd>
+<p>Array Index/Slice scope</p> </dd> <dt class="d_decl" id="OverloadSet">class OverloadSet: ddmd.dsymbol.Dsymbol</dt> <dd>
+<p>Overload Sets</p> </dd> <dt class="d_decl" id="ForwardingScopeDsymbol">class ForwardingScopeDsymbol: ddmd.dsymbol.ScopeDsymbol</dt> <dd>
+<p>Forwarding ScopeDsymbol. Used by ForwardingAttribDeclaration and ForwardingScopeDeclaration to forward symbol insertions to another scope. See <code>ddmd.attrib.ForwardingAttribDeclaration</code> for more details.</p> <dl>
+<dt class="d_decl" id="ForwardingScopeDsymbol.forward">ScopeDsymbol forward</dt> <dd>
+<p>Symbol to <code>forward</code> insertions to. Can be <code>null</code> before being lazily initialized.</p> </dd> <dt class="d_decl" id="ForwardingScopeDsymbol.symtabLookup">Dsymbol symtabLookup(Dsymbol s, Identifier id)</dt> <dd>
+<p>This override handles the following two cases: static foreach (i, i; [0]) { ... } and static foreach (i; [0]) { enum i = 2; }</p> </dd> </dl> </dd> <dt class="d_decl" id="DsymbolTable">class DsymbolTable: ddmd.root.rootobject.RootObject</dt> <dd>
+<p>Table of Dsymbol's</p> <dl>
+<dt class="d_decl" id="DsymbolTable.len">const pure uint len()</dt> <dd>
+<dl>
+<dt>Returns:</dt>
+<dd>number of symbols in symbol table</dd>
+</dl> </dd> </dl> </dd> </dl>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 1999–2017 The D Language Foundation<br>Licensed under the Boost License 1.0.<br>
+    <a href="https://dlang.org/phobos/ddmd_dsymbol.html" class="_attribution-link" target="_blank">https://dlang.org/phobos/ddmd_dsymbol.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

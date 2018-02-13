@@ -1,0 +1,151 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>ddmd.attrib - D - W3cubDocs</title>
+  
+  <meta name="description" content=" Compiler implementation of the D programming language. ">
+  <meta name="keywords" content="ddmd, attrib, -, d">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/d/ddmd_attrib/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/d.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/d/" class="_nav-link" title="" style="margin-left:0;">D</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _d">
+				
+<h1>ddmd.attrib</h1>  <p>Compiler implementation of the <a href="http://www.dlang.org" target="_blank">D programming language</a>. </p> <dl>
+<dt>Authors:</dt>
+<dd>
+<a href="http://www.digitalmars.com" target="_blank">Walter Bright</a> </dd>
+</dl> <dl>
+<dt>License:</dt>
+<dd>
+<a href="http://www.boost.org/LICENSE_1_0.txt" target="_blank">Boost License 1.0</a> </dd>
+</dl> <dl>
+<dt>Source:</dt>
+<dd> <a href="https://github.com/dlang/dmd/blob/master/src/ddmd/attrib.d" target="_blank">attrib.d</a>
+</dd>
+</dl> <dl>
+<dt class="d_decl" id="AttribDeclaration">abstract class AttribDeclaration: ddmd.dsymbol.Dsymbol</dt> <dd> <dl>
+<dt class="d_decl" id="AttribDeclaration.createNewScope">static Scope* createNewScope(Scope* sc, StorageClass stc, LINK linkage, CPPMANGLE cppmangle, Prot protection, int explicitProtection, AlignDeclaration aligndecl, PINLINE inlining)</dt> <dd>
+<p>Create a new scope if one or more given attributes are different from the <code>sc</code>'s. If the returned scope != <code>sc</code>, the caller should pop the scope after it used.</p> </dd> <dt class="d_decl" id="AttribDeclaration.newScope">Scope* newScope(Scope* sc)</dt> <dd>
+<p>A hook point to supply scope for members. addMember, setScope, importAll, semantic, semantic2 and semantic3 will use this.</p> </dd> <dt class="d_decl" id="AttribDeclaration.addLocalClass">final void addLocalClass(ClassDeclarations* aclasses)</dt>  </dl> </dd> <dt class="d_decl" id="StorageClassDeclaration">class StorageClassDeclaration: ddmd.attrib.AttribDeclaration</dt>  <dt class="d_decl" id="DeprecatedDeclaration">class DeprecatedDeclaration: ddmd.attrib.StorageClassDeclaration</dt> <dd> <dl>
+<dt class="d_decl" id="DeprecatedDeclaration.newScope">Scope* newScope(Scope* sc)</dt> <dd>
+<p>Provides a new scope with <code>STCdeprecated</code> and <code>Scope.depdecl</code> set </p> <p>Calls <code>StorageClassDeclaration.newScope</code> (as it must be called or copied in any function overriding <code>newScope</code>), then set the <code>Scope</code>'s depdecl. </p> <dl>
+<dt>Returns:</dt>
+<dd>Always a new scope, to use for this <code>DeprecatedDeclaration</code>'s members.</dd>
+</dl> </dd> <dt class="d_decl" id="DeprecatedDeclaration.semantic2">void semantic2(Scope* sc)</dt> <dd>
+<p>Run the DeprecatedDeclaration's <code>semantic2</code> phase then its members. </p> <p> The message set via a <code>DeprecatedDeclaration</code> can be either of: - a string literal - an enum - a static immutable So we need to call ctfe to resolve it. Afterward forwards to the members' <code>semantic2</code>.</p> </dd> </dl> </dd> <dt class="d_decl" id="LinkDeclaration">class LinkDeclaration: ddmd.attrib.AttribDeclaration</dt>  <dt class="d_decl" id="CPPMangleDeclaration">class CPPMangleDeclaration: ddmd.attrib.AttribDeclaration</dt>  <dt class="d_decl" id="ProtDeclaration">class ProtDeclaration: ddmd.attrib.AttribDeclaration</dt> <dd> <dl>
+<dt class="d_decl" id="ProtDeclaration.this">this(Loc loc, Prot p, Dsymbols* decl)</dt> <dd>
+<dl>
+<dt>Parameters:</dt>
+<dd><table>
+<tr>
+<td>Loc <code>loc</code>
+</td> <td>source location of attribute token</td>
+</tr> <tr>
+<td>Prot <code>p</code>
+</td> <td>protection attribute data</td>
+</tr> <tr>
+<td>Dsymbols* <code>decl</code>
+</td> <td>declarations which are affected by this protection attribute</td>
+</tr> </table></dd>
+</dl> </dd> <dt class="d_decl" id="ProtDeclaration.this.2">this(Loc loc, Identifiers* pkg_identifiers, Dsymbols* decl)</dt> <dd>
+<dl>
+<dt>Parameters:</dt>
+<dd><table>
+<tr>
+<td>Loc <code>loc</code>
+</td> <td>source location of attribute token</td>
+</tr> <tr>
+<td>Identifiers* <code>pkg_identifiers</code>
+</td> <td>list of identifiers for a qualified package name</td>
+</tr> <tr>
+<td>Dsymbols* <code>decl</code>
+</td> <td>declarations which are affected by this protection attribute</td>
+</tr> </table></dd>
+</dl> </dd> </dl> </dd> <dt class="d_decl" id="AlignDeclaration">class AlignDeclaration: ddmd.attrib.AttribDeclaration</dt>  <dt class="d_decl" id="AnonDeclaration">class AnonDeclaration: ddmd.attrib.AttribDeclaration</dt>  <dt class="d_decl" id="PragmaDeclaration">class PragmaDeclaration: ddmd.attrib.AttribDeclaration</dt>  <dt class="d_decl" id="ConditionalDeclaration">class ConditionalDeclaration: ddmd.attrib.AttribDeclaration</dt>  <dt class="d_decl" id="StaticIfDeclaration">class StaticIfDeclaration: ddmd.attrib.ConditionalDeclaration</dt> <dd> <dl>
+<dt class="d_decl" id="StaticIfDeclaration.include">Dsymbols* include(Scope* sc, ScopeDsymbol sds)</dt> <dd>
+<p>Different from other AttribDeclaration subclasses, <code>include</code>() call requires the completion of addMember and setScope phases.</p> </dd> </dl> </dd> <dt class="d_decl" id="StaticForeachDeclaration">class StaticForeachDeclaration: ddmd.attrib.AttribDeclaration</dt> <dd>
+<p>Static foreach at declaration scope, like: static foreach (i; [0, 1, 2]){ }</p> <dl>
+<dt class="d_decl" id="StaticForeachDeclaration.sfe">StaticForeach sfe</dt> <dd>
+<p>contains <code>static foreach</code> expansion logic</p> </dd> <dt class="d_decl" id="StaticForeachDeclaration.scopesym">ScopeDsymbol scopesym</dt> <dd>
+<p>cached enclosing scope (mimics <code>static if</code> declaration)</p> </dd> <dt class="d_decl" id="StaticForeachDeclaration.cached">bool cached</dt> <dd>
+<p><code>include</code> can be called multiple times, but a <code>static foreach</code> should be expanded at most once. Achieved by caching the result of the first call. We need both <code>cached</code> and <code>cache</code>, because <code>null</code> is a valid value for <code>cache</code>.</p> </dd> </dl> </dd> <dt class="d_decl" id="ForwardingAttribDeclaration">class ForwardingAttribDeclaration: ddmd.attrib.AttribDeclaration</dt> <dd>
+<p>Collection of declarations that stores foreach index variables in a local symbol table. Other symbols declared within are forwarded to another scope, like: </p> <p>static foreach (i; 0 .. 10) // loop variables for different indices do not conflict. { // this body is expanded into 10 ForwardingAttribDeclarations, where <code>i</code> has storage class STClocal mixin("enum x" ~ to!string(i) ~ " = i"); // ok, can access current loop variable } <br><br> static foreach (i; 0.. 10) { pragma(msg, mixin("x" ~ to!string(i))); // ok, all 10 symbols are visible as they were forwarded to the global scope } <br><br> static assert (!is(typeof(i))); // loop index variable is not visible outside of the static foreach loop <br><br> A StaticForeachDeclaration generates one <code>ForwardingAttribDeclaration</code> for each expansion of its body. The AST of the <code>ForwardingAttribDeclaration</code> contains both the `static foreach<code> variables and the respective copy of the </code>static foreach` body. The functionality is achieved by using a ForwardingScopeDsymbol as the parent symbol for the generated declarations.</p> <dl>
+<dt class="d_decl" id="ForwardingAttribDeclaration.newScope">Scope* newScope(Scope* sc)</dt> <dd>
+<p>Use the ForwardingScopeDsymbol as the parent symbol for members.</p> </dd> <dt class="d_decl" id="ForwardingAttribDeclaration.addMember">void addMember(Scope* sc, ScopeDsymbol sds)</dt> <dd>
+<p>Lazily initializes the scope to forward to.</p> </dd> </dl> </dd> <dt class="d_decl" id="CompileDeclaration">class CompileDeclaration: ddmd.attrib.AttribDeclaration</dt> <dd>
+<p>Mixin declarations, like: mixin("int x");</p> </dd> <dt class="d_decl" id="UserAttributeDeclaration">class UserAttributeDeclaration: ddmd.attrib.AttribDeclaration</dt> <dd>
+<p>User defined attributes look like: @(args, ...)</p> </dd> </dl>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 1999–2017 The D Language Foundation<br>Licensed under the Boost License 1.0.<br>
+    <a href="https://dlang.org/phobos/ddmd_attrib.html" class="_attribution-link" target="_blank">https://dlang.org/phobos/ddmd_attrib.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

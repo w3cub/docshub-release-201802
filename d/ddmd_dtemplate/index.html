@@ -1,0 +1,242 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>ddmd.dtemplate - D - W3cubDocs</title>
+  
+  <meta name="description" content=" Compiler implementation of the D programming language. ">
+  <meta name="keywords" content="ddmd, dtemplate, -, d">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/d/ddmd_dtemplate/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/d.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/d/" class="_nav-link" title="" style="margin-left:0;">D</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _d">
+				
+<h1>ddmd.dtemplate</h1>  <p>Compiler implementation of the <a href="http://www.dlang.org" target="_blank">D programming language</a>. </p> <p>Template implementation. </p> <dl>
+<dt>Authors:</dt>
+<dd>
+<a href="http://www.digitalmars.com" target="_blank">Walter Bright</a> </dd>
+</dl> <dl>
+<dt>License:</dt>
+<dd>
+<a href="http://www.boost.org/LICENSE_1_0.txt" target="_blank">Boost License 1.0</a> </dd>
+</dl> <dl>
+<dt>Source:</dt>
+<dd> <a href="https://github.com/dlang/dmd/blob/master/src/ddmd/dtemplate.d" target="_blank">dtemplate.d</a>
+</dd>
+</dl> <dl>
+<dt class="d_decl" id="isExpression">Expression isExpression(RootObject o)</dt> <dd>
+<p>These functions substitute for dynamic_cast. dynamic_cast does not work on earlier versions of gcc.</p> </dd> <dt class="d_decl" id="isError">bool isError(RootObject o)</dt> <dd>
+<p>Is this Object an error?</p> </dd> <dt class="d_decl" id="arrayObjectIsError">bool arrayObjectIsError(Objects* args)</dt> <dd>
+<p>Are any of the Objects an error?</p> </dd> <dt class="d_decl" id="getType">Type getType(RootObject o)</dt> <dd>
+<p>Try to get arg as a type.</p> </dd> <dt class="d_decl" id="TemplateDeclaration">class TemplateDeclaration: ddmd.dsymbol.ScopeDsymbol</dt> <dd> <dl>
+<dt class="d_decl" id="TemplateDeclaration.overloadInsert">bool overloadInsert(Dsymbol s)</dt> <dd>
+<p>Overload existing TemplateDeclaration 'this' with the new one '<code>s</code>'. Return <code>true</code> if successful; i.e. no conflict.</p> </dd> <dt class="d_decl" id="TemplateDeclaration.evaluateConstraint">bool evaluateConstraint(TemplateInstance ti, Scope* sc, Scope* paramscope, Objects* dedargs, FuncDeclaration fd)</dt> <dd>
+<p>Check to see if constraint is satisfied.</p> </dd> <dt class="d_decl" id="TemplateDeclaration.matchWithInstance">MATCH matchWithInstance(Scope* sc, TemplateInstance ti, Objects* dedtypes, Expressions* fargs, int flag)</dt> <dd>
+<p>Given that <code>ti</code> is an instance of this TemplateDeclaration, deduce the types of the parameters to this, and store those deduced types in <code>dedtypes</code>[]. </p> <dl>
+<dt>Input:</dt>
+<dd> <code>flag</code> 1: don't do semantic() because of dummy types 2: don't change types in matchArg() </dd>
+</dl> <dl>
+<dt>Output:</dt>
+<dd> <code>dedtypes</code> deduced arguments Return match level.</dd>
+</dl> </dd> <dt class="d_decl" id="TemplateDeclaration.leastAsSpecialized">MATCH leastAsSpecialized(Scope* sc, TemplateDeclaration td2, Expressions* fargs)</dt> <dd>
+<p>Determine partial specialization order of 'this' vs <code>td2</code>. </p> <dl>
+<dt>Returns:</dt>
+<dd>match this is at least as specialized as <code>td2</code> 0 <code>td2</code> is more specialized than this</dd>
+</dl> </dd> <dt class="d_decl" id="TemplateDeclaration.deduceFunctionTemplateMatch">MATCH deduceFunctionTemplateMatch(TemplateInstance ti, Scope* sc, ref FuncDeclaration fd, Type tthis, Expressions* fargs)</dt> <dd>
+<p>Match function arguments against a specific template function. </p> <dl>
+<dt>Input:</dt>
+<dd> <code>ti</code> <code>sc</code> instantiation scope <code>fd</code> <code>tthis</code> 'this' argument if !NULL <code>fargs</code> arguments to function </dd>
+</dl> <dl>
+<dt>Output:</dt>
+<dd> <code>fd</code> Partially instantiated function declaration <code>ti</code>.tdtypes Expression/Type deduced template arguments </dd>
+</dl> <dl>
+<dt>Returns:</dt>
+<dd>match level bit 0-3 Match template parameters by inferred template arguments bit 4-7 Match template parameters by initial template arguments</dd>
+</dl> </dd> <dt class="d_decl" id="TemplateDeclaration.declareParameter">RootObject declareParameter(Scope* sc, TemplateParameter tp, RootObject o)</dt> <dd>
+<p>Declare template parameter <code>tp</code> with value <code>o</code>, and install it in the scope <code>sc</code>.</p> </dd> <dt class="d_decl" id="TemplateDeclaration.doHeaderInstantiation">FuncDeclaration doHeaderInstantiation(TemplateInstance ti, Scope* sc2, FuncDeclaration fd, Type tthis, Expressions* fargs)</dt> <dd>
+<p>Limited function template instantiation for using <code>fd</code>.leastAsSpecialized()</p> </dd> <dt class="d_decl" id="TemplateDeclaration.findExistingInstance">TemplateInstance findExistingInstance(TemplateInstance tithis, Expressions* fargs)</dt> <dd>
+<p>Given a new instance <code>tithis</code> of this TemplateDeclaration, see if there already exists an instance. If so, return that existing instance.</p> </dd> <dt class="d_decl" id="TemplateDeclaration.addInstance">TemplateInstance addInstance(TemplateInstance ti)</dt> <dd>
+<p>Add instance <code>ti</code> to TemplateDeclaration's table of instances. Return a handle we can use to later remove it if it fails instantiation.</p> </dd> <dt class="d_decl" id="TemplateDeclaration.removeInstance">void removeInstance(TemplateInstance ti)</dt> <dd>
+<p>Remove TemplateInstance from table of instances. </p> <dl>
+<dt>Input:</dt>
+<dd> handle returned by addInstance()</dd>
+</dl> </dd> <dt class="d_decl" id="TemplateDeclaration.isVariadic">TemplateTupleParameter isVariadic()</dt> <dd>
+<p>Check if the last template parameter is a tuple one, and returns it if so, else returns <code>null</code>. </p> <dl>
+<dt>Returns:</dt>
+<dd>The last template parameter if it's a <code>TemplateTupleParameter</code>
+</dd>
+</dl> </dd> <dt class="d_decl" id="TemplateDeclaration.isOverloadable">bool isOverloadable()</dt> <dd>
+<p>We can overload templates.</p> </dd> </dl> </dd> <dt class="d_decl" id="functionResolve">void functionResolve(Match* m, Dsymbol dstart, Loc loc, Scope* sc, Objects* tiargs, Type tthis, Expressions* fargs)</dt> <dd>
+<p>Given function arguments, figure out which template function to expand, and return matching result. </p> <dl>
+<dt>Input:</dt>
+<dd> <code>m</code> matching result <code>dstart</code> the root of overloaded function templates <code>loc</code> instantiation location <code>sc</code> instantiation scope <code>tiargs</code> initial list of template arguments <code>tthis</code> if !NULL, the 'this' pointer argument <code>fargs</code> arguments to function</dd>
+</dl> </dd> <dt class="d_decl" id="TemplateParameter">abstract class TemplateParameter</dt> <dd> <dl>
+<dt class="d_decl" id="TemplateParameter.matchArg">MATCH matchArg(Loc instLoc, Scope* sc, Objects* tiargs, size_t i, TemplateParameters* parameters, Objects* dedtypes, Declaration* psparam)</dt> <dd>
+<p>Match to a particular TemplateParameter. </p> <dl>
+<dt>Input:</dt>
+<dd> <code>instLoc</code> location that the template is instantiated. <code>tiargs</code>[] actual arguments to template instance <code>i</code> <code>i</code>'th argument <code>parameters</code>[] template <code>parameters</code> <code>dedtypes</code>[] deduced arguments to template instance *<code>psparam</code> set to symbol declared and initialized to <code>dedtypes</code>[<code>i</code>]</dd>
+</dl> </dd> </dl> </dd> <dt class="d_decl" id="TemplateTypeParameter">class TemplateTypeParameter: ddmd.dtemplate.TemplateParameter</dt> <dd>
+<dl>
+<dt>Syntax:</dt>
+<dd> ident : specType = defaultType</dd>
+</dl> </dd> <dt class="d_decl" id="TemplateThisParameter">class TemplateThisParameter: ddmd.dtemplate.TemplateTypeParameter</dt> <dd>
+<dl>
+<dt>Syntax:</dt>
+<dd> this ident : specType = defaultType</dd>
+</dl> </dd> <dt class="d_decl" id="TemplateValueParameter">class TemplateValueParameter: ddmd.dtemplate.TemplateParameter</dt> <dd>
+<dl>
+<dt>Syntax:</dt>
+<dd> valType ident : specValue = defaultValue</dd>
+</dl> </dd> <dt class="d_decl" id="TemplateAliasParameter">class TemplateAliasParameter: ddmd.dtemplate.TemplateParameter</dt> <dd>
+<dl>
+<dt>Syntax:</dt>
+<dd> specType ident : specAlias = defaultAlias</dd>
+</dl> </dd> <dt class="d_decl" id="TemplateTupleParameter">class TemplateTupleParameter: ddmd.dtemplate.TemplateParameter</dt> <dd>
+<dl>
+<dt>Syntax:</dt>
+<dd> ident ...</dd>
+</dl> </dd> <dt class="d_decl" id="TemplateInstance">class TemplateInstance: ddmd.dsymbol.ScopeDsymbol</dt> <dd>
+<dl>
+<dt>Given:</dt>
+<dd> foo!(args) =&gt; name = foo tiargs = args</dd>
+</dl> <dl>
+<dt class="d_decl" id="TemplateInstance.this">final this(Loc loc, TemplateDeclaration td, Objects* tiargs)</dt> <dd>
+<p>This constructor is only called when we figured out which function template to instantiate.</p> </dd> <dt class="d_decl" id="TemplateInstance.printInstantiationTrace">final void printInstantiationTrace()</dt> <dd>
+<p>Given an error instantiating the TemplateInstance, give the nested TemplateInstance instantiations that got us here. Those are a list threaded into the nested scopes.</p> </dd> <dt class="d_decl" id="TemplateInstance.getIdent">final Identifier getIdent()</dt> <dd>
+<p>Lazily generate identifier for template instance. This is because 75% of the ident's are never needed.</p> </dd> <dt class="d_decl" id="TemplateInstance.compare">final int compare(RootObject o)</dt> <dd>
+<p>Compare proposed template instantiation with existing template instantiation. Note that this is not commutative because of the auto ref check. </p> <dl>
+<dt>Parameters:</dt>
+<dd><table>
+<tr>
+<td>this</td> <td>proposed template instantiation</td>
+</tr> <tr>
+<td>RootObject <code>o</code>
+</td> <td>existing template instantiation</td>
+</tr> </table></dd>
+</dl> <dl>
+<dt>Returns:</dt>
+<dd>0 for match, 1 for no match</dd>
+</dl> </dd> <dt class="d_decl" id="TemplateInstance.needsCodegen">final bool needsCodegen()</dt> <dd>
+<p>Returns <code>true</code> if this is not instantiated in non-root module, and is a part of non-speculative instantiatiation. </p> <dl>
+<dt>Note:</dt>
+<dd> minst does not stabilize until semantic analysis is completed, so don't call this function during semantic analysis to return precise result.</dd>
+</dl> </dd> <dt class="d_decl" id="TemplateInstance.findTempDecl">final bool findTempDecl(Scope* sc, WithScopeSymbol* pwithsym)</dt> <dd>
+<p>Find template declaration corresponding to template instance. </p> <dl>
+<dt>Returns:</dt>
+<dd>
+<code>false</code> if finding fails. </dd>
+</dl> <dl>
+<dt>Note:</dt>
+<dd> This function is reentrant against error occurrence. If returns <code>false</code>, any members of this object won't be modified, and repetition call will reproduce same error.</dd>
+</dl> </dd> <dt class="d_decl" id="TemplateInstance.updateTempDecl">final bool updateTempDecl(Scope* sc, Dsymbol s)</dt> <dd>
+<p>Confirm <code>s</code> is a valid template, then store it. </p> <dl>
+<dt>Input:</dt>
+<dd> <code>sc</code> <code>s</code> candidate symbol of template. It may be: TemplateDeclaration FuncDeclaration with findTemplateDeclRoot() != NULL OverloadSet which contains candidates </dd>
+</dl> <dl>
+<dt>Returns:</dt>
+<dd>
+<code>true</code> if updating succeeds.</dd>
+</dl> </dd> <dt class="d_decl" id="TemplateInstance.semanticTiargs">static bool semanticTiargs(Loc loc, Scope* sc, Objects* tiargs, int flags)</dt> <dd>
+<p>Run semantic of <code>tiargs</code> as arguments of template. </p> <dl>
+<dt>Input:</dt>
+<dd> <code>loc</code> <code>sc</code> <code>tiargs</code> array of template arguments <code>flags</code> 1: replace const variables with their initializers 2: don't devolve Parameter to Type </dd>
+</dl> <dl>
+<dt>Returns:</dt>
+<dd>
+<code>false</code> if one or more arguments have errors.</dd>
+</dl> </dd> <dt class="d_decl" id="TemplateInstance.semanticTiargs.2">final bool semanticTiargs(Scope* sc)</dt> <dd>
+<p>Run semantic on the elements of tiargs. </p> <dl>
+<dt>Input:</dt>
+<dd> <code>sc</code> </dd>
+</dl> <dl>
+<dt>Returns:</dt>
+<dd>
+<code>false</code> if one or more arguments have errors. </dd>
+</dl> <dl>
+<dt>Note:</dt>
+<dd> This function is reentrant against error occurrence. If returns <code>false</code>, all elements of tiargs won't be modified.</dd>
+</dl> </dd> <dt class="d_decl" id="TemplateInstance.needsTypeInference">final bool needsTypeInference(Scope* sc, int flag = 0)</dt> <dd>
+<p>Determine if template instance is really a template function, and that template function needs to infer types from the function arguments. </p> <p>Like findBestMatch, iterate possible template candidates, but just looks only the necessity of type inference.</p> </dd> <dt class="d_decl" id="TemplateInstance.hasNestedArgs">final bool hasNestedArgs(Objects* args, bool isstatic)</dt> <dd>
+<p>Determines if a TemplateInstance will need a nested generation of the TemplateDeclaration. Sets enclosing property if so, and returns != 0;</p> </dd> <dt class="d_decl" id="TemplateInstance.appendToModuleMember">final Dsymbols* appendToModuleMember()</dt> <dd>
+<p>Append 'this' to the specific module members[]</p> </dd> <dt class="d_decl" id="TemplateInstance.declareParameters">final void declareParameters(Scope* sc)</dt> <dd>
+<p>Declare parameters of template instance, initialize them with the template instance arguments.</p> </dd> <dt class="d_decl" id="TemplateInstance.genIdent">final Identifier genIdent(Objects* args)</dt> <dd>
+<p>This instance needs an identifier for name mangling purposes. Create one by taking the template declaration name and adding the type signature for it.</p> </dd> </dl> </dd> <dt class="d_decl" id="unSpeculative">void unSpeculative(Scope* sc, RootObject o)</dt> <dd>
+<p>IsExpression can evaluate the specified type speculatively, and even if it instantiates any symbols, they are normally unnecessary for the final executable. However, if those symbols leak to the actual code, compiler should remark them as non-speculative to generate their code and link to the final executable.</p> </dd> <dt class="d_decl" id="definitelyValueParameter">bool definitelyValueParameter(Expression e)</dt> <dd>
+<p>Return <code>true</code> if <code>e</code> could be valid only as a template value parameter. Return <code>false</code> if it might be an alias or tuple. (Note that even in this case, it could still turn out to be a value).</p> </dd> <dt class="d_decl" id="TemplateMixin">class TemplateMixin: ddmd.dtemplate.TemplateInstance</dt>  <dt class="d_decl" id="TemplateInstanceBox">struct TemplateInstanceBox</dt> <dd>
+<p>This struct is needed for TemplateInstance to be the key in an associative array. Fixing https://issues.dlang.org/show_bug.cgi?id=15812 and </p> <dl>
+<dt>https:</dt>
+<dd> //issues.dlang.org/show_bug.cgi?id=15813 would make it unnecessary.</dd>
+</dl> </dd> </dl>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 1999–2017 The D Language Foundation<br>Licensed under the Boost License 1.0.<br>
+    <a href="https://dlang.org/phobos/ddmd_dtemplate.html" class="_attribution-link" target="_blank">https://dlang.org/phobos/ddmd_dtemplate.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

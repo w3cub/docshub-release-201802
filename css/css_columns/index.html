@@ -1,0 +1,101 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>CSS Columns - CSS - W3cubDocs</title>
+  
+  <meta name="description" content="The CSS Multi-column Layout standard is a CSS module that adds support for multi-column layouts to CSS. This module makes it easier and more &hellip;">
+  <meta name="keywords" content="css, columns, -">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/css/css_columns/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/css.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/css/" class="_nav-link" title="" style="margin-left:0;">CSS</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _mdn">
+				
+<h1>CSS Columns</h1> <p>The <strong>CSS Multi-column Layout</strong> standard is a CSS module that adds support for multi-column layouts to CSS. This module makes it easier and more reliable than ever to produce columnar layouts without having to hand-code complicated and fragile structures. Support is included for establishing the number of columns in a layout, as well as how content should flow from column to column, gap sizes, column dividing lines (known as column rules), and so forth.</p> <h2 id="Multi-column_layout_basics">Multi-column layout basics</h2> <p>The three key properties used to produce the layout of columns in CSS are <a href="../column-count/"><code>column-count</code></a>, <a href="../column-width/"><code>column-width</code></a>, and <a href="../column-gap/"><code>column-gap</code></a>. Other properties provide ways to fine-tune details of how things are organized and rendered within the layout structure built using those properties, but the job of figuring out what goes where is generally handled by these four.</p> <h3 id="Suggesting_the_number_of_columns_and_their_widths">Suggesting the number of columns and their widths</h3> <p>The first two properties, <code>column-count</code> and <code>column-width</code>, are both the most important and the most potentially misleading. It's important to understand that:</p> <ul> <li>The <a href="../column-count/"><code>column-count</code></a> property specifies a <em>maximum</em> number of columns to use to render the text. The browser will consider the amount of horizontal space available, the value of <code>column-width</code>, and the value of <code>column-gap</code>, then draw the largest number of columns across that it can fit into the available space.</li> <li>The <a href="../column-width/"><code>column-width</code></a> property specifies a <em>minimum</em> column width, given a <a href="../length/"><code>&lt;length&gt;</code></a> value. Each column the browser creates will be at least this wide, but may be wider. After determining the number of columns that it will draw, any remaining horizontal space may be divided up by the browser among the columns and added to their widths.</li> </ul> <p>In a way, then, they're more like recommendations than hard and fast rules. And this makes sense once you consider the logic of it; this allows multi-column layouts to be responsive and adaptive to the screen width, while also supporting the overall layout of the page and the intent of the author. As the width of the containing space (or the screen) shrinks, the browser will reduce the number of columns it creates, adjusting the remaining columns' widths to ensure that the overall width is as expected.</p> <p>The other thing you can control is the distance between the columns, known as the column gap. The column gap can be controlled using the <a href="../column-gap/"><code>column-gap</code></a> property. By convention, the default gap is <code>1em</code>, but this may or may not be the case in any given browser, so if it matters to you, explicitly set it. The column gap, unlike the column count and width, doesn't get adjusted by the browser as it tries to fit the content into the available space.</p> <p>Take a look at the example below, in which you can use the range control at the top to adjust the width of the columns' containing element.</p>  <p><iframe class="live-sample-frame sample-code-frame" width="650" height="800" id="frame_Suggesting_the_number_of_columns_and_their_widths" src="https://mdn.mozillademos.org/en-US/docs/Web/CSS/CSS_Columns%24samples/Suggesting_the_number_of_columns_and_their_widths?revision=1322916" frameborder="0"></iframe></p> <h3 id="Text_wrapping_in_multi-column_layouts">Text wrapping in multi-column layouts</h3> <p>The <a href="../column-fill/"><code>column-fill</code></a> property also affects layout. By default, the browser will create as many appropriately-sized columns as it can, then balance the contents across them so that each column is approximately the same length. If, however, you prefer to have the browser fill the first column to its maximum height before moving on to the next column, you can set <code>column-fill</code> to <code>auto</code> (instead of the default, <code>balance</code>).</p> <p>If there is no constraint on the column height, however, there will only be one column created, as it will never reach its maximum height to trigger wrapping to the second column, so be sure to either place your columns inside a container which constrains their height, either by using <a href="../height/"><code>height</code></a> or <a href="../max-height/"><code>max-height</code></a>.</p> <div class="note"> <p>While the CSS specification defines the <a href="../break-before/"><code>break-before</code></a>, <a href="../break-after/"><code>break-after</code></a>, and <a href="../break-inside/"><code>break-inside</code></a> properties to help control wrapping of elements across region, column, or page boundaries, these properties are generally not implemented widely enough to use in real-world code at this time.</p> </div> <h3 id="Column_appearance">Column appearance</h3> <p>You can specify that a column rule—a dividing line drawn in the center of each column gap—be drawn between each column in the rendered output of your layout by using the <a href="../column-rule-style/"><code>column-rule-style</code></a>, <a href="../column-rule-width/"><code>column-rule-width</code></a>, and <a href="../column-rule-color/"><code>column-rule-color</code></a> properties, or the shorthand property <a href="../column-rule/"><code>column-rule</code></a>.</p> <h2 id="Reference">Reference</h2> <h3 id="CSS_properties">CSS properties</h3> <div class="index"> <ul> <li><a href="../break-after/"><code>break-after</code></a></li> <li><a href="../break-before/"><code>break-before</code></a></li> <li><a href="../break-inside/"><code>break-inside</code></a></li> <li><a href="../column-count/"><code>column-count</code></a></li> <li><a href="../column-fill/"><code>column-fill</code></a></li> <li><a href="../column-gap/"><code>column-gap</code></a></li> <li><a href="../column-rule/"><code>column-rule</code></a></li> <li><a href="../column-rule-color/"><code>column-rule-color</code></a></li> <li><a href="../column-rule-style/"><code>column-rule-style</code></a></li> <li><a href="../column-rule-width/"><code>column-rule-width</code></a></li> <li><a href="../column-span/"><code>column-span</code></a></li> <li><a href="../column-width/"><code>column-width</code></a></li> <li><a href="../columns/"><code>columns</code></a></li> </ul> </div> <h2 id="Guides">Guides</h2> <dl> <dt><a href="../css_columns/using_multi-column_layouts/">Using CSS multi-column layouts</a></dt> <dd>Step-by-step tutorial about how to build layouts using several columns.</dd> </dl> <h2 id="Specifications">Specifications</h2> <div class="_table"><table class="standard-table"> <thead> <tr> <th scope="col">Specification</th> <th scope="col">Status</th> <th scope="col">Comment</th> </tr> </thead> <tbody> <tr> <td><a href="https://drafts.csswg.org/css-multicol-1/" hreflang="en" target="_blank">CSS Multi-column Layout Module</a></td> <td><span class="spec-CR">Candidate Recommendation</span></td> <td>Initial definition</td> </tr> </tbody> </table></div> <h2 id="Browser_compatibility">Browser compatibility</h2>   <div class="_table"><table class="compat-table"> <tbody> <tr> <th>Feature</th> <th>Chrome</th> <th>Firefox (Gecko)</th> <th>Internet Explorer</th> <th>Opera</th> <th>Safari (WebKit)</th> </tr> <tr> <td>Basic support</td> <td>
+<span style="color: #888;">(Yes)</span> <span class="inlineIndicator prefixBox prefixBoxInline"><a href="https://developer.mozilla.org/en-US/docs/Web/Guide/Prefixes" target="_blank">-webkit</a></span>
+</td> <td>
+<a href="https://developer.mozilla.org/en-US/Firefox/Releases/9" target="_blank">9</a> (9)<span class="inlineIndicator prefixBox prefixBoxInline"><a href="https://developer.mozilla.org/en-US/docs/Web/Guide/Prefixes" target="_blank">-moz</a></span><br> <a href="https://developer.mozilla.org/en-US/Firefox/Releases/52" target="_blank">52</a> (52)</td> <td>10</td> <td>11.10<br> 15<span class="inlineIndicator prefixBox prefixBoxInline"><a href="https://developer.mozilla.org/en-US/docs/Web/Guide/Prefixes" target="_blank">-webkit</a></span>
+</td> <td>3.0 (522)<span class="inlineIndicator prefixBox prefixBoxInline"><a href="https://developer.mozilla.org/en-US/docs/Web/Guide/Prefixes" target="_blank">-webkit</a></span>
+</td> </tr> </tbody> </table></div>   <div class="_table"><table class="compat-table"> <tbody> <tr> <th>Feature</th> <th>Android</th> <th>Firefox Mobile (Gecko)</th> <th>IE Phone</th> <th>Opera Mobile</th> <th>Safari Mobile</th> </tr> <tr> <td>Basic support</td> <td>2.1<span class="inlineIndicator prefixBox prefixBoxInline"><a href="https://developer.mozilla.org/en-US/docs/Web/Guide/Prefixes" target="_blank">-webkit</a></span>
+</td> <td>22.0 (22)<span class="inlineIndicator prefixBox prefixBoxInline"><a href="https://developer.mozilla.org/en-US/docs/Web/Guide/Prefixes" target="_blank">-moz</a></span><br> 52.0 (52)</td> <td>10</td> <td>11.5<br> 32<span class="inlineIndicator prefixBox prefixBoxInline"><a href="https://developer.mozilla.org/en-US/docs/Web/Guide/Prefixes" target="_blank">-webkit</a></span>
+</td> <td>3.2<span class="inlineIndicator prefixBox prefixBoxInline"><a href="https://developer.mozilla.org/en-US/docs/Web/Guide/Prefixes" target="_blank">-webkit</a></span>
+</td> </tr> </tbody> </table></div>  <h2 id="See_also">See also</h2> <p>Other CSS layout technologies include:</p> <ul> <li>
+<a href="../css_flexible_box_layout/">CSS Flexible box layout</a> (CSS flexbox)</li> <li><a href="../css_grid_layout/">CSS Grid layout</a></li> </ul>
+<div class="_attribution">
+  <p class="_attribution-p">
+    <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Columns%24edit" class="_attribution-link" target="_blank">Edit this page on MDN</a>
+  </p>
+</div>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2005–2018 Mozilla Developer Network and individual contributors.<br>Licensed under the Creative Commons Attribution-ShareAlike License v2.5 or later.<br>
+    <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Columns" class="_attribution-link" target="_blank">https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Columns</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

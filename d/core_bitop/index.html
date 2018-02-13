@@ -1,0 +1,268 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>core.bitop - D - W3cubDocs</title>
+  
+  <meta name="description" content=" This module contains a collection of bit-level operations. ">
+  <meta name="keywords" content="core, bitop, -, d">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/d/core_bitop/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/d.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/d/" class="_nav-link" title="" style="margin-left:0;">D</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _d">
+				
+<h1>core.bitop</h1>  <p>This module contains a collection of bit-level operations. </p>
+<dl>
+<dt>License:</dt>
+<dd>
+<a href="http://www.boost.org/LICENSE_1_0.txt" target="_blank">Boost License 1.0</a> </dd>
+</dl> <dl>
+<dt>Authors:</dt>
+<dd>Don Clugston, Sean Kelly, Walter Bright, Alex Rønne Petersen, Thomas Stuart Bockman </dd>
+</dl> <dl>
+<dt>Source</dt>
+<dd> <a href="https://github.com/dlang/druntime/blob/master/src/core/bitop.d" target="_blank">core/bitop.d</a>
+</dd>
+</dl> <dl>
+<dt class="d_decl" id="bsf">pure nothrow @nogc @safe int bsf(uint v)<br>pure nothrow @nogc @safe int bsf(ulong v)</dt> <dd>
+<p>Scans the bits in <code>v</code> starting with bit 0, looking for the first set bit. </p>
+<dl>
+<dt>Returns:</dt>
+<dd>The bit number of the first bit set. The return value is undefined if <code>v</code> is zero.</dd>
+</dl> <dl>
+<dt>Examples:</dt>
+<dd>
+<pre data-language="d">assert(bsf(0x21) == 0);
+assert(bsf(ulong.max &lt;&lt; 39) == 39);
+</pre> </dd>
+</dl> </dd> <dt class="d_decl" id="bsr">pure nothrow @nogc @safe int bsr(uint v)<br>pure nothrow @nogc @safe int bsr(ulong v)</dt> <dd>
+<p>Scans the bits in <code>v</code> from the most significant bit to the least significant bit, looking for the first set bit. </p>
+<dl>
+<dt>Returns:</dt>
+<dd>The bit number of the first bit set. The return value is undefined if <code>v</code> is zero.</dd>
+</dl> <dl>
+<dt>Examples:</dt>
+<dd>
+<pre data-language="d">assert(bsr(0x21) == 5);
+assert(bsr((ulong.max &gt;&gt; 15) - 1) == 48);
+</pre> </dd>
+</dl> </dd> <dt class="d_decl" id="bt">pure nothrow @nogc @system int bt(in size_t* p, size_t bitnum)</dt> <dd>
+<p>Tests the bit. (No longer an intrisic - the compiler recognizes the patterns in the body.)</p>
+<dl>
+<dt>Examples:</dt>
+<dd>
+<pre data-language="d">size_t[2] array;
+
+array[0] = 2;
+array[1] = 0x100;
+
+assert(bt(array.ptr, 1));
+assert(array[0] == 2);
+assert(array[1] == 0x100);
+</pre> </dd>
+</dl> </dd> <dt class="d_decl" id="btc">pure nothrow @nogc @system int btc(size_t* p, size_t bitnum)</dt> <dd>
+<p>Tests and complements the bit.</p> </dd> <dt class="d_decl" id="btr">pure nothrow @nogc @system int btr(size_t* p, size_t bitnum)</dt> <dd>
+<p>Tests and resets (sets to 0) the bit.</p> </dd> <dt class="d_decl" id="bts">pure nothrow @nogc @system int bts(size_t* p, size_t bitnum)</dt> <dd>
+<p>Tests and sets the bit. </p>
+<dl>
+<dt>Parameters:</dt>
+<dd><table>
+<tr>
+<td>size_t* <code>p</code>
+</td> <td>a non-NULL pointer to an array of size_ts.</td>
+</tr> <tr>
+<td>size_t <code>bitnum</code>
+</td> <td>a bit number, starting with bit 0 of <code>p</code>[0], and progressing. It addresses bits like the expression: <pre data-language="d">p[index / (size_t.sizeof*8)] &amp; (1 &lt;&lt; (index &amp; ((size_t.sizeof*8) - 1)))
+</pre> </td>
+</tr> </table></dd>
+</dl> <dl>
+<dt>Returns:</dt>
+<dd>A non-zero value if the bit was set, and a zero if it was clear.</dd>
+</dl> <dl>
+<dt>Examples:</dt>
+<dd>
+<pre data-language="d">size_t[2] array;
+
+array[0] = 2;
+array[1] = 0x100;
+
+assert(btc(array.ptr, 35) == 0);
+if (size_t.sizeof == 8)
+{
+    assert(array[0] == 0x8_0000_0002);
+    assert(array[1] == 0x100);
+}
+else
+{
+    assert(array[0] == 2);
+    assert(array[1] == 0x108);
+}
+
+assert(btc(array.ptr, 35));
+assert(array[0] == 2);
+assert(array[1] == 0x100);
+
+assert(bts(array.ptr, 35) == 0);
+if (size_t.sizeof == 8)
+{
+    assert(array[0] == 0x8_0000_0002);
+    assert(array[1] == 0x100);
+}
+else
+{
+    assert(array[0] == 2);
+    assert(array[1] == 0x108);
+}
+
+assert(btr(array.ptr, 35));
+assert(array[0] == 2);
+assert(array[1] == 0x100);
+</pre> </dd>
+</dl> </dd> <dt class="d_decl" id="BitRange">struct BitRange</dt> <dd>
+<p>Range over bit set. Each element is the bit number that is set. </p>
+<p>This is more efficient than testing each bit in a sparsely populated bit set. Note that the first bit in the bit set would be bit 0.</p> <dl>
+<dt>Examples:</dt>
+<dd>
+<pre data-language="d">import core.stdc.stdlib : malloc, free;
+import core.stdc.string : memset;
+
+// initialize a bit array
+enum nBytes = (100 + BitRange.bitsPerWord - 1) / 8;
+size_t *bitArr = cast(size_t *)malloc(nBytes);
+scope(exit) free(bitArr);
+memset(bitArr, 0, nBytes);
+
+// set some bits
+bts(bitArr, 48);
+bts(bitArr, 24);
+bts(bitArr, 95);
+bts(bitArr, 78);
+
+enum sum = 48 + 24 + 95 + 78;
+
+// iterate
+size_t testSum;
+size_t nBits;
+foreach(b; BitRange(bitArr, 100))
+{
+    testSum += b;
+    ++nBits;
+}
+
+assert(testSum == sum);
+assert(nBits == 4);
+</pre> </dd>
+</dl> <dl>
+<dt class="d_decl" id="BitRange.bitsPerWord">enum ulong bitsPerWord</dt> <dd>
+<p>Number of bits in each size_t</p> </dd> <dt class="d_decl" id="BitRange.this">pure nothrow @nogc @system this(const(size_t)* bitarr, size_t numBits)</dt> <dd>
+<p>Construct a BitRange. </p>
+<dl>
+<dt>Parameters:</dt>
+
+</dl> </dd> <dt class="d_decl" id="BitRange.front">pure nothrow @nogc @safe size_t front()<br>const pure nothrow @nogc @safe bool empty()<br>pure nothrow @nogc @system void popFront()</dt> <dd>
+<p>Range functions</p> </dd> </dl> </dd> <dt class="d_decl" id="bswap">pure nothrow @nogc @safe uint bswap(uint v)</dt> <dd>
+<p>Swaps bytes in a 4 byte uint end-to-end, i.e. byte 0 becomes byte 3, byte 1 becomes byte 2, byte 2 becomes byte 1, byte 3 becomes byte 0.</p> </dd> <dt class="d_decl" id="bswap.2">pure nothrow @nogc @safe ulong bswap(ulong v)</dt> <dd>
+<p>Swaps bytes in an 8 byte ulong end-to-end, i.e. byte 0 becomes byte 7, byte 1 becomes byte 6, etc.</p> </dd> <dt class="d_decl" id="inp">nothrow @nogc @system ubyte inp(uint port_address)<br>nothrow @nogc @system ushort inpw(uint port_address)<br>nothrow @nogc @system uint inpl(uint port_address)</dt> <dd>
+<p>Reads I/O port at <code>port_address</code>.</p> </dd> <dt class="d_decl" id="outp">nothrow @nogc @system ubyte outp(uint port_address, ubyte value)<br>nothrow @nogc @system ushort outpw(uint port_address, ushort value)<br>nothrow @nogc @system uint outpl(uint port_address, uint value)</dt> <dd>
+<p>Writes and returns <code>value</code> to I/O port at <code>port_address</code>.</p> </dd> <dt class="d_decl" id="popcnt">pure nothrow @nogc @safe int popcnt(uint x)<br>pure nothrow @nogc @safe int popcnt(ulong x)</dt> <dd>
+<p>Calculates the number of set bits in an integer.</p> </dd> <dt class="d_decl" id="_popcnt">pure nothrow @nogc @safe ushort _popcnt(ushort x)<br>pure nothrow @nogc @safe int _popcnt(uint x)<br>pure nothrow @nogc @safe int _popcnt(ulong x)</dt> <dd>
+<p>Calculates the number of set bits in an integer using the X86 SSE4 POPCNT instruction. POPCNT is not available on all X86 CPUs.</p> </dd> <dt class="d_decl" id="volatileLoad">nothrow @nogc @safe ubyte volatileLoad(ubyte* ptr)<br>nothrow @nogc @safe ushort volatileLoad(ushort* ptr)<br>nothrow @nogc @safe uint volatileLoad(uint* ptr)<br>nothrow @nogc @safe ulong volatileLoad(ulong* ptr)<br>nothrow @nogc @safe void volatileStore(ubyte* ptr, ubyte value)<br>nothrow @nogc @safe void volatileStore(ushort* ptr, ushort value)<br>nothrow @nogc @safe void volatileStore(uint* ptr, uint value)<br>nothrow @nogc @safe void volatileStore(ulong* ptr, ulong value)</dt> <dd>
+<p>Read/write <code>value</code> from/to the memory location indicated by <code>ptr</code>. </p>
+<p>These functions are recognized by the compiler, and calls to them are guaranteed to not be removed (as dead assignment elimination or presumed to have no effect) or reordered in the same thread. <br><br> These reordering guarantees are only made with regards to other operations done through these functions; the compiler is free to reorder regular loads/stores with regards to loads/stores done through these functions. <br><br> This is useful when dealing with memory-mapped I/O (MMIO) where a store can have an effect other than just writing a <code>value</code>, or where sequential loads with no intervening stores can retrieve different values from the same location due to external stores to the location. <br><br> These functions will, when possible, do the load/store as a single operation. In general, this is possible when the size of the operation is less than or equal to <code>(void*).sizeof</code>, although some targets may support larger operations. If the load/store cannot be done as a single operation, multiple smaller operations will be used. <br><br> These are not to be conflated with atomic operations. They do not guarantee any atomicity. This may be provided by coincidence as a result of the instructions used on the target, but this should not be relied on for portable programs. Further, no memory fences are implied by these functions. They should not be used for communication between threads. They may be used to guarantee a write or read cycle occurs at a specified address.</p> </dd> <dt class="d_decl" id="bitswap">pure nothrow @nogc @safe uint bitswap(uint x)</dt> <dd>
+<p>Reverses the order of bits in a 32-bit integer.</p> </dd> <dt class="d_decl" id="bitswap.2">pure nothrow @nogc @safe ulong bitswap(ulong x)</dt> <dd>
+<p>Reverses the order of bits in a 64-bit integer.</p> </dd> <dt class="d_decl" id="rol">pure T rol(T)(in T value, in uint count)<br>pure T ror(T)(in T value, in uint count)<br>pure T rol(uint count, T)(in T value)<br>pure T ror(uint count, T)(in T value)<br><br>  Constraints:<br>    if (__traits(isIntegral, T) &amp;&amp; __traits(isUnsigned, T))<br>    if (__traits(isIntegral, T) &amp;&amp; __traits(isUnsigned, T))<br>    if (__traits(isIntegral, T) &amp;&amp; __traits(isUnsigned, T))<br>    if (__traits(isIntegral, T) &amp;&amp; __traits(isUnsigned, T))</dt> <dd>
+<p>Bitwise rotate <code>value</code> left (<code>rol</code>) or right (<code>ror</code>) by <code>count</code> bit positions.</p>
+<dl>
+<dt>Examples:</dt>
+<dd>
+<pre data-language="d">ubyte a = 0b10101010U;
+ulong b = ulong.max;
+
+assert(rol(a, 1) == 0b01010101);
+assert(ror(a, 1) == 0b01010101);
+assert(rol(a, 3) == 0b01010101);
+assert(ror(a, 3) == 0b01010101);
+
+assert(rol(a, 0) == a);
+assert(ror(a, 0) == a);
+
+assert(rol(b, 63) == ulong.max);
+assert(ror(b, 63) == ulong.max);
+
+assert(rol!3(a) == 0b01010101);
+assert(ror!3(a) == 0b01010101);
+</pre> </dd>
+</dl> </dd> </dl>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 1999–2017 The D Language Foundation<br>Licensed under the Boost License 1.0.<br>
+    <a href="https://dlang.org/phobos/core_bitop.html" class="_attribution-link" target="_blank">https://dlang.org/phobos/core_bitop.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

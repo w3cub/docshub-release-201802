@@ -1,0 +1,256 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>std.experimental.allocator.typed - D - W3cubDocs</title>
+  
+  <meta name="description" content="This module defines TypedAllocator, a statically-typed allocator that aggregates multiple untyped allocators and uses them depending on the static &hellip;">
+  <meta name="keywords" content="std, experimental, allocator, typed, -, d">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/d/std_experimental_allocator_typed/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/d.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/d/" class="_nav-link" title="" style="margin-left:0;">D</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _d">
+				
+<h1>std.experimental.allocator.typed</h1>  <p>This module defines <code>TypedAllocator</code>, a statically-<code>typed</code> allocator that aggregates multiple untyped allocators and uses them depending on the static properties of the types allocated. For example, distinct allocators may be used for thread-local vs. thread-shared data, or for fixed-size data (<code>struct</code>, <code>class</code> objects) vs. resizable data (arrays). </p> <dl>
+<dt class="d_decl" id="AllocFlag">enum AllocFlag: uint</dt> <dd>
+<p>Allocation-related flags dictated by type characteristics. <code>TypedAllocator</code> deduces these flags from the type being allocated and uses the appropriate allocator accordingly.</p> <dl>
+<dt class="d_decl" id="AllocFlag.fixedSize">fixedSize</dt> <dd>
+<p>Fixed-size allocation (unlikely to get reallocated later). Examples: <code>int</code>, <code>double</code>, any <code>struct</code> or <code>class</code> type. By default it is assumed that the allocation is variable-size, i.e. susceptible to later reallocation (for example all array types). This flag is advisory, i.e. in-place resizing may be attempted for <code>fixedSize</code> allocations and may succeed. The flag is just a hint to the compiler it may use allocation strategies that work well with objects of fixed size.</p> </dd> <dt class="d_decl" id="AllocFlag.hasNoIndirections">hasNoIndirections</dt> <dd>
+<p>The type being allocated embeds no pointers. Examples: <code>int</code>, <code>int[]</code>, <code> Tuple!(int, float)</code>. The implicit conservative assumption is that the type has members with indirections so it needs to be scanned if garbage collected. Example of types with pointers: <code>int*[]</code>, <code>Tuple!(int, string)</code>.</p> </dd> <dt class="d_decl" id="AllocFlag.immutableShared">immutableSharedthreadLocal</dt> <dd>
+<p>By default it is conservatively assumed that allocated memory may be <code>cast</code> to <code>shared</code>, passed across threads, and deallocated in a different thread than the one that allocated it. If that's not the case, there are two options. First, <code>immutableShared</code> means the memory is allocated for <code>immutable</code> data and will be deallocated in the same thread it was allocated in. Second, <code>threadLocal</code> means the memory is not to be shared across threads at all. The two flags cannot be simultaneously present.</p> </dd> </dl> </dd> <dt class="d_decl" id="TypedAllocator">struct TypedAllocator(PrimaryAllocator, Policies...)</dt> <dd>
+<p><code>TypedAllocator</code> acts like a chassis on which several specialized allocators can be assembled. To let the system make a choice about a particular kind of allocation, use <code>Default</code> for the respective parameters. </p>
+<p>There is a hierarchy of allocation kinds. When an allocator is implemented for a given combination of flags, it is used. Otherwise, the next down the list is chosen. <br><br> </p>
+<table>
+
+<br><br> <tr>
+<th scope="col">
+<code>AllocFlag</code> combination</th> <th scope="col">Description</th>
+</tr> <br><br> <tr>
+<td style="text-align:left"><code>AllocFlag.threadLocal | AllocFlag.hasNoIndirections | AllocFlag.fixedSize</code></td> <td>This is the most specific allocation policy: the memory being allocated is thread local, has no indirections at all, and will not be reallocated. Examples of types fitting this description: <code>int</code>, <code>double</code>, <code>Tuple!(int, long)</code>, but not <code>Tuple!(int, string)</code>, which contains an indirection.</td>
+</tr> <br><br> <tr>
+<td style="text-align:left"><code>AllocFlag.threadLocal | AllocFlag.hasNoIndirections</code></td> <td>As above, but may be reallocated later. Examples of types fitting this description are <code>int[]</code>, <code>double[]</code>, <code>Tuple!(int, long)[]</code>, but not <code>Tuple!(int, string)[]</code>, which contains an indirection.</td>
+</tr> <br><br> <tr>
+<td style="text-align:left"><code>AllocFlag.threadLocal</code></td> <td>As above, but may embed indirections. Examples of types fitting this description are <code>int*[]</code>, <code>Object[]</code>, <code>Tuple!(int, string)[]</code>.</td>
+</tr> <br><br> <tr>
+<td style="text-align:left"><code>AllocFlag.immutableShared | AllocFlag.hasNoIndirections | AllocFlag.fixedSize</code></td> <td>The type being allocated is <code>immutable</code> and has no pointers. The thread that allocated it must also deallocate it. Example: <code>immutable(int)</code>.</td>
+</tr> <br><br> <tr>
+<td style="text-align:left"><code>AllocFlag.immutableShared | AllocFlag.hasNoIndirections</code></td> <td>As above, but the type may be appended to in the future. Example: <code>string</code>.</td>
+</tr> <br><br> <tr>
+<td style="text-align:left"><code>AllocFlag.immutableShared</code></td> <td>As above, but the type may embed references. Example: <code>immutable(Object)[]</code>.</td>
+</tr> <br><br> <tr>
+<td style="text-align:left"><code>AllocFlag.hasNoIndirections | AllocFlag.fixedSize</code></td> <td>The type being allocated may be shared across threads, embeds no indirections, and has fixed size.</td>
+</tr> <br><br> <tr>
+<td style="text-align:left"><code>AllocFlag.hasNoIndirections</code></td> <td>The type being allocated may be shared across threads, may embed indirections, and has variable size.</td>
+</tr> <br><br> <tr>
+<td style="text-align:left"><code>AllocFlag.fixedSize</code></td> <td>The type being allocated may be shared across threads, may embed indirections, and has fixed size.</td>
+</tr> <br><br> <tr>
+<td style="text-align:left"><code>0</code></td> <td>The most conservative/general allocation: memory may be shared, deallocated in a different thread, may or may not be resized, and may embed references.</td>
+</tr> </table>  <dl>
+<dt>Parameters:</dt>
+<dd><table>
+<tr>
+<td>PrimaryAllocator</td> <td>The default allocator.</td>
+</tr> <tr>
+<td>Policies</td> <td>Zero or more pairs consisting of an <code>AllocFlag</code> and an allocator type.</td>
+</tr> </table></dd>
+</dl> <dl>
+<dt>Examples:</dt>
+<dd>
+<pre data-language="d">import std.experimental.allocator.gc_allocator : GCAllocator;
+import std.experimental.allocator.mallocator : Mallocator;
+import std.experimental.allocator.mmap_allocator : MmapAllocator;
+alias MyAllocator = TypedAllocator!(GCAllocator,
+    AllocFlag.fixedSize | AllocFlag.threadLocal, Mallocator,
+    AllocFlag.fixedSize | AllocFlag.threadLocal
+            | AllocFlag.hasNoIndirections,
+        MmapAllocator,
+);
+MyAllocator a;
+auto b = &amp;a.allocatorFor!0();
+static assert(is(typeof(*b) == shared GCAllocator));
+enum f1 = AllocFlag.fixedSize | AllocFlag.threadLocal;
+auto c = &amp;a.allocatorFor!f1();
+static assert(is(typeof(*c) == Mallocator));
+enum f2 = AllocFlag.fixedSize | AllocFlag.threadLocal;
+static assert(is(typeof(a.allocatorFor!f2()) == Mallocator));
+// Partial match
+enum f3 = AllocFlag.threadLocal;
+static assert(is(typeof(a.allocatorFor!f3()) == Mallocator));
+
+int* p = a.make!int;
+scope(exit) a.dispose(p);
+int[] arr = a.makeArray!int(42);
+scope(exit) a.dispose(arr);
+assert(a.expandArray(arr, 3));
+assert(a.shrinkArray(arr, 4));
+</pre> </dd>
+</dl> <dl>
+<dt class="d_decl" id="TypedAllocator.allocatorFor">ref auto allocatorFor(uint flags)()<br>ref auto allocatorFor(T)()</dt> <dd>
+<p>Given <code>flags</code> as a combination of <code>AllocFlag</code> values, or a type <code>T</code>, returns the allocator that's a closest fit in capabilities.</p> </dd> <dt class="d_decl" id="TypedAllocator.type2flags">uint type2flags(T)()</dt> <dd>
+<p>Given a type <code>T</code>, returns its allocation-related flags as a combination of <code>AllocFlag</code> values.</p> </dd> <dt class="d_decl" id="TypedAllocator.make">auto make(T, A...)(auto ref A args)</dt> <dd>
+<p>Dynamically allocates (using the appropriate allocator chosen with <code>allocatorFor!T</code>) and then creates in the memory allocated an object of type <code>T</code>, using <code>args</code> (if any) for its initialization. Initialization occurs in the memory allocated and is otherwise semantically the same as <code>T(args)</code>. (Note that using <code>make!(T[])</code> creates a pointer to an (empty) array of <code>T</code>s, not an array. To allocate and initialize an array, use <code>makeArray!T</code> described below.) </p>
+<dl>
+<dt>Parameters:</dt>
+<dd><table>
+<tr>
+<td>T</td> <td>Type of the object being created.</td>
+</tr> <tr>
+<td>A <code>args</code>
+</td> <td>Optional arguments used for initializing the created object. If not present, the object is default constructed.</td>
+</tr> </table></dd>
+</dl> <dl>
+<dt>Returns:</dt>
+<dd>If <code>T</code> is a class type, returns a reference to the created <code>T</code> object. Otherwise, returns a <code>T*</code> pointing to the created object. In all cases, returns <code>null</code> if allocation failed. </dd>
+</dl> <dl>
+<dt>Throws:</dt>
+<dd>If <code>T</code>'s constructor throws, deallocates the allocated memory and propagates the exception.</dd>
+</dl> </dd> <dt class="d_decl" id="TypedAllocator.makeArray">T[] makeArray(T)(size_t length)<br>T[] makeArray(T)(size_t length, auto ref T init)<br>T[] makeArray(T, R)(R range)<br><br>  Constraints:<br>    if (isInputRange!R)</dt> <dd>
+<p>Create an array of <code>T</code> with <code>length</code> elements. The array is either default-initialized, filled with copies of <code>init</code>, or initialized with values fetched from <code>range</code>. </p>
+<dl>
+<dt>Parameters:</dt>
+<dd><table>
+<tr>
+<td>T</td> <td>element type of the array being created</td>
+</tr> <tr>
+<td>size_t <code>length</code>
+</td> <td>
+<code>length</code> of the newly created array</td>
+</tr> <tr>
+<td>T <code>init</code>
+</td> <td>element used for filling the array</td>
+</tr> <tr>
+<td>R <code>range</code>
+</td> <td>
+<code>range</code> used for initializing the array elements</td>
+</tr> </table></dd>
+</dl> <dl>
+<dt>Returns:</dt>
+<dd>The newly-created array, or <code>null</code> if either <code>length</code> was <code>0</code> or allocation failed. </dd>
+</dl> <dl>
+<dt>Throws:</dt>
+<dd>The first two overloads throw only if the used allocator's primitives do. The overloads that involve copy initialization deallocate memory and propagate the exception if the copy operation throws.</dd>
+</dl> </dd> <dt class="d_decl" id="TypedAllocator.expandArray">bool expandArray(T)(ref T[] array, size_t delta)<br>bool expandArray(T)(T[] array, size_t delta, auto ref T init)<br>bool expandArray(T, R)(ref T[] array, R range)<br><br>  Constraints:<br>    if (isInputRange!R)</dt> <dd>
+<p>Grows <code>array</code> by appending <code>delta</code> more elements. The needed memory is allocated using the same allocator that was used for the <code>array</code> type. The extra elements added are either default-initialized, filled with copies of <code>init</code>, or initialized with values fetched from <code>range</code>. </p>
+<dl>
+<dt>Parameters:</dt>
+<dd><table>
+<tr>
+<td>T</td> <td>element type of the <code>array</code> being created</td>
+</tr> <tr>
+<td>T[] <code>array</code>
+</td> <td>a reference to the <code>array</code> being grown</td>
+</tr> <tr>
+<td>size_t <code>delta</code>
+</td> <td>number of elements to add (upon success the new length of <code>array</code> is <code>array.length + delta</code>)</td>
+</tr> <tr>
+<td>T <code>init</code>
+</td> <td>element used for filling the <code>array</code>
+</td>
+</tr> <tr>
+<td>R <code>range</code>
+</td> <td>
+<code>range</code> used for initializing the <code>array</code> elements</td>
+</tr> </table></dd>
+</dl> <dl>
+<dt>Returns:</dt>
+<dd>
+<code>true</code> upon success, <code>false</code> if memory could not be allocated. In the latter case <code>array</code> is left unaffected. </dd>
+</dl> <dl>
+<dt>Throws:</dt>
+<dd>The first two overloads throw only if the used allocator's primitives do. The overloads that involve copy initialization deallocate memory and propagate the exception if the copy operation throws.</dd>
+</dl> </dd> <dt class="d_decl" id="TypedAllocator.shrinkArray">bool shrinkArray(T)(ref T[] arr, size_t delta)</dt> <dd>
+<p>Shrinks an array by <code>delta</code> elements using <code>allocatorFor!(T[])</code>. </p>
+<p>If <code>arr.length &lt; delta</code>, does nothing and returns <code>false</code>. Otherwise, destroys the last <code>arr.length - delta</code> elements in the array and then reallocates the array's buffer. If reallocation fails, fills the array with default-initialized data. </p> <dl>
+<dt>Parameters:</dt>
+<dd><table>
+<tr>
+<td>T</td> <td>element type of the array being created</td>
+</tr> <tr>
+<td>T[] <code>arr</code>
+</td> <td>a reference to the array being shrunk</td>
+</tr> <tr>
+<td>size_t <code>delta</code>
+</td> <td>number of elements to remove (upon success the new length of <code>arr</code> is <code>arr.length - delta</code>)</td>
+</tr> </table></dd>
+</dl> <dl>
+<dt>Returns:</dt>
+<dd>
+<code>true</code> upon success, <code>false</code> if memory could not be reallocated. In the latter case <code>arr[$ - delta .. $]</code> is left with default-initialized elements. </dd>
+</dl> <dl>
+<dt>Throws:</dt>
+<dd>The first two overloads throw only if the used allocator's primitives do. The overloads that involve copy initialization deallocate memory and propagate the exception if the copy operation throws.</dd>
+</dl> </dd> <dt class="d_decl" id="TypedAllocator.dispose">void dispose(T)(T* p)<br>void dispose(T)(T p)<br>void dispose(T)(T[] array)<br><br>  Constraints:<br>    if (is(T == class) || is(T == interface))</dt> <dd>
+<p>Destroys and then deallocates (using <code>allocatorFor!T</code>) the object pointed to by a pointer, the class object referred to by a <code>class</code> or <code>interface</code> reference, or an entire <code>array</code>. It is assumed the respective entities had been allocated with the same allocator.</p> </dd> </dl> </dd> </dl>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 1999–2017 The D Language Foundation<br>Licensed under the Boost License 1.0.<br>
+    <a href="https://dlang.org/phobos/std_experimental_allocator_typed.html" class="_attribution-link" target="_blank">https://dlang.org/phobos/std_experimental_allocator_typed.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

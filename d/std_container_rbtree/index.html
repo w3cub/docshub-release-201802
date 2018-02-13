@@ -1,0 +1,315 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>std.container.rbtree - D - W3cubDocs</title>
+  
+  <meta name="description" content=" This module implements a red-black tree container. ">
+  <meta name="keywords" content="std, container, rbtree, -, d">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/d/std_container_rbtree/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/d.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/d/" class="_nav-link" title="" style="margin-left:0;">D</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _d">
+				
+<h1>std.container.rbtree</h1>  <p>This module implements a red-black tree container. </p>
+<p>This module is a submodule of <a href="../std_container/"><code>std.container</code></a>. </p> <dl>
+<dt>Source</dt>
+<dd> <span class="phobos_src"><a class="https" href="https://github.com/dlang/phobos/blob/master/std/container/rbtree.d" target="_blank">std/container/rbtree.d</a></span> </dd>
+</dl> <dl>
+<dt>License:</dt>
+<dd>Distributed under the Boost Software License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at <a href="http://boost.org/LICENSE_1_0.txt" target="_blank">boost.org/LICENSE_1_0.txt</a>). </dd>
+</dl> <dl>
+<dt>Authors:</dt>
+<dd>Steven Schveighoffer, <a href="http://erdani.com" target="_blank">Andrei Alexandrescu</a>
+</dd>
+</dl> <dl>
+<dt>Examples:</dt>
+<dd>
+<pre data-language="d">import std.algorithm.comparison : equal;
+import std.container.rbtree;
+
+auto rbt = redBlackTree(3, 1, 4, 2, 5);
+writeln(rbt.front); // 1
+assert(equal(rbt[], [1, 2, 3, 4, 5]));
+
+rbt.removeKey(1, 4);
+assert(equal(rbt[], [2, 3, 5]));
+
+rbt.removeFront();
+assert(equal(rbt[], [3, 5]));
+
+rbt.insert([1, 2, 4]);
+assert(equal(rbt[], [1, 2, 3, 4, 5]));
+
+// Query bounds in O(log(n))
+assert(rbt.lowerBound(3).equal([1, 2]));
+assert(rbt.equalRange(3).equal([3]));
+assert(rbt.upperBound(3).equal([4, 5]));
+
+// A Red Black tree with the highest element at front:
+import std.range : iota;
+auto maxTree = redBlackTree!"a &gt; b"(iota(5));
+assert(equal(maxTree[], [4, 3, 2, 1, 0]));
+
+// adding duplicates will not add them, but return 0
+auto rbt2 = redBlackTree(1, 3);
+writeln(rbt2.insert(1)); // 0
+assert(equal(rbt2[], [1, 3]));
+writeln(rbt2.insert(2)); // 1
+
+// however you can allow duplicates
+auto ubt = redBlackTree!true([0, 1, 0, 1]);
+assert(equal(ubt[], [0, 0, 1, 1]));
+</pre> </dd>
+</dl> <dl>
+<dt class="d_decl" id="RedBlackTree">class RedBlackTree(T, alias less = "a &amp;lt<br>b", bool allowDuplicates = false) if (is(typeof(binaryFun!less(T.init, T.init))))</dt> <dd>
+<p>Implementation of a <a href="https://en.wikipedia.org/wiki/Red%E2%80%93black_tree" target="_blank"> red-black tree</a> container. </p>
+<p>All inserts, removes, searches, and any function in general has complexity of <span class="bigoh">Ο(<code>lg(n)</code>)</span>. <br><br> To use a different comparison than <code>"a &lt; b"</code>, pass a different operator string that can be used by <a href="../std_functional/#binaryFun"><code>std.functional.binaryFun</code></a>, or pass in a function, delegate, functor, or any type where <code>less(a, b)</code> results in a <code>bool</code> value. <br><br> Note that less should produce a strict ordering. That is, for two unequal elements <code>a</code> and <code>b</code>, <code>less(a, b) == !less(b, a)</code>. <code>less(a, a)</code> should always equal <code>false</code>. <br><br> If <code>allowDuplicates</code> is set to <code>true</code>, then inserting the same element more than once continues to add more elements. If it is <code>false</code>, duplicate elements are ignored on insertion. If duplicates are allowed, then new elements are inserted after all existing duplicate elements.</p> <dl>
+<dt class="d_decl" id="RedBlackTree.Elem">alias Elem = T</dt> <dd>
+<p>Element type for the tree</p> </dd> <dt class="d_decl" id="RedBlackTree.Range">alias Range = RBRange!(RBNode*)<br>alias ConstRange = RBRange!(const(RBNode)*)<br>alias ImmutableRange = RBRange!(immutable(RBNode)*)</dt> <dd>
+<p>The range types for <code>RedBlackTree</code></p> </dd> <dt class="d_decl" id="RedBlackTree.empty">@property bool empty()</dt> <dd>
+<p>Check if any elements exist in the container. Returns <code>false</code> if at least one element exists.</p> </dd> <dt class="d_decl" id="RedBlackTree.length">const @property size_t length()</dt> <dd>
+<p>Returns the number of elements in the container. </p>
+<dl>
+<dt>Complexity</dt>
+<dd> <span class="bigoh">Ο(<code>1</code>)</span>.</dd>
+</dl> </dd> <dt class="d_decl" id="RedBlackTree.dup">@property RedBlackTree dup()</dt> <dd>
+<p>Duplicate this container. The resulting container contains a shallow copy of the elements. </p>
+<dl>
+<dt>Complexity</dt>
+<dd> <span class="bigoh">Ο(<code>n</code>)</span>
+</dd>
+</dl> </dd> <dt class="d_decl" id="RedBlackTree.opSlice">Range opSlice()<br>const ConstRange opSlice()<br>immutable ImmutableRange opSlice()</dt> <dd>
+<p>Fetch a range that spans all the elements in the container. </p>
+<dl>
+<dt>Complexity</dt>
+<dd> <span class="bigoh">Ο(<code>1</code>)</span>
+</dd>
+</dl> </dd> <dt class="d_decl" id="RedBlackTree.front">Elem front()</dt> <dd>
+<p>The <code>front</code> element in the container </p>
+<dl>
+<dt>Complexity</dt>
+<dd> <span class="bigoh">Ο(<code>1</code>)</span>
+</dd>
+</dl> </dd> <dt class="d_decl" id="RedBlackTree.back">Elem back()</dt> <dd>
+<p>The last element in the container </p>
+<dl>
+<dt>Complexity</dt>
+<dd> <span class="bigoh">Ο(<code>log(n)</code>)</span>
+</dd>
+</dl> </dd> <dt class="d_decl" id="RedBlackTree.opBinaryRight">const bool opBinaryRight(string op)(Elem e)<br><br>  Constraints:<br>    if (op == "in")</dt> <dd>
+<p><code>in</code> operator. Check to see if the given element exists in the container. </p>
+<dl>
+<dt>Complexity</dt>
+<dd> <span class="bigoh">Ο(<code>log(n)</code>)</span>
+</dd>
+</dl> </dd> <dt class="d_decl" id="RedBlackTree.opEquals">bool opEquals(Object rhs)</dt> <dd>
+<p>Compares two trees for equality. </p>
+<dl>
+<dt>Complexity</dt>
+<dd> <span class="bigoh">Ο(<code>n</code>)</span>
+</dd>
+</dl> </dd> <dt class="d_decl" id="RedBlackTree.clear">void clear()</dt> <dd>
+<p>Removes all elements from the container. </p>
+<dl>
+<dt>Complexity</dt>
+<dd> <span class="bigoh">Ο(<code>1</code>)</span>
+</dd>
+</dl> </dd> <dt class="d_decl" id="RedBlackTree.stableInsert">size_t stableInsert(Stuff)(Stuff stuff)<br><br>  Constraints:<br>    if (isImplicitlyConvertible!(Stuff, Elem))</dt> <dd>
+<p>Insert a single element in the container. Note that this does not invalidate any ranges currently iterating the container. </p>
+<dl>
+<dt>Returns:</dt>
+<dd>The number of elements inserted. </dd>
+</dl> <dl>
+<dt>Complexity</dt>
+<dd> <span class="bigoh">Ο(<code>log(n)</code>)</span>
+</dd>
+</dl> </dd> <dt class="d_decl" id="RedBlackTree.stableInsert.2">size_t stableInsert(Stuff)(Stuff stuff)<br>alias insert = stableInsert<br><br>  Constraints:<br>    if (isInputRange!Stuff &amp;&amp; isImplicitlyConvertible!(ElementType!Stuff, Elem))</dt> <dd>
+<p>Insert a range of elements in the container. Note that this does not invalidate any ranges currently iterating the container. </p>
+<dl>
+<dt>Returns:</dt>
+<dd>The number of elements inserted. </dd>
+</dl> <dl>
+<dt>Complexity</dt>
+<dd> <span class="bigoh">Ο(<code>m * log(n)</code>)</span>
+</dd>
+</dl> </dd> <dt class="d_decl" id="RedBlackTree.removeAny">Elem removeAny()</dt> <dd>
+<p>Remove an element from the container and return its value. </p>
+<dl>
+<dt>Complexity</dt>
+<dd> <span class="bigoh">Ο(<code>log(n)</code>)</span>
+</dd>
+</dl> </dd> <dt class="d_decl" id="RedBlackTree.removeFront">void removeFront()</dt> <dd>
+<p>Remove the front element from the container. </p>
+<dl>
+<dt>Complexity</dt>
+<dd> <span class="bigoh">Ο(<code>log(n)</code>)</span>
+</dd>
+</dl> </dd> <dt class="d_decl" id="RedBlackTree.removeBack">void removeBack()</dt> <dd>
+<p>Remove the back element from the container. </p>
+<dl>
+<dt>Complexity</dt>
+<dd> <span class="bigoh">Ο(<code>log(n)</code>)</span>
+</dd>
+</dl> </dd> <dt class="d_decl" id="RedBlackTree.remove">Range remove(Range r)</dt> <dd>
+<p>Removes the given range from the container. </p>
+<dl>
+<dt>Returns:</dt>
+<dd>A range containing all of the elements that were after the given range. </dd>
+</dl> <dl>
+<dt>Complexity</dt>
+<dd> <span class="bigoh">Ο(<code>m * log(n)</code>)</span> (where m is the number of elements in the range)</dd>
+</dl> </dd> <dt class="d_decl" id="RedBlackTree.remove.2">Range remove(Take!Range r)</dt> <dd>
+<p>Removes the given <code>Take!Range</code> from the container </p>
+<dl>
+<dt>Returns:</dt>
+<dd>A range containing all of the elements that were after the given range. </dd>
+</dl> <dl>
+<dt>Complexity</dt>
+<dd> <span class="bigoh">Ο(<code>m * log(n)</code>)</span> (where m is the number of elements in the range)</dd>
+</dl> </dd> <dt class="d_decl" id="RedBlackTree.removeKey">size_t removeKey(U...)(U elems)<br>size_t removeKey(U)(U[] elems)<br>size_t removeKey(Stuff)(Stuff stuff)<br><br>  Constraints:<br>    if (allSatisfy!(isImplicitlyConvertibleToElem, U))<br>    if (isImplicitlyConvertible!(U, Elem))<br>    if (isInputRange!Stuff &amp;&amp; isImplicitlyConvertible!(ElementType!Stuff, Elem) &amp;&amp; !isDynamicArray!Stuff)</dt> <dd>
+<p>Removes elements from the container that are equal to the given values according to the less comparator. One element is removed for each value given which is in the container. If <code>allowDuplicates</code> is <code>true</code>, duplicates are removed only if duplicate values are given. </p>
+<dl>
+<dt>Returns:</dt>
+<dd>The number of elements removed. </dd>
+</dl> <dl>
+<dt>Complexity</dt>
+<dd> <span class="bigoh">Ο(<code>m log(n)</code>)</span> (where m is the number of elements to remove) </dd>
+</dl> <dl>
+<dt>Example</dt>
+
+</dl>
+<pre data-language="d">auto rbt = redBlackTree!true(0, 1, 1, 1, 4, 5, 7);
+rbt.removeKey(1, 4, 7);
+assert(equal(rbt[], [0, 1, 1, 5]));
+rbt.removeKey(1, 1, 0);
+assert(equal(rbt[], [5]));
+</pre>  </dd> <dt class="d_decl" id="RedBlackTree.upperBound">Range upperBound(Elem e)<br>const ConstRange upperBound(Elem e)<br>immutable ImmutableRange upperBound(Elem e)</dt> <dd>
+<p>Get a range from the container with all elements that are &gt; <code>e</code> according to the less comparator </p>
+<dl>
+<dt>Complexity</dt>
+<dd> <span class="bigoh">Ο(<code>log(n)</code>)</span>
+</dd>
+</dl> </dd> <dt class="d_decl" id="RedBlackTree.lowerBound">Range lowerBound(Elem e)<br>const ConstRange lowerBound(Elem e)<br>immutable ImmutableRange lowerBound(Elem e)</dt> <dd>
+<p>Get a range from the container with all elements that are &lt; <code>e</code> according to the less comparator </p>
+<dl>
+<dt>Complexity</dt>
+<dd> <span class="bigoh">Ο(<code>log(n)</code>)</span>
+</dd>
+</dl> </dd> <dt class="d_decl" id="RedBlackTree.equalRange">auto equalRange(this This)(Elem e)</dt> <dd>
+<p>Get a range from the container with all elements that are == <code>e</code> according to the less comparator </p>
+<dl>
+<dt>Complexity</dt>
+<dd> <span class="bigoh">Ο(<code>log(n)</code>)</span>
+</dd>
+</dl> </dd> <dt class="d_decl" id="RedBlackTree.toString">const void toString(scope void delegate(const(char)[]) sink, FormatSpec!char fmt)</dt> <dd>
+<p>Formats the RedBlackTree into a <code>sink</code> function. For more info see <code> std.format.formatValue</code>. Note that this only is available when the element type can be formatted. Otherwise, the default <code>toString</code> from Object is used.</p> </dd> <dt class="d_decl" id="RedBlackTree.this">this(Elem[] elems...)</dt> <dd>
+<p>Constructor. Pass in an array of elements, or individual elements to initialize the tree with.</p> </dd> <dt class="d_decl" id="RedBlackTree.this.2">this(Stuff)(Stuff stuff)<br><br>  Constraints:<br>    if (isInputRange!Stuff &amp;&amp; isImplicitlyConvertible!(ElementType!Stuff, Elem))</dt> <dd>
+<p>Constructor. Pass in a range of elements to initialize the tree with.</p> </dd> <dt class="d_decl" id="RedBlackTree.this.3">this()</dt>  </dl> </dd> <dt class="d_decl" id="redBlackTree">auto redBlackTree(E)(E[] elems...)<br>auto redBlackTree(bool allowDuplicates, E)(E[] elems...)<br>auto redBlackTree(alias less, E)(E[] elems...)<br>auto redBlackTree(alias less, bool allowDuplicates, E)(E[] elems...)<br>auto redBlackTree(Stuff)(Stuff range)<br>auto redBlackTree(bool allowDuplicates, Stuff)(Stuff range)<br>auto redBlackTree(alias less, Stuff)(Stuff range)<br>auto redBlackTree(alias less, bool allowDuplicates, Stuff)(Stuff range)<br><br>  Constraints:<br>    if (is(typeof(binaryFun!less(E.init, E.init))))<br>    if (is(typeof(binaryFun!less(E.init, E.init))))<br>    if (isInputRange!Stuff &amp;&amp; !isArray!Stuff)<br>    if (isInputRange!Stuff &amp;&amp; !isArray!Stuff)<br>    if (is(typeof(binaryFun!less((ElementType!Stuff).init, (ElementType!Stuff).init))) &amp;&amp; isInputRange!Stuff &amp;&amp; !isArray!Stuff)<br>    if (is(typeof(binaryFun!less((ElementType!Stuff).init, (ElementType!Stuff).init))) &amp;&amp; isInputRange!Stuff &amp;&amp; !isArray!Stuff)</dt> <dd>
+<p>Convenience function for creating a <code>RedBlackTree!E</code> from a list of values. </p>
+<dl>
+<dt>Parameters:</dt>
+<dd><table>
+<tr>
+<td>allowDuplicates</td> <td>Whether duplicates should be allowed (optional, default: <code>false</code>)</td>
+</tr> <tr>
+<td>less</td> <td>predicate to sort by (optional)</td>
+</tr> <tr>
+<td>E[] <code>elems</code>
+</td> <td>elements to insert into the rbtree (variadic arguments)</td>
+</tr> <tr>
+<td>Stuff <code>range</code>
+</td> <td>
+<code>range</code> elements to insert into the rbtree (alternative to <code>elems</code>)</td>
+</tr> </table></dd>
+</dl> <dl>
+<dt>Examples:</dt>
+<dd>
+<pre data-language="d">import std.range : iota;
+
+auto rbt1 = redBlackTree(0, 1, 5, 7);
+auto rbt2 = redBlackTree!string("hello", "world");
+auto rbt3 = redBlackTree!true(0, 1, 5, 7, 5);
+auto rbt4 = redBlackTree!"a &gt; b"(0, 1, 5, 7);
+auto rbt5 = redBlackTree!("a &gt; b", true)(0.1, 1.3, 5.9, 7.2, 5.9);
+
+// also works with ranges
+auto rbt6 = redBlackTree(iota(3));
+auto rbt7 = redBlackTree!true(iota(3));
+auto rbt8 = redBlackTree!"a &gt; b"(iota(3));
+auto rbt9 = redBlackTree!("a &gt; b", true)(iota(3));
+</pre> </dd>
+</dl> </dd> </dl>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 1999–2017 The D Language Foundation<br>Licensed under the Boost License 1.0.<br>
+    <a href="https://dlang.org/phobos/std_container_rbtree.html" class="_attribution-link" target="_blank">https://dlang.org/phobos/std_container_rbtree.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>
