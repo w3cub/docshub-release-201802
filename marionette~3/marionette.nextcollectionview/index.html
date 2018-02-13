@@ -1,0 +1,332 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>NextCollectionView - Marionette.js 3 - W3cubDocs</title>
+  
+  <meta name="description" content=" Warning The NextCollectionView API is currently experimental and may change. ">
+  <meta name="keywords" content="marionette, nextcollectionview, -, js, marionette~3">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/marionette~3/marionette.nextcollectionview/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/marionette~3.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/marionette~3/" class="_nav-link" title="" style="margin-left:0;">Marionette.js 3</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _marionette">
+				
+<h1>
+Marionette.NextCollectionView</h1>
+<p><strong>Warning</strong> <em>The NextCollectionView API is currently experimental and may change.</em></p> <p>This NextCollectionView is a possible replacement for the current <a href="../marionette.collectionview/"><code>CollectionView</code></a> in a future version of Marionette. This simplifies the logic flow of the CollectionView as well as normalizes parts of the API. The result is a more performant CollectionView with more consistent behavior. For more information check out <a href="https://medium.com/blog-marionettejs/next-collection-view-d335f5a9736a" target="_blank">our blog post</a> on why this was introduced.</p> <p>The <code>NextCollectionView</code> will loop through all of the models in the specified collection, instantiating a view for each of them using a specified <code>childView</code>, and adding them to the <code>children</code>. It will then sort the <code>children</code> by the <code>viewComparator</code> and filter them by the <code>viewFilter</code>. The <code>el</code> of the child views that pass the filter will be rendered and appended to the collection view's <code>el</code>. By default the <code>NextCollectionView</code> will maintain a sorted collection's order in the DOM. This behavior can be disabled by specifying <code>{sortWithCollection: false}</code> on initialize.</p> <p><code>NextCollectionView</code> has the base functionality provided by the View Mixin.</p> <h2 id="documentation-index">
+Documentation Index</h2>
+<ul> <li>
+<a href="#nextcollectionviews-childview">NextCollectionView's <code>childView</code></a><ul> <li><a href="#nextcollectionviews-childviewoptions">NextCollectionView's <code>childViewOptions</code></a></li> </ul> </li> <li>
+<a href="#nextcollectionviews-emptyview">NextCollectionView's <code>emptyView</code></a><ul> <li><a href="#nextcollectionviews-emptyviewoptions">NextCollectionView's <code>emptyViewOptions</code></a></li> <li><a href="#nextcollectionviews-isempty">NextCollectionView's <code>isEmpty</code></a></li> </ul> </li> <li>
+<a href="#nextcollectionviews-render">NextCollectionView's <code>render</code></a><ul> <li><a href="#automatic-rendering">Automatic Rendering</a></li> <li><a href="#re-render-the-nextcollectionview">Re-render the NextCollectionView</a></li> <li><a href="#nextcollectionviews-attachhtml">NextCollectionView's <code>attachHtml</code></a></li> </ul> </li> <li><a href="#nextcollectionviews-destroy">NextCollectionView's <code>destroy</code></a></li> <li>
+<a href="#events">Events</a><ul> <li><a href="#child-event-bubbling">Child Event Bubbling</a></li> <li><a href="#lifecycle-events">Lifecycle Events</a></li> </ul> </li> <li>
+<a href="#advanced-nextcollectionview-usage">Advanced NextCollectionView Usage</a><ul> <li><a href="#managing-children">Managing Children</a></li> <li><a href="#filtering">Filtering</a></li> <li><a href="#sorting">Sorting</a></li> </ul> </li> </ul> <h2 id="nextcollectionviews-childview">
+NextCollectionView's <code>childView</code>
+</h2>
+<p>Specify a <code>childView</code> in your collection view definition. This must be a Backbone view class definition, not an instance. It can be any <code>Backbone.View</code> or be derived from <code>Marionette.View</code>.</p> <pre data-language="javascript"><span class="hljs-keyword">var</span> Mn = <span class="hljs-built_in">require</span>(<span class="hljs-string">'backbone.marionette'</span>);
+
+<span class="hljs-keyword">var</span> MyChildView = Mn.View.extend({});
+
+Mn.NextCollectionView.extend({
+  <span class="hljs-attr">childView</span>: MyChildView
+});
+</pre> <p>Child views must be defined before they are referenced by the <code>childView</code> attribute in a collection view definition.</p> <p>Alternatively, you can specify a <code>childView</code> in the options for the constructor:</p> <pre data-language="javascript"><span class="hljs-keyword">var</span> Mn = <span class="hljs-built_in">require</span>(<span class="hljs-string">'backbone.marionette'</span>);
+
+<span class="hljs-keyword">var</span> MyNextCollectionView = Mn.NextCollectionView.extend({...});
+
+<span class="hljs-keyword">new</span> MyNextCollectionView({
+  <span class="hljs-attr">childView</span>: MyChildView
+});
+</pre> <p>If you do not specify a <code>childView</code>, an exception will be thrown stating that you must specify a <code>childView</code>.</p> <p>You can also define <code>childView</code> as a function. In this form, the value returned by this method is the <code>ChildView</code> class that will be instantiated when a <code>Model</code> needs to be initially rendered. This method also gives you the ability to customize per <code>Model</code> <code>ChildViews</code>.</p> <pre data-language="javascript"><span class="hljs-keyword">var</span> Bb = <span class="hljs-built_in">require</span>(<span class="hljs-string">'backbone'</span>);
+<span class="hljs-keyword">var</span> Mn = <span class="hljs-built_in">require</span>(<span class="hljs-string">'backbone.marionette'</span>);
+
+<span class="hljs-keyword">var</span> FooBar = Bb.Model.extend({
+  <span class="hljs-attr">defaults</span>: {
+    <span class="hljs-attr">isFoo</span>: <span class="hljs-literal">false</span>
+  }
+});
+
+<span class="hljs-keyword">var</span> FooView = Mn.View.extend({
+  <span class="hljs-attr">template</span>: <span class="hljs-string">'#foo-template'</span>
+});
+<span class="hljs-keyword">var</span> BarView = Mn.View.extend({
+  <span class="hljs-attr">template</span>: <span class="hljs-string">'#bar-template'</span>
+});
+
+<span class="hljs-keyword">var</span> MyNextCollectionView = Mn.NextCollectionView.extend({
+  <span class="hljs-attr">collection</span>: <span class="hljs-keyword">new</span> Bb.Collection(),
+  <span class="hljs-attr">childView</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">item</span>) </span>{
+    <span class="hljs-comment">// Choose which view class to render,</span>
+    <span class="hljs-comment">// depending on the properties of the item model</span>
+    <span class="hljs-keyword">if</span>  (item.get(<span class="hljs-string">'isFoo'</span>)) {
+      <span class="hljs-keyword">return</span> FooView;
+    }
+    <span class="hljs-keyword">else</span> {
+      <span class="hljs-keyword">return</span> BarView;
+    }
+  }
+});
+
+<span class="hljs-keyword">var</span> collectionView = <span class="hljs-keyword">new</span> MyNextCollectionView();
+<span class="hljs-keyword">var</span> foo = <span class="hljs-keyword">new</span> FooBar({
+  <span class="hljs-attr">isFoo</span>: <span class="hljs-literal">true</span>
+});
+<span class="hljs-keyword">var</span> bar = <span class="hljs-keyword">new</span> FooBar({
+  <span class="hljs-attr">isFoo</span>: <span class="hljs-literal">false</span>
+});
+
+<span class="hljs-comment">// Renders a FooView</span>
+collectionView.collection.add(foo);
+
+<span class="hljs-comment">// Renders a BarView</span>
+collectionView.collection.add(bar);
+</pre> <h3 id="nextcollectionviews-childviewoptions">
+NextCollectionView's <code>childViewOptions</code>
+</h3>
+<p>There may be scenarios where you need to pass data from your parent collection view in to each of the childView instances. To do this, provide a <code>childViewOptions</code> definition on your collection view as an object literal. This will be passed to the constructor of your childView as part of the <code>options</code>.</p> <pre data-language="javascript"><span class="hljs-keyword">var</span> Mn = <span class="hljs-built_in">require</span>(<span class="hljs-string">'backbone.marionette'</span>);
+
+<span class="hljs-keyword">var</span> ChildView = Mn.View.extend({
+  <span class="hljs-attr">initialize</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">options</span>) </span>{
+    <span class="hljs-built_in">console</span>.log(options.foo); <span class="hljs-comment">// =&gt; "bar"</span>
+  }
+});
+
+<span class="hljs-keyword">var</span> NextCollectionView = Mn.NextCollectionView.extend({
+  <span class="hljs-attr">childView</span>: ChildView,
+
+  <span class="hljs-attr">childViewOptions</span>: {
+    <span class="hljs-attr">foo</span>: <span class="hljs-string">'bar'</span>
+  }
+});
+</pre> <p>You can also specify the <code>childViewOptions</code> as a function, if you need to calculate the values to return at runtime. The model will be passed into the function should you need access to it when calculating <code>childViewOptions</code>. The function must return an object, and the attributes of the object will be copied to the <code>childView</code> instance's options.</p> <pre data-language="javascript"><span class="hljs-keyword">var</span> Mn = <span class="hljs-built_in">require</span>(<span class="hljs-string">'backbone.marionette'</span>);
+
+<span class="hljs-keyword">var</span> NextCollectionView = Mn.NextCollectionView.extend({
+  <span class="hljs-attr">childViewOptions</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">model</span>) </span>{
+    <span class="hljs-comment">// do some calculations based on the model</span>
+    <span class="hljs-keyword">return</span> {
+      <span class="hljs-attr">foo</span>: <span class="hljs-string">'bar'</span>
+    }
+  }
+});
+</pre> <h2 id="nextcollectionviews-emptyview">
+NextCollectionView's <code>emptyView</code>
+</h2>
+<p>When a collection has no children, and you need to render a view other than the list of childViews, you can specify an <code>emptyView</code> attribute on your collection view. The <code>emptyView</code> just like the <a href="#nextcollectionviews-childview"><code>childView</code></a> can also be passed as an option on instantiation or can be a function that returns the <code>emptyView</code>.</p> <pre data-language="javascript"><span class="hljs-keyword">var</span> Mn = <span class="hljs-built_in">require</span>(<span class="hljs-string">'backbone.marionette'</span>);
+
+<span class="hljs-keyword">var</span> MyEmptyView = Mn.View.extend({
+  <span class="hljs-attr">template</span>: _.template(<span class="hljs-string">'Nothing to display.'</span>)
+});
+
+<span class="hljs-keyword">var</span> MyNextCollectionView = Mn.NextCollectionView.extend({
+  <span class="hljs-comment">// ...</span>
+
+  emptyView: MyEmptyView
+});
+</pre> <h3 id="nextcollectionviews-getemptyregion">
+NextCollectionView's <code>getEmptyRegion</code>
+</h3>
+<p>When a <code>NextCollectionView</code> is instantiated it creates a region for showing the <a href="#nextcollectionviews-emptyview"><code>emptyView</code></a>. This region can be requested using the <code>getEmptyRegion</code> method. The region will share the <code>el</code> with the <code>NextCollectionView</code> and is shown with <a href="../marionette.region/#additional-options"><code>replaceElement: false</code></a>.</p> <p><strong>Note</strong> The <code>NextCollectionView</code> expects to be the only entity managing the region. Showing things in this region directly is not advised.</p> <pre data-language="javascript"><span class="hljs-keyword">const</span> isEmptyShowing = myNextCollectionView.getEmptyRegion().hasView();
+</pre> <h3 id="nextcollectionviews-emptyviewoptions">
+NextCollectionView's <code>emptyViewOptions</code>
+</h3>
+<p>Similar to <a href="#nextcollectionviews-childview"><code>childView</code></a> and <a href="#nextcollectionviews-childviewoptions"><code>childViewOptions</code></a>, there is an <code>emptyViewOptions</code> property that will be passed to the <code>emptyView</code> constructor. It can be provided as an object literal or as a function.</p> <p>If <code>emptyViewOptions</code> aren't provided the <code>NextCollectionView</code> will default to passing the <code>childViewOptions</code> to the <code>emptyView</code>.</p> <pre data-language="javascript"><span class="hljs-keyword">var</span> Mn = <span class="hljs-built_in">require</span>(<span class="hljs-string">'backbone.marionette'</span>);
+
+<span class="hljs-keyword">var</span> EmptyView = Mn.View({
+  <span class="hljs-attr">initialize</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">options</span>)</span>{
+    <span class="hljs-built_in">console</span>.log(options.foo); <span class="hljs-comment">// =&gt; "bar"</span>
+  }
+});
+
+<span class="hljs-keyword">var</span> NextCollectionView = Mn.NextCollectionView({
+  <span class="hljs-attr">emptyView</span>: EmptyView,
+
+  <span class="hljs-attr">emptyViewOptions</span>: {
+    <span class="hljs-attr">foo</span>: <span class="hljs-string">'bar'</span>
+  }
+});
+</pre> <h3 id="nextcollectionviews-isempty">
+NextCollectionView's <code>isEmpty</code>
+</h3>
+<p>If you want to control when the empty view is rendered, you can override <code>isEmpty</code>:</p> <pre data-language="javascript"><span class="hljs-keyword">var</span> Mn = <span class="hljs-built_in">require</span>(<span class="hljs-string">'backbone.marionette'</span>);
+
+<span class="hljs-keyword">var</span> MyNextCollectionView = Mn.NextCollectionView.extend({
+  <span class="hljs-attr">isEmpty</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">allViewsFiltered</span>) </span>{
+    <span class="hljs-comment">// some logic to calculate if the view should be rendered as empty</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.collection.length &lt; <span class="hljs-number">2</span>;
+  }
+});
+</pre> <p>In the normal lifecycle of a <code>NextCollectionView</code>, <code>isEmpty</code> will be called twice. Once when a render begins, and again after the <a href="#filtering"><code>viewFilter</code></a> is run. For the call after filtering, a boolean will be passed indicating if all of the NextCollectionView's <code>children</code> were filtered.</p> <h2 id="nextcollectionviews-render">
+NextCollectionView's <code>render</code>
+</h2>
+<p>The <code>render</code> method of the collection view is responsible for rendering the entire collection. It loops through each of the children in the collection and renders them individually as a <code>childView</code>.</p> <pre data-language="javascript"><span class="hljs-keyword">var</span> Mn = <span class="hljs-built_in">require</span>(<span class="hljs-string">'backbone.marionette'</span>);
+
+<span class="hljs-keyword">var</span> MyNextCollectionView = Mn.NextCollectionView.extend({...});
+
+<span class="hljs-comment">// all of the children views will now be rendered.</span>
+<span class="hljs-keyword">new</span> MyNextCollectionView().render();
+</pre> <h3 id="automatic-rendering">
+Automatic Rendering</h3>
+<p>After the initial render the collection view binds to the <code>update</code> and <code>reset</code> events of the collection that is specified.</p> <p>When the collection for the view is "reset", the view will call <code>render</code> on itself and re-render the entire collection.</p> <p>When a model is added to the collection, the collection view will render that one model into the children.</p> <p>When a model is removed from a collection (or destroyed / deleted), the collection view will destroy and remove that model's child view.</p> <p>When the collection for the view is sorted, the view will automatically re-sort its child views unless the <code>sortWithCollection</code> attribute on the NextCollectionView is set to <code>false</code>.</p> <pre data-language="javascript"><span class="hljs-keyword">var</span> Bb = <span class="hljs-built_in">require</span>(<span class="hljs-string">'backbone'</span>);
+<span class="hljs-keyword">var</span> Mn = <span class="hljs-built_in">require</span>(<span class="hljs-string">'backbone.marionette'</span>);
+
+<span class="hljs-keyword">var</span> collection = <span class="hljs-keyword">new</span> Bb.Collection();
+
+<span class="hljs-keyword">var</span> MyChildView = Mn.View.extend({
+  <span class="hljs-attr">template</span>: _.noop
+});
+
+<span class="hljs-keyword">var</span> MyNextCollectionView = Mn.NextCollectionView.extend({
+  <span class="hljs-attr">childView</span>: MyChildView,
+  <span class="hljs-attr">collection</span>: collection,
+});
+
+<span class="hljs-keyword">var</span> myNextCollectionView = <span class="hljs-keyword">new</span> MyNextCollectionView();
+
+<span class="hljs-comment">// Collection view will not re-render as it has not been rendered</span>
+collection.reset([{<span class="hljs-attr">foo</span>: <span class="hljs-string">'foo'</span>}]);
+
+myNextCollectionView.render();
+
+<span class="hljs-comment">// Collection view will re-render displaying the new model</span>
+collection.reset([{<span class="hljs-attr">foo</span>: <span class="hljs-string">'bar'</span>}]);
+</pre> <h3 id="re-render-the-nextcollectionview">
+Re-render the NextCollectionView</h3>
+<p>If you need to re-render the entire collection, you can call the <code>view.render</code> method. This method takes care of destroying all of the child views that may have previously been opened.</p> <h3 id="nextcollectionviews-attachhtml">
+NextCollectionView's <code>attachHtml</code>
+</h3>
+<p>By default the <code>NextCollectionView</code> will append the HTML of each ChildView into the element buffer, and then calls the DOM API's <a href="../dom.api/#appendcontentsel-contents">appendContents</a> once at the end to move the HTML into the collection view's <code>el</code>.</p> <p>You can override this by specifying an <code>attachHtml</code> method in your view definition. This method takes one parameter and has no return value.</p> <pre data-language="javascript"><span class="hljs-keyword">var</span> Mn = <span class="hljs-built_in">require</span>(<span class="hljs-string">'backbone.marionette'</span>);
+
+Mn.NextCollectionView.extend({
+
+  <span class="hljs-comment">// The default implementation:</span>
+  attachHtml: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">els</span>)</span>{
+    <span class="hljs-keyword">this</span>.Dom.appendContents(<span class="hljs-keyword">this</span>.el, els);
+  }
+
+});
+</pre> <p>The first parameter is the instance of the NextCollectionView that will receive the HTML from the second parameter, the HTML buffer.</p> <h2 id="nextcollectionviews-destroy">
+NextCollectionView's <code>destroy</code>
+</h2>
+<p><code>NextCollectionView</code> implements a <code>destroy</code> method which automatically destroys its children and cleans up listeners.</p> <pre data-language="javascript"><span class="hljs-keyword">var</span> Bb = <span class="hljs-built_in">require</span>(<span class="hljs-string">'backbone'</span>);
+<span class="hljs-keyword">var</span> Mn = <span class="hljs-built_in">require</span>(<span class="hljs-string">'backbone.marionette'</span>);
+
+<span class="hljs-keyword">var</span> MyChildView = Mn.View.extend({
+  <span class="hljs-attr">template</span>: _.template(<span class="hljs-string">'ChildView'</span>),
+  <span class="hljs-attr">onDestroy</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>() </span>{
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'I will get destroyed'</span>);
+  }
+})
+
+<span class="hljs-keyword">var</span> myNextCollectionView = <span class="hljs-keyword">new</span> Mn.NextCollectionView({
+  <span class="hljs-attr">childView</span>: MyChildView,
+  <span class="hljs-attr">collection</span>: <span class="hljs-keyword">new</span> Bb.Collection([{ <span class="hljs-attr">id</span>: <span class="hljs-number">1</span> }])
+});
+
+myNextCollectionView.render();
+
+myNextCollectionView.destroy(); <span class="hljs-comment">// logs "I will get destroyed"</span>
+</pre> <h2 id="events">
+Events</h2>
+<p>The <code>NextCollectionView</code>, like <code>View</code>, is able to trigger and respond to events occurring during their lifecycle. The <a href="../events/">Documentation for Events</a> has the complete documentation for how to set and handle events on views.</p> <h3 id="child-event-bubbling">
+Child Event Bubbling</h3>
+<p>The collection view is able to monitor and act on events on any children they own using <a href="../events/#explicit-event-listeners"><code>childViewEvents</code></a> and <a href="../events/#triggering-events-on-child-events"><code>childViewTriggers</code></a>. Additionally when a child view triggers an event, that <a href="../events/#event-bubbling">event will bubble up</a> one level to the parent collection view. For an example:</p> <pre data-language="javascript"><span class="hljs-keyword">var</span> Mn = <span class="hljs-built_in">require</span>(<span class="hljs-string">'backbone.marionette'</span>);
+
+<span class="hljs-keyword">var</span> Item = Mn.View.extend({
+  <span class="hljs-attr">tagName</span>: <span class="hljs-string">'li'</span>,
+
+  <span class="hljs-attr">triggers</span>: {
+    <span class="hljs-string">'click a'</span>: <span class="hljs-string">'select:item'</span>
+  }
+});
+
+<span class="hljs-keyword">var</span> Collection = Mn.NextCollectionView.extend({
+  <span class="hljs-attr">tagName</span>: <span class="hljs-string">'ul'</span>,
+
+  <span class="hljs-attr">onChildviewSelectItem</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">childView</span>) </span>{
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'item selected: '</span> + childView.model.id);
+  }
+});
+</pre> <p>The event will receive a <a href="../events/#a-child-views-event-prefix"><code>childview:</code> prefix</a> before going through the magic method binding logic. See the <a href="../events/#child-view-events">documentation for Child View Events</a> for more information.</p> <h3 id="lifecycle-events">
+Lifecycle Events</h3>
+<p>The <code>NextCollectionView</code> contains its own lifecycle events, on top of the regular <code>View</code> event lifecycle. For more information on what these are, and how to use them, see the <a href="../viewlifecycle/#nextcollectionview-lifecycle">Documentation on <code>NextCollectionView</code> lifecycle events</a></p> <h2 id="advanced-nextcollectionview-usage">
+Advanced NextCollectionView Usage</h2>
+<p>For getting advanced information about filtering, sorting or managing <code>NextCollectionView</code> look at <a href="../marionette.nextcollectionviewadvanced/">Advanced NextCollectionView usage</a></p> <h3 id="managing-children">
+Managing Children</h3>
+<p>The <code>NextCollectionView</code> can store and manage its child views. This allows you to easily access the views within the collection view, iterate them, find them by a given indexer such as the view's model or collection, and more. <a href="../marionette.nextcollectionviewadvanced/#nextcollectionviews-children">Additional Information...</a></p> <h3 id="filtering">
+Filtering</h3>
+<p><code>NextCollectionView</code> allows for a custom <code>viewFilter</code> option if you want to prevent some of the child views from being rendered inside the NextCollectionView. <a href="../marionette.nextcollectionviewadvanced/#nextcollectionviews-filter">Additional Information...</a></p> <h3 id="sorting">
+Sorting</h3>
+<p>By default the <code>NextCollectionView</code> will maintain a sorted collection's order in the DOM. <a href="../marionette.nextcollectionviewadvanced/#nextcollectionviews-sort">Additional Information...</a></p>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2017 Muted Solutions, LLC<br>Licensed under the MIT License.<br>
+    <a href="https://marionettejs.com/docs/v3.5.1/marionette.nextcollectionview.html" class="_attribution-link" target="_blank">https://marionettejs.com/docs/v3.5.1/marionette.nextcollectionview.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>
