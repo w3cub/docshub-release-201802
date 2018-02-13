@@ -1,0 +1,603 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>std&#58;&#58;convert&#58;&#58;From - Rust - W3cubDocs</title>
+  
+  <meta name="description" content=" Simple and safe type conversions in to Self. It is the reciprocal of Into. ">
+  <meta name="keywords" content="trait, std, convert, from, -, rust">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/rust/std/convert/trait.from/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/rust.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/rust/" class="_nav-link" title="" style="margin-left:0;">Rust</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _rust">
+				
+<h1 class="fqn">Trait std::convert::From</h1> <pre class="rust trait" data-language="rust">pub trait From&lt;T&gt; {
+    fn from(T) -&gt; Self;
+}</pre>
+<p>Simple and safe type conversions in to <code>Self</code>. It is the reciprocal of <code>Into</code>.</p> <p>This trait is useful when performing error handling as described by <a href="../../../book/first-edition/error-handling/">the book</a> and is closely related to the <code>?</code> operator.</p> <p>When constructing a function that is capable of failing the return type will generally be of the form <code>Result&lt;T, E&gt;</code>.</p> <p>The <code>From</code> trait allows for simplification of error handling by providing a means of returning a single error type that encapsulates numerous possible erroneous situations.</p> <p>This trait is not limited to error handling, rather the general case for this trait would be in any type conversions to have an explicit definition of how they are performed.</p> <p><strong>Note: this trait must not fail</strong>. If the conversion can fail, use <a href="../trait.tryfrom/"><code>TryFrom</code></a> or a dedicated method which returns an <a href="../../option/enum.option/"><code>Option&lt;T&gt;</code></a> or a <a href="../../result/enum.result/"><code>Result&lt;T, E&gt;</code></a>.</p> <h4 id="generic-implementations" class="section-header">Generic Implementations</h4> <ul> <li>
+<code>From&lt;T&gt; for U</code> implies <a href="../trait.into/"><code>Into&lt;U&gt;</code></a><code>for T</code>
+</li> <li>
+<a href="../trait.from/#tymethod.from"><code>from</code></a> is reflexive, which means that <code>From&lt;T&gt; for T</code> is implemented</li> </ul> <h4 id="examples" class="section-header">Examples</h4> <p><a href="../../string/struct.string/"><code>String</code></a> implements <code>From&lt;&amp;str&gt;</code>:</p> <pre class="rust rust-example-rendered" data-language="rust">
+let string = "hello".to_string();
+let other_string = String::from("hello");
+
+assert_eq!(string, other_string);</pre> <p>An example usage for error handling:</p> <pre class="rust rust-example-rendered" data-language="rust">
+use std::io::{self, Read};
+use std::num;
+
+enum CliError {
+    IoError(io::Error),
+    ParseError(num::ParseIntError),
+}
+
+impl From&lt;io::Error&gt; for CliError {
+    fn from(error: io::Error) -&gt; Self {
+        CliError::IoError(error)
+    }
+}
+
+impl From&lt;num::ParseIntError&gt; for CliError {
+    fn from(error: num::ParseIntError) -&gt; Self {
+        CliError::ParseError(error)
+    }
+}
+
+fn open_and_parse_file(file_name: &amp;str) -&gt; Result&lt;i32, CliError&gt; {
+    let mut file = std::fs::File::open("test")?;
+    let mut contents = String::new();
+    file.read_to_string(&amp;mut contents)?;
+    let num: i32 = contents.trim().parse()?;
+    Ok(num)
+}</pre>  <h2 id="required-methods" class="small-section-header"> Required Methods </h2> <div class="methods"> <h3 id="tymethod.from" class="method"><span id="from.v" class="invisible"><code>fn <a href="#tymethod.from" class="fnname">from</a>(T) -&gt; Self</code></span></h3>
+<div class="docblock">
+<p>Performs the conversion.</p> </div>
+</div> <h2 id="foreign-impls" class="small-section-header"> Implementations on Foreign Types </h2> <h3 id="impl-From%3C%26%27a%20mut%20T%3E" class="impl">
+<span class="in-band"><code>impl&lt;'a, T&gt; <a class="trait" href="../trait.from/" title="trait std::convert::From">From</a>&lt;<a class="primitive" href="../../primitive.reference/">&amp;'a mut </a>T&gt; for <a class="struct" href="https://doc.rust-lang.org/core/nonzero/struct.NonZero.html" title="struct core::nonzero::NonZero" target="_blank">NonZero</a>&lt;<a class="primitive" href="../../primitive.pointer/">*const T</a>&gt; <span class="where fmt-newline">where<br>    T: ?<a class="trait" href="../../marker/trait.sized/" title="trait std::marker::Sized">Sized</a>, </span></code></span><span class="out-of-band">
+<a class="srclink" href="https://doc.rust-lang.org/src/core/nonzero.rs.html#104-109" title="goto source code" target="_blank">[src]</a></span>
+</h3> <div class="impl-items">
+<h4 id="method.from" class="method">
+<span id="from.v-1" class="invisible"><code>fn <a href="#method.from" class="fnname">from</a>(reference: <a class="primitive" href="../../primitive.reference/">&amp;'a mut </a>T) -&gt; <a class="struct" href="https://doc.rust-lang.org/core/nonzero/struct.NonZero.html" title="struct core::nonzero::NonZero" target="_blank">NonZero</a>&lt;<a class="primitive" href="../../primitive.pointer/">*const T</a>&gt;</code></span><span class="out-of-band">
+<a class="srclink" href="https://doc.rust-lang.org/src/core/nonzero.rs.html#105-108" title="goto source code" target="_blank">[src]</a></span>
+</h4> </div>
+<h3 id="impl-From%3C%26%27a%20T%3E" class="impl">
+<span class="in-band"><code>impl&lt;'a, T&gt; <a class="trait" href="../trait.from/" title="trait std::convert::From">From</a>&lt;<a class="primitive" href="../../primitive.reference/">&amp;'a </a>T&gt; for <a class="struct" href="https://doc.rust-lang.org/core/nonzero/struct.NonZero.html" title="struct core::nonzero::NonZero" target="_blank">NonZero</a>&lt;<a class="primitive" href="../../primitive.pointer/">*const T</a>&gt; <span class="where fmt-newline">where<br>    T: ?<a class="trait" href="../../marker/trait.sized/" title="trait std::marker::Sized">Sized</a>, </span></code></span><span class="out-of-band">
+<a class="srclink" href="https://doc.rust-lang.org/src/core/nonzero.rs.html#111-115" title="goto source code" target="_blank">[src]</a></span>
+</h3> <div class="impl-items">
+<h4 id="method.from-1" class="method">
+<span id="from.v-2" class="invisible"><code>fn <a href="#method.from" class="fnname">from</a>(reference: <a class="primitive" href="../../primitive.reference/">&amp;'a </a>T) -&gt; <a class="struct" href="https://doc.rust-lang.org/core/nonzero/struct.NonZero.html" title="struct core::nonzero::NonZero" target="_blank">NonZero</a>&lt;<a class="primitive" href="../../primitive.pointer/">*const T</a>&gt;</code></span><span class="out-of-band">
+<a class="srclink" href="https://doc.rust-lang.org/src/core/nonzero.rs.html#112-114" title="goto source code" target="_blank">[src]</a></span>
+</h4> </div>
+<h3 id="impl-From%3C%26%27a%20mut%20T%3E-1" class="impl">
+<span class="in-band"><code>impl&lt;'a, T&gt; <a class="trait" href="../trait.from/" title="trait std::convert::From">From</a>&lt;<a class="primitive" href="../../primitive.reference/">&amp;'a mut </a>T&gt; for <a class="struct" href="https://doc.rust-lang.org/core/nonzero/struct.NonZero.html" title="struct core::nonzero::NonZero" target="_blank">NonZero</a>&lt;<a class="primitive" href="../../primitive.pointer/">*mut T</a>&gt; <span class="where fmt-newline">where<br>    T: ?<a class="trait" href="../../marker/trait.sized/" title="trait std::marker::Sized">Sized</a>, </span></code></span><span class="out-of-band">
+<a class="srclink" href="https://doc.rust-lang.org/src/core/nonzero.rs.html#98-102" title="goto source code" target="_blank">[src]</a></span>
+</h3> <div class="impl-items">
+<h4 id="method.from-2" class="method">
+<span id="from.v-3" class="invisible"><code>fn <a href="#method.from" class="fnname">from</a>(reference: <a class="primitive" href="../../primitive.reference/">&amp;'a mut </a>T) -&gt; <a class="struct" href="https://doc.rust-lang.org/core/nonzero/struct.NonZero.html" title="struct core::nonzero::NonZero" target="_blank">NonZero</a>&lt;<a class="primitive" href="../../primitive.pointer/">*mut T</a>&gt;</code></span><span class="out-of-band">
+<a class="srclink" href="https://doc.rust-lang.org/src/core/nonzero.rs.html#99-101" title="goto source code" target="_blank">[src]</a></span>
+</h4> </div> <h2 id="implementors" class="small-section-header"> Implementors </h2> <ul class="item-list" id="implementors-list"> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/alloc/string.rs.html#2104-2108" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;'a&gt; From&lt;&amp;'a <a class="primitive" href="../../primitive.str/">str</a>&gt; for <a class="struct" href="../../string/struct.string/" title="struct std::string::String">String</a></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/alloc/string.rs.html#2120-2124" title="goto source code" target="_blank">[src]</a></div>
+<code>impl From&lt;<a class="struct" href="../../string/struct.string/" title="struct std::string::String">String</a>&gt; for <a class="struct" href="../../boxed/struct.box/" title="struct std::boxed::Box">Box</a>&lt;<a class="primitive" href="../../primitive.str/">str</a>&gt;</code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/alloc/string.rs.html#2142-2147" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;'a&gt; From&lt;<a class="struct" href="../../string/struct.string/" title="struct std::string::String">String</a>&gt; for <a class="enum" href="../../borrow/enum.cow/" title="enum std::borrow::Cow">Cow</a>&lt;'a, <a class="primitive" href="../../primitive.str/">str</a>&gt;</code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/alloc/boxed.rs.html#549-555" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;'a, T&gt; From&lt;<a class="primitive" href="../../primitive.slice/">&amp;'a [T]</a>&gt; for <a class="struct" href="../../boxed/struct.box/" title="struct std::boxed::Box">Box</a>&lt;<a class="primitive" href="../../primitive.slice/">[</a>T<a class="primitive" href="../../primitive.slice/">]</a>&gt; <span class="where fmt-newline">where<br>    T: <a class="trait" href="../../marker/trait.copy/" title="trait std::marker::Copy">Copy</a>, </span></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/alloc/vec.rs.html#2176-2185" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;'a, T&gt; From&lt;<a class="primitive" href="../../primitive.slice/">&amp;'a [T]</a>&gt; for <a class="struct" href="../../vec/struct.vec/" title="struct std::vec::Vec">Vec</a>&lt;T&gt; <span class="where fmt-newline">where<br>    T: <a class="trait" href="../../clone/trait.clone/" title="trait std::clone::Clone">Clone</a>, </span></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/alloc/binary_heap.rs.html#1081-1085" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;T&gt; From&lt;<a class="struct" href="../../collections/binary_heap/struct.binaryheap/" title="struct std::collections::binary_heap::BinaryHeap">BinaryHeap</a>&lt;T&gt;&gt; for <a class="struct" href="../../vec/struct.vec/" title="struct std::vec::Vec">Vec</a>&lt;T&gt;</code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/alloc/rc.rs.html#1103-1108" title="goto source code" target="_blank">[src]</a></div>
+<code>impl From&lt;<a class="struct" href="../../string/struct.string/" title="struct std::string::String">String</a>&gt; for <a class="struct" href="../../rc/struct.rc/" title="struct std::rc::Rc">Rc</a>&lt;<a class="primitive" href="../../primitive.str/">str</a>&gt;</code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/alloc/vec.rs.html#2209-2213" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;T&gt; From&lt;<a class="struct" href="../../boxed/struct.box/" title="struct std::boxed::Box">Box</a>&lt;<a class="primitive" href="../../primitive.slice/">[</a>T<a class="primitive" href="../../primitive.slice/">]</a>&gt;&gt; for <a class="struct" href="../../vec/struct.vec/" title="struct std::vec::Vec">Vec</a>&lt;T&gt;</code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/alloc/string.rs.html#2127-2131" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;'a&gt; From&lt;<a class="enum" href="../../borrow/enum.cow/" title="enum std::borrow::Cow">Cow</a>&lt;'a, <a class="primitive" href="../../primitive.str/">str</a>&gt;&gt; for <a class="struct" href="../../string/struct.string/" title="struct std::string::String">String</a></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/alloc/arc.rs.html#1399-1411" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;T&gt; From&lt;<a class="struct" href="../../vec/struct.vec/" title="struct std::vec::Vec">Vec</a>&lt;T&gt;&gt; for <a class="struct" href="../../sync/struct.arc/" title="struct std::sync::Arc">Arc</a>&lt;<a class="primitive" href="../../primitive.slice/">[</a>T<a class="primitive" href="../../primitive.slice/">]</a>&gt;</code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/alloc/vec.rs.html#2225-2229" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;'a&gt; From&lt;&amp;'a <a class="primitive" href="../../primitive.str/">str</a>&gt; for <a class="struct" href="../../vec/struct.vec/" title="struct std::vec::Vec">Vec</a>&lt;<a class="primitive" href="../../primitive.u8/">u8</a>&gt;</code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/alloc/boxed.rs.html#558-562" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;'a&gt; From&lt;&amp;'a <a class="primitive" href="../../primitive.str/">str</a>&gt; for <a class="struct" href="../../boxed/struct.box/" title="struct std::boxed::Box">Box</a>&lt;<a class="primitive" href="../../primitive.str/">str</a>&gt;</code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/alloc/boxed.rs.html#542-546" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;T&gt; From&lt;T&gt; for <a class="struct" href="../../boxed/struct.box/" title="struct std::boxed::Box">Box</a>&lt;T&gt;</code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/alloc/vec.rs.html#2188-2197" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;'a, T&gt; From&lt;<a class="primitive" href="../../primitive.slice/">&amp;'a mut [T]</a>&gt; for <a class="struct" href="../../vec/struct.vec/" title="struct std::vec::Vec">Vec</a>&lt;T&gt; <span class="where fmt-newline">where<br>    T: <a class="trait" href="../../clone/trait.clone/" title="trait std::clone::Clone">Clone</a>, </span></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/alloc/boxed.rs.html#565-569" title="goto source code" target="_blank">[src]</a></div>
+<code>impl From&lt;<a class="struct" href="../../boxed/struct.box/" title="struct std::boxed::Box">Box</a>&lt;<a class="primitive" href="../../primitive.str/">str</a>&gt;&gt; for <a class="struct" href="../../boxed/struct.box/" title="struct std::boxed::Box">Box</a>&lt;<a class="primitive" href="../../primitive.slice/">[</a><a class="primitive" href="../../primitive.u8/">u8</a><a class="primitive" href="../../primitive.slice/">]</a>&gt;</code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/alloc/rc.rs.html#1119-1131" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;T&gt; From&lt;<a class="struct" href="../../vec/struct.vec/" title="struct std::vec::Vec">Vec</a>&lt;T&gt;&gt; for <a class="struct" href="../../rc/struct.rc/" title="struct std::rc::Rc">Rc</a>&lt;<a class="primitive" href="../../primitive.slice/">[</a>T<a class="primitive" href="../../primitive.slice/">]</a>&gt;</code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/alloc/rc.rs.html#1080-1084" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;T&gt; From&lt;T&gt; for <a class="struct" href="../../rc/struct.rc/" title="struct std::rc::Rc">Rc</a>&lt;T&gt;</code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/alloc/arc.rs.html#1383-1388" title="goto source code" target="_blank">[src]</a></div>
+<code>impl From&lt;<a class="struct" href="../../string/struct.string/" title="struct std::string::String">String</a>&gt; for <a class="struct" href="../../sync/struct.arc/" title="struct std::sync::Arc">Arc</a>&lt;<a class="primitive" href="../../primitive.str/">str</a>&gt;</code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/alloc/vec.rs.html#2236-2240" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;'a, T&gt; From&lt;<a class="primitive" href="../../primitive.slice/">&amp;'a [T]</a>&gt; for <a class="enum" href="../../borrow/enum.cow/" title="enum std::borrow::Cow">Cow</a>&lt;'a, <a class="primitive" href="../../primitive.slice/">[</a>T<a class="primitive" href="../../primitive.slice/">]</a>&gt; <span class="where fmt-newline">where<br>    T: <a class="trait" href="../../clone/trait.clone/" title="trait std::clone::Clone">Clone</a>, </span></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/alloc/vec.rs.html#2200-2204" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;'a, T&gt; From&lt;<a class="enum" href="../../borrow/enum.cow/" title="enum std::borrow::Cow">Cow</a>&lt;'a, <a class="primitive" href="../../primitive.slice/">[</a>T<a class="primitive" href="../../primitive.slice/">]</a>&gt;&gt; for <a class="struct" href="../../vec/struct.vec/" title="struct std::vec::Vec">Vec</a>&lt;T&gt; <span class="where fmt-newline">where<br>    <a class="primitive" href="../../primitive.slice/">[</a>T<a class="primitive" href="../../primitive.slice/">]</a>: <a class="trait" href="../../borrow/trait.toowned/" title="trait std::borrow::ToOwned">ToOwned</a>,<br>    &lt;<a class="primitive" href="../../primitive.slice/">[</a>T<a class="primitive" href="../../primitive.slice/">]</a> as <a class="trait" href="../../borrow/trait.toowned/" title="trait std::borrow::ToOwned">ToOwned</a>&gt;::<a class="type" href="../../borrow/trait.toowned/#associatedtype.Owned" title="type std::borrow::ToOwned::Owned">Owned</a> == <a class="struct" href="../../vec/struct.vec/" title="struct std::vec::Vec">Vec</a>&lt;T&gt;, </span></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/alloc/arc.rs.html#1375-1380" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;'a&gt; From&lt;&amp;'a <a class="primitive" href="../../primitive.str/">str</a>&gt; for <a class="struct" href="../../sync/struct.arc/" title="struct std::sync::Arc">Arc</a>&lt;<a class="primitive" href="../../primitive.str/">str</a>&gt;</code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/alloc/vec.rs.html#2218-2222" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;T&gt; From&lt;<a class="struct" href="../../vec/struct.vec/" title="struct std::vec::Vec">Vec</a>&lt;T&gt;&gt; for <a class="struct" href="../../boxed/struct.box/" title="struct std::boxed::Box">Box</a>&lt;<a class="primitive" href="../../primitive.slice/">[</a>T<a class="primitive" href="../../primitive.slice/">]</a>&gt;</code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/alloc/rc.rs.html#1087-1092" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;'a, T&gt; From&lt;<a class="primitive" href="../../primitive.slice/">&amp;'a [T]</a>&gt; for <a class="struct" href="../../rc/struct.rc/" title="struct std::rc::Rc">Rc</a>&lt;<a class="primitive" href="../../primitive.slice/">[</a>T<a class="primitive" href="../../primitive.slice/">]</a>&gt; <span class="where fmt-newline">where<br>    T: <a class="trait" href="../../clone/trait.clone/" title="trait std::clone::Clone">Clone</a>, </span></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/alloc/string.rs.html#2113-2117" title="goto source code" target="_blank">[src]</a></div>
+<code>impl From&lt;<a class="struct" href="../../boxed/struct.box/" title="struct std::boxed::Box">Box</a>&lt;<a class="primitive" href="../../primitive.str/">str</a>&gt;&gt; for <a class="struct" href="../../string/struct.string/" title="struct std::string::String">String</a></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/alloc/binary_heap.rs.html#1072-1078" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;T&gt; From&lt;<a class="struct" href="../../vec/struct.vec/" title="struct std::vec::Vec">Vec</a>&lt;T&gt;&gt; for <a class="struct" href="../../collections/binary_heap/struct.binaryheap/" title="struct std::collections::binary_heap::BinaryHeap">BinaryHeap</a>&lt;T&gt; <span class="where fmt-newline">where<br>    T: <a class="trait" href="../../cmp/trait.ord/" title="trait std::cmp::Ord">Ord</a>, </span></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/alloc/arc.rs.html#1360-1364" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;T&gt; From&lt;T&gt; for <a class="struct" href="../../sync/struct.arc/" title="struct std::sync::Arc">Arc</a>&lt;T&gt;</code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/alloc/arc.rs.html#1391-1396" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;T&gt; From&lt;<a class="struct" href="../../boxed/struct.box/" title="struct std::boxed::Box">Box</a>&lt;T&gt;&gt; for <a class="struct" href="../../sync/struct.arc/" title="struct std::sync::Arc">Arc</a>&lt;T&gt; <span class="where fmt-newline">where<br>    T: ?<a class="trait" href="../../marker/trait.sized/" title="trait std::marker::Sized">Sized</a>, </span></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/alloc/string.rs.html#2171-2175" title="goto source code" target="_blank">[src]</a></div>
+<code>impl From&lt;<a class="struct" href="../../string/struct.string/" title="struct std::string::String">String</a>&gt; for <a class="struct" href="../../vec/struct.vec/" title="struct std::vec::Vec">Vec</a>&lt;<a class="primitive" href="../../primitive.u8/">u8</a>&gt;</code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/alloc/arc.rs.html#1367-1372" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;'a, T&gt; From&lt;<a class="primitive" href="../../primitive.slice/">&amp;'a [T]</a>&gt; for <a class="struct" href="../../sync/struct.arc/" title="struct std::sync::Arc">Arc</a>&lt;<a class="primitive" href="../../primitive.slice/">[</a>T<a class="primitive" href="../../primitive.slice/">]</a>&gt; <span class="where fmt-newline">where<br>    T: <a class="trait" href="../../clone/trait.clone/" title="trait std::clone::Clone">Clone</a>, </span></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/alloc/vec.rs.html#2243-2247" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;'a, T&gt; From&lt;<a class="struct" href="../../vec/struct.vec/" title="struct std::vec::Vec">Vec</a>&lt;T&gt;&gt; for <a class="enum" href="../../borrow/enum.cow/" title="enum std::borrow::Cow">Cow</a>&lt;'a, <a class="primitive" href="../../primitive.slice/">[</a>T<a class="primitive" href="../../primitive.slice/">]</a>&gt; <span class="where fmt-newline">where<br>    T: <a class="trait" href="../../clone/trait.clone/" title="trait std::clone::Clone">Clone</a>, </span></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/alloc/vec_deque.rs.html#2444-2467" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;T&gt; From&lt;<a class="struct" href="../../vec/struct.vec/" title="struct std::vec::Vec">Vec</a>&lt;T&gt;&gt; for <a class="struct" href="../../collections/vec_deque/struct.vecdeque/" title="struct std::collections::vec_deque::VecDeque">VecDeque</a>&lt;T&gt;</code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/alloc/string.rs.html#2134-2139" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;'a&gt; From&lt;&amp;'a <a class="primitive" href="../../primitive.str/">str</a>&gt; for <a class="enum" href="../../borrow/enum.cow/" title="enum std::borrow::Cow">Cow</a>&lt;'a, <a class="primitive" href="../../primitive.str/">str</a>&gt;</code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/alloc/vec_deque.rs.html#2470-2538" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;T&gt; From&lt;<a class="struct" href="../../collections/vec_deque/struct.vecdeque/" title="struct std::collections::vec_deque::VecDeque">VecDeque</a>&lt;T&gt;&gt; for <a class="struct" href="../../vec/struct.vec/" title="struct std::vec::Vec">Vec</a>&lt;T&gt;</code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/alloc/rc.rs.html#1095-1100" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;'a&gt; From&lt;&amp;'a <a class="primitive" href="../../primitive.str/">str</a>&gt; for <a class="struct" href="../../rc/struct.rc/" title="struct std::rc::Rc">Rc</a>&lt;<a class="primitive" href="../../primitive.str/">str</a>&gt;</code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/alloc/rc.rs.html#1111-1116" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;T&gt; From&lt;<a class="struct" href="../../boxed/struct.box/" title="struct std::boxed::Box">Box</a>&lt;T&gt;&gt; for <a class="struct" href="../../rc/struct.rc/" title="struct std::rc::Rc">Rc</a>&lt;T&gt; <span class="where fmt-newline">where<br>    T: ?<a class="trait" href="../../marker/trait.sized/" title="trait std::marker::Sized">Sized</a>, </span></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/core/ptr.rs.html#2546-2550" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;'a, T&gt; From&lt;<a class="primitive" href="../../primitive.reference/">&amp;'a mut </a>T&gt; for <a class="struct" href="../../ptr/struct.shared/" title="struct std::ptr::Shared">Shared</a>&lt;T&gt; <span class="where fmt-newline">where<br>    T: ?<a class="trait" href="../../marker/trait.sized/" title="trait std::marker::Sized">Sized</a>, </span></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/core/num/mod.rs.html#3405-3410" title="goto source code" target="_blank">[src]</a></div>
+<code>impl From&lt;<a class="primitive" href="../../primitive.u8/">u8</a>&gt; for <a class="primitive" href="../../primitive.i64/">i64</a></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/core/num/mod.rs.html#3405-3410" title="goto source code" target="_blank">[src]</a></div>
+<code>impl From&lt;<a class="primitive" href="../../primitive.u16/">u16</a>&gt; for <a class="primitive" href="../../primitive.i32/">i32</a></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/core/num/mod.rs.html#3405-3410" title="goto source code" target="_blank">[src]</a></div>
+<code>impl From&lt;<a class="primitive" href="../../primitive.i16/">i16</a>&gt; for <a class="primitive" href="../../primitive.f64/">f64</a></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/core/num/mod.rs.html#3405-3410" title="goto source code" target="_blank">[src]</a></div>
+<code>impl From&lt;<a class="primitive" href="../../primitive.u16/">u16</a>&gt; for <a class="primitive" href="../../primitive.f64/">f64</a></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/core/sync/atomic.rs.html#978-981" title="goto source code" target="_blank">[src]</a></div>
+<code>impl From&lt;<a class="primitive" href="../../primitive.i32/">i32</a>&gt; for <a class="struct" href="../../sync/atomic/struct.atomici32/" title="struct std::sync::atomic::AtomicI32">AtomicI32</a></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/core/num/mod.rs.html#3405-3410" title="goto source code" target="_blank">[src]</a></div>
+<code>impl From&lt;<a class="primitive" href="../../primitive.u64/">u64</a>&gt; for <a class="primitive" href="../../primitive.i128/">i128</a></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/core/ptr.rs.html#2539-2543" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;T&gt; From&lt;<a class="struct" href="../../ptr/struct.unique/" title="struct std::ptr::Unique">Unique</a>&lt;T&gt;&gt; for <a class="struct" href="../../ptr/struct.shared/" title="struct std::ptr::Shared">Shared</a>&lt;T&gt; <span class="where fmt-newline">where<br>    T: ?<a class="trait" href="../../marker/trait.sized/" title="trait std::marker::Sized">Sized</a>, </span></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/core/num/mod.rs.html#3405-3410" title="goto source code" target="_blank">[src]</a></div>
+<code>impl From&lt;<a class="primitive" href="../../primitive.u8/">u8</a>&gt; for <a class="primitive" href="../../primitive.u128/">u128</a></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/core/num/mod.rs.html#3405-3410" title="goto source code" target="_blank">[src]</a></div>
+<code>impl From&lt;<a class="primitive" href="../../primitive.u8/">u8</a>&gt; for <a class="primitive" href="../../primitive.i128/">i128</a></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/core/num/mod.rs.html#3405-3410" title="goto source code" target="_blank">[src]</a></div>
+<code>impl From&lt;<a class="primitive" href="../../primitive.i16/">i16</a>&gt; for <a class="primitive" href="../../primitive.f32/">f32</a></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/core/num/mod.rs.html#3405-3410" title="goto source code" target="_blank">[src]</a></div>
+<code>impl From&lt;<a class="primitive" href="../../primitive.u16/">u16</a>&gt; for <a class="primitive" href="../../primitive.f32/">f32</a></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/core/sync/atomic.rs.html#978-981" title="goto source code" target="_blank">[src]</a></div>
+<code>impl From&lt;<a class="primitive" href="../../primitive.isize/">isize</a>&gt; for <a class="struct" href="../../sync/atomic/struct.atomicisize/" title="struct std::sync::atomic::AtomicIsize">AtomicIsize</a></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/core/sync/atomic.rs.html#978-981" title="goto source code" target="_blank">[src]</a></div>
+<code>impl From&lt;<a class="primitive" href="../../primitive.usize/">usize</a>&gt; for <a class="struct" href="../../sync/atomic/struct.atomicusize/" title="struct std::sync::atomic::AtomicUsize">AtomicUsize</a></code>
+</li> <li><code>impl&lt;T&gt; From&lt;T&gt; for T</code></li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/core/num/mod.rs.html#3405-3410" title="goto source code" target="_blank">[src]</a></div>
+<code>impl From&lt;<a class="primitive" href="../../primitive.i8/">i8</a>&gt; for <a class="primitive" href="../../primitive.i64/">i64</a></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/core/sync/atomic.rs.html#932-935" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;T&gt; From&lt;<a class="primitive" href="../../primitive.pointer/">*mut T</a>&gt; for <a class="struct" href="../../sync/atomic/struct.atomicptr/" title="struct std::sync::atomic::AtomicPtr">AtomicPtr</a>&lt;T&gt;</code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/core/num/mod.rs.html#3405-3410" title="goto source code" target="_blank">[src]</a></div>
+<code>impl From&lt;<a class="primitive" href="../../primitive.i8/">i8</a>&gt; for <a class="primitive" href="../../primitive.i16/">i16</a></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/core/ptr.rs.html#2553-2557" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;'a, T&gt; From&lt;<a class="primitive" href="../../primitive.reference/">&amp;'a </a>T&gt; for <a class="struct" href="../../ptr/struct.shared/" title="struct std::ptr::Shared">Shared</a>&lt;T&gt; <span class="where fmt-newline">where<br>    T: ?<a class="trait" href="../../marker/trait.sized/" title="trait std::marker::Sized">Sized</a>, </span></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/core/cell.rs.html#933-937" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;T&gt; From&lt;T&gt; for <a class="struct" href="../../cell/struct.refcell/" title="struct std::cell::RefCell">RefCell</a>&lt;T&gt;</code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/core/num/mod.rs.html#3405-3410" title="goto source code" target="_blank">[src]</a></div>
+<code>impl From&lt;<a class="primitive" href="../../primitive.u16/">u16</a>&gt; for <a class="primitive" href="../../primitive.u32/">u32</a></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/core/num/mod.rs.html#3405-3410" title="goto source code" target="_blank">[src]</a></div>
+<code>impl From&lt;<a class="primitive" href="../../primitive.u32/">u32</a>&gt; for <a class="primitive" href="../../primitive.u64/">u64</a></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/core/num/mod.rs.html#3405-3410" title="goto source code" target="_blank">[src]</a></div>
+<code>impl From&lt;<a class="primitive" href="../../primitive.u16/">u16</a>&gt; for <a class="primitive" href="../../primitive.u128/">u128</a></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/core/num/mod.rs.html#3405-3410" title="goto source code" target="_blank">[src]</a></div>
+<code>impl From&lt;<a class="primitive" href="../../primitive.u32/">u32</a>&gt; for <a class="primitive" href="../../primitive.u128/">u128</a></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/core/num/mod.rs.html#3405-3410" title="goto source code" target="_blank">[src]</a></div>
+<code>impl From&lt;<a class="primitive" href="../../primitive.u8/">u8</a>&gt; for <a class="primitive" href="../../primitive.i16/">i16</a></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/core/num/mod.rs.html#3405-3410" title="goto source code" target="_blank">[src]</a></div>
+<code>impl From&lt;<a class="primitive" href="../../primitive.i8/">i8</a>&gt; for <a class="primitive" href="../../primitive.f32/">f32</a></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/core/cell.rs.html#315-319" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;T&gt; From&lt;T&gt; for <a class="struct" href="../../cell/struct.cell/" title="struct std::cell::Cell">Cell</a>&lt;T&gt;</code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/core/num/mod.rs.html#3405-3410" title="goto source code" target="_blank">[src]</a></div>
+<code>impl From&lt;<a class="primitive" href="../../primitive.i8/">i8</a>&gt; for <a class="primitive" href="../../primitive.i128/">i128</a></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/core/num/mod.rs.html#3405-3410" title="goto source code" target="_blank">[src]</a></div>
+<code>impl From&lt;<a class="primitive" href="../../primitive.i64/">i64</a>&gt; for <a class="primitive" href="../../primitive.i128/">i128</a></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/core/cell.rs.html#1280-1284" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;T&gt; From&lt;T&gt; for <a class="struct" href="../../cell/struct.unsafecell/" title="struct std::cell::UnsafeCell">UnsafeCell</a>&lt;T&gt;</code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/core/num/mod.rs.html#3405-3410" title="goto source code" target="_blank">[src]</a></div>
+<code>impl From&lt;<a class="primitive" href="../../primitive.i32/">i32</a>&gt; for <a class="primitive" href="../../primitive.i128/">i128</a></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/core/num/mod.rs.html#3405-3410" title="goto source code" target="_blank">[src]</a></div>
+<code>impl From&lt;<a class="primitive" href="../../primitive.i32/">i32</a>&gt; for <a class="primitive" href="../../primitive.i64/">i64</a></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/core/sync/atomic.rs.html#978-981" title="goto source code" target="_blank">[src]</a></div>
+<code>impl From&lt;<a class="primitive" href="../../primitive.u16/">u16</a>&gt; for <a class="struct" href="../../sync/atomic/struct.atomicu16/" title="struct std::sync::atomic::AtomicU16">AtomicU16</a></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/core/num/mod.rs.html#3405-3410" title="goto source code" target="_blank">[src]</a></div>
+<code>impl From&lt;<a class="primitive" href="../../primitive.u8/">u8</a>&gt; for <a class="primitive" href="../../primitive.f32/">f32</a></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/core/num/mod.rs.html#3405-3410" title="goto source code" target="_blank">[src]</a></div>
+<code>impl From&lt;<a class="primitive" href="../../primitive.u16/">u16</a>&gt; for <a class="primitive" href="../../primitive.i128/">i128</a></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/core/sync/atomic.rs.html#978-981" title="goto source code" target="_blank">[src]</a></div>
+<code>impl From&lt;<a class="primitive" href="../../primitive.i64/">i64</a>&gt; for <a class="struct" href="../../sync/atomic/struct.atomici64/" title="struct std::sync::atomic::AtomicI64">AtomicI64</a></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/core/num/mod.rs.html#3405-3410" title="goto source code" target="_blank">[src]</a></div>
+<code>impl From&lt;<a class="primitive" href="../../primitive.i16/">i16</a>&gt; for <a class="primitive" href="../../primitive.i32/">i32</a></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/core/num/mod.rs.html#3405-3410" title="goto source code" target="_blank">[src]</a></div>
+<code>impl From&lt;<a class="primitive" href="../../primitive.u32/">u32</a>&gt; for <a class="primitive" href="../../primitive.i64/">i64</a></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/core/option.rs.html#936-940" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;T&gt; From&lt;T&gt; for <a class="enum" href="../../option/enum.option/" title="enum std::option::Option">Option</a>&lt;T&gt;</code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/core/sync/atomic.rs.html#978-981" title="goto source code" target="_blank">[src]</a></div>
+<code>impl From&lt;<a class="primitive" href="../../primitive.u64/">u64</a>&gt; for <a class="struct" href="../../sync/atomic/struct.atomicu64/" title="struct std::sync::atomic::AtomicU64">AtomicU64</a></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/core/num/mod.rs.html#3405-3410" title="goto source code" target="_blank">[src]</a></div>
+<code>impl From&lt;<a class="primitive" href="../../primitive.u16/">u16</a>&gt; for <a class="primitive" href="../../primitive.i64/">i64</a></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/core/char.rs.html#178-183" title="goto source code" target="_blank">[src]</a></div>
+<code>impl From&lt;<a class="primitive" href="../../primitive.char/">char</a>&gt; for <a class="primitive" href="../../primitive.u32/">u32</a></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/core/num/mod.rs.html#3405-3410" title="goto source code" target="_blank">[src]</a></div>
+<code>impl From&lt;<a class="primitive" href="../../primitive.u8/">u8</a>&gt; for <a class="primitive" href="../../primitive.f64/">f64</a></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/core/num/mod.rs.html#3405-3410" title="goto source code" target="_blank">[src]</a></div>
+<code>impl From&lt;<a class="primitive" href="../../primitive.u8/">u8</a>&gt; for <a class="primitive" href="../../primitive.u16/">u16</a></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/core/num/mod.rs.html#3405-3410" title="goto source code" target="_blank">[src]</a></div>
+<code>impl From&lt;<a class="primitive" href="../../primitive.u32/">u32</a>&gt; for <a class="primitive" href="../../primitive.f64/">f64</a></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/core/num/mod.rs.html#3405-3410" title="goto source code" target="_blank">[src]</a></div>
+<code>impl From&lt;<a class="primitive" href="../../primitive.i16/">i16</a>&gt; for <a class="primitive" href="../../primitive.i128/">i128</a></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/core/char.rs.html#204-209" title="goto source code" target="_blank">[src]</a></div>
+<code>impl From&lt;<a class="primitive" href="../../primitive.u8/">u8</a>&gt; for <a class="primitive" href="../../primitive.char/">char</a></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/core/num/mod.rs.html#3405-3410" title="goto source code" target="_blank">[src]</a></div>
+<code>impl From&lt;<a class="primitive" href="../../primitive.u16/">u16</a>&gt; for <a class="primitive" href="../../primitive.u64/">u64</a></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/core/num/mod.rs.html#3405-3410" title="goto source code" target="_blank">[src]</a></div>
+<code>impl From&lt;<a class="primitive" href="../../primitive.f32/">f32</a>&gt; for <a class="primitive" href="../../primitive.f64/">f64</a></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/core/num/mod.rs.html#3405-3410" title="goto source code" target="_blank">[src]</a></div>
+<code>impl From&lt;<a class="primitive" href="../../primitive.u32/">u32</a>&gt; for <a class="primitive" href="../../primitive.i128/">i128</a></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/core/num/mod.rs.html#3405-3410" title="goto source code" target="_blank">[src]</a></div>
+<code>impl From&lt;<a class="primitive" href="../../primitive.i32/">i32</a>&gt; for <a class="primitive" href="../../primitive.f64/">f64</a></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/core/ptr.rs.html#2397-2401" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;'a, T&gt; From&lt;<a class="primitive" href="../../primitive.reference/">&amp;'a mut </a>T&gt; for <a class="struct" href="../../ptr/struct.unique/" title="struct std::ptr::Unique">Unique</a>&lt;T&gt; <span class="where fmt-newline">where<br>    T: ?<a class="trait" href="../../marker/trait.sized/" title="trait std::marker::Sized">Sized</a>, </span></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/core/sync/atomic.rs.html#978-981" title="goto source code" target="_blank">[src]</a></div>
+<code>impl From&lt;<a class="primitive" href="../../primitive.i16/">i16</a>&gt; for <a class="struct" href="../../sync/atomic/struct.atomici16/" title="struct std::sync::atomic::AtomicI16">AtomicI16</a></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/core/num/mod.rs.html#3405-3410" title="goto source code" target="_blank">[src]</a></div>
+<code>impl From&lt;<a class="primitive" href="../../primitive.i8/">i8</a>&gt; for <a class="primitive" href="../../primitive.i32/">i32</a></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/core/sync/atomic.rs.html#978-981" title="goto source code" target="_blank">[src]</a></div>
+<code>impl From&lt;<a class="primitive" href="../../primitive.u32/">u32</a>&gt; for <a class="struct" href="../../sync/atomic/struct.atomicu32/" title="struct std::sync::atomic::AtomicU32">AtomicU32</a></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/core/num/mod.rs.html#3405-3410" title="goto source code" target="_blank">[src]</a></div>
+<code>impl From&lt;<a class="primitive" href="../../primitive.u8/">u8</a>&gt; for <a class="primitive" href="../../primitive.u32/">u32</a></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/core/num/mod.rs.html#3405-3410" title="goto source code" target="_blank">[src]</a></div>
+<code>impl From&lt;<a class="primitive" href="../../primitive.u64/">u64</a>&gt; for <a class="primitive" href="../../primitive.u128/">u128</a></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/core/num/mod.rs.html#3405-3410" title="goto source code" target="_blank">[src]</a></div>
+<code>impl From&lt;<a class="primitive" href="../../primitive.i16/">i16</a>&gt; for <a class="primitive" href="../../primitive.i64/">i64</a></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/core/sync/atomic.rs.html#978-981" title="goto source code" target="_blank">[src]</a></div>
+<code>impl From&lt;<a class="primitive" href="../../primitive.u8/">u8</a>&gt; for <a class="struct" href="../../sync/atomic/struct.atomicu8/" title="struct std::sync::atomic::AtomicU8">AtomicU8</a></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/core/num/mod.rs.html#3405-3410" title="goto source code" target="_blank">[src]</a></div>
+<code>impl From&lt;<a class="primitive" href="../../primitive.u8/">u8</a>&gt; for <a class="primitive" href="../../primitive.u64/">u64</a></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/core/num/mod.rs.html#3054-3059" title="goto source code" target="_blank">[src]</a></div>
+<code>impl From&lt;<a class="enum" href="../enum.infallible/" title="enum std::convert::Infallible">Infallible</a>&gt; for <a class="struct" href="../../num/struct.tryfrominterror/" title="struct std::num::TryFromIntError">TryFromIntError</a></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/core/num/mod.rs.html#3405-3410" title="goto source code" target="_blank">[src]</a></div>
+<code>impl From&lt;<a class="primitive" href="../../primitive.u8/">u8</a>&gt; for <a class="primitive" href="../../primitive.usize/">usize</a></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/core/num/mod.rs.html#3405-3410" title="goto source code" target="_blank">[src]</a></div>
+<code>impl From&lt;<a class="primitive" href="../../primitive.u8/">u8</a>&gt; for <a class="primitive" href="../../primitive.i32/">i32</a></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/core/sync/atomic.rs.html#978-981" title="goto source code" target="_blank">[src]</a></div>
+<code>impl From&lt;<a class="primitive" href="../../primitive.i8/">i8</a>&gt; for <a class="struct" href="../../sync/atomic/struct.atomici8/" title="struct std::sync::atomic::AtomicI8">AtomicI8</a></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/core/num/mod.rs.html#3405-3410" title="goto source code" target="_blank">[src]</a></div>
+<code>impl From&lt;<a class="primitive" href="../../primitive.i8/">i8</a>&gt; for <a class="primitive" href="../../primitive.isize/">isize</a></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/core/ptr.rs.html#2404-2408" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;'a, T&gt; From&lt;<a class="primitive" href="../../primitive.reference/">&amp;'a </a>T&gt; for <a class="struct" href="../../ptr/struct.unique/" title="struct std::ptr::Unique">Unique</a>&lt;T&gt; <span class="where fmt-newline">where<br>    T: ?<a class="trait" href="../../marker/trait.sized/" title="trait std::marker::Sized">Sized</a>, </span></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/core/num/mod.rs.html#3405-3410" title="goto source code" target="_blank">[src]</a></div>
+<code>impl From&lt;<a class="primitive" href="../../primitive.i8/">i8</a>&gt; for <a class="primitive" href="../../primitive.f64/">f64</a></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/std/error.rs.html#167-171" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;'a, E: <a class="trait" href="../../error/trait.error/" title="trait std::error::Error">Error</a> + 'a&gt; From&lt;E&gt; for <a class="struct" href="../../boxed/struct.box/" title="struct std::boxed::Box">Box</a>&lt;<a class="trait" href="../../error/trait.error/" title="trait std::error::Error">Error</a> + 'a&gt;</code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/std/error.rs.html#174-178" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;'a, E: <a class="trait" href="../../error/trait.error/" title="trait std::error::Error">Error</a> + <a class="trait" href="../../marker/trait.send/" title="trait std::marker::Send">Send</a> + <a class="trait" href="../../marker/trait.sync/" title="trait std::marker::Sync">Sync</a> + 'a&gt; From&lt;E&gt; for <a class="struct" href="../../boxed/struct.box/" title="struct std::boxed::Box">Box</a>&lt;<a class="trait" href="../../error/trait.error/" title="trait std::error::Error">Error</a> + <a class="trait" href="../../marker/trait.send/" title="trait std::marker::Send">Send</a> + <a class="trait" href="../../marker/trait.sync/" title="trait std::marker::Sync">Sync</a> + 'a&gt;</code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/std/error.rs.html#181-198" title="goto source code" target="_blank">[src]</a></div>
+<code>impl From&lt;<a class="struct" href="../../string/struct.string/" title="struct std::string::String">String</a>&gt; for <a class="struct" href="../../boxed/struct.box/" title="struct std::boxed::Box">Box</a>&lt;<a class="trait" href="../../error/trait.error/" title="trait std::error::Error">Error</a> + <a class="trait" href="../../marker/trait.send/" title="trait std::marker::Send">Send</a> + <a class="trait" href="../../marker/trait.sync/" title="trait std::marker::Sync">Sync</a>&gt;</code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/std/error.rs.html#201-207" title="goto source code" target="_blank">[src]</a></div>
+<code>impl From&lt;<a class="struct" href="../../string/struct.string/" title="struct std::string::String">String</a>&gt; for <a class="struct" href="../../boxed/struct.box/" title="struct std::boxed::Box">Box</a>&lt;<a class="trait" href="../../error/trait.error/" title="trait std::error::Error">Error</a>&gt;</code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/std/error.rs.html#210-214" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;'a, 'b&gt; From&lt;&amp;'b <a class="primitive" href="../../primitive.str/">str</a>&gt; for <a class="struct" href="../../boxed/struct.box/" title="struct std::boxed::Box">Box</a>&lt;<a class="trait" href="../../error/trait.error/" title="trait std::error::Error">Error</a> + <a class="trait" href="../../marker/trait.send/" title="trait std::marker::Send">Send</a> + <a class="trait" href="../../marker/trait.sync/" title="trait std::marker::Sync">Sync</a> + 'a&gt;</code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/std/error.rs.html#217-221" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;'a&gt; From&lt;&amp;'a <a class="primitive" href="../../primitive.str/">str</a>&gt; for <a class="struct" href="../../boxed/struct.box/" title="struct std::boxed::Box">Box</a>&lt;<a class="trait" href="../../error/trait.error/" title="trait std::error::Error">Error</a>&gt;</code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/std/error.rs.html#224-228" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;'a, 'b&gt; From&lt;<a class="enum" href="../../borrow/enum.cow/" title="enum std::borrow::Cow">Cow</a>&lt;'b, <a class="primitive" href="../../primitive.str/">str</a>&gt;&gt; for <a class="struct" href="../../boxed/struct.box/" title="struct std::boxed::Box">Box</a>&lt;<a class="trait" href="../../error/trait.error/" title="trait std::error::Error">Error</a> + <a class="trait" href="../../marker/trait.send/" title="trait std::marker::Send">Send</a> + <a class="trait" href="../../marker/trait.sync/" title="trait std::marker::Sync">Sync</a> + 'a&gt;</code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/std/error.rs.html#231-235" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;'a&gt; From&lt;<a class="enum" href="../../borrow/enum.cow/" title="enum std::borrow::Cow">Cow</a>&lt;'a, <a class="primitive" href="../../primitive.str/">str</a>&gt;&gt; for <a class="struct" href="../../boxed/struct.box/" title="struct std::boxed::Box">Box</a>&lt;<a class="trait" href="../../error/trait.error/" title="trait std::error::Error">Error</a>&gt;</code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/std/ffi/c_str.rs.html#642-647" title="goto source code" target="_blank">[src]</a></div>
+<code>impl From&lt;<a class="struct" href="../../ffi/struct.cstring/" title="struct std::ffi::CString">CString</a>&gt; for <a class="struct" href="../../vec/struct.vec/" title="struct std::vec::Vec">Vec</a>&lt;<a class="primitive" href="../../primitive.u8/">u8</a>&gt;</code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/std/ffi/c_str.rs.html#684-689" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;'a&gt; From&lt;&amp;'a <a class="struct" href="../../ffi/struct.cstr/" title="struct std::ffi::CStr">CStr</a>&gt; for <a class="struct" href="../../boxed/struct.box/" title="struct std::boxed::Box">Box</a>&lt;<a class="struct" href="../../ffi/struct.cstr/" title="struct std::ffi::CStr">CStr</a>&gt;</code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/std/ffi/c_str.rs.html#692-697" title="goto source code" target="_blank">[src]</a></div>
+<code>impl From&lt;<a class="struct" href="../../boxed/struct.box/" title="struct std::boxed::Box">Box</a>&lt;<a class="struct" href="../../ffi/struct.cstr/" title="struct std::ffi::CStr">CStr</a>&gt;&gt; for <a class="struct" href="../../ffi/struct.cstring/" title="struct std::ffi::CString">CString</a></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/std/ffi/c_str.rs.html#700-705" title="goto source code" target="_blank">[src]</a></div>
+<code>impl From&lt;<a class="struct" href="../../ffi/struct.cstring/" title="struct std::ffi::CString">CString</a>&gt; for <a class="struct" href="../../boxed/struct.box/" title="struct std::boxed::Box">Box</a>&lt;<a class="struct" href="../../ffi/struct.cstr/" title="struct std::ffi::CStr">CStr</a>&gt;</code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/std/ffi/c_str.rs.html#763-768" title="goto source code" target="_blank">[src]</a></div>
+<code>impl From&lt;<a class="struct" href="../../ffi/struct.nulerror/" title="struct std::ffi::NulError">NulError</a>&gt; for <a class="struct" href="../../io/struct.error/" title="struct std::io::Error">Error</a></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/std/ffi/c_str.rs.html#1165-1169" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;'a&gt; From&lt;&amp;'a <a class="struct" href="../../ffi/struct.cstr/" title="struct std::ffi::CStr">CStr</a>&gt; for <a class="struct" href="../../ffi/struct.cstring/" title="struct std::ffi::CString">CString</a></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/std/ffi/os_str.rs.html#314-318" title="goto source code" target="_blank">[src]</a></div>
+<code>impl From&lt;<a class="struct" href="../../string/struct.string/" title="struct std::string::String">String</a>&gt; for <a class="struct" href="../../ffi/struct.osstring/" title="struct std::ffi::OsString">OsString</a></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/std/ffi/os_str.rs.html#321-325" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;'a, T: ?<a class="trait" href="../../marker/trait.sized/" title="trait std::marker::Sized">Sized</a> + <a class="trait" href="../trait.asref/" title="trait std::convert::AsRef">AsRef</a>&lt;<a class="struct" href="../../ffi/struct.osstr/" title="struct std::ffi::OsStr">OsStr</a>&gt;&gt; From&lt;<a class="primitive" href="../../primitive.reference/">&amp;'a </a>T&gt; for <a class="struct" href="../../ffi/struct.osstring/" title="struct std::ffi::OsString">OsString</a></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/std/ffi/os_str.rs.html#574-579" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;'a&gt; From&lt;&amp;'a <a class="struct" href="../../ffi/struct.osstr/" title="struct std::ffi::OsStr">OsStr</a>&gt; for <a class="struct" href="../../boxed/struct.box/" title="struct std::boxed::Box">Box</a>&lt;<a class="struct" href="../../ffi/struct.osstr/" title="struct std::ffi::OsStr">OsStr</a>&gt;</code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/std/ffi/os_str.rs.html#582-586" title="goto source code" target="_blank">[src]</a></div>
+<code>impl From&lt;<a class="struct" href="../../boxed/struct.box/" title="struct std::boxed::Box">Box</a>&lt;<a class="struct" href="../../ffi/struct.osstr/" title="struct std::ffi::OsStr">OsStr</a>&gt;&gt; for <a class="struct" href="../../ffi/struct.osstring/" title="struct std::ffi::OsString">OsString</a></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/std/ffi/os_str.rs.html#589-593" title="goto source code" target="_blank">[src]</a></div>
+<code>impl From&lt;<a class="struct" href="../../ffi/struct.osstring/" title="struct std::ffi::OsString">OsString</a>&gt; for <a class="struct" href="../../boxed/struct.box/" title="struct std::boxed::Box">Box</a>&lt;<a class="struct" href="../../ffi/struct.osstr/" title="struct std::ffi::OsStr">OsStr</a>&gt;</code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/std/io/buffered.rs.html#626-628" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;W&gt; From&lt;<a class="struct" href="../../io/struct.intoinnererror/" title="struct std::io::IntoInnerError">IntoInnerError</a>&lt;W&gt;&gt; for <a class="struct" href="../../io/struct.error/" title="struct std::io::Error">Error</a></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/std/io/error.rs.html#217-224" title="goto source code" target="_blank">[src]</a></div>
+<code>impl From&lt;<a class="enum" href="../../io/enum.errorkind/" title="enum std::io::ErrorKind">ErrorKind</a>&gt; for <a class="struct" href="../../io/struct.error/" title="struct std::io::Error">Error</a></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/std/net/ip.rs.html#656-660" title="goto source code" target="_blank">[src]</a></div>
+<code>impl From&lt;<a class="struct" href="../../net/struct.ipv4addr/" title="struct std::net::Ipv4Addr">Ipv4Addr</a>&gt; for <a class="enum" href="../../net/enum.ipaddr/" title="enum std::net::IpAddr">IpAddr</a></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/std/net/ip.rs.html#663-667" title="goto source code" target="_blank">[src]</a></div>
+<code>impl From&lt;<a class="struct" href="../../net/struct.ipv6addr/" title="struct std::net::Ipv6Addr">Ipv6Addr</a>&gt; for <a class="enum" href="../../net/enum.ipaddr/" title="enum std::net::IpAddr">IpAddr</a></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/std/net/ip.rs.html#770-776" title="goto source code" target="_blank">[src]</a></div>
+<code>impl From&lt;<a class="struct" href="../../net/struct.ipv4addr/" title="struct std::net::Ipv4Addr">Ipv4Addr</a>&gt; for <a class="primitive" href="../../primitive.u32/">u32</a></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/std/net/ip.rs.html#779-784" title="goto source code" target="_blank">[src]</a></div>
+<code>impl From&lt;<a class="primitive" href="../../primitive.u32/">u32</a>&gt; for <a class="struct" href="../../net/struct.ipv4addr/" title="struct std::net::Ipv4Addr">Ipv4Addr</a></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/std/net/ip.rs.html#787-791" title="goto source code" target="_blank">[src]</a></div>
+<code>impl From&lt;<a class="primitive" href="../../primitive.array/">[</a><a class="primitive" href="../../primitive.u8/">u8</a><a class="primitive" href="../../primitive.array/">; 4]</a>&gt; for <a class="struct" href="../../net/struct.ipv4addr/" title="struct std::net::Ipv4Addr">Ipv4Addr</a></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/std/net/ip.rs.html#794-798" title="goto source code" target="_blank">[src]</a></div>
+<code>impl From&lt;<a class="primitive" href="../../primitive.array/">[</a><a class="primitive" href="../../primitive.u8/">u8</a><a class="primitive" href="../../primitive.array/">; 4]</a>&gt; for <a class="enum" href="../../net/enum.ipaddr/" title="enum std::net::IpAddr">IpAddr</a></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/std/net/ip.rs.html#1349-1356" title="goto source code" target="_blank">[src]</a></div>
+<code>impl From&lt;<a class="struct" href="../../net/struct.ipv6addr/" title="struct std::net::Ipv6Addr">Ipv6Addr</a>&gt; for <a class="primitive" href="../../primitive.u128/">u128</a></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/std/net/ip.rs.html#1358-1366" title="goto source code" target="_blank">[src]</a></div>
+<code>impl From&lt;<a class="primitive" href="../../primitive.u128/">u128</a>&gt; for <a class="struct" href="../../net/struct.ipv6addr/" title="struct std::net::Ipv6Addr">Ipv6Addr</a></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/std/net/ip.rs.html#1369-1375" title="goto source code" target="_blank">[src]</a></div>
+<code>impl From&lt;<a class="primitive" href="../../primitive.array/">[</a><a class="primitive" href="../../primitive.u8/">u8</a><a class="primitive" href="../../primitive.array/">; 16]</a>&gt; for <a class="struct" href="../../net/struct.ipv6addr/" title="struct std::net::Ipv6Addr">Ipv6Addr</a></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/std/net/ip.rs.html#1378-1383" title="goto source code" target="_blank">[src]</a></div>
+<code>impl From&lt;<a class="primitive" href="../../primitive.array/">[</a><a class="primitive" href="../../primitive.u16/">u16</a><a class="primitive" href="../../primitive.array/">; 8]</a>&gt; for <a class="struct" href="../../net/struct.ipv6addr/" title="struct std::net::Ipv6Addr">Ipv6Addr</a></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/std/net/ip.rs.html#1387-1391" title="goto source code" target="_blank">[src]</a></div>
+<code>impl From&lt;<a class="primitive" href="../../primitive.array/">[</a><a class="primitive" href="../../primitive.u8/">u8</a><a class="primitive" href="../../primitive.array/">; 16]</a>&gt; for <a class="enum" href="../../net/enum.ipaddr/" title="enum std::net::IpAddr">IpAddr</a></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/std/net/ip.rs.html#1394-1398" title="goto source code" target="_blank">[src]</a></div>
+<code>impl From&lt;<a class="primitive" href="../../primitive.array/">[</a><a class="primitive" href="../../primitive.u16/">u16</a><a class="primitive" href="../../primitive.array/">; 8]</a>&gt; for <a class="enum" href="../../net/enum.ipaddr/" title="enum std::net::IpAddr">IpAddr</a></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/std/net/addr.rs.html#546-550" title="goto source code" target="_blank">[src]</a></div>
+<code>impl From&lt;<a class="struct" href="../../net/struct.socketaddrv4/" title="struct std::net::SocketAddrV4">SocketAddrV4</a>&gt; for <a class="enum" href="../../net/enum.socketaddr/" title="enum std::net::SocketAddr">SocketAddr</a></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/std/net/addr.rs.html#553-557" title="goto source code" target="_blank">[src]</a></div>
+<code>impl From&lt;<a class="struct" href="../../net/struct.socketaddrv6/" title="struct std::net::SocketAddrV6">SocketAddrV6</a>&gt; for <a class="enum" href="../../net/enum.socketaddr/" title="enum std::net::SocketAddr">SocketAddr</a></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/std/net/addr.rs.html#560-564" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;I: <a class="trait" href="../trait.into/" title="trait std::convert::Into">Into</a>&lt;<a class="enum" href="../../net/enum.ipaddr/" title="enum std::net::IpAddr">IpAddr</a>&gt;&gt; From&lt;<a class="primitive" href="../../primitive.tuple/">(</a>I, <a class="primitive" href="../../primitive.u16/">u16</a><a class="primitive" href="../../primitive.tuple/">)</a>&gt; for <a class="enum" href="../../net/enum.socketaddr/" title="enum std::net::SocketAddr">SocketAddr</a></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/std/path.rs.html#1341-1347" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;'a&gt; From&lt;&amp;'a <a class="struct" href="../../path/struct.path/" title="struct std::path::Path">Path</a>&gt; for <a class="struct" href="../../boxed/struct.box/" title="struct std::boxed::Box">Box</a>&lt;<a class="struct" href="../../path/struct.path/" title="struct std::path::Path">Path</a>&gt;</code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/std/path.rs.html#1350-1354" title="goto source code" target="_blank">[src]</a></div>
+<code>impl From&lt;<a class="struct" href="../../boxed/struct.box/" title="struct std::boxed::Box">Box</a>&lt;<a class="struct" href="../../path/struct.path/" title="struct std::path::Path">Path</a>&gt;&gt; for <a class="struct" href="../../path/struct.pathbuf/" title="struct std::path::PathBuf">PathBuf</a></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/std/path.rs.html#1357-1361" title="goto source code" target="_blank">[src]</a></div>
+<code>impl From&lt;<a class="struct" href="../../path/struct.pathbuf/" title="struct std::path::PathBuf">PathBuf</a>&gt; for <a class="struct" href="../../boxed/struct.box/" title="struct std::boxed::Box">Box</a>&lt;<a class="struct" href="../../path/struct.path/" title="struct std::path::Path">Path</a>&gt;</code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/std/path.rs.html#1364-1368" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;'a, T: ?<a class="trait" href="../../marker/trait.sized/" title="trait std::marker::Sized">Sized</a> + <a class="trait" href="../trait.asref/" title="trait std::convert::AsRef">AsRef</a>&lt;<a class="struct" href="../../ffi/struct.osstr/" title="struct std::ffi::OsStr">OsStr</a>&gt;&gt; From&lt;<a class="primitive" href="../../primitive.reference/">&amp;'a </a>T&gt; for <a class="struct" href="../../path/struct.pathbuf/" title="struct std::path::PathBuf">PathBuf</a></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/std/path.rs.html#1371-1375" title="goto source code" target="_blank">[src]</a></div>
+<code>impl From&lt;<a class="struct" href="../../ffi/struct.osstring/" title="struct std::ffi::OsString">OsString</a>&gt; for <a class="struct" href="../../path/struct.pathbuf/" title="struct std::path::PathBuf">PathBuf</a></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/std/path.rs.html#1378-1382" title="goto source code" target="_blank">[src]</a></div>
+<code>impl From&lt;<a class="struct" href="../../path/struct.pathbuf/" title="struct std::path::PathBuf">PathBuf</a>&gt; for <a class="struct" href="../../ffi/struct.osstring/" title="struct std::ffi::OsString">OsString</a></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/std/path.rs.html#1385-1389" title="goto source code" target="_blank">[src]</a></div>
+<code>impl From&lt;<a class="struct" href="../../string/struct.string/" title="struct std::string::String">String</a>&gt; for <a class="struct" href="../../path/struct.pathbuf/" title="struct std::path::PathBuf">PathBuf</a></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/std/path.rs.html#1440-1445" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;'a&gt; From&lt;&amp;'a <a class="struct" href="../../path/struct.path/" title="struct std::path::Path">Path</a>&gt; for <a class="enum" href="../../borrow/enum.cow/" title="enum std::borrow::Cow">Cow</a>&lt;'a, <a class="struct" href="../../path/struct.path/" title="struct std::path::Path">Path</a>&gt;</code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/std/path.rs.html#1448-1453" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;'a&gt; From&lt;<a class="struct" href="../../path/struct.pathbuf/" title="struct std::path::PathBuf">PathBuf</a>&gt; for <a class="enum" href="../../borrow/enum.cow/" title="enum std::borrow::Cow">Cow</a>&lt;'a, <a class="struct" href="../../path/struct.path/" title="struct std::path::Path">Path</a>&gt;</code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/std/process.rs.html#973-977" title="goto source code" target="_blank">[src]</a></div>
+<code>impl From&lt;<a class="struct" href="../../process/struct.childstdin/" title="struct std::process::ChildStdin">ChildStdin</a>&gt; for <a class="struct" href="../../process/struct.stdio/" title="struct std::process::Stdio">Stdio</a></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/std/process.rs.html#980-984" title="goto source code" target="_blank">[src]</a></div>
+<code>impl From&lt;<a class="struct" href="../../process/struct.childstdout/" title="struct std::process::ChildStdout">ChildStdout</a>&gt; for <a class="struct" href="../../process/struct.stdio/" title="struct std::process::Stdio">Stdio</a></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/std/process.rs.html#987-991" title="goto source code" target="_blank">[src]</a></div>
+<code>impl From&lt;<a class="struct" href="../../process/struct.childstderr/" title="struct std::process::ChildStderr">ChildStderr</a>&gt; for <a class="struct" href="../../process/struct.stdio/" title="struct std::process::Stdio">Stdio</a></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/std/process.rs.html#994-998" title="goto source code" target="_blank">[src]</a></div>
+<code>impl From&lt;<a class="struct" href="../../fs/struct.file/" title="struct std::fs::File">File</a>&gt; for <a class="struct" href="../../process/struct.stdio/" title="struct std::process::Stdio">Stdio</a></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/std/sys_common/poison.rs.html#219-223" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;T&gt; From&lt;<a class="struct" href="../../sync/struct.poisonerror/" title="struct std::sync::PoisonError">PoisonError</a>&lt;T&gt;&gt; for <a class="enum" href="../../sync/enum.trylockerror/" title="enum std::sync::TryLockError">TryLockError</a>&lt;T&gt;</code>
+</li> </ul>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2010 The Rust Project Developers<br>Licensed under the Apache License, Version 2.0 or the MIT license, at your option.<br>
+    <a href="https://doc.rust-lang.org/std/convert/trait.From.html" class="_attribution-link" target="_blank">https://doc.rust-lang.org/std/convert/trait.From.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

@@ -1,0 +1,120 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>5.1.7. Enumerations - Rust - W3cubDocs</title>
+  
+  <meta name="description" content="An enumeration is a simultaneous definition of a nominal enumerated type as well as a set of constructors, that can be used to create or pattern- &hellip;">
+  <meta name="keywords" content="enumerations, -, rust">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/rust/reference/items/enumerations/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/rust.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/rust/" class="_nav-link" title="" style="margin-left:0;">Rust</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _rust">
+				
+<h1 id="">Enumerations</h1> <p>An <em>enumeration</em> is a simultaneous definition of a nominal <a href="../../types/#enumerated-types">enumerated type</a> as well as a set of <em>constructors</em>, that can be used to create or pattern-match values of the corresponding enumerated type.</p> <p>Enumerations are declared with the keyword <code>enum</code>.</p> <p>An example of an <code>enum</code> item and its use:</p> <pre data-language="rust">
+# #![allow(unused_variables)]
+#fn main() {
+enum Animal {
+    Dog,
+    Cat,
+}
+
+let mut a: Animal = Animal::Dog;
+a = Animal::Cat;
+#}</pre> <p>Enumeration constructors can have either named or unnamed fields:</p> <pre data-language="rust">
+# #![allow(unused_variables)]
+#fn main() {
+enum Animal {
+    Dog (String, f64),
+    Cat { name: String, weight: f64 },
+}
+
+let mut a: Animal = Animal::Dog("Cocoa".to_string(), 37.2);
+a = Animal::Cat { name: "Spotty".to_string(), weight: 2.7 };
+#}</pre> <p>In this example, <code>Cat</code> is a <em>struct-like enum variant</em>, whereas <code>Dog</code> is simply called an enum variant. Each enum instance has a <em>discriminant</em> which is an integer associated to it that is used to determine which variant it holds.</p> <h2 id="">C-like Enumerations</h2> <p>If there is no data attached to <em>any</em> of the variants of an enumeration it is called a <em>c-like enumeration</em>. If a discriminant isn't specified, they start at zero, and add one for each variant, in order. Each enum value is just its discriminant which you can specify explicitly:</p> <pre data-language="rust">
+# #![allow(unused_variables)]
+#fn main() {
+enum Foo {
+    Bar,            // 0
+    Baz = 123,
+    Quux,           // 124
+}
+#}</pre> <p>The right hand side of the specification is interpreted as an <code>isize</code> value, but the compiler is allowed to use a smaller type in the actual memory layout. The <a href="../../attributes/#ffi-attributes"><code>repr</code> attribute</a> can be added in order to change the type of the right hand side and specify the memory layout.</p> <p>You can also cast a c-like enum to get its discriminant:</p> <pre data-language="rust">
+# #![allow(unused_variables)]
+#fn main() {
+# enum Foo { Baz = 123 }
+let x = Foo::Baz as u32; // x is now 123u32
+#}</pre> <p>This only works as long as none of the variants have data attached. If it were <code>Baz(i32)</code>, this is disallowed.</p>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2010 The Rust Project Developers<br>Licensed under the Apache License, Version 2.0 or the MIT license, at your option.<br>
+    <a href="https://doc.rust-lang.org/reference/items/enumerations.html" class="_attribution-link" target="_blank">https://doc.rust-lang.org/reference/items/enumerations.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

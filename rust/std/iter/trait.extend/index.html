@@ -1,0 +1,214 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>std&#58;&#58;iter&#58;&#58;Extend - Rust - W3cubDocs</title>
+  
+  <meta name="description" content=" Extend a collection with the contents of an iterator. ">
+  <meta name="keywords" content="trait, std, iter, extend, -, rust">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/rust/std/iter/trait.extend/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/rust.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/rust/" class="_nav-link" title="" style="margin-left:0;">Rust</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _rust">
+				
+<h1 class="fqn">Trait std::iter::Extend</h1> <pre class="rust trait" data-language="rust">pub trait Extend&lt;A&gt; {
+    fn extend&lt;T&gt;(&amp;mut self, iter: T)    where        T: IntoIterator&lt;Item = A&gt;;
+}</pre>
+<p>Extend a collection with the contents of an iterator.</p> <p>Iterators produce a series of values, and collections can also be thought of as a series of values. The <code>Extend</code> trait bridges this gap, allowing you to extend a collection by including the contents of that iterator. When extending a collection with an already existing key, that entry is updated or, in the case of collections that permit multiple entries with equal keys, that entry is inserted.</p> <h4 id="examples" class="section-header">Examples</h4> <p>Basic usage:</p> <pre class="rust rust-example-rendered" data-language="rust">
+// You can extend a String with some chars:
+let mut message = String::from("The first three letters are: ");
+
+message.extend(&amp;['a', 'b', 'c']);
+
+assert_eq!("abc", &amp;message[29..32]);</pre> <p>Implementing <code>Extend</code>:</p> <pre class="rust rust-example-rendered" data-language="rust">
+// A sample collection, that's just a wrapper over Vec&lt;T&gt;
+#[derive(Debug)]
+struct MyCollection(Vec&lt;i32&gt;);
+
+// Let's give it some methods so we can create one and add things
+// to it.
+impl MyCollection {
+    fn new() -&gt; MyCollection {
+        MyCollection(Vec::new())
+    }
+
+    fn add(&amp;mut self, elem: i32) {
+        self.0.push(elem);
+    }
+}
+
+// since MyCollection has a list of i32s, we implement Extend for i32
+impl Extend&lt;i32&gt; for MyCollection {
+
+    // This is a bit simpler with the concrete type signature: we can call
+    // extend on anything which can be turned into an Iterator which gives
+    // us i32s. Because we need i32s to put into MyCollection.
+    fn extend&lt;T: IntoIterator&lt;Item=i32&gt;&gt;(&amp;mut self, iter: T) {
+
+        // The implementation is very straightforward: loop through the
+        // iterator, and add() each element to ourselves.
+        for elem in iter {
+            self.add(elem);
+        }
+    }
+}
+
+let mut c = MyCollection::new();
+
+c.add(5);
+c.add(6);
+c.add(7);
+
+// let's extend our collection with three more numbers
+c.extend(vec![1, 2, 3]);
+
+// we've added these elements onto the end
+assert_eq!("MyCollection([5, 6, 7, 1, 2, 3])", format!("{:?}", c));</pre>  <h2 id="required-methods" class="small-section-header"> Required Methods </h2> <div class="methods"> <h3 id="tymethod.extend" class="method"><span id="extend.v" class="invisible"><code>fn <a href="#tymethod.extend" class="fnname">extend</a>&lt;T&gt;(&amp;mut self, iter: T) <span class="where fmt-newline">where<br>    T: <a class="trait" href="../trait.intoiterator/" title="trait std::iter::IntoIterator">IntoIterator</a>&lt;Item = A&gt;, </span></code></span></h3>
+<div class="docblock">
+<p>Extends a collection with the contents of an iterator.</p> <p>As this is the only method for this trait, the <a href="../trait.extend/">trait-level</a> docs contain more details.</p> <h4 id="examples-1" class="section-header">Examples</h4> <p>Basic usage:</p> <pre class="rust rust-example-rendered" data-language="rust">
+// You can extend a String with some chars:
+let mut message = String::from("abc");
+
+message.extend(['d', 'e', 'f'].iter());
+
+assert_eq!("abcdef", &amp;message);</pre> </div>
+</div> <h2 id="implementors" class="small-section-header"> Implementors </h2> <ul class="item-list" id="implementors-list"> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/alloc/string.rs.html#1683-1689" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;'a&gt; Extend&lt;<a class="enum" href="../../borrow/enum.cow/" title="enum std::borrow::Cow">Cow</a>&lt;'a, <a class="primitive" href="../../primitive.str/">str</a>&gt;&gt; for <a class="struct" href="../../string/struct.string/" title="struct std::string::String">String</a></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/alloc/btree/set.rs.html#779-783" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;'a, T&gt; Extend&lt;<a class="primitive" href="../../primitive.reference/">&amp;'a </a>T&gt; for <a class="struct" href="../../collections/btree_set/struct.btreeset/" title="struct std::collections::btree_set::BTreeSet">BTreeSet</a>&lt;T&gt; <span class="where fmt-newline">where<br>    T: 'a + <a class="trait" href="../../marker/trait.copy/" title="trait std::marker::Copy">Copy</a> + <a class="trait" href="../../cmp/trait.ord/" title="trait std::cmp::Ord">Ord</a>, </span></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/alloc/string.rs.html#1658-1662" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;'a&gt; Extend&lt;&amp;'a <a class="primitive" href="../../primitive.char/">char</a>&gt; for <a class="struct" href="../../string/struct.string/" title="struct std::string::String">String</a></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/alloc/btree/map.rs.html#1678-1685" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;K, V&gt; Extend&lt;<a class="primitive" href="../../primitive.tuple/">(</a>K, V<a class="primitive" href="../../primitive.tuple/">)</a>&gt; for <a class="struct" href="../../collections/btree_map/struct.btreemap/" title="struct std::collections::btree_map::BTreeMap">BTreeMap</a>&lt;K, V&gt; <span class="where fmt-newline">where<br>    K: <a class="trait" href="../../cmp/trait.ord/" title="trait std::cmp::Ord">Ord</a>, </span></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/alloc/vec.rs.html#2051-2055" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;'a, T&gt; Extend&lt;<a class="primitive" href="../../primitive.reference/">&amp;'a </a>T&gt; for <a class="struct" href="../../vec/struct.vec/" title="struct std::vec::Vec">Vec</a>&lt;T&gt; <span class="where fmt-newline">where<br>    T: 'a + <a class="trait" href="../../marker/trait.copy/" title="trait std::marker::Copy">Copy</a>, </span></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/alloc/vec_deque.rs.html#2430-2434" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;'a, T&gt; Extend&lt;<a class="primitive" href="../../primitive.reference/">&amp;'a </a>T&gt; for <a class="struct" href="../../collections/vec_deque/struct.vecdeque/" title="struct std::collections::vec_deque::VecDeque">VecDeque</a>&lt;T&gt; <span class="where fmt-newline">where<br>    T: 'a + <a class="trait" href="../../marker/trait.copy/" title="trait std::marker::Copy">Copy</a>, </span></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/alloc/btree/map.rs.html#1688-1692" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;'a, K, V&gt; Extend&lt;<a class="primitive" href="../../primitive.tuple/">(</a><a class="primitive" href="../../primitive.reference/">&amp;'a </a>K, <a class="primitive" href="../../primitive.reference/">&amp;'a </a>V<a class="primitive" href="../../primitive.tuple/">)</a>&gt; for <a class="struct" href="../../collections/btree_map/struct.btreemap/" title="struct std::collections::btree_map::BTreeMap">BTreeMap</a>&lt;K, V&gt; <span class="where fmt-newline">where<br>    K: <a class="trait" href="../../marker/trait.copy/" title="trait std::marker::Copy">Copy</a> + <a class="trait" href="../../cmp/trait.ord/" title="trait std::cmp::Ord">Ord</a>,<br>    V: <a class="trait" href="../../marker/trait.copy/" title="trait std::marker::Copy">Copy</a>, </span></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/alloc/string.rs.html#1646-1655" title="goto source code" target="_blank">[src]</a></div>
+<code>impl Extend&lt;<a class="primitive" href="../../primitive.char/">char</a>&gt; for <a class="struct" href="../../string/struct.string/" title="struct std::string::String">String</a></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/alloc/linked_list.rs.html#1041-1045" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;T&gt; Extend&lt;T&gt; for <a class="struct" href="../../collections/linked_list/struct.linkedlist/" title="struct std::collections::linked_list::LinkedList">LinkedList</a>&lt;T&gt;</code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/alloc/binary_heap.rs.html#1135-1140" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;T&gt; Extend&lt;T&gt; for <a class="struct" href="../../collections/binary_heap/struct.binaryheap/" title="struct std::collections::binary_heap::BinaryHeap">BinaryHeap</a>&lt;T&gt; <span class="where fmt-newline">where<br>    T: <a class="trait" href="../../cmp/trait.ord/" title="trait std::cmp::Ord">Ord</a>, </span></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/alloc/vec_deque.rs.html#2421-2427" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;A&gt; Extend&lt;A&gt; for <a class="struct" href="../../collections/vec_deque/struct.vecdeque/" title="struct std::collections::vec_deque::VecDeque">VecDeque</a>&lt;A&gt;</code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/alloc/string.rs.html#1674-1680" title="goto source code" target="_blank">[src]</a></div>
+<code>impl Extend&lt;<a class="struct" href="../../string/struct.string/" title="struct std::string::String">String</a>&gt; for <a class="struct" href="../../string/struct.string/" title="struct std::string::String">String</a></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/alloc/btree/set.rs.html#769-776" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;T&gt; Extend&lt;T&gt; for <a class="struct" href="../../collections/btree_set/struct.btreeset/" title="struct std::collections::btree_set::BTreeSet">BTreeSet</a>&lt;T&gt; <span class="where fmt-newline">where<br>    T: <a class="trait" href="../../cmp/trait.ord/" title="trait std::cmp::Ord">Ord</a>, </span></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/alloc/string.rs.html#1665-1671" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;'a&gt; Extend&lt;&amp;'a <a class="primitive" href="../../primitive.str/">str</a>&gt; for <a class="struct" href="../../string/struct.string/" title="struct std::string::String">String</a></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/alloc/linked_list.rs.html#1062-1066" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;'a, T&gt; Extend&lt;<a class="primitive" href="../../primitive.reference/">&amp;'a </a>T&gt; for <a class="struct" href="../../collections/linked_list/struct.linkedlist/" title="struct std::collections::linked_list::LinkedList">LinkedList</a>&lt;T&gt; <span class="where fmt-newline">where<br>    T: 'a + <a class="trait" href="../../marker/trait.copy/" title="trait std::marker::Copy">Copy</a>, </span></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/alloc/vec.rs.html#1778-1783" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;T&gt; Extend&lt;T&gt; for <a class="struct" href="../../vec/struct.vec/" title="struct std::vec::Vec">Vec</a>&lt;T&gt;</code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/alloc/binary_heap.rs.html#1168-1172" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;'a, T&gt; Extend&lt;<a class="primitive" href="../../primitive.reference/">&amp;'a </a>T&gt; for <a class="struct" href="../../collections/binary_heap/struct.binaryheap/" title="struct std::collections::binary_heap::BinaryHeap">BinaryHeap</a>&lt;T&gt; <span class="where fmt-newline">where<br>    T: 'a + <a class="trait" href="../../marker/trait.copy/" title="trait std::marker::Copy">Copy</a> + <a class="trait" href="../../cmp/trait.ord/" title="trait std::cmp::Ord">Ord</a>, </span></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/std/collections/hash/map.rs.html#2410-2430" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;K, V, S&gt; Extend&lt;<a class="primitive" href="../../primitive.tuple/">(</a>K, V<a class="primitive" href="../../primitive.tuple/">)</a>&gt; for <a class="struct" href="../../collections/struct.hashmap/" title="struct std::collections::HashMap">HashMap</a>&lt;K, V, S&gt; <span class="where fmt-newline">where<br>    K: <a class="trait" href="../../cmp/trait.eq/" title="trait std::cmp::Eq">Eq</a> + <a class="trait" href="../../hash/trait.hash/" title="trait std::hash::Hash">Hash</a>,<br>    S: <a class="trait" href="../../hash/trait.buildhasher/" title="trait std::hash::BuildHasher">BuildHasher</a>, </span></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/std/collections/hash/map.rs.html#2433-2441" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;'a, K, V, S&gt; Extend&lt;<a class="primitive" href="../../primitive.tuple/">(</a><a class="primitive" href="../../primitive.reference/">&amp;'a </a>K, <a class="primitive" href="../../primitive.reference/">&amp;'a </a>V<a class="primitive" href="../../primitive.tuple/">)</a>&gt; for <a class="struct" href="../../collections/struct.hashmap/" title="struct std::collections::HashMap">HashMap</a>&lt;K, V, S&gt; <span class="where fmt-newline">where<br>    K: <a class="trait" href="../../cmp/trait.eq/" title="trait std::cmp::Eq">Eq</a> + <a class="trait" href="../../hash/trait.hash/" title="trait std::hash::Hash">Hash</a> + <a class="trait" href="../../marker/trait.copy/" title="trait std::marker::Copy">Copy</a>,<br>    V: <a class="trait" href="../../marker/trait.copy/" title="trait std::marker::Copy">Copy</a>,<br>    S: <a class="trait" href="../../hash/trait.buildhasher/" title="trait std::hash::BuildHasher">BuildHasher</a>, </span></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/std/collections/hash/set.rs.html#750-757" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;T, S&gt; Extend&lt;T&gt; for <a class="struct" href="../../collections/struct.hashset/" title="struct std::collections::HashSet">HashSet</a>&lt;T, S&gt; <span class="where fmt-newline">where<br>    T: <a class="trait" href="../../cmp/trait.eq/" title="trait std::cmp::Eq">Eq</a> + <a class="trait" href="../../hash/trait.hash/" title="trait std::hash::Hash">Hash</a>,<br>    S: <a class="trait" href="../../hash/trait.buildhasher/" title="trait std::hash::BuildHasher">BuildHasher</a>, </span></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/std/collections/hash/set.rs.html#760-767" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;'a, T, S&gt; Extend&lt;<a class="primitive" href="../../primitive.reference/">&amp;'a </a>T&gt; for <a class="struct" href="../../collections/struct.hashset/" title="struct std::collections::HashSet">HashSet</a>&lt;T, S&gt; <span class="where fmt-newline">where<br>    T: 'a + <a class="trait" href="../../cmp/trait.eq/" title="trait std::cmp::Eq">Eq</a> + <a class="trait" href="../../hash/trait.hash/" title="trait std::hash::Hash">Hash</a> + <a class="trait" href="../../marker/trait.copy/" title="trait std::marker::Copy">Copy</a>,<br>    S: <a class="trait" href="../../hash/trait.buildhasher/" title="trait std::hash::BuildHasher">BuildHasher</a>, </span></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/std/path.rs.html#1401-1407" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;P: <a class="trait" href="../../convert/trait.asref/" title="trait std::convert::AsRef">AsRef</a>&lt;<a class="struct" href="../../path/struct.path/" title="struct std::path::Path">Path</a>&gt;&gt; Extend&lt;P&gt; for <a class="struct" href="../../path/struct.pathbuf/" title="struct std::path::PathBuf">PathBuf</a></code>
+</li> </ul>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2010 The Rust Project Developers<br>Licensed under the Apache License, Version 2.0 or the MIT license, at your option.<br>
+    <a href="https://doc.rust-lang.org/std/iter/trait.Extend.html" class="_attribution-link" target="_blank">https://doc.rust-lang.org/std/iter/trait.Extend.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

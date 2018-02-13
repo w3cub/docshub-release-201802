@@ -1,0 +1,156 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>std&#58;&#58;ops&#58;&#58;CoerceUnsized - Rust - W3cubDocs</title>
+  
+  <meta name="description" content=" Trait that indicates that this is a pointer or a wrapper for one, where unsizing can be performed on the pointee. ">
+  <meta name="keywords" content="trait, std, ops, coerceunsized, -, rust">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/rust/std/ops/trait.coerceunsized/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/rust.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/rust/" class="_nav-link" title="" style="margin-left:0;">Rust</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _rust">
+				
+<h1 class="fqn">Trait std::ops::CoerceUnsized</h1> <pre class="rust trait" data-language="rust">#[lang = "coerce_unsized"]
+pub trait CoerceUnsized&lt;T&gt; { }</pre>
+<div class="stability"><span class="stab unstable">🔬 This is a nightly-only experimental API. (coerce_unsized #27732)</span></div>
+<p>Trait that indicates that this is a pointer or a wrapper for one, where unsizing can be performed on the pointee.</p> <p>See the <a href="https://github.com/rust-lang/rfcs/blob/master/text/0982-dst-coercion.md" target="_blank">DST coercion RfC</a> and <a href="https://doc.rust-lang.org/nomicon/coercions.html" target="_blank">the nomicon entry on coercion</a> for more details.</p> <p>For builtin pointer types, pointers to <code>T</code> will coerce to pointers to <code>U</code> if <code>T: Unsize&lt;U&gt;</code> by converting from a thin pointer to a fat pointer.</p> <p>For custom types, the coercion here works by coercing <code>Foo&lt;T&gt;</code> to <code>Foo&lt;U&gt;</code> provided an impl of <code>CoerceUnsized&lt;Foo&lt;U&gt;&gt; for Foo&lt;T&gt;</code> exists. Such an impl can only be written if <code>Foo&lt;T&gt;</code> has only a single non-phantomdata field involving <code>T</code>. If the type of that field is <code>Bar&lt;T&gt;</code>, an implementation of <code>CoerceUnsized&lt;Bar&lt;U&gt;&gt; for Bar&lt;T&gt;</code> must exist. The coercion will work by coercing the <code>Bar&lt;T&gt;</code> field into <code>Bar&lt;U&gt;</code> and filling in the rest of the fields from <code>Foo&lt;T&gt;</code> to create a <code>Foo&lt;U&gt;</code>. This will effectively drill down to a pointer field and coerce that.</p> <p>Generally, for smart pointers you will implement <code>CoerceUnsized&lt;Ptr&lt;U&gt;&gt; for Ptr&lt;T&gt; where T: Unsize&lt;U&gt;, U: ?Sized</code>, with an optional <code>?Sized</code> bound on <code>T</code> itself. For wrapper types that directly embed <code>T</code> like <code>Cell&lt;T&gt;</code> and <code>RefCell&lt;T&gt;</code>, you can directly implement <code>CoerceUnsized&lt;Wrap&lt;U&gt;&gt; for Wrap&lt;T&gt; where T: CoerceUnsized&lt;U&gt;</code>. This will let coercions of types like <code>Cell&lt;Box&lt;T&gt;&gt;</code> work.</p> <p><a href="../../marker/trait.unsize/"><code>Unsize</code></a> is used to mark types which can be coerced to DSTs if behind pointers. It is implemented automatically by the compiler.</p>  <h2 id="foreign-impls" class="small-section-header"> Implementations on Foreign Types </h2> <h3 id="impl-CoerceUnsized%3CNonZero%3CU%3E%3E" class="impl">
+<span class="in-band"><code>impl&lt;T, U&gt; <a class="trait" href="../trait.coerceunsized/" title="trait std::ops::CoerceUnsized">CoerceUnsized</a>&lt;<a class="struct" href="https://doc.rust-lang.org/core/nonzero/struct.NonZero.html" title="struct core::nonzero::NonZero" target="_blank">NonZero</a>&lt;U&gt;&gt; for <a class="struct" href="https://doc.rust-lang.org/core/nonzero/struct.NonZero.html" title="struct core::nonzero::NonZero" target="_blank">NonZero</a>&lt;T&gt; <span class="where fmt-newline">where<br>    T: <a class="trait" href="https://doc.rust-lang.org/core/nonzero/trait.Zeroable.html" title="trait core::nonzero::Zeroable" target="_blank">Zeroable</a> + <a class="trait" href="../trait.coerceunsized/" title="trait std::ops::CoerceUnsized">CoerceUnsized</a>&lt;U&gt;,<br>    U: <a class="trait" href="https://doc.rust-lang.org/core/nonzero/trait.Zeroable.html" title="trait core::nonzero::Zeroable" target="_blank">Zeroable</a>, </span></code></span><span class="out-of-band">
+<a class="srclink" href="https://doc.rust-lang.org/src/core/nonzero.rs.html#96" title="goto source code" target="_blank">[src]</a></span>
+</h3>  <h2 id="implementors" class="small-section-header"> Implementors </h2> <ul class="item-list" id="implementors-list"> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/alloc/arc.rs.html#245" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;T, U&gt; CoerceUnsized&lt;<a class="struct" href="../../sync/struct.weak/" title="struct std::sync::Weak">Weak</a>&lt;U&gt;&gt; for std::sync::<a class="struct" href="../../sync/struct.weak/" title="struct std::sync::Weak">Weak</a>&lt;T&gt; <span class="where fmt-newline">where<br>    T: <a class="trait" href="../../marker/trait.unsize/" title="trait std::marker::Unsize">Unsize</a>&lt;U&gt; + ?<a class="trait" href="../../marker/trait.sized/" title="trait std::marker::Sized">Sized</a>,<br>    U: ?<a class="trait" href="../../marker/trait.sized/" title="trait std::marker::Sized">Sized</a>, </span></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/alloc/rc.rs.html#294" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;T, U&gt; CoerceUnsized&lt;<a class="struct" href="../../rc/struct.rc/" title="struct std::rc::Rc">Rc</a>&lt;U&gt;&gt; for <a class="struct" href="../../rc/struct.rc/" title="struct std::rc::Rc">Rc</a>&lt;T&gt; <span class="where fmt-newline">where<br>    T: <a class="trait" href="../../marker/trait.unsize/" title="trait std::marker::Unsize">Unsize</a>&lt;U&gt; + ?<a class="trait" href="../../marker/trait.sized/" title="trait std::marker::Sized">Sized</a>,<br>    U: ?<a class="trait" href="../../marker/trait.sized/" title="trait std::marker::Sized">Sized</a>, </span></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/alloc/boxed.rs.html#787" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;T, U&gt; CoerceUnsized&lt;<a class="struct" href="../../boxed/struct.box/" title="struct std::boxed::Box">Box</a>&lt;U&gt;&gt; for <a class="struct" href="../../boxed/struct.box/" title="struct std::boxed::Box">Box</a>&lt;T&gt; <span class="where fmt-newline">where<br>    T: <a class="trait" href="../../marker/trait.unsize/" title="trait std::marker::Unsize">Unsize</a>&lt;U&gt; + ?<a class="trait" href="../../marker/trait.sized/" title="trait std::marker::Sized">Sized</a>,<br>    U: ?<a class="trait" href="../../marker/trait.sized/" title="trait std::marker::Sized">Sized</a>, </span></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/alloc/arc.rs.html#209" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;T, U&gt; CoerceUnsized&lt;<a class="struct" href="../../sync/struct.arc/" title="struct std::sync::Arc">Arc</a>&lt;U&gt;&gt; for <a class="struct" href="../../sync/struct.arc/" title="struct std::sync::Arc">Arc</a>&lt;T&gt; <span class="where fmt-newline">where<br>    T: <a class="trait" href="../../marker/trait.unsize/" title="trait std::marker::Unsize">Unsize</a>&lt;U&gt; + ?<a class="trait" href="../../marker/trait.sized/" title="trait std::marker::Sized">Sized</a>,<br>    U: ?<a class="trait" href="../../marker/trait.sized/" title="trait std::marker::Sized">Sized</a>, </span></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/alloc/rc.rs.html#1167" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;T, U&gt; CoerceUnsized&lt;<a class="struct" href="../../rc/struct.weak/" title="struct std::rc::Weak">Weak</a>&lt;U&gt;&gt; for std::rc::<a class="struct" href="../../rc/struct.weak/" title="struct std::rc::Weak">Weak</a>&lt;T&gt; <span class="where fmt-newline">where<br>    T: <a class="trait" href="../../marker/trait.unsize/" title="trait std::marker::Unsize">Unsize</a>&lt;U&gt; + ?<a class="trait" href="../../marker/trait.sized/" title="trait std::marker::Sized">Sized</a>,<br>    U: ?<a class="trait" href="../../marker/trait.sized/" title="trait std::marker::Sized">Sized</a>, </span></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/core/cell.rs.html#479" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;T, U&gt; CoerceUnsized&lt;<a class="struct" href="../../cell/struct.cell/" title="struct std::cell::Cell">Cell</a>&lt;U&gt;&gt; for <a class="struct" href="../../cell/struct.cell/" title="struct std::cell::Cell">Cell</a>&lt;T&gt; <span class="where fmt-newline">where<br>    T: <a class="trait" href="../trait.coerceunsized/" title="trait std::ops::CoerceUnsized">CoerceUnsized</a>&lt;U&gt;, </span></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/core/cell.rs.html#940" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;T, U&gt; CoerceUnsized&lt;<a class="struct" href="../../cell/struct.refcell/" title="struct std::cell::RefCell">RefCell</a>&lt;U&gt;&gt; for <a class="struct" href="../../cell/struct.refcell/" title="struct std::cell::RefCell">RefCell</a>&lt;T&gt; <span class="where fmt-newline">where<br>    T: <a class="trait" href="../trait.coerceunsized/" title="trait std::ops::CoerceUnsized">CoerceUnsized</a>&lt;U&gt;, </span></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/core/ops/unsize.rs.html#72" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;T, U&gt; CoerceUnsized&lt;<a class="primitive" href="../../primitive.pointer/">*mut U</a>&gt; for <a class="primitive" href="../../primitive.pointer/">*mut T</a> <span class="where fmt-newline">where<br>    T: <a class="trait" href="../../marker/trait.unsize/" title="trait std::marker::Unsize">Unsize</a>&lt;U&gt; + ?<a class="trait" href="../../marker/trait.sized/" title="trait std::marker::Sized">Sized</a>,<br>    U: ?<a class="trait" href="../../marker/trait.sized/" title="trait std::marker::Sized">Sized</a>, </span></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/core/ops/unsize.rs.html#61" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;'a, T, U&gt; CoerceUnsized&lt;<a class="primitive" href="../../primitive.pointer/">*const U</a>&gt; for <a class="primitive" href="../../primitive.reference/">&amp;'a mut </a>T <span class="where fmt-newline">where<br>    T: <a class="trait" href="../../marker/trait.unsize/" title="trait std::marker::Unsize">Unsize</a>&lt;U&gt; + ?<a class="trait" href="../../marker/trait.sized/" title="trait std::marker::Sized">Sized</a>,<br>    U: ?<a class="trait" href="../../marker/trait.sized/" title="trait std::marker::Sized">Sized</a>, </span></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/core/cell.rs.html#1287" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;T, U&gt; CoerceUnsized&lt;<a class="struct" href="../../cell/struct.unsafecell/" title="struct std::cell::UnsafeCell">UnsafeCell</a>&lt;U&gt;&gt; for <a class="struct" href="../../cell/struct.unsafecell/" title="struct std::cell::UnsafeCell">UnsafeCell</a>&lt;T&gt; <span class="where fmt-newline">where<br>    T: <a class="trait" href="../trait.coerceunsized/" title="trait std::ops::CoerceUnsized">CoerceUnsized</a>&lt;U&gt;, </span></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/core/ops/unsize.rs.html#75" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;T, U&gt; CoerceUnsized&lt;<a class="primitive" href="../../primitive.pointer/">*const U</a>&gt; for <a class="primitive" href="../../primitive.pointer/">*mut T</a> <span class="where fmt-newline">where<br>    T: <a class="trait" href="../../marker/trait.unsize/" title="trait std::marker::Unsize">Unsize</a>&lt;U&gt; + ?<a class="trait" href="../../marker/trait.sized/" title="trait std::marker::Sized">Sized</a>,<br>    U: ?<a class="trait" href="../../marker/trait.sized/" title="trait std::marker::Sized">Sized</a>, </span></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/core/ops/unsize.rs.html#65" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;'a, 'b, T, U&gt; CoerceUnsized&lt;<a class="primitive" href="../../primitive.reference/">&amp;'a </a>U&gt; for <a class="primitive" href="../../primitive.reference/">&amp;'b </a>T <span class="where fmt-newline">where<br>    'b: 'a,<br>    T: <a class="trait" href="../../marker/trait.unsize/" title="trait std::marker::Unsize">Unsize</a>&lt;U&gt; + ?<a class="trait" href="../../marker/trait.sized/" title="trait std::marker::Sized">Sized</a>,<br>    U: ?<a class="trait" href="../../marker/trait.sized/" title="trait std::marker::Sized">Sized</a>, </span></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/core/ptr.rs.html#2387" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;T, U&gt; CoerceUnsized&lt;<a class="struct" href="../../ptr/struct.unique/" title="struct std::ptr::Unique">Unique</a>&lt;U&gt;&gt; for <a class="struct" href="../../ptr/struct.unique/" title="struct std::ptr::Unique">Unique</a>&lt;T&gt; <span class="where fmt-newline">where<br>    T: <a class="trait" href="../../marker/trait.unsize/" title="trait std::marker::Unsize">Unsize</a>&lt;U&gt; + ?<a class="trait" href="../../marker/trait.sized/" title="trait std::marker::Sized">Sized</a>,<br>    U: ?<a class="trait" href="../../marker/trait.sized/" title="trait std::marker::Sized">Sized</a>, </span></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/core/ptr.rs.html#2529" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;T, U&gt; CoerceUnsized&lt;<a class="struct" href="../../ptr/struct.shared/" title="struct std::ptr::Shared">Shared</a>&lt;U&gt;&gt; for <a class="struct" href="../../ptr/struct.shared/" title="struct std::ptr::Shared">Shared</a>&lt;T&gt; <span class="where fmt-newline">where<br>    T: <a class="trait" href="../../marker/trait.unsize/" title="trait std::marker::Unsize">Unsize</a>&lt;U&gt; + ?<a class="trait" href="../../marker/trait.sized/" title="trait std::marker::Sized">Sized</a>,<br>    U: ?<a class="trait" href="../../marker/trait.sized/" title="trait std::marker::Sized">Sized</a>, </span></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/core/cell.rs.html#1150" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;'b, T, U&gt; CoerceUnsized&lt;<a class="struct" href="../../cell/struct.refmut/" title="struct std::cell::RefMut">RefMut</a>&lt;'b, U&gt;&gt; for <a class="struct" href="../../cell/struct.refmut/" title="struct std::cell::RefMut">RefMut</a>&lt;'b, T&gt; <span class="where fmt-newline">where<br>    T: <a class="trait" href="../../marker/trait.unsize/" title="trait std::marker::Unsize">Unsize</a>&lt;U&gt; + ?<a class="trait" href="../../marker/trait.sized/" title="trait std::marker::Sized">Sized</a>,<br>    U: ?<a class="trait" href="../../marker/trait.sized/" title="trait std::marker::Sized">Sized</a>, </span></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/core/ops/unsize.rs.html#52" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;'a, T, U&gt; CoerceUnsized&lt;<a class="primitive" href="../../primitive.reference/">&amp;'a mut </a>U&gt; for <a class="primitive" href="../../primitive.reference/">&amp;'a mut </a>T <span class="where fmt-newline">where<br>    T: <a class="trait" href="../../marker/trait.unsize/" title="trait std::marker::Unsize">Unsize</a>&lt;U&gt; + ?<a class="trait" href="../../marker/trait.sized/" title="trait std::marker::Sized">Sized</a>,<br>    U: ?<a class="trait" href="../../marker/trait.sized/" title="trait std::marker::Sized">Sized</a>, </span></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/core/ops/unsize.rs.html#68" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;'a, T, U&gt; CoerceUnsized&lt;<a class="primitive" href="../../primitive.pointer/">*const U</a>&gt; for <a class="primitive" href="../../primitive.reference/">&amp;'a </a>T <span class="where fmt-newline">where<br>    T: <a class="trait" href="../../marker/trait.unsize/" title="trait std::marker::Unsize">Unsize</a>&lt;U&gt; + ?<a class="trait" href="../../marker/trait.sized/" title="trait std::marker::Sized">Sized</a>,<br>    U: ?<a class="trait" href="../../marker/trait.sized/" title="trait std::marker::Sized">Sized</a>, </span></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/core/ops/unsize.rs.html#79" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;T, U&gt; CoerceUnsized&lt;<a class="primitive" href="../../primitive.pointer/">*const U</a>&gt; for <a class="primitive" href="../../primitive.pointer/">*const T</a> <span class="where fmt-newline">where<br>    T: <a class="trait" href="../../marker/trait.unsize/" title="trait std::marker::Unsize">Unsize</a>&lt;U&gt; + ?<a class="trait" href="../../marker/trait.sized/" title="trait std::marker::Sized">Sized</a>,<br>    U: ?<a class="trait" href="../../marker/trait.sized/" title="trait std::marker::Sized">Sized</a>, </span></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/core/ops/unsize.rs.html#55" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;'a, 'b, T, U&gt; CoerceUnsized&lt;<a class="primitive" href="../../primitive.reference/">&amp;'a </a>U&gt; for <a class="primitive" href="../../primitive.reference/">&amp;'b mut </a>T <span class="where fmt-newline">where<br>    'b: 'a,<br>    T: <a class="trait" href="../../marker/trait.unsize/" title="trait std::marker::Unsize">Unsize</a>&lt;U&gt; + ?<a class="trait" href="../../marker/trait.sized/" title="trait std::marker::Sized">Sized</a>,<br>    U: ?<a class="trait" href="../../marker/trait.sized/" title="trait std::marker::Sized">Sized</a>, </span></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/core/cell.rs.html#1051" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;'b, T, U&gt; CoerceUnsized&lt;<a class="struct" href="../../cell/struct.ref/" title="struct std::cell::Ref">Ref</a>&lt;'b, U&gt;&gt; for <a class="struct" href="../../cell/struct.ref/" title="struct std::cell::Ref">Ref</a>&lt;'b, T&gt; <span class="where fmt-newline">where<br>    T: <a class="trait" href="../../marker/trait.unsize/" title="trait std::marker::Unsize">Unsize</a>&lt;U&gt; + ?<a class="trait" href="../../marker/trait.sized/" title="trait std::marker::Sized">Sized</a>,<br>    U: ?<a class="trait" href="../../marker/trait.sized/" title="trait std::marker::Sized">Sized</a>, </span></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/core/ops/unsize.rs.html#58" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;'a, T, U&gt; CoerceUnsized&lt;<a class="primitive" href="../../primitive.pointer/">*mut U</a>&gt; for <a class="primitive" href="../../primitive.reference/">&amp;'a mut </a>T <span class="where fmt-newline">where<br>    T: <a class="trait" href="../../marker/trait.unsize/" title="trait std::marker::Unsize">Unsize</a>&lt;U&gt; + ?<a class="trait" href="../../marker/trait.sized/" title="trait std::marker::Sized">Sized</a>,<br>    U: ?<a class="trait" href="../../marker/trait.sized/" title="trait std::marker::Sized">Sized</a>, </span></code>
+</li> </ul>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2010 The Rust Project Developers<br>Licensed under the Apache License, Version 2.0 or the MIT license, at your option.<br>
+    <a href="https://doc.rust-lang.org/std/ops/trait.CoerceUnsized.html" class="_attribution-link" target="_blank">https://doc.rust-lang.org/std/ops/trait.CoerceUnsized.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

@@ -1,0 +1,137 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>std&#58;&#58;thread&#58;&#58;LocalKey - Rust - W3cubDocs</title>
+  
+  <meta name="description" content=" A thread local storage key which owns its contents. ">
+  <meta name="keywords" content="struct, std, thread, localkey, -, rust">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/rust/std/thread/struct.localkey/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/rust.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/rust/" class="_nav-link" title="" style="margin-left:0;">Rust</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _rust">
+				
+<h1 class="fqn">Struct std::thread::LocalKey</h1> <pre class="rust struct" data-language="rust">pub struct LocalKey&lt;T: 'static&gt; { /* fields omitted */ }</pre>
+<p>A thread local storage key which owns its contents.</p> <p>This key uses the fastest possible implementation available to it for the target platform. It is instantiated with the <a href="../../macro.thread_local/"><code>thread_local!</code></a> macro and the primary method is the <a href="../struct.localkey/#method.with"><code>with</code></a> method.</p> <p>The <a href="../struct.localkey/#method.with"><code>with</code></a> method yields a reference to the contained value which cannot be sent across threads or escape the given closure.</p> <h4 id="initialization-and-destruction" class="section-header">Initialization and Destruction</h4> <p>Initialization is dynamically performed on the first call to <a href="../struct.localkey/#method.with"><code>with</code></a> within a thread, and values that implement <a href="../../ops/trait.drop/"><code>Drop</code></a> get destructed when a thread exits. Some caveats apply, which are explained below.</p> <p>A <code>LocalKey</code>'s initializer cannot recursively depend on itself, and using a <code>LocalKey</code> in this way will cause the initializer to infinitely recurse on the first call to <code>with</code>.</p> <h4 id="examples" class="section-header">Examples</h4> <pre class="rust rust-example-rendered" data-language="rust">
+use std::cell::RefCell;
+use std::thread;
+
+thread_local!(static FOO: RefCell&lt;u32&gt; = RefCell::new(1));
+
+FOO.with(|f| {
+    assert_eq!(*f.borrow(), 1);
+    *f.borrow_mut() = 2;
+});
+
+// each thread starts out with the initial value of 1
+thread::spawn(move|| {
+    FOO.with(|f| {
+        assert_eq!(*f.borrow(), 1);
+        *f.borrow_mut() = 3;
+    });
+});
+
+// we retain our original value of 2 despite the child thread
+FOO.with(|f| {
+    assert_eq!(*f.borrow(), 2);
+});</pre> <h4 id="platform-specific-behavior" class="section-header">Platform-specific behavior</h4> <p>Note that a "best effort" is made to ensure that destructors for types stored in thread local storage are run, but not all platforms can guarantee that destructors will be run for all types in thread local storage. For example, there are a number of known caveats where destructors are not run:</p> <ol> <li>On Unix systems when pthread-based TLS is being used, destructors will not be run for TLS values on the main thread when it exits. Note that the application will exit immediately after the main thread exits as well.</li> <li>On all platforms it's possible for TLS to re-initialize other TLS slots during destruction. Some platforms ensure that this cannot happen infinitely by preventing re-initialization of any slot that has been destroyed, but not all platforms have this guard. Those platforms that do not guard typically have a synthetic limit after which point no more destructors are run.</li> <li>On macOS, initializing TLS during destruction of other TLS slots can sometimes cancel <em>all</em> destructors for the current thread, whether or not the slots have already had their destructors run or not.</li> </ol>  <h2 id="methods" class="small-section-header"> Methods </h2> <h3 id="impl" class="impl">
+<span class="in-band"><code>impl&lt;T: 'static&gt; <a class="struct" href="../struct.localkey/" title="struct std::thread::LocalKey">LocalKey</a>&lt;T&gt;</code></span><span class="out-of-band">
+<a class="srclink" href="https://doc.rust-lang.org/src/std/thread/local.rs.html#262-383" title="goto source code" target="_blank">[src]</a></span>
+</h3> <h4 id="method.with" class="method">
+<span id="with.v" class="invisible"><code>pub fn <a href="#method.with" class="fnname">with</a>&lt;F, R&gt;(&amp;'static self, f: F) -&gt; R <span class="where fmt-newline">where<br>    F: <a class="trait" href="../../ops/trait.fnonce/" title="trait std::ops::FnOnce">FnOnce</a>(<a class="primitive" href="../../primitive.reference/">&amp;</a>T) -&gt; R, </span></code></span><span class="out-of-band">
+<a class="srclink" href="https://doc.rust-lang.org/src/std/thread/local.rs.html#286-290" title="goto source code" target="_blank">[src]</a></span>
+</h4> <div class="docblock">
+<p>Acquires a reference to the value in this TLS key.</p> <p>This will lazily initialize the value if this thread has not referenced this key yet.</p> <h4 id="panics" class="section-header">Panics</h4> <p>This function will <code>panic!()</code> if the key currently has its destructor running, and it <strong>may</strong> panic if the destructor has previously been run for this thread.</p> </div>
+<h4 id="method.state" class="method">
+<span id="state.v" class="invisible"><code>pub fn <a href="#method.state" class="fnname">state</a>(&amp;'static self) -&gt; <a class="enum" href="../enum.localkeystate/" title="enum std::thread::LocalKeyState">LocalKeyState</a></code></span><span class="out-of-band">
+<a class="srclink" href="https://doc.rust-lang.org/src/std/thread/local.rs.html#344-356" title="goto source code" target="_blank">[src]</a></span>
+</h4> <div class="stability"><span class="stab unstable">🔬 This is a nightly-only experimental API. (thread_local_state #27716)state querying was recently added </span></div>
+<div class="docblock">
+<p>Query the current state of this key.</p> <p>A key is initially in the <code>Uninitialized</code> state whenever a thread starts. It will remain in this state up until the first call to <a href="../struct.localkey/#method.with"><code>with</code></a> within a thread has run the initialization expression successfully.</p> <p>Once the initialization expression succeeds, the key transitions to the <code>Valid</code> state which will guarantee that future calls to <a href="../struct.localkey/#method.with"><code>with</code></a> will succeed within the thread. Some keys might skip the <code>Uninitialized</code> state altogether and start in the <code>Valid</code> state as an optimization (e.g. keys initialized with a constant expression), but no guarantees are made.</p> <p>When a thread exits, each key will be destroyed in turn, and as keys are destroyed they will enter the <code>Destroyed</code> state just before the destructor starts to run. Keys may remain in the <code>Destroyed</code> state after destruction has completed. Keys without destructors (e.g. with types that are <a href="../../marker/trait.copy/"><code>Copy</code></a>), may never enter the <code>Destroyed</code> state.</p> <p>Keys in the <code>Uninitialized</code> state can be accessed so long as the initialization does not panic. Keys in the <code>Valid</code> state are guaranteed to be able to be accessed. Keys in the <code>Destroyed</code> state will panic on any call to <a href="../struct.localkey/#method.with"><code>with</code></a>.</p> </div>
+<h4 id="method.try_with" class="method">
+<span id="try_with.v" class="invisible"><code>pub fn <a href="#method.try_with" class="fnname">try_with</a>&lt;F, R&gt;(&amp;'static self, f: F) -&gt; <a class="enum" href="../../result/enum.result/" title="enum std::result::Result">Result</a>&lt;R, <a class="struct" href="../struct.accesserror/" title="struct std::thread::AccessError">AccessError</a>&gt; <span class="where fmt-newline">where<br>    F: <a class="trait" href="../../ops/trait.fnonce/" title="trait std::ops::FnOnce">FnOnce</a>(<a class="primitive" href="../../primitive.reference/">&amp;</a>T) -&gt; R, </span></code></span><span class="out-of-band">
+<a class="srclink" href="https://doc.rust-lang.org/src/std/thread/local.rs.html#371-382" title="goto source code" target="_blank">[src]</a></span>
+</h4> <div class="stability"><span class="stab unstable">🔬 This is a nightly-only experimental API. (thread_local_state #27716)state querying was recently added </span></div>
+<div class="docblock">
+<p>Acquires a reference to the value in this TLS key.</p> <p>This will lazily initialize the value if this thread has not referenced this key yet. If the key has been destroyed (which may happen if this is called in a destructor), this function will return a ThreadLocalError.</p> <h4 id="panics-1" class="section-header">Panics</h4> <p>This function will still <code>panic!()</code> if the key is uninitialized and the key's initializer panics.</p> </div> <h2 id="implementations" class="small-section-header"> Trait Implementations </h2> <h3 id="impl-Debug" class="impl">
+<span class="in-band"><code>impl&lt;T: 'static&gt; <a class="trait" href="../../fmt/trait.debug/" title="trait std::fmt::Debug">Debug</a> for <a class="struct" href="../struct.localkey/" title="struct std::thread::LocalKey">LocalKey</a>&lt;T&gt;</code></span><span class="out-of-band">
+<div class="since" title="Stable since Rust version 1.16.0">1.16.0</div>
+<a class="srclink" href="https://doc.rust-lang.org/src/std/thread/local.rs.html#111-115" title="goto source code" target="_blank">[src]</a></span>
+</h3> <h4 id="method.fmt" class="method">
+<span id="fmt.v" class="invisible"><code>fn <a href="../../fmt/trait.debug/#tymethod.fmt" class="fnname">fmt</a>(&amp;self, f: &amp;mut <a class="struct" href="../../fmt/struct.formatter/" title="struct std::fmt::Formatter">Formatter</a>) -&gt; <a class="type" href="../../fmt/type.result/" title="type std::fmt::Result">Result</a></code></span><span class="out-of-band">
+<a class="srclink" href="https://doc.rust-lang.org/src/std/thread/local.rs.html#112-114" title="goto source code" target="_blank">[src]</a></span>
+</h4> <div class="docblock">
+<p>Formats the value using the given formatter. <a href="../../fmt/trait.debug/#tymethod.fmt">Read more</a></p> </div>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2010 The Rust Project Developers<br>Licensed under the Apache License, Version 2.0 or the MIT license, at your option.<br>
+    <a href="https://doc.rust-lang.org/std/thread/struct.LocalKey.html" class="_attribution-link" target="_blank">https://doc.rust-lang.org/std/thread/struct.LocalKey.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

@@ -1,0 +1,101 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>6.2.10. Method Call Expressions - Rust - W3cubDocs</title>
+  
+  <meta name="description" content="A method call consists of an expression followed by a single dot, an identifier, and a parenthesized expression-list. Method calls are resolved to &hellip;">
+  <meta name="keywords" content="method-call, expressions, method, call, -, rust">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/rust/reference/expressions/method-call-expr/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/rust.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/rust/" class="_nav-link" title="" style="margin-left:0;">Rust</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _rust">
+				
+<h1 id="">Method-call expressions</h1> <p>A <em>method call</em> consists of an expression followed by a single dot, an <a href="../../identifiers/">identifier</a>, and a parenthesized expression-list. Method calls are resolved to methods on specific traits, either statically dispatching to a method if the exact <code>self</code>-type of the left-hand-side is known, or dynamically dispatching if the left-hand-side expression is an indirect <a href="../../types/#trait-objects">trait object</a>. Method call expressions will automatically take a shared or mutable borrow of the receiver if needed.</p> <pre data-language="rust">
+# #![allow(unused_variables)]
+#fn main() {
+let pi: Result&lt;f32, _&gt; = "3.14".parse();
+let log_pi = pi.unwrap_or(1.0).log(2.72);
+# assert!(1.14 &lt; log_pi &amp;&amp; log_pi &lt; 1.15)
+#}</pre> <p>When resolving method calls on an expression of type <code>A</code>, Rust will use the following order, only looking at methods that are <a href="../../visibility-and-privacy/">visible</a> and traits that are in scope:</p> <ol> <li>Inherent methods, with receiver of type <code>A</code>, <code>&amp;A</code>, <code>&amp;mut A</code>.</li> <li>Trait methods with receiver of type <code>A</code>.</li> <li>Trait methods with receiver of type <code>&amp;A</code>.</li> <li>Trait methods with receiver of type <code>&amp;mut A</code>.</li> <li>If it's possible, Rust will then repeat steps 1-5 with <code>&lt;A as std::ops::Deref&gt;::Target</code>, and insert a dereference operator.</li> <li>If <code>A</code> is now an <a href="../../types/#array-and-slice-types">array</a> type, then repeat steps 1-4 with the corresponding slice type.</li> </ol> <p>Note: that in steps 1-4 the receiver is used, not the type of <code>Self</code> nor the type of <code>A</code>. For example</p> <pre data-language="rust">// `Self` is `&amp;A`, receiver is `&amp;A`.
+impl&lt;'a&gt; Trait for &amp;'a A {
+    fn method(self) {}
+}
+// If `A` is `&amp;B`, then `Self` is `B` and the receiver is `A`.
+impl B {
+    fn method(&amp;self) {}
+}
+</pre> <p>Another note: this process does not use the mutability or lifetime of the receiver, or whether <code>unsafe</code> methods can currently be called to resolve methods. These constraints instead lead to compiler errors.</p> <p>If a step is reached where there is more than one possible method (where generic methods or traits are considered the same), then it is a compiler error. These cases require a <a href="../call-expr/#disambiguating-function-calls">more specific syntax.</a> for method and function invocation.</p>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2010 The Rust Project Developers<br>Licensed under the Apache License, Version 2.0 or the MIT license, at your option.<br>
+    <a href="https://doc.rust-lang.org/reference/expressions/method-call-expr.html" class="_attribution-link" target="_blank">https://doc.rust-lang.org/reference/expressions/method-call-expr.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

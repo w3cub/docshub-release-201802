@@ -1,0 +1,148 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>std&#58;&#58;os&#58;&#58;windows&#58;&#58;fs&#58;&#58;MetadataExt - Rust - W3cubDocs</title>
+  
+  <meta name="description" content=" Extension methods for fs&#58;&#58;Metadata to access the raw fields contained within. ">
+  <meta name="keywords" content="trait, std, os, windows, fs, metadataext, -, rust">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/rust/std/os/windows/fs/trait.metadataext/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/rust.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/rust/" class="_nav-link" title="" style="margin-left:0;">Rust</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _rust">
+				
+<h1 class="fqn">Trait std::os::windows::fs::MetadataExt</h1> <pre class="rust trait" data-language="rust">pub trait MetadataExt {
+    fn file_attributes(&amp;self) -&gt; u32;
+    fn creation_time(&amp;self) -&gt; u64;
+    fn last_access_time(&amp;self) -&gt; u64;
+    fn last_write_time(&amp;self) -&gt; u64;
+    fn file_size(&amp;self) -&gt; u64;
+}</pre>
+<div class="stability"><span class="stab portability">This is supported on Windows only.</span></div>
+<p>Extension methods for <a href="../../../../fs/struct.metadata/"><code>fs::Metadata</code></a> to access the raw fields contained within.</p> <p>The data members that this trait exposes correspond to the members of the <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/aa363788.aspx" target="_blank"><code>BY_HANDLE_FILE_INFORMATION</code></a> structure.</p>  <h2 id="required-methods" class="small-section-header"> Required Methods </h2> <div class="methods"> <h3 id="tymethod.file_attributes" class="method"><span id="file_attributes.v" class="invisible"><code>fn <a href="#tymethod.file_attributes" class="fnname">file_attributes</a>(&amp;self) -&gt; <a class="primitive" href="../../../../primitive.u32/">u32</a></code></span></h3>
+<div class="stability"><span class="stab portability">This is supported on Windows only.</span></div>
+<div class="docblock">
+<p>Returns the value of the <code>dwFileAttributes</code> field of this metadata.</p> <p>This field contains the file system attribute information for a file or directory. For possible values and their descriptions, see <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/gg258117.aspx" target="_blank">File Attribute Constants</a> in the Windows Dev Center.</p> <h4 id="examples" class="section-header">Examples</h4> <pre class="rust rust-example-rendered" data-language="rust">
+use std::io;
+use std::fs;
+use std::os::windows::prelude::*;
+
+let metadata = fs::metadata("foo.txt")?;
+let attributes = metadata.file_attributes();</pre> </div>
+<h3 id="tymethod.creation_time" class="method"><span id="creation_time.v" class="invisible"><code>fn <a href="#tymethod.creation_time" class="fnname">creation_time</a>(&amp;self) -&gt; <a class="primitive" href="../../../../primitive.u64/">u64</a></code></span></h3>
+<div class="stability"><span class="stab portability">This is supported on Windows only.</span></div>
+<div class="docblock">
+<p>Returns the value of the <code>ftCreationTime</code> field of this metadata.</p> <p>The returned 64-bit value is equivalent to a <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/ms724284.aspx" target="_blank"><code>FILETIME</code></a> struct, which represents the number of 100-nanosecond intervals since January 1, 1601 (UTC). The struct is automatically converted to a <code>u64</code> value, as that is the recommended way to use it.</p> <p>If the underlying filesystem does not support creation time, the returned value is 0.</p> <h4 id="examples-1" class="section-header">Examples</h4> <pre class="rust rust-example-rendered" data-language="rust">
+use std::io;
+use std::fs;
+use std::os::windows::prelude::*;
+
+let metadata = fs::metadata("foo.txt")?;
+let creation_time = metadata.creation_time();</pre> </div>
+<h3 id="tymethod.last_access_time" class="method"><span id="last_access_time.v" class="invisible"><code>fn <a href="#tymethod.last_access_time" class="fnname">last_access_time</a>(&amp;self) -&gt; <a class="primitive" href="../../../../primitive.u64/">u64</a></code></span></h3>
+<div class="stability"><span class="stab portability">This is supported on Windows only.</span></div>
+<div class="docblock">
+<p>Returns the value of the <code>ftLastAccessTime</code> field of this metadata.</p> <p>The returned 64-bit value is equivalent to a <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/ms724284.aspx" target="_blank"><code>FILETIME</code></a> struct, which represents the number of 100-nanosecond intervals since January 1, 1601 (UTC). The struct is automatically converted to a <code>u64</code> value, as that is the recommended way to use it.</p> <p>For a file, the value specifies the last time that a file was read from or written to. For a directory, the value specifies when the directory was created. For both files and directories, the specified date is correct, but the time of day is always set to midnight.</p> <p>If the underlying filesystem does not support last access time, the returned value is 0.</p> <h4 id="examples-2" class="section-header">Examples</h4> <pre class="rust rust-example-rendered" data-language="rust">
+use std::io;
+use std::fs;
+use std::os::windows::prelude::*;
+
+let metadata = fs::metadata("foo.txt")?;
+let last_access_time = metadata.last_access_time();</pre> </div>
+<h3 id="tymethod.last_write_time" class="method"><span id="last_write_time.v" class="invisible"><code>fn <a href="#tymethod.last_write_time" class="fnname">last_write_time</a>(&amp;self) -&gt; <a class="primitive" href="../../../../primitive.u64/">u64</a></code></span></h3>
+<div class="stability"><span class="stab portability">This is supported on Windows only.</span></div>
+<div class="docblock">
+<p>Returns the value of the <code>ftLastWriteTime</code> field of this metadata.</p> <p>The returned 64-bit value is equivalent to a <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/ms724284.aspx" target="_blank"><code>FILETIME</code></a> struct, which represents the number of 100-nanosecond intervals since January 1, 1601 (UTC). The struct is automatically converted to a <code>u64</code> value, as that is the recommended way to use it.</p> <p>For a file, the value specifies the last time that a file was written to. For a directory, the structure specifies when the directory was created.</p> <p>If the underlying filesystem does not support the last write time, the returned value is 0.</p> <h4 id="examples-3" class="section-header">Examples</h4> <pre class="rust rust-example-rendered" data-language="rust">
+use std::io;
+use std::fs;
+use std::os::windows::prelude::*;
+
+let metadata = fs::metadata("foo.txt")?;
+let last_write_time = metadata.last_write_time();</pre> </div>
+<h3 id="tymethod.file_size" class="method"><span id="file_size.v" class="invisible"><code>fn <a href="#tymethod.file_size" class="fnname">file_size</a>(&amp;self) -&gt; <a class="primitive" href="../../../../primitive.u64/">u64</a></code></span></h3>
+<div class="stability"><span class="stab portability">This is supported on Windows only.</span></div>
+<div class="docblock">
+<p>Returns the value of the <code>nFileSize{High,Low}</code> fields of this metadata.</p> <p>The returned value does not have meaning for directories.</p> <h4 id="examples-4" class="section-header">Examples</h4> <pre class="rust rust-example-rendered" data-language="rust">
+use std::io;
+use std::fs;
+use std::os::windows::prelude::*;
+
+let metadata = fs::metadata("foo.txt")?;
+let file_size = metadata.file_size();</pre> </div>
+</div> <h2 id="implementors" class="small-section-header"> Implementors </h2> <ul class="item-list" id="implementors-list"> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/std/sys/windows/ext/fs.rs.html#440-446" title="goto source code" target="_blank">[src]</a></div>
+<code>impl MetadataExt for <a class="struct" href="../../../../fs/struct.metadata/" title="struct std::fs::Metadata">Metadata</a></code>
+</li> </ul>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2010 The Rust Project Developers<br>Licensed under the Apache License, Version 2.0 or the MIT license, at your option.<br>
+    <a href="https://doc.rust-lang.org/std/os/windows/fs/trait.MetadataExt.html" class="_attribution-link" target="_blank">https://doc.rust-lang.org/std/os/windows/fs/trait.MetadataExt.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

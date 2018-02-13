@@ -1,0 +1,161 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>std&#58;&#58;string&#58;&#58;FromUtf8Error - Rust - W3cubDocs</title>
+  
+  <meta name="description" content=" A possible error value when converting a String from a UTF-8 byte vector. ">
+  <meta name="keywords" content="struct, std, string, fromutf, error, -, rust">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/rust/std/string/struct.fromutf8error/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/rust.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/rust/" class="_nav-link" title="" style="margin-left:0;">Rust</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _rust">
+				
+<h1 class="fqn">Struct std::string::FromUtf8Error</h1> <pre class="rust struct" data-language="rust">pub struct FromUtf8Error { /* fields omitted */ }</pre>
+<p>A possible error value when converting a <code>String</code> from a UTF-8 byte vector.</p> <p>This type is the error type for the <a href="../struct.string/#method.from_utf8"><code>from_utf8</code></a> method on <a href="../struct.string/"><code>String</code></a>. It is designed in such a way to carefully avoid reallocations: the <a href="../struct.fromutf8error/#method.into_bytes"><code>into_bytes</code></a> method will give back the byte vector that was used in the conversion attempt.</p> <p>The <a href="../../str/struct.utf8error/"><code>Utf8Error</code></a> type provided by <a href="../../str/"><code>std::str</code></a> represents an error that may occur when converting a slice of <a href="../../primitive.u8/"><code>u8</code></a>s to a <a href="../../primitive.str/"><code>&amp;str</code></a>. In this sense, it's an analogue to <code>FromUtf8Error</code>, and you can get one from a <code>FromUtf8Error</code> through the <a href="#method.utf8_error"><code>utf8_error</code></a> method.</p> <h4 id="examples" class="section-header">Examples</h4> <p>Basic usage:</p> <pre class="rust rust-example-rendered" data-language="rust">
+// some invalid bytes, in a vector
+let bytes = vec![0, 159];
+
+let value = String::from_utf8(bytes);
+
+assert!(value.is_err());
+assert_eq!(vec![0, 159], value.unwrap_err().into_bytes());</pre>  <h2 id="methods" class="small-section-header"> Methods </h2> <h3 id="impl" class="impl">
+<span class="in-band"><code>impl <a class="struct" href="../struct.fromutf8error/" title="struct std::string::FromUtf8Error">FromUtf8Error</a></code></span><span class="out-of-band">
+<a class="srclink" href="https://doc.rust-lang.org/src/alloc/string.rs.html#1500-1573" title="goto source code" target="_blank">[src]</a></span>
+</h3> <h4 id="method.as_bytes" class="method">
+<span id="as_bytes.v" class="invisible"><code>fn <a href="#method.as_bytes" class="fnname">as_bytes</a>(&amp;self) -&gt; <a class="primitive" href="../../primitive.slice/">&amp;[</a><a class="primitive" href="../../primitive.u8/">u8</a><a class="primitive" href="../../primitive.slice/">]</a></code></span><span class="out-of-band">
+<a class="srclink" href="https://doc.rust-lang.org/src/alloc/string.rs.html#1517-1519" title="goto source code" target="_blank">[src]</a></span>
+</h4> <div class="stability"><span class="stab unstable">🔬 This is a nightly-only experimental API. (from_utf8_error_as_bytes #40895)recently added </span></div>
+<div class="docblock">
+<p>Returns a slice of [<code>u8</code>]s bytes that were attempted to convert to a <code>String</code>.</p> <h4 id="examples-1" class="section-header">Examples</h4> <p>Basic usage:</p> <pre class="rust rust-example-rendered" data-language="rust">
+#![feature(from_utf8_error_as_bytes)]
+// some invalid bytes, in a vector
+let bytes = vec![0, 159];
+
+let value = String::from_utf8(bytes);
+
+assert_eq!(&amp;[0, 159], value.unwrap_err().as_bytes());</pre> </div>
+<h4 id="method.into_bytes" class="method">
+<span id="into_bytes.v" class="invisible"><code>fn <a href="#method.into_bytes" class="fnname">into_bytes</a>(self) -&gt; <a class="struct" href="../../vec/struct.vec/" title="struct std::vec::Vec">Vec</a>&lt;<a class="primitive" href="../../primitive.u8/">u8</a>&gt;</code></span><span class="out-of-band">
+<a class="srclink" href="https://doc.rust-lang.org/src/alloc/string.rs.html#1540-1542" title="goto source code" target="_blank">[src]</a></span>
+</h4> <div class="docblock">
+<p>Returns the bytes that were attempted to convert to a <code>String</code>.</p> <p>This method is carefully constructed to avoid allocation. It will consume the error, moving out the bytes, so that a copy of the bytes does not need to be made.</p> <h4 id="examples-2" class="section-header">Examples</h4> <p>Basic usage:</p> <pre class="rust rust-example-rendered" data-language="rust">
+// some invalid bytes, in a vector
+let bytes = vec![0, 159];
+
+let value = String::from_utf8(bytes);
+
+assert_eq!(vec![0, 159], value.unwrap_err().into_bytes());</pre> </div>
+<h4 id="method.utf8_error" class="method">
+<span id="utf8_error.v" class="invisible"><code>fn <a href="#method.utf8_error" class="fnname">utf8_error</a>(&amp;self) -&gt; <a class="struct" href="../../str/struct.utf8error/" title="struct std::str::Utf8Error">Utf8Error</a></code></span><span class="out-of-band">
+<a class="srclink" href="https://doc.rust-lang.org/src/alloc/string.rs.html#1570-1572" title="goto source code" target="_blank">[src]</a></span>
+</h4> <div class="docblock">
+<p>Fetch a <code>Utf8Error</code> to get more details about the conversion failure.</p> <p>The <a href="../../str/struct.utf8error/"><code>Utf8Error</code></a> type provided by <a href="../../str/"><code>std::str</code></a> represents an error that may occur when converting a slice of <a href="../../primitive.u8/"><code>u8</code></a>s to a <a href="../../primitive.str/"><code>&amp;str</code></a>. In this sense, it's an analogue to <code>FromUtf8Error</code>. See its documentation for more details on using it.</p> <h4 id="examples-3" class="section-header">Examples</h4> <p>Basic usage:</p> <pre class="rust rust-example-rendered" data-language="rust">
+// some invalid bytes, in a vector
+let bytes = vec![0, 159];
+
+let error = String::from_utf8(bytes).unwrap_err().utf8_error();
+
+// the first byte is invalid here
+assert_eq!(1, error.valid_up_to());</pre> </div> <h2 id="implementations" class="small-section-header"> Trait Implementations </h2> <h3 id="impl-Debug" class="impl">
+<span class="in-band"><code>impl <a class="trait" href="../../fmt/trait.debug/" title="trait std::fmt::Debug">Debug</a> for <a class="struct" href="../struct.fromutf8error/" title="struct std::string::FromUtf8Error">FromUtf8Error</a></code></span><span class="out-of-band">
+<a class="srclink" href="https://doc.rust-lang.org/src/alloc/string.rs.html#334" title="goto source code" target="_blank">[src]</a></span>
+</h3> <h4 id="method.fmt" class="method">
+<span id="fmt.v" class="invisible"><code>fn <a href="../../fmt/trait.debug/#tymethod.fmt" class="fnname">fmt</a>(&amp;self, __arg_0: &amp;mut <a class="struct" href="../../fmt/struct.formatter/" title="struct std::fmt::Formatter">Formatter</a>) -&gt; <a class="enum" href="../../result/enum.result/" title="enum std::result::Result">Result</a>&lt;<a class="primitive" href="../../primitive.unit/">()</a>, <a class="struct" href="../../fmt/struct.error/" title="struct std::fmt::Error">Error</a>&gt;</code></span><span class="out-of-band">
+<a class="srclink" href="https://doc.rust-lang.org/src/alloc/string.rs.html#334" title="goto source code" target="_blank">[src]</a></span>
+</h4> <div class="docblock">
+<p>Formats the value using the given formatter. <a href="../../fmt/trait.debug/#tymethod.fmt">Read more</a></p> </div>
+<h3 id="impl-Display" class="impl">
+<span class="in-band"><code>impl <a class="trait" href="../../fmt/trait.display/" title="trait std::fmt::Display">Display</a> for <a class="struct" href="../struct.fromutf8error/" title="struct std::string::FromUtf8Error">FromUtf8Error</a></code></span><span class="out-of-band">
+<a class="srclink" href="https://doc.rust-lang.org/src/alloc/string.rs.html#1576-1580" title="goto source code" target="_blank">[src]</a></span>
+</h3> <h4 id="method.fmt-1" class="method">
+<span id="fmt.v-1" class="invisible"><code>fn <a href="../../fmt/trait.display/#tymethod.fmt" class="fnname">fmt</a>(&amp;self, f: &amp;mut <a class="struct" href="../../fmt/struct.formatter/" title="struct std::fmt::Formatter">Formatter</a>) -&gt; <a class="enum" href="../../result/enum.result/" title="enum std::result::Result">Result</a>&lt;<a class="primitive" href="../../primitive.unit/">()</a>, <a class="struct" href="../../fmt/struct.error/" title="struct std::fmt::Error">Error</a>&gt;</code></span><span class="out-of-band">
+<a class="srclink" href="https://doc.rust-lang.org/src/alloc/string.rs.html#1577-1579" title="goto source code" target="_blank">[src]</a></span>
+</h4> <div class="docblock">
+<p>Formats the value using the given formatter. <a href="../../fmt/trait.display/#tymethod.fmt">Read more</a></p> </div>
+<h3 id="impl-Error" class="impl">
+<span class="in-band"><code>impl <a class="trait" href="../../error/trait.error/" title="trait std::error::Error">Error</a> for <a class="struct" href="../struct.fromutf8error/" title="struct std::string::FromUtf8Error">FromUtf8Error</a></code></span><span class="out-of-band">
+<a class="srclink" href="https://doc.rust-lang.org/src/std/error.rs.html#301-305" title="goto source code" target="_blank">[src]</a></span>
+</h3> <h4 id="method.description" class="method">
+<span id="description.v" class="invisible"><code>fn <a href="../../error/trait.error/#tymethod.description" class="fnname">description</a>(&amp;self) -&gt; &amp;<a class="primitive" href="../../primitive.str/">str</a></code></span><span class="out-of-band">
+<a class="srclink" href="https://doc.rust-lang.org/src/std/error.rs.html#302-304" title="goto source code" target="_blank">[src]</a></span>
+</h4> <div class="docblock">
+<p>A short description of the error. <a href="../../error/trait.error/#tymethod.description">Read more</a></p> </div>
+<h4 id="method.cause" class="method">
+<span id="cause.v" class="invisible"><code>fn <a href="../../error/trait.error/#method.cause" class="fnname">cause</a>(&amp;self) -&gt; <a class="enum" href="../../option/enum.option/" title="enum std::option::Option">Option</a>&lt;&amp;<a class="trait" href="../../error/trait.error/" title="trait std::error::Error">Error</a>&gt;</code></span><span class="out-of-band">
+<a class="srclink" href="https://doc.rust-lang.org/src/std/error.rs.html#154" title="goto source code" target="_blank">[src]</a></span>
+</h4> <div class="docblock">
+<p>The lower-level cause of this error, if any. <a href="../../error/trait.error/#method.cause">Read more</a></p> </div>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2010 The Rust Project Developers<br>Licensed under the Apache License, Version 2.0 or the MIT license, at your option.<br>
+    <a href="https://doc.rust-lang.org/std/string/struct.FromUtf8Error.html" class="_attribution-link" target="_blank">https://doc.rust-lang.org/std/string/struct.FromUtf8Error.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

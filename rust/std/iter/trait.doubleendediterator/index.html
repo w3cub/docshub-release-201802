@@ -1,0 +1,426 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>std&#58;&#58;iter&#58;&#58;DoubleEndedIterator - Rust - W3cubDocs</title>
+  
+  <meta name="description" content=" An iterator able to yield elements from both ends. ">
+  <meta name="keywords" content="trait, std, iter, doubleendediterator, -, rust">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/rust/std/iter/trait.doubleendediterator/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/rust.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/rust/" class="_nav-link" title="" style="margin-left:0;">Rust</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _rust">
+				
+<h1 class="fqn">Trait std::iter::DoubleEndedIterator</h1> <pre class="rust trait" data-language="rust">pub trait DoubleEndedIterator: Iterator {
+    fn next_back(&amp;mut self) -&gt; Option&lt;Self::Item&gt;;
+
+    fn try_rfold&lt;B, F, R&gt;(&amp;mut self, init: B, f: F) -&gt; R    where        F: FnMut(B, Self::Item) -&gt; R,        R: Try&lt;Ok = B&gt;,
+    { ... }
+    fn rfold&lt;B, F&gt;(self, accum: B, f: F) -&gt; B    where        F: FnMut(B, Self::Item) -&gt; B,
+    { ... }
+    fn rfind&lt;P&gt;(&amp;mut self, predicate: P) -&gt; Option&lt;Self::Item&gt;    where        P: FnMut(&amp;Self::Item) -&gt; bool,
+    { ... }
+}</pre>
+<p>An iterator able to yield elements from both ends.</p> <p>Something that implements <code>DoubleEndedIterator</code> has one extra capability over something that implements <a href="../trait.iterator/"><code>Iterator</code></a>: the ability to also take <code>Item</code>s from the back, as well as the front.</p> <p>It is important to note that both back and forth work on the same range, and do not cross: iteration is over when they meet in the middle.</p> <p>In a similar fashion to the <a href="../trait.iterator/"><code>Iterator</code></a> protocol, once a <code>DoubleEndedIterator</code> returns <code>None</code> from a <code>next_back()</code>, calling it again may or may not ever return <code>Some</code> again. <code>next()</code> and <code>next_back()</code> are interchangeable for this purpose.</p> <h4 id="examples" class="section-header">Examples</h4> <p>Basic usage:</p> <pre class="rust rust-example-rendered" data-language="rust">
+let numbers = vec![1, 2, 3, 4, 5, 6];
+
+let mut iter = numbers.iter();
+
+assert_eq!(Some(&amp;1), iter.next());
+assert_eq!(Some(&amp;6), iter.next_back());
+assert_eq!(Some(&amp;5), iter.next_back());
+assert_eq!(Some(&amp;2), iter.next());
+assert_eq!(Some(&amp;3), iter.next());
+assert_eq!(Some(&amp;4), iter.next());
+assert_eq!(None, iter.next());
+assert_eq!(None, iter.next_back());</pre>  <h2 id="required-methods" class="small-section-header"> Required Methods </h2> <div class="methods"> <h3 id="tymethod.next_back" class="method"><span id="next_back.v" class="invisible"><code>fn <a href="#tymethod.next_back" class="fnname">next_back</a>(&amp;mut self) -&gt; <a class="enum" href="../../option/enum.option/" title="enum std::option::Option">Option</a>&lt;Self::<a class="type" href="../trait.iterator/#associatedtype.Item" title="type std::iter::Iterator::Item">Item</a>&gt;</code></span></h3>
+<div class="docblock">
+<p>Removes and returns an element from the end of the iterator.</p> <p>Returns <code>None</code> when there are no more elements.</p> <p>The <a href="../trait.doubleendediterator/">trait-level</a> docs contain more details.</p> <h4 id="examples-1" class="section-header">Examples</h4> <p>Basic usage:</p> <pre class="rust rust-example-rendered" data-language="rust">
+let numbers = vec![1, 2, 3, 4, 5, 6];
+
+let mut iter = numbers.iter();
+
+assert_eq!(Some(&amp;1), iter.next());
+assert_eq!(Some(&amp;6), iter.next_back());
+assert_eq!(Some(&amp;5), iter.next_back());
+assert_eq!(Some(&amp;2), iter.next());
+assert_eq!(Some(&amp;3), iter.next());
+assert_eq!(Some(&amp;4), iter.next());
+assert_eq!(None, iter.next());
+assert_eq!(None, iter.next_back());</pre> </div>
+</div> <h2 id="provided-methods" class="small-section-header"> Provided Methods </h2> <div class="methods"> <h3 id="method.try_rfold" class="method"><span id="try_rfold.v" class="invisible"><code>fn <a href="#method.try_rfold" class="fnname">try_rfold</a>&lt;B, F, R&gt;(&amp;mut self, init: B, f: F) -&gt; R <span class="where fmt-newline">where<br>    F: <a class="trait" href="../../ops/trait.fnmut/" title="trait std::ops::FnMut">FnMut</a>(B, Self::<a class="type" href="../trait.iterator/#associatedtype.Item" title="type std::iter::Iterator::Item">Item</a>) -&gt; R,<br>    R: <a class="trait" href="../../ops/trait.try/" title="trait std::ops::Try">Try</a>&lt;Ok = B&gt;, </span></code></span></h3>
+<div class="stability"><span class="stab unstable">🔬 This is a nightly-only experimental API. (iterator_try_fold #45594)</span></div>
+<div class="docblock">
+<p>This is the reverse version of <a href="../trait.iterator/#method.try_fold"><code>try_fold()</code></a>: it takes elements starting from the back of the iterator.</p> <h4 id="examples-2" class="section-header">Examples</h4> <p>Basic usage:</p> <pre class="rust rust-example-rendered" data-language="rust">
+#![feature(iterator_try_fold)]
+let a = ["1", "2", "3"];
+let sum = a.iter()
+    .map(|&amp;s| s.parse::&lt;i32&gt;())
+    .try_rfold(0, |acc, x| x.and_then(|y| Ok(acc + y)));
+assert_eq!(sum, Ok(6));</pre> <p>Short-circuiting:</p> <pre class="rust rust-example-rendered" data-language="rust">
+#![feature(iterator_try_fold)]
+let a = ["1", "rust", "3"];
+let mut it = a.iter();
+let sum = it
+    .by_ref()
+    .map(|&amp;s| s.parse::&lt;i32&gt;())
+    .try_rfold(0, |acc, x| x.and_then(|y| Ok(acc + y)));
+assert!(sum.is_err());
+
+// Because it short-circuited, the remaining elements are still
+// available through the iterator.
+assert_eq!(it.next_back(), Some(&amp;"1"));</pre> </div>
+<h3 id="method.rfold" class="method"><span id="rfold.v" class="invisible"><code>fn <a href="#method.rfold" class="fnname">rfold</a>&lt;B, F&gt;(self, accum: B, f: F) -&gt; B <span class="where fmt-newline">where<br>    F: <a class="trait" href="../../ops/trait.fnmut/" title="trait std::ops::FnMut">FnMut</a>(B, Self::<a class="type" href="../trait.iterator/#associatedtype.Item" title="type std::iter::Iterator::Item">Item</a>) -&gt; B, </span></code></span></h3>
+<div class="stability"><span class="stab unstable">🔬 This is a nightly-only experimental API. (iter_rfold #44705)</span></div>
+<div class="docblock">
+<p>An iterator method that reduces the iterator's elements to a single, final value, starting from the back.</p> <p>This is the reverse version of <a href="../trait.iterator/#method.fold"><code>fold()</code></a>: it takes elements starting from the back of the iterator.</p> <p><code>rfold()</code> takes two arguments: an initial value, and a closure with two arguments: an 'accumulator', and an element. The closure returns the value that the accumulator should have for the next iteration.</p> <p>The initial value is the value the accumulator will have on the first call.</p> <p>After applying this closure to every element of the iterator, <code>rfold()</code> returns the accumulator.</p> <p>This operation is sometimes called 'reduce' or 'inject'.</p> <p>Folding is useful whenever you have a collection of something, and want to produce a single value from it.</p> <h4 id="examples-3" class="section-header">Examples</h4> <p>Basic usage:</p> <pre class="rust rust-example-rendered" data-language="rust">
+#![feature(iter_rfold)]
+let a = [1, 2, 3];
+
+// the sum of all of the elements of a
+let sum = a.iter()
+           .rfold(0, |acc, &amp;x| acc + x);
+
+assert_eq!(sum, 6);</pre> <p>This example builds a string, starting with an initial value and continuing with each element from the back until the front:</p> <pre class="rust rust-example-rendered" data-language="rust">
+#![feature(iter_rfold)]
+let numbers = [1, 2, 3, 4, 5];
+
+let zero = "0".to_string();
+
+let result = numbers.iter().rfold(zero, |acc, &amp;x| {
+    format!("({} + {})", x, acc)
+});
+
+assert_eq!(result, "(1 + (2 + (3 + (4 + (5 + 0)))))");</pre> </div>
+<h3 id="method.rfind" class="method"><span id="rfind.v" class="invisible"><code>fn <a href="#method.rfind" class="fnname">rfind</a>&lt;P&gt;(&amp;mut self, predicate: P) -&gt; <a class="enum" href="../../option/enum.option/" title="enum std::option::Option">Option</a>&lt;Self::<a class="type" href="../trait.iterator/#associatedtype.Item" title="type std::iter::Iterator::Item">Item</a>&gt; <span class="where fmt-newline">where<br>    P: <a class="trait" href="../../ops/trait.fnmut/" title="trait std::ops::FnMut">FnMut</a>(&amp;Self::<a class="type" href="../trait.iterator/#associatedtype.Item" title="type std::iter::Iterator::Item">Item</a>) -&gt; <a class="primitive" href="../../primitive.bool/">bool</a>, </span></code></span></h3>
+<div class="stability"><span class="stab unstable">🔬 This is a nightly-only experimental API. (iter_rfind #39480)</span></div>
+<div class="docblock">
+<p>Searches for an element of an iterator from the right that satisfies a predicate.</p> <p><code>rfind()</code> takes a closure that returns <code>true</code> or <code>false</code>. It applies this closure to each element of the iterator, starting at the end, and if any of them return <code>true</code>, then <code>rfind()</code> returns <a href="../../option/enum.option/#variant.Some"><code>Some(element)</code></a>. If they all return <code>false</code>, it returns <a href="../../option/enum.option/#variant.None"><code>None</code></a>.</p> <p><code>rfind()</code> is short-circuiting; in other words, it will stop processing as soon as the closure returns <code>true</code>.</p> <p>Because <code>rfind()</code> takes a reference, and many iterators iterate over references, this leads to a possibly confusing situation where the argument is a double reference. You can see this effect in the examples below, with <code>&amp;&amp;x</code>.</p> <h4 id="examples-4" class="section-header">Examples</h4> <p>Basic usage:</p> <pre class="rust rust-example-rendered" data-language="rust">
+#![feature(iter_rfind)]
+
+let a = [1, 2, 3];
+
+assert_eq!(a.iter().rfind(|&amp;&amp;x| x == 2), Some(&amp;2));
+
+assert_eq!(a.iter().rfind(|&amp;&amp;x| x == 5), None);</pre> <p>Stopping at the first <code>true</code>:</p> <pre class="rust rust-example-rendered" data-language="rust">
+#![feature(iter_rfind)]
+
+let a = [1, 2, 3];
+
+let mut iter = a.iter();
+
+assert_eq!(iter.rfind(|&amp;&amp;x| x == 2), Some(&amp;2));
+
+// we can still use `iter`, as there are more elements.
+assert_eq!(iter.next_back(), Some(&amp;1));</pre> </div>
+</div> <h2 id="implementors" class="small-section-header"> Implementors </h2> <ul class="item-list" id="implementors-list"> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/alloc/linked_list.rs.html#815-830" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;'a, T&gt; DoubleEndedIterator for std::collections::linked_list::<a class="struct" href="../../collections/linked_list/struct.iter/" title="struct std::collections::linked_list::Iter">Iter</a>&lt;'a, T&gt;</code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/alloc/linked_list.rs.html#864-879" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;'a, T&gt; DoubleEndedIterator for std::collections::linked_list::<a class="struct" href="../../collections/linked_list/struct.itermut/" title="struct std::collections::linked_list::IterMut">IterMut</a>&lt;'a, T&gt;</code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/alloc/btree/map.rs.html#1385-1389" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;'a, K, V&gt; DoubleEndedIterator for <a class="struct" href="../../collections/btree_map/struct.keys/" title="struct std::collections::btree_map::Keys">Keys</a>&lt;'a, K, V&gt;</code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/alloc/btree/set.rs.html#910-914" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;'a, T&gt; DoubleEndedIterator for std::collections::btree_set::<a class="struct" href="../../collections/btree_set/struct.iter/" title="struct std::collections::btree_set::Iter">Iter</a>&lt;'a, T&gt;</code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/alloc/binary_heap.rs.html#953-958" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;'a, T&gt; DoubleEndedIterator for std::collections::binary_heap::<a class="struct" href="../../collections/binary_heap/struct.iter/" title="struct std::collections::binary_heap::Iter">Iter</a>&lt;'a, T&gt;</code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/alloc/btree/map.rs.html#1472-1476" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;'a, K, V&gt; DoubleEndedIterator for <a class="struct" href="../../collections/btree_map/struct.valuesmut/" title="struct std::collections::btree_map::ValuesMut">ValuesMut</a>&lt;'a, K, V&gt;</code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/alloc/btree/map.rs.html#1163-1172" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;'a, K, V&gt; DoubleEndedIterator for std::collections::btree_map::<a class="struct" href="../../collections/btree_map/struct.iter/" title="struct std::collections::btree_map::Iter">Iter</a>&lt;'a, K, V&gt; <span class="where fmt-newline">where<br>    K: 'a,<br>    V: 'a, </span></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/alloc/string.rs.html#2252-2257" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;'a&gt; DoubleEndedIterator for std::string::<a class="struct" href="../../string/struct.drain/" title="struct std::string::Drain">Drain</a>&lt;'a&gt;</code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/alloc/btree/set.rs.html#935-939" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;T&gt; DoubleEndedIterator for std::collections::btree_set::<a class="struct" href="../../collections/btree_set/struct.intoiter/" title="struct std::collections::btree_set::IntoIter">IntoIter</a>&lt;T&gt;</code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/alloc/btree/set.rs.html#965-969" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;'a, T&gt; DoubleEndedIterator for std::collections::btree_set::<a class="struct" href="../../collections/btree_set/struct.range/" title="struct std::collections::btree_set::Range">Range</a>&lt;'a, T&gt;</code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/alloc/vec_deque.rs.html#2128-2133" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;T&gt; DoubleEndedIterator for std::collections::vec_deque::<a class="struct" href="../../collections/vec_deque/struct.intoiter/" title="struct std::collections::vec_deque::IntoIter">IntoIter</a>&lt;T&gt;</code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/alloc/binary_heap.rs.html#1008-1013" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;T&gt; DoubleEndedIterator for std::collections::binary_heap::<a class="struct" href="../../collections/binary_heap/struct.intoiter/" title="struct std::collections::binary_heap::IntoIter">IntoIter</a>&lt;T&gt;</code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/alloc/btree/map.rs.html#1422-1426" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;'a, K, V&gt; DoubleEndedIterator for <a class="struct" href="../../collections/btree_map/struct.values/" title="struct std::collections::btree_map::Values">Values</a>&lt;'a, K, V&gt;</code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/alloc/btree/map.rs.html#1220-1229" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;'a, K, V&gt; DoubleEndedIterator for std::collections::btree_map::<a class="struct" href="../../collections/btree_map/struct.itermut/" title="struct std::collections::btree_map::IterMut">IterMut</a>&lt;'a, K, V&gt; <span class="where fmt-newline">where<br>    K: 'a,<br>    V: 'a, </span></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/alloc/vec.rs.html#2374-2396" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;T&gt; DoubleEndedIterator for std::vec::<a class="struct" href="../../vec/struct.intoiter/" title="struct std::vec::IntoIter">IntoIter</a>&lt;T&gt;</code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/alloc/vec_deque.rs.html#2239-2244" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;'a, T&gt; DoubleEndedIterator for std::collections::vec_deque::<a class="struct" href="../../collections/vec_deque/struct.drain/" title="struct std::collections::vec_deque::Drain">Drain</a>&lt;'a, T&gt; <span class="where fmt-newline">where<br>    T: 'a, </span></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/alloc/binary_heap.rs.html#1054-1059" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;'a, T&gt; DoubleEndedIterator for std::collections::binary_heap::<a class="struct" href="../../collections/binary_heap/struct.drain/" title="struct std::collections::binary_heap::Drain">Drain</a>&lt;'a, T&gt; <span class="where fmt-newline">where<br>    T: 'a, </span></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/alloc/btree/map.rs.html#1623-1631" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;'a, K, V&gt; DoubleEndedIterator for <a class="struct" href="../../collections/btree_map/struct.rangemut/" title="struct std::collections::btree_map::RangeMut">RangeMut</a>&lt;'a, K, V&gt;</code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/alloc/btree/map.rs.html#1323-1359" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;K, V&gt; DoubleEndedIterator for std::collections::btree_map::<a class="struct" href="../../collections/btree_map/struct.intoiter/" title="struct std::collections::btree_map::IntoIter">IntoIter</a>&lt;K, V&gt;</code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/alloc/vec.rs.html#2593-2597" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;'a, I&gt; DoubleEndedIterator for <a class="struct" href="../../vec/struct.splice/" title="struct std::vec::Splice">Splice</a>&lt;'a, I&gt; <span class="where fmt-newline">where<br>    I: <a class="trait" href="../trait.iterator/" title="trait std::iter::Iterator">Iterator</a>, </span></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/alloc/btree/map.rs.html#1522-1530" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;'a, K, V&gt; DoubleEndedIterator for std::collections::btree_map::<a class="struct" href="../../collections/btree_map/struct.range/" title="struct std::collections::btree_map::Range">Range</a>&lt;'a, K, V&gt;</code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/alloc/vec_deque.rs.html#1967-1984" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;'a, T&gt; DoubleEndedIterator for std::collections::vec_deque::<a class="struct" href="../../collections/vec_deque/struct.iter/" title="struct std::collections::vec_deque::Iter">Iter</a>&lt;'a, T&gt;</code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/alloc/vec_deque.rs.html#2056-2077" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;'a, T&gt; DoubleEndedIterator for std::collections::vec_deque::<a class="struct" href="../../collections/vec_deque/struct.itermut/" title="struct std::collections::vec_deque::IterMut">IterMut</a>&lt;'a, T&gt;</code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/alloc/linked_list.rs.html#986-991" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;T&gt; DoubleEndedIterator for std::collections::linked_list::<a class="struct" href="../../collections/linked_list/struct.intoiter/" title="struct std::collections::linked_list::IntoIter">IntoIter</a>&lt;T&gt;</code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/alloc/boxed.rs.html#689-693" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;I&gt; DoubleEndedIterator for <a class="struct" href="../../boxed/struct.box/" title="struct std::boxed::Box">Box</a>&lt;I&gt; <span class="where fmt-newline">where<br>    I: <a class="trait" href="../trait.doubleendediterator/" title="trait std::iter::DoubleEndedIterator">DoubleEndedIterator</a> + ?<a class="trait" href="../../marker/trait.sized/" title="trait std::marker::Sized">Sized</a>, </span></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/alloc/vec.rs.html#2475-2480" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;'a, T&gt; DoubleEndedIterator for std::vec::<a class="struct" href="../../vec/struct.drain/" title="struct std::vec::Drain">Drain</a>&lt;'a, T&gt;</code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/core/slice/mod.rs.html#1730-1751" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;'a, T, P&gt; DoubleEndedIterator for <a class="struct" href="../../slice/struct.splitmut/" title="struct std::slice::SplitMut">SplitMut</a>&lt;'a, T, P&gt; <span class="where fmt-newline">where<br>    P: <a class="trait" href="../../ops/trait.fnmut/" title="trait std::ops::FnMut">FnMut</a>(<a class="primitive" href="../../primitive.reference/">&amp;</a>T) -&gt; <a class="primitive" href="../../primitive.bool/">bool</a>, </span></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/core/iter/traits.rs.html#587-589" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;'a, I&gt; DoubleEndedIterator for <a class="primitive" href="../../primitive.reference/">&amp;'a mut </a>I <span class="where fmt-newline">where<br>    I: <a class="trait" href="../trait.doubleendediterator/" title="trait std::iter::DoubleEndedIterator">DoubleEndedIterator</a> + ?<a class="trait" href="../../marker/trait.sized/" title="trait std::marker::Sized">Sized</a>, </span></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/core/iter/mod.rs.html#1661-1699" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;I&gt; DoubleEndedIterator for <a class="struct" href="../struct.enumerate/" title="struct std::iter::Enumerate">Enumerate</a>&lt;I&gt; <span class="where fmt-newline">where<br>    I: <a class="trait" href="../trait.exactsizeiterator/" title="trait std::iter::ExactSizeIterator">ExactSizeIterator</a> + <a class="trait" href="../trait.doubleendediterator/" title="trait std::iter::DoubleEndedIterator">DoubleEndedIterator</a>, </span></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/core/result.rs.html#994-997" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;'a, T&gt; DoubleEndedIterator for std::result::<a class="struct" href="../../result/struct.iter/" title="struct std::result::Iter">Iter</a>&lt;'a, T&gt;</code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/core/str/mod.rs.html#998-1005" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;'a, P&gt; DoubleEndedIterator for <a class="struct" href="../../str/struct.splitterminator/" title="struct std::str::SplitTerminator">SplitTerminator</a>&lt;'a, P&gt; <span class="where fmt-newline">where<br>    P: <a class="trait" href="../../str/pattern/trait.pattern/" title="trait std::str::pattern::Pattern">Pattern</a>&lt;'a&gt;,<br>    &lt;P as <a class="trait" href="../../str/pattern/trait.pattern/" title="trait std::str::pattern::Pattern">Pattern</a>&lt;'a&gt;&gt;::<a class="type" href="../../str/pattern/trait.pattern/#associatedtype.Searcher" title="type std::str::pattern::Pattern::Searcher">Searcher</a>: <a class="trait" href="../../str/pattern/trait.doubleendedsearcher/" title="trait std::str::pattern::DoubleEndedSearcher">DoubleEndedSearcher</a>&lt;'a&gt;, </span></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/core/iter/mod.rs.html#456-477" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;I&gt; DoubleEndedIterator for <a class="struct" href="../struct.rev/" title="struct std::iter::Rev">Rev</a>&lt;I&gt; <span class="where fmt-newline">where<br>    I: <a class="trait" href="../trait.doubleendediterator/" title="trait std::iter::DoubleEndedIterator">DoubleEndedIterator</a>, </span></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/core/slice/mod.rs.html#2306-2321" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;'a, T&gt; DoubleEndedIterator for <a class="struct" href="../../slice/struct.chunksmut/" title="struct std::slice::ChunksMut">ChunksMut</a>&lt;'a, T&gt;</code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/core/str/mod.rs.html#1334-1339" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;'a&gt; DoubleEndedIterator for <a class="struct" href="../../str/struct.lines/" title="struct std::str::Lines">Lines</a>&lt;'a&gt;</code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/core/iter/range.rs.html#271-281" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;A&gt; DoubleEndedIterator for std::ops::<a class="struct" href="../../ops/struct.range/" title="struct std::ops::Range">Range</a>&lt;A&gt; <span class="where fmt-newline">where<br>    A: <a class="trait" href="../trait.step/" title="trait std::iter::Step">Step</a>, </span></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/core/slice/mod.rs.html#2205-2218" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;'a, T&gt; DoubleEndedIterator for <a class="struct" href="../../slice/struct.chunks/" title="struct std::slice::Chunks">Chunks</a>&lt;'a, T&gt;</code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/core/str/mod.rs.html#998-1005" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;'a, P&gt; DoubleEndedIterator for std::str::<a class="struct" href="../../str/struct.split/" title="struct std::str::Split">Split</a>&lt;'a, P&gt; <span class="where fmt-newline">where<br>    P: <a class="trait" href="../../str/pattern/trait.pattern/" title="trait std::str::pattern::Pattern">Pattern</a>&lt;'a&gt;,<br>    &lt;P as <a class="trait" href="../../str/pattern/trait.pattern/" title="trait std::str::pattern::Pattern">Pattern</a>&lt;'a&gt;&gt;::<a class="type" href="../../str/pattern/trait.pattern/#associatedtype.Searcher" title="type std::str::pattern::Pattern::Searcher">Searcher</a>: <a class="trait" href="../../str/pattern/trait.doubleendedsearcher/" title="trait std::str::pattern::DoubleEndedSearcher">DoubleEndedSearcher</a>&lt;'a&gt;, </span></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/core/iter/mod.rs.html#2165-2189" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;I&gt; DoubleEndedIterator for <a class="struct" href="../struct.skip/" title="struct std::iter::Skip">Skip</a>&lt;I&gt; <span class="where fmt-newline">where<br>    I: <a class="trait" href="../trait.doubleendediterator/" title="trait std::iter::DoubleEndedIterator">DoubleEndedIterator</a> + <a class="trait" href="../trait.exactsizeiterator/" title="trait std::iter::ExactSizeIterator">ExactSizeIterator</a>, </span></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/core/result.rs.html#1038-1041" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;'a, T&gt; DoubleEndedIterator for std::result::<a class="struct" href="../../result/struct.itermut/" title="struct std::result::IterMut">IterMut</a>&lt;'a, T&gt;</code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/core/iter/sources.rs.html#128-132" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;T&gt; DoubleEndedIterator for <a class="struct" href="../struct.empty/" title="struct std::iter::Empty">Empty</a>&lt;T&gt;</code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/core/iter/range.rs.html#373-391" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;A&gt; DoubleEndedIterator for <a class="struct" href="../../ops/struct.rangeinclusive/" title="struct std::ops::RangeInclusive">RangeInclusive</a>&lt;A&gt; <span class="where fmt-newline">where<br>    A: <a class="trait" href="../trait.step/" title="trait std::iter::Step">Step</a>, </span></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/core/iter/mod.rs.html#2796-2820" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;I, F&gt; DoubleEndedIterator for <a class="struct" href="../struct.inspect/" title="struct std::iter::Inspect">Inspect</a>&lt;I, F&gt; <span class="where fmt-newline">where<br>    F: <a class="trait" href="../../ops/trait.fnmut/" title="trait std::ops::FnMut">FnMut</a>(&amp;&lt;I as <a class="trait" href="../trait.iterator/" title="trait std::iter::Iterator">Iterator</a>&gt;::<a class="type" href="../trait.iterator/#associatedtype.Item" title="type std::iter::Iterator::Item">Item</a>) -&gt; <a class="primitive" href="../../primitive.unit/">()</a>,<br>    I: <a class="trait" href="../trait.doubleendediterator/" title="trait std::iter::DoubleEndedIterator">DoubleEndedIterator</a>, </span></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/core/str/mod.rs.html#998-1005" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;'a, P&gt; DoubleEndedIterator for <a class="struct" href="../../str/struct.matches/" title="struct std::str::Matches">Matches</a>&lt;'a, P&gt; <span class="where fmt-newline">where<br>    P: <a class="trait" href="../../str/pattern/trait.pattern/" title="trait std::str::pattern::Pattern">Pattern</a>&lt;'a&gt;,<br>    &lt;P as <a class="trait" href="../../str/pattern/trait.pattern/" title="trait std::str::pattern::Pattern">Pattern</a>&lt;'a&gt;&gt;::<a class="type" href="../../str/pattern/trait.pattern/#associatedtype.Searcher" title="type std::str::pattern::Pattern::Searcher">Searcher</a>: <a class="trait" href="../../str/pattern/trait.doubleendedsearcher/" title="trait std::str::pattern::DoubleEndedSearcher">DoubleEndedSearcher</a>&lt;'a&gt;, </span></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/core/iter/mod.rs.html#1275-1296" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;B, I, F&gt; DoubleEndedIterator for <a class="struct" href="../struct.map/" title="struct std::iter::Map">Map</a>&lt;I, F&gt; <span class="where fmt-newline">where<br>    F: <a class="trait" href="../../ops/trait.fnmut/" title="trait std::ops::FnMut">FnMut</a>(&lt;I as <a class="trait" href="../trait.iterator/" title="trait std::iter::Iterator">Iterator</a>&gt;::<a class="type" href="../trait.iterator/#associatedtype.Item" title="type std::iter::Iterator::Item">Item</a>) -&gt; B,<br>    I: <a class="trait" href="../trait.doubleendediterator/" title="trait std::iter::DoubleEndedIterator">DoubleEndedIterator</a>, </span></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/core/str/mod.rs.html#1008-1015" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;'a, P&gt; DoubleEndedIterator for <a class="struct" href="../../str/struct.rmatches/" title="struct std::str::RMatches">RMatches</a>&lt;'a, P&gt; <span class="where fmt-newline">where<br>    P: <a class="trait" href="../../str/pattern/trait.pattern/" title="trait std::str::pattern::Pattern">Pattern</a>&lt;'a&gt;,<br>    &lt;P as <a class="trait" href="../../str/pattern/trait.pattern/" title="trait std::str::pattern::Pattern">Pattern</a>&lt;'a&gt;&gt;::<a class="type" href="../../str/pattern/trait.pattern/#associatedtype.Searcher" title="type std::str::pattern::Pattern::Searcher">Searcher</a>: <a class="trait" href="../../str/pattern/trait.doubleendedsearcher/" title="trait std::str::pattern::DoubleEndedSearcher">DoubleEndedSearcher</a>&lt;'a&gt;, </span></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/core/result.rs.html#1081-1084" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;T&gt; DoubleEndedIterator for std::result::<a class="struct" href="../../result/struct.intoiter/" title="struct std::result::IntoIter">IntoIter</a>&lt;T&gt;</code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/core/slice/mod.rs.html#2096-2107" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;'a, T&gt; DoubleEndedIterator for <a class="struct" href="../../slice/struct.windows/" title="struct std::slice::Windows">Windows</a>&lt;'a, T&gt;</code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/core/iter/mod.rs.html#1534-1568" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;B, I, F&gt; DoubleEndedIterator for <a class="struct" href="../struct.filtermap/" title="struct std::iter::FilterMap">FilterMap</a>&lt;I, F&gt; <span class="where fmt-newline">where<br>    F: <a class="trait" href="../../ops/trait.fnmut/" title="trait std::ops::FnMut">FnMut</a>(&lt;I as <a class="trait" href="../trait.iterator/" title="trait std::iter::Iterator">Iterator</a>&gt;::<a class="type" href="../trait.iterator/#associatedtype.Item" title="type std::iter::Iterator::Item">Item</a>) -&gt; <a class="enum" href="../../option/enum.option/" title="enum std::option::Option">Option</a>&lt;B&gt;,<br>    I: <a class="trait" href="../trait.doubleendediterator/" title="trait std::iter::DoubleEndedIterator">DoubleEndedIterator</a>, </span></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/core/iter/sources.rs.html#209-213" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;T&gt; DoubleEndedIterator for <a class="struct" href="../struct.once/" title="struct std::iter::Once">Once</a>&lt;T&gt;</code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/core/iter/mod.rs.html#2692-2713" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;I&gt; DoubleEndedIterator for <a class="struct" href="../struct.fuse/" title="struct std::iter::Fuse">Fuse</a>&lt;I&gt; <span class="where fmt-newline">where<br>    I: <a class="trait" href="../trait.doubleendediterator/" title="trait std::iter::DoubleEndedIterator">DoubleEndedIterator</a> + <a class="trait" href="../trait.fusediterator/" title="trait std::iter::FusedIterator">FusedIterator</a>, </span></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/core/iter/mod.rs.html#2600-2635" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;I&gt; DoubleEndedIterator for <a class="struct" href="../struct.fuse/" title="struct std::iter::Fuse">Fuse</a>&lt;I&gt; <span class="where fmt-newline">where<br>    I: <a class="trait" href="../trait.doubleendediterator/" title="trait std::iter::DoubleEndedIterator">DoubleEndedIterator</a>, </span></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/core/str/mod.rs.html#794-806" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;'a&gt; DoubleEndedIterator for <a class="struct" href="../../str/struct.bytes/" title="struct std::str::Bytes">Bytes</a>&lt;'a&gt;</code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/core/str/mod.rs.html#693-704" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;'a&gt; DoubleEndedIterator for <a class="struct" href="../../str/struct.charindices/" title="struct std::str::CharIndices">CharIndices</a>&lt;'a&gt;</code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/core/str/mod.rs.html#1008-1015" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;'a, P&gt; DoubleEndedIterator for <a class="struct" href="../../str/struct.rmatchindices/" title="struct std::str::RMatchIndices">RMatchIndices</a>&lt;'a, P&gt; <span class="where fmt-newline">where<br>    P: <a class="trait" href="../../str/pattern/trait.pattern/" title="trait std::str::pattern::Pattern">Pattern</a>&lt;'a&gt;,<br>    &lt;P as <a class="trait" href="../../str/pattern/trait.pattern/" title="trait std::str::pattern::Pattern">Pattern</a>&lt;'a&gt;&gt;::<a class="type" href="../../str/pattern/trait.pattern/#associatedtype.Searcher" title="type std::str::pattern::Pattern::Searcher">Searcher</a>: <a class="trait" href="../../str/pattern/trait.doubleendedsearcher/" title="trait std::str::pattern::DoubleEndedSearcher">DoubleEndedSearcher</a>&lt;'a&gt;, </span></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/core/iter/mod.rs.html#1422-1458" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;I, P&gt; DoubleEndedIterator for <a class="struct" href="../struct.filter/" title="struct std::iter::Filter">Filter</a>&lt;I, P&gt; <span class="where fmt-newline">where<br>    I: <a class="trait" href="../trait.doubleendediterator/" title="trait std::iter::DoubleEndedIterator">DoubleEndedIterator</a>,<br>    P: <a class="trait" href="../../ops/trait.fnmut/" title="trait std::ops::FnMut">FnMut</a>(&amp;&lt;I as <a class="trait" href="../trait.iterator/" title="trait std::iter::Iterator">Iterator</a>&gt;::<a class="type" href="../trait.iterator/#associatedtype.Item" title="type std::iter::Iterator::Item">Item</a>) -&gt; <a class="primitive" href="../../primitive.bool/">bool</a>, </span></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/core/str/mod.rs.html#1008-1015" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;'a, P&gt; DoubleEndedIterator for <a class="struct" href="../../str/struct.rsplitterminator/" title="struct std::str::RSplitTerminator">RSplitTerminator</a>&lt;'a, P&gt; <span class="where fmt-newline">where<br>    P: <a class="trait" href="../../str/pattern/trait.pattern/" title="trait std::str::pattern::Pattern">Pattern</a>&lt;'a&gt;,<br>    &lt;P as <a class="trait" href="../../str/pattern/trait.pattern/" title="trait std::str::pattern::Pattern">Pattern</a>&lt;'a&gt;&gt;::<a class="type" href="../../str/pattern/trait.pattern/#associatedtype.Searcher" title="type std::str::pattern::Pattern::Searcher">Searcher</a>: <a class="trait" href="../../str/pattern/trait.doubleendedsearcher/" title="trait std::str::pattern::DoubleEndedSearcher">DoubleEndedSearcher</a>&lt;'a&gt;, </span></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/core/option.rs.html#1085-1088" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;A&gt; DoubleEndedIterator for std::option::<a class="struct" href="../../option/struct.intoiter/" title="struct std::option::IntoIter">IntoIter</a>&lt;A&gt;</code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/core/option.rs.html#1048-1051" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;'a, A&gt; DoubleEndedIterator for std::option::<a class="struct" href="../../option/struct.itermut/" title="struct std::option::IterMut">IterMut</a>&lt;'a, A&gt;</code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/core/iter/mod.rs.html#2438-2496" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;I, U, F&gt; DoubleEndedIterator for <a class="struct" href="../struct.flatmap/" title="struct std::iter::FlatMap">FlatMap</a>&lt;I, U, F&gt; <span class="where fmt-newline">where<br>    F: <a class="trait" href="../../ops/trait.fnmut/" title="trait std::ops::FnMut">FnMut</a>(&lt;I as <a class="trait" href="../trait.iterator/" title="trait std::iter::Iterator">Iterator</a>&gt;::<a class="type" href="../trait.iterator/#associatedtype.Item" title="type std::iter::Iterator::Item">Item</a>) -&gt; U,<br>    I: <a class="trait" href="../trait.doubleendediterator/" title="trait std::iter::DoubleEndedIterator">DoubleEndedIterator</a>,<br>    U: <a class="trait" href="../trait.intoiterator/" title="trait std::iter::IntoIterator">IntoIterator</a>,<br>    &lt;U as <a class="trait" href="../trait.intoiterator/" title="trait std::iter::IntoIterator">IntoIterator</a>&gt;::<a class="type" href="../trait.intoiterator/#associatedtype.IntoIter" title="type std::iter::IntoIterator::IntoIter">IntoIter</a>: <a class="trait" href="../trait.doubleendediterator/" title="trait std::iter::DoubleEndedIterator">DoubleEndedIterator</a>, </span></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/core/iter/mod.rs.html#542-560" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;'a, I, T&gt; DoubleEndedIterator for <a class="struct" href="../struct.cloned/" title="struct std::iter::Cloned">Cloned</a>&lt;I&gt; <span class="where fmt-newline">where<br>    I: <a class="trait" href="../trait.doubleendediterator/" title="trait std::iter::DoubleEndedIterator">DoubleEndedIterator</a>&lt;Item = <a class="primitive" href="../../primitive.reference/">&amp;'a </a>T&gt;,<br>    T: 'a + <a class="trait" href="../../clone/trait.clone/" title="trait std::clone::Clone">Clone</a>, </span></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/core/str/mod.rs.html#1008-1015" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;'a, P&gt; DoubleEndedIterator for std::str::<a class="struct" href="../../str/struct.rsplit/" title="struct std::str::RSplit">RSplit</a>&lt;'a, P&gt; <span class="where fmt-newline">where<br>    P: <a class="trait" href="../../str/pattern/trait.pattern/" title="trait std::str::pattern::Pattern">Pattern</a>&lt;'a&gt;,<br>    &lt;P as <a class="trait" href="../../str/pattern/trait.pattern/" title="trait std::str::pattern::Pattern">Pattern</a>&lt;'a&gt;&gt;::<a class="type" href="../../str/pattern/trait.pattern/#associatedtype.Searcher" title="type std::str::pattern::Pattern::Searcher">Searcher</a>: <a class="trait" href="../../str/pattern/trait.doubleendedsearcher/" title="trait std::str::pattern::DoubleEndedSearcher">DoubleEndedSearcher</a>&lt;'a&gt;, </span></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/core/slice/mod.rs.html#1632-1646" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;'a, T, P&gt; DoubleEndedIterator for std::slice::<a class="struct" href="../../slice/struct.split/" title="struct std::slice::Split">Split</a>&lt;'a, T, P&gt; <span class="where fmt-newline">where<br>    P: <a class="trait" href="../../ops/trait.fnmut/" title="trait std::ops::FnMut">FnMut</a>(<a class="primitive" href="../../primitive.reference/">&amp;</a>T) -&gt; <a class="primitive" href="../../primitive.bool/">bool</a>, </span></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/core/slice/mod.rs.html#1203-1252" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;'a, T&gt; DoubleEndedIterator for std::slice::<a class="struct" href="../../slice/struct.itermut/" title="struct std::slice::IterMut">IterMut</a>&lt;'a, T&gt;</code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/core/slice/mod.rs.html#1203-1252" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;'a, T&gt; DoubleEndedIterator for std::slice::<a class="struct" href="../../slice/struct.iter/" title="struct std::slice::Iter">Iter</a>&lt;'a, T&gt;</code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/core/str/mod.rs.html#998-1005" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;'a, P&gt; DoubleEndedIterator for <a class="struct" href="../../str/struct.matchindices/" title="struct std::str::MatchIndices">MatchIndices</a>&lt;'a, P&gt; <span class="where fmt-newline">where<br>    P: <a class="trait" href="../../str/pattern/trait.pattern/" title="trait std::str::pattern::Pattern">Pattern</a>&lt;'a&gt;,<br>    &lt;P as <a class="trait" href="../../str/pattern/trait.pattern/" title="trait std::str::pattern::Pattern">Pattern</a>&lt;'a&gt;&gt;::<a class="type" href="../../str/pattern/trait.pattern/#associatedtype.Searcher" title="type std::str::pattern::Pattern::Searcher">Searcher</a>: <a class="trait" href="../../str/pattern/trait.doubleendedsearcher/" title="trait std::str::pattern::DoubleEndedSearcher">DoubleEndedSearcher</a>&lt;'a&gt;, </span></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/core/iter/sources.rs.html#39-42" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;A&gt; DoubleEndedIterator for <a class="struct" href="../struct.repeat/" title="struct std::iter::Repeat">Repeat</a>&lt;A&gt; <span class="where fmt-newline">where<br>    A: <a class="trait" href="../../clone/trait.clone/" title="trait std::clone::Clone">Clone</a>, </span></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/core/str/mod.rs.html#601-611" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;'a&gt; DoubleEndedIterator for <a class="struct" href="../../str/struct.chars/" title="struct std::str::Chars">Chars</a>&lt;'a&gt;</code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/core/iter/mod.rs.html#885-942" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;A, B&gt; DoubleEndedIterator for <a class="struct" href="../struct.chain/" title="struct std::iter::Chain">Chain</a>&lt;A, B&gt; <span class="where fmt-newline">where<br>    A: <a class="trait" href="../trait.doubleendediterator/" title="trait std::iter::DoubleEndedIterator">DoubleEndedIterator</a>,<br>    B: <a class="trait" href="../trait.doubleendediterator/" title="trait std::iter::DoubleEndedIterator">DoubleEndedIterator</a>&lt;Item = &lt;A as <a class="trait" href="../trait.iterator/" title="trait std::iter::Iterator">Iterator</a>&gt;::<a class="type" href="../trait.iterator/#associatedtype.Item" title="type std::iter::Iterator::Item">Item</a>&gt;, </span></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/core/iter/mod.rs.html#991-999" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;A, B&gt; DoubleEndedIterator for <a class="struct" href="../struct.zip/" title="struct std::iter::Zip">Zip</a>&lt;A, B&gt; <span class="where fmt-newline">where<br>    A: <a class="trait" href="../trait.doubleendediterator/" title="trait std::iter::DoubleEndedIterator">DoubleEndedIterator</a> + <a class="trait" href="../trait.exactsizeiterator/" title="trait std::iter::ExactSizeIterator">ExactSizeIterator</a>,<br>    B: <a class="trait" href="../trait.doubleendediterator/" title="trait std::iter::DoubleEndedIterator">DoubleEndedIterator</a> + <a class="trait" href="../trait.exactsizeiterator/" title="trait std::iter::ExactSizeIterator">ExactSizeIterator</a>, </span></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/core/option.rs.html#1003-1006" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;'a, A&gt; DoubleEndedIterator for std::option::<a class="struct" href="../../option/struct.iter/" title="struct std::option::Iter">Iter</a>&lt;'a, A&gt;</code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/core/slice/mod.rs.html#1860-1867" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;'a, T, P&gt; DoubleEndedIterator for <a class="struct" href="../../slice/struct.rsplitmut/" title="struct std::slice::RSplitMut">RSplitMut</a>&lt;'a, T, P&gt; <span class="where fmt-newline">where<br>    P: <a class="trait" href="../../ops/trait.fnmut/" title="trait std::ops::FnMut">FnMut</a>(<a class="primitive" href="../../primitive.reference/">&amp;</a>T) -&gt; <a class="primitive" href="../../primitive.bool/">bool</a>, </span></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/core/str/mod.rs.html#1400-1405" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;'a&gt; DoubleEndedIterator for <a class="struct" href="../../str/struct.linesany/" title="struct std::str::LinesAny">LinesAny</a>&lt;'a&gt;</code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/core/slice/mod.rs.html#1795-1800" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;'a, T, P&gt; DoubleEndedIterator for std::slice::<a class="struct" href="../../slice/struct.rsplit/" title="struct std::slice::RSplit">RSplit</a>&lt;'a, T, P&gt; <span class="where fmt-newline">where<br>    P: <a class="trait" href="../../ops/trait.fnmut/" title="trait std::ops::FnMut">FnMut</a>(<a class="primitive" href="../../primitive.reference/">&amp;</a>T) -&gt; <a class="primitive" href="../../primitive.bool/">bool</a>, </span></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/std_unicode/u_str.rs.html#182-186" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;'a&gt; DoubleEndedIterator for <a class="struct" href="../../str/struct.splitwhitespace/" title="struct std::str::SplitWhitespace">SplitWhitespace</a>&lt;'a&gt;</code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/std/ascii.rs.html#664-668" title="goto source code" target="_blank">[src]</a></div>
+<code>impl DoubleEndedIterator for <a class="struct" href="../../ascii/struct.escapedefault/" title="struct std::ascii::EscapeDefault">EscapeDefault</a></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/std/env.rs.html#739-743" title="goto source code" target="_blank">[src]</a></div>
+<code>impl DoubleEndedIterator for <a class="struct" href="../../env/struct.args/" title="struct std::env::Args">Args</a></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/std/env.rs.html#768-770" title="goto source code" target="_blank">[src]</a></div>
+<code>impl DoubleEndedIterator for <a class="struct" href="../../env/struct.argsos/" title="struct std::env::ArgsOs">ArgsOs</a></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/std/path.rs.html#893-897" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;'a&gt; DoubleEndedIterator for std::path::<a class="struct" href="../../path/struct.iter/" title="struct std::path::Iter">Iter</a>&lt;'a&gt;</code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/std/path.rs.html#956-1000" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;'a&gt; DoubleEndedIterator for <a class="struct" href="../../path/struct.components/" title="struct std::path::Components">Components</a>&lt;'a&gt;</code>
+</li> </ul>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2010 The Rust Project Developers<br>Licensed under the Apache License, Version 2.0 or the MIT license, at your option.<br>
+    <a href="https://doc.rust-lang.org/std/iter/trait.DoubleEndedIterator.html" class="_attribution-link" target="_blank">https://doc.rust-lang.org/std/iter/trait.DoubleEndedIterator.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

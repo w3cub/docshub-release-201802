@@ -1,0 +1,137 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>5.1.10. Static Items - Rust - W3cubDocs</title>
+  
+  <meta name="description" content="A static item is similar to a constant, except that it represents a precise memory location in the program. A static is never &#34;inlined&#34; at &hellip;">
+  <meta name="keywords" content="static, items, -, rust">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/rust/reference/items/static-items/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/rust.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/rust/" class="_nav-link" title="" style="margin-left:0;">Rust</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _rust">
+				
+<h1 id="">Static items</h1> <p>A <em>static item</em> is similar to a <em>constant</em>, except that it represents a precise memory location in the program. A static is never "inlined" at the usage site, and all references to it refer to the same memory location. Static items have the <code>static</code> lifetime, which outlives all other lifetimes in a Rust program. Static items may be placed in read-only memory if they do not contain any interior mutability.</p> <p>Statics may contain interior mutability through the <code>UnsafeCell</code> language item. All access to a static is safe, but there are a number of restrictions on statics:</p> <ul> <li>Statics may not contain any destructors.</li> <li>The types of static values must ascribe to <code>Sync</code> to allow thread-safe access.</li> <li>Statics allow using paths to statics in the <a href="../../expressions/#constant-expressions">constant-expression</a> used to initialize them, but statics may not refer to other statics by value, only by reference.</li> <li>Constants cannot refer to statics.</li> </ul> <p>Constants should in general be preferred over statics, unless large amounts of data are being stored, or single-address and mutability properties are required.</p> <h2 id="">Mutable statics</h2> <p>If a static item is declared with the <code>mut</code> keyword, then it is allowed to be modified by the program. One of Rust's goals is to make concurrency bugs hard to run into, and this is obviously a very large source of race conditions or other bugs. For this reason, an <code>unsafe</code> block is required when either reading or writing a mutable static variable. Care should be taken to ensure that modifications to a mutable static are safe with respect to other threads running in the same process.</p> <p>Mutable statics are still very useful, however. They can be used with C libraries and can also be bound from C libraries (in an <code>extern</code> block).</p> <pre data-language="rust">
+# #![allow(unused_variables)]
+#fn main() {
+# fn atomic_add(_: &amp;mut u32, _: u32) -&gt; u32 { 2 }
+
+static mut LEVELS: u32 = 0;
+
+// This violates the idea of no shared state, and this doesn't internally
+// protect against races, so this function is `unsafe`
+unsafe fn bump_levels_unsafe1() -&gt; u32 {
+    let ret = LEVELS;
+    LEVELS += 1;
+    return ret;
+}
+
+// Assuming that we have an atomic_add function which returns the old value,
+// this function is "safe" but the meaning of the return value may not be what
+// callers expect, so it's still marked as `unsafe`
+unsafe fn bump_levels_unsafe2() -&gt; u32 {
+    return atomic_add(&amp;mut LEVELS, 1);
+}
+#}</pre> <p>Mutable statics have the same restrictions as normal statics, except that the type of the value is not required to ascribe to <code>Sync</code>.</p> <h2 id="">
+<code>'static</code> lifetime elision</h2> <p>Both constant and static declarations of reference types have <em>implicit</em> <code>'static</code> lifetimes unless an explicit lifetime is specified. As such, the constant declarations involving <code>'static</code> above may be written without the lifetimes. Returning to our previous example:</p> <pre data-language="rust">
+# #![allow(unused_variables)]
+#fn main() {
+const BIT1: u32 = 1 &lt;&lt; 0;
+const BIT2: u32 = 1 &lt;&lt; 1;
+
+const BITS: [u32; 2] = [BIT1, BIT2];
+const STRING: &amp;str = "bitstring";
+
+struct BitsNStrings&lt;'a&gt; {
+    mybits: [u32; 2],
+    mystring: &amp;'a str,
+}
+
+const BITS_N_STRINGS: BitsNStrings = BitsNStrings {
+    mybits: BITS,
+    mystring: STRING,
+};
+#}</pre> <p>Note that if the <code>static</code> or <code>const</code> items include function or closure references, which themselves include references, the compiler will first try the standard elision rules (<a href="https://doc.rust-lang.org/nomicon/lifetime-elision.html" target="_blank">see discussion in the nomicon</a>). If it is unable to resolve the lifetimes by its usual rules, it will default to using the <code>'static</code> lifetime. By way of example:</p> <pre data-language="rust">// Resolved as `fn&lt;'a&gt;(&amp;'a str) -&gt; &amp;'a str`.
+const RESOLVED_SINGLE: fn(&amp;str) -&gt; &amp;str = ..
+
+// Resolved as `Fn&lt;'a, 'b, 'c&gt;(&amp;'a Foo, &amp;'b Bar, &amp;'c Baz) -&gt; usize`.
+const RESOLVED_MULTIPLE: Fn(&amp;Foo, &amp;Bar, &amp;Baz) -&gt; usize = ..
+
+// There is insufficient information to bound the return reference lifetime
+// relative to the argument lifetimes, so the signature is resolved as
+// `Fn(&amp;'static Foo, &amp;'static Bar) -&gt; &amp;'static Baz`.
+const RESOLVED_STATIC: Fn(&amp;Foo, &amp;Bar) -&gt; &amp;Baz = ..
+</pre>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2010 The Rust Project Developers<br>Licensed under the Apache License, Version 2.0 or the MIT license, at your option.<br>
+    <a href="https://doc.rust-lang.org/reference/items/static-items.html" class="_attribution-link" target="_blank">https://doc.rust-lang.org/reference/items/static-items.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

@@ -1,0 +1,212 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>std&#58;&#58;ops&#58;&#58;IndexMut - Rust - W3cubDocs</title>
+  
+  <meta name="description" content=" Used for indexing operations (container[index]) in mutable contexts. ">
+  <meta name="keywords" content="trait, std, ops, indexmut, -, rust">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/rust/std/ops/trait.indexmut/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/rust.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/rust/" class="_nav-link" title="" style="margin-left:0;">Rust</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _rust">
+				
+<h1 class="fqn">Trait std::ops::IndexMut</h1> <pre class="rust trait" data-language="rust">#[lang = "index_mut"]
+pub trait IndexMut&lt;Idx&gt;: Index&lt;Idx&gt; where    Idx: ?Sized, {
+    fn index_mut(&amp;mut self, index: Idx) -&gt; &amp;mut Self::Output;
+}</pre>
+<p>Used for indexing operations (<code>container[index]</code>) in mutable contexts.</p> <p><code>container[index]</code> is actually syntactic sugar for <code>*container.index_mut(index)</code>, but only when used as a mutable value. If an immutable value is requested, the <a href="../trait.index/"><code>Index</code></a> trait is used instead. This allows nice things such as <code>v[index] = value</code>.</p> <h4 id="examples" class="section-header">Examples</h4> <p>A very simple implementation of a <code>Balance</code> struct that has two sides, where each can be indexed mutably and immutably.</p> <pre class="rust rust-example-rendered" data-language="rust">
+use std::ops::{Index,IndexMut};
+
+#[derive(Debug)]
+enum Side {
+    Left,
+    Right,
+}
+
+#[derive(Debug, PartialEq)]
+enum Weight {
+    Kilogram(f32),
+    Pound(f32),
+}
+
+struct Balance {
+    pub left: Weight,
+    pub right: Weight,
+}
+
+impl Index&lt;Side&gt; for Balance {
+    type Output = Weight;
+
+    fn index&lt;'a&gt;(&amp;'a self, index: Side) -&gt; &amp;'a Weight {
+        println!("Accessing {:?}-side of balance immutably", index);
+        match index {
+            Side::Left =&gt; &amp;self.left,
+            Side::Right =&gt; &amp;self.right,
+        }
+    }
+}
+
+impl IndexMut&lt;Side&gt; for Balance {
+    fn index_mut&lt;'a&gt;(&amp;'a mut self, index: Side) -&gt; &amp;'a mut Weight {
+        println!("Accessing {:?}-side of balance mutably", index);
+        match index {
+            Side::Left =&gt; &amp;mut self.left,
+            Side::Right =&gt; &amp;mut self.right,
+        }
+    }
+}
+
+let mut balance = Balance {
+    right: Weight::Kilogram(2.5),
+    left: Weight::Pound(1.5),
+};
+
+// In this case, `balance[Side::Right]` is sugar for
+// `*balance.index(Side::Right)`, since we are only *reading*
+// `balance[Side::Right]`, not writing it.
+assert_eq!(balance[Side::Right], Weight::Kilogram(2.5));
+
+// However, in this case `balance[Side::Left]` is sugar for
+// `*balance.index_mut(Side::Left)`, since we are writing
+// `balance[Side::Left]`.
+balance[Side::Left] = Weight::Kilogram(3.0);</pre>  <h2 id="required-methods" class="small-section-header"> Required Methods </h2> <div class="methods"> <h3 id="tymethod.index_mut" class="method"><span id="index_mut.v" class="invisible"><code>fn <a href="#tymethod.index_mut" class="fnname">index_mut</a>(&amp;mut self, index: Idx) -&gt; &amp;mut Self::<a class="type" href="../trait.index/#associatedtype.Output" title="type std::ops::Index::Output">Output</a></code></span></h3>
+<div class="docblock">
+<p>Performs the mutable indexing (<code>container[index]</code>) operation.</p> </div>
+</div> <h2 id="implementors" class="small-section-header"> Implementors </h2> <ul class="item-list" id="implementors-list"> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/alloc/string.rs.html#1916-1921" title="goto source code" target="_blank">[src]</a></div>
+<code>impl IndexMut&lt;<a class="struct" href="../struct.rangefrom/" title="struct std::ops::RangeFrom">RangeFrom</a>&lt;<a class="primitive" href="../../primitive.usize/">usize</a>&gt;&gt; for <a class="struct" href="../../string/struct.string/" title="struct std::string::String">String</a></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/alloc/vec_deque.rs.html#2370-2375" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;A&gt; IndexMut&lt;<a class="primitive" href="../../primitive.usize/">usize</a>&gt; for <a class="struct" href="../../collections/vec_deque/struct.vecdeque/" title="struct std::collections::vec_deque::VecDeque">VecDeque</a>&lt;A&gt;</code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/alloc/string.rs.html#1937-1942" title="goto source code" target="_blank">[src]</a></div>
+<code>impl IndexMut&lt;<a class="struct" href="../struct.rangetoinclusive/" title="struct std::ops::RangeToInclusive">RangeToInclusive</a>&lt;<a class="primitive" href="../../primitive.usize/">usize</a>&gt;&gt; for <a class="struct" href="../../string/struct.string/" title="struct std::string::String">String</a></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/alloc/vec.rs.html#1651-1656" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;T&gt; IndexMut&lt;<a class="struct" href="../struct.rangefrom/" title="struct std::ops::RangeFrom">RangeFrom</a>&lt;<a class="primitive" href="../../primitive.usize/">usize</a>&gt;&gt; for <a class="struct" href="../../vec/struct.vec/" title="struct std::vec::Vec">Vec</a>&lt;T&gt;</code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/alloc/vec.rs.html#1642-1647" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;T&gt; IndexMut&lt;<a class="struct" href="../struct.rangeto/" title="struct std::ops::RangeTo">RangeTo</a>&lt;<a class="primitive" href="../../primitive.usize/">usize</a>&gt;&gt; for <a class="struct" href="../../vec/struct.vec/" title="struct std::vec::Vec">Vec</a>&lt;T&gt;</code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/alloc/vec.rs.html#1669-1674" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;T&gt; IndexMut&lt;<a class="struct" href="../struct.rangeinclusive/" title="struct std::ops::RangeInclusive">RangeInclusive</a>&lt;<a class="primitive" href="../../primitive.usize/">usize</a>&gt;&gt; for <a class="struct" href="../../vec/struct.vec/" title="struct std::vec::Vec">Vec</a>&lt;T&gt;</code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/alloc/vec.rs.html#1660-1665" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;T&gt; IndexMut&lt;<a class="struct" href="../struct.rangefull/" title="struct std::ops::RangeFull">RangeFull</a>&gt; for <a class="struct" href="../../vec/struct.vec/" title="struct std::vec::Vec">Vec</a>&lt;T&gt;</code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/alloc/string.rs.html#1902-1907" title="goto source code" target="_blank">[src]</a></div>
+<code>impl IndexMut&lt;<a class="struct" href="../struct.range/" title="struct std::ops::Range">Range</a>&lt;<a class="primitive" href="../../primitive.usize/">usize</a>&gt;&gt; for <a class="struct" href="../../string/struct.string/" title="struct std::string::String">String</a></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/alloc/vec.rs.html#1557-1563" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;T&gt; IndexMut&lt;<a class="primitive" href="../../primitive.usize/">usize</a>&gt; for <a class="struct" href="../../vec/struct.vec/" title="struct std::vec::Vec">Vec</a>&lt;T&gt;</code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/alloc/vec.rs.html#1633-1638" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;T&gt; IndexMut&lt;<a class="struct" href="../struct.range/" title="struct std::ops::Range">Range</a>&lt;<a class="primitive" href="../../primitive.usize/">usize</a>&gt;&gt; for <a class="struct" href="../../vec/struct.vec/" title="struct std::vec::Vec">Vec</a>&lt;T&gt;</code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/alloc/vec.rs.html#1678-1683" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;T&gt; IndexMut&lt;<a class="struct" href="../struct.rangetoinclusive/" title="struct std::ops::RangeToInclusive">RangeToInclusive</a>&lt;<a class="primitive" href="../../primitive.usize/">usize</a>&gt;&gt; for <a class="struct" href="../../vec/struct.vec/" title="struct std::vec::Vec">Vec</a>&lt;T&gt;</code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/alloc/string.rs.html#1923-1928" title="goto source code" target="_blank">[src]</a></div>
+<code>impl IndexMut&lt;<a class="struct" href="../struct.rangefull/" title="struct std::ops::RangeFull">RangeFull</a>&gt; for <a class="struct" href="../../string/struct.string/" title="struct std::string::String">String</a></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/alloc/string.rs.html#1930-1935" title="goto source code" target="_blank">[src]</a></div>
+<code>impl IndexMut&lt;<a class="struct" href="../struct.rangeinclusive/" title="struct std::ops::RangeInclusive">RangeInclusive</a>&lt;<a class="primitive" href="../../primitive.usize/">usize</a>&gt;&gt; for <a class="struct" href="../../string/struct.string/" title="struct std::string::String">String</a></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/alloc/string.rs.html#1909-1914" title="goto source code" target="_blank">[src]</a></div>
+<code>impl IndexMut&lt;<a class="struct" href="../struct.rangeto/" title="struct std::ops::RangeTo">RangeTo</a>&lt;<a class="primitive" href="../../primitive.usize/">usize</a>&gt;&gt; for <a class="struct" href="../../string/struct.string/" title="struct std::string::String">String</a></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/core/str/mod.rs.html#1776-1781" title="goto source code" target="_blank">[src]</a></div>
+<code>impl IndexMut&lt;<a class="struct" href="../struct.rangefull/" title="struct std::ops::RangeFull">RangeFull</a>&gt; for <a class="primitive" href="../../primitive.str/">str</a></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/core/slice/mod.rs.html#733-740" title="goto source code" target="_blank">[src]</a></div>
+<code>impl&lt;T, I&gt; IndexMut&lt;I&gt; for <a class="primitive" href="../../primitive.slice/">[</a>T<a class="primitive" href="../../primitive.slice/">]</a> <span class="where fmt-newline">where<br>    I: <a class="trait" href="../../slice/trait.sliceindex/" title="trait std::slice::SliceIndex">SliceIndex</a>&lt;<a class="primitive" href="../../primitive.slice/">[</a>T<a class="primitive" href="../../primitive.slice/">]</a>&gt;, </span></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/core/str/mod.rs.html#1810-1815" title="goto source code" target="_blank">[src]</a></div>
+<code>impl IndexMut&lt;<a class="struct" href="../struct.rangeinclusive/" title="struct std::ops::RangeInclusive">RangeInclusive</a>&lt;<a class="primitive" href="../../primitive.usize/">usize</a>&gt;&gt; for <a class="primitive" href="../../primitive.str/">str</a></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/core/str/mod.rs.html#1819-1824" title="goto source code" target="_blank">[src]</a></div>
+<code>impl IndexMut&lt;<a class="struct" href="../struct.rangetoinclusive/" title="struct std::ops::RangeToInclusive">RangeToInclusive</a>&lt;<a class="primitive" href="../../primitive.usize/">usize</a>&gt;&gt; for <a class="primitive" href="../../primitive.str/">str</a></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/core/str/mod.rs.html#1746-1751" title="goto source code" target="_blank">[src]</a></div>
+<code>impl IndexMut&lt;<a class="struct" href="../struct.rangefrom/" title="struct std::ops::RangeFrom">RangeFrom</a>&lt;<a class="primitive" href="../../primitive.usize/">usize</a>&gt;&gt; for <a class="primitive" href="../../primitive.str/">str</a></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/core/str/mod.rs.html#1686-1691" title="goto source code" target="_blank">[src]</a></div>
+<code>impl IndexMut&lt;<a class="struct" href="../struct.range/" title="struct std::ops::Range">Range</a>&lt;<a class="primitive" href="../../primitive.usize/">usize</a>&gt;&gt; for <a class="primitive" href="../../primitive.str/">str</a></code>
+</li> <li>
+<div class="out-of-band"><a class="srclink" href="https://doc.rust-lang.org/src/core/str/mod.rs.html#1716-1721" title="goto source code" target="_blank">[src]</a></div>
+<code>impl IndexMut&lt;<a class="struct" href="../struct.rangeto/" title="struct std::ops::RangeTo">RangeTo</a>&lt;<a class="primitive" href="../../primitive.usize/">usize</a>&gt;&gt; for <a class="primitive" href="../../primitive.str/">str</a></code>
+</li> </ul>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2010 The Rust Project Developers<br>Licensed under the Apache License, Version 2.0 or the MIT license, at your option.<br>
+    <a href="https://doc.rust-lang.org/std/ops/trait.IndexMut.html" class="_attribution-link" target="_blank">https://doc.rust-lang.org/std/ops/trait.IndexMut.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

@@ -1,0 +1,256 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>5.1.11. Traits - Rust - W3cubDocs</title>
+  
+  <meta name="description" content=" A trait describes an abstract interface that types can implement. This interface consists of associated items, which come in three varieties&#58; ">
+  <meta name="keywords" content="traits, -, rust">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/rust/reference/items/traits/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/rust.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/rust/" class="_nav-link" title="" style="margin-left:0;">Rust</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _rust">
+				
+<h1 id="">Traits</h1> <p>A <em>trait</em> describes an abstract interface that types can implement. This interface consists of associated items, which come in three varieties:</p> <ul> <li><a href="../traits/#associated-functions-and-methods">functions</a></li> <li><a href="../traits/#associated-types">types</a></li> <li><a href="../traits/#associated-constants">constants</a></li> </ul> <p>All traits define an implicit type parameter <code>Self</code> that refers to "the type that is implementing this interface". Traits may also contain additional type parameters. These type parameters (including <code>Self</code>) may be constrained by other traits and so forth as usual.</p> <p>Traits are implemented for specific types through separate <a href="../implementations/">implementations</a>.</p> <h2 id="">Associated functions and methods</h2> <p>Associated functions whose first parameter is named <code>self</code> are called methods and may be invoked using <code>.</code> notation (e.g., <code>x.foo()</code>) as well as the usual function call notation (<code>foo(x)</code>).</p> <p>Consider the following trait:</p> <pre data-language="rust">
+# #![allow(unused_variables)]
+#fn main() {
+# type Surface = i32;
+# type BoundingBox = i32;
+trait Shape {
+    fn draw(&amp;self, Surface);
+    fn bounding_box(&amp;self) -&gt; BoundingBox;
+}
+#}</pre> <p>This defines a trait with two methods. All values that have <a href="../implementations/">implementations</a> of this trait in scope can have their <code>draw</code> and <code>bounding_box</code> methods called, using <code>value.bounding_box()</code> <a href="../../expressions/method-call-expr/">syntax</a>. Note that <code>&amp;self</code> is short for <code>self: &amp;Self</code>, and similarly, <code>self</code> is short for <code>self: Self</code> and <code>&amp;mut self</code> is short for <code>self: &amp;mut Self</code>.</p> <p>Traits can include default implementations of methods, as in:</p> <pre data-language="rust">
+# #![allow(unused_variables)]
+#fn main() {
+trait Foo {
+    fn bar(&amp;self);
+    fn baz(&amp;self) { println!("We called baz."); }
+}
+#}</pre> <p>Here the <code>baz</code> method has a default implementation, so types that implement <code>Foo</code> need only implement <code>bar</code>. It is also possible for implementing types to override a method that has a default implementation.</p> <p>Type parameters can be specified for a trait to make it generic. These appear after the trait name, using the same syntax used in <a href="../functions/#generic-functions">generic functions</a>.</p> <pre data-language="rust">
+# #![allow(unused_variables)]
+#fn main() {
+trait Seq&lt;T&gt; {
+    fn len(&amp;self) -&gt; u32;
+    fn elt_at(&amp;self, n: u32) -&gt; T;
+    fn iter&lt;F&gt;(&amp;self, F) where F: Fn(T);
+}
+#}</pre> <p>Associated functions may lack a <code>self</code> argument, sometimes called 'static methods'. This means that they can only be called with function call syntax (<code>f(x)</code>) and not method call syntax (<code>obj.f()</code>). The way to refer to the name of a static method is to qualify it with the trait name or type name, treating the trait name like a module. For example:</p> <pre data-language="rust">
+# #![allow(unused_variables)]
+#fn main() {
+trait Num {
+    fn from_i32(n: i32) -&gt; Self;
+}
+impl Num for f64 {
+    fn from_i32(n: i32) -&gt; f64 { n as f64 }
+}
+let x: f64 = Num::from_i32(42);
+let x: f64 = f64::from_i32(42);
+#}</pre> <h2 id="">Associated Types</h2> <p>It is also possible to define associated types for a trait. Consider the following example of a <code>Container</code> trait. Notice how the type is available for use in the method signatures:</p> <pre data-language="rust">
+# #![allow(unused_variables)]
+#fn main() {
+trait Container {
+    type E;
+    fn empty() -&gt; Self;
+    fn insert(&amp;mut self, Self::E);
+}
+#}</pre> <p>In order for a type to implement this trait, it must not only provide implementations for every method, but it must specify the type <code>E</code>. Here's an implementation of <code>Container</code> for the standard library type <code>Vec</code>:</p> <pre data-language="rust">
+# #![allow(unused_variables)]
+#fn main() {
+# trait Container {
+#     type E;
+#     fn empty() -&gt; Self;
+#     fn insert(&amp;mut self, Self::E);
+# }
+impl&lt;T&gt; Container for Vec&lt;T&gt; {
+    type E = T;
+    fn empty() -&gt; Vec&lt;T&gt; { Vec::new() }
+    fn insert(&amp;mut self, x: T) { self.push(x); }
+}
+#}</pre> <h2 id="">Associated Constants</h2> <p>A trait can define constants like this:</p> <pre data-language="rust">trait Foo {
+    const ID: i32;
+}
+
+impl Foo for i32 {
+    const ID: i32 = 1;
+}
+
+fn main() {
+    assert_eq!(1, i32::ID);
+}
+</pre> <p>Any implementor of <code>Foo</code> will have to define <code>ID</code>. Without the definition:</p> <pre data-language="rust">
+# #![allow(unused_variables)]
+#fn main() {
+trait Foo {
+    const ID: i32;
+}
+
+impl Foo for i32 {
+}
+#}</pre> <p>gives</p> <pre>error: not all trait items implemented, missing: `ID` [E0046]
+     impl Foo for i32 {
+     }
+</pre> <p>A default value can be implemented as well:</p> <pre data-language="rust">trait Foo {
+    const ID: i32 = 1;
+}
+
+impl Foo for i32 {
+}
+
+impl Foo for i64 {
+    const ID: i32 = 5;
+}
+
+fn main() {
+    assert_eq!(1, i32::ID);
+    assert_eq!(5, i64::ID);
+}
+</pre> <p>As you can see, when implementing <code>Foo</code>, you can leave it unimplemented, as with <code>i32</code>. It will then use the default value. But, as in <code>i64</code>, we can also add our own definition.</p> <p>Associated constants don’t have to be associated with a trait. An <code>impl</code> block for a <code>struct</code> or an <code>enum</code> works fine too:</p> <pre data-language="rust">
+# #![allow(unused_variables)]
+#fn main() {
+struct Foo;
+
+impl Foo {
+    const FOO: u32 = 3;
+}
+#}</pre> <h2 id="">Trait bounds</h2> <p>Generic functions may use traits as <em>bounds</em> on their type parameters. This will have three effects:</p> <ul> <li>Only types that have the trait may instantiate the parameter.</li> <li>Within the generic function, the methods of the trait can be called on values that have the parameter's type. Associated types can be used in the function's signature, and associated constants can be used in expressions within the function body.</li> <li>Generic functions and types with the same or weaker bounds can use the generic type in the function body or signature.</li> </ul> <p>For example:</p> <pre data-language="rust">
+# #![allow(unused_variables)]
+#fn main() {
+# type Surface = i32;
+# trait Shape { fn draw(&amp;self, Surface); }
+struct Figure&lt;S: Shape&gt;(S, S);
+fn draw_twice&lt;T: Shape&gt;(surface: Surface, sh: T) {
+    sh.draw(surface);
+    sh.draw(surface);
+}
+fn draw_figure&lt;U: Shape&gt;(surface: Surface, Figure(sh1, sh2): Figure&lt;U&gt;) {
+    sh1.draw(surface);
+    draw_twice(surface, sh2); // Can call this since U: Shape
+}
+#}</pre> <h2 id="">Trait objects</h2> <p>Traits also define a <a href="../../types/#trait-objects">trait object</a> with the same name as the trait. Values of this type are created by coercing from a pointer of some specific type to a pointer of trait type. For example, <code>&amp;T</code> could be coerced to <code>&amp;Shape</code> if <code>T: Shape</code> holds (and similarly for <code>Box&lt;T&gt;</code>). This coercion can either be implicit or <a href="../../expressions/operator-expr/#type-cast-expressions">explicit</a>. Here is an example of an explicit coercion:</p> <pre data-language="rust">
+# #![allow(unused_variables)]
+#fn main() {
+trait Shape { }
+impl Shape for i32 { }
+let mycircle = 0i32;
+let myshape: Box&lt;Shape&gt; = Box::new(mycircle) as Box&lt;Shape&gt;;
+#}</pre> <p>The resulting value is a box containing the value that was cast, along with information that identifies the methods of the implementation that was used. Values with a trait type can have <a href="../../expressions/method-call-expr/">methods called</a> on them, for any method in the trait, and can be used to instantiate type parameters that are bounded by the trait.</p> <h2 id="">Supertraits</h2> <p>Trait bounds on <code>Self</code> are considered "supertraits". These are required to be acyclic. Supertraits are somewhat different from other constraints in that they affect what methods are available in the vtable when the trait is used as a <a href="../../types/#trait-objects">trait object</a>. Consider the following example:</p> <pre data-language="rust">
+# #![allow(unused_variables)]
+#fn main() {
+trait Shape { fn area(&amp;self) -&gt; f64; }
+trait Circle : Shape { fn radius(&amp;self) -&gt; f64; }
+#}</pre> <p>The syntax <code>Circle : Shape</code> means that types that implement <code>Circle</code> must also have an implementation for <code>Shape</code>. Multiple supertraits are separated by <code>+</code>, <code>trait Circle : Shape + PartialEq { }</code>. In an implementation of <code>Circle</code> for a given type <code>T</code>, methods can refer to <code>Shape</code> methods, since the typechecker checks that any type with an implementation of <code>Circle</code> also has an implementation of <code>Shape</code>:</p> <pre data-language="rust">
+# #![allow(unused_variables)]
+#fn main() {
+struct Foo;
+
+trait Shape { fn area(&amp;self) -&gt; f64; }
+trait Circle : Shape { fn radius(&amp;self) -&gt; f64; }
+impl Shape for Foo {
+    fn area(&amp;self) -&gt; f64 {
+        0.0
+    }
+}
+impl Circle for Foo {
+    fn radius(&amp;self) -&gt; f64 {
+        println!("calling area: {}", self.area());
+
+        0.0
+    }
+}
+
+let c = Foo;
+c.radius();
+#}</pre> <p>In type-parameterized functions, methods of the supertrait may be called on values of subtrait-bound type parameters. Referring to the previous example of <code>trait Circle : Shape</code>:</p> <pre data-language="rust">
+# #![allow(unused_variables)]
+#fn main() {
+# trait Shape { fn area(&amp;self) -&gt; f64; }
+# trait Circle : Shape { fn radius(&amp;self) -&gt; f64; }
+fn radius_times_area&lt;T: Circle&gt;(c: T) -&gt; f64 {
+    // `c` is both a Circle and a Shape
+    c.radius() * c.area()
+}
+#}</pre> <p>Likewise, supertrait methods may also be called on trait objects.</p> <pre data-language="rust">
+# #![allow(unused_variables)]
+#fn main() {
+# trait Shape { fn area(&amp;self) -&gt; f64; }
+# trait Circle : Shape { fn radius(&amp;self) -&gt; f64; }
+# impl Shape for i32 { fn area(&amp;self) -&gt; f64 { 0.0 } }
+# impl Circle for i32 { fn radius(&amp;self) -&gt; f64 { 0.0 } }
+# let mycircle = 0i32;
+let mycircle = Box::new(mycircle) as Box&lt;Circle&gt;;
+let nonsense = mycircle.radius() * mycircle.area();
+#}</pre>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2010 The Rust Project Developers<br>Licensed under the Apache License, Version 2.0 or the MIT license, at your option.<br>
+    <a href="https://doc.rust-lang.org/reference/items/traits.html" class="_attribution-link" target="_blank">https://doc.rust-lang.org/reference/items/traits.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

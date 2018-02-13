@@ -1,0 +1,199 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>std&#58;&#58;ptr&#58;&#58;Shared - Rust - W3cubDocs</title>
+  
+  <meta name="description" content="A wrapper around a raw &#42;mut T that indicates that the possessor of this wrapper has shared ownership of the referent. Useful for building &hellip;">
+  <meta name="keywords" content="struct, std, ptr, shared, -, rust">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/rust/std/ptr/struct.shared/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/rust.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/rust/" class="_nav-link" title="" style="margin-left:0;">Rust</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _rust">
+				
+<h1 class="fqn">Struct std::ptr::Shared</h1> <pre class="rust struct" data-language="rust">pub struct Shared&lt;T&gt; where    T: ?Sized,  { /* fields omitted */ }</pre>
+<div class="stability"><span class="stab unstable">🔬 This is a nightly-only experimental API. (shared #27730)needs an RFC to flesh out design </span></div>
+<p>A wrapper around a raw <code>*mut T</code> that indicates that the possessor of this wrapper has shared ownership of the referent. Useful for building abstractions like <code>Rc&lt;T&gt;</code>, <code>Arc&lt;T&gt;</code>, or doubly-linked lists, which internally use aliased raw pointers to manage the memory that they own.</p> <p>This is similar to <code>Unique</code>, except that it doesn't make any aliasing guarantees, and doesn't derive Send and Sync. Note that unlike <code>&amp;T</code>, Shared has no special mutability requirements. Shared may mutate data aliased by other Shared pointers. More precise rules require Rust to develop an actual aliasing model.</p> <p>Unlike <code>*mut T</code>, the pointer must always be non-null, even if the pointer is never dereferenced. This is so that enums may use this forbidden value as a discriminant -- <code>Option&lt;Shared&lt;T&gt;&gt;</code> has the same size as <code>Shared&lt;T&gt;</code>. However the pointer may still dangle if it isn't dereferenced.</p> <p>Unlike <code>*mut T</code>, <code>Shared&lt;T&gt;</code> is covariant over <code>T</code>. If this is incorrect for your use case, you should include some PhantomData in your type to provide invariance, such as <code>PhantomData&lt;Cell&lt;T&gt;&gt;</code> or <code>PhantomData&lt;&amp;'a mut T&gt;</code>. Usually this won't be necessary; covariance is correct for Rc, Arc, and LinkedList because they provide a public API that follows the normal shared XOR mutable rules of Rust.</p>  <h2 id="methods" class="small-section-header"> Methods </h2> <h3 id="impl" class="impl">
+<span class="in-band"><code>impl&lt;T&gt; <a class="struct" href="../struct.shared/" title="struct std::ptr::Shared">Shared</a>&lt;T&gt;</code></span><span class="out-of-band">
+<a class="srclink" href="https://doc.rust-lang.org/src/core/ptr.rs.html#2456-2467" title="goto source code" target="_blank">[src]</a></span>
+</h3> <h4 id="method.empty" class="method">
+<span id="empty.v" class="invisible"><code>fn <a href="#method.empty" class="fnname">empty</a>() -&gt; <a class="struct" href="../struct.shared/" title="struct std::ptr::Shared">Shared</a>&lt;T&gt;</code></span><span class="out-of-band">
+<a class="srclink" href="https://doc.rust-lang.org/src/core/ptr.rs.html#2461-2466" title="goto source code" target="_blank">[src]</a></span>
+</h4> <div class="stability"><span class="stab unstable">🔬 This is a nightly-only experimental API. (shared #27730)</span></div>
+<div class="docblock">
+<p>Creates a new <code>Shared</code> that is dangling, but well-aligned.</p> <p>This is useful for initializing types which lazily allocate, like <code>Vec::new</code> does.</p> </div>
+<h3 id="impl-1" class="impl">
+<span class="in-band"><code>impl&lt;T&gt; <a class="struct" href="../struct.shared/" title="struct std::ptr::Shared">Shared</a>&lt;T&gt; <span class="where fmt-newline">where<br>    T: ?<a class="trait" href="../../marker/trait.sized/" title="trait std::marker::Sized">Sized</a>, </span></code></span><span class="out-of-band">
+<a class="srclink" href="https://doc.rust-lang.org/src/core/ptr.rs.html#2470-2516" title="goto source code" target="_blank">[src]</a></span>
+</h3> <h4 id="method.new_unchecked" class="method">
+<span id="new_unchecked.v" class="invisible"><code>const unsafe fn <a href="#method.new_unchecked" class="fnname">new_unchecked</a>(ptr: <a class="primitive" href="../../primitive.pointer/">*mut T</a>) -&gt; <a class="struct" href="../struct.shared/" title="struct std::ptr::Shared">Shared</a>&lt;T&gt;</code></span><span class="out-of-band">
+<a class="srclink" href="https://doc.rust-lang.org/src/core/ptr.rs.html#2478-2480" title="goto source code" target="_blank">[src]</a></span>
+</h4> <div class="stability"><span class="stab unstable">🔬 This is a nightly-only experimental API. (shared #27730)</span></div>
+<div class="docblock">
+<p>Creates a new <code>Shared</code>.</p> <h4 id="safety" class="section-header">Safety</h4> <p><code>ptr</code> must be non-null.</p> </div>
+<h4 id="method.new" class="method">
+<span id="new.v" class="invisible"><code>fn <a href="#method.new" class="fnname">new</a>(ptr: <a class="primitive" href="../../primitive.pointer/">*mut T</a>) -&gt; <a class="enum" href="../../option/enum.option/" title="enum std::option::Option">Option</a>&lt;<a class="struct" href="../struct.shared/" title="struct std::ptr::Shared">Shared</a>&lt;T&gt;&gt;</code></span><span class="out-of-band">
+<a class="srclink" href="https://doc.rust-lang.org/src/core/ptr.rs.html#2483-2485" title="goto source code" target="_blank">[src]</a></span>
+</h4> <div class="stability"><span class="stab unstable">🔬 This is a nightly-only experimental API. (shared #27730)</span></div>
+<div class="docblock">
+<p>Creates a new <code>Shared</code> if <code>ptr</code> is non-null.</p> </div>
+<h4 id="method.as_ptr" class="method">
+<span id="as_ptr.v" class="invisible"><code>fn <a href="#method.as_ptr" class="fnname">as_ptr</a>(self) -&gt; <a class="primitive" href="../../primitive.pointer/">*mut T</a></code></span><span class="out-of-band">
+<a class="srclink" href="https://doc.rust-lang.org/src/core/ptr.rs.html#2488-2490" title="goto source code" target="_blank">[src]</a></span>
+</h4> <div class="stability"><span class="stab unstable">🔬 This is a nightly-only experimental API. (shared #27730)</span></div>
+<div class="docblock">
+<p>Acquires the underlying <code>*mut</code> pointer.</p> </div>
+<h4 id="method.as_ref" class="method">
+<span id="as_ref.v" class="invisible"><code>unsafe fn <a href="#method.as_ref" class="fnname">as_ref</a>(&amp;self) -&gt; <a class="primitive" href="../../primitive.reference/">&amp;</a>T</code></span><span class="out-of-band">
+<a class="srclink" href="https://doc.rust-lang.org/src/core/ptr.rs.html#2497-2499" title="goto source code" target="_blank">[src]</a></span>
+</h4> <div class="stability"><span class="stab unstable">🔬 This is a nightly-only experimental API. (shared #27730)</span></div>
+<div class="docblock">
+<p>Dereferences the content.</p> <p>The resulting lifetime is bound to self so this behaves "as if" it were actually an instance of T that is getting borrowed. If a longer (unbound) lifetime is needed, use <code>&amp;*my_ptr.ptr()</code>.</p> </div>
+<h4 id="method.as_mut" class="method">
+<span id="as_mut.v" class="invisible"><code>unsafe fn <a href="#method.as_mut" class="fnname">as_mut</a>(&amp;mut self) -&gt; <a class="primitive" href="../../primitive.reference/">&amp;mut </a>T</code></span><span class="out-of-band">
+<a class="srclink" href="https://doc.rust-lang.org/src/core/ptr.rs.html#2506-2508" title="goto source code" target="_blank">[src]</a></span>
+</h4> <div class="stability"><span class="stab unstable">🔬 This is a nightly-only experimental API. (shared #27730)</span></div>
+<div class="docblock">
+<p>Mutably dereferences the content.</p> <p>The resulting lifetime is bound to self so this behaves "as if" it were actually an instance of T that is getting borrowed. If a longer (unbound) lifetime is needed, use <code>&amp;mut *my_ptr.ptr_mut()</code>.</p> </div>
+<h4 id="method.as_mut_ptr" class="method">
+<span id="as_mut_ptr.v" class="invisible"><code>unsafe fn <a href="#method.as_mut_ptr" class="fnname">as_mut_ptr</a>(&amp;self) -&gt; <a class="primitive" href="../../primitive.pointer/">*mut T</a></code></span><span class="out-of-band">
+<a class="srclink" href="https://doc.rust-lang.org/src/core/ptr.rs.html#2513-2515" title="goto source code" target="_blank">[src]</a></span>
+</h4> <div class="stability">
+<span class="stab deprecated">Deprecated since 1.19: renamed to as_ptr for ergonomics/consistency </span><span class="stab unstable">🔬 This is a nightly-only experimental API. (shared #27730)</span>
+</div>
+<div class="docblock">
+<p>Acquires the underlying pointer as a <code>*mut</code> pointer.</p> </div> <h2 id="implementations" class="small-section-header"> Trait Implementations </h2> <h3 id="impl-Clone" class="impl">
+<span class="in-band"><code>impl&lt;T&gt; <a class="trait" href="../../clone/trait.clone/" title="trait std::clone::Clone">Clone</a> for <a class="struct" href="../struct.shared/" title="struct std::ptr::Shared">Shared</a>&lt;T&gt; <span class="where fmt-newline">where<br>    T: ?<a class="trait" href="../../marker/trait.sized/" title="trait std::marker::Sized">Sized</a>, </span></code></span><span class="out-of-band">
+<a class="srclink" href="https://doc.rust-lang.org/src/core/ptr.rs.html#2519-2523" title="goto source code" target="_blank">[src]</a></span>
+</h3> <h4 id="method.clone" class="method">
+<span id="clone.v" class="invisible"><code>fn <a href="../../clone/trait.clone/#tymethod.clone" class="fnname">clone</a>(&amp;self) -&gt; <a class="struct" href="../struct.shared/" title="struct std::ptr::Shared">Shared</a>&lt;T&gt;</code></span><span class="out-of-band">
+<a class="srclink" href="https://doc.rust-lang.org/src/core/ptr.rs.html#2520-2522" title="goto source code" target="_blank">[src]</a></span>
+</h4> <div class="docblock">
+<p>Returns a copy of the value. <a href="../../clone/trait.clone/#tymethod.clone">Read more</a></p> </div>
+<h4 id="method.clone_from" class="method">
+<span id="clone_from.v" class="invisible"><code>fn <a href="../../clone/trait.clone/#method.clone_from" class="fnname">clone_from</a>(&amp;mut self, source: <a class="primitive" href="../../primitive.reference/">&amp;</a>Self)</code></span><span class="out-of-band">
+<div class="since" title="Stable since Rust version 1.0.0">1.0.0</div>
+<a class="srclink" href="https://doc.rust-lang.org/src/core/clone.rs.html#112-114" title="goto source code" target="_blank">[src]</a></span>
+</h4> <div class="docblock">
+<p>Performs copy-assignment from <code>source</code>. <a href="../../clone/trait.clone/#method.clone_from">Read more</a></p> </div>
+<h3 id="impl-From%3C%26%27a%20mut%20T%3E" class="impl">
+<span class="in-band"><code>impl&lt;'a, T&gt; <a class="trait" href="../../convert/trait.from/" title="trait std::convert::From">From</a>&lt;<a class="primitive" href="../../primitive.reference/">&amp;'a mut </a>T&gt; for <a class="struct" href="../struct.shared/" title="struct std::ptr::Shared">Shared</a>&lt;T&gt; <span class="where fmt-newline">where<br>    T: ?<a class="trait" href="../../marker/trait.sized/" title="trait std::marker::Sized">Sized</a>, </span></code></span><span class="out-of-band">
+<a class="srclink" href="https://doc.rust-lang.org/src/core/ptr.rs.html#2546-2550" title="goto source code" target="_blank">[src]</a></span>
+</h3> <h4 id="method.from" class="method">
+<span id="from.v" class="invisible"><code>fn <a href="../../convert/trait.from/#tymethod.from" class="fnname">from</a>(reference: <a class="primitive" href="../../primitive.reference/">&amp;'a mut </a>T) -&gt; <a class="struct" href="../struct.shared/" title="struct std::ptr::Shared">Shared</a>&lt;T&gt;</code></span><span class="out-of-band">
+<a class="srclink" href="https://doc.rust-lang.org/src/core/ptr.rs.html#2547-2549" title="goto source code" target="_blank">[src]</a></span>
+</h4> <div class="docblock">
+<p>Performs the conversion.</p> </div>
+<h3 id="impl-From%3CUnique%3CT%3E%3E" class="impl">
+<span class="in-band"><code>impl&lt;T&gt; <a class="trait" href="../../convert/trait.from/" title="trait std::convert::From">From</a>&lt;<a class="struct" href="../struct.unique/" title="struct std::ptr::Unique">Unique</a>&lt;T&gt;&gt; for <a class="struct" href="../struct.shared/" title="struct std::ptr::Shared">Shared</a>&lt;T&gt; <span class="where fmt-newline">where<br>    T: ?<a class="trait" href="../../marker/trait.sized/" title="trait std::marker::Sized">Sized</a>, </span></code></span><span class="out-of-band">
+<a class="srclink" href="https://doc.rust-lang.org/src/core/ptr.rs.html#2539-2543" title="goto source code" target="_blank">[src]</a></span>
+</h3> <h4 id="method.from-1" class="method">
+<span id="from.v-1" class="invisible"><code>fn <a href="../../convert/trait.from/#tymethod.from" class="fnname">from</a>(unique: <a class="struct" href="../struct.unique/" title="struct std::ptr::Unique">Unique</a>&lt;T&gt;) -&gt; <a class="struct" href="../struct.shared/" title="struct std::ptr::Shared">Shared</a>&lt;T&gt;</code></span><span class="out-of-band">
+<a class="srclink" href="https://doc.rust-lang.org/src/core/ptr.rs.html#2540-2542" title="goto source code" target="_blank">[src]</a></span>
+</h4> <div class="docblock">
+<p>Performs the conversion.</p> </div>
+<h3 id="impl-From%3C%26%27a%20T%3E" class="impl">
+<span class="in-band"><code>impl&lt;'a, T&gt; <a class="trait" href="../../convert/trait.from/" title="trait std::convert::From">From</a>&lt;<a class="primitive" href="../../primitive.reference/">&amp;'a </a>T&gt; for <a class="struct" href="../struct.shared/" title="struct std::ptr::Shared">Shared</a>&lt;T&gt; <span class="where fmt-newline">where<br>    T: ?<a class="trait" href="../../marker/trait.sized/" title="trait std::marker::Sized">Sized</a>, </span></code></span><span class="out-of-band">
+<a class="srclink" href="https://doc.rust-lang.org/src/core/ptr.rs.html#2553-2557" title="goto source code" target="_blank">[src]</a></span>
+</h3> <h4 id="method.from-2" class="method">
+<span id="from.v-2" class="invisible"><code>fn <a href="../../convert/trait.from/#tymethod.from" class="fnname">from</a>(reference: <a class="primitive" href="../../primitive.reference/">&amp;'a </a>T) -&gt; <a class="struct" href="../struct.shared/" title="struct std::ptr::Shared">Shared</a>&lt;T&gt;</code></span><span class="out-of-band">
+<a class="srclink" href="https://doc.rust-lang.org/src/core/ptr.rs.html#2554-2556" title="goto source code" target="_blank">[src]</a></span>
+</h4> <div class="docblock">
+<p>Performs the conversion.</p> </div>
+<h3 id="impl-Copy" class="impl">
+<span class="in-band"><code>impl&lt;T&gt; <a class="trait" href="../../marker/trait.copy/" title="trait std::marker::Copy">Copy</a> for <a class="struct" href="../struct.shared/" title="struct std::ptr::Shared">Shared</a>&lt;T&gt; <span class="where fmt-newline">where<br>    T: ?<a class="trait" href="../../marker/trait.sized/" title="trait std::marker::Sized">Sized</a>, </span></code></span><span class="out-of-band">
+<a class="srclink" href="https://doc.rust-lang.org/src/core/ptr.rs.html#2526" title="goto source code" target="_blank">[src]</a></span>
+</h3> <h3 id="impl-Send" class="impl">
+<span class="in-band"><code>impl&lt;T&gt; !<a class="trait" href="../../marker/trait.send/" title="trait std::marker::Send">Send</a> for <a class="struct" href="../struct.shared/" title="struct std::ptr::Shared">Shared</a>&lt;T&gt; <span class="where fmt-newline">where<br>    T: ?<a class="trait" href="../../marker/trait.sized/" title="trait std::marker::Sized">Sized</a>, </span></code></span><span class="out-of-band">
+<a class="srclink" href="https://doc.rust-lang.org/src/core/ptr.rs.html#2448" title="goto source code" target="_blank">[src]</a></span>
+</h3> <p><code>Shared</code> pointers are not <code>Send</code> because the data they reference may be aliased.</p> <h3 id="impl-CoerceUnsized%3CShared%3CU%3E%3E" class="impl">
+<span class="in-band"><code>impl&lt;T, U&gt; <a class="trait" href="../../ops/trait.coerceunsized/" title="trait std::ops::CoerceUnsized">CoerceUnsized</a>&lt;<a class="struct" href="../struct.shared/" title="struct std::ptr::Shared">Shared</a>&lt;U&gt;&gt; for <a class="struct" href="../struct.shared/" title="struct std::ptr::Shared">Shared</a>&lt;T&gt; <span class="where fmt-newline">where<br>    T: <a class="trait" href="../../marker/trait.unsize/" title="trait std::marker::Unsize">Unsize</a>&lt;U&gt; + ?<a class="trait" href="../../marker/trait.sized/" title="trait std::marker::Sized">Sized</a>,<br>    U: ?<a class="trait" href="../../marker/trait.sized/" title="trait std::marker::Sized">Sized</a>, </span></code></span><span class="out-of-band">
+<a class="srclink" href="https://doc.rust-lang.org/src/core/ptr.rs.html#2529" title="goto source code" target="_blank">[src]</a></span>
+</h3> <h3 id="impl-Sync" class="impl">
+<span class="in-band"><code>impl&lt;T&gt; !<a class="trait" href="../../marker/trait.sync/" title="trait std::marker::Sync">Sync</a> for <a class="struct" href="../struct.shared/" title="struct std::ptr::Shared">Shared</a>&lt;T&gt; <span class="where fmt-newline">where<br>    T: ?<a class="trait" href="../../marker/trait.sized/" title="trait std::marker::Sized">Sized</a>, </span></code></span><span class="out-of-band">
+<a class="srclink" href="https://doc.rust-lang.org/src/core/ptr.rs.html#2453" title="goto source code" target="_blank">[src]</a></span>
+</h3> <p><code>Shared</code> pointers are not <code>Sync</code> because the data they reference may be aliased.</p> <h3 id="impl-Pointer" class="impl">
+<span class="in-band"><code>impl&lt;T&gt; <a class="trait" href="../../fmt/trait.pointer/" title="trait std::fmt::Pointer">Pointer</a> for <a class="struct" href="../struct.shared/" title="struct std::ptr::Shared">Shared</a>&lt;T&gt; <span class="where fmt-newline">where<br>    T: ?<a class="trait" href="../../marker/trait.sized/" title="trait std::marker::Sized">Sized</a>, </span></code></span><span class="out-of-band">
+<a class="srclink" href="https://doc.rust-lang.org/src/core/ptr.rs.html#2532-2536" title="goto source code" target="_blank">[src]</a></span>
+</h3> <h4 id="method.fmt" class="method">
+<span id="fmt.v" class="invisible"><code>fn <a href="../../fmt/trait.pointer/#tymethod.fmt" class="fnname">fmt</a>(&amp;self, f: &amp;mut <a class="struct" href="../../fmt/struct.formatter/" title="struct std::fmt::Formatter">Formatter</a>) -&gt; <a class="enum" href="../../result/enum.result/" title="enum std::result::Result">Result</a>&lt;<a class="primitive" href="../../primitive.unit/">()</a>, <a class="struct" href="../../fmt/struct.error/" title="struct std::fmt::Error">Error</a>&gt;</code></span><span class="out-of-band">
+<a class="srclink" href="https://doc.rust-lang.org/src/core/ptr.rs.html#2533-2535" title="goto source code" target="_blank">[src]</a></span>
+</h4> <div class="docblock">
+<p>Formats the value using the given formatter.</p> </div>
+<h3 id="impl-UnwindSafe" class="impl">
+<span class="in-band"><code>impl&lt;T: <a class="trait" href="../../panic/trait.refunwindsafe/" title="trait std::panic::RefUnwindSafe">RefUnwindSafe</a> + ?<a class="trait" href="../../marker/trait.sized/" title="trait std::marker::Sized">Sized</a>&gt; <a class="trait" href="../../panic/trait.unwindsafe/" title="trait std::panic::UnwindSafe">UnwindSafe</a> for <a class="struct" href="../struct.shared/" title="struct std::ptr::Shared">Shared</a>&lt;T&gt;</code></span><span class="out-of-band">
+<a class="srclink" href="https://doc.rust-lang.org/src/std/panic.rs.html#205" title="goto source code" target="_blank">[src]</a></span>
+</h3>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2010 The Rust Project Developers<br>Licensed under the Apache License, Version 2.0 or the MIT license, at your option.<br>
+    <a href="https://doc.rust-lang.org/std/ptr/struct.Shared.html" class="_attribution-link" target="_blank">https://doc.rust-lang.org/std/ptr/struct.Shared.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

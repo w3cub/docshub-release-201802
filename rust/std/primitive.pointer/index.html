@@ -1,0 +1,925 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Std&#58;&#58;pointer - Rust - W3cubDocs</title>
+  
+  <meta name="description" content=" Raw, unsafe pointers, &#42;const T, and &#42;mut T. ">
+  <meta name="keywords" content="primitive, type, pointer, std, -, rust">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/rust/std/primitive.pointer/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/rust.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/rust/" class="_nav-link" title="" style="margin-left:0;">Rust</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _rust">
+				
+<h1 class="fqn">Primitive Type pointer</h1> <p>Raw, unsafe pointers, <code>*const T</code>, and <code>*mut T</code>.</p> <p>Working with raw pointers in Rust is uncommon, typically limited to a few patterns.</p> <p>Use the <a href="../ptr/fn.null/"><code>null</code></a> and <a href="../ptr/fn.null_mut/"><code>null_mut</code></a> functions to create null pointers, and the <a href="../primitive.pointer/#method.is_null"><code>is_null</code></a> method of the <code>*const T</code> and <code>*mut T</code> types to check for null. The <code>*const T</code> and <code>*mut T</code> types also define the <a href="../primitive.pointer/#method.offset"><code>offset</code></a> method, for pointer math.</p> <h4 id="common-ways-to-create-raw-pointers" class="section-header">Common ways to create raw pointers</h4> <h3 id="1-coerce-a-reference-t-or-mutable-reference-mut-t" class="section-header">1. Coerce a reference (<code>&amp;T</code>) or mutable reference (<code>&amp;mut T</code>).</h3> <pre class="rust rust-example-rendered" data-language="rust">
+let my_num: i32 = 10;
+let my_num_ptr: *const i32 = &amp;my_num;
+let mut my_speed: i32 = 88;
+let my_speed_ptr: *mut i32 = &amp;mut my_speed;</pre> <p>To get a pointer to a boxed value, dereference the box:</p> <pre class="rust rust-example-rendered" data-language="rust">
+let my_num: Box&lt;i32&gt; = Box::new(10);
+let my_num_ptr: *const i32 = &amp;*my_num;
+let mut my_speed: Box&lt;i32&gt; = Box::new(88);
+let my_speed_ptr: *mut i32 = &amp;mut *my_speed;</pre> <p>This does not take ownership of the original allocation and requires no resource management later, but you must not use the pointer after its lifetime.</p> <h3 id="2-consume-a-box-boxt" class="section-header">2. Consume a box (<code>Box&lt;T&gt;</code>).</h3> <p>The <a href="../boxed/struct.box/#method.into_raw"><code>into_raw</code></a> function consumes a box and returns the raw pointer. It doesn't destroy <code>T</code> or deallocate any memory.</p> <pre class="rust rust-example-rendered" data-language="rust">
+let my_speed: Box&lt;i32&gt; = Box::new(88);
+let my_speed: *mut i32 = Box::into_raw(my_speed);
+
+// By taking ownership of the original `Box&lt;T&gt;` though
+// we are obligated to put it together later to be destroyed.
+unsafe {
+    drop(Box::from_raw(my_speed));
+}</pre> <p>Note that here the call to <a href="../mem/fn.drop/"><code>drop</code></a> is for clarity - it indicates that we are done with the given value and it should be destroyed.</p> <h3 id="3-get-it-from-c" class="section-header">3. Get it from C.</h3> <pre class="rust rust-example-rendered" data-language="rust">
+extern crate libc;
+
+use std::mem;
+
+fn main() {
+    unsafe {
+        let my_num: *mut i32 = libc::malloc(mem::size_of::&lt;i32&gt;()) as *mut i32;
+        if my_num.is_null() {
+            panic!("failed to allocate memory");
+        }
+        libc::free(my_num as *mut libc::c_void);
+    }
+}</pre> <p>Usually you wouldn't literally use <code>malloc</code> and <code>free</code> from Rust, but C APIs hand out a lot of pointers generally, so are a common source of raw pointers in Rust.</p> <p><em><a href="../ptr/">See also the <code>std::ptr</code> module</a>.</em></p>  <h2 id="methods" class="small-section-header"> Methods </h2> <h3 id="impl" class="impl">
+<span class="in-band"><code>impl&lt;T&gt; <a class="primitive" href="../primitive.pointer/">*const T</a> <span class="where fmt-newline">where<br>    T: ?<a class="trait" href="../marker/trait.sized/" title="trait std::marker::Sized">Sized</a>, </span></code></span><span class="out-of-band">
+<a class="srclink" href="https://doc.rust-lang.org/src/core/ptr.rs.html#474-1104" title="goto source code" target="_blank">[src]</a></span>
+</h3> <h4 id="method.is_null" class="method">
+<span id="is_null.v" class="invisible"><code>fn <a href="#method.is_null" class="fnname">is_null</a>(self) -&gt; <a class="primitive" href="../primitive.bool/">bool</a></code></span><span class="out-of-band">
+<a class="srclink" href="https://doc.rust-lang.org/src/core/ptr.rs.html#488-490" title="goto source code" target="_blank">[src]</a></span>
+</h4> <div class="docblock">
+<p>Returns <code>true</code> if the pointer is null.</p> <h4 id="examples" class="section-header">Examples</h4> <p>Basic usage:</p> <pre class="rust rust-example-rendered" data-language="rust">
+let s: &amp;str = "Follow the rabbit";
+let ptr: *const u8 = s.as_ptr();
+assert!(!ptr.is_null());</pre> </div>
+<h4 id="method.as_ref" class="method">
+<span id="as_ref.v" class="invisible"><code>unsafe fn <a href="#method.as_ref" class="fnname">as_ref</a>&lt;'a&gt;(self) -&gt; <a class="enum" href="../option/enum.option/" title="enum std::option::Option">Option</a>&lt;<a class="primitive" href="../primitive.reference/">&amp;'a </a>T&gt;</code></span><span class="out-of-band">
+<div class="since" title="Stable since Rust version 1.9.0">1.9.0</div>
+<a class="srclink" href="https://doc.rust-lang.org/src/core/ptr.rs.html#520-528" title="goto source code" target="_blank">[src]</a></span>
+</h4> <div class="docblock">
+<p>Returns <code>None</code> if the pointer is null, or else returns a reference to the value wrapped in <code>Some</code>.</p> <h4 id="safety" class="section-header">Safety</h4> <p>While this method and its mutable counterpart are useful for null-safety, it is important to note that this is still an unsafe operation because the returned value could be pointing to invalid memory.</p> <p>Additionally, the lifetime <code>'a</code> returned is arbitrarily chosen and does not necessarily reflect the actual lifetime of the data.</p> <h4 id="examples-1" class="section-header">Examples</h4> <p>Basic usage:</p> <pre class="rust rust-example-rendered" data-language="rust">
+let ptr: *const u8 = &amp;10u8 as *const u8;
+
+unsafe {
+    if let Some(val_back) = ptr.as_ref() {
+        println!("We got back the value: {}!", val_back);
+    }
+}</pre> </div>
+<h4 id="method.offset" class="method">
+<span id="offset.v" class="invisible"><code>unsafe fn <a href="#method.offset" class="fnname">offset</a>(self, count: <a class="primitive" href="../primitive.isize/">isize</a>) -&gt; <a class="primitive" href="../primitive.pointer/">*const T</a></code></span><span class="out-of-band">
+<a class="srclink" href="https://doc.rust-lang.org/src/core/ptr.rs.html#581-583" title="goto source code" target="_blank">[src]</a></span>
+</h4> <div class="docblock">
+<p>Calculates the offset from a pointer.</p> <p><code>count</code> is in units of T; e.g. a <code>count</code> of 3 represents a pointer offset of <code>3 * size_of::&lt;T&gt;()</code> bytes.</p> <h4 id="safety-1" class="section-header">Safety</h4> <p>If any of the following conditions are violated, the result is Undefined Behavior:</p> <ul> <li><p>Both the starting and resulting pointer must be either in bounds or one byte past the end of an allocated object.</p></li> <li><p>The computed offset, <strong>in bytes</strong>, cannot overflow or underflow an <code>isize</code>.</p></li> <li><p>The offset being in bounds cannot rely on "wrapping around" the address space. That is, the infinite-precision sum, <strong>in bytes</strong> must fit in a usize.</p></li> </ul> <p>The compiler and standard library generally tries to ensure allocations never reach a size where an offset is a concern. For instance, <code>Vec</code> and <code>Box</code> ensure they never allocate more than <code>isize::MAX</code> bytes, so <code>vec.as_ptr().offset(vec.len() as isize)</code> is always safe.</p> <p>Most platforms fundamentally can't even construct such an allocation. For instance, no known 64-bit platform can ever serve a request for 2<sup>63</sup> bytes due to page-table limitations or splitting the address space. However, some 32-bit and 16-bit platforms may successfully serve a request for more than <code>isize::MAX</code> bytes with things like Physical Address Extension. As such, memory acquired directly from allocators or memory mapped files <em>may</em> be too large to handle with this function.</p> <p>Consider using <code>wrapping_offset</code> instead if these constraints are difficult to satisfy. The only advantage of this method is that it enables more aggressive compiler optimizations.</p> <h4 id="examples-2" class="section-header">Examples</h4> <p>Basic usage:</p> <pre class="rust rust-example-rendered" data-language="rust">
+let s: &amp;str = "123";
+let ptr: *const u8 = s.as_ptr();
+
+unsafe {
+    println!("{}", *ptr.offset(1) as char);
+    println!("{}", *ptr.offset(2) as char);
+}</pre> </div>
+<h4 id="method.wrapping_offset" class="method">
+<span id="wrapping_offset.v" class="invisible"><code>fn <a href="#method.wrapping_offset" class="fnname">wrapping_offset</a>(self, count: <a class="primitive" href="../primitive.isize/">isize</a>) -&gt; <a class="primitive" href="../primitive.pointer/">*const T</a></code></span><span class="out-of-band">
+<div class="since" title="Stable since Rust version 1.16.0">1.16.0</div>
+<a class="srclink" href="https://doc.rust-lang.org/src/core/ptr.rs.html#619-623" title="goto source code" target="_blank">[src]</a></span>
+</h4> <div class="docblock">
+<p>Calculates the offset from a pointer using wrapping arithmetic.</p> <p><code>count</code> is in units of T; e.g. a <code>count</code> of 3 represents a pointer offset of <code>3 * size_of::&lt;T&gt;()</code> bytes.</p> <h4 id="safety-2" class="section-header">Safety</h4> <p>The resulting pointer does not need to be in bounds, but it is potentially hazardous to dereference (which requires <code>unsafe</code>).</p> <p>Always use <code>.offset(count)</code> instead when possible, because <code>offset</code> allows the compiler to optimize better.</p> <h4 id="examples-3" class="section-header">Examples</h4> <p>Basic usage:</p> <pre class="rust rust-example-rendered" data-language="rust">
+// Iterate using a raw pointer in increments of two elements
+let data = [1u8, 2, 3, 4, 5];
+let mut ptr: *const u8 = data.as_ptr();
+let step = 2;
+let end_rounded_up = ptr.wrapping_offset(6);
+
+// This loop prints "1, 3, 5, "
+while ptr != end_rounded_up {
+    unsafe {
+        print!("{}, ", *ptr);
+    }
+    ptr = ptr.wrapping_offset(step);
+}</pre> </div>
+<h4 id="method.offset_to" class="method">
+<span id="offset_to.v" class="invisible"><code>fn <a href="#method.offset_to" class="fnname">offset_to</a>(self, other: <a class="primitive" href="../primitive.pointer/">*const T</a>) -&gt; <a class="enum" href="../option/enum.option/" title="enum std::option::Option">Option</a>&lt;<a class="primitive" href="../primitive.isize/">isize</a>&gt;</code></span><span class="out-of-band">
+<a class="srclink" href="https://doc.rust-lang.org/src/core/ptr.rs.html#653-661" title="goto source code" target="_blank">[src]</a></span>
+</h4> <div class="stability"><span class="stab unstable">🔬 This is a nightly-only experimental API. (offset_to #41079)</span></div>
+<div class="docblock">
+<p>Calculates the distance between two pointers. The returned value is in units of T: the distance in bytes is divided by <code>mem::size_of::&lt;T&gt;()</code>.</p> <p>If the address different between the two pointers ia not a multiple of <code>mem::size_of::&lt;T&gt;()</code> then the result of the division is rounded towards zero.</p> <p>This function returns <code>None</code> if <code>T</code> is a zero-sized typed.</p> <h4 id="examples-4" class="section-header">Examples</h4> <p>Basic usage:</p> <pre class="rust rust-example-rendered" data-language="rust">
+#![feature(offset_to)]
+
+fn main() {
+    let a = [0; 5];
+    let ptr1: *const i32 = &amp;a[1];
+    let ptr2: *const i32 = &amp;a[3];
+    assert_eq!(ptr1.offset_to(ptr2), Some(2));
+    assert_eq!(ptr2.offset_to(ptr1), Some(-2));
+    assert_eq!(unsafe { ptr1.offset(2) }, ptr2);
+    assert_eq!(unsafe { ptr2.offset(-2) }, ptr1);
+}</pre> </div>
+<h4 id="method.add" class="method">
+<span id="add.v" class="invisible"><code>unsafe fn <a href="#method.add" class="fnname">add</a>(self, count: <a class="primitive" href="../primitive.usize/">usize</a>) -&gt; <a class="primitive" href="../primitive.pointer/">*const T</a></code></span><span class="out-of-band">
+<a class="srclink" href="https://doc.rust-lang.org/src/core/ptr.rs.html#716-720" title="goto source code" target="_blank">[src]</a></span>
+</h4> <div class="stability"><span class="stab unstable">🔬 This is a nightly-only experimental API. (pointer_methods #43941)</span></div>
+<div class="docblock">
+<p>Calculates the offset from a pointer (convenience for <code>.offset(count as isize)</code>).</p> <p><code>count</code> is in units of T; e.g. a <code>count</code> of 3 represents a pointer offset of <code>3 * size_of::&lt;T&gt;()</code> bytes.</p> <h4 id="safety-3" class="section-header">Safety</h4> <p>If any of the following conditions are violated, the result is Undefined Behavior:</p> <ul> <li><p>Both the starting and resulting pointer must be either in bounds or one byte past the end of an allocated object.</p></li> <li><p>The computed offset, <strong>in bytes</strong>, cannot overflow or underflow an <code>isize</code>.</p></li> <li><p>The offset being in bounds cannot rely on "wrapping around" the address space. That is, the infinite-precision sum must fit in a <code>usize</code>.</p></li> </ul> <p>The compiler and standard library generally tries to ensure allocations never reach a size where an offset is a concern. For instance, <code>Vec</code> and <code>Box</code> ensure they never allocate more than <code>isize::MAX</code> bytes, so <code>vec.as_ptr().add(vec.len())</code> is always safe.</p> <p>Most platforms fundamentally can't even construct such an allocation. For instance, no known 64-bit platform can ever serve a request for 2<sup>63</sup> bytes due to page-table limitations or splitting the address space. However, some 32-bit and 16-bit platforms may successfully serve a request for more than <code>isize::MAX</code> bytes with things like Physical Address Extension. As such, memory acquired directly from allocators or memory mapped files <em>may</em> be too large to handle with this function.</p> <p>Consider using <code>wrapping_offset</code> instead if these constraints are difficult to satisfy. The only advantage of this method is that it enables more aggressive compiler optimizations.</p> <h4 id="examples-5" class="section-header">Examples</h4> <p>Basic usage:</p> <pre class="rust rust-example-rendered" data-language="rust">
+#![feature(pointer_methods)]
+
+let s: &amp;str = "123";
+let ptr: *const u8 = s.as_ptr();
+
+unsafe {
+    println!("{}", *ptr.add(1) as char);
+    println!("{}", *ptr.add(2) as char);
+}</pre> </div>
+<h4 id="method.sub" class="method">
+<span id="sub.v" class="invisible"><code>unsafe fn <a href="#method.sub" class="fnname">sub</a>(self, count: <a class="primitive" href="../primitive.usize/">usize</a>) -&gt; <a class="primitive" href="../primitive.pointer/">*const T</a></code></span><span class="out-of-band">
+<a class="srclink" href="https://doc.rust-lang.org/src/core/ptr.rs.html#775-779" title="goto source code" target="_blank">[src]</a></span>
+</h4> <div class="stability"><span class="stab unstable">🔬 This is a nightly-only experimental API. (pointer_methods #43941)</span></div>
+<div class="docblock">
+<p>Calculates the offset from a pointer (convenience for <code>.offset((count as isize).wrapping_neg())</code>).</p> <p><code>count</code> is in units of T; e.g. a <code>count</code> of 3 represents a pointer offset of <code>3 * size_of::&lt;T&gt;()</code> bytes.</p> <h4 id="safety-4" class="section-header">Safety</h4> <p>If any of the following conditions are violated, the result is Undefined Behavior:</p> <ul> <li><p>Both the starting and resulting pointer must be either in bounds or one byte past the end of an allocated object.</p></li> <li><p>The computed offset cannot exceed <code>isize::MAX</code> <strong>bytes</strong>.</p></li> <li><p>The offset being in bounds cannot rely on "wrapping around" the address space. That is, the infinite-precision sum must fit in a usize.</p></li> </ul> <p>The compiler and standard library generally tries to ensure allocations never reach a size where an offset is a concern. For instance, <code>Vec</code> and <code>Box</code> ensure they never allocate more than <code>isize::MAX</code> bytes, so <code>vec.as_ptr().add(vec.len()).sub(vec.len())</code> is always safe.</p> <p>Most platforms fundamentally can't even construct such an allocation. For instance, no known 64-bit platform can ever serve a request for 2<sup>63</sup> bytes due to page-table limitations or splitting the address space. However, some 32-bit and 16-bit platforms may successfully serve a request for more than <code>isize::MAX</code> bytes with things like Physical Address Extension. As such, memory acquired directly from allocators or memory mapped files <em>may</em> be too large to handle with this function.</p> <p>Consider using <code>wrapping_offset</code> instead if these constraints are difficult to satisfy. The only advantage of this method is that it enables more aggressive compiler optimizations.</p> <h4 id="examples-6" class="section-header">Examples</h4> <p>Basic usage:</p> <pre class="rust rust-example-rendered" data-language="rust">
+#![feature(pointer_methods)]
+
+let s: &amp;str = "123";
+
+unsafe {
+    let end: *const u8 = s.as_ptr().add(3);
+    println!("{}", *end.sub(1) as char);
+    println!("{}", *end.sub(2) as char);
+}</pre> </div>
+<h4 id="method.wrapping_add" class="method">
+<span id="wrapping_add.v" class="invisible"><code>fn <a href="#method.wrapping_add" class="fnname">wrapping_add</a>(self, count: <a class="primitive" href="../primitive.usize/">usize</a>) -&gt; <a class="primitive" href="../primitive.pointer/">*const T</a></code></span><span class="out-of-band">
+<a class="srclink" href="https://doc.rust-lang.org/src/core/ptr.rs.html#818-822" title="goto source code" target="_blank">[src]</a></span>
+</h4> <div class="stability"><span class="stab unstable">🔬 This is a nightly-only experimental API. (pointer_methods #43941)</span></div>
+<div class="docblock">
+<p>Calculates the offset from a pointer using wrapping arithmetic. (convenience for <code>.wrapping_offset(count as isize)</code>)</p> <p><code>count</code> is in units of T; e.g. a <code>count</code> of 3 represents a pointer offset of <code>3 * size_of::&lt;T&gt;()</code> bytes.</p> <h4 id="safety-5" class="section-header">Safety</h4> <p>The resulting pointer does not need to be in bounds, but it is potentially hazardous to dereference (which requires <code>unsafe</code>).</p> <p>Always use <code>.add(count)</code> instead when possible, because <code>add</code> allows the compiler to optimize better.</p> <h4 id="examples-7" class="section-header">Examples</h4> <p>Basic usage:</p> <pre class="rust rust-example-rendered" data-language="rust">
+#![feature(pointer_methods)]
+
+// Iterate using a raw pointer in increments of two elements
+let data = [1u8, 2, 3, 4, 5];
+let mut ptr: *const u8 = data.as_ptr();
+let step = 2;
+let end_rounded_up = ptr.wrapping_add(6);
+
+// This loop prints "1, 3, 5, "
+while ptr != end_rounded_up {
+    unsafe {
+        print!("{}, ", *ptr);
+    }
+    ptr = ptr.wrapping_add(step);
+}</pre> </div>
+<h4 id="method.wrapping_sub" class="method">
+<span id="wrapping_sub.v" class="invisible"><code>fn <a href="#method.wrapping_sub" class="fnname">wrapping_sub</a>(self, count: <a class="primitive" href="../primitive.usize/">usize</a>) -&gt; <a class="primitive" href="../primitive.pointer/">*const T</a></code></span><span class="out-of-band">
+<a class="srclink" href="https://doc.rust-lang.org/src/core/ptr.rs.html#861-865" title="goto source code" target="_blank">[src]</a></span>
+</h4> <div class="stability"><span class="stab unstable">🔬 This is a nightly-only experimental API. (pointer_methods #43941)</span></div>
+<div class="docblock">
+<p>Calculates the offset from a pointer using wrapping arithmetic. (convenience for <code>.wrapping_offset((count as isize).wrapping_sub())</code>)</p> <p><code>count</code> is in units of T; e.g. a <code>count</code> of 3 represents a pointer offset of <code>3 * size_of::&lt;T&gt;()</code> bytes.</p> <h4 id="safety-6" class="section-header">Safety</h4> <p>The resulting pointer does not need to be in bounds, but it is potentially hazardous to dereference (which requires <code>unsafe</code>).</p> <p>Always use <code>.sub(count)</code> instead when possible, because <code>sub</code> allows the compiler to optimize better.</p> <h4 id="examples-8" class="section-header">Examples</h4> <p>Basic usage:</p> <pre class="rust rust-example-rendered" data-language="rust">
+#![feature(pointer_methods)]
+
+// Iterate using a raw pointer in increments of two elements (backwards)
+let data = [1u8, 2, 3, 4, 5];
+let mut ptr: *const u8 = data.as_ptr();
+let start_rounded_down = ptr.wrapping_sub(2);
+ptr = ptr.wrapping_add(4);
+let step = 2;
+// This loop prints "5, 3, 1, "
+while ptr != start_rounded_down {
+    unsafe {
+        print!("{}, ", *ptr);
+    }
+    ptr = ptr.wrapping_sub(step);
+}</pre> </div>
+<h4 id="method.read" class="method">
+<span id="read.v" class="invisible"><code>unsafe fn <a href="#method.read" class="fnname">read</a>(self) -&gt; T</code></span><span class="out-of-band">
+<a class="srclink" href="https://doc.rust-lang.org/src/core/ptr.rs.html#897-901" title="goto source code" target="_blank">[src]</a></span>
+</h4> <div class="stability"><span class="stab unstable">🔬 This is a nightly-only experimental API. (pointer_methods #43941)</span></div>
+<div class="docblock">
+<p>Reads the value from <code>self</code> without moving it. This leaves the memory in <code>self</code> unchanged.</p> <h4 id="safety-7" class="section-header">Safety</h4> <p>Beyond accepting a raw pointer, this is unsafe because it semantically moves the value out of <code>self</code> without preventing further usage of <code>self</code>. If <code>T</code> is not <code>Copy</code>, then care must be taken to ensure that the value at <code>self</code> is not used before the data is overwritten again (e.g. with <code>write</code>, <code>write_bytes</code>, or <code>copy</code>). Note that <code>*self = foo</code> counts as a use because it will attempt to drop the value previously at <code>*self</code>.</p> <p>The pointer must be aligned; use <code>read_unaligned</code> if that is not the case.</p> <h4 id="examples-9" class="section-header">Examples</h4> <p>Basic usage:</p> <pre class="rust rust-example-rendered" data-language="rust">
+#![feature(pointer_methods)]
+
+let x = 12;
+let y = &amp;x as *const i32;
+
+unsafe {
+    assert_eq!(y.read(), 12);
+}</pre> </div>
+<h4 id="method.read_volatile" class="method">
+<span id="read_volatile.v" class="invisible"><code>unsafe fn <a href="#method.read_volatile" class="fnname">read_volatile</a>(self) -&gt; T</code></span><span class="out-of-band">
+<a class="srclink" href="https://doc.rust-lang.org/src/core/ptr.rs.html#949-953" title="goto source code" target="_blank">[src]</a></span>
+</h4> <div class="stability"><span class="stab unstable">🔬 This is a nightly-only experimental API. (pointer_methods #43941)</span></div>
+<div class="docblock">
+<p>Performs a volatile read of the value from <code>self</code> without moving it. This leaves the memory in <code>self</code> unchanged.</p> <p>Volatile operations are intended to act on I/O memory, and are guaranteed to not be elided or reordered by the compiler across other volatile operations.</p> <h4 id="notes" class="section-header">Notes</h4> <p>Rust does not currently have a rigorously and formally defined memory model, so the precise semantics of what "volatile" means here is subject to change over time. That being said, the semantics will almost always end up pretty similar to <a href="http://www.open-std.org/jtc1/sc22/wg14/www/docs/n1570.pdf" target="_blank">C11's definition of volatile</a>.</p> <p>The compiler shouldn't change the relative order or number of volatile memory operations. However, volatile memory operations on zero-sized types (e.g. if a zero-sized type is passed to <code>read_volatile</code>) are no-ops and may be ignored.</p> <h4 id="safety-8" class="section-header">Safety</h4> <p>Beyond accepting a raw pointer, this is unsafe because it semantically moves the value out of <code>self</code> without preventing further usage of <code>self</code>. If <code>T</code> is not <code>Copy</code>, then care must be taken to ensure that the value at <code>self</code> is not used before the data is overwritten again (e.g. with <code>write</code>, <code>write_bytes</code>, or <code>copy</code>). Note that <code>*self = foo</code> counts as a use because it will attempt to drop the value previously at <code>*self</code>.</p> <h4 id="examples-10" class="section-header">Examples</h4> <p>Basic usage:</p> <pre class="rust rust-example-rendered" data-language="rust">
+#![feature(pointer_methods)]
+
+let x = 12;
+let y = &amp;x as *const i32;
+
+unsafe {
+    assert_eq!(y.read_volatile(), 12);
+}</pre> </div>
+<h4 id="method.read_unaligned" class="method">
+<span id="read_unaligned.v" class="invisible"><code>unsafe fn <a href="#method.read_unaligned" class="fnname">read_unaligned</a>(self) -&gt; T</code></span><span class="out-of-band">
+<a class="srclink" href="https://doc.rust-lang.org/src/core/ptr.rs.html#985-989" title="goto source code" target="_blank">[src]</a></span>
+</h4> <div class="stability"><span class="stab unstable">🔬 This is a nightly-only experimental API. (pointer_methods #43941)</span></div>
+<div class="docblock">
+<p>Reads the value from <code>self</code> without moving it. This leaves the memory in <code>self</code> unchanged.</p> <p>Unlike <code>read</code>, the pointer may be unaligned.</p> <h4 id="safety-9" class="section-header">Safety</h4> <p>Beyond accepting a raw pointer, this is unsafe because it semantically moves the value out of <code>self</code> without preventing further usage of <code>self</code>. If <code>T</code> is not <code>Copy</code>, then care must be taken to ensure that the value at <code>self</code> is not used before the data is overwritten again (e.g. with <code>write</code>, <code>write_bytes</code>, or <code>copy</code>). Note that <code>*self = foo</code> counts as a use because it will attempt to drop the value previously at <code>*self</code>.</p> <h4 id="examples-11" class="section-header">Examples</h4> <p>Basic usage:</p> <pre class="rust rust-example-rendered" data-language="rust">
+#![feature(pointer_methods)]
+
+let x = 12;
+let y = &amp;x as *const i32;
+
+unsafe {
+    assert_eq!(y.read_unaligned(), 12);
+}</pre> </div>
+<h4 id="method.copy_to" class="method">
+<span id="copy_to.v" class="invisible"><code>unsafe fn <a href="#method.copy_to" class="fnname">copy_to</a>(self, dest: <a class="primitive" href="../primitive.pointer/">*mut T</a>, count: <a class="primitive" href="../primitive.usize/">usize</a>)</code></span><span class="out-of-band">
+<a class="srclink" href="https://doc.rust-lang.org/src/core/ptr.rs.html#1022-1026" title="goto source code" target="_blank">[src]</a></span>
+</h4> <div class="stability"><span class="stab unstable">🔬 This is a nightly-only experimental API. (pointer_methods #43941)</span></div>
+<div class="docblock">
+<p>Copies <code>count * size_of&lt;T&gt;</code> bytes from <code>self</code> to <code>dest</code>. The source and destination may overlap.</p> <p>NOTE: this has the <em>same</em> argument order as <code>ptr::copy</code>.</p> <p>This is semantically equivalent to C's <code>memmove</code>.</p> <h4 id="safety-10" class="section-header">Safety</h4> <p>Care must be taken with the ownership of <code>self</code> and <code>dest</code>. This method semantically moves the values of <code>self</code> into <code>dest</code>. However it does not drop the contents of <code>self</code>, or prevent the contents of <code>dest</code> from being dropped or used.</p> <h4 id="examples-12" class="section-header">Examples</h4> <p>Efficiently create a Rust vector from an unsafe buffer:</p> <pre class="rust rust-example-rendered" data-language="rust">
+#![feature(pointer_methods)]
+
+unsafe fn from_buf_raw&lt;T: Copy&gt;(ptr: *const T, elts: usize) -&gt; Vec&lt;T&gt; {
+    let mut dst = Vec::with_capacity(elts);
+    dst.set_len(elts);
+    ptr.copy_to(dst.as_mut_ptr(), elts);
+    dst
+}</pre> </div>
+<h4 id="method.copy_to_nonoverlapping" class="method">
+<span id="copy_to_nonoverlapping.v" class="invisible"><code>unsafe fn <a href="#method.copy_to_nonoverlapping" class="fnname">copy_to_nonoverlapping</a>(self, dest: <a class="primitive" href="../primitive.pointer/">*mut T</a>, count: <a class="primitive" href="../primitive.usize/">usize</a>)</code></span><span class="out-of-band">
+<a class="srclink" href="https://doc.rust-lang.org/src/core/ptr.rs.html#1061-1065" title="goto source code" target="_blank">[src]</a></span>
+</h4> <div class="stability"><span class="stab unstable">🔬 This is a nightly-only experimental API. (pointer_methods #43941)</span></div>
+<div class="docblock">
+<p>Copies <code>count * size_of&lt;T&gt;</code> bytes from <code>self</code> to <code>dest</code>. The source and destination may <em>not</em> overlap.</p> <p>NOTE: this has the <em>same</em> argument order as <code>ptr::copy_nonoverlapping</code>.</p> <p><code>copy_nonoverlapping</code> is semantically equivalent to C's <code>memcpy</code>.</p> <h4 id="safety-11" class="section-header">Safety</h4> <p>Beyond requiring that the program must be allowed to access both regions of memory, it is Undefined Behavior for source and destination to overlap. Care must also be taken with the ownership of <code>self</code> and <code>self</code>. This method semantically moves the values of <code>self</code> into <code>dest</code>. However it does not drop the contents of <code>dest</code>, or prevent the contents of <code>self</code> from being dropped or used.</p> <h4 id="examples-13" class="section-header">Examples</h4> <p>Efficiently create a Rust vector from an unsafe buffer:</p> <pre class="rust rust-example-rendered" data-language="rust">
+#![feature(pointer_methods)]
+
+unsafe fn from_buf_raw&lt;T: Copy&gt;(ptr: *const T, elts: usize) -&gt; Vec&lt;T&gt; {
+    let mut dst = Vec::with_capacity(elts);
+    dst.set_len(elts);
+    ptr.copy_to_nonoverlapping(dst.as_mut_ptr(), elts);
+    dst
+}</pre> </div>
+<h4 id="method.align_offset" class="method">
+<span id="align_offset.v" class="invisible"><code>fn <a href="#method.align_offset" class="fnname">align_offset</a>(self, align: <a class="primitive" href="../primitive.usize/">usize</a>) -&gt; <a class="primitive" href="../primitive.usize/">usize</a></code></span><span class="out-of-band">
+<a class="srclink" href="https://doc.rust-lang.org/src/core/ptr.rs.html#1099-1103" title="goto source code" target="_blank">[src]</a></span>
+</h4> <div class="stability"><span class="stab unstable">🔬 This is a nightly-only experimental API. (align_offset #44488)</span></div>
+<div class="docblock">
+<p>Computes the byte offset that needs to be applied in order to make the pointer aligned to <code>align</code>. If it is not possible to align the pointer, the implementation returns <code>usize::max_value()</code>.</p> <p>There are no guarantees whatsover that offsetting the pointer will not overflow or go beyond the allocation that the pointer points into. It is up to the caller to ensure that the returned offset is correct in all terms other than alignment.</p> <h4 id="examples-14" class="section-header">Examples</h4> <p>Accessing adjacent <code>u8</code> as <code>u16</code></p> <pre class="rust rust-example-rendered" data-language="rust">
+let x = [5u8, 6u8, 7u8, 8u8, 9u8];
+let ptr = &amp;x[n] as *const u8;
+let offset = ptr.align_offset(align_of::&lt;u16&gt;());
+if offset &lt; x.len() - n - 1 {
+    let u16_ptr = ptr.offset(offset as isize) as *const u16;
+    assert_ne!(*u16_ptr, 500);
+} else {
+    // while the pointer can be aligned via `offset`, it would point
+    // outside the allocation
+}</pre> </div>
+<h3 id="impl-1" class="impl">
+<span class="in-band"><code>impl&lt;T&gt; <a class="primitive" href="../primitive.pointer/">*mut T</a> <span class="where fmt-newline">where<br>    T: ?<a class="trait" href="../marker/trait.sized/" title="trait std::marker::Sized">Sized</a>, </span></code></span><span class="out-of-band">
+<a class="srclink" href="https://doc.rust-lang.org/src/core/ptr.rs.html#1107-2065" title="goto source code" target="_blank">[src]</a></span>
+</h3> <h4 id="method.is_null-1" class="method">
+<span id="is_null.v-1" class="invisible"><code>fn <a href="#method.is_null-1" class="fnname">is_null</a>(self) -&gt; <a class="primitive" href="../primitive.bool/">bool</a></code></span><span class="out-of-band">
+<a class="srclink" href="https://doc.rust-lang.org/src/core/ptr.rs.html#1121-1123" title="goto source code" target="_blank">[src]</a></span>
+</h4> <div class="docblock">
+<p>Returns <code>true</code> if the pointer is null.</p> <h4 id="examples-15" class="section-header">Examples</h4> <p>Basic usage:</p> <pre class="rust rust-example-rendered" data-language="rust">
+let mut s = [1, 2, 3];
+let ptr: *mut u32 = s.as_mut_ptr();
+assert!(!ptr.is_null());</pre> </div>
+<h4 id="method.as_ref-1" class="method">
+<span id="as_ref.v-1" class="invisible"><code>unsafe fn <a href="#method.as_ref-1" class="fnname">as_ref</a>&lt;'a&gt;(self) -&gt; <a class="enum" href="../option/enum.option/" title="enum std::option::Option">Option</a>&lt;<a class="primitive" href="../primitive.reference/">&amp;'a </a>T&gt;</code></span><span class="out-of-band">
+<div class="since" title="Stable since Rust version 1.9.0">1.9.0</div>
+<a class="srclink" href="https://doc.rust-lang.org/src/core/ptr.rs.html#1153-1161" title="goto source code" target="_blank">[src]</a></span>
+</h4> <div class="docblock">
+<p>Returns <code>None</code> if the pointer is null, or else returns a reference to the value wrapped in <code>Some</code>.</p> <h4 id="safety-12" class="section-header">Safety</h4> <p>While this method and its mutable counterpart are useful for null-safety, it is important to note that this is still an unsafe operation because the returned value could be pointing to invalid memory.</p> <p>Additionally, the lifetime <code>'a</code> returned is arbitrarily chosen and does not necessarily reflect the actual lifetime of the data.</p> <h4 id="examples-16" class="section-header">Examples</h4> <p>Basic usage:</p> <pre class="rust rust-example-rendered" data-language="rust">
+let ptr: *mut u8 = &amp;mut 10u8 as *mut u8;
+
+unsafe {
+    if let Some(val_back) = ptr.as_ref() {
+        println!("We got back the value: {}!", val_back);
+    }
+}</pre> </div>
+<h4 id="method.offset-1" class="method">
+<span id="offset.v-1" class="invisible"><code>unsafe fn <a href="#method.offset-1" class="fnname">offset</a>(self, count: <a class="primitive" href="../primitive.isize/">isize</a>) -&gt; <a class="primitive" href="../primitive.pointer/">*mut T</a></code></span><span class="out-of-band">
+<a class="srclink" href="https://doc.rust-lang.org/src/core/ptr.rs.html#1214-1216" title="goto source code" target="_blank">[src]</a></span>
+</h4> <div class="docblock">
+<p>Calculates the offset from a pointer.</p> <p><code>count</code> is in units of T; e.g. a <code>count</code> of 3 represents a pointer offset of <code>3 * size_of::&lt;T&gt;()</code> bytes.</p> <h4 id="safety-13" class="section-header">Safety</h4> <p>If any of the following conditions are violated, the result is Undefined Behavior:</p> <ul> <li><p>Both the starting and resulting pointer must be either in bounds or one byte past the end of an allocated object.</p></li> <li><p>The computed offset, <strong>in bytes</strong>, cannot overflow or underflow an <code>isize</code>.</p></li> <li><p>The offset being in bounds cannot rely on "wrapping around" the address space. That is, the infinite-precision sum, <strong>in bytes</strong> must fit in a usize.</p></li> </ul> <p>The compiler and standard library generally tries to ensure allocations never reach a size where an offset is a concern. For instance, <code>Vec</code> and <code>Box</code> ensure they never allocate more than <code>isize::MAX</code> bytes, so <code>vec.as_ptr().offset(vec.len() as isize)</code> is always safe.</p> <p>Most platforms fundamentally can't even construct such an allocation. For instance, no known 64-bit platform can ever serve a request for 2<sup>63</sup> bytes due to page-table limitations or splitting the address space. However, some 32-bit and 16-bit platforms may successfully serve a request for more than <code>isize::MAX</code> bytes with things like Physical Address Extension. As such, memory acquired directly from allocators or memory mapped files <em>may</em> be too large to handle with this function.</p> <p>Consider using <code>wrapping_offset</code> instead if these constraints are difficult to satisfy. The only advantage of this method is that it enables more aggressive compiler optimizations.</p> <h4 id="examples-17" class="section-header">Examples</h4> <p>Basic usage:</p> <pre class="rust rust-example-rendered" data-language="rust">
+let mut s = [1, 2, 3];
+let ptr: *mut u32 = s.as_mut_ptr();
+
+unsafe {
+    println!("{}", *ptr.offset(1));
+    println!("{}", *ptr.offset(2));
+}</pre> </div>
+<h4 id="method.wrapping_offset-1" class="method">
+<span id="wrapping_offset.v-1" class="invisible"><code>fn <a href="#method.wrapping_offset-1" class="fnname">wrapping_offset</a>(self, count: <a class="primitive" href="../primitive.isize/">isize</a>) -&gt; <a class="primitive" href="../primitive.pointer/">*mut T</a></code></span><span class="out-of-band">
+<div class="since" title="Stable since Rust version 1.16.0">1.16.0</div>
+<a class="srclink" href="https://doc.rust-lang.org/src/core/ptr.rs.html#1251-1255" title="goto source code" target="_blank">[src]</a></span>
+</h4> <div class="docblock">
+<p>Calculates the offset from a pointer using wrapping arithmetic. <code>count</code> is in units of T; e.g. a <code>count</code> of 3 represents a pointer offset of <code>3 * size_of::&lt;T&gt;()</code> bytes.</p> <h4 id="safety-14" class="section-header">Safety</h4> <p>The resulting pointer does not need to be in bounds, but it is potentially hazardous to dereference (which requires <code>unsafe</code>).</p> <p>Always use <code>.offset(count)</code> instead when possible, because <code>offset</code> allows the compiler to optimize better.</p> <h4 id="examples-18" class="section-header">Examples</h4> <p>Basic usage:</p> <pre class="rust rust-example-rendered" data-language="rust">
+// Iterate using a raw pointer in increments of two elements
+let mut data = [1u8, 2, 3, 4, 5];
+let mut ptr: *mut u8 = data.as_mut_ptr();
+let step = 2;
+let end_rounded_up = ptr.wrapping_offset(6);
+
+while ptr != end_rounded_up {
+    unsafe {
+        *ptr = 0;
+    }
+    ptr = ptr.wrapping_offset(step);
+}
+assert_eq!(&amp;data, &amp;[0, 2, 0, 4, 0]);</pre> </div>
+<h4 id="method.as_mut" class="method">
+<span id="as_mut.v" class="invisible"><code>unsafe fn <a href="#method.as_mut" class="fnname">as_mut</a>&lt;'a&gt;(self) -&gt; <a class="enum" href="../option/enum.option/" title="enum std::option::Option">Option</a>&lt;<a class="primitive" href="../primitive.reference/">&amp;'a mut </a>T&gt;</code></span><span class="out-of-band">
+<div class="since" title="Stable since Rust version 1.9.0">1.9.0</div>
+<a class="srclink" href="https://doc.rust-lang.org/src/core/ptr.rs.html#1279-1287" title="goto source code" target="_blank">[src]</a></span>
+</h4> <div class="docblock">
+<p>Returns <code>None</code> if the pointer is null, or else returns a mutable reference to the value wrapped in <code>Some</code>.</p> <h4 id="safety-15" class="section-header">Safety</h4> <p>As with <code>as_ref</code>, this is unsafe because it cannot verify the validity of the returned pointer, nor can it ensure that the lifetime <code>'a</code> returned is indeed a valid lifetime for the contained data.</p> <h4 id="examples-19" class="section-header">Examples</h4> <p>Basic usage:</p> <pre class="rust rust-example-rendered" data-language="rust">
+let mut s = [1, 2, 3];
+let ptr: *mut u32 = s.as_mut_ptr();
+let first_value = unsafe { ptr.as_mut().unwrap() };
+*first_value = 4;
+println!("{:?}", s); // It'll print: "[4, 2, 3]".</pre> </div>
+<h4 id="method.offset_to-1" class="method">
+<span id="offset_to.v-1" class="invisible"><code>fn <a href="#method.offset_to-1" class="fnname">offset_to</a>(self, other: <a class="primitive" href="../primitive.pointer/">*const T</a>) -&gt; <a class="enum" href="../option/enum.option/" title="enum std::option::Option">Option</a>&lt;<a class="primitive" href="../primitive.isize/">isize</a>&gt;</code></span><span class="out-of-band">
+<a class="srclink" href="https://doc.rust-lang.org/src/core/ptr.rs.html#1317-1325" title="goto source code" target="_blank">[src]</a></span>
+</h4> <div class="stability"><span class="stab unstable">🔬 This is a nightly-only experimental API. (offset_to #41079)</span></div>
+<div class="docblock">
+<p>Calculates the distance between two pointers. The returned value is in units of T: the distance in bytes is divided by <code>mem::size_of::&lt;T&gt;()</code>.</p> <p>If the address different between the two pointers ia not a multiple of <code>mem::size_of::&lt;T&gt;()</code> then the result of the division is rounded towards zero.</p> <p>This function returns <code>None</code> if <code>T</code> is a zero-sized typed.</p> <h4 id="examples-20" class="section-header">Examples</h4> <p>Basic usage:</p> <pre class="rust rust-example-rendered" data-language="rust">
+#![feature(offset_to)]
+
+fn main() {
+    let mut a = [0; 5];
+    let ptr1: *mut i32 = &amp;mut a[1];
+    let ptr2: *mut i32 = &amp;mut a[3];
+    assert_eq!(ptr1.offset_to(ptr2), Some(2));
+    assert_eq!(ptr2.offset_to(ptr1), Some(-2));
+    assert_eq!(unsafe { ptr1.offset(2) }, ptr2);
+    assert_eq!(unsafe { ptr2.offset(-2) }, ptr1);
+}</pre> </div>
+<h4 id="method.align_offset-1" class="method">
+<span id="align_offset.v-1" class="invisible"><code>fn <a href="#method.align_offset-1" class="fnname">align_offset</a>(self, align: <a class="primitive" href="../primitive.usize/">usize</a>) -&gt; <a class="primitive" href="../primitive.usize/">usize</a></code></span><span class="out-of-band">
+<a class="srclink" href="https://doc.rust-lang.org/src/core/ptr.rs.html#1359-1363" title="goto source code" target="_blank">[src]</a></span>
+</h4> <div class="stability"><span class="stab unstable">🔬 This is a nightly-only experimental API. (align_offset #44488)</span></div>
+<div class="docblock">
+<p>Computes the byte offset that needs to be applied in order to make the pointer aligned to <code>align</code>. If it is not possible to align the pointer, the implementation returns <code>usize::max_value()</code>.</p> <p>There are no guarantees whatsover that offsetting the pointer will not overflow or go beyond the allocation that the pointer points into. It is up to the caller to ensure that the returned offset is correct in all terms other than alignment.</p> <h4 id="examples-21" class="section-header">Examples</h4> <p>Accessing adjacent <code>u8</code> as <code>u16</code></p> <pre class="rust rust-example-rendered" data-language="rust">
+let x = [5u8, 6u8, 7u8, 8u8, 9u8];
+let ptr = &amp;x[n] as *const u8;
+let offset = ptr.align_offset(align_of::&lt;u16&gt;());
+if offset &lt; x.len() - n - 1 {
+    let u16_ptr = ptr.offset(offset as isize) as *const u16;
+    assert_ne!(*u16_ptr, 500);
+} else {
+    // while the pointer can be aligned via `offset`, it would point
+    // outside the allocation
+}</pre> </div>
+<h4 id="method.add-1" class="method">
+<span id="add.v-1" class="invisible"><code>unsafe fn <a href="#method.add-1" class="fnname">add</a>(self, count: <a class="primitive" href="../primitive.usize/">usize</a>) -&gt; <a class="primitive" href="../primitive.pointer/">*mut T</a></code></span><span class="out-of-band">
+<a class="srclink" href="https://doc.rust-lang.org/src/core/ptr.rs.html#1418-1422" title="goto source code" target="_blank">[src]</a></span>
+</h4> <div class="stability"><span class="stab unstable">🔬 This is a nightly-only experimental API. (pointer_methods #43941)</span></div>
+<div class="docblock">
+<p>Calculates the offset from a pointer (convenience for <code>.offset(count as isize)</code>).</p> <p><code>count</code> is in units of T; e.g. a <code>count</code> of 3 represents a pointer offset of <code>3 * size_of::&lt;T&gt;()</code> bytes.</p> <h4 id="safety-16" class="section-header">Safety</h4> <p>If any of the following conditions are violated, the result is Undefined Behavior:</p> <ul> <li><p>Both the starting and resulting pointer must be either in bounds or one byte past the end of an allocated object.</p></li> <li><p>The computed offset, <strong>in bytes</strong>, cannot overflow or underflow an <code>isize</code>.</p></li> <li><p>The offset being in bounds cannot rely on "wrapping around" the address space. That is, the infinite-precision sum must fit in a <code>usize</code>.</p></li> </ul> <p>The compiler and standard library generally tries to ensure allocations never reach a size where an offset is a concern. For instance, <code>Vec</code> and <code>Box</code> ensure they never allocate more than <code>isize::MAX</code> bytes, so <code>vec.as_ptr().add(vec.len())</code> is always safe.</p> <p>Most platforms fundamentally can't even construct such an allocation. For instance, no known 64-bit platform can ever serve a request for 2<sup>63</sup> bytes due to page-table limitations or splitting the address space. However, some 32-bit and 16-bit platforms may successfully serve a request for more than <code>isize::MAX</code> bytes with things like Physical Address Extension. As such, memory acquired directly from allocators or memory mapped files <em>may</em> be too large to handle with this function.</p> <p>Consider using <code>wrapping_offset</code> instead if these constraints are difficult to satisfy. The only advantage of this method is that it enables more aggressive compiler optimizations.</p> <h4 id="examples-22" class="section-header">Examples</h4> <p>Basic usage:</p> <pre class="rust rust-example-rendered" data-language="rust">
+#![feature(pointer_methods)]
+
+let s: &amp;str = "123";
+let ptr: *const u8 = s.as_ptr();
+
+unsafe {
+    println!("{}", *ptr.add(1) as char);
+    println!("{}", *ptr.add(2) as char);
+}</pre> </div>
+<h4 id="method.sub-1" class="method">
+<span id="sub.v-1" class="invisible"><code>unsafe fn <a href="#method.sub-1" class="fnname">sub</a>(self, count: <a class="primitive" href="../primitive.usize/">usize</a>) -&gt; <a class="primitive" href="../primitive.pointer/">*mut T</a></code></span><span class="out-of-band">
+<a class="srclink" href="https://doc.rust-lang.org/src/core/ptr.rs.html#1477-1481" title="goto source code" target="_blank">[src]</a></span>
+</h4> <div class="stability"><span class="stab unstable">🔬 This is a nightly-only experimental API. (pointer_methods #43941)</span></div>
+<div class="docblock">
+<p>Calculates the offset from a pointer (convenience for <code>.offset((count as isize).wrapping_neg())</code>).</p> <p><code>count</code> is in units of T; e.g. a <code>count</code> of 3 represents a pointer offset of <code>3 * size_of::&lt;T&gt;()</code> bytes.</p> <h4 id="safety-17" class="section-header">Safety</h4> <p>If any of the following conditions are violated, the result is Undefined Behavior:</p> <ul> <li><p>Both the starting and resulting pointer must be either in bounds or one byte past the end of an allocated object.</p></li> <li><p>The computed offset cannot exceed <code>isize::MAX</code> <strong>bytes</strong>.</p></li> <li><p>The offset being in bounds cannot rely on "wrapping around" the address space. That is, the infinite-precision sum must fit in a usize.</p></li> </ul> <p>The compiler and standard library generally tries to ensure allocations never reach a size where an offset is a concern. For instance, <code>Vec</code> and <code>Box</code> ensure they never allocate more than <code>isize::MAX</code> bytes, so <code>vec.as_ptr().add(vec.len()).sub(vec.len())</code> is always safe.</p> <p>Most platforms fundamentally can't even construct such an allocation. For instance, no known 64-bit platform can ever serve a request for 2<sup>63</sup> bytes due to page-table limitations or splitting the address space. However, some 32-bit and 16-bit platforms may successfully serve a request for more than <code>isize::MAX</code> bytes with things like Physical Address Extension. As such, memory acquired directly from allocators or memory mapped files <em>may</em> be too large to handle with this function.</p> <p>Consider using <code>wrapping_offset</code> instead if these constraints are difficult to satisfy. The only advantage of this method is that it enables more aggressive compiler optimizations.</p> <h4 id="examples-23" class="section-header">Examples</h4> <p>Basic usage:</p> <pre class="rust rust-example-rendered" data-language="rust">
+#![feature(pointer_methods)]
+
+let s: &amp;str = "123";
+
+unsafe {
+    let end: *const u8 = s.as_ptr().add(3);
+    println!("{}", *end.sub(1) as char);
+    println!("{}", *end.sub(2) as char);
+}</pre> </div>
+<h4 id="method.wrapping_add-1" class="method">
+<span id="wrapping_add.v-1" class="invisible"><code>fn <a href="#method.wrapping_add-1" class="fnname">wrapping_add</a>(self, count: <a class="primitive" href="../primitive.usize/">usize</a>) -&gt; <a class="primitive" href="../primitive.pointer/">*mut T</a></code></span><span class="out-of-band">
+<a class="srclink" href="https://doc.rust-lang.org/src/core/ptr.rs.html#1520-1524" title="goto source code" target="_blank">[src]</a></span>
+</h4> <div class="stability"><span class="stab unstable">🔬 This is a nightly-only experimental API. (pointer_methods #43941)</span></div>
+<div class="docblock">
+<p>Calculates the offset from a pointer using wrapping arithmetic. (convenience for <code>.wrapping_offset(count as isize)</code>)</p> <p><code>count</code> is in units of T; e.g. a <code>count</code> of 3 represents a pointer offset of <code>3 * size_of::&lt;T&gt;()</code> bytes.</p> <h4 id="safety-18" class="section-header">Safety</h4> <p>The resulting pointer does not need to be in bounds, but it is potentially hazardous to dereference (which requires <code>unsafe</code>).</p> <p>Always use <code>.add(count)</code> instead when possible, because <code>add</code> allows the compiler to optimize better.</p> <h4 id="examples-24" class="section-header">Examples</h4> <p>Basic usage:</p> <pre class="rust rust-example-rendered" data-language="rust">
+#![feature(pointer_methods)]
+
+// Iterate using a raw pointer in increments of two elements
+let data = [1u8, 2, 3, 4, 5];
+let mut ptr: *const u8 = data.as_ptr();
+let step = 2;
+let end_rounded_up = ptr.wrapping_add(6);
+
+// This loop prints "1, 3, 5, "
+while ptr != end_rounded_up {
+    unsafe {
+        print!("{}, ", *ptr);
+    }
+    ptr = ptr.wrapping_add(step);
+}</pre> </div>
+<h4 id="method.wrapping_sub-1" class="method">
+<span id="wrapping_sub.v-1" class="invisible"><code>fn <a href="#method.wrapping_sub-1" class="fnname">wrapping_sub</a>(self, count: <a class="primitive" href="../primitive.usize/">usize</a>) -&gt; <a class="primitive" href="../primitive.pointer/">*mut T</a></code></span><span class="out-of-band">
+<a class="srclink" href="https://doc.rust-lang.org/src/core/ptr.rs.html#1563-1567" title="goto source code" target="_blank">[src]</a></span>
+</h4> <div class="stability"><span class="stab unstable">🔬 This is a nightly-only experimental API. (pointer_methods #43941)</span></div>
+<div class="docblock">
+<p>Calculates the offset from a pointer using wrapping arithmetic. (convenience for <code>.wrapping_offset((count as isize).wrapping_sub())</code>)</p> <p><code>count</code> is in units of T; e.g. a <code>count</code> of 3 represents a pointer offset of <code>3 * size_of::&lt;T&gt;()</code> bytes.</p> <h4 id="safety-19" class="section-header">Safety</h4> <p>The resulting pointer does not need to be in bounds, but it is potentially hazardous to dereference (which requires <code>unsafe</code>).</p> <p>Always use <code>.sub(count)</code> instead when possible, because <code>sub</code> allows the compiler to optimize better.</p> <h4 id="examples-25" class="section-header">Examples</h4> <p>Basic usage:</p> <pre class="rust rust-example-rendered" data-language="rust">
+#![feature(pointer_methods)]
+
+// Iterate using a raw pointer in increments of two elements (backwards)
+let data = [1u8, 2, 3, 4, 5];
+let mut ptr: *const u8 = data.as_ptr();
+let start_rounded_down = ptr.wrapping_sub(2);
+ptr = ptr.wrapping_add(4);
+let step = 2;
+// This loop prints "5, 3, 1, "
+while ptr != start_rounded_down {
+    unsafe {
+        print!("{}, ", *ptr);
+    }
+    ptr = ptr.wrapping_sub(step);
+}</pre> </div>
+<h4 id="method.read-1" class="method">
+<span id="read.v-1" class="invisible"><code>unsafe fn <a href="#method.read-1" class="fnname">read</a>(self) -&gt; T</code></span><span class="out-of-band">
+<a class="srclink" href="https://doc.rust-lang.org/src/core/ptr.rs.html#1599-1603" title="goto source code" target="_blank">[src]</a></span>
+</h4> <div class="stability"><span class="stab unstable">🔬 This is a nightly-only experimental API. (pointer_methods #43941)</span></div>
+<div class="docblock">
+<p>Reads the value from <code>self</code> without moving it. This leaves the memory in <code>self</code> unchanged.</p> <h4 id="safety-20" class="section-header">Safety</h4> <p>Beyond accepting a raw pointer, this is unsafe because it semantically moves the value out of <code>self</code> without preventing further usage of <code>self</code>. If <code>T</code> is not <code>Copy</code>, then care must be taken to ensure that the value at <code>self</code> is not used before the data is overwritten again (e.g. with <code>write</code>, <code>write_bytes</code>, or <code>copy</code>). Note that <code>*self = foo</code> counts as a use because it will attempt to drop the value previously at <code>*self</code>.</p> <p>The pointer must be aligned; use <code>read_unaligned</code> if that is not the case.</p> <h4 id="examples-26" class="section-header">Examples</h4> <p>Basic usage:</p> <pre class="rust rust-example-rendered" data-language="rust">
+#![feature(pointer_methods)]
+
+let x = 12;
+let y = &amp;x as *const i32;
+
+unsafe {
+    assert_eq!(y.read(), 12);
+}</pre> </div>
+<h4 id="method.read_volatile-1" class="method">
+<span id="read_volatile.v-1" class="invisible"><code>unsafe fn <a href="#method.read_volatile-1" class="fnname">read_volatile</a>(self) -&gt; T</code></span><span class="out-of-band">
+<a class="srclink" href="https://doc.rust-lang.org/src/core/ptr.rs.html#1651-1655" title="goto source code" target="_blank">[src]</a></span>
+</h4> <div class="stability"><span class="stab unstable">🔬 This is a nightly-only experimental API. (pointer_methods #43941)</span></div>
+<div class="docblock">
+<p>Performs a volatile read of the value from <code>self</code> without moving it. This leaves the memory in <code>self</code> unchanged.</p> <p>Volatile operations are intended to act on I/O memory, and are guaranteed to not be elided or reordered by the compiler across other volatile operations.</p> <h4 id="notes-1" class="section-header">Notes</h4> <p>Rust does not currently have a rigorously and formally defined memory model, so the precise semantics of what "volatile" means here is subject to change over time. That being said, the semantics will almost always end up pretty similar to <a href="http://www.open-std.org/jtc1/sc22/wg14/www/docs/n1570.pdf" target="_blank">C11's definition of volatile</a>.</p> <p>The compiler shouldn't change the relative order or number of volatile memory operations. However, volatile memory operations on zero-sized types (e.g. if a zero-sized type is passed to <code>read_volatile</code>) are no-ops and may be ignored.</p> <h4 id="safety-21" class="section-header">Safety</h4> <p>Beyond accepting a raw pointer, this is unsafe because it semantically moves the value out of <code>self</code> without preventing further usage of <code>self</code>. If <code>T</code> is not <code>Copy</code>, then care must be taken to ensure that the value at <code>src</code> is not used before the data is overwritten again (e.g. with <code>write</code>, <code>write_bytes</code>, or <code>copy</code>). Note that <code>*self = foo</code> counts as a use because it will attempt to drop the value previously at <code>*self</code>.</p> <h4 id="examples-27" class="section-header">Examples</h4> <p>Basic usage:</p> <pre class="rust rust-example-rendered" data-language="rust">
+#![feature(pointer_methods)]
+
+let x = 12;
+let y = &amp;x as *const i32;
+
+unsafe {
+    assert_eq!(y.read_volatile(), 12);
+}</pre> </div>
+<h4 id="method.read_unaligned-1" class="method">
+<span id="read_unaligned.v-1" class="invisible"><code>unsafe fn <a href="#method.read_unaligned-1" class="fnname">read_unaligned</a>(self) -&gt; T</code></span><span class="out-of-band">
+<a class="srclink" href="https://doc.rust-lang.org/src/core/ptr.rs.html#1687-1691" title="goto source code" target="_blank">[src]</a></span>
+</h4> <div class="stability"><span class="stab unstable">🔬 This is a nightly-only experimental API. (pointer_methods #43941)</span></div>
+<div class="docblock">
+<p>Reads the value from <code>self</code> without moving it. This leaves the memory in <code>self</code> unchanged.</p> <p>Unlike <code>read</code>, the pointer may be unaligned.</p> <h4 id="safety-22" class="section-header">Safety</h4> <p>Beyond accepting a raw pointer, this is unsafe because it semantically moves the value out of <code>self</code> without preventing further usage of <code>self</code>. If <code>T</code> is not <code>Copy</code>, then care must be taken to ensure that the value at <code>self</code> is not used before the data is overwritten again (e.g. with <code>write</code>, <code>write_bytes</code>, or <code>copy</code>). Note that <code>*self = foo</code> counts as a use because it will attempt to drop the value previously at <code>*self</code>.</p> <h4 id="examples-28" class="section-header">Examples</h4> <p>Basic usage:</p> <pre class="rust rust-example-rendered" data-language="rust">
+#![feature(pointer_methods)]
+
+let x = 12;
+let y = &amp;x as *const i32;
+
+unsafe {
+    assert_eq!(y.read_unaligned(), 12);
+}</pre> </div>
+<h4 id="method.copy_to-1" class="method">
+<span id="copy_to.v-1" class="invisible"><code>unsafe fn <a href="#method.copy_to-1" class="fnname">copy_to</a>(self, dest: <a class="primitive" href="../primitive.pointer/">*mut T</a>, count: <a class="primitive" href="../primitive.usize/">usize</a>)</code></span><span class="out-of-band">
+<a class="srclink" href="https://doc.rust-lang.org/src/core/ptr.rs.html#1724-1728" title="goto source code" target="_blank">[src]</a></span>
+</h4> <div class="stability"><span class="stab unstable">🔬 This is a nightly-only experimental API. (pointer_methods #43941)</span></div>
+<div class="docblock">
+<p>Copies <code>count * size_of&lt;T&gt;</code> bytes from <code>self</code> to <code>dest</code>. The source and destination may overlap.</p> <p>NOTE: this has the <em>same</em> argument order as <code>ptr::copy</code>.</p> <p>This is semantically equivalent to C's <code>memmove</code>.</p> <h4 id="safety-23" class="section-header">Safety</h4> <p>Care must be taken with the ownership of <code>self</code> and <code>dest</code>. This method semantically moves the values of <code>self</code> into <code>dest</code>. However it does not drop the contents of <code>self</code>, or prevent the contents of <code>dest</code> from being dropped or used.</p> <h4 id="examples-29" class="section-header">Examples</h4> <p>Efficiently create a Rust vector from an unsafe buffer:</p> <pre class="rust rust-example-rendered" data-language="rust">
+#![feature(pointer_methods)]
+
+unsafe fn from_buf_raw&lt;T: Copy&gt;(ptr: *const T, elts: usize) -&gt; Vec&lt;T&gt; {
+    let mut dst = Vec::with_capacity(elts);
+    dst.set_len(elts);
+    ptr.copy_to(dst.as_mut_ptr(), elts);
+    dst
+}</pre> </div>
+<h4 id="method.copy_to_nonoverlapping-1" class="method">
+<span id="copy_to_nonoverlapping.v-1" class="invisible"><code>unsafe fn <a href="#method.copy_to_nonoverlapping-1" class="fnname">copy_to_nonoverlapping</a>(self, dest: <a class="primitive" href="../primitive.pointer/">*mut T</a>, count: <a class="primitive" href="../primitive.usize/">usize</a>)</code></span><span class="out-of-band">
+<a class="srclink" href="https://doc.rust-lang.org/src/core/ptr.rs.html#1763-1767" title="goto source code" target="_blank">[src]</a></span>
+</h4> <div class="stability"><span class="stab unstable">🔬 This is a nightly-only experimental API. (pointer_methods #43941)</span></div>
+<div class="docblock">
+<p>Copies <code>count * size_of&lt;T&gt;</code> bytes from <code>self</code> to <code>dest</code>. The source and destination may <em>not</em> overlap.</p> <p>NOTE: this has the <em>same</em> argument order as <code>ptr::copy_nonoverlapping</code>.</p> <p><code>copy_nonoverlapping</code> is semantically equivalent to C's <code>memcpy</code>.</p> <h4 id="safety-24" class="section-header">Safety</h4> <p>Beyond requiring that the program must be allowed to access both regions of memory, it is Undefined Behavior for source and destination to overlap. Care must also be taken with the ownership of <code>self</code> and <code>self</code>. This method semantically moves the values of <code>self</code> into <code>dest</code>. However it does not drop the contents of <code>dest</code>, or prevent the contents of <code>self</code> from being dropped or used.</p> <h4 id="examples-30" class="section-header">Examples</h4> <p>Efficiently create a Rust vector from an unsafe buffer:</p> <pre class="rust rust-example-rendered" data-language="rust">
+#![feature(pointer_methods)]
+
+unsafe fn from_buf_raw&lt;T: Copy&gt;(ptr: *const T, elts: usize) -&gt; Vec&lt;T&gt; {
+    let mut dst = Vec::with_capacity(elts);
+    dst.set_len(elts);
+    ptr.copy_to_nonoverlapping(dst.as_mut_ptr(), elts);
+    dst
+}</pre> </div>
+<h4 id="method.copy_from" class="method">
+<span id="copy_from.v" class="invisible"><code>unsafe fn <a href="#method.copy_from" class="fnname">copy_from</a>(self, src: <a class="primitive" href="../primitive.pointer/">*const T</a>, count: <a class="primitive" href="../primitive.usize/">usize</a>)</code></span><span class="out-of-band">
+<a class="srclink" href="https://doc.rust-lang.org/src/core/ptr.rs.html#1800-1804" title="goto source code" target="_blank">[src]</a></span>
+</h4> <div class="stability"><span class="stab unstable">🔬 This is a nightly-only experimental API. (pointer_methods #43941)</span></div>
+<div class="docblock">
+<p>Copies <code>count * size_of&lt;T&gt;</code> bytes from <code>src</code> to <code>self</code>. The source and destination may overlap.</p> <p>NOTE: this has the <em>opposite</em> argument order of <code>ptr::copy</code>.</p> <p>This is semantically equivalent to C's <code>memmove</code>.</p> <h4 id="safety-25" class="section-header">Safety</h4> <p>Care must be taken with the ownership of <code>src</code> and <code>self</code>. This method semantically moves the values of <code>src</code> into <code>self</code>. However it does not drop the contents of <code>self</code>, or prevent the contents of <code>src</code> from being dropped or used.</p> <h4 id="examples-31" class="section-header">Examples</h4> <p>Efficiently create a Rust vector from an unsafe buffer:</p> <pre class="rust rust-example-rendered" data-language="rust">
+#![feature(pointer_methods)]
+
+unsafe fn from_buf_raw&lt;T: Copy&gt;(ptr: *const T, elts: usize) -&gt; Vec&lt;T&gt; {
+    let mut dst = Vec::with_capacity(elts);
+    dst.set_len(elts);
+    dst.as_mut_ptr().copy_from(ptr, elts);
+    dst
+}</pre> </div>
+<h4 id="method.copy_from_nonoverlapping" class="method">
+<span id="copy_from_nonoverlapping.v" class="invisible"><code>unsafe fn <a href="#method.copy_from_nonoverlapping" class="fnname">copy_from_nonoverlapping</a>(self, src: <a class="primitive" href="../primitive.pointer/">*const T</a>, count: <a class="primitive" href="../primitive.usize/">usize</a>)</code></span><span class="out-of-band">
+<a class="srclink" href="https://doc.rust-lang.org/src/core/ptr.rs.html#1839-1843" title="goto source code" target="_blank">[src]</a></span>
+</h4> <div class="stability"><span class="stab unstable">🔬 This is a nightly-only experimental API. (pointer_methods #43941)</span></div>
+<div class="docblock">
+<p>Copies <code>count * size_of&lt;T&gt;</code> bytes from <code>src</code> to <code>self</code>. The source and destination may <em>not</em> overlap.</p> <p>NOTE: this has the <em>opposite</em> argument order of <code>ptr::copy_nonoverlapping</code>.</p> <p><code>copy_nonoverlapping</code> is semantically equivalent to C's <code>memcpy</code>.</p> <h4 id="safety-26" class="section-header">Safety</h4> <p>Beyond requiring that the program must be allowed to access both regions of memory, it is Undefined Behavior for source and destination to overlap. Care must also be taken with the ownership of <code>src</code> and <code>self</code>. This method semantically moves the values of <code>src</code> into <code>self</code>. However it does not drop the contents of <code>self</code>, or prevent the contents of <code>src</code> from being dropped or used.</p> <h4 id="examples-32" class="section-header">Examples</h4> <p>Efficiently create a Rust vector from an unsafe buffer:</p> <pre class="rust rust-example-rendered" data-language="rust">
+#![feature(pointer_methods)]
+
+unsafe fn from_buf_raw&lt;T: Copy&gt;(ptr: *const T, elts: usize) -&gt; Vec&lt;T&gt; {
+    let mut dst = Vec::with_capacity(elts);
+    dst.set_len(elts);
+    dst.as_mut_ptr().copy_from_nonoverlapping(ptr, elts);
+    dst
+}</pre> </div>
+<h4 id="method.drop_in_place" class="method">
+<span id="drop_in_place.v" class="invisible"><code>unsafe fn <a href="#method.drop_in_place" class="fnname">drop_in_place</a>(self)</code></span><span class="out-of-band">
+<a class="srclink" href="https://doc.rust-lang.org/src/core/ptr.rs.html#1864-1866" title="goto source code" target="_blank">[src]</a></span>
+</h4> <div class="stability"><span class="stab unstable">🔬 This is a nightly-only experimental API. (pointer_methods #43941)</span></div>
+<div class="docblock">
+<p>Executes the destructor (if any) of the pointed-to value.</p> <p>This has two use cases:</p> <ul> <li><p>It is <em>required</em> to use <code>drop_in_place</code> to drop unsized types like trait objects, because they can't be read out onto the stack and dropped normally.</p></li> <li><p>It is friendlier to the optimizer to do this over <code>ptr::read</code> when dropping manually allocated memory (e.g. when writing Box/Rc/Vec), as the compiler doesn't need to prove that it's sound to elide the copy.</p></li> </ul> <h4 id="safety-27" class="section-header">Safety</h4> <p>This has all the same safety problems as <code>ptr::read</code> with respect to invalid pointers, types, and double drops.</p> </div>
+<h4 id="method.write" class="method">
+<span id="write.v" class="invisible"><code>unsafe fn <a href="#method.write" class="fnname">write</a>(self, val: T)</code></span><span class="out-of-band">
+<a class="srclink" href="https://doc.rust-lang.org/src/core/ptr.rs.html#1905-1909" title="goto source code" target="_blank">[src]</a></span>
+</h4> <div class="stability"><span class="stab unstable">🔬 This is a nightly-only experimental API. (pointer_methods #43941)</span></div>
+<div class="docblock">
+<p>Overwrites a memory location with the given value without reading or dropping the old value.</p> <h4 id="safety-28" class="section-header">Safety</h4> <p>This operation is marked unsafe because it writes through a raw pointer.</p> <p>It does not drop the contents of <code>self</code>. This is safe, but it could leak allocations or resources, so care must be taken not to overwrite an object that should be dropped.</p> <p>Additionally, it does not drop <code>val</code>. Semantically, <code>val</code> is moved into the location pointed to by <code>self</code>.</p> <p>This is appropriate for initializing uninitialized memory, or overwriting memory that has previously been <code>read</code> from.</p> <p>The pointer must be aligned; use <code>write_unaligned</code> if that is not the case.</p> <h4 id="examples-33" class="section-header">Examples</h4> <p>Basic usage:</p> <pre class="rust rust-example-rendered" data-language="rust">
+#![feature(pointer_methods)]
+
+let mut x = 0;
+let y = &amp;mut x as *mut i32;
+let z = 12;
+
+unsafe {
+    y.write(z);
+    assert_eq!(y.read(), 12);
+}</pre> </div>
+<h4 id="method.write_bytes" class="method">
+<span id="write_bytes.v" class="invisible"><code>unsafe fn <a href="#method.write_bytes" class="fnname">write_bytes</a>(self, val: <a class="primitive" href="../primitive.u8/">u8</a>, count: <a class="primitive" href="../primitive.usize/">usize</a>)</code></span><span class="out-of-band">
+<a class="srclink" href="https://doc.rust-lang.org/src/core/ptr.rs.html#1928-1932" title="goto source code" target="_blank">[src]</a></span>
+</h4> <div class="stability"><span class="stab unstable">🔬 This is a nightly-only experimental API. (pointer_methods #43941)</span></div>
+<div class="docblock">
+<p>Invokes memset on the specified pointer, setting <code>count * size_of::&lt;T&gt;()</code> bytes of memory starting at <code>self</code> to <code>val</code>.</p> <h4 id="examples-34" class="section-header">Examples</h4> <pre class="rust rust-example-rendered" data-language="rust">
+#![feature(pointer_methods)]
+
+let mut vec = vec![0; 4];
+unsafe {
+    let vec_ptr = vec.as_mut_ptr();
+    vec_ptr.write_bytes(b'a', 2);
+}
+assert_eq!(vec, [b'a', b'a', 0, 0]);</pre> </div>
+<h4 id="method.write_volatile" class="method">
+<span id="write_volatile.v" class="invisible"><code>unsafe fn <a href="#method.write_volatile" class="fnname">write_volatile</a>(self, val: T)</code></span><span class="out-of-band">
+<a class="srclink" href="https://doc.rust-lang.org/src/core/ptr.rs.html#1984-1988" title="goto source code" target="_blank">[src]</a></span>
+</h4> <div class="stability"><span class="stab unstable">🔬 This is a nightly-only experimental API. (pointer_methods #43941)</span></div>
+<div class="docblock">
+<p>Performs a volatile write of a memory location with the given value without reading or dropping the old value.</p> <p>Volatile operations are intended to act on I/O memory, and are guaranteed to not be elided or reordered by the compiler across other volatile operations.</p> <h4 id="notes-2" class="section-header">Notes</h4> <p>Rust does not currently have a rigorously and formally defined memory model, so the precise semantics of what "volatile" means here is subject to change over time. That being said, the semantics will almost always end up pretty similar to <a href="http://www.open-std.org/jtc1/sc22/wg14/www/docs/n1570.pdf" target="_blank">C11's definition of volatile</a>.</p> <p>The compiler shouldn't change the relative order or number of volatile memory operations. However, volatile memory operations on zero-sized types (e.g. if a zero-sized type is passed to <code>write_volatile</code>) are no-ops and may be ignored.</p> <h4 id="safety-29" class="section-header">Safety</h4> <p>This operation is marked unsafe because it accepts a raw pointer.</p> <p>It does not drop the contents of <code>self</code>. This is safe, but it could leak allocations or resources, so care must be taken not to overwrite an object that should be dropped.</p> <p>This is appropriate for initializing uninitialized memory, or overwriting memory that has previously been <code>read</code> from.</p> <h4 id="examples-35" class="section-header">Examples</h4> <p>Basic usage:</p> <pre class="rust rust-example-rendered" data-language="rust">
+#![feature(pointer_methods)]
+
+let mut x = 0;
+let y = &amp;mut x as *mut i32;
+let z = 12;
+
+unsafe {
+    y.write_volatile(z);
+    assert_eq!(y.read_volatile(), 12);
+}</pre> </div>
+<h4 id="method.write_unaligned" class="method">
+<span id="write_unaligned.v" class="invisible"><code>unsafe fn <a href="#method.write_unaligned" class="fnname">write_unaligned</a>(self, val: T)</code></span><span class="out-of-band">
+<a class="srclink" href="https://doc.rust-lang.org/src/core/ptr.rs.html#2027-2031" title="goto source code" target="_blank">[src]</a></span>
+</h4> <div class="stability"><span class="stab unstable">🔬 This is a nightly-only experimental API. (pointer_methods #43941)</span></div>
+<div class="docblock">
+<p>Overwrites a memory location with the given value without reading or dropping the old value.</p> <p>Unlike <code>write</code>, the pointer may be unaligned.</p> <h4 id="safety-30" class="section-header">Safety</h4> <p>This operation is marked unsafe because it writes through a raw pointer.</p> <p>It does not drop the contents of <code>self</code>. This is safe, but it could leak allocations or resources, so care must be taken not to overwrite an object that should be dropped.</p> <p>Additionally, it does not drop <code>src</code>. Semantically, <code>src</code> is moved into the location pointed to by <code>dst</code>.</p> <p>This is appropriate for initializing uninitialized memory, or overwriting memory that has previously been <code>read</code> from.</p> <h4 id="examples-36" class="section-header">Examples</h4> <p>Basic usage:</p> <pre class="rust rust-example-rendered" data-language="rust">
+#![feature(pointer_methods)]
+
+let mut x = 0;
+let y = &amp;mut x as *mut i32;
+let z = 12;
+
+unsafe {
+    y.write_unaligned(z);
+    assert_eq!(y.read_unaligned(), 12);
+}</pre> </div>
+<h4 id="method.replace" class="method">
+<span id="replace.v" class="invisible"><code>unsafe fn <a href="#method.replace" class="fnname">replace</a>(self, src: T) -&gt; T</code></span><span class="out-of-band">
+<a class="srclink" href="https://doc.rust-lang.org/src/core/ptr.rs.html#2042-2046" title="goto source code" target="_blank">[src]</a></span>
+</h4> <div class="stability"><span class="stab unstable">🔬 This is a nightly-only experimental API. (pointer_methods #43941)</span></div>
+<div class="docblock">
+<p>Replaces the value at <code>self</code> with <code>src</code>, returning the old value, without dropping either.</p> <h4 id="safety-31" class="section-header">Safety</h4> <p>This is only unsafe because it accepts a raw pointer. Otherwise, this operation is identical to <code>mem::replace</code>.</p> </div>
+<h4 id="method.swap" class="method">
+<span id="swap.v" class="invisible"><code>unsafe fn <a href="#method.swap" class="fnname">swap</a>(self, with: <a class="primitive" href="../primitive.pointer/">*mut T</a>)</code></span><span class="out-of-band">
+<a class="srclink" href="https://doc.rust-lang.org/src/core/ptr.rs.html#2060-2064" title="goto source code" target="_blank">[src]</a></span>
+</h4> <div class="stability"><span class="stab unstable">🔬 This is a nightly-only experimental API. (pointer_methods #43941)</span></div>
+<div class="docblock">
+<p>Swaps the values at two mutable locations of the same type, without deinitializing either. They may overlap, unlike <code>mem::swap</code> which is otherwise equivalent.</p> <h4 id="safety-32" class="section-header">Safety</h4> <p>This function copies the memory through the raw pointers passed to it as arguments.</p> <p>Ensure that these pointers are valid before calling <code>swap</code>.</p> </div> <h2 id="implementations" class="small-section-header"> Trait Implementations </h2> <h3 id="impl-PartialOrd%3C*mut%20T%3E" class="impl">
+<span class="in-band"><code>impl&lt;T&gt; <a class="trait" href="../cmp/trait.partialord/" title="trait std::cmp::PartialOrd">PartialOrd</a>&lt;<a class="primitive" href="../primitive.pointer/">*mut T</a>&gt; for <a class="primitive" href="../primitive.pointer/">*mut T</a> <span class="where fmt-newline">where<br>    T: ?<a class="trait" href="../marker/trait.sized/" title="trait std::marker::Sized">Sized</a>, </span></code></span><span class="out-of-band">
+<a class="srclink" href="https://doc.rust-lang.org/src/core/ptr.rs.html#2254-2271" title="goto source code" target="_blank">[src]</a></span>
+</h3> <h4 id="method.partial_cmp" class="method">
+<span id="partial_cmp.v" class="invisible"><code>fn <a href="../cmp/trait.partialord/#tymethod.partial_cmp" class="fnname">partial_cmp</a>(&amp;self, other: &amp;<a class="primitive" href="../primitive.pointer/">*mut T</a>) -&gt; <a class="enum" href="../option/enum.option/" title="enum std::option::Option">Option</a>&lt;<a class="enum" href="../cmp/enum.ordering/" title="enum std::cmp::Ordering">Ordering</a>&gt;</code></span><span class="out-of-band">
+<a class="srclink" href="https://doc.rust-lang.org/src/core/ptr.rs.html#2256-2258" title="goto source code" target="_blank">[src]</a></span>
+</h4> <div class="docblock">
+<p>This method returns an ordering between <code>self</code> and <code>other</code> values if one exists. <a href="../cmp/trait.partialord/#tymethod.partial_cmp">Read more</a></p> </div>
+<h4 id="method.lt" class="method">
+<span id="lt.v" class="invisible"><code>fn <a href="../cmp/trait.partialord/#method.lt" class="fnname">lt</a>(&amp;self, other: &amp;<a class="primitive" href="../primitive.pointer/">*mut T</a>) -&gt; <a class="primitive" href="../primitive.bool/">bool</a></code></span><span class="out-of-band">
+<a class="srclink" href="https://doc.rust-lang.org/src/core/ptr.rs.html#2261" title="goto source code" target="_blank">[src]</a></span>
+</h4> <div class="docblock">
+<p>This method tests less than (for <code>self</code> and <code>other</code>) and is used by the <code>&lt;</code> operator. <a href="../cmp/trait.partialord/#method.lt">Read more</a></p> </div>
+<h4 id="method.le" class="method">
+<span id="le.v" class="invisible"><code>fn <a href="../cmp/trait.partialord/#method.le" class="fnname">le</a>(&amp;self, other: &amp;<a class="primitive" href="../primitive.pointer/">*mut T</a>) -&gt; <a class="primitive" href="../primitive.bool/">bool</a></code></span><span class="out-of-band">
+<a class="srclink" href="https://doc.rust-lang.org/src/core/ptr.rs.html#2264" title="goto source code" target="_blank">[src]</a></span>
+</h4> <div class="docblock">
+<p>This method tests less than or equal to (for <code>self</code> and <code>other</code>) and is used by the <code>&lt;=</code> operator. <a href="../cmp/trait.partialord/#method.le">Read more</a></p> </div>
+<h4 id="method.gt" class="method">
+<span id="gt.v" class="invisible"><code>fn <a href="../cmp/trait.partialord/#method.gt" class="fnname">gt</a>(&amp;self, other: &amp;<a class="primitive" href="../primitive.pointer/">*mut T</a>) -&gt; <a class="primitive" href="../primitive.bool/">bool</a></code></span><span class="out-of-band">
+<a class="srclink" href="https://doc.rust-lang.org/src/core/ptr.rs.html#2267" title="goto source code" target="_blank">[src]</a></span>
+</h4> <div class="docblock">
+<p>This method tests greater than (for <code>self</code> and <code>other</code>) and is used by the <code>&gt;</code> operator. <a href="../cmp/trait.partialord/#method.gt">Read more</a></p> </div>
+<h4 id="method.ge" class="method">
+<span id="ge.v" class="invisible"><code>fn <a href="../cmp/trait.partialord/#method.ge" class="fnname">ge</a>(&amp;self, other: &amp;<a class="primitive" href="../primitive.pointer/">*mut T</a>) -&gt; <a class="primitive" href="../primitive.bool/">bool</a></code></span><span class="out-of-band">
+<a class="srclink" href="https://doc.rust-lang.org/src/core/ptr.rs.html#2270" title="goto source code" target="_blank">[src]</a></span>
+</h4> <div class="docblock">
+<p>This method tests greater than or equal to (for <code>self</code> and <code>other</code>) and is used by the <code>&gt;=</code> operator. <a href="../cmp/trait.partialord/#method.ge">Read more</a></p> </div>
+<h3 id="impl-PartialOrd%3C*const%20T%3E" class="impl">
+<span class="in-band"><code>impl&lt;T&gt; <a class="trait" href="../cmp/trait.partialord/" title="trait std::cmp::PartialOrd">PartialOrd</a>&lt;<a class="primitive" href="../primitive.pointer/">*const T</a>&gt; for <a class="primitive" href="../primitive.pointer/">*const T</a> <span class="where fmt-newline">where<br>    T: ?<a class="trait" href="../marker/trait.sized/" title="trait std::marker::Sized">Sized</a>, </span></code></span><span class="out-of-band">
+<a class="srclink" href="https://doc.rust-lang.org/src/core/ptr.rs.html#2220-2237" title="goto source code" target="_blank">[src]</a></span>
+</h3> <h4 id="method.partial_cmp-1" class="method">
+<span id="partial_cmp.v-1" class="invisible"><code>fn <a href="../cmp/trait.partialord/#tymethod.partial_cmp" class="fnname">partial_cmp</a>(&amp;self, other: &amp;<a class="primitive" href="../primitive.pointer/">*const T</a>) -&gt; <a class="enum" href="../option/enum.option/" title="enum std::option::Option">Option</a>&lt;<a class="enum" href="../cmp/enum.ordering/" title="enum std::cmp::Ordering">Ordering</a>&gt;</code></span><span class="out-of-band">
+<a class="srclink" href="https://doc.rust-lang.org/src/core/ptr.rs.html#2222-2224" title="goto source code" target="_blank">[src]</a></span>
+</h4> <div class="docblock">
+<p>This method returns an ordering between <code>self</code> and <code>other</code> values if one exists. <a href="../cmp/trait.partialord/#tymethod.partial_cmp">Read more</a></p> </div>
+<h4 id="method.lt-1" class="method">
+<span id="lt.v-1" class="invisible"><code>fn <a href="../cmp/trait.partialord/#method.lt" class="fnname">lt</a>(&amp;self, other: &amp;<a class="primitive" href="../primitive.pointer/">*const T</a>) -&gt; <a class="primitive" href="../primitive.bool/">bool</a></code></span><span class="out-of-band">
+<a class="srclink" href="https://doc.rust-lang.org/src/core/ptr.rs.html#2227" title="goto source code" target="_blank">[src]</a></span>
+</h4> <div class="docblock">
+<p>This method tests less than (for <code>self</code> and <code>other</code>) and is used by the <code>&lt;</code> operator. <a href="../cmp/trait.partialord/#method.lt">Read more</a></p> </div>
+<h4 id="method.le-1" class="method">
+<span id="le.v-1" class="invisible"><code>fn <a href="../cmp/trait.partialord/#method.le" class="fnname">le</a>(&amp;self, other: &amp;<a class="primitive" href="../primitive.pointer/">*const T</a>) -&gt; <a class="primitive" href="../primitive.bool/">bool</a></code></span><span class="out-of-band">
+<a class="srclink" href="https://doc.rust-lang.org/src/core/ptr.rs.html#2230" title="goto source code" target="_blank">[src]</a></span>
+</h4> <div class="docblock">
+<p>This method tests less than or equal to (for <code>self</code> and <code>other</code>) and is used by the <code>&lt;=</code> operator. <a href="../cmp/trait.partialord/#method.le">Read more</a></p> </div>
+<h4 id="method.gt-1" class="method">
+<span id="gt.v-1" class="invisible"><code>fn <a href="../cmp/trait.partialord/#method.gt" class="fnname">gt</a>(&amp;self, other: &amp;<a class="primitive" href="../primitive.pointer/">*const T</a>) -&gt; <a class="primitive" href="../primitive.bool/">bool</a></code></span><span class="out-of-band">
+<a class="srclink" href="https://doc.rust-lang.org/src/core/ptr.rs.html#2233" title="goto source code" target="_blank">[src]</a></span>
+</h4> <div class="docblock">
+<p>This method tests greater than (for <code>self</code> and <code>other</code>) and is used by the <code>&gt;</code> operator. <a href="../cmp/trait.partialord/#method.gt">Read more</a></p> </div>
+<h4 id="method.ge-1" class="method">
+<span id="ge.v-1" class="invisible"><code>fn <a href="../cmp/trait.partialord/#method.ge" class="fnname">ge</a>(&amp;self, other: &amp;<a class="primitive" href="../primitive.pointer/">*const T</a>) -&gt; <a class="primitive" href="../primitive.bool/">bool</a></code></span><span class="out-of-band">
+<a class="srclink" href="https://doc.rust-lang.org/src/core/ptr.rs.html#2236" title="goto source code" target="_blank">[src]</a></span>
+</h4> <div class="docblock">
+<p>This method tests greater than or equal to (for <code>self</code> and <code>other</code>) and is used by the <code>&gt;=</code> operator. <a href="../cmp/trait.partialord/#method.ge">Read more</a></p> </div>
+<h3 id="impl-Eq" class="impl">
+<span class="in-band"><code>impl&lt;T&gt; <a class="trait" href="../cmp/trait.eq/" title="trait std::cmp::Eq">Eq</a> for <a class="primitive" href="../primitive.pointer/">*const T</a> <span class="where fmt-newline">where<br>    T: ?<a class="trait" href="../marker/trait.sized/" title="trait std::marker::Sized">Sized</a>, </span></code></span><span class="out-of-band">
+<a class="srclink" href="https://doc.rust-lang.org/src/core/ptr.rs.html#2075" title="goto source code" target="_blank">[src]</a></span>
+</h3> <h3 id="impl-Eq-1" class="impl">
+<span class="in-band"><code>impl&lt;T&gt; <a class="trait" href="../cmp/trait.eq/" title="trait std::cmp::Eq">Eq</a> for <a class="primitive" href="../primitive.pointer/">*mut T</a> <span class="where fmt-newline">where<br>    T: ?<a class="trait" href="../marker/trait.sized/" title="trait std::marker::Sized">Sized</a>, </span></code></span><span class="out-of-band">
+<a class="srclink" href="https://doc.rust-lang.org/src/core/ptr.rs.html#2084" title="goto source code" target="_blank">[src]</a></span>
+</h3> <h3 id="impl-Zeroable" class="impl">
+<span class="in-band"><code>impl&lt;T&gt; <a class="trait" href="https://doc.rust-lang.org/core/nonzero/trait.Zeroable.html" title="trait core::nonzero::Zeroable" target="_blank">Zeroable</a> for <a class="primitive" href="../primitive.pointer/">*const T</a> <span class="where fmt-newline">where<br>    T: ?<a class="trait" href="../marker/trait.sized/" title="trait std::marker::Sized">Sized</a>, </span></code></span><span class="out-of-band">
+<a class="srclink" href="https://doc.rust-lang.org/src/core/nonzero.rs.html#28-34" title="goto source code" target="_blank">[src]</a></span>
+</h3> <p>For fat pointers to be considered "zero", only the "data" part needs to be null.</p> <h4 id="method.is_zero" class="method">
+<span id="is_zero.v" class="invisible"><code>fn <a href="https://doc.rust-lang.org/core/nonzero/trait.Zeroable.html#tymethod.is_zero" class="fnname" target="_blank">is_zero</a>(&amp;self) -&gt; <a class="primitive" href="../primitive.bool/">bool</a></code></span><span class="out-of-band">
+<a class="srclink" href="https://doc.rust-lang.org/src/core/nonzero.rs.html#30-33" title="goto source code" target="_blank">[src]</a></span>
+</h4> <div class="stability"><span class="stab unstable">🔬 This is a nightly-only experimental API. (nonzero #27730)needs an RFC to flesh out the design </span></div>
+<h3 id="impl-Zeroable-1" class="impl">
+<span class="in-band"><code>impl&lt;T&gt; <a class="trait" href="https://doc.rust-lang.org/core/nonzero/trait.Zeroable.html" title="trait core::nonzero::Zeroable" target="_blank">Zeroable</a> for <a class="primitive" href="../primitive.pointer/">*mut T</a> <span class="where fmt-newline">where<br>    T: ?<a class="trait" href="../marker/trait.sized/" title="trait std::marker::Sized">Sized</a>, </span></code></span><span class="out-of-band">
+<a class="srclink" href="https://doc.rust-lang.org/src/core/nonzero.rs.html#28-34" title="goto source code" target="_blank">[src]</a></span>
+</h3> <p>For fat pointers to be considered "zero", only the "data" part needs to be null.</p> <h4 id="method.is_zero-1" class="method">
+<span id="is_zero.v-1" class="invisible"><code>fn <a href="https://doc.rust-lang.org/core/nonzero/trait.Zeroable.html#tymethod.is_zero" class="fnname" target="_blank">is_zero</a>(&amp;self) -&gt; <a class="primitive" href="../primitive.bool/">bool</a></code></span><span class="out-of-band">
+<a class="srclink" href="https://doc.rust-lang.org/src/core/nonzero.rs.html#30-33" title="goto source code" target="_blank">[src]</a></span>
+</h4> <div class="stability"><span class="stab unstable">🔬 This is a nightly-only experimental API. (nonzero #27730)needs an RFC to flesh out the design </span></div>
+<h3 id="impl-Hash" class="impl">
+<span class="in-band"><code>impl&lt;T&gt; <a class="trait" href="../hash/trait.hash/" title="trait std::hash::Hash">Hash</a> for <a class="primitive" href="../primitive.pointer/">*mut T</a> <span class="where fmt-newline">where<br>    T: ?<a class="trait" href="../marker/trait.sized/" title="trait std::marker::Sized">Sized</a>, </span></code></span><span class="out-of-band">
+<a class="srclink" href="https://doc.rust-lang.org/src/core/hash/mod.rs.html#685-699" title="goto source code" target="_blank">[src]</a></span>
+</h3> <h4 id="method.hash" class="method">
+<span id="hash.v" class="invisible"><code>fn <a href="../hash/trait.hash/#tymethod.hash" class="fnname">hash</a>&lt;H&gt;(&amp;self, state: <a class="primitive" href="../primitive.reference/">&amp;mut </a>H) <span class="where fmt-newline">where<br>    H: <a class="trait" href="../hash/trait.hasher/" title="trait std::hash::Hasher">Hasher</a>, </span></code></span><span class="out-of-band">
+<a class="srclink" href="https://doc.rust-lang.org/src/core/hash/mod.rs.html#686-698" title="goto source code" target="_blank">[src]</a></span>
+</h4> <div class="docblock">
+<p>Feeds this value into the given [<code>Hasher</code>]. <a href="../hash/trait.hash/#tymethod.hash">Read more</a></p> </div>
+<h4 id="method.hash_slice" class="method">
+<span id="hash_slice.v" class="invisible"><code>fn <a href="../hash/trait.hash/#method.hash_slice" class="fnname">hash_slice</a>&lt;H&gt;(data: <a class="primitive" href="../primitive.slice/">&amp;[Self]</a>, state: <a class="primitive" href="../primitive.reference/">&amp;mut </a>H) <span class="where fmt-newline">where<br>    H: <a class="trait" href="../hash/trait.hasher/" title="trait std::hash::Hasher">Hasher</a>, </span></code></span><span class="out-of-band">
+<div class="since" title="Stable since Rust version 1.3.0">1.3.0</div>
+<a class="srclink" href="https://doc.rust-lang.org/src/core/hash/mod.rs.html#202-208" title="goto source code" target="_blank">[src]</a></span>
+</h4> <div class="docblock">
+<p>Feeds a slice of this type into the given [<code>Hasher</code>]. <a href="../hash/trait.hash/#method.hash_slice">Read more</a></p> </div>
+<h3 id="impl-Hash-1" class="impl">
+<span class="in-band"><code>impl&lt;T&gt; <a class="trait" href="../hash/trait.hash/" title="trait std::hash::Hash">Hash</a> for <a class="primitive" href="../primitive.pointer/">*const T</a> <span class="where fmt-newline">where<br>    T: ?<a class="trait" href="../marker/trait.sized/" title="trait std::marker::Sized">Sized</a>, </span></code></span><span class="out-of-band">
+<a class="srclink" href="https://doc.rust-lang.org/src/core/hash/mod.rs.html#668-682" title="goto source code" target="_blank">[src]</a></span>
+</h3> <h4 id="method.hash-1" class="method">
+<span id="hash.v-1" class="invisible"><code>fn <a href="../hash/trait.hash/#tymethod.hash" class="fnname">hash</a>&lt;H&gt;(&amp;self, state: <a class="primitive" href="../primitive.reference/">&amp;mut </a>H) <span class="where fmt-newline">where<br>    H: <a class="trait" href="../hash/trait.hasher/" title="trait std::hash::Hasher">Hasher</a>, </span></code></span><span class="out-of-band">
+<a class="srclink" href="https://doc.rust-lang.org/src/core/hash/mod.rs.html#669-681" title="goto source code" target="_blank">[src]</a></span>
+</h4> <div class="docblock">
+<p>Feeds this value into the given [<code>Hasher</code>]. <a href="../hash/trait.hash/#tymethod.hash">Read more</a></p> </div>
+<h4 id="method.hash_slice-1" class="method">
+<span id="hash_slice.v-1" class="invisible"><code>fn <a href="../hash/trait.hash/#method.hash_slice" class="fnname">hash_slice</a>&lt;H&gt;(data: <a class="primitive" href="../primitive.slice/">&amp;[Self]</a>, state: <a class="primitive" href="../primitive.reference/">&amp;mut </a>H) <span class="where fmt-newline">where<br>    H: <a class="trait" href="../hash/trait.hasher/" title="trait std::hash::Hasher">Hasher</a>, </span></code></span><span class="out-of-band">
+<div class="since" title="Stable since Rust version 1.3.0">1.3.0</div>
+<a class="srclink" href="https://doc.rust-lang.org/src/core/hash/mod.rs.html#202-208" title="goto source code" target="_blank">[src]</a></span>
+</h4> <div class="docblock">
+<p>Feeds a slice of this type into the given [<code>Hasher</code>]. <a href="../hash/trait.hash/#method.hash_slice">Read more</a></p> </div>
+<h3 id="impl-Send" class="impl">
+<span class="in-band"><code>impl&lt;T&gt; !<a class="trait" href="../marker/trait.send/" title="trait std::marker::Send">Send</a> for <a class="primitive" href="../primitive.pointer/">*const T</a> <span class="where fmt-newline">where<br>    T: ?<a class="trait" href="../marker/trait.sized/" title="trait std::marker::Sized">Sized</a>, </span></code></span><span class="out-of-band">
+<a class="srclink" href="https://doc.rust-lang.org/src/core/marker.rs.html#54" title="goto source code" target="_blank">[src]</a></span>
+</h3> <h3 id="impl-Send-1" class="impl">
+<span class="in-band"><code>impl&lt;T&gt; !<a class="trait" href="../marker/trait.send/" title="trait std::marker::Send">Send</a> for <a class="primitive" href="../primitive.pointer/">*mut T</a> <span class="where fmt-newline">where<br>    T: ?<a class="trait" href="../marker/trait.sized/" title="trait std::marker::Sized">Sized</a>, </span></code></span><span class="out-of-band">
+<a class="srclink" href="https://doc.rust-lang.org/src/core/marker.rs.html#56" title="goto source code" target="_blank">[src]</a></span>
+</h3> <h3 id="impl-CoerceUnsized%3C*mut%20U%3E" class="impl">
+<span class="in-band"><code>impl&lt;T, U&gt; <a class="trait" href="../ops/trait.coerceunsized/" title="trait std::ops::CoerceUnsized">CoerceUnsized</a>&lt;<a class="primitive" href="../primitive.pointer/">*mut U</a>&gt; for <a class="primitive" href="../primitive.pointer/">*mut T</a> <span class="where fmt-newline">where<br>    T: <a class="trait" href="../marker/trait.unsize/" title="trait std::marker::Unsize">Unsize</a>&lt;U&gt; + ?<a class="trait" href="../marker/trait.sized/" title="trait std::marker::Sized">Sized</a>,<br>    U: ?<a class="trait" href="../marker/trait.sized/" title="trait std::marker::Sized">Sized</a>, </span></code></span><span class="out-of-band">
+<a class="srclink" href="https://doc.rust-lang.org/src/core/ops/unsize.rs.html#72" title="goto source code" target="_blank">[src]</a></span>
+</h3> <h3 id="impl-CoerceUnsized%3C*const%20U%3E" class="impl">
+<span class="in-band"><code>impl&lt;T, U&gt; <a class="trait" href="../ops/trait.coerceunsized/" title="trait std::ops::CoerceUnsized">CoerceUnsized</a>&lt;<a class="primitive" href="../primitive.pointer/">*const U</a>&gt; for <a class="primitive" href="../primitive.pointer/">*mut T</a> <span class="where fmt-newline">where<br>    T: <a class="trait" href="../marker/trait.unsize/" title="trait std::marker::Unsize">Unsize</a>&lt;U&gt; + ?<a class="trait" href="../marker/trait.sized/" title="trait std::marker::Sized">Sized</a>,<br>    U: ?<a class="trait" href="../marker/trait.sized/" title="trait std::marker::Sized">Sized</a>, </span></code></span><span class="out-of-band">
+<a class="srclink" href="https://doc.rust-lang.org/src/core/ops/unsize.rs.html#75" title="goto source code" target="_blank">[src]</a></span>
+</h3> <h3 id="impl-CoerceUnsized%3C*const%20U%3E-1" class="impl">
+<span class="in-band"><code>impl&lt;T, U&gt; <a class="trait" href="../ops/trait.coerceunsized/" title="trait std::ops::CoerceUnsized">CoerceUnsized</a>&lt;<a class="primitive" href="../primitive.pointer/">*const U</a>&gt; for <a class="primitive" href="../primitive.pointer/">*const T</a> <span class="where fmt-newline">where<br>    T: <a class="trait" href="../marker/trait.unsize/" title="trait std::marker::Unsize">Unsize</a>&lt;U&gt; + ?<a class="trait" href="../marker/trait.sized/" title="trait std::marker::Sized">Sized</a>,<br>    U: ?<a class="trait" href="../marker/trait.sized/" title="trait std::marker::Sized">Sized</a>, </span></code></span><span class="out-of-band">
+<a class="srclink" href="https://doc.rust-lang.org/src/core/ops/unsize.rs.html#79" title="goto source code" target="_blank">[src]</a></span>
+</h3> <h3 id="impl-Sync" class="impl">
+<span class="in-band"><code>impl&lt;T&gt; !<a class="trait" href="../marker/trait.sync/" title="trait std::marker::Sync">Sync</a> for <a class="primitive" href="../primitive.pointer/">*const T</a> <span class="where fmt-newline">where<br>    T: ?<a class="trait" href="../marker/trait.sized/" title="trait std::marker::Sized">Sized</a>, </span></code></span><span class="out-of-band">
+<a class="srclink" href="https://doc.rust-lang.org/src/core/marker.rs.html#359" title="goto source code" target="_blank">[src]</a></span>
+</h3> <h3 id="impl-Sync-1" class="impl">
+<span class="in-band"><code>impl&lt;T&gt; !<a class="trait" href="../marker/trait.sync/" title="trait std::marker::Sync">Sync</a> for <a class="primitive" href="../primitive.pointer/">*mut T</a> <span class="where fmt-newline">where<br>    T: ?<a class="trait" href="../marker/trait.sized/" title="trait std::marker::Sized">Sized</a>, </span></code></span><span class="out-of-band">
+<a class="srclink" href="https://doc.rust-lang.org/src/core/marker.rs.html#361" title="goto source code" target="_blank">[src]</a></span>
+</h3> <h3 id="impl-Ord" class="impl">
+<span class="in-band"><code>impl&lt;T&gt; <a class="trait" href="../cmp/trait.ord/" title="trait std::cmp::Ord">Ord</a> for <a class="primitive" href="../primitive.pointer/">*mut T</a> <span class="where fmt-newline">where<br>    T: ?<a class="trait" href="../marker/trait.sized/" title="trait std::marker::Sized">Sized</a>, </span></code></span><span class="out-of-band">
+<a class="srclink" href="https://doc.rust-lang.org/src/core/ptr.rs.html#2240-2251" title="goto source code" target="_blank">[src]</a></span>
+</h3> <h4 id="method.cmp" class="method">
+<span id="cmp.v" class="invisible"><code>fn <a href="../cmp/trait.ord/#tymethod.cmp" class="fnname">cmp</a>(&amp;self, other: &amp;<a class="primitive" href="../primitive.pointer/">*mut T</a>) -&gt; <a class="enum" href="../cmp/enum.ordering/" title="enum std::cmp::Ordering">Ordering</a></code></span><span class="out-of-band">
+<a class="srclink" href="https://doc.rust-lang.org/src/core/ptr.rs.html#2242-2250" title="goto source code" target="_blank">[src]</a></span>
+</h4> <div class="docblock">
+<p>This method returns an <code>Ordering</code> between <code>self</code> and <code>other</code>. <a href="../cmp/trait.ord/#tymethod.cmp">Read more</a></p> </div>
+<h4 id="method.max" class="method">
+<span id="max.v" class="invisible"><code>fn <a href="../cmp/trait.ord/#method.max" class="fnname">max</a>(self, other: Self) -&gt; Self</code></span><span class="out-of-band">
+<div class="since" title="Stable since Rust version 1.21.0">1.21.0</div>
+<a class="srclink" href="https://doc.rust-lang.org/src/core/cmp.rs.html#460-463" title="goto source code" target="_blank">[src]</a></span>
+</h4> <div class="docblock">
+<p>Compares and returns the maximum of two values. <a href="../cmp/trait.ord/#method.max">Read more</a></p> </div>
+<h4 id="method.min" class="method">
+<span id="min.v" class="invisible"><code>fn <a href="../cmp/trait.ord/#method.min" class="fnname">min</a>(self, other: Self) -&gt; Self</code></span><span class="out-of-band">
+<div class="since" title="Stable since Rust version 1.21.0">1.21.0</div>
+<a class="srclink" href="https://doc.rust-lang.org/src/core/cmp.rs.html#476-479" title="goto source code" target="_blank">[src]</a></span>
+</h4> <div class="docblock">
+<p>Compares and returns the minimum of two values. <a href="../cmp/trait.ord/#method.min">Read more</a></p> </div>
+<h3 id="impl-Ord-1" class="impl">
+<span class="in-band"><code>impl&lt;T&gt; <a class="trait" href="../cmp/trait.ord/" title="trait std::cmp::Ord">Ord</a> for <a class="primitive" href="../primitive.pointer/">*const T</a> <span class="where fmt-newline">where<br>    T: ?<a class="trait" href="../marker/trait.sized/" title="trait std::marker::Sized">Sized</a>, </span></code></span><span class="out-of-band">
+<a class="srclink" href="https://doc.rust-lang.org/src/core/ptr.rs.html#2206-2217" title="goto source code" target="_blank">[src]</a></span>
+</h3> <h4 id="method.cmp-1" class="method">
+<span id="cmp.v-1" class="invisible"><code>fn <a href="../cmp/trait.ord/#tymethod.cmp" class="fnname">cmp</a>(&amp;self, other: &amp;<a class="primitive" href="../primitive.pointer/">*const T</a>) -&gt; <a class="enum" href="../cmp/enum.ordering/" title="enum std::cmp::Ordering">Ordering</a></code></span><span class="out-of-band">
+<a class="srclink" href="https://doc.rust-lang.org/src/core/ptr.rs.html#2208-2216" title="goto source code" target="_blank">[src]</a></span>
+</h4> <div class="docblock">
+<p>This method returns an <code>Ordering</code> between <code>self</code> and <code>other</code>. <a href="../cmp/trait.ord/#tymethod.cmp">Read more</a></p> </div>
+<h4 id="method.max-1" class="method">
+<span id="max.v-1" class="invisible"><code>fn <a href="../cmp/trait.ord/#method.max" class="fnname">max</a>(self, other: Self) -&gt; Self</code></span><span class="out-of-band">
+<div class="since" title="Stable since Rust version 1.21.0">1.21.0</div>
+<a class="srclink" href="https://doc.rust-lang.org/src/core/cmp.rs.html#460-463" title="goto source code" target="_blank">[src]</a></span>
+</h4> <div class="docblock">
+<p>Compares and returns the maximum of two values. <a href="../cmp/trait.ord/#method.max">Read more</a></p> </div>
+<h4 id="method.min-1" class="method">
+<span id="min.v-1" class="invisible"><code>fn <a href="../cmp/trait.ord/#method.min" class="fnname">min</a>(self, other: Self) -&gt; Self</code></span><span class="out-of-band">
+<div class="since" title="Stable since Rust version 1.21.0">1.21.0</div>
+<a class="srclink" href="https://doc.rust-lang.org/src/core/cmp.rs.html#476-479" title="goto source code" target="_blank">[src]</a></span>
+</h4> <div class="docblock">
+<p>Compares and returns the minimum of two values. <a href="../cmp/trait.ord/#method.min">Read more</a></p> </div>
+<h3 id="impl-PartialEq%3C*const%20T%3E" class="impl">
+<span class="in-band"><code>impl&lt;T&gt; <a class="trait" href="../cmp/trait.partialeq/" title="trait std::cmp::PartialEq">PartialEq</a>&lt;<a class="primitive" href="../primitive.pointer/">*const T</a>&gt; for <a class="primitive" href="../primitive.pointer/">*const T</a> <span class="where fmt-newline">where<br>    T: ?<a class="trait" href="../marker/trait.sized/" title="trait std::marker::Sized">Sized</a>, </span></code></span><span class="out-of-band">
+<a class="srclink" href="https://doc.rust-lang.org/src/core/ptr.rs.html#2069-2072" title="goto source code" target="_blank">[src]</a></span>
+</h3> <h4 id="method.eq" class="method">
+<span id="eq.v" class="invisible"><code>fn <a href="../cmp/trait.partialeq/#tymethod.eq" class="fnname">eq</a>(&amp;self, other: &amp;<a class="primitive" href="../primitive.pointer/">*const T</a>) -&gt; <a class="primitive" href="../primitive.bool/">bool</a></code></span><span class="out-of-band">
+<a class="srclink" href="https://doc.rust-lang.org/src/core/ptr.rs.html#2071" title="goto source code" target="_blank">[src]</a></span>
+</h4> <div class="docblock">
+<p>This method tests for <code>self</code> and <code>other</code> values to be equal, and is used by <code>==</code>. <a href="../cmp/trait.partialeq/#tymethod.eq">Read more</a></p> </div>
+<h4 id="method.ne" class="method">
+<span id="ne.v" class="invisible"><code>fn <a href="../cmp/trait.partialeq/#method.ne" class="fnname">ne</a>(&amp;self, other: <a class="primitive" href="../primitive.reference/">&amp;</a>Rhs) -&gt; <a class="primitive" href="../primitive.bool/">bool</a></code></span><span class="out-of-band">
+<a class="srclink" href="https://doc.rust-lang.org/src/core/cmp.rs.html#121" title="goto source code" target="_blank">[src]</a></span>
+</h4> <div class="docblock">
+<p>This method tests for <code>!=</code>.</p> </div>
+<h3 id="impl-PartialEq%3C*mut%20T%3E" class="impl">
+<span class="in-band"><code>impl&lt;T&gt; <a class="trait" href="../cmp/trait.partialeq/" title="trait std::cmp::PartialEq">PartialEq</a>&lt;<a class="primitive" href="../primitive.pointer/">*mut T</a>&gt; for <a class="primitive" href="../primitive.pointer/">*mut T</a> <span class="where fmt-newline">where<br>    T: ?<a class="trait" href="../marker/trait.sized/" title="trait std::marker::Sized">Sized</a>, </span></code></span><span class="out-of-band">
+<a class="srclink" href="https://doc.rust-lang.org/src/core/ptr.rs.html#2078-2081" title="goto source code" target="_blank">[src]</a></span>
+</h3> <h4 id="method.eq-1" class="method">
+<span id="eq.v-1" class="invisible"><code>fn <a href="../cmp/trait.partialeq/#tymethod.eq" class="fnname">eq</a>(&amp;self, other: &amp;<a class="primitive" href="../primitive.pointer/">*mut T</a>) -&gt; <a class="primitive" href="../primitive.bool/">bool</a></code></span><span class="out-of-band">
+<a class="srclink" href="https://doc.rust-lang.org/src/core/ptr.rs.html#2080" title="goto source code" target="_blank">[src]</a></span>
+</h4> <div class="docblock">
+<p>This method tests for <code>self</code> and <code>other</code> values to be equal, and is used by <code>==</code>. <a href="../cmp/trait.partialeq/#tymethod.eq">Read more</a></p> </div>
+<h4 id="method.ne-1" class="method">
+<span id="ne.v-1" class="invisible"><code>fn <a href="../cmp/trait.partialeq/#method.ne" class="fnname">ne</a>(&amp;self, other: <a class="primitive" href="../primitive.reference/">&amp;</a>Rhs) -&gt; <a class="primitive" href="../primitive.bool/">bool</a></code></span><span class="out-of-band">
+<a class="srclink" href="https://doc.rust-lang.org/src/core/cmp.rs.html#121" title="goto source code" target="_blank">[src]</a></span>
+</h4> <div class="docblock">
+<p>This method tests for <code>!=</code>.</p> </div>
+<h3 id="impl-Pointer" class="impl">
+<span class="in-band"><code>impl&lt;T&gt; <a class="trait" href="../fmt/trait.pointer/" title="trait std::fmt::Pointer">Pointer</a> for <a class="primitive" href="../primitive.pointer/">*mut T</a> <span class="where fmt-newline">where<br>    T: ?<a class="trait" href="../marker/trait.sized/" title="trait std::marker::Sized">Sized</a>, </span></code></span><span class="out-of-band">
+<a class="srclink" href="https://doc.rust-lang.org/src/core/fmt/mod.rs.html#1625-1629" title="goto source code" target="_blank">[src]</a></span>
+</h3> <h4 id="method.fmt" class="method">
+<span id="fmt.v" class="invisible"><code>fn <a href="../fmt/trait.pointer/#tymethod.fmt" class="fnname">fmt</a>(&amp;self, f: &amp;mut <a class="struct" href="../fmt/struct.formatter/" title="struct std::fmt::Formatter">Formatter</a>) -&gt; <a class="enum" href="../result/enum.result/" title="enum std::result::Result">Result</a>&lt;<a class="primitive" href="../primitive.unit/">()</a>, <a class="struct" href="../fmt/struct.error/" title="struct std::fmt::Error">Error</a>&gt;</code></span><span class="out-of-band">
+<a class="srclink" href="https://doc.rust-lang.org/src/core/fmt/mod.rs.html#1626-1628" title="goto source code" target="_blank">[src]</a></span>
+</h4> <div class="docblock">
+<p>Formats the value using the given formatter.</p> </div>
+<h3 id="impl-Pointer-1" class="impl">
+<span class="in-band"><code>impl&lt;T&gt; <a class="trait" href="../fmt/trait.pointer/" title="trait std::fmt::Pointer">Pointer</a> for <a class="primitive" href="../primitive.pointer/">*const T</a> <span class="where fmt-newline">where<br>    T: ?<a class="trait" href="../marker/trait.sized/" title="trait std::marker::Sized">Sized</a>, </span></code></span><span class="out-of-band">
+<a class="srclink" href="https://doc.rust-lang.org/src/core/fmt/mod.rs.html#1597-1622" title="goto source code" target="_blank">[src]</a></span>
+</h3> <h4 id="method.fmt-1" class="method">
+<span id="fmt.v-1" class="invisible"><code>fn <a href="../fmt/trait.pointer/#tymethod.fmt" class="fnname">fmt</a>(&amp;self, f: &amp;mut <a class="struct" href="../fmt/struct.formatter/" title="struct std::fmt::Formatter">Formatter</a>) -&gt; <a class="enum" href="../result/enum.result/" title="enum std::result::Result">Result</a>&lt;<a class="primitive" href="../primitive.unit/">()</a>, <a class="struct" href="../fmt/struct.error/" title="struct std::fmt::Error">Error</a>&gt;</code></span><span class="out-of-band">
+<a class="srclink" href="https://doc.rust-lang.org/src/core/fmt/mod.rs.html#1598-1621" title="goto source code" target="_blank">[src]</a></span>
+</h4> <div class="docblock">
+<p>Formats the value using the given formatter.</p> </div>
+<h3 id="impl-Debug" class="impl">
+<span class="in-band"><code>impl&lt;T&gt; <a class="trait" href="../fmt/trait.debug/" title="trait std::fmt::Debug">Debug</a> for <a class="primitive" href="../primitive.pointer/">*mut T</a> <span class="where fmt-newline">where<br>    T: ?<a class="trait" href="../marker/trait.sized/" title="trait std::marker::Sized">Sized</a>, </span></code></span><span class="out-of-band">
+<a class="srclink" href="https://doc.rust-lang.org/src/core/fmt/mod.rs.html#1652-1654" title="goto source code" target="_blank">[src]</a></span>
+</h3> <h4 id="method.fmt-2" class="method">
+<span id="fmt.v-2" class="invisible"><code>fn <a href="../fmt/trait.debug/#tymethod.fmt" class="fnname">fmt</a>(&amp;self, f: &amp;mut <a class="struct" href="../fmt/struct.formatter/" title="struct std::fmt::Formatter">Formatter</a>) -&gt; <a class="enum" href="../result/enum.result/" title="enum std::result::Result">Result</a>&lt;<a class="primitive" href="../primitive.unit/">()</a>, <a class="struct" href="../fmt/struct.error/" title="struct std::fmt::Error">Error</a>&gt;</code></span><span class="out-of-band">
+<a class="srclink" href="https://doc.rust-lang.org/src/core/fmt/mod.rs.html#1653" title="goto source code" target="_blank">[src]</a></span>
+</h4> <div class="docblock">
+<p>Formats the value using the given formatter. <a href="../fmt/trait.debug/#tymethod.fmt">Read more</a></p> </div>
+<h3 id="impl-Debug-1" class="impl">
+<span class="in-band"><code>impl&lt;T&gt; <a class="trait" href="../fmt/trait.debug/" title="trait std::fmt::Debug">Debug</a> for <a class="primitive" href="../primitive.pointer/">*const T</a> <span class="where fmt-newline">where<br>    T: ?<a class="trait" href="../marker/trait.sized/" title="trait std::marker::Sized">Sized</a>, </span></code></span><span class="out-of-band">
+<a class="srclink" href="https://doc.rust-lang.org/src/core/fmt/mod.rs.html#1648-1650" title="goto source code" target="_blank">[src]</a></span>
+</h3> <h4 id="method.fmt-3" class="method">
+<span id="fmt.v-3" class="invisible"><code>fn <a href="../fmt/trait.debug/#tymethod.fmt" class="fnname">fmt</a>(&amp;self, f: &amp;mut <a class="struct" href="../fmt/struct.formatter/" title="struct std::fmt::Formatter">Formatter</a>) -&gt; <a class="enum" href="../result/enum.result/" title="enum std::result::Result">Result</a>&lt;<a class="primitive" href="../primitive.unit/">()</a>, <a class="struct" href="../fmt/struct.error/" title="struct std::fmt::Error">Error</a>&gt;</code></span><span class="out-of-band">
+<a class="srclink" href="https://doc.rust-lang.org/src/core/fmt/mod.rs.html#1649" title="goto source code" target="_blank">[src]</a></span>
+</h4> <div class="docblock">
+<p>Formats the value using the given formatter. <a href="../fmt/trait.debug/#tymethod.fmt">Read more</a></p> </div>
+<h3 id="impl-UnwindSafe" class="impl">
+<span class="in-band"><code>impl&lt;T: <a class="trait" href="../panic/trait.refunwindsafe/" title="trait std::panic::RefUnwindSafe">RefUnwindSafe</a> + ?<a class="trait" href="../marker/trait.sized/" title="trait std::marker::Sized">Sized</a>&gt; <a class="trait" href="../panic/trait.unwindsafe/" title="trait std::panic::UnwindSafe">UnwindSafe</a> for <a class="primitive" href="../primitive.pointer/">*const T</a></code></span><span class="out-of-band">
+<div class="since" title="Stable since Rust version 1.9.0">1.9.0</div>
+<a class="srclink" href="https://doc.rust-lang.org/src/std/panic.rs.html#199" title="goto source code" target="_blank">[src]</a></span>
+</h3> <h3 id="impl-UnwindSafe-1" class="impl">
+<span class="in-band"><code>impl&lt;T: <a class="trait" href="../panic/trait.refunwindsafe/" title="trait std::panic::RefUnwindSafe">RefUnwindSafe</a> + ?<a class="trait" href="../marker/trait.sized/" title="trait std::marker::Sized">Sized</a>&gt; <a class="trait" href="../panic/trait.unwindsafe/" title="trait std::panic::UnwindSafe">UnwindSafe</a> for <a class="primitive" href="../primitive.pointer/">*mut T</a></code></span><span class="out-of-band">
+<div class="since" title="Stable since Rust version 1.9.0">1.9.0</div>
+<a class="srclink" href="https://doc.rust-lang.org/src/std/panic.rs.html#201" title="goto source code" target="_blank">[src]</a></span>
+</h3>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2010 The Rust Project Developers<br>Licensed under the Apache License, Version 2.0 or the MIT license, at your option.<br>
+    <a href="https://doc.rust-lang.org/std/primitive.pointer.html" class="_attribution-link" target="_blank">https://doc.rust-lang.org/std/primitive.pointer.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>
