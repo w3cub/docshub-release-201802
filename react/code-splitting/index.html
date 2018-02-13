@@ -1,0 +1,145 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Code-Splitting - React - W3cubDocs</title>
+  
+  <meta name="description" content="Most React apps will have their files “bundled” using tools like Webpack or Browserify. Bundling is the process of following imported files and &hellip;">
+  <meta name="keywords" content="code-splitting, -, react">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/react/code-splitting/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/react.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/react/" class="_nav-link" title="" style="margin-left:0;">React</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _simple">
+				
+<h1 class="css-1a9m1x6">Code-Splitting</h1>
+<h2 id="bundling">Bundling</h2> <p>Most React apps will have their files “bundled” using tools like <a href="https://webpack.js.org/" target="_blank">Webpack</a> or <a href="http://browserify.org/" target="_blank">Browserify</a>. Bundling is the process of following imported files and merging them into a single file: a “bundle”. This bundle can then be included on a webpage to load an entire app at once.</p> <h4 id="example">Example</h4> <p><strong>App:</strong></p> <pre data-language="jsx">// app.js
+import { add } from './math.js';
+
+console.log(add(16, 26)); // 42
+</pre> <pre data-language="jsx">// math.js
+export function add(a, b) {
+  return a + b;
+}
+</pre> <p><strong>Bundle:</strong></p> <pre data-language="jsx">function add(a, b) {
+  return a + b;
+}
+
+console.log(add(16, 26)); // 42
+</pre> <blockquote> <p>Note:</p> <p>Your bundles will end up looking a lot different than this.</p> </blockquote> <p>If you’re using <a href="https://github.com/facebookincubator/create-react-app" target="_blank">Create React App</a>, <a href="https://github.com/zeit/next.js/" target="_blank">Next.js</a>, <a href="https://www.gatsbyjs.org/" target="_blank">Gatsby</a>, or a similar tool, you will have a Webpack setup out of the box to bundle your app.</p> <p>If you aren’t, you’ll need to setup bundling yourself. For example, see the <a href="https://webpack.js.org/guides/installation/" target="_blank">Installation</a> and <a href="https://webpack.js.org/guides/getting-started/" target="_blank">Getting Started</a> guides on the Webpack docs.</p> <h2 id="code-splitting">Code Splitting</h2> <p>Bundling is great, but as your app grows, your bundle will grow too. Especially if you are including large third-party libraries. You need to keep an eye on the code you are including in your bundle so that you don’t accidentally make it so large that your app takes a long time to load.</p> <p>To avoid winding up with a large bundle, it’s good to get ahead of the problem and start “splitting” your bundle. <a href="https://webpack.js.org/guides/code-splitting/" target="_blank">Code-Splitting</a> is a feature supported by bundlers like Webpack and Browserify (via <a href="https://github.com/browserify/factor-bundle" target="_blank">factor-bundle</a>) which can create multiple bundles that can be dynamically loaded at runtime.</p> <p>Code-splitting your app can help you “lazy-load” just the things that are currently needed by the user, which can dramatically improve the performance of your app. While you haven’t reduced the overall amount of code in your app, you’ve avoided loading code that the user may never need, and reduced the amount of code needed during the initial load.</p> <h2 id="import"><code>import()</code></h2> <p>The best way to introduce code-splitting into your app is through the dynamic <code>import()</code> syntax.</p> <p><strong>Before:</strong></p> <pre data-language="jsx">import { add } from './math';
+
+console.log(add(16, 26));
+</pre> <p><strong>After:</strong></p> <pre data-language="jsx">import("./math").then(math =&gt; {
+  console.log(math.add(16, 26));
+});
+</pre> <blockquote> <p>Note:</p> <p>The dynamic <code>import()</code> syntax is a ECMAScript (JavaScript) <a href="https://github.com/tc39/proposal-dynamic-import" target="_blank">proposal</a> not currently part of the language standard. It is expected to be accepted within the near future.</p> </blockquote> <p>When Webpack comes across this syntax, it automatically start code-splitting your app. If you’re using Create React App, this is already configured for you and you can <a href="https://github.com/facebookincubator/create-react-app/blob/master/packages/react-scripts/template/README.md#code-splitting" target="_blank">start using it</a> immediately. It’s also supported out of the box in <a href="https://github.com/zeit/next.js/#dynamic-import" target="_blank">Next.js</a>.</p> <p>If you’re setting up Webpack yourself, you’ll probably want to read Webpack’s <a href="https://webpack.js.org/guides/code-splitting/" target="_blank">guide on code splitting</a>. Your Webpack config should look vaguely <a href="https://gist.github.com/gaearon/ca6e803f5c604d37468b0091d9959269" target="_blank">like this</a>.</p> <p>When using <a href="http://babeljs.io/" target="_blank">Babel</a>, you’ll need to make sure that Babel can parse the dynamic import syntax but is not transforming it. For that you will need <a href="https://yarnpkg.com/en/package/babel-plugin-syntax-dynamic-import" target="_blank">babel-plugin-syntax-dynamic-import</a>.</p> <h2 id="libraries">Libraries</h2> <h3 id="react-loadable">React Loadable</h3> <p><a href="https://github.com/thejameskyle/react-loadable" target="_blank">React Loadable</a> wraps dynamic imports in a nice, React-friendly API for introducing code splitting into your app at a given component.</p> <p><strong>Before:</strong></p> <pre data-language="jsx">import OtherComponent from './OtherComponent';
+
+const MyComponent = () =&gt; (
+  &lt;OtherComponent/&gt;
+);
+</pre> <p><strong>After:</strong></p> <pre data-language="jsx">import Loadable from 'react-loadable';
+
+const LoadableOtherComponent = Loadable({
+  loader: () =&gt; import('./OtherComponent'),
+  loading: () =&gt; &lt;div&gt;Loading...&lt;/div&gt;,
+});
+
+const MyComponent = () =&gt; (
+  &lt;LoadableOtherComponent/&gt;
+);
+</pre> <p>React Loadable helps you create <a href="https://github.com/thejameskyle/react-loadable#creating-a-great-loading-component" target="_blank">loading states</a>, <a href="https://github.com/thejameskyle/react-loadable#loading-error-states" target="_blank">error states</a>, <a href="https://github.com/thejameskyle/react-loadable#timing-out-when-the-loader-is-taking-too-long" target="_blank">timeouts</a>, <a href="https://github.com/thejameskyle/react-loadable#preloading" target="_blank">preloading</a>, and more. It can even help you <a href="https://github.com/thejameskyle/react-loadable#------------server-side-rendering" target="_blank">server-side render</a> an app with lots of code-splitting.</p> <h2 id="route-based-code-splitting">Route-based code splitting</h2> <p>Deciding where in your app to introduce code splitting can be a bit tricky. You want to make sure you choose places that will split bundles evenly, but won’t disrupt the user experience.</p> <p>A good place is to start is with routes. Most people on the web are used to page transitions taking some amount of time to load. You also tend to be re-rendering the entire page at once so your users are unlikely to be interacting with other elements on the page at the same time.</p> <p>Here’s an example of how to setup route-based code splitting into your app using libraries like <a href="https://reacttraining.com/react-router/" target="_blank">React Router</a> and <a href="https://github.com/thejameskyle/react-loadable" target="_blank">React Loadable</a>.</p> <pre data-language="jsx">import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import Loadable from 'react-loadable';
+
+const Loading = () =&gt; &lt;div&gt;Loading...&lt;/div&gt;;
+
+const Home = Loadable({
+  loader: () =&gt; import('./routes/Home'),
+  loading: Loading,
+});
+
+const About = Loadable({
+  loader: () =&gt; import('./routes/About'),
+  loading: Loading,
+});
+
+const App = () =&gt; (
+  &lt;Router&gt;
+    &lt;Switch&gt;
+      &lt;Route exact path="/" component={Home}/&gt;
+      &lt;Route path="/about" component={About}/&gt;
+    &lt;/Switch&gt;
+  &lt;/Router&gt;
+);
+</pre>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2013–present Facebook Inc.<br>Licensed under the Creative Commons Attribution 4.0 International Public License.<br>
+    <a href="https://reactjs.org/docs/code-splitting.html" class="_attribution-link" target="_blank">https://reactjs.org/docs/code-splitting.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

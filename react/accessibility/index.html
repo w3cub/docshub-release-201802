@@ -1,0 +1,152 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Accessibility - React - W3cubDocs</title>
+  
+  <meta name="description" content="Web accessibility (also referred to as a11y) is the design and creation of websites that can be used by everyone. Accessibility support is necessary &hellip;">
+  <meta name="keywords" content="accessibility, -, react">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/react/accessibility/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/react.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/react/" class="_nav-link" title="" style="margin-left:0;">React</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _simple">
+				
+<h1 class="css-1a9m1x6">Accessibility</h1>
+<h2 id="why-accessibility">Why Accessibility?</h2> <p>Web accessibility (also referred to as <a href="https://en.wiktionary.org/wiki/a11y" target="_blank"><strong>a11y</strong></a>) is the design and creation of websites that can be used by everyone. Accessibility support is necessary to allow assistive technology to interpret web pages.</p> <p>React fully supports building accessible websites, often by using standard HTML techniques.</p> <h2 id="standards-and-guidelines">Standards and Guidelines</h2> <h3 id="wcag">WCAG</h3> <p>The <a href="https://www.w3.org/WAI/intro/wcag" target="_blank">Web Content Accessibility Guidelines</a> provides guidelines for creating accessible web sites.</p> <p>The following WCAG checklists provide an overview:</p> <ul> <li><a href="https://www.wuhcag.com/wcag-checklist/" target="_blank">WCAG checklist from Wuhcag</a></li> <li><a href="http://webaim.org/standards/wcag/checklist" target="_blank">WCAG checklist from WebAIM</a></li> <li><a href="http://a11yproject.com/checklist.html" target="_blank">Checklist from The A11Y Project</a></li> </ul> <h3 id="wai-aria">WAI-ARIA</h3> <p>The <a href="https://www.w3.org/WAI/intro/aria" target="_blank">Web Accessibility Initiative - Accessible Rich Internet Applications</a> document contains techniques for building fully accessible JavaScript widgets.</p> <p>Note that all <code>aria-*</code> HTML attributes are fully supported in JSX. Whereas most DOM properties and attributes in React are camelCased, these attributes should be lowercased:</p> <pre data-language="jsx">&lt;input
+  type="text" 
+  aria-label={labelText}
+  aria-required="true"
+  onChange={onchangeHandler}
+  value={inputValue}
+  name="name"
+/&gt;
+</pre> <h2 id="semantic-html">Semantic HTML</h2> <p>Semantic HTML is the foundation of accessibility in a web application. Using the various HTML elements to reinforce the meaning of information in our websites will often give us accessibility for free.</p> <ul> <li><a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element" target="_blank">MDN HTML elements reference</a></li> </ul> <p>Sometimes we break HTML semantics when we add <code>&lt;div&gt;</code> elements to our JSX to make our React code work, especially when working with lists (<code>&lt;ol&gt;</code>, <code>&lt;ul&gt;</code> and <code>&lt;dl&gt;</code>) and the HTML <code>&lt;table&gt;</code>. In these cases we should rather use React Fragments to group together multiple elements.</p> <p>Use <code>&lt;Fragment&gt;</code> when a <code>key</code> prop is required:</p> <pre data-language="jsx">import React, { Fragment } from 'react';
+
+function Glossary(props) {
+  return (
+    &lt;dl&gt;
+      {props.items.map(item =&gt; (
+        // Without the `key`, React will fire a key warning
+        &lt;Fragment key={item.id}&gt;
+          &lt;dt&gt;{item.term}&lt;/dt&gt;
+          &lt;dd&gt;{item.description}&lt;/dd&gt;
+        &lt;/Fragment&gt;
+      ))}
+    &lt;/dl&gt;
+  );
+}
+</pre> <p>Use <code>&lt;&gt;&lt;/&gt;</code> syntax everywhere else:</p> <pre data-language="jsx">function ListItem({ item }) {
+  return ( 
+    &lt;&gt;
+      &lt;dt&gt;{item.term}&lt;/dt&gt;
+      &lt;dd&gt;{item.description}&lt;/dd&gt;&gt;
+    &lt;/&gt;
+  );    
+}
+</pre> <h2 id="accessible-forms">Accessible Forms</h2> <h3 id="labeling">Labeling</h3> <p>Every HTML form control, such as <code>&lt;input&gt;</code> and <code>&lt;textarea&gt;</code>, needs to be labeled accessibly. We need to provide descriptive labels that are also exposed to screen readers.</p> <p>The following resources show us how to do this:</p> <ul> <li><a href="https://www.w3.org/WAI/tutorials/forms/labels/" target="_blank">The W3C shows us how to label elements</a></li> <li><a href="http://webaim.org/techniques/forms/controls" target="_blank">WebAIM shows us how to label elements</a></li> <li><a href="https://www.paciellogroup.com/blog/2017/04/what-is-an-accessible-name/" target="_blank">The Paciello Group explains accessible names</a></li> </ul> <p>Although these standard HTML practices can be directly used in React, note that the <code>for</code> attribute is written as <code>htmlFor</code> in JSX:</p> <pre data-language="jsx">&lt;label htmlFor="namedInput"&gt;Name:&lt;/label&gt;
+&lt;input id="namedInput" type="text" name="name"/&gt;
+</pre> <h3 id="notifying-the-user-of-errors">Notifying the user of errors</h3> <p>Error situations need to be understood by all users. The following link shows us how to expose error texts to screen readers as well:</p> <ul> <li><a href="https://www.w3.org/WAI/tutorials/forms/notifications/" target="_blank">The W3C demonstrates user notifications</a></li> <li><a href="http://webaim.org/techniques/formvalidation/" target="_blank">WebAIM looks at form validation</a></li> </ul> <h2 id="focus-control">Focus Control</h2> <p>Ensure that your web application can be fully operated with the keyboard only: </p> <ul> <li><a href="http://webaim.org/techniques/keyboard/" target="_blank">WebAIM talks about keyboard accessibility</a></li> </ul> <h3 id="keyboard-focus-and-focus-outline">Keyboard focus and focus outline</h3> <p>Keyboard focus refers to the current element in the DOM that is selected to accept input from the keyboard. We see it everywhere as a focus outline similar to that shown in the following image:</p> <a href="https://reactjs.org/static/keyboard-focus-dec0e6bcc1f882baf76ebc860d4f04e5-9d63d.png" target="_blank">   <img alt="Blue keyboard focus outline around a selected link." title="" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJIAAAA/CAMAAAA8J2GMAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAACEUExURaVHOqhcYLaSn9Ofc4xbauz5+bjM7YO9+/n5+crh+srb36Rfqa5KOqqc1u3UrdnY3Pn58aDM+uPt+NXz+WN7tNXm+Mi7xLvZ+KZ3t/jpzKZKWfn34OfLqLtnO6VHe5DE+sXf+tm2lKNQkcmQY6uTyLGBiay25Xu19bbA58N8UWOD0WOU6k+YtE0AAAM1SURBVGje7Zp5e6IwEMaDEASVciiHiKvi0XX3+3+/zeQiUCpHbUn36fylEJhfJpN3AgE53KLYndTiSJAgDuRqYJGChGNXC4uxQMLwNw0P8wntEKZAgTkSxCicT24hxIkhQR4d5hrYgeUTQdIjRiJOgESClM41sRTChCCTQl2QQsgm5MhMCo/TTf9jKLOJITHE45SSdGQMDaRpZfI9JGci+05Itu3H9aaB7/vRhEgLy0LIrjUtUPPIBEi/1mrTl+FIQRTh5yKhDH8M6dy4xROQkPcxJBOh5bORUKofkpJOOiBdV5BO7yEFfpL4Pv5aJA8g0K0VKTghZssFc54b+W9xcrc3jNy+5zk0ID+HYT1EghmD8mML0naFpHniZC4E/04n6162eCbSDjyX+A1SQT1djWvFZFauIYDlOlgNRtpeL7gLydnCHS9NJHo0W8vxgxEL9qIlnM3JTCX1h0S5XPQvQyT2RMY6kGiPOYhEot49ZQjptKQRtfnZ27j0NmHAu5CCu1QCifRSm4gFDxM9TFqeFdUfigTdytIOJNZ5el+BBGGQOc/+ZgIAZYUqZoNFAK5eph1IlIT+VJEy5TYnwRCIOZaO1yVyhWXdOpBo58GLQKLZk1RGzudrGXdVyVqRTrNHdgYk68/rYyTaeRIHgbRTNIkbR2LioEC0IAVvr67fCpA2fx8jMV3M+iCZjbLYhnQ2HtmqV5R452/qwJV+zWJVQRWKkbnkdeUSW4qhfKZEqdWRrDLeaCTodhm6PZDkWNmihKUtq1qqkUIxR+tS2alLTlVChK+ivWydmYK+KOk0FInoyXLt9kNyTgoSDcQFy3xlXgtabOsF2OSH+geJNO+LxGWwqnZoyXK6WLFqSxMpbZRAk16yS3DfTIIO9EXiuWurMbvOZnThCSVNLcVbmU5UFIzWzBu7XmqWH5m3J1WVYAxN9RGL1rlYScHsc5Co17RabQmgzOW+6xLJ1k5Mqaol8Oe+poDHgSRZdCzPAmgzTC2/y5uT183G4s9xExiU3c3mB+n/QPp5V9kfSbeXzFq9itdtw0LDbR0NN7803CLUcSNVw+1mHTflNfx0QccPPLT8DEYn+wd0mBVahPuWngAAAABJRU5ErkJggg==">   </a> <p>Only ever use CSS that removes this outline, for example by setting <code>outline: 0</code>, if you are replacing it with another focus outline implementation.</p> <h3 id="mechanisms-to-skip-to-desired-content">Mechanisms to skip to desired content</h3> <p>Provide a mechanism to allow users to skip past navigation sections in your application as this assists and speeds up keyboard navigation.</p> <p>Skiplinks or Skip Navigation Links are hidden navigation links that only become visible when keyboard users interact with the page. They are very easy to implement with internal page anchors and some styling:</p> <ul> <li><a href="http://webaim.org/techniques/skipnav/" target="_blank">WebAIM - Skip Navigation Links</a></li> </ul> <p>Also use landmark elements and roles, such as <code>&lt;main&gt;</code> and <code>&lt;aside&gt;</code>, to demarcate page regions as assistive technology allow the user to quickly navigate to these sections.</p> <p>Read more about the use of these elements to enhance accessibility here:</p> <ul> <li><a href="https://dequeuniversity.com/assets/html/jquery-summit/html5/slides/landmarks.html" target="_blank">Deque University - HTML 5 and ARIA Landmarks</a></li> </ul> <h3 id="programmatically-managing-focus">Programmatically managing focus</h3> <p>Our React applications continuously modify the HTML DOM during runtime, sometimes leading to keyboard focus being lost or set to an unexpected element. In order to repair this, we need to programmatically nudge the keyboard focus in the right direction. For example, by resetting keyboard focus to a button that opened a modal window after that modal window is closed.</p> <p>The Mozilla Developer Network takes a look at this and describes how we can build <a href="https://developer.mozilla.org/en-US/docs/Web/Accessibility/Keyboard-navigable_JavaScript_widgets" target="_blank">keyboard-navigable JavaScript widgets</a>.</p> <p>To set focus in React, we can use <a href="../refs-and-the-dom/">Refs to DOM elements</a>.</p> <p>Using this, we first create a ref to an element in the JSX of a component class:</p> <pre data-language="jsx">render() {
+  // Use the `ref` callback to store a reference to the text input DOM
+  // element in an instance field (for example, this.textInput).
+  return (
+    &lt;input
+      type="text"
+      ref={(input) =&gt; { this.textInput = input; }} /&gt;
+  );
+}
+</pre> <p>Then we can focus it elsewhere in our component when needed:</p> <pre data-language="jsx">focus() {
+  // Explicitly focus the text input using the raw DOM API
+  this.textInput.focus();
+}
+</pre> <p>Sometimes a parent component needs to set focus to an element in a child component. Although we can create <a href="../refs-and-the-dom/#adding-a-ref-to-a-class-component">refs to class components</a>, we need a pattern that also works with functional components and when <a href="../higher-order-components/#refs-arent-passed-through">using refs with HOCs</a>. To ensure that our parent component can always access the ref, we pass a callback as a prop to the child component to <a href="../refs-and-the-dom/#exposing-dom-refs-to-parent-components">expose the ref to the parent component</a>.</p> <pre data-language="jsx">// Expose the ref with a callback prop
+function Field({ inputRef, ...rest }) {
+  return &lt;input ref={inputRef} {...rest} /&gt;;
+}
+
+// Inside a parent class component's render method...
+&lt;Field
+  inputRef={(inputEl) =&gt; {
+    // This callback gets passed through as a regular prop
+    this.inputEl = inputEl
+  }}
+/&gt;
+
+// Now you can set focus when required.
+this.inputEl.focus();
+</pre> <p>A great focus management example is the <a href="https://github.com/davidtheclark/react-aria-modal" target="_blank">react-aria-modal</a>. This is a relatively rare example of a fully accessible modal window. Not only does it set initial focus on the cancel button (preventing the keyboard user from accidentally activating the success action) and trap keyboard focus inside the modal, it also resets focus back to the element that initially triggered the modal.</p> <blockquote> <p>Note:</p> <p>While this is a very important accessibility feature, it is also a technique that should be used judiciously. Use it to repair the keyboard focus flow when it is disturbed, not to try and anticipate how users want to use applications.</p> </blockquote> <h2 id="more-complex-widgets">More Complex Widgets</h2> <p>A more complex user experience should not mean a less accessible one. Whereas accessibility is most easily achieved by coding as close to HTML as possible, even the most complex widget can be coded accessibly.</p> <p>Here we require knowledge of <a href="https://www.w3.org/TR/wai-aria/roles" target="_blank">ARIA Roles</a> as well as <a href="https://www.w3.org/TR/wai-aria/states_and_properties" target="_blank">ARIA States and Properties</a>. These are toolboxes filled with HTML attributes that are fully supported in JSX and enable us to construct fully accessible, highly functional React components.</p> <p>Each type of widget has a specific design pattern and is expected to function in a certain way by users and user agents alike:</p> <ul> <li><a href="https://www.w3.org/TR/wai-aria-practices/#aria_ex" target="_blank">WAI-ARIA Authoring Practices - Design Patterns and Widgets</a></li> <li><a href="http://heydonworks.com/practical_aria_examples/" target="_blank">Heydon Pickering - ARIA Examples</a></li> <li><a href="https://inclusive-components.design/" target="_blank">Inclusive Components</a></li> </ul> <h2 id="other-points-for-consideration">Other Points for Consideration</h2> <h3 id="setting-the-language">Setting the language</h3> <p>Indicate the human language of page texts as screen reader software uses this to select the correct voice settings:</p> <ul> <li><a href="http://webaim.org/techniques/screenreader/#language" target="_blank">WebAIM - Document Language</a></li> </ul> <h3 id="setting-the-document-title">Setting the document title</h3> <p>Set the document <code>&lt;title&gt;</code> to correctly describe the current page content as this ensures that the user remains aware of the current page context:</p> <ul> <li><a href="https://www.w3.org/TR/UNDERSTANDING-WCAG20/navigation-mechanisms-title.html" target="_blank">WCAG - Understanding the Document Title Requirement</a></li> </ul> <p>We can set this in React using the <a href="https://github.com/gaearon/react-document-title" target="_blank">React Document Title Component</a>.</p> <h3 id="color-contrast">Color contrast</h3> <p>Ensure that all readable text on your website has sufficient color contrast to remain maximally readable by users with low vision:</p> <ul> <li><a href="https://www.w3.org/TR/UNDERSTANDING-WCAG20/visual-audio-contrast-contrast.html" target="_blank">WCAG - Understanding the Color Contrast Requirement</a></li> <li><a href="https://www.smashingmagazine.com/2014/10/color-contrast-tips-and-tools-for-accessibility/" target="_blank">Everything About Color Contrast And Why You Should Rethink It</a></li> <li><a href="http://a11yproject.com/posts/what-is-color-contrast/" target="_blank">A11yProject - What is Color Contrast</a></li> </ul> <p>It can be tedious to manually calculate the proper color combinations for all cases in your website so instead, you can <a href="http://jxnblk.com/colorable/" target="_blank">calculate an entire accessible color palette with Colorable</a>.</p> <p>Both the aXe and WAVE tools mentioned below also include color contrast tests and will report on contrast errors.</p> <p>If you want to extend your contrast testing abilities you can use these tools:</p> <ul> <li><a href="http://webaim.org/resources/contrastchecker/" target="_blank">WebAIM - Color Contrast Checker</a></li> <li><a href="https://www.paciellogroup.com/resources/contrastanalyser/" target="_blank">The Paciello Group - Color Contrast Analyzer</a></li> </ul> <h2 id="development-and-testing-tools">Development and Testing Tools</h2> <p>There are a number of tools we can use to assist in the creation of accessible web applications.</p> <h3 id="the-keyboard">The keyboard</h3> <p>By far the easiest and also one of the most important checks is to test if your entire website can be reached and used with the keyboard alone. Do this by:</p> <ol> <li>Plugging out your mouse.</li> <li>Using <code>Tab</code> and <code>Shift+Tab</code> to browse.</li> <li>Using <code>Enter</code> to activate elements.</li> <li>Where required, using your keyboard arrow keys to interact with some elements, such as menus and dropdowns. </li> </ol> <h3 id="development-assistance">Development assistance</h3> <p>We can check some accessibility features directly in our JSX code. Often intellisense checks are already provided in JSX aware IDE’s for the ARIA roles, states and properties. We also have access to the following tool:</p> <h4 id="eslint-plugin-jsx-a11y">eslint-plugin-jsx-a11y</h4> <p>The <a href="https://github.com/evcohen/eslint-plugin-jsx-a11y" target="_blank">eslint-plugin-jsx-a11y</a> plugin for ESLint provides AST linting feedback regarding accessibility issues in your JSX. Many IDE’s allow you to integrate these findings directly into code analysis and source code windows.</p> <p><a href="https://github.com/facebookincubator/create-react-app" target="_blank">Create React App</a> has this plugin with a subset of rules activated. If you want to enable even more accessibility rules, you can create an <code>.eslintrc</code> file in the root of your project with this content: </p> <pre data-language="jsxon">{
+  "extends": ["react-app", "plugin:jsx-a11y/recommended"],
+  "plugins": ["jsx-a11y"]
+}</pre> <h3 id="testing-accessibility-in-the-browser">Testing accessibility in the browser</h3> <p>A number of tools exist that can run accessibility audits on web pages in your browser. Please use them in combination with other accessibility checks mentioned here as they can only test the technical accessibility of your HTML.</p> <h4 id="axe-axe-core-and-react-axe">aXe, aXe-core and react-axe</h4> <p>Deque Systems offers <a href="https://www.deque.com/products/axe-core/" target="_blank">aXe-core</a> for automated and end-to-end accessibility tests of your applications. This module includes integrations for Selenium.</p> <p><a href="https://www.deque.com/products/axe/" target="_blank">The Accessibility Engine</a> or aXe, is an accessibility inspector browser extension built on <code>aXe-core</code>.</p> <p>You can also use the <a href="https://github.com/dylanb/react-axe" target="_blank">react-axe</a> module to report these accessibility findings directly to the console while developing and debugging.</p> <h4 id="webaim-wave">WebAIM WAVE</h4> <p>The <a href="http://wave.webaim.org/extension/" target="_blank">Web Accessibility Evaluation Tool</a> is another accessibility browser extension.</p> <h4 id="accessibility-inspectors-and-the-accessibility-tree">Accessibility inspectors and the Accessibility Tree</h4> <p><a href="https://www.paciellogroup.com/blog/2015/01/the-browser-accessibility-tree/" target="_blank">The Accessibility Tree</a> is a subset of the DOM tree that contains accessible objects for every DOM element that should be exposed to assistive technology, such as screen readers.</p> <p>In some browsers we can easily view the accessibility information for each element in the accessibility tree:</p> <ul> <li><a href="https://gist.github.com/marcysutton/0a42f815878c159517a55e6652e3b23a" target="_blank">Activate the Accessibility Inspector in Chrome</a></li> <li><a href="https://developer.apple.com/library/content/documentation/Accessibility/Conceptual/AccessibilityMacOSX/OSXAXTestingApps.html" target="_blank">Using the Accessibility Inspector in OS X Safari</a></li> </ul> <h3 id="screen-readers">Screen readers</h3> <p>Testing with a screen reader should form part of your accessibility tests.</p> <p>Please note that browser / screen reader combinations matter. It is recommended that you test your application in the browser best suited to your screen reader of choice.</p> <h4 id="nvda-in-firefox">NVDA in Firefox</h4> <p><a href="https://www.nvaccess.org/" target="_blank">NonVisual Desktop Access</a> or NVDA is an open source Windows screen reader that is widely used.</p> <p>Refer to the following guides on how to best use NVDA:</p> <ul> <li><a href="http://webaim.org/articles/nvda/" target="_blank">WebAIM - Using NVDA to Evaluate Web Accessibility</a></li> <li><a href="https://dequeuniversity.com/screenreaders/nvda-keyboard-shortcuts" target="_blank">Deque - NVDA Keyboard Shortcuts</a></li> </ul> <h4 id="voiceover-in-safari">VoiceOver in Safari</h4> <p>VoiceOver is an integrated screen reader on Apple devices. </p> <p>Refer to the following guides on how activate and use VoiceOver:</p> <ul> <li><a href="http://webaim.org/articles/voiceover/" target="_blank">WebAIM - Using VoiceOver to Evaluate Web Accessibility</a></li> <li><a href="https://dequeuniversity.com/screenreaders/voiceover-keyboard-shortcuts" target="_blank">Deque - VoiceOver for OS X Keyboard Shortcuts</a></li> <li><a href="https://dequeuniversity.com/screenreaders/voiceover-ios-shortcuts" target="_blank">Deque - VoiceOver for iOS Shortcuts</a></li> </ul> <h4 id="jaws-in-internet-explorer">JAWS in Internet Explorer</h4> <p><a href="http://www.freedomscientific.com/Products/Blindness/JAWS" target="_blank">Job Access With Speech</a> or JAWS, is a prolifically used screen reader on Windows. </p> <p>Refer to the following guides on how to best use JAWS:</p> <ul> <li><a href="http://webaim.org/articles/jaws/" target="_blank">WebAIM - Using JAWS to Evaluate Web Accessibility</a></li> <li><a href="https://dequeuniversity.com/screenreaders/jaws-keyboard-shortcuts" target="_blank">Deque - JAWS Keyboard Shortcuts</a></li> </ul>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2013–present Facebook Inc.<br>Licensed under the Creative Commons Attribution 4.0 International Public License.<br>
+    <a href="https://reactjs.org/docs/accessibility.html" class="_attribution-link" target="_blank">https://reactjs.org/docs/accessibility.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

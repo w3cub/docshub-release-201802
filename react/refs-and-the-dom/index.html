@@ -1,0 +1,208 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Refs and the DOM - React - W3cubDocs</title>
+  
+  <meta name="description" content="In the typical React dataflow, props are the only way that parent components interact with their children. To modify a child, you re-render it with &hellip;">
+  <meta name="keywords" content="refs, and, dom, -, react">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/react/refs-and-the-dom/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/react.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/react/" class="_nav-link" title="" style="margin-left:0;">React</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _simple">
+				
+<h1 class="css-1a9m1x6">Refs and the DOM</h1>
+<p>In the typical React dataflow, <a href="../components-and-props/">props</a> are the only way that parent components interact with their children. To modify a child, you re-render it with new props. However, there are a few cases where you need to imperatively modify a child outside of the typical dataflow. The child to be modified could be an instance of a React component, or it could be a DOM element. For both of these cases, React provides an escape hatch.</p> <h3 id="when-to-use-refs">When to Use Refs</h3> <p>There are a few good use cases for refs:</p> <ul> <li>Managing focus, text selection, or media playback.</li> <li>Triggering imperative animations.</li> <li>Integrating with third-party DOM libraries.</li> </ul> <p>Avoid using refs for anything that can be done declaratively.</p> <p>For example, instead of exposing <code>open()</code> and <code>close()</code> methods on a <code>Dialog</code> component, pass an <code>isOpen</code> prop to it.</p> <h3 id="dont-overuse-refs">Don’t Overuse Refs</h3> <p>Your first inclination may be to use refs to “make things happen” in your app. If this is the case, take a moment and think more critically about where state should be owned in the component hierarchy. Often, it becomes clear that the proper place to “own” that state is at a higher level in the hierarchy. See the <a href="../lifting-state-up/">Lifting State Up</a> guide for examples of this.</p> <h3 id="adding-a-ref-to-a-dom-element">Adding a Ref to a DOM Element</h3> <p>React supports a special attribute that you can attach to any component. The <code>ref</code> attribute takes a callback function, and the callback will be executed immediately after the component is mounted or unmounted.</p> <p>When the <code>ref</code> attribute is used on an HTML element, the <code>ref</code> callback receives the underlying DOM element as its argument. For example, this code uses the <code>ref</code> callback to store a reference to a DOM node:</p> <pre data-language="jsx">class CustomTextInput extends React.Component {
+  constructor(props) {
+    super(props);
+    this.focusTextInput = this.focusTextInput.bind(this);
+  }
+
+  focusTextInput() {
+    // Explicitly focus the text input using the raw DOM API
+    this.textInput.focus();
+  }
+
+  render() {
+    // Use the `ref` callback to store a reference to the text input DOM
+    // element in an instance field (for example, this.textInput).
+    return (
+      &lt;div&gt;
+        &lt;input
+          type="text"
+          ref={(input) =&gt; { this.textInput = input; }} /&gt;
+        &lt;input
+          type="button"
+          value="Focus the text input"
+          onClick={this.focusTextInput}
+        /&gt;
+      &lt;/div&gt;
+    );
+  }
+}
+</pre> <p>React will call the <code>ref</code> callback with the DOM element when the component mounts, and call it with <code>null</code> when it unmounts. <code>ref</code> callbacks are invoked before <code>componentDidMount</code> or <code>componentDidUpdate</code> lifecycle hooks.</p> <p>Using the <code>ref</code> callback just to set a property on the class is a common pattern for accessing DOM elements. The preferred way is to set the property in the <code>ref</code> callback like in the above example. There is even a shorter way to write it: <code>ref={input =&gt; this.textInput = input}</code>. </p> <h3 id="adding-a-ref-to-a-class-component">Adding a Ref to a Class Component</h3> <p>When the <code>ref</code> attribute is used on a custom component declared as a class, the <code>ref</code> callback receives the mounted instance of the component as its argument. For example, if we wanted to wrap the <code>CustomTextInput</code> above to simulate it being clicked immediately after mounting:</p> <pre data-language="jsx">class AutoFocusTextInput extends React.Component {
+  componentDidMount() {
+    this.textInput.focusTextInput();
+  }
+
+  render() {
+    return (
+      &lt;CustomTextInput
+        ref={(input) =&gt; { this.textInput = input; }} /&gt;
+    );
+  }
+}
+</pre> <p>Note that this only works if <code>CustomTextInput</code> is declared as a class:</p> <pre data-language="jsx">class CustomTextInput extends React.Component {
+  // ...
+}
+</pre> <h3 id="refs-and-functional-components">Refs and Functional Components</h3> <p><strong>You may not use the <code>ref</code> attribute on functional components</strong> because they don’t have instances:</p> <pre data-language="jsx">function MyFunctionalComponent() {
+  return &lt;input /&gt;;
+}
+
+class Parent extends React.Component {
+  render() {
+    // This will *not* work!
+    return (
+      &lt;MyFunctionalComponent
+        ref={(input) =&gt; { this.textInput = input; }} /&gt;
+    );
+  }
+}
+</pre> <p>You should convert the component to a class if you need a ref to it, just like you do when you need lifecycle methods or state.</p> <p>You can, however, <strong>use the <code>ref</code> attribute inside a functional component</strong> as long as you refer to a DOM element or a class component:</p> <pre data-language="jsx">function CustomTextInput(props) {
+  // textInput must be declared here so the ref callback can refer to it
+  let textInput = null;
+
+  function handleClick() {
+    textInput.focus();
+  }
+
+  return (
+    &lt;div&gt;
+      &lt;input
+        type="text"
+        ref={(input) =&gt; { textInput = input; }} /&gt;
+      &lt;input
+        type="button"
+        value="Focus the text input"
+        onClick={handleClick}
+      /&gt;
+    &lt;/div&gt;
+  );  
+}
+</pre> <h3 id="exposing-dom-refs-to-parent-components">Exposing DOM Refs to Parent Components</h3> <p>In rare cases, you might want to have access to a child’s DOM node from a parent component. This is generally not recommended because it breaks component encapsulation, but it can occasionally be useful for triggering focus or measuring the size or position of a child DOM node.</p> <p>While you could <a href="#adding-a-ref-to-a-class-component">add a ref to the child component</a>, this is not an ideal solution, as you would only get a component instance rather than a DOM node. Additionally, this wouldn’t work with functional components.</p> <p>Instead, in such cases we recommend exposing a special prop on the child. The child would take a function prop with an arbitrary name (e.g. <code>inputRef</code>) and attach it to the DOM node as a <code>ref</code> attribute. This lets the parent pass its ref callback to the child’s DOM node through the component in the middle.</p> <p>This works both for classes and for functional components.</p> <pre data-language="jsx">function CustomTextInput(props) {
+  return (
+    &lt;div&gt;
+      &lt;input ref={props.inputRef} /&gt;
+    &lt;/div&gt;
+  );
+}
+
+class Parent extends React.Component {
+  render() {
+    return (
+      &lt;CustomTextInput
+        inputRef={el =&gt; this.inputElement = el}
+      /&gt;
+    );
+  }
+}
+</pre> <p>In the example above, <code>Parent</code> passes its ref callback as an <code>inputRef</code> prop to the <code>CustomTextInput</code>, and the <code>CustomTextInput</code> passes the same function as a special <code>ref</code> attribute to the <code>&lt;input&gt;</code>. As a result, <code>this.inputElement</code> in <code>Parent</code> will be set to the DOM node corresponding to the <code>&lt;input&gt;</code> element in the <code>CustomTextInput</code>.</p> <p>Note that the name of the <code>inputRef</code> prop in the above example has no special meaning, as it is a regular component prop. However, using the <code>ref</code> attribute on the <code>&lt;input&gt;</code> itself is important, as it tells React to attach a ref to its DOM node.</p> <p>This works even though <code>CustomTextInput</code> is a functional component. Unlike the special <code>ref</code> attribute which can <a href="#refs-and-functional-components">only be specified for DOM elements and for class components</a>, there are no restrictions on regular component props like <code>inputRef</code>.</p> <p>Another benefit of this pattern is that it works several components deep. For example, imagine <code>Parent</code> didn’t need that DOM node, but a component that rendered <code>Parent</code> (let’s call it <code>Grandparent</code>) needed access to it. Then we could let the <code>Grandparent</code> specify the <code>inputRef</code> prop to the <code>Parent</code>, and let <code>Parent</code> “forward” it to the <code>CustomTextInput</code>:</p> <pre data-language="jsx">function CustomTextInput(props) {
+  return (
+    &lt;div&gt;
+      &lt;input ref={props.inputRef} /&gt;
+    &lt;/div&gt;
+  );
+}
+
+function Parent(props) {
+  return (
+    &lt;div&gt;
+      My input: &lt;CustomTextInput inputRef={props.inputRef} /&gt;
+    &lt;/div&gt;
+  );
+}
+
+
+class Grandparent extends React.Component {
+  render() {
+    return (
+      &lt;Parent
+        inputRef={el =&gt; this.inputElement = el}
+      /&gt;
+    );
+  }
+}
+</pre> <p>Here, the ref callback is first specified by <code>Grandparent</code>. It is passed to the <code>Parent</code> as a regular prop called <code>inputRef</code>, and the <code>Parent</code> passes it to the <code>CustomTextInput</code> as a prop too. Finally, the <code>CustomTextInput</code> reads the <code>inputRef</code> prop and attaches the passed function as a <code>ref</code> attribute to the <code>&lt;input&gt;</code>. As a result, <code>this.inputElement</code> in <code>Grandparent</code> will be set to the DOM node corresponding to the <code>&lt;input&gt;</code> element in the <code>CustomTextInput</code>.</p> <p>All things considered, we advise against exposing DOM nodes whenever possible, but this can be a useful escape hatch. Note that this approach requires you to add some code to the child component. If you have absolutely no control over the child component implementation, your last option is to use <a href="../react-dom/#finddomnode"><code>findDOMNode()</code></a>, but it is discouraged.</p> <h3 id="legacy-api-string-refs">Legacy API: String Refs</h3> <p>If you worked with React before, you might be familiar with an older API where the <code>ref</code> attribute is a string, like <code>"textInput"</code>, and the DOM node is accessed as <code>this.refs.textInput</code>. We advise against it because string refs have <a href="https://github.com/facebook/react/pull/8333#issuecomment-271648615" target="_blank">some issues</a>, are considered legacy, and <strong>are likely to be removed in one of the future releases</strong>. If you’re currently using <code>this.refs.textInput</code> to access refs, we recommend the callback pattern instead.</p> <h3 id="caveats">Caveats</h3> <p>If the <code>ref</code> callback is defined as an inline function, it will get called twice during updates, first with <code>null</code> and then again with the DOM element. This is because a new instance of the function is created with each render, so React needs to clear the old ref and set up the new one. You can avoid this by defining the <code>ref</code> callback as a bound method on the class, but note that it shouldn’t matter in most cases.</p>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2013–present Facebook Inc.<br>Licensed under the Creative Commons Attribution 4.0 International Public License.<br>
+    <a href="https://reactjs.org/docs/refs-and-the-dom.html" class="_attribution-link" target="_blank">https://reactjs.org/docs/refs-and-the-dom.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>
