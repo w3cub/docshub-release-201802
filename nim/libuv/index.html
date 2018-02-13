@@ -1,0 +1,358 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Libuv - Nim - W3cubDocs</title>
+  
+  <meta name="description" content="libuv is still fast moving target This file was last updated against a development HEAD revision of https&#58;&#47;&#47;github.com&#47;joyent&#47; &hellip;">
+  <meta name="keywords" content="module, libuv, -, nim">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/nim/libuv/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/nim.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/nim/" class="_nav-link" title="" style="margin-left:0;">Nim</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _nim">
+				
+<h1 class="title">Module libuv</h1>  <p class="module-desc">libuv is still fast moving target This file was last updated against a development HEAD revision of <a href="https://github.com/joyent/libuv" target="_blank">https://github.com/joyent/libuv</a>/Use the following link to see changes (in uv.h) since then and don't forget to update the information here. <a href="https://github.com/joyent/libuv/compare/9f6024a6fa9d254527b4b59af724257df870288b...master" target="_blank">https://github.com/joyent/libuv/compare/9f6024a6fa9d254527b4b59af724257df870288b...master</a></p>  <h2 id="6">Imports</h2> <dl> <a href="../winlean/">winlean</a> </dl>  <h2 id="7">Types</h2> <dl> <dt id="Port"><pre id="Port">Port = distinct int16</pre></dt> <dd> port type   </dd> <dt id="AllocProc"><pre id="AllocProc" data-language="nim">AllocProc = proc (handle: PHandle; suggested_size: csize): Buf {.cdecl.}</pre></dt>  <dt id="ReadProc"><pre id="ReadProc" data-language="nim">ReadProc = proc (stream: PStream; nread: cssize; buf: Buf) {.cdecl.}</pre></dt>  <dt id="ReadProc2"><pre id="ReadProc2" data-language="nim">ReadProc2 = proc (stream: PPipe; nread: cssize; buf: Buf; pending: HandleType) {.cdecl.}</pre></dt>  <dt id="WriteProc"><pre id="WriteProc" data-language="nim">WriteProc = proc (req: PWrite; status: cint) {.cdecl.}</pre></dt>  <dt id="ConnectProc"><pre id="ConnectProc" data-language="nim">ConnectProc = proc (req: PConnect; status: cint) {.cdecl.}</pre></dt>  <dt id="ShutdownProc"><pre id="ShutdownProc" data-language="nim">ShutdownProc = proc (req: PShutdown; status: cint) {.cdecl.}</pre></dt>  <dt id="ConnectionProc"><pre id="ConnectionProc" data-language="nim">ConnectionProc = proc (server: PStream; status: cint) {.cdecl.}</pre></dt>  <dt id="CloseProc"><pre id="CloseProc" data-language="nim">CloseProc = proc (handle: PHandle) {.cdecl.}</pre></dt>  <dt id="TimerProc"><pre id="TimerProc" data-language="nim">TimerProc = proc (handle: PTimer; status: cint) {.cdecl.}</pre></dt>  <dt id="AsyncProc"><pre id="AsyncProc" data-language="nim">AsyncProc = proc (handle: PAsync; status: cint) {.cdecl.}</pre></dt>  <dt id="PrepareProc"><pre id="PrepareProc" data-language="nim">PrepareProc = proc (handle: PPrepare; status: cint) {.cdecl.}</pre></dt>  <dt id="CheckProc"><pre id="CheckProc" data-language="nim">CheckProc = proc (handle: PCheck; status: cint) {.cdecl.}</pre></dt>  <dt id="IdleProc"><pre id="IdleProc" data-language="nim">IdleProc = proc (handle: PIdle; status: cint) {.cdecl.}</pre></dt>  <dt id="PSockAddr"><pre id="PSockAddr">PSockAddr = ptr SockAddr</pre></dt>  <dt id="GetAddrInfoProc"><pre id="GetAddrInfoProc" data-language="nim">GetAddrInfoProc = proc (handle: PGetAddrInfo; status: cint; res: ptr AddrInfo)</pre></dt>  <dt id="ExitProc"><pre id="ExitProc" data-language="nim">ExitProc = proc (a2: PProcess; exit_status: cint; term_signal: cint)</pre></dt>  <dt id="FsProc"><pre id="FsProc" data-language="nim">FsProc = proc (req: PFS)</pre></dt>  <dt id="WorkProc"><pre id="WorkProc" data-language="nim">WorkProc = proc (req: PWork)</pre></dt>  <dt id="AfterWorkProc"><pre id="AfterWorkProc" data-language="nim">AfterWorkProc = proc (req: PWork)</pre></dt>  <dt id="FsEventProc"><pre id="FsEventProc" data-language="nim">FsEventProc = proc (handle: PFsEvent; filename: cstring; events: cint; status: cint)</pre></dt>  <dt id="ErrorCode"><pre id="ErrorCode" data-language="nim">ErrorCode = enum
+  UNKNOWN = - 1, OK = 0, EOF, EACCESS, EAGAIN, EADDRINUSE, EADDRNOTAVAIL, EAFNOSUPPORT,
+  EALREADY, EBADF, EBUSY, ECONNABORTED, ECONNREFUSED, ECONNRESET, EDESTADDRREQ, EFAULT,
+  EHOSTUNREACH, EINTR, EINVAL, EISCONN, EMFILE, EMSGSIZE, ENETDOWN, ENETUNREACH, ENFILE,
+  ENOBUFS, ENOMEM, ENONET, ENOPROTOOPT, ENOTCONN, ENOTSOCK, ENOTSUP, ENOENT, EPIPE,
+  EPROTO, EPROTONOSUPPORT, EPROTOTYPE, ETIMEDOUT, ECHARSET, EAIFAMNOSUPPORT,
+  EAINONAME, EAISERVICE, EAISOCKTYPE, ESHUTDOWN, EEXIST</pre></dt>  <dt id="HandleType"><pre id="HandleType" data-language="nim">HandleType = enum
+  UNKNOWN_HANDLE = 0, TCP, UDP, NAMED_PIPE, TTY, FILE, TIMER, PREPARE, CHECK, IDLE, ASYNC,
+  ARES_TASK, ARES_EVENT, PROCESS, FS_EVENT</pre></dt>  <dt id="ReqType"><pre id="ReqType" data-language="nim">ReqType = enum
+  rUNKNOWN_REQ = 0, rCONNECT, rACCEPT, rREAD, rWRITE, rSHUTDOWN, rWAKEUP, rUDP_SEND, rFS,
+  rWORK, rGETADDRINFO, rREQ_TYPE_PRIVATE</pre></dt>  <dt id="Err"><pre id="Err" data-language="nim">Err = object
+  code* {.importc: "code".}: ErrorCode
+  sys_errno* {.importc: "sys_errno_".}: cint</pre></dt>  <dt id="FsEventType"><pre id="FsEventType" data-language="nim">FsEventType = enum
+  evRENAME = 1, evCHANGE = 2</pre></dt>  <dt id="TFsEvent"><pre id="TFsEvent" data-language="nim">TFsEvent = object
+  loop* {.importc: "loop".}: PLoop
+  typ* {.importc: "type".}: HandleType
+  close_cb* {.importc: "close_cb".}: CloseProc
+  data* {.importc: "data".}: pointer
+  filename {.importc: "filename".}: cstring</pre></dt>  <dt id="PFsEvent"><pre id="PFsEvent">PFsEvent = ptr TFsEvent</pre></dt>  <dt id="FsEvents"><pre id="FsEvents" data-language="nim">FsEvents = object
+  loop* {.importc: "loop".}: PLoop
+  typ* {.importc: "type".}: HandleType
+  close_cb* {.importc: "close_cb".}: CloseProc
+  data* {.importc: "data".}: pointer
+  filename* {.importc: "filename".}: cstring</pre></dt>  <dt id="Buf"><pre id="Buf" data-language="nim">Buf = object
+  base* {.importc: "base".}: cstring
+  len* {.importc: "len".}: csize</pre></dt>  <dt id="AnyHandle"><pre id="AnyHandle" data-language="nim">AnyHandle = object
+  tcp* {.importc: "tcp".}: TTcp
+  pipe* {.importc: "pipe".}: Pipe
+  prepare* {.importc: "prepare".}: TPrepare
+  check* {.importc: "check".}: TCheck
+  idle* {.importc: "idle".}: TIdle
+  async* {.importc: "async".}: TAsync
+  timer* {.importc: "timer".}: TTimer
+  getaddrinfo* {.importc: "getaddrinfo".}: GetAddrInfo
+  fs_event* {.importc: "fs_event".}: FsEvents</pre></dt>  <dt id="AnyReq"><pre id="AnyReq" data-language="nim">AnyReq = object
+  req* {.importc: "req".}: Req
+  write* {.importc: "write".}: Write
+  connect* {.importc: "connect".}: Connect
+  shutdown* {.importc: "shutdown".}: Shutdown
+  fs_req* {.importc: "fs_req".}: FS
+  work_req* {.importc: "work_req".}: Work</pre></dt>  <dt id="Counters"><pre id="Counters" data-language="nim">Counters = object
+  eio_init* {.importc: "eio_init".}: uint64
+  req_init* {.importc: "req_init".}: uint64
+  handle_init* {.importc: "handle_init".}: uint64
+  stream_init* {.importc: "stream_init".}: uint64
+  tcp_init* {.importc: "tcp_init".}: uint64
+  udp_init* {.importc: "udp_init".}: uint64
+  pipe_init* {.importc: "pipe_init".}: uint64
+  tty_init* {.importc: "tty_init".}: uint64
+  prepare_init* {.importc: "prepare_init".}: uint64
+  check_init* {.importc: "check_init".}: uint64
+  idle_init* {.importc: "idle_init".}: uint64
+  async_init* {.importc: "async_init".}: uint64
+  timer_init* {.importc: "timer_init".}: uint64
+  process_init* {.importc: "process_init".}: uint64
+  fs_event_init* {.importc: "fs_event_init".}: uint64</pre></dt>  <dt id="Loop"><pre id="Loop" data-language="nim">Loop = object
+  eio_want_poll_notifier* {.importc: "uv_eio_want_poll_notifier".}: TAsync
+  eio_done_poll_notifier* {.importc: "uv_eio_done_poll_notifier".}: TAsync
+  eio_poller* {.importc: "uv_eio_poller".}: TIdle
+  counters* {.importc: "counters".}: Counters
+  last_err* {.importc: "last_err".}: Err
+  data* {.importc: "data".}: pointer</pre></dt>  <dt id="PLoop"><pre id="PLoop">PLoop = ptr Loop</pre></dt>  <dt id="Shutdown"><pre id="Shutdown" data-language="nim">Shutdown = object
+  typ* {.importc: "type".}: ReqType
+  data* {.importc: "data".}: pointer
+  handle* {.importc: "handle".}: PStream
+  cb* {.importc: "cb".}: ShutdownProc</pre></dt>  <dt id="PShutdown"><pre id="PShutdown">PShutdown = ptr Shutdown</pre></dt>  <dt id="Handle"><pre id="Handle" data-language="nim">Handle = object
+  loop* {.importc: "loop".}: PLoop
+  typ* {.importc: "type".}: HandleType
+  close_cb* {.importc: "close_cb".}: CloseProc
+  data* {.importc: "data".}: pointer</pre></dt>  <dt id="PHandle"><pre id="PHandle">PHandle = ptr Handle</pre></dt>  <dt id="Stream"><pre id="Stream" data-language="nim">Stream = object
+  loop* {.importc: "loop".}: PLoop
+  typ* {.importc: "type".}: HandleType
+  alloc_cb* {.importc: "alloc_cb".}: AllocProc
+  read_cb* {.importc: "read_cb".}: ReadProc
+  read2_cb* {.importc: "read2_cb".}: ReadProc2
+  close_cb* {.importc: "close_cb".}: CloseProc
+  data* {.importc: "data".}: pointer
+  write_queue_size* {.importc: "write_queue_size".}: csize</pre></dt>  <dt id="PStream"><pre id="PStream">PStream = ptr Stream</pre></dt>  <dt id="Write"><pre id="Write" data-language="nim">Write = object
+  typ* {.importc: "type".}: ReqType
+  data* {.importc: "data".}: pointer
+  cb* {.importc: "cb".}: WriteProc
+  send_handle* {.importc: "send_handle".}: PStream
+  handle* {.importc: "handle".}: PStream</pre></dt>  <dt id="PWrite"><pre id="PWrite">PWrite = ptr Write</pre></dt>  <dt id="TTcp"><pre id="TTcp" data-language="nim">TTcp = object
+  loop* {.importc: "loop".}: PLoop
+  typ* {.importc: "type".}: HandleType
+  alloc_cb* {.importc: "alloc_cb".}: AllocProc
+  read_cb* {.importc: "read_cb".}: ReadProc
+  read2_cb* {.importc: "read2_cb".}: ReadProc2
+  close_cb* {.importc: "close_cb".}: CloseProc
+  data* {.importc: "data".}: pointer
+  write_queue_size* {.importc: "write_queue_size".}: csize</pre></dt>  <dt id="PTcp"><pre id="PTcp">PTcp = ptr TTcp</pre></dt>  <dt id="Connect"><pre id="Connect" data-language="nim">Connect = object
+  typ* {.importc: "type".}: ReqType
+  data* {.importc: "data".}: pointer
+  cb* {.importc: "cb".}: ConnectProc
+  handle* {.importc: "handle".}: PStream</pre></dt>  <dt id="PConnect"><pre id="PConnect">PConnect = ptr Connect</pre></dt>  <dt id="UdpFlags"><pre id="UdpFlags" data-language="nim">UdpFlags = enum
+  UDP_IPV6ONLY = 1, UDP_PARTIAL = 2 ## XXX: better import this</pre></dt>  <dt id="UdpSendProc"><pre id="UdpSendProc" data-language="nim">UdpSendProc = proc (req: PUdpSend; status: cint)</pre></dt>  <dt id="UdpRecvProc"><pre id="UdpRecvProc" data-language="nim">UdpRecvProc = proc (handle: PUdp; nread: cssize; buf: Buf; adr: ptr SockAddr;
+                 flags: cunsigned)</pre></dt>  <dt id="TUdp"><pre id="TUdp" data-language="nim">TUdp = object
+  loop* {.importc: "loop".}: PLoop
+  typ* {.importc: "type".}: HandleType
+  close_cb* {.importc: "close_cb".}: CloseProc
+  data* {.importc: "data".}: pointer</pre></dt>  <dt id="PUdp"><pre id="PUdp">PUdp = ptr TUdp</pre></dt>  <dt id="UdpSend"><pre id="UdpSend" data-language="nim">UdpSend = object
+  typ* {.importc: "type".}: ReqType
+  data* {.importc: "data".}: pointer
+  handle* {.importc: "handle".}: PUdp
+  cb* {.importc: "cb".}: UdpSendProc</pre></dt>  <dt id="PUdpSend"><pre id="PUdpSend">PUdpSend = ptr UdpSend</pre></dt>  <dt id="tTTy"><pre id="tTTy" data-language="nim">tTTy = object
+  loop* {.importc: "loop".}: PLoop
+  typ* {.importc: "type".}: HandleType
+  alloc_cb* {.importc: "alloc_cb".}: AllocProc
+  read_cb* {.importc: "read_cb".}: ReadProc
+  read2_cb* {.importc: "read2_cb".}: ReadProc2
+  close_cb* {.importc: "close_cb".}: CloseProc
+  data* {.importc: "data".}: pointer
+  write_queue_size* {.importc: "write_queue_size".}: csize</pre></dt>  <dt id="pTTy"><pre id="pTTy">pTTy = ptr tTTy</pre></dt>  <dt id="Pipe"><pre id="Pipe" data-language="nim">Pipe = object
+  loop* {.importc: "loop".}: PLoop
+  typ* {.importc: "type".}: HandleType
+  alloc_cb* {.importc: "alloc_cb".}: AllocProc
+  read_cb* {.importc: "read_cb".}: ReadProc
+  read2_cb* {.importc: "read2_cb".}: ReadProc2
+  close_cb* {.importc: "close_cb".}: CloseProc
+  data* {.importc: "data".}: pointer
+  write_queue_size* {.importc: "write_queue_size".}: csize
+  ipc {.importc: "ipc".}: int</pre></dt>  <dt id="PPipe"><pre id="PPipe">PPipe = ptr Pipe</pre></dt>  <dt id="TPrepare"><pre id="TPrepare" data-language="nim">TPrepare = object
+  loop* {.importc: "loop".}: PLoop
+  typ* {.importc: "type".}: HandleType
+  close_cb* {.importc: "close_cb".}: CloseProc
+  data* {.importc: "data".}: pointer</pre></dt>  <dt id="PPrepare"><pre id="PPrepare">PPrepare = ptr TPrepare</pre></dt>  <dt id="TCheck"><pre id="TCheck" data-language="nim">TCheck = object
+  loop* {.importc: "loop".}: PLoop
+  typ* {.importc: "type".}: HandleType
+  close_cb* {.importc: "close_cb".}: CloseProc
+  data* {.importc: "data".}: pointer</pre></dt>  <dt id="PCheck"><pre id="PCheck">PCheck = ptr TCheck</pre></dt>  <dt id="TIdle"><pre id="TIdle" data-language="nim">TIdle = object
+  loop* {.importc: "loop".}: PLoop
+  typ* {.importc: "type".}: HandleType
+  close_cb* {.importc: "close_cb".}: CloseProc
+  data* {.importc: "data".}: pointer</pre></dt>  <dt id="PIdle"><pre id="PIdle">PIdle = ptr TIdle</pre></dt>  <dt id="TAsync"><pre id="TAsync" data-language="nim">TAsync = object
+  loop* {.importc: "loop".}: PLoop
+  typ* {.importc: "type".}: HandleType
+  close_cb* {.importc: "close_cb".}: CloseProc
+  data* {.importc: "data".}: pointer</pre></dt>  <dt id="PAsync"><pre id="PAsync">PAsync = ptr TAsync</pre></dt>  <dt id="TTimer"><pre id="TTimer" data-language="nim">TTimer = object
+  loop* {.importc: "loop".}: PLoop
+  typ* {.importc: "type".}: HandleType
+  close_cb* {.importc: "close_cb".}: CloseProc
+  data* {.importc: "data".}: pointer</pre></dt>  <dt id="PTimer"><pre id="PTimer">PTimer = ptr TTimer</pre></dt>  <dt id="GetAddrInfo"><pre id="GetAddrInfo" data-language="nim">GetAddrInfo = object
+  typ* {.importc: "type".}: ReqType
+  data* {.importc: "data".}: pointer
+  loop* {.importc: "loop".}: PLoop</pre></dt>  <dt id="PGetAddrInfo"><pre id="PGetAddrInfo">PGetAddrInfo = ptr GetAddrInfo</pre></dt>  <dt id="ProcessOptions"><pre id="ProcessOptions" data-language="nim">ProcessOptions = object
+  exit_cb* {.importc: "exit_cb".}: ExitProc
+  file* {.importc: "file".}: cstring
+  args* {.importc: "args".}: cstringArray
+  env* {.importc: "env".}: cstringArray
+  cwd* {.importc: "cwd".}: cstring
+  windows_verbatim_arguments* {.importc: "windows_verbatim_arguments".}: cint
+  stdin_stream* {.importc: "stdin_stream".}: PPipe
+  stdout_stream* {.importc: "stdout_stream".}: PPipe
+  stderr_stream* {.importc: "stderr_stream".}: PPipe</pre></dt>  <dt id="PProcessOptions"><pre id="PProcessOptions">PProcessOptions = ptr ProcessOptions</pre></dt>  <dt id="TProcess"><pre id="TProcess" data-language="nim">TProcess = object
+  loop* {.importc: "loop".}: PLoop
+  typ* {.importc: "type".}: HandleType
+  close_cb* {.importc: "close_cb".}: CloseProc
+  data* {.importc: "data".}: pointer
+  exit_cb* {.importc: "exit_cb".}: ExitProc
+  pid* {.importc: "pid".}: cint</pre></dt>  <dt id="PProcess"><pre id="PProcess">PProcess = ptr TProcess</pre></dt>  <dt id="Work"><pre id="Work" data-language="nim">Work = object
+  typ* {.importc: "type".}: ReqType
+  data* {.importc: "data".}: pointer
+  loop* {.importc: "loop".}: PLoop
+  work_cb* {.importc: "work_cb".}: WorkProc
+  after_work_cb* {.importc: "after_work_cb".}: AfterWorkProc</pre></dt>  <dt id="PWork"><pre id="PWork">PWork = ptr Work</pre></dt>  <dt id="FsType"><pre id="FsType" data-language="nim">FsType = enum
+  FS_UNKNOWN = - 1, FS_CUSTOM, FS_OPEN, FS_CLOSE, FS_READ, FS_WRITE, FS_SENDFILE, FS_STAT,
+  FS_LSTAT, FS_FSTAT, FS_FTRUNCATE, FS_UTIME, FS_FUTIME, FS_CHMOD, FS_FCHMOD, FS_FSYNC,
+  FS_FDATASYNC, FS_UNLINK, FS_RMDIR, FS_MKDIR, FS_RENAME, FS_READDIR, FS_LINK,
+  FS_SYMLINK, FS_READLINK, FS_CHOWN, FS_FCHOWN</pre></dt>  <dt id="FS"><pre id="FS" data-language="nim">FS = object
+  typ* {.importc: "type".}: ReqType
+  data* {.importc: "data".}: pointer
+  loop* {.importc: "loop".}: PLoop
+  fs_type* {.importc: "fs_type".}: FsType
+  cb* {.importc: "cb".}: FsProc
+  result* {.importc: "result".}: cssize
+  fsPtr* {.importc: "ptr".}: pointer
+  path* {.importc: "path".}: cstring
+  errorno* {.importc: "errorno".}: cint</pre></dt>  <dt id="PFS"><pre id="PFS">PFS = ptr FS</pre></dt>  <dt id="Req"><pre id="Req" data-language="nim">Req = object
+  typ* {.importc: "type".}: ReqType
+  data* {.importc: "data".}: pointer</pre></dt>  <dt id="PReq"><pre id="PReq">PReq = ptr Req</pre></dt>  <dt id="AresOptions"><pre id="AresOptions" data-language="nim">AresOptions = object
+  flags* {.importc: "flags".}: int
+  timeout* {.importc: "timeout".}: int
+  tries* {.importc: "tries".}: int
+  ndots* {.importc: "ndots".}: int
+  udp_port* {.importc: "udp_port".}: Port
+  tcp_port* {.importc: "tcp_port".}: Port
+  socket_send_buffer_size* {.importc: "socket_send_buffer_size".}: int
+  socket_recv_buffer_size* {.importc: "socket_receive_buffer_size".}: int
+  servers* {.importc: "servers".}: ptr InAddr
+  nservers* {.importc: "nservers".}: int
+  domains* {.importc: "domains".}: ptr cstring
+  ndomains* {.importc: "ndomains".}: int
+  lookups* {.importc: "lookups".}: cstring</pre></dt>  <dt id="PAresOptions"><pre id="PAresOptions">PAresOptions = ptr AresOptions</pre></dt>  <dt id="PAresChannel"><pre id="PAresChannel">PAresChannel = pointer</pre></dt>  </dl>  <h2 id="12">Procs</h2> <dl> <dt id="loop_new"><pre id="loop_new," data-language="nim">proc loop_new(): PLoop {.importc: "uv_loop_new", header: "uv.h".}</pre></dt>  <dt id="loop_delete"><pre id="loop_delete,PLoop" data-language="nim">proc loop_delete(a2: PLoop) {.importc: "uv_loop_delete", header: "uv.h".}</pre></dt>  <dt id="default_loop"><pre id="default_loop," data-language="nim">proc default_loop(): PLoop {.importc: "uv_default_loop", header: "uv.h".}</pre></dt>  <dt id="run"><pre id="run,PLoop" data-language="nim">proc run(a2: PLoop): cint {.importc: "uv_run", header: "uv.h".}</pre></dt>  <dt id="addref"><pre id="addref,PLoop" data-language="nim">proc addref(a2: PLoop) {.importc: "uv_ref", header: "uv.h".}</pre></dt>  <dt id="unref"><pre id="unref,PLoop" data-language="nim">proc unref(a2: PLoop) {.importc: "uv_unref", header: "uv.h".}</pre></dt>  <dt id="update_time"><pre id="update_time,PLoop" data-language="nim">proc update_time(a2: PLoop) {.importc: "uv_update_time", header: "uv.h".}</pre></dt>  <dt id="now"><pre id="now,PLoop" data-language="nim">proc now(a2: PLoop): int64 {.importc: "uv_now", header: "uv.h".}</pre></dt>  <dt id="last_error"><pre id="last_error,PLoop" data-language="nim">proc last_error(a2: PLoop): Err {.importc: "uv_last_error", header: "uv.h".}</pre></dt>  <dt id="strerror"><pre id="strerror,Err" data-language="nim">proc strerror(err: Err): cstring {.importc: "uv_strerror", header: "uv.h".}</pre></dt>  <dt id="err_name"><pre id="err_name,Err" data-language="nim">proc err_name(err: Err): cstring {.importc: "uv_err_name", header: "uv.h".}</pre></dt>  <dt id="shutdown"><pre id="shutdown,PShutdown,PStream,ShutdownProc" data-language="nim">proc shutdown(req: PShutdown; handle: PStream; cb: ShutdownProc): cint {.
+    importc: "uv_shutdown", header: "uv.h".}</pre></dt>  <dt id="is_active"><pre id="is_active,PHandle" data-language="nim">proc is_active(handle: PHandle): cint {.importc: "uv_is_active", header: "uv.h".}</pre></dt>  <dt id="close"><pre id="close,PHandle,CloseProc" data-language="nim">proc close(handle: PHandle; close_cb: CloseProc) {.importc: "uv_close", header: "uv.h".}</pre></dt>  <dt id="buf_init"><pre id="buf_init,cstring,csize" data-language="nim">proc buf_init(base: cstring; len: csize): Buf {.importc: "uv_buf_init", header: "uv.h".}</pre></dt>  <dt id="listen"><pre id="listen,PStream,cint,ConnectionProc" data-language="nim">proc listen(stream: PStream; backlog: cint; cb: ConnectionProc): cint {.
+    importc: "uv_listen", header: "uv.h".}</pre></dt>  <dt id="accept"><pre id="accept,PStream,PStream" data-language="nim">proc accept(server: PStream; client: PStream): cint {.importc: "uv_accept",
+    header: "uv.h".}</pre></dt>  <dt id="read_start"><pre id="read_start,PStream,AllocProc,ReadProc" data-language="nim">proc read_start(a2: PStream; alloc_cb: AllocProc; read_cb: ReadProc): cint {.
+    importc: "uv_read_start", header: "uv.h".}</pre></dt>  <dt id="read_start"><pre id="read_start,PStream,AllocProc,ReadProc2" data-language="nim">proc read_start(a2: PStream; alloc_cb: AllocProc; read_cb: ReadProc2): cint {.
+    importc: "uv_read2_start", header: "uv.h".}</pre></dt>  <dt id="read_stop"><pre id="read_stop,PStream" data-language="nim">proc read_stop(a2: PStream): cint {.importc: "uv_read_stop", header: "uv.h".}</pre></dt>  <dt id="write"><pre id="write,PWrite,PStream,ptr.Buf,cint,WriteProc" data-language="nim">proc write(req: PWrite; handle: PStream; bufs: ptr Buf; bufcnt: cint; cb: WriteProc): cint {.
+    importc: "uv_write", header: "uv.h".}</pre></dt>  <dt id="write"><pre id="write,PWrite,PStream,ptr.Buf,cint,PStream,WriteProc" data-language="nim">proc write(req: PWrite; handle: PStream; bufs: ptr Buf; bufcnt: cint;
+          send_handle: PStream; cb: WriteProc): cint {.importc: "uv_write2",
+    header: "uv.h".}</pre></dt>  <dt id="tcp_init"><pre id="tcp_init,PLoop,PTcp" data-language="nim">proc tcp_init(a2: PLoop; handle: PTcp): cint {.importc: "uv_tcp_init", header: "uv.h".}</pre></dt>  <dt id="tcp_bind"><pre id="tcp_bind,PTcp,Sockaddr_in" data-language="nim">proc tcp_bind(handle: PTcp; a3: Sockaddr_in): cint {.importc: "uv_tcp_bind",
+    header: "uv.h".}</pre></dt>  <dt id="tcp_bind6"><pre id="tcp_bind6,PTcp,Sockaddr_in6" data-language="nim">proc tcp_bind6(handle: PTcp; a3: Sockaddr_in6): cint {.importc: "uv_tcp_bind6",
+    header: "uv.h".}</pre></dt>  <dt id="tcp_getsockname"><pre id="tcp_getsockname,PTcp,ptr.SockAddr,cint" data-language="nim">proc tcp_getsockname(handle: PTcp; name: ptr SockAddr; namelen: var cint): cint {.
+    importc: "uv_tcp_getsockname", header: "uv.h".}</pre></dt>  <dt id="tcp_getpeername"><pre id="tcp_getpeername,PTcp,ptr.SockAddr,cint" data-language="nim">proc tcp_getpeername(handle: PTcp; name: ptr SockAddr; namelen: var cint): cint {.
+    importc: "uv_tcp_getpeername", header: "uv.h".}</pre></dt>  <dt id="tcp_connect"><pre id="tcp_connect,PConnect,PTcp,Sockaddr_in,ConnectProc" data-language="nim">proc tcp_connect(req: PConnect; handle: PTcp; address: Sockaddr_in; cb: ConnectProc): cint {.
+    importc: "uv_tcp_connect", header: "uv.h".}</pre></dt>  <dt id="tcp_connect6"><pre id="tcp_connect6,PConnect,PTcp,Sockaddr_in6,ConnectProc" data-language="nim">proc tcp_connect6(req: PConnect; handle: PTcp; address: Sockaddr_in6; cb: ConnectProc): cint {.
+    importc: "uv_tcp_connect6", header: "uv.h".}</pre></dt>  <dt id="udp_init"><pre id="udp_init,PLoop,PUdp" data-language="nim">proc udp_init(a2: PLoop; handle: PUdp): cint {.importc: "uv_udp_init", header: "uv.h".}</pre></dt>  <dt id="udp_bind"><pre id="udp_bind,PUdp,Sockaddr_in,cunsigned" data-language="nim">proc udp_bind(handle: PUdp; adr: Sockaddr_in; flags: cunsigned): cint {.
+    importc: "uv_udp_bind", header: "uv.h".}</pre></dt>  <dt id="udp_bind6"><pre id="udp_bind6,PUdp,Sockaddr_in6,cunsigned" data-language="nim">proc udp_bind6(handle: PUdp; adr: Sockaddr_in6; flags: cunsigned): cint {.
+    importc: "uv_udp_bind6", header: "uv.h".}</pre></dt>  <dt id="udp_getsockname"><pre id="udp_getsockname,PUdp,ptr.SockAddr,cint" data-language="nim">proc udp_getsockname(handle: PUdp; name: ptr SockAddr; namelen: var cint): cint {.
+    importc: "uv_udp_getsockname", header: "uv.h".}</pre></dt>  <dt id="udp_send"><pre id="udp_send,PUdpSend,PUdp,ptr.Buf,cint,Sockaddr_in,UdpSendProc" data-language="nim">proc udp_send(req: PUdpSend; handle: PUdp; bufs: ptr Buf; bufcnt: cint; adr: Sockaddr_in;
+             send_cb: UdpSendProc): cint {.importc: "uv_udp_send", header: "uv.h".}</pre></dt>  <dt id="udp_send6"><pre id="udp_send6,PUdpSend,PUdp,ptr.Buf,cint,Sockaddr_in6,UdpSendProc" data-language="nim">proc udp_send6(req: PUdpSend; handle: PUdp; bufs: ptr Buf; bufcnt: cint;
+              adr: Sockaddr_in6; send_cb: UdpSendProc): cint {.
+    importc: "uv_udp_send6", header: "uv.h".}</pre></dt>  <dt id="udp_recv_start"><pre id="udp_recv_start,PUdp,AllocProc,UdpRecvProc" data-language="nim">proc udp_recv_start(handle: PUdp; alloc_cb: AllocProc; recv_cb: UdpRecvProc): cint {.
+    importc: "uv_udp_recv_start", header: "uv.h".}</pre></dt>  <dt id="udp_recv_stop"><pre id="udp_recv_stop,PUdp" data-language="nim">proc udp_recv_stop(handle: PUdp): cint {.importc: "uv_udp_recv_stop", header: "uv.h".}</pre></dt>  <dt id="tty_init"><pre id="tty_init,PLoop,pTTy,File" data-language="nim">proc tty_init(a2: PLoop; a3: pTTy; fd: File): cint {.importc: "uv_tty_init",
+    header: "uv.h".}</pre></dt>  <dt id="tty_set_mode"><pre id="tty_set_mode,pTTy,cint" data-language="nim">proc tty_set_mode(a2: pTTy; mode: cint): cint {.importc: "uv_tty_set_mode",
+    header: "uv.h".}</pre></dt>  <dt id="tty_get_winsize"><pre id="tty_get_winsize,pTTy,cint,cint" data-language="nim">proc tty_get_winsize(a2: pTTy; width: var cint; height: var cint): cint {.
+    importc: "uv_tty_get_winsize", header: "uv.h".}</pre></dt>  <dt id="tty_reset_mode"><pre id="tty_reset_mode," data-language="nim">proc tty_reset_mode() {.importc: "uv_tty_reset_mode", header: "uv.h".}</pre></dt>  <dt id="guess_handle"><pre id="guess_handle,File" data-language="nim">proc guess_handle(file: File): HandleType {.importc: "uv_guess_handle", header: "uv.h".}</pre></dt>  <dt id="pipe_init"><pre id="pipe_init,PLoop,PPipe,int" data-language="nim">proc pipe_init(a2: PLoop; handle: PPipe; ipc: int): cint {.importc: "uv_pipe_init",
+    header: "uv.h".}</pre></dt>  <dt id="pipe_open"><pre id="pipe_open,PPipe,File" data-language="nim">proc pipe_open(a2: PPipe; file: File) {.importc: "uv_pipe_open", header: "uv.h".}</pre></dt>  <dt id="pipe_bind"><pre id="pipe_bind,PPipe,cstring" data-language="nim">proc pipe_bind(handle: PPipe; name: cstring): cint {.importc: "uv_pipe_bind",
+    header: "uv.h".}</pre></dt>  <dt id="pipe_connect"><pre id="pipe_connect,PConnect,PPipe,cstring,ConnectProc" data-language="nim">proc pipe_connect(req: PConnect; handle: PPipe; name: cstring; cb: ConnectProc): cint {.
+    importc: "uv_pipe_connect", header: "uv.h".}</pre></dt>  <dt id="prepare_init"><pre id="prepare_init,PLoop,PPrepare" data-language="nim">proc prepare_init(a2: PLoop; prepare: PPrepare): cint {.importc: "uv_prepare_init",
+    header: "uv.h".}</pre></dt>  <dt id="prepare_start"><pre id="prepare_start,PPrepare,PrepareProc" data-language="nim">proc prepare_start(prepare: PPrepare; cb: PrepareProc): cint {.
+    importc: "uv_prepare_start", header: "uv.h".}</pre></dt>  <dt id="prepare_stop"><pre id="prepare_stop,PPrepare" data-language="nim">proc prepare_stop(prepare: PPrepare): cint {.importc: "uv_prepare_stop",
+    header: "uv.h".}</pre></dt>  <dt id="check_init"><pre id="check_init,PLoop,PCheck" data-language="nim">proc check_init(a2: PLoop; check: PCheck): cint {.importc: "uv_check_init",
+    header: "uv.h".}</pre></dt>  <dt id="check_start"><pre id="check_start,PCheck,CheckProc" data-language="nim">proc check_start(check: PCheck; cb: CheckProc): cint {.importc: "uv_check_start",
+    header: "uv.h".}</pre></dt>  <dt id="check_stop"><pre id="check_stop,PCheck" data-language="nim">proc check_stop(check: PCheck): cint {.importc: "uv_check_stop", header: "uv.h".}</pre></dt>  <dt id="idle_init"><pre id="idle_init,PLoop,PIdle" data-language="nim">proc idle_init(a2: PLoop; idle: PIdle): cint {.importc: "uv_idle_init", header: "uv.h".}</pre></dt>  <dt id="idle_start"><pre id="idle_start,PIdle,IdleProc" data-language="nim">proc idle_start(idle: PIdle; cb: IdleProc): cint {.importc: "uv_idle_start",
+    header: "uv.h".}</pre></dt>  <dt id="idle_stop"><pre id="idle_stop,PIdle" data-language="nim">proc idle_stop(idle: PIdle): cint {.importc: "uv_idle_stop", header: "uv.h".}</pre></dt>  <dt id="async_init"><pre id="async_init,PLoop,PAsync,AsyncProc" data-language="nim">proc async_init(a2: PLoop; async: PAsync; async_cb: AsyncProc): cint {.
+    importc: "uv_async_init", header: "uv.h".}</pre></dt>  <dt id="async_send"><pre id="async_send,PAsync" data-language="nim">proc async_send(async: PAsync): cint {.importc: "uv_async_send", header: "uv.h".}</pre></dt>  <dt id="timer_init"><pre id="timer_init,PLoop,PTimer" data-language="nim">proc timer_init(a2: PLoop; timer: PTimer): cint {.importc: "uv_timer_init",
+    header: "uv.h".}</pre></dt>  <dt id="timer_start"><pre id="timer_start,PTimer,TimerProc,int64,int64" data-language="nim">proc timer_start(timer: PTimer; cb: TimerProc; timeout: int64; repeat: int64): cint {.
+    importc: "uv_timer_start", header: "uv.h".}</pre></dt>  <dt id="timer_stop"><pre id="timer_stop,PTimer" data-language="nim">proc timer_stop(timer: PTimer): cint {.importc: "uv_timer_stop", header: "uv.h".}</pre></dt>  <dt id="timer_again"><pre id="timer_again,PTimer" data-language="nim">proc timer_again(timer: PTimer): cint {.importc: "uv_timer_again", header: "uv.h".}</pre></dt>  <dt id="timer_set_repeat"><pre id="timer_set_repeat,PTimer,int64" data-language="nim">proc timer_set_repeat(timer: PTimer; repeat: int64) {.importc: "uv_timer_set_repeat",
+    header: "uv.h".}</pre></dt>  <dt id="timer_get_repeat"><pre id="timer_get_repeat,PTimer" data-language="nim">proc timer_get_repeat(timer: PTimer): int64 {.importc: "uv_timer_get_repeat",
+    header: "uv.h".}</pre></dt>  <dt id="ares_init_options"><pre id="ares_init_options,PLoop,PAresChannel,PAresOptions,cint" data-language="nim">proc ares_init_options(a2: PLoop; channel: PAresChannel; options: PAresOptions;
+                      optmask: cint): cint {.importc: "uv_ares_init_options",
+    header: "uv.h".}</pre></dt>  <dt id="ares_destroy"><pre id="ares_destroy,PLoop,PAresChannel" data-language="nim">proc ares_destroy(a2: PLoop; channel: PAresChannel) {.importc: "uv_ares_destroy",
+    header: "uv.h".}</pre></dt>  <dt id="getaddrinfo"><pre id="getaddrinfo,PLoop,PGetAddrInfo,GetAddrInfoProc,cstring,cstring,ptr.AddrInfo" data-language="nim">proc getaddrinfo(a2: PLoop; handle: PGetAddrInfo; getaddrinfo_cb: GetAddrInfoProc;
+                node: cstring; service: cstring; hints: ptr AddrInfo): cint {.
+    importc: "uv_getaddrinfo", header: "uv.h".}</pre></dt>  <dt id="freeaddrinfo"><pre id="freeaddrinfo,ptr.AddrInfo" data-language="nim">proc freeaddrinfo(ai: ptr AddrInfo) {.importc: "uv_freeaddrinfo", header: "uv.h".}</pre></dt>  <dt id="spawn"><pre id="spawn,PLoop,PProcess,ProcessOptions" data-language="nim">proc spawn(a2: PLoop; a3: PProcess; options: ProcessOptions): cint {.
+    importc: "uv_spawn", header: "uv.h".}</pre></dt>  <dt id="process_kill"><pre id="process_kill,PProcess,cint" data-language="nim">proc process_kill(a2: PProcess; signum: cint): cint {.importc: "uv_process_kill",
+    header: "uv.h".}</pre></dt>  <dt id="queue_work"><pre id="queue_work,PLoop,PWork,WorkProc,AfterWorkProc" data-language="nim">proc queue_work(loop: PLoop; req: PWork; work_cb: WorkProc;
+               after_work_cb: AfterWorkProc): cint {.importc: "uv_queue_work",
+    header: "uv.h".}</pre></dt>  <dt id="req_cleanup"><pre id="req_cleanup,PFS" data-language="nim">proc req_cleanup(req: PFS) {.importc: "uv_fs_req_cleanup", header: "uv.h".}</pre></dt>  <dt id="close"><pre id="close,PLoop,PFS,File,FsProc" data-language="nim">proc close(loop: PLoop; req: PFS; file: File; cb: FsProc): cint {.importc: "uv_fs_close",
+    header: "uv.h".}</pre></dt>  <dt id="open"><pre id="open,PLoop,PFS,cstring,cint,cint,FsProc" data-language="nim">proc open(loop: PLoop; req: PFS; path: cstring; flags: cint; mode: cint; cb: FsProc): cint {.
+    importc: "uv_fs_open", header: "uv.h".}</pre></dt>  <dt id="read"><pre id="read,PLoop,PFS,File,pointer,csize,coff,FsProc" data-language="nim">proc read(loop: PLoop; req: PFS; file: File; buf: pointer; length: csize; offset: coff;
+         cb: FsProc): cint {.importc: "uv_fs_read", header: "uv.h".}</pre></dt>  <dt id="unlink"><pre id="unlink,PLoop,PFS,cstring,FsProc" data-language="nim">proc unlink(loop: PLoop; req: PFS; path: cstring; cb: FsProc): cint {.
+    importc: "uv_fs_unlink", header: "uv.h".}</pre></dt>  <dt id="write"><pre id="write,PLoop,PFS,File,pointer,csize,coff,FsProc" data-language="nim">proc write(loop: PLoop; req: PFS; file: File; buf: pointer; length: csize; offset: coff;
+          cb: FsProc): cint {.importc: "uv_fs_write", header: "uv.h".}</pre></dt>  <dt id="mkdir"><pre id="mkdir,PLoop,PFS,cstring,cint,FsProc" data-language="nim">proc mkdir(loop: PLoop; req: PFS; path: cstring; mode: cint; cb: FsProc): cint {.
+    importc: "uv_fs_mkdir", header: "uv.h".}</pre></dt>  <dt id="rmdir"><pre id="rmdir,PLoop,PFS,cstring,FsProc" data-language="nim">proc rmdir(loop: PLoop; req: PFS; path: cstring; cb: FsProc): cint {.
+    importc: "uv_fs_rmdir", header: "uv.h".}</pre></dt>  <dt id="readdir"><pre id="readdir,PLoop,PFS,cstring,cint,FsProc" data-language="nim">proc readdir(loop: PLoop; req: PFS; path: cstring; flags: cint; cb: FsProc): cint {.
+    importc: "uv_fs_readdir", header: "uv.h".}</pre></dt>  <dt id="stat"><pre id="stat,PLoop,PFS,cstring,FsProc" data-language="nim">proc stat(loop: PLoop; req: PFS; path: cstring; cb: FsProc): cint {.importc: "uv_fs_stat",
+    header: "uv.h".}</pre></dt>  <dt id="fstat"><pre id="fstat,PLoop,PFS,File,FsProc" data-language="nim">proc fstat(loop: PLoop; req: PFS; file: File; cb: FsProc): cint {.importc: "uv_fs_fstat",
+    header: "uv.h".}</pre></dt>  <dt id="rename"><pre id="rename,PLoop,PFS,cstring,cstring,FsProc" data-language="nim">proc rename(loop: PLoop; req: PFS; path: cstring; new_path: cstring; cb: FsProc): cint {.
+    importc: "uv_fs_rename", header: "uv.h".}</pre></dt>  <dt id="fsync"><pre id="fsync,PLoop,PFS,File,FsProc" data-language="nim">proc fsync(loop: PLoop; req: PFS; file: File; cb: FsProc): cint {.importc: "uv_fs_fsync",
+    header: "uv.h".}</pre></dt>  <dt id="fdatasync"><pre id="fdatasync,PLoop,PFS,File,FsProc" data-language="nim">proc fdatasync(loop: PLoop; req: PFS; file: File; cb: FsProc): cint {.
+    importc: "uv_fs_fdatasync", header: "uv.h".}</pre></dt>  <dt id="ftruncate"><pre id="ftruncate,PLoop,PFS,File,coff,FsProc" data-language="nim">proc ftruncate(loop: PLoop; req: PFS; file: File; offset: coff; cb: FsProc): cint {.
+    importc: "uv_fs_ftruncate", header: "uv.h".}</pre></dt>  <dt id="sendfile"><pre id="sendfile,PLoop,PFS,File,File,coff,csize,FsProc" data-language="nim">proc sendfile(loop: PLoop; req: PFS; out_fd: File; in_fd: File; in_offset: coff;
+             length: csize; cb: FsProc): cint {.importc: "uv_fs_sendfile",
+    header: "uv.h".}</pre></dt>  <dt id="chmod"><pre id="chmod,PLoop,PFS,cstring,cint,FsProc" data-language="nim">proc chmod(loop: PLoop; req: PFS; path: cstring; mode: cint; cb: FsProc): cint {.
+    importc: "uv_fs_chmod", header: "uv.h".}</pre></dt>  <dt id="utime"><pre id="utime,PLoop,PFS,cstring,cdouble,cdouble,FsProc" data-language="nim">proc utime(loop: PLoop; req: PFS; path: cstring; atime: cdouble; mtime: cdouble; cb: FsProc): cint {.
+    importc: "uv_fs_utime", header: "uv.h".}</pre></dt>  <dt id="futime"><pre id="futime,PLoop,PFS,File,cdouble,cdouble,FsProc" data-language="nim">proc futime(loop: PLoop; req: PFS; file: File; atime: cdouble; mtime: cdouble; cb: FsProc): cint {.
+    importc: "uv_fs_futime", header: "uv.h".}</pre></dt>  <dt id="lstat"><pre id="lstat,PLoop,PFS,cstring,FsProc" data-language="nim">proc lstat(loop: PLoop; req: PFS; path: cstring; cb: FsProc): cint {.
+    importc: "uv_fs_lstat", header: "uv.h".}</pre></dt>  <dt id="link"><pre id="link,PLoop,PFS,cstring,cstring,FsProc" data-language="nim">proc link(loop: PLoop; req: PFS; path: cstring; new_path: cstring; cb: FsProc): cint {.
+    importc: "uv_fs_link", header: "uv.h".}</pre></dt>  <dt id="symlink"><pre id="symlink,PLoop,PFS,cstring,cstring,cint,FsProc" data-language="nim">proc symlink(loop: PLoop; req: PFS; path: cstring; new_path: cstring; flags: cint;
+            cb: FsProc): cint {.importc: "uv_fs_symlink", header: "uv.h".}</pre></dt>  <dt id="readlink"><pre id="readlink,PLoop,PFS,cstring,FsProc" data-language="nim">proc readlink(loop: PLoop; req: PFS; path: cstring; cb: FsProc): cint {.
+    importc: "uv_fs_readlink", header: "uv.h".}</pre></dt>  <dt id="fchmod"><pre id="fchmod,PLoop,PFS,File,cint,FsProc" data-language="nim">proc fchmod(loop: PLoop; req: PFS; file: File; mode: cint; cb: FsProc): cint {.
+    importc: "uv_fs_fchmod", header: "uv.h".}</pre></dt>  <dt id="chown"><pre id="chown,PLoop,PFS,cstring,cint,cint,FsProc" data-language="nim">proc chown(loop: PLoop; req: PFS; path: cstring; uid: cint; gid: cint; cb: FsProc): cint {.
+    importc: "uv_fs_chown", header: "uv.h".}</pre></dt>  <dt id="fchown"><pre id="fchown,PLoop,PFS,File,cint,cint,FsProc" data-language="nim">proc fchown(loop: PLoop; req: PFS; file: File; uid: cint; gid: cint; cb: FsProc): cint {.
+    importc: "uv_fs_fchown", header: "uv.h".}</pre></dt>  <dt id="event_init"><pre id="event_init,PLoop,PFsEvent,cstring,FsEventProc" data-language="nim">proc event_init(loop: PLoop; handle: PFsEvent; filename: cstring; cb: FsEventProc): cint {.
+    importc: "uv_fs_event_init", header: "uv.h".}</pre></dt>  <dt id="ip4_addr"><pre id="ip4_addr,cstring,cint" data-language="nim">proc ip4_addr(ip: cstring; port: cint): Sockaddr_in {.importc: "uv_ip4_addr",
+    header: "uv.h".}</pre></dt>  <dt id="ip6_addr"><pre id="ip6_addr,cstring,cint" data-language="nim">proc ip6_addr(ip: cstring; port: cint): Sockaddr_in6 {.importc: "uv_ip6_addr",
+    header: "uv.h".}</pre></dt>  <dt id="ip4_name"><pre id="ip4_name,ptr.Sockaddr_in,cstring,csize" data-language="nim">proc ip4_name(src: ptr Sockaddr_in; dst: cstring; size: csize): cint {.
+    importc: "uv_ip4_name", header: "uv.h".}</pre></dt>  <dt id="ip6_name"><pre id="ip6_name,ptr.Sockaddr_in6,cstring,csize" data-language="nim">proc ip6_name(src: ptr Sockaddr_in6; dst: cstring; size: csize): cint {.
+    importc: "uv_ip6_name", header: "uv.h".}</pre></dt>  <dt id="exepath"><pre id="exepath,cstring,csize" data-language="nim">proc exepath(buffer: cstring; size: var csize): cint {.importc: "uv_exepath",
+    header: "uv.h".}</pre></dt>  <dt id="hrtime"><pre id="hrtime," data-language="nim">proc hrtime(): uint64 {.importc: "uv_hrtime", header: "uv.h".}</pre></dt>  <dt id="loadavg"><pre id="loadavg,array[,cdouble]" data-language="nim">proc loadavg(load: var array[0 .. 2, cdouble]) {.importc: "uv_loadavg", header: "uv.h".}</pre></dt>  <dt id="get_free_memory"><pre id="get_free_memory," data-language="nim">proc get_free_memory(): cdouble {.importc: "uv_get_free_memory", header: "uv.h".}</pre></dt>  <dt id="get_total_memory"><pre id="get_total_memory," data-language="nim">proc get_total_memory(): cdouble {.importc: "uv_get_total_memory", header: "uv.h".}</pre></dt>  </dl>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2006–2017 Andreas Rumpf<br>Licensed under the MIT License.<br>
+    <a href="https://nim-lang.org/docs/libuv.html" class="_attribution-link" target="_blank">https://nim-lang.org/docs/libuv.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

@@ -1,0 +1,87 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Threadpool - Nim - W3cubDocs</title>
+  
+  <meta name="description" content=" Implements Nim&#39;s &#39;spawn&#39;. ">
+  <meta name="keywords" content="module, threadpool, -, nim">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/nim/threadpool/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/nim.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/nim/" class="_nav-link" title="" style="margin-left:0;">Nim</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _nim">
+				
+<h1 class="title">Module threadpool</h1>  <p class="module-desc">Implements Nim's 'spawn'.</p>  <h2 id="6">Imports</h2> <dl> <a href="../cpuinfo/">cpuinfo</a>, <a href="../cpuload/">cpuload</a>, <a href="../locks/">locks</a> </dl>  <h2 id="7">Types</h2> <dl> <dt id="foreign"><pre id="foreign">foreign = object</pre></dt> <dd> a region that indicates the pointer comes from a foreign thread heap.   </dd> <dt id="FlowVarBase"><pre id="FlowVarBase">FlowVarBase = ref FlowVarBaseObj</pre></dt> <dd> untyped base class for 'FlowVar[T]'   </dd> <dt id="FlowVar"><pre id="FlowVar" data-language="nim">FlowVar[T] = ref FlowVarObj[T]</pre></dt> <dd> a data flow variable   </dd> <dt id="ThreadId"><pre id="ThreadId" data-language="nim">ThreadId = range[0 .. 32 - 1]</pre></dt>  </dl>  <h2 id="10">Consts</h2> <dl> <dt id="MaxThreadPoolSize"><pre id="MaxThreadPoolSize">MaxThreadPoolSize = 256</pre></dt> <dd> maximal size of the thread pool. 256 threads should be good enough for anybody ;-)   </dd> <dt id="MaxDistinguishedThread"><pre id="MaxDistinguishedThread">MaxDistinguishedThread = 32</pre></dt> <dd> maximal number of "distinguished" threads.   </dd> </dl>  <h2 id="12">Procs</h2> <dl> <dt id="await"><pre id="await,FlowVarBase" data-language="nim">proc await(fv: FlowVarBase) {.raises: [], tags: [].}</pre></dt> <dd> waits until the value for the flowVar arrives. Usually it is not necessary to call this explicitly.   </dd> <dt id="awaitAndThen"><pre id="awaitAndThen,FlowVar[T],proc(T)" data-language="nim">proc awaitAndThen[T](fv: FlowVar[T]; action: proc (x: T) {.closure.})</pre></dt> <dd> blocks until the <code>fv</code> is available and then passes its value to <code>action</code>. Note that due to Nim's parameter passing semantics this means that <code>T</code> doesn't need to be copied and so <code>awaitAndThen</code> can sometimes be more efficient than <code>^</code>.   </dd> <dt id="unsafeRead"><pre id="unsafeRead,FlowVar[ref.T]" data-language="nim">proc unsafeRead[T](fv: FlowVar[ref T]): foreign ptr T</pre></dt> <dd> blocks until the value is available and then returns this value.   </dd> <dt id="^"><pre id="^,FlowVar[ref.T]" data-language="nim">proc `^`[T](fv: FlowVar[ref T]): ref T</pre></dt> <dd> blocks until the value is available and then returns this value.   </dd> <dt id="^"><pre id="^,FlowVar[T]" data-language="nim">proc `^`[T](fv: FlowVar[T]): T</pre></dt> <dd> blocks until the value is available and then returns this value.   </dd> <dt id="awaitAny"><pre id="awaitAny,openArray[FlowVarBase]" data-language="nim">proc awaitAny(flowVars: openArray[FlowVarBase]): int {.raises: [], tags: [].}</pre></dt> <dd> awaits any of the given flowVars. Returns the index of one flowVar for which a value arrived. A flowVar only supports one call to 'awaitAny' at the same time. That means if you await([a,b]) and await([b,c]) the second call will only await 'c'. If there is no flowVar left to be able to wait on, -1 is returned. <strong>Note</strong>: This results in non-deterministic behaviour and so should be avoided.   </dd> <dt id="isReady"><pre id="isReady,FlowVarBase" data-language="nim">proc isReady(fv: FlowVarBase): bool {.raises: [], tags: [].}</pre></dt> <dd> <p>Determines whether the specified <code>FlowVarBase</code>'s value is available.</p> <p>If <code>true</code> awaiting <code>fv</code> will not block.</p>   </dd> <dt id="setMinPoolSize"><pre id="setMinPoolSize,range[]" data-language="nim">proc setMinPoolSize(size: range[1 .. MaxThreadPoolSize]) {.raises: [], tags: [].}</pre></dt> <dd> sets the minimal thread pool size. The default value of this is 4.   </dd> <dt id="setMaxPoolSize"><pre id="setMaxPoolSize,range[]" data-language="nim">proc setMaxPoolSize(size: range[1 .. MaxThreadPoolSize]) {.raises: [], tags: [].}</pre></dt> <dd> sets the maximal thread pool size. The default value of this is <code>MaxThreadPoolSize</code>.   </dd> <dt id="preferSpawn"><pre id="preferSpawn," data-language="nim">proc preferSpawn(): bool {.raises: [], tags: [].}</pre></dt> <dd> Use this proc to determine quickly if a 'spawn' or a direct call is preferable. If it returns 'true' a 'spawn' may make sense. In general it is not necessary to call this directly; use 'spawnX' instead.   </dd> <dt id="spawn"><pre id="spawn,typed" data-language="nim">proc spawn(call: typed): void {.magic: "Spawn".}</pre></dt> <dd> always spawns a new task, so that the 'call' is never executed on the calling thread. 'call' has to be proc call 'p(...)' where 'p' is gcsafe and has a return type that is either 'void' or compatible with <code>FlowVar[T]</code>.   </dd> <dt id="pinnedSpawn"><pre id="pinnedSpawn,ThreadId,typed" data-language="nim">proc pinnedSpawn(id: ThreadId; call: typed): void {.magic: "Spawn".}</pre></dt> <dd> always spawns a new task on the worker thread with <code>id</code>, so that the 'call' is <strong>always</strong> executed on the thread. 'call' has to be proc call 'p(...)' where 'p' is gcsafe and has a return type that is either 'void' or compatible with <code>FlowVar[T]</code>.   </dd> <dt id="parallel"><pre id="parallel,untyped" data-language="nim">proc parallel(body: untyped) {.magic: "Parallel".}</pre></dt> <dd> a parallel section can be used to execute a block in parallel. <code>body</code> has to be in a DSL that is a particular subset of the language. Please refer to the manual for further information.   </dd> <dt id="sync"><pre id="sync," data-language="nim">proc sync() {.raises: [], tags: [].}</pre></dt> <dd> a simple barrier to wait for all spawn'ed tasks. If you need more elaborate waiting, you have to use an explicit barrier.   </dd> </dl>  <h2 id="17">Templates</h2> <dl> <dt id="spawnX"><pre id="spawnX.t," data-language="nim">template spawnX(call): void</pre></dt> <dd> spawns a new task if a CPU core is ready, otherwise executes the call in the calling thread. Usually it is advised to use 'spawn' in order to not block the producer for an unknown amount of time. 'call' has to be proc call 'p(...)' where 'p' is gcsafe and has a return type that is either 'void' or compatible with <code>FlowVar[T]</code>.   </dd> </dl>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2006–2017 Andreas Rumpf<br>Licensed under the MIT License.<br>
+    <a href="https://nim-lang.org/docs/threadpool.html" class="_attribution-link" target="_blank">https://nim-lang.org/docs/threadpool.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

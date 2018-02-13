@@ -1,0 +1,130 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Nativesockets - Nim - W3cubDocs</title>
+  
+  <meta name="description" content=" This module implements a low-level cross-platform sockets interface. Look at the net module for the higher-level version. ">
+  <meta name="keywords" content="module, nativesockets, -, nim">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/nim/nativesockets/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/nim.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/nim/" class="_nav-link" title="" style="margin-left:0;">Nim</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _nim">
+				
+<h1 class="title">Module nativesockets</h1>  <p class="module-desc">This module implements a low-level cross-platform sockets interface. Look at the <code>net</code> module for the higher-level version.</p>  <h2 id="6">Imports</h2> <dl> <a href="../os/">os</a>, <a href="../options/">options</a>, <a href="../winlean/">winlean</a> </dl>  <h2 id="7">Types</h2> <dl> <dt id="Port"><pre id="Port">Port = distinct uint16</pre></dt> <dd> port type   </dd> <dt id="Domain"><pre id="Domain" data-language="nim">Domain = enum
+  AF_UNSPEC = 0, ## unspecified domain (can be detected automatically by
+              ## some procedures, such as getaddrinfo)
+  AF_UNIX = 1,                  ## for local socket (using a file). Unsupported on Windows.
+  AF_INET = 2,                  ## for network protocol IPv4 or
+  AF_INET6 = when defined(macosx): ## for network protocol IPv6.
+  30
+   else: 23</pre></dt> <dd> domain, which specifies the protocol family of the created socket. Other domains than those that are listed here are unsupported.   </dd> <dt id="SockType"><pre id="SockType" data-language="nim">SockType = enum
+  SOCK_STREAM = 1,              ## reliable stream-oriented service or Stream Sockets
+  SOCK_DGRAM = 2,               ## datagram service or Datagram Sockets
+  SOCK_RAW = 3,                 ## raw protocols atop the network layer.
+  SOCK_SEQPACKET = 5            ## reliable sequenced packet service</pre></dt> <dd> second argument to <em>socket</em> proc   </dd> <dt id="Protocol"><pre id="Protocol" data-language="nim">Protocol = enum
+  IPPROTO_TCP = 6,              ## Transmission control protocol.
+  IPPROTO_UDP = 17,             ## User datagram protocol.
+  IPPROTO_IP,                 ## Internet protocol. Unsupported on Windows.
+  IPPROTO_IPV6,               ## Internet Protocol Version 6. Unsupported on Windows.
+  IPPROTO_RAW,                ## Raw IP Packets Protocol. Unsupported on Windows.
+  IPPROTO_ICMP                ## Control message protocol. Unsupported on Windows.</pre></dt> <dd> third argument to <em>socket</em> proc   </dd> <dt id="Servent"><pre id="Servent" data-language="nim">Servent = object
+  name*: string
+  aliases*: seq[string]
+  port*: Port
+  proto*: string</pre></dt> <dd> information about a service   </dd> <dt id="Hostent"><pre id="Hostent" data-language="nim">Hostent = object
+  name*: string
+  aliases*: seq[string]
+  addrtype*: Domain
+  length*: int
+  addrList*: seq[string]</pre></dt> <dd> information about a given host   </dd> </dl>  <h2 id="9">Lets</h2> <dl> <dt id="osInvalidSocket"><pre id="osInvalidSocket">osInvalidSocket = INVALID_SOCKET</pre></dt>  </dl>  <h2 id="10">Consts</h2> <dl> <dt id="IOCPARM_MASK"><pre id="IOCPARM_MASK">IOCPARM_MASK = 127</pre></dt>  <dt id="IOC_IN"><pre id="IOC_IN">IOC_IN = -2147483648</pre></dt>  <dt id="FIONBIO"><pre id="FIONBIO">FIONBIO = -2147195266</pre></dt>  </dl>  <h2 id="12">Procs</h2> <dl> <dt id="ioctlsocket"><pre id="ioctlsocket,SocketHandle,clong,ptr.clong" data-language="nim">proc ioctlsocket(s: SocketHandle; cmd: clong; argptr: ptr clong): cint {.stdcall,
+    importc: "ioctlsocket", dynlib: "ws2_32.dll".}</pre></dt>  <dt id="=="><pre id="==,Port,Port" data-language="nim">proc `==`(a, b: Port): bool {.borrow.}</pre></dt> <dd> <code>==</code> for ports.   </dd> <dt id="$"><pre id="$,Port" data-language="nim">proc `$`(p: Port): string {.borrow.}</pre></dt> <dd> returns the port number as a string   </dd> <dt id="toInt"><pre id="toInt,Domain" data-language="nim">proc toInt(domain: Domain): cshort {.raises: [], tags: [].}</pre></dt> <dd> Converts the Domain enum to a platform-dependent <code>cint</code>.   </dd> <dt id="toKnownDomain"><pre id="toKnownDomain,cint" data-language="nim">proc toKnownDomain(family: cint): Option[Domain] {.raises: [], tags: [].}</pre></dt> <dd> Converts the platform-dependent <code>cint</code> to the Domain or none(), if the <code>cint</code> is not known.   </dd> <dt id="toInt"><pre id="toInt,SockType" data-language="nim">proc toInt(typ: SockType): cint {.raises: [], tags: [].}</pre></dt> <dd> Converts the SockType enum to a platform-dependent <code>cint</code>.   </dd> <dt id="toInt"><pre id="toInt,Protocol" data-language="nim">proc toInt(p: Protocol): cint {.raises: [], tags: [].}</pre></dt> <dd> Converts the Protocol enum to a platform-dependent <code>cint</code>.   </dd> <dt id="toSockType"><pre id="toSockType,Protocol" data-language="nim">proc toSockType(protocol: Protocol): SockType {.raises: [], tags: [].}</pre></dt>  <dt id="newNativeSocket"><pre id="newNativeSocket,Domain,SockType,Protocol" data-language="nim">proc newNativeSocket(domain: Domain = AF_INET; sockType: SockType = SOCK_STREAM;
+                    protocol: Protocol = IPPROTO_TCP): SocketHandle {.raises: [],
+    tags: [].}</pre></dt> <dd> Creates a new socket; returns <em>InvalidSocket</em> if an error occurs.   </dd> <dt id="newNativeSocket"><pre id="newNativeSocket,cint,cint,cint" data-language="nim">proc newNativeSocket(domain: cint; sockType: cint; protocol: cint): SocketHandle {.
+    raises: [], tags: [].}</pre></dt> <dd> <p>Creates a new socket; returns <em>InvalidSocket</em> if an error occurs.</p> <p>Use this overload if one of the enums specified above does not contain what you need.</p>   </dd> <dt id="close"><pre id="close,SocketHandle" data-language="nim">proc close(socket: SocketHandle) {.raises: [], tags: [].}</pre></dt> <dd> closes a socket.   </dd> <dt id="bindAddr"><pre id="bindAddr,SocketHandle,ptr.SockAddr,SockLen" data-language="nim">proc bindAddr(socket: SocketHandle; name: ptr SockAddr; namelen: SockLen): cint {.
+    raises: [], tags: [].}</pre></dt>  <dt id="listen"><pre id="listen,SocketHandle" data-language="nim">proc listen(socket: SocketHandle; backlog = SOMAXCONN): cint {.tags: [ReadIOEffect],
+    raises: [].}</pre></dt> <dd> Marks <code>socket</code> as accepting connections. <code>Backlog</code> specifies the maximum length of the queue of pending connections.   </dd> <dt id="getAddrInfo"><pre id="getAddrInfo,string,Port,Domain,SockType,Protocol" data-language="nim">proc getAddrInfo(address: string; port: Port; domain: Domain = AF_INET;
+                sockType: SockType = SOCK_STREAM; protocol: Protocol = IPPROTO_TCP): ptr AddrInfo {.
+    raises: [OSError], tags: [].}</pre></dt> <dd> <blockquote><p><strong>Warning</strong>: The resulting <code>ptr AddrInfo</code> must be freed using <code>freeAddrInfo</code>!</p></blockquote>   </dd> <dt id="dealloc"><pre id="dealloc,ptr.AddrInfo" data-language="nim">proc dealloc(ai: ptr AddrInfo) {.deprecated, raises: [], tags: [].}</pre></dt> <dd> Deprecated since 0.16.2. Use <code>freeAddrInfo</code> instead.   </dd> <dt id="ntohl"><pre id="ntohl,uint32" data-language="nim">proc ntohl(x: uint32): uint32 {.raises: [], tags: [].}</pre></dt> <dd> Converts 32-bit unsigned integers from network to host byte order. On machines where the host byte order is the same as network byte order, this is a no-op; otherwise, it performs a 4-byte swap operation.   </dd> <dt id="ntohs"><pre id="ntohs,uint16" data-language="nim">proc ntohs(x: uint16): uint16 {.raises: [], tags: [].}</pre></dt> <dd> Converts 16-bit unsigned integers from network to host byte order. On machines where the host byte order is the same as network byte order, this is a no-op; otherwise, it performs a 2-byte swap operation.   </dd> <dt id="getServByName"><pre id="getServByName,string,string" data-language="nim">proc getServByName(name, proto: string): Servent {.tags: [ReadIOEffect],
+    raises: [OSError].}</pre></dt> <dd> <p>Searches the database from the beginning and finds the first entry for which the service name specified by <code>name</code> matches the s_name member and the protocol name specified by <code>proto</code> matches the s_proto member.</p> <p>On posix this will search through the <code>/etc/services</code> file.</p>   </dd> <dt id="getServByPort"><pre id="getServByPort,Port,string" data-language="nim">proc getServByPort(port: Port; proto: string): Servent {.tags: [ReadIOEffect],
+    raises: [OSError].}</pre></dt> <dd> <p>Searches the database from the beginning and finds the first entry for which the port specified by <code>port</code> matches the s_port member and the protocol name specified by <code>proto</code> matches the s_proto member.</p> <p>On posix this will search through the <code>/etc/services</code> file.</p>   </dd> <dt id="getHostByAddr"><pre id="getHostByAddr,string" data-language="nim">proc getHostByAddr(ip: string): Hostent {.tags: [ReadIOEffect], raises: [OSError].}</pre></dt> <dd> This function will lookup the hostname of an IP Address.   </dd> <dt id="getHostByName"><pre id="getHostByName,string" data-language="nim">proc getHostByName(name: string): Hostent {.tags: [ReadIOEffect], raises: [OSError].}</pre></dt> <dd> This function will lookup the IP address of a hostname.   </dd> <dt id="getHostname"><pre id="getHostname," data-language="nim">proc getHostname(): string {.tags: [ReadIOEffect], raises: [OSError].}</pre></dt> <dd> Returns the local hostname (not the FQDN)   </dd> <dt id="getSockDomain"><pre id="getSockDomain,SocketHandle" data-language="nim">proc getSockDomain(socket: SocketHandle): Domain {.raises: [OSError], tags: [].}</pre></dt> <dd> returns the socket's domain (AF_INET or AF_INET6).   </dd> <dt id="getAddrString"><pre id="getAddrString,ptr.SockAddr" data-language="nim">proc getAddrString(sockAddr: ptr SockAddr): string {.
+    raises: [Exception, OSError, IOError], tags: [RootEffect].}</pre></dt> <dd> return the string representation of address within sockAddr   </dd> <dt id="getSockName"><pre id="getSockName,SocketHandle" data-language="nim">proc getSockName(socket: SocketHandle): Port {.raises: [OSError], tags: [].}</pre></dt> <dd> returns the socket's associated port number.   </dd> <dt id="getLocalAddr"><pre id="getLocalAddr,SocketHandle,Domain" data-language="nim">proc getLocalAddr(socket: SocketHandle; domain: Domain): (string, Port) {.
+    raises: [OSError, Exception], tags: [RootEffect].}</pre></dt> <dd> <p>returns the socket's local address and port number.</p> <p>Similar to POSIX's <span id="getsockname_1">getsockname</span>.</p>   </dd> <dt id="getPeerAddr"><pre id="getPeerAddr,SocketHandle,Domain" data-language="nim">proc getPeerAddr(socket: SocketHandle; domain: Domain): (string, Port) {.
+    raises: [OSError, Exception], tags: [RootEffect].}</pre></dt> <dd> <p>returns the socket's peer address and port number.</p> <p>Similar to POSIX's <span id="getpeername_1">getpeername</span></p>   </dd> <dt id="getSockOptInt"><pre id="getSockOptInt,SocketHandle,int,int" data-language="nim">proc getSockOptInt(socket: SocketHandle; level, optname: int): int {.
+    tags: [ReadIOEffect], raises: [OSError].}</pre></dt> <dd> getsockopt for integer options.   </dd> <dt id="setSockOptInt"><pre id="setSockOptInt,SocketHandle,int,int,int" data-language="nim">proc setSockOptInt(socket: SocketHandle; level, optname, optval: int) {.
+    tags: [WriteIOEffect], raises: [OSError].}</pre></dt> <dd> setsockopt for integer options.   </dd> <dt id="setBlocking"><pre id="setBlocking,SocketHandle,bool" data-language="nim">proc setBlocking(s: SocketHandle; blocking: bool) {.raises: [OSError], tags: [].}</pre></dt> <dd> <p>Sets blocking mode on socket.</p> <p>Raises EOS on error.</p>   </dd> <dt id="select"><pre id="select,seq[SocketHandle],int" data-language="nim">proc select(readfds: var seq[SocketHandle]; timeout = 500): int {.deprecated, raises: [],
+    tags: [].}</pre></dt> <dd> <p>When a socket in <code>readfds</code> is ready to be read from then a non-zero value will be returned specifying the count of the sockets which can be read from. The sockets which can be read from will also be removed from <code>readfds</code>.</p> <p><code>timeout</code> is specified in milliseconds and <code>-1</code> can be specified for an unlimited time. <strong>Warning:</strong> This is deprecated since version 0.16.2. Use the <code>selectRead</code> procedure instead.</p>   </dd> <dt id="selectRead"><pre id="selectRead,seq[SocketHandle],int" data-language="nim">proc selectRead(readfds: var seq[SocketHandle]; timeout = 500): int {.raises: [], tags: [].}</pre></dt> <dd> <p>When a socket in <code>readfds</code> is ready to be read from then a non-zero value will be returned specifying the count of the sockets which can be read from. The sockets which can be read from will also be removed from <code>readfds</code>.</p> <p><code>timeout</code> is specified in milliseconds and <code>-1</code> can be specified for an unlimited time.</p>   </dd> <dt id="selectWrite"><pre id="selectWrite,seq[SocketHandle],int" data-language="nim">proc selectWrite(writefds: var seq[SocketHandle]; timeout = 500): int {.
+    tags: [ReadIOEffect], raises: [].}</pre></dt> <dd> <p>When a socket in <code>writefds</code> is ready to be written to then a non-zero value will be returned specifying the count of the sockets which can be written to. The sockets which can be written to will also be removed from <code>writefds</code>.</p> <p><code>timeout</code> is specified in milliseconds and <code>-1</code> can be specified for an unlimited time.</p>   </dd> </dl>  <h2 id="17">Templates</h2> <dl> <dt id="ntohl"><pre id="ntohl.t,int32" data-language="nim">template ntohl(x: int32): untyped {.deprecated.}</pre></dt> <dd> Converts 32-bit integers from network to host byte order. On machines where the host byte order is the same as network byte order, this is a no-op; otherwise, it performs a 4-byte swap operation. <strong>Warning</strong>: This template is deprecated since 0.14.0, IPv4 addresses are now treated as unsigned integers. Please use the unsigned version of this template.   </dd> <dt id="ntohs"><pre id="ntohs.t,int16" data-language="nim">template ntohs(x: int16): untyped {.deprecated.}</pre></dt> <dd> Converts 16-bit integers from network to host byte order. On machines where the host byte order is the same as network byte order, this is a no-op; otherwise, it performs a 2-byte swap operation. <strong>Warning</strong>: This template is deprecated since 0.14.0, where port numbers became unsigned integers. Please use the unsigned version of this template.   </dd> <dt id="htonl"><pre id="htonl.t,int32" data-language="nim">template htonl(x: int32): untyped {.deprecated.}</pre></dt> <dd> Converts 32-bit integers from host to network byte order. On machines where the host byte order is the same as network byte order, this is a no-op; otherwise, it performs a 4-byte swap operation. <strong>Warning</strong>: This template is deprecated since 0.14.0, IPv4 addresses are now treated as unsigned integers. Please use the unsigned version of this template.   </dd> <dt id="htonl"><pre id="htonl.t,uint32" data-language="nim">template htonl(x: uint32): untyped</pre></dt> <dd> Converts 32-bit unsigned integers from host to network byte order. On machines where the host byte order is the same as network byte order, this is a no-op; otherwise, it performs a 4-byte swap operation.   </dd> <dt id="htons"><pre id="htons.t,int16" data-language="nim">template htons(x: int16): untyped {.deprecated.}</pre></dt> <dd> Converts 16-bit integers from host to network byte order. On machines where the host byte order is the same as network byte order, this is a no-op; otherwise, it performs a 2-byte swap operation. <strong>Warning</strong>: This template is deprecated since 0.14.0, where port numbers became unsigned integers. Please use the unsigned version of this template.   </dd> <dt id="htons"><pre id="htons.t,uint16" data-language="nim">template htons(x: uint16): untyped</pre></dt> <dd> Converts 16-bit unsigned integers from host to network byte order. On machines where the host byte order is the same as network byte order, this is a no-op; otherwise, it performs a 2-byte swap operation.   </dd> </dl>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2006–2017 Andreas Rumpf<br>Licensed under the MIT License.<br>
+    <a href="https://nim-lang.org/docs/nativesockets.html" class="_attribution-link" target="_blank">https://nim-lang.org/docs/nativesockets.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

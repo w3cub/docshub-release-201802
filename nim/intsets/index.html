@@ -1,0 +1,92 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Intsets - Nim - W3cubDocs</title>
+  
+  <meta name="description" content="The intsets module implements an efficient int set implemented as a sparse bit set. Note&#58; Since Nim currently does not allow the assignment &hellip;">
+  <meta name="keywords" content="module, intsets, -, nim">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/nim/intsets/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/nim.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/nim/" class="_nav-link" title="" style="margin-left:0;">Nim</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _nim">
+				
+<h1 class="title">Module intsets</h1>  <p class="module-desc">The <code>intsets</code> module implements an efficient int set implemented as a <span id="sparse-bit-set_1">sparse bit set</span>. <strong>Note</strong>: Since Nim currently does not allow the assignment operator to be overloaded, <code>=</code> for int sets performs some rather meaningless shallow copy; use <code>assign</code> to get a deep copy.</p>  <h2 id="6">Imports</h2> <dl> <a href="../hashes/">hashes</a>, <a href="../math/">math</a>, <a href="../sequtils/">sequtils</a>, <a href="../algorithm/">algorithm</a> </dl>  <h2 id="7">Types</h2> <dl> <dt id="IntSet"><pre id="IntSet" data-language="nim">IntSet = object
+  elems: int
+  counter, max: int
+  head: PTrunk
+  data: TrunkSeq
+  a: array[0 .. 33, int]</pre></dt> <dd> an efficient set of 'int' implemented as a sparse bit set   </dd> </dl>  <h2 id="12">Procs</h2> <dl> <dt id="contains"><pre id="contains,IntSet,int" data-language="nim">proc contains(s: IntSet; key: int): bool {.raises: [], tags: [].}</pre></dt> <dd> returns true iff <em>key</em> is in <em>s</em>.   </dd> <dt id="incl"><pre id="incl,IntSet,int" data-language="nim">proc incl(s: var IntSet; key: int) {.raises: [], tags: [].}</pre></dt> <dd> includes an element <em>key</em> in <em>s</em>.   </dd> <dt id="excl"><pre id="excl,IntSet,int" data-language="nim">proc excl(s: var IntSet; key: int) {.raises: [], tags: [].}</pre></dt> <dd> excludes <em>key</em> from the set <em>s</em>.   </dd> <dt id="containsOrIncl"><pre id="containsOrIncl,IntSet,int" data-language="nim">proc containsOrIncl(s: var IntSet; key: int): bool {.raises: [], tags: [].}</pre></dt> <dd> returns true if <em>s</em> contains <em>key</em>, otherwise <em>key</em> is included in <em>s</em> and false is returned.   </dd> <dt id="initIntSet"><pre id="initIntSet," data-language="nim">proc initIntSet(): IntSet {.raises: [], tags: [].}</pre></dt> <dd> creates a new int set that is empty.   </dd> <dt id="clear"><pre id="clear,IntSet" data-language="nim">proc clear(result: var IntSet) {.raises: [], tags: [].}</pre></dt>  <dt id="isNil"><pre id="isNil,IntSet" data-language="nim">proc isNil(x: IntSet): bool {.inline, raises: [], tags: [].}</pre></dt>  <dt id="assign"><pre id="assign,IntSet,IntSet" data-language="nim">proc assign(dest: var IntSet; src: IntSet) {.raises: [], tags: [].}</pre></dt> <dd> copies <em>src</em> to <em>dest</em>. <em>dest</em> does not need to be initialized by <em>initIntSet</em>.   </dd> <dt id="$"><pre id="$,IntSet" data-language="nim">proc `$`(s: IntSet): string {.raises: [], tags: [].}</pre></dt> <dd> The <em>$</em> operator for int sets.   </dd> <dt id="empty"><pre id="empty,IntSet" data-language="nim">proc empty(s: IntSet): bool {.inline, deprecated, raises: [], tags: [].}</pre></dt> <dd> returns true if <em>s</em> is empty. This is safe to call even before the set has been initialized with <em>initIntSet</em>. Note this never worked reliably and so is deprecated.   </dd> </dl>  <h2 id="14">Iterators</h2> <dl> <dt id="items"><pre id="items.i,IntSet" data-language="nim">iterator items(s: IntSet): int {.inline, raises: [], tags: [].}</pre></dt> <dd> iterates over any included element of <em>s</em>.   </dd> </dl>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2006–2017 Andreas Rumpf<br>Licensed under the MIT License.<br>
+    <a href="https://nim-lang.org/docs/intsets.html" class="_attribution-link" target="_blank">https://nim-lang.org/docs/intsets.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

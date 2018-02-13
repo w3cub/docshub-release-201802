@@ -1,0 +1,193 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Net - Nim - W3cubDocs</title>
+  
+  <meta name="description" content="This module implements a high-level cross-platform sockets interface. The procedures implemented in this module are primarily for blocking sockets. &hellip;">
+  <meta name="keywords" content="module, net, -, nim">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/nim/net/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/nim.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/nim/" class="_nav-link" title="" style="margin-left:0;">Nim</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _nim">
+				
+<h1 class="title">Module net</h1>  
+<p>This module implements a high-level cross-platform sockets interface. The procedures implemented in this module are primarily for blocking sockets. For asynchronous non-blocking sockets use the <code>asyncnet</code> module together with the <code>asyncdispatch</code> module.</p> <p>The first thing you will always need to do in order to start using sockets, is to create a new instance of the <code>Socket</code> type using the <code>newSocket</code> procedure.</p> <h2 id="ssl">SSL</h2>
+<p>In order to use the SSL procedures defined in this module, you will need to compile your application with the <code>-d:ssl</code> flag.</p> <h2 id="examples">Examples</h2> <h3 id="examples-connecting-to-a-server">Connecting to a server</h3>
+<p>After you create a socket with the <code>newSocket</code> procedure, you can easily connect it to a server running at a known hostname (or IP address) and port. To do so over TCP, use the example below.</p> <pre class="listing" data-language="nim">var socket = newSocket()
+socket.connect("google.com", Port(80))</pre>
+<p>UDP is a connectionless protocol, so UDP sockets don't have to explicitly call the <code>connect</code> procedure. They can simply start sending data immediately.</p> <pre class="listing" data-language="nim">var socket = newSocket()
+socket.sendTo("192.168.0.1", Port(27960), "status\n")</pre> <h3 id="examples-creating-a-server">Creating a server</h3>
+<p>After you create a socket with the <code>newSocket</code> procedure, you can create a TCP server by calling the <code>bindAddr</code> and <code>listen</code> procedures.</p> <pre class="listing" data-language="nim">var socket = newSocket()
+socket.bindAddr(Port(1234))
+socket.listen()</pre>
+<p>You can then begin accepting connections using the <code>accept</code> procedure.</p> <pre class="listing" data-language="nim">var client = newSocket()
+var address = ""
+while true:
+  socket.acceptAddr(client, address)
+  echo("Client connected from: ", address)</pre>  <h2 id="6">Imports</h2> <dl> <a href="../nativesockets/">nativesockets</a>, <a href="../os/">os</a>, <a href="../strutils/">strutils</a>, <a href="../parseutils/">parseutils</a>, <a href="../times/">times</a>, <a href="../sets/">sets</a>, <a href="../options/">options</a>, <a href="../openssl/">openssl</a> </dl>  <h2 id="7">Types</h2> <dl> <dt id="SslError"><pre id="SslError">SslError = object of Exception</pre></dt>  <dt id="SslCVerifyMode"><pre id="SslCVerifyMode" data-language="nim">SslCVerifyMode = enum
+  CVerifyNone, CVerifyPeer</pre></dt>  <dt id="SslProtVersion"><pre id="SslProtVersion" data-language="nim">SslProtVersion = enum
+  protSSLv2, protSSLv3, protTLSv1, protSSLv23</pre></dt>  <dt id="SslContext"><pre id="SslContext" data-language="nim">SslContext = ref object
+  context*: SslCtx
+  referencedData: HashSet[int]
+  extraInternal: SslContextExtraInternal</pre></dt>  <dt id="SslAcceptResult"><pre id="SslAcceptResult" data-language="nim">SslAcceptResult = enum
+  AcceptNoClient = 0, AcceptNoHandshake, AcceptSuccess</pre></dt>  <dt id="SslHandshakeType"><pre id="SslHandshakeType" data-language="nim">SslHandshakeType = enum
+  handshakeAsClient, handshakeAsServer</pre></dt>  <dt id="SslClientGetPskFunc"><pre id="SslClientGetPskFunc" data-language="nim">SslClientGetPskFunc = proc (hint: string): tuple[identity: string, psk: string]</pre></dt>  <dt id="SslServerGetPskFunc"><pre id="SslServerGetPskFunc" data-language="nim">SslServerGetPskFunc = proc (identity: string): string</pre></dt>  <dt id="SocketImpl"><pre id="SocketImpl" data-language="nim">SocketImpl = object
+  fd: SocketHandle
+  case isBuffered: bool
+  of true:
+      buffer: array[0 .. BufferSize, char]
+      currPos: int
+      bufLen: int
+
+  of false:
+    nil
+  when defineSsl:
+      case isSsl: bool
+      of true:
+          sslHandle: SslPtr
+          sslContext: SslContext
+          sslNoHandshake: bool
+          sslHasPeekChar: bool
+          sslPeekChar: char
+
+      of false:
+        nil
+    
+  lastError: OSErrorCode       ## stores the last error on this socket
+  domain: Domain
+  sockType: SockType
+  protocol: Protocol</pre></dt> <dd> socket type   </dd> <dt id="Socket"><pre id="Socket">Socket = ref SocketImpl</pre></dt>  <dt id="SOBool"><pre id="SOBool" data-language="nim">SOBool = enum
+  OptAcceptConn, OptBroadcast, OptDebug, OptDontRoute, OptKeepAlive, OptOOBInline,
+  OptReuseAddr, OptReusePort</pre></dt> <dd> Boolean socket options.   </dd> <dt id="ReadLineResult"><pre id="ReadLineResult" data-language="nim">ReadLineResult = enum
+  ReadFullLine, ReadPartialLine, ReadDisconnected, ReadNone</pre></dt> <dd> result for readLineAsync   </dd> <dt id="TimeoutError"><pre id="TimeoutError">TimeoutError = object of Exception</pre></dt>  <dt id="SocketFlag"><pre id="SocketFlag" data-language="nim">SocketFlag = enum
+  Peek, SafeDisconn            ## Ensures disconnection exceptions (ECONNRESET, EPIPE etc) are not thrown.</pre></dt>  <dt id="IpAddressFamily"><pre id="IpAddressFamily" data-language="nim">IpAddressFamily = enum
+  IPv6,                       ## IPv6 address
+  IPv4                        ## IPv4 address</pre></dt> <dd> Describes the type of an IP address   </dd> <dt id="IpAddress"><pre id="IpAddress" data-language="nim">IpAddress = object
+  case family*: IpAddressFamily ## the type of the IP address (IPv4 or IPv6)
+  of IpAddressFamily.IPv6:
+      address_v6*: array[0 .. 15, uint8] ## Contains the IP address in bytes in
+                                    ## case of IPv6
+    
+  of IpAddressFamily.IPv4:
+      address_v4*: array[0 .. 3, uint8] ## Contains the IP address in bytes in
+                                   ## case of IPv4</pre></dt> <dd> stores an arbitrary IP address   </dd> </dl>  <h2 id="10">Consts</h2> <dl> <dt id="BufferSize"><pre id="BufferSize">BufferSize: int = 4000</pre></dt> <dd> size of a buffered socket's buffer   </dd> <dt id="MaxLineLength"><pre id="MaxLineLength">MaxLineLength = 1000000</pre></dt>  </dl>  <h2 id="12">Procs</h2> <dl> <dt id="isDisconnectionError"><pre id="isDisconnectionError,set[SocketFlag],OSErrorCode" data-language="nim">proc isDisconnectionError(flags: set[SocketFlag]; lastError: OSErrorCode): bool {.
+    raises: [], tags: [].}</pre></dt> <dd> Determines whether <code>lastError</code> is a disconnection error. Only does this if flags contains <code>SafeDisconn</code>.   </dd> <dt id="toOSFlags"><pre id="toOSFlags,set[SocketFlag]" data-language="nim">proc toOSFlags(socketFlags: set[SocketFlag]): cint {.raises: [], tags: [].}</pre></dt> <dd> Converts the flags into the underlying OS representation.   </dd> <dt id="newSocket"><pre id="newSocket,SocketHandle,Domain,SockType,Protocol" data-language="nim">proc newSocket(fd: SocketHandle; domain: Domain = AF_INET;
+              sockType: SockType = SOCK_STREAM; protocol: Protocol = IPPROTO_TCP;
+              buffered = true): Socket {.raises: [], tags: [].}</pre></dt> <dd> Creates a new socket as specified by the params.   </dd> <dt id="newSocket"><pre id="newSocket,cint,cint,cint" data-language="nim">proc newSocket(domain, sockType, protocol: cint; buffered = true): Socket {.
+    raises: [OSError], tags: [].}</pre></dt> <dd> <p>Creates a new socket.</p> <p>If an error occurs EOS will be raised.</p>   </dd> <dt id="newSocket"><pre id="newSocket,Domain,SockType,Protocol" data-language="nim">proc newSocket(domain: Domain = AF_INET; sockType: SockType = SOCK_STREAM;
+              protocol: Protocol = IPPROTO_TCP; buffered = true): Socket {.
+    raises: [OSError], tags: [].}</pre></dt> <dd> <p>Creates a new socket.</p> <p>If an error occurs EOS will be raised.</p>   </dd> <dt id="parseIpAddress"><pre id="parseIpAddress,string" data-language="nim">proc parseIpAddress(address_str: string): IpAddress {.raises: [ValueError], tags: [].}</pre></dt> <dd> Parses an IP address Raises EInvalidValue on error   </dd> <dt id="isIpAddress"><pre id="isIpAddress,string" data-language="nim">proc isIpAddress(address_str: string): bool {.tags: [], raises: [].}</pre></dt> <dd> Checks if a string is an IP address Returns true if it is, false otherwise   </dd> <dt id="raiseSSLError"><pre id="raiseSSLError,string" data-language="nim">proc raiseSSLError(s = "") {.raises: [SslError, OSError], tags: [].}</pre></dt> <dd> Raises a new SSL error.   </dd> <dt id="getExtraData"><pre id="getExtraData,SslContext,int" data-language="nim">proc getExtraData(ctx: SslContext; index: int): RootRef {.
+    raises: [IndexError, SslError, OSError], tags: [].}</pre></dt> <dd> Retrieves arbitrary data stored inside SSLContext.   </dd> <dt id="setExtraData"><pre id="setExtraData,SslContext,int,RootRef" data-language="nim">proc setExtraData(ctx: SslContext; index: int; data: RootRef) {.
+    raises: [IndexError, SslError, OSError], tags: [].}</pre></dt> <dd> Stores arbitrary data inside SSLContext. The unique <em>index</em> should be retrieved using getSslContextExtraDataIndex.   </dd> <dt id="newContext"><pre id="newContext,string,string,string" data-language="nim">proc newContext(protVersion = protSSLv23; verifyMode = CVerifyPeer; certFile = "";
+               keyFile = ""; cipherList = "ALL"): SslContext {.
+    raises: [Exception, SslError, OSError, IOError],
+    tags: [RootEffect, ReadDirEffect].}</pre></dt> <dd> <p>Creates an SSL context.</p> <p>Protocol version specifies the protocol to use. SSLv2, SSLv3, TLSv1 are available with the addition of <code>protSSLv23</code> which allows for compatibility with all of them.</p> <p>There are currently only two options for verify mode; one is <code>CVerifyNone</code> and with it certificates will not be verified the other is <code>CVerifyPeer</code> and certificates will be verified for it, <code>CVerifyPeer</code> is the safest choice.</p> <p>The last two parameters specify the certificate file path and the key file path, a server socket will most likely not work without these. Certificates can be generated using the following command: <code>openssl req -x509 -nodes -days 365 -newkey rsa:1024 -keyout mycert.pem -out mycert.pem</code>.</p>   </dd> <dt id="destroyContext"><pre id="destroyContext,SslContext" data-language="nim">proc destroyContext(ctx: SslContext) {.raises: [IndexError, SslError, OSError],
+                                    tags: [].}</pre></dt> <dd> Free memory referenced by SSLContext.   </dd> <dt id="pskIdentityHint="><pre id="pskIdentityHint=,SslContext,string" data-language="nim">proc pskIdentityHint=(ctx: SslContext; hint: string) {.raises: [SslError, OSError],
+    tags: [].}</pre></dt> <dd> <p>Sets the identity hint passed to server.</p> <p>Only used in PSK ciphersuites.</p>   </dd> <dt id="clientGetPskFunc"><pre id="clientGetPskFunc,SslContext" data-language="nim">proc clientGetPskFunc(ctx: SslContext): SslClientGetPskFunc {.raises: [], tags: [].}</pre></dt>  <dt id="clientGetPskFunc="><pre id="clientGetPskFunc=,SslContext,SslClientGetPskFunc" data-language="nim">proc clientGetPskFunc=(ctx: SslContext; fun: SslClientGetPskFunc) {.
+    raises: [Exception], tags: [RootEffect].}</pre></dt> <dd> <p>Sets function that returns the client identity and the PSK based on identity hint from the server.</p> <p>Only used in PSK ciphersuites.</p>   </dd> <dt id="serverGetPskFunc"><pre id="serverGetPskFunc,SslContext" data-language="nim">proc serverGetPskFunc(ctx: SslContext): SslServerGetPskFunc {.raises: [], tags: [].}</pre></dt>  <dt id="serverGetPskFunc="><pre id="serverGetPskFunc=,SslContext,SslServerGetPskFunc" data-language="nim">proc serverGetPskFunc=(ctx: SslContext; fun: SslServerGetPskFunc) {.
+    raises: [Exception], tags: [RootEffect].}</pre></dt> <dd> <p>Sets function that returns PSK based on the client identity.</p> <p>Only used in PSK ciphersuites.</p>   </dd> <dt id="getPskIdentity"><pre id="getPskIdentity,Socket" data-language="nim">proc getPskIdentity(socket: Socket): string {.raises: [], tags: [].}</pre></dt> <dd> Gets the PSK identity provided by the client.   </dd> <dt id="wrapSocket"><pre id="wrapSocket,SslContext,Socket" data-language="nim">proc wrapSocket(ctx: SslContext; socket: Socket) {.raises: [SslError, OSError], tags: [].}</pre></dt> <dd> <p>Wraps a socket in an SSL context. This function effectively turns <code>socket</code> into an SSL socket.</p> <p>This must be called on an unconnected socket; an SSL session will be started when the socket is connected.</p> <p><strong>Disclaimer</strong>: This code is not well tested, may be very unsafe and prone to security vulnerabilities.</p>   </dd> <dt id="wrapConnectedSocket"><pre id="wrapConnectedSocket,SslContext,Socket,SslHandshakeType,string" data-language="nim">proc wrapConnectedSocket(ctx: SslContext; socket: Socket;
+                        handshake: SslHandshakeType; hostname: string = nil) {.
+    raises: [SslError, OSError, Exception], tags: [RootEffect].}</pre></dt> <dd> <p>Wraps a connected socket in an SSL context. This function effectively turns <code>socket</code> into an SSL socket. <code>hostname</code> should be specified so that the client knows which hostname the server certificate should be validated against.</p> <p>This should be called on a connected socket, and will perform an SSL handshake immediately.</p> <p><strong>Disclaimer</strong>: This code is not well tested, may be very unsafe and prone to security vulnerabilities.</p>   </dd> <dt id="getSocketError"><pre id="getSocketError,Socket" data-language="nim">proc getSocketError(socket: Socket): OSErrorCode {.raises: [OSError], tags: [].}</pre></dt> <dd> Checks <code>osLastError</code> for a valid error. If it has been reset it uses the last error stored in the socket object.   </dd> <dt id="socketError"><pre id="socketError,Socket,int" data-language="nim">proc socketError(socket: Socket; err: int = - 1; async = false; lastError = -1.OSErrorCode): void {.
+    gcsafe, raises: [SslError, OSError], tags: [].}</pre></dt> <dd> <p>Raises an OSError based on the error code returned by <code>SSLGetError</code> (for SSL sockets) and <code>osLastError</code> otherwise.</p> <p>If <code>async</code> is <code>true</code> no error will be thrown in the case when the error was caused by no data being available to be read.</p> <p>If <code>err</code> is not lower than 0 no exception will be raised.</p>   </dd> <dt id="listen"><pre id="listen,Socket" data-language="nim">proc listen(socket: Socket; backlog = SOMAXCONN) {.tags: [ReadIOEffect],
+    raises: [OSError].}</pre></dt> <dd> <p>Marks <code>socket</code> as accepting connections. <code>Backlog</code> specifies the maximum length of the queue of pending connections.</p> <p>Raises an EOS error upon failure.</p>   </dd> <dt id="bindAddr"><pre id="bindAddr,Socket,string" data-language="nim">proc bindAddr(socket: Socket; port = Port(0); address = "") {.tags: [ReadIOEffect],
+    raises: [OSError].}</pre></dt> <dd> <p>Binds <code>address</code>:<code>port</code> to the socket.</p> <p>If <code>address</code> is "" then ADDR_ANY will be bound.</p>   </dd> <dt id="acceptAddr"><pre id="acceptAddr,Socket,Socket,string" data-language="nim">proc acceptAddr(server: Socket; client: var Socket; address: var string;
+               flags = {SafeDisconn}) {.tags: [ReadIOEffect], gcsafe, locks: 0,
+                                     raises: [OSError, SslError].}</pre></dt> <dd> <p>Blocks until a connection is being made from a client. When a connection is made sets <code>client</code> to the client socket and <code>address</code> to the address of the connecting client. This function will raise EOS if an error occurs.</p> <p>The resulting client will inherit any properties of the server socket. For example: whether the socket is buffered or not.</p> <p><strong>Note</strong>: <code>client</code> must be initialised (with <code>new</code>), this function makes no effort to initialise the <code>client</code> variable.</p> <p>The <code>accept</code> call may result in an error if the connecting socket disconnects during the duration of the <code>accept</code>. If the <code>SafeDisconn</code> flag is specified then this error will not be raised and instead accept will be called again.</p>   </dd> <dt id="accept"><pre id="accept,Socket,Socket" data-language="nim">proc accept(server: Socket; client: var Socket; flags = {SafeDisconn}) {.
+    tags: [ReadIOEffect], raises: [OSError, SslError].}</pre></dt> <dd> <p>Equivalent to <code>acceptAddr</code> but doesn't return the address, only the socket.</p> <p><strong>Note</strong>: <code>client</code> must be initialised (with <code>new</code>), this function makes no effort to initialise the <code>client</code> variable.</p> <p>The <code>accept</code> call may result in an error if the connecting socket disconnects during the duration of the <code>accept</code>. If the <code>SafeDisconn</code> flag is specified then this error will not be raised and instead accept will be called again.</p>   </dd> <dt id="close"><pre id="close,Socket" data-language="nim">proc close(socket: Socket) {.raises: [SslError, OSError], tags: [].}</pre></dt> <dd> Closes a socket.   </dd> <dt id="toCInt"><pre id="toCInt,SOBool" data-language="nim">proc toCInt(opt: SOBool): cint {.raises: [], tags: [].}</pre></dt> <dd> Converts a <code>SOBool</code> into its Socket Option cint representation.   </dd> <dt id="getSockOpt"><pre id="getSockOpt,Socket,SOBool" data-language="nim">proc getSockOpt(socket: Socket; opt: SOBool; level = SOL_SOCKET): bool {.
+    tags: [ReadIOEffect], raises: [OSError].}</pre></dt> <dd> Retrieves option <code>opt</code> as a boolean value.   </dd> <dt id="getLocalAddr"><pre id="getLocalAddr,Socket" data-language="nim">proc getLocalAddr(socket: Socket): (string, Port) {.raises: [OSError, Exception],
+    tags: [RootEffect].}</pre></dt> <dd> <p>Get the socket's local address and port number.</p> <p>This is high-level interface for <span id="getsockname_1">getsockname</span>.</p>   </dd> <dt id="getPeerAddr"><pre id="getPeerAddr,Socket" data-language="nim">proc getPeerAddr(socket: Socket): (string, Port) {.raises: [OSError, Exception],
+    tags: [RootEffect].}</pre></dt> <dd> <p>Get the socket's peer address and port number.</p> <p>This is high-level interface for <span id="getpeername_1">getpeername</span>.</p>   </dd> <dt id="setSockOpt"><pre id="setSockOpt,Socket,SOBool,bool" data-language="nim">proc setSockOpt(socket: Socket; opt: SOBool; value: bool; level = SOL_SOCKET) {.
+    tags: [WriteIOEffect], raises: [OSError].}</pre></dt> <dd> Sets option <code>opt</code> to a boolean value specified by <code>value</code>.   </dd> <dt id="hasDataBuffered"><pre id="hasDataBuffered,Socket" data-language="nim">proc hasDataBuffered(s: Socket): bool {.raises: [], tags: [].}</pre></dt> <dd> Determines whether a socket has data buffered.   </dd> <dt id="recv"><pre id="recv,Socket,pointer,int" data-language="nim">proc recv(socket: Socket; data: pointer; size: int): int {.tags: [ReadIOEffect],
+    raises: [].}</pre></dt> <dd> <p>Receives data from a socket.</p> <p><strong>Note</strong>: This is a low-level function, you may be interested in the higher level versions of this function which are also named <code>recv</code>.</p>   </dd> <dt id="recv"><pre id="recv,Socket,pointer,int,int" data-language="nim">proc recv(socket: Socket; data: pointer; size: int; timeout: int): int {.
+    tags: [ReadIOEffect, TimeEffect], raises: [TimeoutError, OSError].}</pre></dt> <dd> overload with a <code>timeout</code> parameter in milliseconds.   </dd> <dt id="recv"><pre id="recv,Socket,string,int" data-language="nim">proc recv(socket: Socket; data: var string; size: int; timeout = - 1; flags = {SafeDisconn}): int {.
+    raises: [TimeoutError, OSError, SslError], tags: [ReadIOEffect, TimeEffect].}</pre></dt> <dd> <p>Higher-level version of <code>recv</code>.</p> <p>When 0 is returned the socket's connection has been closed.</p> <p>This function will throw an EOS exception when an error occurs. A value lower than 0 is never returned.</p> <p>A timeout may be specified in milliseconds, if enough data is not received within the time specified an ETimeout exception will be raised.</p> <p><strong>Note</strong>: <code>data</code> must be initialised.</p> <p><strong>Warning</strong>: Only the <code>SafeDisconn</code> flag is currently supported.</p>   </dd> <dt id="recv"><pre id="recv,Socket,int" data-language="nim">proc recv(socket: Socket; size: int; timeout = - 1; flags = {SafeDisconn}): string {.inline,
+    raises: [TimeoutError, OSError, SslError], tags: [ReadIOEffect, TimeEffect].}</pre></dt> <dd> <p>Higher-level version of <code>recv</code> which returns a string.</p> <p>When <code>""</code> is returned the socket's connection has been closed.</p> <p>This function will throw an EOS exception when an error occurs.</p> <p>A timeout may be specified in milliseconds, if enough data is not received within the time specified an ETimeout exception will be raised.</p> <p><strong>Warning</strong>: Only the <code>SafeDisconn</code> flag is currently supported.</p>   </dd> <dt id="readLine"><pre id="readLine,Socket,TaintedString" data-language="nim">proc readLine(socket: Socket; line: var TaintedString; timeout = - 1;
+             flags = {SafeDisconn}; maxLength = MaxLineLength) {.
+    tags: [ReadIOEffect, TimeEffect], raises: [TimeoutError, OSError, SslError].}</pre></dt> <dd> <p>Reads a line of data from <code>socket</code>.</p> <p>If a full line is read <code>\r\L</code> is not added to <code>line</code>, however if solely <code>\r\L</code> is read then <code>line</code> will be set to it.</p> <p>If the socket is disconnected, <code>line</code> will be set to <code>""</code>.</p> <p>An EOS exception will be raised in the case of a socket error.</p> <p>A timeout can be specified in milliseconds, if data is not received within the specified time an ETimeout exception will be raised.</p> <p>The <code>maxLength</code> parameter determines the maximum amount of characters that can be read. The result is truncated after that.</p> <p><strong>Warning</strong>: Only the <code>SafeDisconn</code> flag is currently supported.</p>   </dd> <dt id="recvLine"><pre id="recvLine,Socket" data-language="nim">proc recvLine(socket: Socket; timeout = - 1; flags = {SafeDisconn};
+             maxLength = MaxLineLength): TaintedString {.
+    raises: [TimeoutError, OSError, SslError], tags: [ReadIOEffect, TimeEffect].}</pre></dt> <dd> <p>Reads a line of data from <code>socket</code>.</p> <p>If a full line is read <code>\r\L</code> is not added to the result, however if solely <code>\r\L</code> is read then the result will be set to it.</p> <p>If the socket is disconnected, the result will be set to <code>""</code>.</p> <p>An EOS exception will be raised in the case of a socket error.</p> <p>A timeout can be specified in milliseconds, if data is not received within the specified time an ETimeout exception will be raised.</p> <p>The <code>maxLength</code> parameter determines the maximum amount of characters that can be read. The result is truncated after that.</p> <p><strong>Warning</strong>: Only the <code>SafeDisconn</code> flag is currently supported.</p>   </dd> <dt id="recvFrom"><pre id="recvFrom,Socket,string,int,string,Port,int32" data-language="nim">proc recvFrom(socket: Socket; data: var string; length: int; address: var string;
+             port: var Port; flags = 0'i32): int {.tags: [ReadIOEffect],
+    raises: [OSError].}</pre></dt> <dd> <p>Receives data from <code>socket</code>. This function should normally be used with connection-less sockets (UDP sockets).</p> <p>If an error occurs an EOS exception will be raised. Otherwise the return value will be the length of data received.</p> <p><strong>Warning:</strong> This function does not yet have a buffered implementation, so when <code>socket</code> is buffered the non-buffered implementation will be used. Therefore if <code>socket</code> contains something in its buffer this function will make no effort to return it.</p>   </dd> <dt id="skip"><pre id="skip,Socket,int" data-language="nim">proc skip(socket: Socket; size: int; timeout = - 1) {.
+    raises: [Exception, TimeoutError, OSError], tags: [TimeEffect, ReadIOEffect].}</pre></dt> <dd> <p>Skips <code>size</code> amount of bytes.</p> <p>An optional timeout can be specified in milliseconds, if skipping the bytes takes longer than specified an ETimeout exception will be raised.</p> <p>Returns the number of skipped bytes.</p>   </dd> <dt id="send"><pre id="send,Socket,pointer,int" data-language="nim">proc send(socket: Socket; data: pointer; size: int): int {.tags: [WriteIOEffect],
+    raises: [].}</pre></dt> <dd> <p>Sends data to a socket.</p> <p><strong>Note</strong>: This is a low-level version of <code>send</code>. You likely should use the version below.</p>   </dd> <dt id="send"><pre id="send,Socket,string" data-language="nim">proc send(socket: Socket; data: string; flags = {SafeDisconn}) {.tags: [WriteIOEffect],
+    raises: [SslError, OSError].}</pre></dt> <dd> sends data to a socket.   </dd> <dt id="trySend"><pre id="trySend,Socket,string" data-language="nim">proc trySend(socket: Socket; data: string): bool {.tags: [WriteIOEffect], raises: [].}</pre></dt> <dd> Safe alternative to <code>send</code>. Does not raise an EOS when an error occurs, and instead returns <code>false</code> on failure.   </dd> <dt id="sendTo"><pre id="sendTo,Socket,string,Port,pointer,int,Domain,int32" data-language="nim">proc sendTo(socket: Socket; address: string; port: Port; data: pointer; size: int;
+           af: Domain = AF_INET; flags = 0'i32): int {.tags: [WriteIOEffect],
+    raises: [OSError].}</pre></dt> <dd> <p>This proc sends <code>data</code> to the specified <code>address</code>, which may be an IP address or a hostname, if a hostname is specified this function will try each IP of that hostname.</p> <p><strong>Note:</strong> You may wish to use the high-level version of this function which is defined below.</p> <p><strong>Note:</strong> This proc is not available for SSL sockets.</p>   </dd> <dt id="sendTo"><pre id="sendTo,Socket,string,Port,string" data-language="nim">proc sendTo(socket: Socket; address: string; port: Port; data: string): int {.
+    tags: [WriteIOEffect], raises: [OSError].}</pre></dt> <dd> <p>This proc sends <code>data</code> to the specified <code>address</code>, which may be an IP address or a hostname, if a hostname is specified this function will try each IP of that hostname.</p> <p>This is the high-level version of the above <code>sendTo</code> function.</p>   </dd> <dt id="isSsl"><pre id="isSsl,Socket" data-language="nim">proc isSsl(socket: Socket): bool {.raises: [], tags: [].}</pre></dt> <dd> Determines whether <code>socket</code> is a SSL socket.   </dd> <dt id="getFd"><pre id="getFd,Socket" data-language="nim">proc getFd(socket: Socket): SocketHandle {.raises: [], tags: [].}</pre></dt> <dd> Returns the socket's file descriptor   </dd> <dt id="IPv4_any"><pre id="IPv4_any," data-language="nim">proc IPv4_any(): IpAddress {.raises: [], tags: [].}</pre></dt> <dd> Returns the IPv4 any address, which can be used to listen on all available network adapters   </dd> <dt id="IPv4_loopback"><pre id="IPv4_loopback," data-language="nim">proc IPv4_loopback(): IpAddress {.raises: [], tags: [].}</pre></dt> <dd> Returns the IPv4 loopback address (127.0.0.1)   </dd> <dt id="IPv4_broadcast"><pre id="IPv4_broadcast," data-language="nim">proc IPv4_broadcast(): IpAddress {.raises: [], tags: [].}</pre></dt> <dd> Returns the IPv4 broadcast address (255.255.255.255)   </dd> <dt id="IPv6_any"><pre id="IPv6_any," data-language="nim">proc IPv6_any(): IpAddress {.raises: [], tags: [].}</pre></dt> <dd> Returns the IPv6 any address (::0), which can be used to listen on all available network adapters   </dd> <dt id="IPv6_loopback"><pre id="IPv6_loopback," data-language="nim">proc IPv6_loopback(): IpAddress {.raises: [], tags: [].}</pre></dt> <dd> Returns the IPv6 loopback address (::1)   </dd> <dt id="=="><pre id="==,IpAddress,IpAddress" data-language="nim">proc `==`(lhs, rhs: IpAddress): bool {.raises: [], tags: [].}</pre></dt> <dd> Compares two IpAddresses for Equality. Returns true if the addresses are equal   </dd> <dt id="$"><pre id="$,IpAddress" data-language="nim">proc `$`(address: IpAddress): string {.raises: [], tags: [].}</pre></dt> <dd> Converts an IpAddress into the textual representation   </dd> <dt id="dial"><pre id="dial,string,Port" data-language="nim">proc dial(address: string; port: Port; protocol = IPPROTO_TCP; buffered = true): Socket {.
+    tags: [ReadIOEffect, WriteIOEffect], raises: [OSError, IOError].}</pre></dt> <dd> Establishes connection to the specified <code>address</code>:<code>port</code> pair via the specified protocol. The procedure iterates through possible resolutions of the <code>address</code> until it succeeds, meaning that it seamlessly works with both IPv4 and IPv6. Returns Socket ready to send or receive data.   </dd> <dt id="connect"><pre id="connect,Socket,string" data-language="nim">proc connect(socket: Socket; address: string; port = Port(0)) {.tags: [ReadIOEffect],
+    raises: [OSError, SslError].}</pre></dt> <dd> <p>Connects socket to <code>address</code>:<code>port</code>. <code>Address</code> can be an IP address or a host name. If <code>address</code> is a host name, this function will try each IP of that host name. <code>htons</code> is already performed on <code>port</code> so you must not do it.</p> <p>If <code>socket</code> is an SSL socket a handshake will be automatically performed.</p>   </dd> <dt id="connect"><pre id="connect,Socket,string,int" data-language="nim">proc connect(socket: Socket; address: string; port = Port(0); timeout: int) {.
+    tags: [ReadIOEffect, WriteIOEffect], raises: [OSError, TimeoutError].}</pre></dt> <dd> <p>Connects to server as specified by <code>address</code> on port specified by <code>port</code>.</p> <p>The <code>timeout</code> paremeter specifies the time in milliseconds to allow for the connection to the server to be made.</p>   </dd> </dl>  <h2 id="17">Templates</h2> <dl> <dt id="&amp;="><pre id="&amp;=.t,Socket,typed" data-language="nim">template `&amp;=`(socket: Socket; data: typed)</pre></dt> <dd> an alias for 'send'.   </dd> </dl>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2006–2017 Andreas Rumpf<br>Licensed under the MIT License.<br>
+    <a href="https://nim-lang.org/docs/net.html" class="_attribution-link" target="_blank">https://nim-lang.org/docs/net.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

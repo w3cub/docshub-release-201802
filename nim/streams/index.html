@@ -1,0 +1,133 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Streams - Nim - W3cubDocs</title>
+  
+  <meta name="description" content="This module provides a stream interface and two implementations thereof&#58; the FileStream and the StringStream which implement the stream &hellip;">
+  <meta name="keywords" content="module, streams, -, nim">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/nim/streams/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/nim.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/nim/" class="_nav-link" title="" style="margin-left:0;">Nim</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _nim">
+				
+<h1 class="title">Module streams</h1>  
+<p>This module provides a stream interface and two implementations thereof: the <em>FileStream</em> and the <em>StringStream</em> which implement the stream interface for Nim file objects (<em>File</em>) and strings. Other modules may provide other implementations for this standard stream interface.</p> <p>Examples:</p> <pre class="listing" data-language="nim">import streams
+var
+  ss = newStringStream("""The first line
+the second line
+the third line""")
+  line = ""
+while ss.readLine(line):
+  echo line
+ss.close()
+
+var fs = newFileStream("somefile.txt", fmRead)
+if not isNil(fs):
+  while fs.readLine(line):
+    echo line
+  fs.close()</pre>  <h2 id="7">Types</h2> <dl> <dt id="Stream"><pre id="Stream">Stream = ref StreamObj</pre></dt>  <dt id="StreamObj"><pre id="StreamObj" data-language="nim">StreamObj = object of RootObj
+  closeImpl*: proc (s: Stream) {.nimcall, tags: [], gcsafe.}
+  atEndImpl*: proc (s: Stream): bool {.nimcall, tags: [], gcsafe.}
+  setPositionImpl*: proc (s: Stream; pos: int) {.nimcall, tags: [], gcsafe.}
+  getPositionImpl*: proc (s: Stream): int {.nimcall, tags: [], gcsafe.}
+  readDataImpl*: proc (s: Stream; buffer: pointer; bufLen: int): int {.nimcall,
+      tags: [ReadIOEffect], gcsafe.}
+  peekDataImpl*: proc (s: Stream; buffer: pointer; bufLen: int): int {.nimcall,
+      tags: [ReadIOEffect], gcsafe.}
+  writeDataImpl*: proc (s: Stream; buffer: pointer; bufLen: int) {.nimcall,
+      tags: [WriteIOEffect], gcsafe.}
+  flushImpl*: proc (s: Stream) {.nimcall, tags: [WriteIOEffect], gcsafe.}</pre></dt> <dd> Stream interface that supports writing or reading. Note that these fields here shouldn't be used directly. They are accessible so that a stream implementation can override them.   </dd> <dt id="StringStream"><pre id="StringStream">StringStream = ref StringStreamObj</pre></dt> <dd> a stream that encapsulates a string   </dd> <dt id="StringStreamObj"><pre id="StringStreamObj" data-language="nim">StringStreamObj = object of StreamObj
+  data*: string
+  pos: int</pre></dt>  <dt id="FileStream"><pre id="FileStream">FileStream = ref FileStreamObj</pre></dt> <dd> a stream that encapsulates a <em>File</em>   </dd> <dt id="FileStreamObj"><pre id="FileStreamObj" data-language="nim">FileStreamObj = object of Stream
+  f: File</pre></dt>  </dl>  <h2 id="12">Procs</h2> <dl> <dt id="flush"><pre id="flush,Stream" data-language="nim">proc flush(s: Stream) {.raises: [Exception], tags: [WriteIOEffect].}</pre></dt> <dd> flushes the buffers that the stream <em>s</em> might use.   </dd> <dt id="close"><pre id="close,Stream" data-language="nim">proc close(s: Stream) {.raises: [Exception], tags: [].}</pre></dt> <dd> closes the stream <em>s</em>.   </dd> <dt id="close"><pre id="close,Stream,Stream" data-language="nim">proc close(s, unused: Stream) {.deprecated, raises: [Exception], tags: [].}</pre></dt> <dd> closes the stream <em>s</em>.   </dd> <dt id="atEnd"><pre id="atEnd,Stream" data-language="nim">proc atEnd(s: Stream): bool {.raises: [Exception], tags: [].}</pre></dt> <dd> checks if more data can be read from <em>f</em>. Returns true if all data has been read.   </dd> <dt id="atEnd"><pre id="atEnd,Stream,Stream" data-language="nim">proc atEnd(s, unused: Stream): bool {.deprecated, raises: [Exception], tags: [].}</pre></dt> <dd> checks if more data can be read from <em>f</em>. Returns true if all data has been read.   </dd> <dt id="setPosition"><pre id="setPosition,Stream,int" data-language="nim">proc setPosition(s: Stream; pos: int) {.raises: [Exception], tags: [].}</pre></dt> <dd> sets the position <em>pos</em> of the stream <em>s</em>.   </dd> <dt id="setPosition"><pre id="setPosition,Stream,Stream,int" data-language="nim">proc setPosition(s, unused: Stream; pos: int) {.deprecated, raises: [Exception], tags: [].}</pre></dt> <dd> sets the position <em>pos</em> of the stream <em>s</em>.   </dd> <dt id="getPosition"><pre id="getPosition,Stream" data-language="nim">proc getPosition(s: Stream): int {.raises: [Exception], tags: [].}</pre></dt> <dd> retrieves the current position in the stream <em>s</em>.   </dd> <dt id="getPosition"><pre id="getPosition,Stream,Stream" data-language="nim">proc getPosition(s, unused: Stream): int {.deprecated, raises: [Exception], tags: [].}</pre></dt> <dd> retrieves the current position in the stream <em>s</em>.   </dd> <dt id="readData"><pre id="readData,Stream,pointer,int" data-language="nim">proc readData(s: Stream; buffer: pointer; bufLen: int): int {.raises: [Exception],
+    tags: [ReadIOEffect].}</pre></dt> <dd> low level proc that reads data into an untyped <em>buffer</em> of <em>bufLen</em> size.   </dd> <dt id="readAll"><pre id="readAll,Stream" data-language="nim">proc readAll(s: Stream): string {.raises: [Exception], tags: [ReadIOEffect].}</pre></dt> <dd> Reads all available data.   </dd> <dt id="readData"><pre id="readData,Stream,Stream,pointer,int" data-language="nim">proc readData(s, unused: Stream; buffer: pointer; bufLen: int): int {.deprecated,
+    raises: [Exception], tags: [ReadIOEffect].}</pre></dt> <dd> low level proc that reads data into an untyped <em>buffer</em> of <em>bufLen</em> size.   </dd> <dt id="peekData"><pre id="peekData,Stream,pointer,int" data-language="nim">proc peekData(s: Stream; buffer: pointer; bufLen: int): int {.raises: [Exception],
+    tags: [ReadIOEffect].}</pre></dt> <dd> low level proc that reads data into an untyped <em>buffer</em> of <em>bufLen</em> size without moving stream position   </dd> <dt id="writeData"><pre id="writeData,Stream,pointer,int" data-language="nim">proc writeData(s: Stream; buffer: pointer; bufLen: int) {.raises: [Exception],
+    tags: [WriteIOEffect].}</pre></dt> <dd> low level proc that writes an untyped <em>buffer</em> of <em>bufLen</em> size to the stream <em>s</em>.   </dd> <dt id="writeData"><pre id="writeData,Stream,Stream,pointer,int" data-language="nim">proc writeData(s, unused: Stream; buffer: pointer; bufLen: int) {.deprecated,
+    raises: [Exception], tags: [WriteIOEffect].}</pre></dt> <dd> low level proc that writes an untyped <em>buffer</em> of <em>bufLen</em> size to the stream <em>s</em>.   </dd> <dt id="write"><pre id="write,Stream,T" data-language="nim">proc write[T](s: Stream; x: T)</pre></dt> <dd> generic write procedure. Writes <em>x</em> to the stream <em>s</em>. Implementation:<pre class="listing" data-language="nim">s.writeData(s, addr(x), sizeof(x))</pre>   </dd> <dt id="write"><pre id="write,Stream,string" data-language="nim">proc write(s: Stream; x: string) {.raises: [Exception], tags: [WriteIOEffect].}</pre></dt> <dd> writes the string <em>x</em> to the the stream <em>s</em>. No length field or terminating zero is written.   </dd> <dt id="writeLn"><pre id="writeLn,Stream,varargs[string,]" data-language="nim">proc writeLn(s: Stream; args: varargs[string, `$`]) {.deprecated, raises: [Exception],
+    tags: [WriteIOEffect].}</pre></dt> <dd> <strong>Deprecated since version 0.11.4:</strong> Use <strong>writeLine</strong> instead.   </dd> <dt id="writeLine"><pre id="writeLine,Stream,varargs[string,]" data-language="nim">proc writeLine(s: Stream; args: varargs[string, `$`]) {.raises: [Exception],
+    tags: [WriteIOEffect].}</pre></dt> <dd> writes one or more strings to the the stream <em>s</em> followed by a new line. No length field or terminating zero is written.   </dd> <dt id="readChar"><pre id="readChar,Stream" data-language="nim">proc readChar(s: Stream): char {.raises: [Exception], tags: [ReadIOEffect].}</pre></dt> <dd> reads a char from the stream <em>s</em>. Raises <em>EIO</em> if an error occurred. Returns '0' as an EOF marker.   </dd> <dt id="peekChar"><pre id="peekChar,Stream" data-language="nim">proc peekChar(s: Stream): char {.raises: [Exception], tags: [ReadIOEffect].}</pre></dt> <dd> peeks a char from the stream <em>s</em>. Raises <em>EIO</em> if an error occurred. Returns '0' as an EOF marker.   </dd> <dt id="readBool"><pre id="readBool,Stream" data-language="nim">proc readBool(s: Stream): bool {.raises: [Exception, IOError], tags: [ReadIOEffect].}</pre></dt> <dd> reads a bool from the stream <em>s</em>. Raises <em>EIO</em> if an error occurred.   </dd> <dt id="peekBool"><pre id="peekBool,Stream" data-language="nim">proc peekBool(s: Stream): bool {.raises: [Exception, IOError], tags: [ReadIOEffect].}</pre></dt> <dd> peeks a bool from the stream <em>s</em>. Raises <em>EIO</em> if an error occurred.   </dd> <dt id="readInt8"><pre id="readInt8,Stream" data-language="nim">proc readInt8(s: Stream): int8 {.raises: [Exception, IOError], tags: [ReadIOEffect].}</pre></dt> <dd> reads an int8 from the stream <em>s</em>. Raises <em>EIO</em> if an error occurred.   </dd> <dt id="peekInt8"><pre id="peekInt8,Stream" data-language="nim">proc peekInt8(s: Stream): int8 {.raises: [Exception, IOError], tags: [ReadIOEffect].}</pre></dt> <dd> peeks an int8 from the stream <em>s</em>. Raises <em>EIO</em> if an error occurred.   </dd> <dt id="readInt16"><pre id="readInt16,Stream" data-language="nim">proc readInt16(s: Stream): int16 {.raises: [Exception, IOError], tags: [ReadIOEffect].}</pre></dt> <dd> reads an int16 from the stream <em>s</em>. Raises <em>EIO</em> if an error occurred.   </dd> <dt id="peekInt16"><pre id="peekInt16,Stream" data-language="nim">proc peekInt16(s: Stream): int16 {.raises: [Exception, IOError], tags: [ReadIOEffect].}</pre></dt> <dd> peeks an int16 from the stream <em>s</em>. Raises <em>EIO</em> if an error occurred.   </dd> <dt id="readInt32"><pre id="readInt32,Stream" data-language="nim">proc readInt32(s: Stream): int32 {.raises: [Exception, IOError], tags: [ReadIOEffect].}</pre></dt> <dd> reads an int32 from the stream <em>s</em>. Raises <em>EIO</em> if an error occurred.   </dd> <dt id="peekInt32"><pre id="peekInt32,Stream" data-language="nim">proc peekInt32(s: Stream): int32 {.raises: [Exception, IOError], tags: [ReadIOEffect].}</pre></dt> <dd> peeks an int32 from the stream <em>s</em>. Raises <em>EIO</em> if an error occurred.   </dd> <dt id="readInt64"><pre id="readInt64,Stream" data-language="nim">proc readInt64(s: Stream): int64 {.raises: [Exception, IOError], tags: [ReadIOEffect].}</pre></dt> <dd> reads an int64 from the stream <em>s</em>. Raises <em>EIO</em> if an error occurred.   </dd> <dt id="peekInt64"><pre id="peekInt64,Stream" data-language="nim">proc peekInt64(s: Stream): int64 {.raises: [Exception, IOError], tags: [ReadIOEffect].}</pre></dt> <dd> peeks an int64 from the stream <em>s</em>. Raises <em>EIO</em> if an error occurred.   </dd> <dt id="readFloat32"><pre id="readFloat32,Stream" data-language="nim">proc readFloat32(s: Stream): float32 {.raises: [Exception, IOError],
+                                   tags: [ReadIOEffect].}</pre></dt> <dd> reads a float32 from the stream <em>s</em>. Raises <em>EIO</em> if an error occurred.   </dd> <dt id="peekFloat32"><pre id="peekFloat32,Stream" data-language="nim">proc peekFloat32(s: Stream): float32 {.raises: [Exception, IOError],
+                                   tags: [ReadIOEffect].}</pre></dt> <dd> peeks a float32 from the stream <em>s</em>. Raises <em>EIO</em> if an error occurred.   </dd> <dt id="readFloat64"><pre id="readFloat64,Stream" data-language="nim">proc readFloat64(s: Stream): float64 {.raises: [Exception, IOError],
+                                   tags: [ReadIOEffect].}</pre></dt> <dd> reads a float64 from the stream <em>s</em>. Raises <em>EIO</em> if an error occurred.   </dd> <dt id="peekFloat64"><pre id="peekFloat64,Stream" data-language="nim">proc peekFloat64(s: Stream): float64 {.raises: [Exception, IOError],
+                                   tags: [ReadIOEffect].}</pre></dt> <dd> peeks a float64 from the stream <em>s</em>. Raises <em>EIO</em> if an error occurred.   </dd> <dt id="readStr"><pre id="readStr,Stream,int" data-language="nim">proc readStr(s: Stream; length: int): TaintedString {.raises: [Exception],
+    tags: [ReadIOEffect].}</pre></dt> <dd> reads a string of length <em>length</em> from the stream <em>s</em>. Raises <em>EIO</em> if an error occurred.   </dd> <dt id="peekStr"><pre id="peekStr,Stream,int" data-language="nim">proc peekStr(s: Stream; length: int): TaintedString {.raises: [Exception],
+    tags: [ReadIOEffect].}</pre></dt> <dd> peeks a string of length <em>length</em> from the stream <em>s</em>. Raises <em>EIO</em> if an error occurred.   </dd> <dt id="readLine"><pre id="readLine,Stream,TaintedString" data-language="nim">proc readLine(s: Stream; line: var TaintedString): bool {.raises: [Exception],
+    tags: [ReadIOEffect].}</pre></dt> <dd> reads a line of text from the stream <em>s</em> into <em>line</em>. <em>line</em> must not be <code>nil</code>! May throw an IO exception. A line of text may be delimited by <code>CR</code>, <code>LF</code> or <code>CRLF</code>. The newline character(s) are not part of the returned string. Returns <code>false</code> if the end of the file has been reached, <code>true</code> otherwise. If <code>false</code> is returned <em>line</em> contains no new data.   </dd> <dt id="peekLine"><pre id="peekLine,Stream,TaintedString" data-language="nim">proc peekLine(s: Stream; line: var TaintedString): bool {.
+    raises: [Exception, Exception], tags: [ReadIOEffect].}</pre></dt> <dd> peeks a line of text from the stream <em>s</em> into <em>line</em>. <em>line</em> must not be <code>nil</code>! May throw an IO exception. A line of text may be delimited by <code>CR</code>, <code>LF</code> or <code>CRLF</code>. The newline character(s) are not part of the returned string. Returns <code>false</code> if the end of the file has been reached, <code>true</code> otherwise. If <code>false</code> is returned <em>line</em> contains no new data.   </dd> <dt id="readLine"><pre id="readLine,Stream" data-language="nim">proc readLine(s: Stream): TaintedString {.raises: [Exception], tags: [ReadIOEffect].}</pre></dt> <dd> Reads a line from a stream <em>s</em>. Note: This is not very efficient. Raises <em>EIO</em> if an error occurred.   </dd> <dt id="peekLine"><pre id="peekLine,Stream" data-language="nim">proc peekLine(s: Stream): TaintedString {.raises: [Exception, Exception],
+                                      tags: [ReadIOEffect].}</pre></dt> <dd> Peeks a line from a stream <em>s</em>. Note: This is not very efficient. Raises <em>EIO</em> if an error occurred.   </dd> <dt id="newStringStream"><pre id="newStringStream,string" data-language="nim">proc newStringStream(s: string = ""): StringStream {.raises: [], tags: [].}</pre></dt> <dd> creates a new stream from the string <em>s</em>.   </dd> <dt id="newFileStream"><pre id="newFileStream,File" data-language="nim">proc newFileStream(f: File): FileStream {.raises: [], tags: [].}</pre></dt> <dd> creates a new stream from the file <em>f</em>.   </dd> <dt id="newFileStream"><pre id="newFileStream,string,FileMode,int" data-language="nim">proc newFileStream(filename: string; mode: FileMode = fmRead; bufSize: int = - 1): FileStream {.
+    raises: [], tags: [].}</pre></dt> <dd> creates a new stream from the file named <em>filename</em> with the mode <em>mode</em>. If the file cannot be opened, nil is returned. See the <a href="../system/">system</a> module for a list of available FileMode enums.   </dd> </dl>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2006–2017 Andreas Rumpf<br>Licensed under the MIT License.<br>
+    <a href="https://nim-lang.org/docs/streams.html" class="_attribution-link" target="_blank">https://nim-lang.org/docs/streams.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

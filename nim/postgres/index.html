@@ -1,0 +1,250 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Postgres - Nim - W3cubDocs</title>
+  
+  <meta name="description" content=" © 2006–2017 Andreas RumpfLicensed under the MIT License. https&#58;&#47;&#47;nim-lang.org&#47;docs&#47;postgres.html ">
+  <meta name="keywords" content="module, postgres, -, nim">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/nim/postgres/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/nim.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/nim/" class="_nav-link" title="" style="margin-left:0;">Nim</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _nim">
+				
+<h1 class="title">Module postgres</h1>    <h2 id="7">Types</h2> <dl> <dt id="POid"><pre id="POid">POid = ptr Oid</pre></dt>  <dt id="Oid"><pre id="Oid">Oid = int32</pre></dt>  <dt id="SockAddr"><pre id="SockAddr" data-language="nim">SockAddr = array[1 .. 112, int8]</pre></dt>  <dt id="PGresAttDesc"><pre id="PGresAttDesc" data-language="nim">PGresAttDesc = object
+  name*: cstring
+  adtid*: Oid
+  adtsize*: int</pre></dt>  <dt id="PPGresAttDesc"><pre id="PPGresAttDesc">PPGresAttDesc = ptr PGresAttDesc</pre></dt>  <dt id="PPPGresAttDesc"><pre id="PPPGresAttDesc">PPPGresAttDesc = ptr PPGresAttDesc</pre></dt>  <dt id="PGresAttValue"><pre id="PGresAttValue" data-language="nim">PGresAttValue = object
+  length*: int32
+  value*: cstring</pre></dt>  <dt id="PPGresAttValue"><pre id="PPGresAttValue">PPGresAttValue = ptr PGresAttValue</pre></dt>  <dt id="PPPGresAttValue"><pre id="PPPGresAttValue">PPPGresAttValue = ptr PPGresAttValue</pre></dt>  <dt id="PExecStatusType"><pre id="PExecStatusType">PExecStatusType = ptr ExecStatusType</pre></dt>  <dt id="ExecStatusType"><pre id="ExecStatusType" data-language="nim">ExecStatusType = enum
+  PGRES_EMPTY_QUERY = 0, PGRES_COMMAND_OK, PGRES_TUPLES_OK, PGRES_COPY_OUT,
+  PGRES_COPY_IN, PGRES_BAD_RESPONSE, PGRES_NONFATAL_ERROR, PGRES_FATAL_ERROR</pre></dt>  <dt id="PGlobjfuncs"><pre id="PGlobjfuncs" data-language="nim">PGlobjfuncs = object
+  fn_lo_open*: Oid
+  fn_lo_close*: Oid
+  fn_lo_creat*: Oid
+  fn_lo_unlink*: Oid
+  fn_lo_lseek*: Oid
+  fn_lo_tell*: Oid
+  fn_lo_read*: Oid
+  fn_lo_write*: Oid</pre></dt>  <dt id="PPGlobjfuncs"><pre id="PPGlobjfuncs">PPGlobjfuncs = ptr PGlobjfuncs</pre></dt>  <dt id="PConnStatusType"><pre id="PConnStatusType">PConnStatusType = ptr ConnStatusType</pre></dt>  <dt id="ConnStatusType"><pre id="ConnStatusType" data-language="nim">ConnStatusType = enum
+  CONNECTION_OK, CONNECTION_BAD, CONNECTION_STARTED, CONNECTION_MADE,
+  CONNECTION_AWAITING_RESPONSE, CONNECTION_AUTH_OK, CONNECTION_SETENV,
+  CONNECTION_SSL_STARTUP, CONNECTION_NEEDED</pre></dt>  <dt id="PGconn"><pre id="PGconn" data-language="nim">PGconn = object
+  pghost*: cstring
+  pgtty*: cstring
+  pgport*: cstring
+  pgoptions*: cstring
+  dbName*: cstring
+  status*: ConnStatusType
+  errorMessage*: array[0 .. 4096 - 1, char]
+  Pfin*: File
+  Pfout*: File
+  Pfdebug*: File
+  sock*: int32
+  laddr*: SockAddr
+  raddr*: SockAddr
+  salt*: array[0 .. 2 - 1, char]
+  asyncNotifyWaiting*: int32
+  notifyList*: pointer
+  pguser*: cstring
+  pgpass*: cstring
+  lobjfuncs*: PPGlobjfuncs</pre></dt>  <dt id="PPGconn"><pre id="PPGconn">PPGconn = ptr PGconn</pre></dt>  <dt id="PGresult"><pre id="PGresult" data-language="nim">PGresult = object
+  ntups*: int32
+  numAttributes*: int32
+  attDescs*: PPGresAttDesc
+  tuples*: PPPGresAttValue
+  tupArrSize*: int32
+  resultStatus*: ExecStatusType
+  cmdStatus*: array[0 .. 40 - 1, char]
+  binary*: int32
+  conn*: PPGconn</pre></dt>  <dt id="PPGresult"><pre id="PPGresult">PPGresult = ptr PGresult</pre></dt>  <dt id="PPostgresPollingStatusType"><pre id="PPostgresPollingStatusType">PPostgresPollingStatusType = ptr PostgresPollingStatusType</pre></dt>  <dt id="PostgresPollingStatusType"><pre id="PostgresPollingStatusType" data-language="nim">PostgresPollingStatusType = enum
+  PGRES_POLLING_FAILED = 0, PGRES_POLLING_READING, PGRES_POLLING_WRITING,
+  PGRES_POLLING_OK, PGRES_POLLING_ACTIVE</pre></dt>  <dt id="PPGTransactionStatusType"><pre id="PPGTransactionStatusType">PPGTransactionStatusType = ptr PGTransactionStatusType</pre></dt>  <dt id="PGTransactionStatusType"><pre id="PGTransactionStatusType" data-language="nim">PGTransactionStatusType = enum
+  PQTRANS_IDLE, PQTRANS_ACTIVE, PQTRANS_INTRANS, PQTRANS_INERROR, PQTRANS_UNKNOWN</pre></dt>  <dt id="PPGVerbosity"><pre id="PPGVerbosity">PPGVerbosity = ptr PGVerbosity</pre></dt>  <dt id="PGVerbosity"><pre id="PGVerbosity" data-language="nim">PGVerbosity = enum
+  PQERRORS_TERSE, PQERRORS_DEFAULT, PQERRORS_VERBOSE</pre></dt>  <dt id="PpgNotify"><pre id="PpgNotify">PpgNotify = ptr pgNotify</pre></dt>  <dt id="pgNotify"><pre id="pgNotify" data-language="nim">pgNotify = object
+  relname*: cstring
+  be_pid*: int32
+  extra*: cstring</pre></dt>  <dt id="PQnoticeReceiver"><pre id="PQnoticeReceiver" data-language="nim">PQnoticeReceiver = proc (arg: pointer; res: PPGresult) {.cdecl.}</pre></dt>  <dt id="PQnoticeProcessor"><pre id="PQnoticeProcessor" data-language="nim">PQnoticeProcessor = proc (arg: pointer; message: cstring) {.cdecl.}</pre></dt>  <dt id="Ppqbool"><pre id="Ppqbool">Ppqbool = ptr pqbool</pre></dt>  <dt id="pqbool"><pre id="pqbool">pqbool = char</pre></dt>  <dt id="P_PQprintOpt"><pre id="P_PQprintOpt">P_PQprintOpt = ptr PQprintOpt</pre></dt>  <dt id="PQprintOpt"><pre id="PQprintOpt" data-language="nim">PQprintOpt = object
+  header*: pqbool
+  align*: pqbool
+  standard*: pqbool
+  html3*: pqbool
+  expanded*: pqbool
+  pager*: pqbool
+  fieldSep*: cstring
+  tableOpt*: cstring
+  caption*: cstring
+  fieldName*: ptr cstring</pre></dt>  <dt id="P_PQconninfoOption"><pre id="P_PQconninfoOption">P_PQconninfoOption = ptr PQconninfoOption</pre></dt>  <dt id="PQconninfoOption"><pre id="PQconninfoOption" data-language="nim">PQconninfoOption = object
+  keyword*: cstring
+  envvar*: cstring
+  compiled*: cstring
+  val*: cstring
+  label*: cstring
+  dispchar*: cstring
+  dispsize*: int32</pre></dt>  <dt id="PPQArgBlock"><pre id="PPQArgBlock">PPQArgBlock = ptr PQArgBlock</pre></dt>  <dt id="PQArgBlock"><pre id="PQArgBlock" data-language="nim">PQArgBlock = object
+  length*: int32
+  isint*: int32
+  p*: pointer</pre></dt>  </dl>  <h2 id="10">Consts</h2> <dl> <dt id="ERROR_MSG_LENGTH"><pre id="ERROR_MSG_LENGTH">ERROR_MSG_LENGTH = 4096</pre></dt>  <dt id="CMDSTATUS_LEN"><pre id="CMDSTATUS_LEN">CMDSTATUS_LEN = 40</pre></dt>  </dl>  <h2 id="12">Procs</h2> <dl> <dt id="pqconnectStart"><pre id="pqconnectStart,cstring" data-language="nim">proc pqconnectStart(conninfo: cstring): PPGconn {.cdecl, dynlib: dllName,
+    importc: "PQconnectStart".}</pre></dt>  <dt id="pqconnectPoll"><pre id="pqconnectPoll,PPGconn" data-language="nim">proc pqconnectPoll(conn: PPGconn): PostgresPollingStatusType {.cdecl,
+    dynlib: dllName, importc: "PQconnectPoll".}</pre></dt>  <dt id="pqconnectdb"><pre id="pqconnectdb,cstring" data-language="nim">proc pqconnectdb(conninfo: cstring): PPGconn {.cdecl, dynlib: dllName,
+    importc: "PQconnectdb".}</pre></dt>  <dt id="pqsetdbLogin"><pre id="pqsetdbLogin,cstring,cstring,cstring,cstring,cstring,cstring,cstring" data-language="nim">proc pqsetdbLogin(pghost: cstring; pgport: cstring; pgoptions: cstring; pgtty: cstring;
+                 dbName: cstring; login: cstring; pwd: cstring): PPGconn {.cdecl,
+    dynlib: dllName, importc: "PQsetdbLogin".}</pre></dt>  <dt id="pqfinish"><pre id="pqfinish,PPGconn" data-language="nim">proc pqfinish(conn: PPGconn) {.cdecl, dynlib: dllName, importc: "PQfinish".}</pre></dt>  <dt id="pqconndefaults"><pre id="pqconndefaults," data-language="nim">proc pqconndefaults(): P_PQconninfoOption {.cdecl, dynlib: dllName,
+    importc: "PQconndefaults".}</pre></dt>  <dt id="pqconninfoFree"><pre id="pqconninfoFree,P_PQconninfoOption" data-language="nim">proc pqconninfoFree(connOptions: P_PQconninfoOption) {.cdecl, dynlib: dllName,
+    importc: "PQconninfoFree".}</pre></dt>  <dt id="pqresetStart"><pre id="pqresetStart,PPGconn" data-language="nim">proc pqresetStart(conn: PPGconn): int32 {.cdecl, dynlib: dllName,
+                                      importc: "PQresetStart".}</pre></dt>  <dt id="pqresetPoll"><pre id="pqresetPoll,PPGconn" data-language="nim">proc pqresetPoll(conn: PPGconn): PostgresPollingStatusType {.cdecl, dynlib: dllName,
+    importc: "PQresetPoll".}</pre></dt>  <dt id="pqreset"><pre id="pqreset,PPGconn" data-language="nim">proc pqreset(conn: PPGconn) {.cdecl, dynlib: dllName, importc: "PQreset".}</pre></dt>  <dt id="pqrequestCancel"><pre id="pqrequestCancel,PPGconn" data-language="nim">proc pqrequestCancel(conn: PPGconn): int32 {.cdecl, dynlib: dllName,
+    importc: "PQrequestCancel".}</pre></dt>  <dt id="pqdb"><pre id="pqdb,PPGconn" data-language="nim">proc pqdb(conn: PPGconn): cstring {.cdecl, dynlib: dllName, importc: "PQdb".}</pre></dt>  <dt id="pquser"><pre id="pquser,PPGconn" data-language="nim">proc pquser(conn: PPGconn): cstring {.cdecl, dynlib: dllName, importc: "PQuser".}</pre></dt>  <dt id="pqpass"><pre id="pqpass,PPGconn" data-language="nim">proc pqpass(conn: PPGconn): cstring {.cdecl, dynlib: dllName, importc: "PQpass".}</pre></dt>  <dt id="pqhost"><pre id="pqhost,PPGconn" data-language="nim">proc pqhost(conn: PPGconn): cstring {.cdecl, dynlib: dllName, importc: "PQhost".}</pre></dt>  <dt id="pqport"><pre id="pqport,PPGconn" data-language="nim">proc pqport(conn: PPGconn): cstring {.cdecl, dynlib: dllName, importc: "PQport".}</pre></dt>  <dt id="pqtty"><pre id="pqtty,PPGconn" data-language="nim">proc pqtty(conn: PPGconn): cstring {.cdecl, dynlib: dllName, importc: "PQtty".}</pre></dt>  <dt id="pqoptions"><pre id="pqoptions,PPGconn" data-language="nim">proc pqoptions(conn: PPGconn): cstring {.cdecl, dynlib: dllName, importc: "PQoptions".}</pre></dt>  <dt id="pqstatus"><pre id="pqstatus,PPGconn" data-language="nim">proc pqstatus(conn: PPGconn): ConnStatusType {.cdecl, dynlib: dllName,
+    importc: "PQstatus".}</pre></dt>  <dt id="pqtransactionStatus"><pre id="pqtransactionStatus,PPGconn" data-language="nim">proc pqtransactionStatus(conn: PPGconn): PGTransactionStatusType {.cdecl,
+    dynlib: dllName, importc: "PQtransactionStatus".}</pre></dt>  <dt id="pqparameterStatus"><pre id="pqparameterStatus,PPGconn,cstring" data-language="nim">proc pqparameterStatus(conn: PPGconn; paramName: cstring): cstring {.cdecl,
+    dynlib: dllName, importc: "PQparameterStatus".}</pre></dt>  <dt id="pqprotocolVersion"><pre id="pqprotocolVersion,PPGconn" data-language="nim">proc pqprotocolVersion(conn: PPGconn): int32 {.cdecl, dynlib: dllName,
+    importc: "PQprotocolVersion".}</pre></dt>  <dt id="pqerrorMessage"><pre id="pqerrorMessage,PPGconn" data-language="nim">proc pqerrorMessage(conn: PPGconn): cstring {.cdecl, dynlib: dllName,
+    importc: "PQerrorMessage".}</pre></dt>  <dt id="pqsocket"><pre id="pqsocket,PPGconn" data-language="nim">proc pqsocket(conn: PPGconn): int32 {.cdecl, dynlib: dllName, importc: "PQsocket".}</pre></dt>  <dt id="pqbackendPID"><pre id="pqbackendPID,PPGconn" data-language="nim">proc pqbackendPID(conn: PPGconn): int32 {.cdecl, dynlib: dllName,
+                                      importc: "PQbackendPID".}</pre></dt>  <dt id="pqclientEncoding"><pre id="pqclientEncoding,PPGconn" data-language="nim">proc pqclientEncoding(conn: PPGconn): int32 {.cdecl, dynlib: dllName,
+    importc: "PQclientEncoding".}</pre></dt>  <dt id="pqsetClientEncoding"><pre id="pqsetClientEncoding,PPGconn,cstring" data-language="nim">proc pqsetClientEncoding(conn: PPGconn; encoding: cstring): int32 {.cdecl,
+    dynlib: dllName, importc: "PQsetClientEncoding".}</pre></dt>  <dt id="pqsetErrorVerbosity"><pre id="pqsetErrorVerbosity,PPGconn,PGVerbosity" data-language="nim">proc pqsetErrorVerbosity(conn: PPGconn; verbosity: PGVerbosity): PGVerbosity {.cdecl,
+    dynlib: dllName, importc: "PQsetErrorVerbosity".}</pre></dt>  <dt id="pqtrace"><pre id="pqtrace,PPGconn,File" data-language="nim">proc pqtrace(conn: PPGconn; debug_port: File) {.cdecl, dynlib: dllName,
+    importc: "PQtrace".}</pre></dt>  <dt id="pquntrace"><pre id="pquntrace,PPGconn" data-language="nim">proc pquntrace(conn: PPGconn) {.cdecl, dynlib: dllName, importc: "PQuntrace".}</pre></dt>  <dt id="pqsetNoticeReceiver"><pre id="pqsetNoticeReceiver,PPGconn,PQnoticeReceiver,pointer" data-language="nim">proc pqsetNoticeReceiver(conn: PPGconn; theProc: PQnoticeReceiver; arg: pointer): PQnoticeReceiver {.
+    cdecl, dynlib: dllName, importc: "PQsetNoticeReceiver".}</pre></dt>  <dt id="pqsetNoticeProcessor"><pre id="pqsetNoticeProcessor,PPGconn,PQnoticeProcessor,pointer" data-language="nim">proc pqsetNoticeProcessor(conn: PPGconn; theProc: PQnoticeProcessor; arg: pointer): PQnoticeProcessor {.
+    cdecl, dynlib: dllName, importc: "PQsetNoticeProcessor".}</pre></dt>  <dt id="pqexec"><pre id="pqexec,PPGconn,cstring" data-language="nim">proc pqexec(conn: PPGconn; query: cstring): PPGresult {.cdecl, dynlib: dllName,
+    importc: "PQexec".}</pre></dt>  <dt id="pqexecParams"><pre id="pqexecParams,PPGconn,cstring,int32,POid,cstringArray,ptr.int32,ptr.int32,int32" data-language="nim">proc pqexecParams(conn: PPGconn; command: cstring; nParams: int32; paramTypes: POid;
+                 paramValues: cstringArray; paramLengths, paramFormats: ptr int32;
+                 resultFormat: int32): PPGresult {.cdecl, dynlib: dllName,
+    importc: "PQexecParams".}</pre></dt>  <dt id="pqprepare"><pre id="pqprepare,PPGconn,cstring,cstring,int32,POid" data-language="nim">proc pqprepare(conn: PPGconn; stmtName, query: cstring; nParams: int32; paramTypes: POid): PPGresult {.
+    cdecl, dynlib: dllName, importc: "PQprepare".}</pre></dt>  <dt id="pqexecPrepared"><pre id="pqexecPrepared,PPGconn,cstring,int32,cstringArray,ptr.int32,ptr.int32,int32" data-language="nim">proc pqexecPrepared(conn: PPGconn; stmtName: cstring; nParams: int32;
+                   paramValues: cstringArray;
+                   paramLengths, paramFormats: ptr int32; resultFormat: int32): PPGresult {.
+    cdecl, dynlib: dllName, importc: "PQexecPrepared".}</pre></dt>  <dt id="pqsendQuery"><pre id="pqsendQuery,PPGconn,cstring" data-language="nim">proc pqsendQuery(conn: PPGconn; query: cstring): int32 {.cdecl, dynlib: dllName,
+    importc: "PQsendQuery".}</pre></dt>  <dt id="pqsendQueryParams"><pre id="pqsendQueryParams,PPGconn,cstring,int32,POid,cstringArray,ptr.int32,ptr.int32,int32" data-language="nim">proc pqsendQueryParams(conn: PPGconn; command: cstring; nParams: int32;
+                      paramTypes: POid; paramValues: cstringArray;
+                      paramLengths, paramFormats: ptr int32; resultFormat: int32): int32 {.
+    cdecl, dynlib: dllName, importc: "PQsendQueryParams".}</pre></dt>  <dt id="pqsendQueryPrepared"><pre id="pqsendQueryPrepared,PPGconn,cstring,int32,cstringArray,ptr.int32,ptr.int32,int32" data-language="nim">proc pqsendQueryPrepared(conn: PPGconn; stmtName: cstring; nParams: int32;
+                        paramValues: cstringArray;
+                        paramLengths, paramFormats: ptr int32; resultFormat: int32): int32 {.
+    cdecl, dynlib: dllName, importc: "PQsendQueryPrepared".}</pre></dt>  <dt id="pqgetResult"><pre id="pqgetResult,PPGconn" data-language="nim">proc pqgetResult(conn: PPGconn): PPGresult {.cdecl, dynlib: dllName,
+    importc: "PQgetResult".}</pre></dt>  <dt id="pqisBusy"><pre id="pqisBusy,PPGconn" data-language="nim">proc pqisBusy(conn: PPGconn): int32 {.cdecl, dynlib: dllName, importc: "PQisBusy".}</pre></dt>  <dt id="pqconsumeInput"><pre id="pqconsumeInput,PPGconn" data-language="nim">proc pqconsumeInput(conn: PPGconn): int32 {.cdecl, dynlib: dllName,
+                                        importc: "PQconsumeInput".}</pre></dt>  <dt id="pqnotifies"><pre id="pqnotifies,PPGconn" data-language="nim">proc pqnotifies(conn: PPGconn): PpgNotify {.cdecl, dynlib: dllName,
+                                        importc: "PQnotifies".}</pre></dt>  <dt id="pqputCopyData"><pre id="pqputCopyData,PPGconn,cstring,int32" data-language="nim">proc pqputCopyData(conn: PPGconn; buffer: cstring; nbytes: int32): int32 {.cdecl,
+    dynlib: dllName, importc: "PQputCopyData".}</pre></dt>  <dt id="pqputCopyEnd"><pre id="pqputCopyEnd,PPGconn,cstring" data-language="nim">proc pqputCopyEnd(conn: PPGconn; errormsg: cstring): int32 {.cdecl, dynlib: dllName,
+    importc: "PQputCopyEnd".}</pre></dt>  <dt id="pqgetCopyData"><pre id="pqgetCopyData,PPGconn,cstringArray,int32" data-language="nim">proc pqgetCopyData(conn: PPGconn; buffer: cstringArray; async: int32): int32 {.cdecl,
+    dynlib: dllName, importc: "PQgetCopyData".}</pre></dt>  <dt id="pqgetline"><pre id="pqgetline,PPGconn,cstring,int32" data-language="nim">proc pqgetline(conn: PPGconn; str: cstring; len: int32): int32 {.cdecl, dynlib: dllName,
+    importc: "PQgetline".}</pre></dt>  <dt id="pqputline"><pre id="pqputline,PPGconn,cstring" data-language="nim">proc pqputline(conn: PPGconn; str: cstring): int32 {.cdecl, dynlib: dllName,
+    importc: "PQputline".}</pre></dt>  <dt id="pqgetlineAsync"><pre id="pqgetlineAsync,PPGconn,cstring,int32" data-language="nim">proc pqgetlineAsync(conn: PPGconn; buffer: cstring; bufsize: int32): int32 {.cdecl,
+    dynlib: dllName, importc: "PQgetlineAsync".}</pre></dt>  <dt id="pqputnbytes"><pre id="pqputnbytes,PPGconn,cstring,int32" data-language="nim">proc pqputnbytes(conn: PPGconn; buffer: cstring; nbytes: int32): int32 {.cdecl,
+    dynlib: dllName, importc: "PQputnbytes".}</pre></dt>  <dt id="pqendcopy"><pre id="pqendcopy,PPGconn" data-language="nim">proc pqendcopy(conn: PPGconn): int32 {.cdecl, dynlib: dllName, importc: "PQendcopy".}</pre></dt>  <dt id="pqsetnonblocking"><pre id="pqsetnonblocking,PPGconn,int32" data-language="nim">proc pqsetnonblocking(conn: PPGconn; arg: int32): int32 {.cdecl, dynlib: dllName,
+    importc: "PQsetnonblocking".}</pre></dt>  <dt id="pqisnonblocking"><pre id="pqisnonblocking,PPGconn" data-language="nim">proc pqisnonblocking(conn: PPGconn): int32 {.cdecl, dynlib: dllName,
+    importc: "PQisnonblocking".}</pre></dt>  <dt id="pqflush"><pre id="pqflush,PPGconn" data-language="nim">proc pqflush(conn: PPGconn): int32 {.cdecl, dynlib: dllName, importc: "PQflush".}</pre></dt>  <dt id="pqfn"><pre id="pqfn,PPGconn,int32,ptr.int32,ptr.int32,int32,PPQArgBlock,int32" data-language="nim">proc pqfn(conn: PPGconn; fnid: int32; result_buf, result_len: ptr int32;
+         result_is_int: int32; args: PPQArgBlock; nargs: int32): PPGresult {.cdecl,
+    dynlib: dllName, importc: "PQfn".}</pre></dt>  <dt id="pqresultStatus"><pre id="pqresultStatus,PPGresult" data-language="nim">proc pqresultStatus(res: PPGresult): ExecStatusType {.cdecl, dynlib: dllName,
+    importc: "PQresultStatus".}</pre></dt>  <dt id="pqresStatus"><pre id="pqresStatus,ExecStatusType" data-language="nim">proc pqresStatus(status: ExecStatusType): cstring {.cdecl, dynlib: dllName,
+    importc: "PQresStatus".}</pre></dt>  <dt id="pqresultErrorMessage"><pre id="pqresultErrorMessage,PPGresult" data-language="nim">proc pqresultErrorMessage(res: PPGresult): cstring {.cdecl, dynlib: dllName,
+    importc: "PQresultErrorMessage".}</pre></dt>  <dt id="pqresultErrorField"><pre id="pqresultErrorField,PPGresult,int32" data-language="nim">proc pqresultErrorField(res: PPGresult; fieldcode: int32): cstring {.cdecl,
+    dynlib: dllName, importc: "PQresultErrorField".}</pre></dt>  <dt id="pqntuples"><pre id="pqntuples,PPGresult" data-language="nim">proc pqntuples(res: PPGresult): int32 {.cdecl, dynlib: dllName, importc: "PQntuples".}</pre></dt>  <dt id="pqnfields"><pre id="pqnfields,PPGresult" data-language="nim">proc pqnfields(res: PPGresult): int32 {.cdecl, dynlib: dllName, importc: "PQnfields".}</pre></dt>  <dt id="pqbinaryTuples"><pre id="pqbinaryTuples,PPGresult" data-language="nim">proc pqbinaryTuples(res: PPGresult): int32 {.cdecl, dynlib: dllName,
+    importc: "PQbinaryTuples".}</pre></dt>  <dt id="pqfname"><pre id="pqfname,PPGresult,int32" data-language="nim">proc pqfname(res: PPGresult; field_num: int32): cstring {.cdecl, dynlib: dllName,
+    importc: "PQfname".}</pre></dt>  <dt id="pqfnumber"><pre id="pqfnumber,PPGresult,cstring" data-language="nim">proc pqfnumber(res: PPGresult; field_name: cstring): int32 {.cdecl, dynlib: dllName,
+    importc: "PQfnumber".}</pre></dt>  <dt id="pqftable"><pre id="pqftable,PPGresult,int32" data-language="nim">proc pqftable(res: PPGresult; field_num: int32): Oid {.cdecl, dynlib: dllName,
+    importc: "PQftable".}</pre></dt>  <dt id="pqftablecol"><pre id="pqftablecol,PPGresult,int32" data-language="nim">proc pqftablecol(res: PPGresult; field_num: int32): int32 {.cdecl, dynlib: dllName,
+    importc: "PQftablecol".}</pre></dt>  <dt id="pqfformat"><pre id="pqfformat,PPGresult,int32" data-language="nim">proc pqfformat(res: PPGresult; field_num: int32): int32 {.cdecl, dynlib: dllName,
+    importc: "PQfformat".}</pre></dt>  <dt id="pqftype"><pre id="pqftype,PPGresult,int32" data-language="nim">proc pqftype(res: PPGresult; field_num: int32): Oid {.cdecl, dynlib: dllName,
+    importc: "PQftype".}</pre></dt>  <dt id="pqfsize"><pre id="pqfsize,PPGresult,int32" data-language="nim">proc pqfsize(res: PPGresult; field_num: int32): int32 {.cdecl, dynlib: dllName,
+    importc: "PQfsize".}</pre></dt>  <dt id="pqfmod"><pre id="pqfmod,PPGresult,int32" data-language="nim">proc pqfmod(res: PPGresult; field_num: int32): int32 {.cdecl, dynlib: dllName,
+    importc: "PQfmod".}</pre></dt>  <dt id="pqcmdStatus"><pre id="pqcmdStatus,PPGresult" data-language="nim">proc pqcmdStatus(res: PPGresult): cstring {.cdecl, dynlib: dllName,
+                                        importc: "PQcmdStatus".}</pre></dt>  <dt id="pqoidStatus"><pre id="pqoidStatus,PPGresult" data-language="nim">proc pqoidStatus(res: PPGresult): cstring {.cdecl, dynlib: dllName,
+                                        importc: "PQoidStatus".}</pre></dt>  <dt id="pqoidValue"><pre id="pqoidValue,PPGresult" data-language="nim">proc pqoidValue(res: PPGresult): Oid {.cdecl, dynlib: dllName, importc: "PQoidValue".}</pre></dt>  <dt id="pqcmdTuples"><pre id="pqcmdTuples,PPGresult" data-language="nim">proc pqcmdTuples(res: PPGresult): cstring {.cdecl, dynlib: dllName,
+                                        importc: "PQcmdTuples".}</pre></dt>  <dt id="pqgetvalue"><pre id="pqgetvalue,PPGresult,int32,int32" data-language="nim">proc pqgetvalue(res: PPGresult; tup_num: int32; field_num: int32): cstring {.cdecl,
+    dynlib: dllName, importc: "PQgetvalue".}</pre></dt>  <dt id="pqgetlength"><pre id="pqgetlength,PPGresult,int32,int32" data-language="nim">proc pqgetlength(res: PPGresult; tup_num: int32; field_num: int32): int32 {.cdecl,
+    dynlib: dllName, importc: "PQgetlength".}</pre></dt>  <dt id="pqgetisnull"><pre id="pqgetisnull,PPGresult,int32,int32" data-language="nim">proc pqgetisnull(res: PPGresult; tup_num: int32; field_num: int32): int32 {.cdecl,
+    dynlib: dllName, importc: "PQgetisnull".}</pre></dt>  <dt id="pqclear"><pre id="pqclear,PPGresult" data-language="nim">proc pqclear(res: PPGresult) {.cdecl, dynlib: dllName, importc: "PQclear".}</pre></dt>  <dt id="pqfreemem"><pre id="pqfreemem,pointer" data-language="nim">proc pqfreemem(p: pointer) {.cdecl, dynlib: dllName, importc: "PQfreemem".}</pre></dt>  <dt id="pqmakeEmptyPGresult"><pre id="pqmakeEmptyPGresult,PPGconn,ExecStatusType" data-language="nim">proc pqmakeEmptyPGresult(conn: PPGconn; status: ExecStatusType): PPGresult {.cdecl,
+    dynlib: dllName, importc: "PQmakeEmptyPGresult".}</pre></dt>  <dt id="pqescapeString"><pre id="pqescapeString,cstring,cstring,int" data-language="nim">proc pqescapeString(till, `from`: cstring; len: int): int {.cdecl, dynlib: dllName,
+    importc: "PQescapeString".}</pre></dt>  <dt id="pqescapeBytea"><pre id="pqescapeBytea,cstring,int,int" data-language="nim">proc pqescapeBytea(bintext: cstring; binlen: int; bytealen: var int): cstring {.cdecl,
+    dynlib: dllName, importc: "PQescapeBytea".}</pre></dt>  <dt id="pqunescapeBytea"><pre id="pqunescapeBytea,cstring,int" data-language="nim">proc pqunescapeBytea(strtext: cstring; retbuflen: var int): cstring {.cdecl,
+    dynlib: dllName, importc: "PQunescapeBytea".}</pre></dt>  <dt id="pqprint"><pre id="pqprint,File,PPGresult,P_PQprintOpt" data-language="nim">proc pqprint(fout: File; res: PPGresult; ps: P_PQprintOpt) {.cdecl, dynlib: dllName,
+    importc: "PQprint".}</pre></dt>  <dt id="pqdisplayTuples"><pre id="pqdisplayTuples,PPGresult,File,int32,cstring,int32,int32" data-language="nim">proc pqdisplayTuples(res: PPGresult; fp: File; fillAlign: int32; fieldSep: cstring;
+                    printHeader: int32; quiet: int32) {.cdecl, dynlib: dllName,
+    importc: "PQdisplayTuples".}</pre></dt>  <dt id="pqprintTuples"><pre id="pqprintTuples,PPGresult,File,int32,int32,int32" data-language="nim">proc pqprintTuples(res: PPGresult; fout: File; printAttName: int32; terseOutput: int32;
+                  width: int32) {.cdecl, dynlib: dllName, importc: "PQprintTuples".}</pre></dt>  <dt id="lo_open"><pre id="lo_open,PPGconn,Oid,int32" data-language="nim">proc lo_open(conn: PPGconn; lobjId: Oid; mode: int32): int32 {.cdecl, dynlib: dllName,
+    importc: "lo_open".}</pre></dt>  <dt id="lo_close"><pre id="lo_close,PPGconn,int32" data-language="nim">proc lo_close(conn: PPGconn; fd: int32): int32 {.cdecl, dynlib: dllName,
+    importc: "lo_close".}</pre></dt>  <dt id="lo_read"><pre id="lo_read,PPGconn,int32,cstring,int" data-language="nim">proc lo_read(conn: PPGconn; fd: int32; buf: cstring; length: int): int32 {.cdecl,
+    dynlib: dllName, importc: "lo_read".}</pre></dt>  <dt id="lo_write"><pre id="lo_write,PPGconn,int32,cstring,int" data-language="nim">proc lo_write(conn: PPGconn; fd: int32; buf: cstring; length: int): int32 {.cdecl,
+    dynlib: dllName, importc: "lo_write".}</pre></dt>  <dt id="lo_lseek"><pre id="lo_lseek,PPGconn,int32,int32,int32" data-language="nim">proc lo_lseek(conn: PPGconn; fd: int32; offset: int32; whence: int32): int32 {.cdecl,
+    dynlib: dllName, importc: "lo_lseek".}</pre></dt>  <dt id="lo_creat"><pre id="lo_creat,PPGconn,int32" data-language="nim">proc lo_creat(conn: PPGconn; mode: int32): Oid {.cdecl, dynlib: dllName,
+    importc: "lo_creat".}</pre></dt>  <dt id="lo_tell"><pre id="lo_tell,PPGconn,int32" data-language="nim">proc lo_tell(conn: PPGconn; fd: int32): int32 {.cdecl, dynlib: dllName,
+    importc: "lo_tell".}</pre></dt>  <dt id="lo_unlink"><pre id="lo_unlink,PPGconn,Oid" data-language="nim">proc lo_unlink(conn: PPGconn; lobjId: Oid): int32 {.cdecl, dynlib: dllName,
+    importc: "lo_unlink".}</pre></dt>  <dt id="lo_import"><pre id="lo_import,PPGconn,cstring" data-language="nim">proc lo_import(conn: PPGconn; filename: cstring): Oid {.cdecl, dynlib: dllName,
+    importc: "lo_import".}</pre></dt>  <dt id="lo_export"><pre id="lo_export,PPGconn,Oid,cstring" data-language="nim">proc lo_export(conn: PPGconn; lobjId: Oid; filename: cstring): int32 {.cdecl,
+    dynlib: dllName, importc: "lo_export".}</pre></dt>  <dt id="pqmblen"><pre id="pqmblen,cstring,int32" data-language="nim">proc pqmblen(s: cstring; encoding: int32): int32 {.cdecl, dynlib: dllName,
+    importc: "PQmblen".}</pre></dt>  <dt id="pqenv2encoding"><pre id="pqenv2encoding," data-language="nim">proc pqenv2encoding(): int32 {.cdecl, dynlib: dllName, importc: "PQenv2encoding".}</pre></dt>  <dt id="pqsetdb"><pre id="pqsetdb,cstring,cstring,cstring,cstring,cstring" data-language="nim">proc pqsetdb(M_PGHOST, M_PGPORT, M_PGOPT, M_PGTTY, M_DBNAME: cstring): PPGconn {.
+    raises: [], tags: [].}</pre></dt>  </dl>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2006–2017 Andreas Rumpf<br>Licensed under the MIT License.<br>
+    <a href="https://nim-lang.org/docs/postgres.html" class="_attribution-link" target="_blank">https://nim-lang.org/docs/postgres.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

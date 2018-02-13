@@ -1,0 +1,427 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Times - Nim - W3cubDocs</title>
+  
+  <meta name="description" content=" This module contains routines and types for dealing with time. This module is available for the JavaScript target. ">
+  <meta name="keywords" content="module, times, -, nim">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/nim/times/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/nim.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/nim/" class="_nav-link" title="" style="margin-left:0;">Nim</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _nim">
+				
+<h1 class="title">Module times</h1>  
+<p>This module contains routines and types for dealing with time. This module is available for the <a href="../backends/#the-javascript-target">JavaScript target</a>.</p> <p>Examples:</p> <pre class="listing" data-language="nim">import times, os
+var
+  t = cpuTime()
+
+sleep(100)   # replace this with something to be timed
+echo "Time taken: ",cpuTime() - t
+
+echo "My formatted time: ", format(getLocalTime(getTime()), "d MMMM yyyy HH:mm")
+echo "Using predefined formats: ", getClockStr(), " ", getDateStr()
+
+echo "epochTime() float value: ", epochTime()
+echo "getTime()   float value: ", toSeconds(getTime())
+echo "cpuTime()   float value: ", cpuTime()
+echo "An hour from now      : ", getLocalTime(getTime()) + 1.hours
+echo "An hour from (UTC) now: ", getGmTime(getTime()) + initInterval(0,0,0,1)</pre>  <h2 id="6">Imports</h2> <dl> <a href="../strutils/">strutils</a>, <a href="../parseutils/">parseutils</a>, <a href="../winlean/">winlean</a> </dl>  <h2 id="7">Types</h2> <dl> <dt id="Month"><pre id="Month" data-language="nim">Month = enum
+  mJan, mFeb, mMar, mApr, mMay, mJun, mJul, mAug, mSep, mOct, mNov, mDec</pre></dt> <dd> represents a month   </dd> <dt id="WeekDay"><pre id="WeekDay" data-language="nim">WeekDay = enum
+  dMon, dTue, dWed, dThu, dFri, dSat, dSun</pre></dt> <dd> represents a weekday   </dd> <dt id="Time"><pre id="Time">Time = distinct TimeImpl</pre></dt>  <dt id="TimeInfo"><pre id="TimeInfo" data-language="nim">TimeInfo = object of RootObj
+  second*: range[0 .. 61]        ## The number of seconds after the minute,
+                      ## normally in the range 0 to 59, but can
+                      ## be up to 61 to allow for leap seconds.
+  minute*: range[0 .. 59]        ## The number of minutes after the hour,
+                      ## in the range 0 to 59.
+  hour*: range[0 .. 23]          ## The number of hours past midnight,
+                    ## in the range 0 to 23.
+  monthday*: range[1 .. 31]      ## The day of the month, in the range 1 to 31.
+  month*: Month                ## The current month.
+  year*: int                   ## The current year.
+  weekday*: WeekDay            ## The current day of the week.
+  yearday*: range[0 .. 365]      ## The number of days since January 1,
+                        ## in the range 0 to 365.
+                        ## Always 0 if the target is JS.
+  isDST*: bool                 ## Determines whether DST is in effect.
+             ## Semantically, this adds another negative hour
+             ## offset to the time in addition to the timezone.
+  timezone*: int               ## The offset of the (non-DST) timezone in seconds
+               ## west of UTC. Note that the sign of this number
+               ## is the opposite of the one in a formatted
+               ## timezone string like ``+01:00`` (which would be
+               ## parsed into the timezone ``-3600``).</pre></dt> <dd> represents a time in different parts   </dd> <dt id="TimeInterval"><pre id="TimeInterval" data-language="nim">TimeInterval = object
+  milliseconds*: int           ## The number of milliseconds
+  seconds*: int                ## The number of seconds
+  minutes*: int                ## The number of minutes
+  hours*: int                  ## The number of hours
+  days*: int                   ## The number of days
+  months*: int                 ## The number of months
+  years*: int                  ## The number of years</pre></dt> <dd> a time interval   </dd> </dl>  <h2 id="12">Procs</h2> <dl> <dt id="fromSeconds"><pre id="fromSeconds,int64" data-language="nim">proc fromSeconds(since1970: int64): Time {.tags: [], raises: [], gcsafe, locks: 0.}</pre></dt> <dd> Takes an int which contains the number of seconds since the unix epoch and returns a time object.   </dd> <dt id="&lt;"><pre id="&lt;,Time,Time" data-language="nim">proc `&lt;`(a, b: Time): bool {.gcsafe, extern: "ntLtTime", tags: [], raises: [], noSideEffect.}</pre></dt> <dd> returns true iff <code>a &lt; b</code>, that is iff a happened before b.   </dd> <dt id="&lt;="><pre id="&lt;=,Time,Time" data-language="nim">proc `&lt;=`(a, b: Time): bool {.gcsafe, extern: "ntLeTime", tags: [], raises: [], noSideEffect.}</pre></dt> <dd> returns true iff <code>a &lt;= b</code>.   </dd> <dt id="=="><pre id="==,Time,Time" data-language="nim">proc `==`(a, b: Time): bool {.gcsafe, extern: "ntEqTime", tags: [], raises: [], noSideEffect.}</pre></dt> <dd> returns true if <code>a == b</code>, that is if both times represent the same value   </dd> <dt id="initInterval"><pre id="initInterval,int,int,int,int,int,int,int" data-language="nim">proc initInterval(milliseconds, seconds, minutes, hours, days, months, years: int = 0): TimeInterval {.
+    raises: [], tags: [].}</pre></dt> <dd> <p>creates a new <code>TimeInterval</code>.</p> <p>You can also use the convenience procedures called <code>milliseconds</code>, <code>seconds</code>, <code>minutes</code>, <code>hours</code>, <code>days</code>, <code>months</code>, and <code>years</code>.</p> <p>Example:</p> <pre class="listing" data-language="nim">let day = initInterval(hours=24)
+let tomorrow = getTime() + day
+echo(tomorrow)</pre>   </dd> <dt id="+"><pre id="+,TimeInterval,TimeInterval" data-language="nim">proc `+`(ti1, ti2: TimeInterval): TimeInterval {.raises: [], tags: [].}</pre></dt> <dd> Adds two <code>TimeInterval</code> objects together.   </dd> <dt id="-"><pre id="-,TimeInterval" data-language="nim">proc `-`(ti: TimeInterval): TimeInterval {.raises: [], tags: [].}</pre></dt> <dd> Reverses a time interval .. code-block:: nim<blockquote><p>let day = -initInterval(hours=24) echo day # -&gt; (milliseconds: 0, seconds: 0, minutes: 0, hours: 0, days: -1, months: 0, years: 0)</p></blockquote>   </dd> <dt id="-"><pre id="-,TimeInterval,TimeInterval" data-language="nim">proc `-`(ti1, ti2: TimeInterval): TimeInterval {.raises: [], tags: [].}</pre></dt> <dd> <p>Subtracts TimeInterval <code>ti1</code> from <code>ti2</code>.</p> <p>Time components are compared one-by-one, see output:</p> <pre class="listing" data-language="nim">let a = fromSeconds(1_000_000_000)
+let b = fromSeconds(1_500_000_000)
+echo b.toTimeInterval - a.toTimeInterval
+# (milliseconds: 0, seconds: -40, minutes: -6, hours: 1, days: -2, months: -2, years: 16)</pre>   </dd> <dt id="isLeapYear"><pre id="isLeapYear,int" data-language="nim">proc isLeapYear(year: int): bool {.raises: [], tags: [].}</pre></dt> <dd> returns true if <code>year</code> is a leap year   </dd> <dt id="getDaysInMonth"><pre id="getDaysInMonth,Month,int" data-language="nim">proc getDaysInMonth(month: Month; year: int): int {.raises: [], tags: [].}</pre></dt> <dd> Get the number of days in a <code>month</code> of a <code>year</code>   </dd> <dt id="getDaysInYear"><pre id="getDaysInYear,int" data-language="nim">proc getDaysInYear(year: int): int {.raises: [], tags: [].}</pre></dt> <dd> Get the number of days in a <code>year</code>   </dd> <dt id="+"><pre id="+,TimeInfo,TimeInterval" data-language="nim">proc `+`(a: TimeInfo; interval: TimeInterval): TimeInfo {.raises: [Exception],
+    tags: [TimeEffect].}</pre></dt> <dd> <p>adds <code>interval</code> time from TimeInfo <code>a</code>.</p> <p><strong>Note:</strong> This has been only briefly tested and it may not be very accurate.</p>   </dd> <dt id="-"><pre id="-,TimeInfo,TimeInterval" data-language="nim">proc `-`(a: TimeInfo; interval: TimeInterval): TimeInfo {.raises: [Exception],
+    tags: [TimeEffect].}</pre></dt> <dd> <p>subtracts <code>interval</code> time from TimeInfo <code>a</code>.</p> <p><strong>Note:</strong> This has been only briefly tested, it is inaccurate especially when you subtract so much that you reach the Julian calendar.</p>   </dd> <dt id="miliseconds"><pre id="miliseconds,TimeInterval" data-language="nim">proc miliseconds(t: TimeInterval): int {.deprecated, raises: [], tags: [].}</pre></dt>  <dt id="miliseconds="><pre id="miliseconds=,TimeInterval,int" data-language="nim">proc miliseconds=(t: var TimeInterval; milliseconds: int) {.deprecated, raises: [],
+    tags: [].}</pre></dt> <dd> <p>An alias for a misspelled field in <code>TimeInterval</code>.</p> <p><strong>Warning:</strong> This should not be used! It will be removed in the next version.</p>   </dd> <dt id="getDateStr"><pre id="getDateStr," data-language="nim">proc getDateStr(): string {.gcsafe, extern: "nt$1", tags: [TimeEffect],
+                         raises: [Exception].}</pre></dt> <dd> gets the current date as a string of the format <code>YYYY-MM-DD</code>.   </dd> <dt id="getClockStr"><pre id="getClockStr," data-language="nim">proc getClockStr(): string {.gcsafe, extern: "nt$1", tags: [TimeEffect],
+                          raises: [Exception].}</pre></dt> <dd> gets the current clock time as a string of the format <code>HH:MM:SS</code>.   </dd> <dt id="$"><pre id="$,WeekDay" data-language="nim">proc `$`(day: WeekDay): string {.raises: [], tags: [].}</pre></dt> <dd> stingify operator for <code>WeekDay</code>.   </dd> <dt id="$"><pre id="$,Month" data-language="nim">proc `$`(m: Month): string {.raises: [], tags: [].}</pre></dt> <dd> stingify operator for <code>Month</code>.   </dd> <dt id="milliseconds"><pre id="milliseconds,int" data-language="nim">proc milliseconds(ms: int): TimeInterval {.inline, raises: [], tags: [].}</pre></dt> <dd> <p>TimeInterval of <em>ms</em> milliseconds</p> <p>Note: not all time functions have millisecond resolution</p>   </dd> <dt id="seconds"><pre id="seconds,int" data-language="nim">proc seconds(s: int): TimeInterval {.inline, raises: [], tags: [].}</pre></dt> <dd> <p>TimeInterval of <em>s</em> seconds</p> <p><code>echo getTime() + 5.second</code></p>   </dd> <dt id="minutes"><pre id="minutes,int" data-language="nim">proc minutes(m: int): TimeInterval {.inline, raises: [], tags: [].}</pre></dt> <dd> <p>TimeInterval of <em>m</em> minutes</p> <p><code>echo getTime() + 5.minutes</code></p>   </dd> <dt id="hours"><pre id="hours,int" data-language="nim">proc hours(h: int): TimeInterval {.inline, raises: [], tags: [].}</pre></dt> <dd> <p>TimeInterval of <em>h</em> hours</p> <p><code>echo getTime() + 2.hours</code></p>   </dd> <dt id="days"><pre id="days,int" data-language="nim">proc days(d: int): TimeInterval {.inline, raises: [], tags: [].}</pre></dt> <dd> <p>TimeInterval of <em>d</em> days</p> <p><code>echo getTime() + 2.days</code></p>   </dd> <dt id="months"><pre id="months,int" data-language="nim">proc months(m: int): TimeInterval {.inline, raises: [], tags: [].}</pre></dt> <dd> <p>TimeInterval of <em>m</em> months</p> <p><code>echo getTime() + 2.months</code></p>   </dd> <dt id="years"><pre id="years,int" data-language="nim">proc years(y: int): TimeInterval {.inline, raises: [], tags: [].}</pre></dt> <dd> <p>TimeInterval of <em>y</em> years</p> <p><code>echo getTime() + 2.years</code></p>   </dd> <dt id="+="><pre id="+=,Time,TimeInterval" data-language="nim">proc `+=`(t: var Time; ti: TimeInterval) {.raises: [Exception], tags: [TimeEffect].}</pre></dt> <dd> modifies <em>t</em> by adding the interval <em>ti</em>   </dd> <dt id="+"><pre id="+,Time,TimeInterval" data-language="nim">proc `+`(t: Time; ti: TimeInterval): Time {.raises: [Exception], tags: [TimeEffect].}</pre></dt> <dd> <p>adds the interval <em>ti</em> to Time <em>t</em> by converting to localTime, adding the interval, and converting back</p> <p><code>echo getTime() + 1.day</code></p>   </dd> <dt id="-="><pre id="-=,Time,TimeInterval" data-language="nim">proc `-=`(t: var Time; ti: TimeInterval) {.raises: [Exception], tags: [TimeEffect].}</pre></dt> <dd> modifies <em>t</em> by subtracting the interval <em>ti</em>   </dd> <dt id="-"><pre id="-,Time,TimeInterval" data-language="nim">proc `-`(t: Time; ti: TimeInterval): Time {.raises: [Exception], tags: [TimeEffect].}</pre></dt> <dd> <p>subtracts the interval <em>ti</em> from Time <em>t</em></p> <p><code>echo getTime() - 1.day</code></p>   </dd> <dt id="format"><pre id="format,TimeInfo,string" data-language="nim">proc format(info: TimeInfo; f: string): string {.raises: [ValueError], tags: [].}</pre></dt> <dd> This function formats <em>info</em> as specified by <em>f</em>. The following format specifiers are available:<table>
+<tr>
+<th>Specifier</th>
+<th>Description</th>
+<th>Example</th>
+</tr> <tr>
+<td>d</td>
+<td>Numeric value of the day of the month, it will be one or two digits long.</td>
+<td>
+<code>1/04/2012 -&gt; 1</code>, <code>21/04/2012 -&gt; 21</code>
+</td>
+</tr> <tr>
+<td>dd</td>
+<td>Same as above, but always two digits.</td>
+<td>
+<code>1/04/2012 -&gt; 01</code>, <code>21/04/2012 -&gt; 21</code>
+</td>
+</tr> <tr>
+<td>ddd</td>
+<td>Three letter string which indicates the day of the week.</td>
+<td>
+<code>Saturday -&gt; Sat</code>, <code>Monday -&gt; Mon</code>
+</td>
+</tr> <tr>
+<td>dddd</td>
+<td>Full string for the day of the week.</td>
+<td>
+<code>Saturday -&gt; Saturday</code>, <code>Monday -&gt; Monday</code>
+</td>
+</tr> <tr>
+<td>h</td>
+<td>The hours in one digit if possible. Ranging from 0-12.</td>
+<td>
+<code>5pm -&gt; 5</code>, <code>2am -&gt; 2</code>
+</td>
+</tr> <tr>
+<td>hh</td>
+<td>The hours in two digits always. If the hour is one digit 0 is prepended.</td>
+<td>
+<code>5pm -&gt; 05</code>, <code>11am -&gt; 11</code>
+</td>
+</tr> <tr>
+<td>H</td>
+<td>The hours in one digit if possible, randing from 0-24.</td>
+<td>
+<code>5pm -&gt; 17</code>, <code>2am -&gt; 2</code>
+</td>
+</tr> <tr>
+<td>HH</td>
+<td>The hours in two digits always. 0 is prepended if the hour is one digit.</td>
+<td>
+<code>5pm -&gt; 17</code>, <code>2am -&gt; 02</code>
+</td>
+</tr> <tr>
+<td>m</td>
+<td>The minutes in 1 digit if possible.</td>
+<td>
+<code>5:30 -&gt; 30</code>, <code>2:01 -&gt; 1</code>
+</td>
+</tr> <tr>
+<td>mm</td>
+<td>Same as above but always 2 digits, 0 is prepended if the minute is one digit.</td>
+<td>
+<code>5:30 -&gt; 30</code>, <code>2:01 -&gt; 01</code>
+</td>
+</tr> <tr>
+<td>M</td>
+<td>The month in one digit if possible.</td>
+<td>
+<code>September -&gt; 9</code>, <code>December -&gt; 12</code>
+</td>
+</tr> <tr>
+<td>MM</td>
+<td>The month in two digits always. 0 is prepended.</td>
+<td>
+<code>September -&gt; 09</code>, <code>December -&gt; 12</code>
+</td>
+</tr> <tr>
+<td>MMM</td>
+<td>Abbreviated three-letter form of the month.</td>
+<td>
+<code>September -&gt; Sep</code>, <code>December -&gt; Dec</code>
+</td>
+</tr> <tr>
+<td>MMMM</td>
+<td>Full month string, properly capitalized.</td>
+<td><code>September -&gt; September</code></td>
+</tr> <tr>
+<td>s</td>
+<td>Seconds as one digit if possible.</td>
+<td><code>00:00:06 -&gt; 6</code></td>
+</tr> <tr>
+<td>ss</td>
+<td>Same as above but always two digits. 0 is prepended.</td>
+<td><code>00:00:06 -&gt; 06</code></td>
+</tr> <tr>
+<td>t</td>
+<td>
+<code>A</code> when time is in the AM. <code>P</code> when time is in the PM.</td>
+<td></td>
+</tr> <tr>
+<td>tt</td>
+<td>Same as above, but <code>AM</code> and <code>PM</code> instead of <code>A</code> and <code>P</code> respectively.</td>
+<td></td>
+</tr> <tr>
+<td>y(yyyy)</td>
+<td>This displays the year to different digits. You most likely only want 2 or 4 'y's</td>
+<td></td>
+</tr> <tr>
+<td>yy</td>
+<td>Displays the year to two digits.</td>
+<td><code>2012 -&gt; 12</code></td>
+</tr> <tr>
+<td>yyyy</td>
+<td>Displays the year to four digits.</td>
+<td><code>2012 -&gt; 2012</code></td>
+</tr> <tr>
+<td>z</td>
+<td>Displays the timezone offset from UTC.</td>
+<td>
+<code>GMT+7 -&gt; +7</code>, <code>GMT-5 -&gt; -5</code>
+</td>
+</tr> <tr>
+<td>zz</td>
+<td>Same as above but with leading 0.</td>
+<td>
+<code>GMT+7 -&gt; +07</code>, <code>GMT-5 -&gt; -05</code>
+</td>
+</tr> <tr>
+<td>zzz</td>
+<td>Same as above but with <code>:mm</code> where <em>mm</em> represents minutes.</td>
+<td>
+<code>GMT+7 -&gt; +07:00</code>, <code>GMT-5 -&gt; -05:00</code>
+</td>
+</tr> </table>
+<p>Other strings can be inserted by putting them in <code>''</code>. For example <code>hh'-&gt;'mm</code> will give <code>01-&gt;56</code>. The following characters can be inserted without quoting them: <code>:</code> <code>-</code> <code>(</code> <code>)</code> <code>/</code> <code>[</code> <code>]</code> <code>,</code>. However you don't need to necessarily separate format specifiers, a unambiguous format string like <code>yyyyMMddhhmmss</code> is valid too.</p>   </dd> <dt id="$"><pre id="$,TimeInfo" data-language="nim">proc `$`(timeInfo: TimeInfo): string {.tags: [], raises: [], gcsafe, locks: 0.}</pre></dt> <dd> converts a <em>TimeInfo</em> object to a string representation. It uses the format <code>yyyy-MM-dd'T'HH-mm-sszzz</code>.   </dd> <dt id="$"><pre id="$,Time" data-language="nim">proc `$`(time: Time): string {.tags: [TimeEffect], raises: [], gcsafe, locks: 0.}</pre></dt> <dd> converts a <em>Time</em> value to a string representation. It will use the local time zone and use the format <code>yyyy-MM-dd'T'HH-mm-sszzz</code>.   </dd> <dt id="parse"><pre id="parse,string,string" data-language="nim">proc parse(value, layout: string): TimeInfo {.
+    raises: [Exception, OverflowError, ValueError], tags: [TimeEffect].}</pre></dt> <dd> This function parses a date/time string using the standard format identifiers as listed below. The function defaults information not provided in the format string from the running program (timezone, month, year, etc). Daylight saving time is only set if no timezone is given and the given date lies within the DST period of the current locale.<table>
+<tr>
+<th>Specifier</th>
+<th>Description</th>
+<th>Example</th>
+</tr> <tr>
+<td>d</td>
+<td>Numeric value of the day of the month, it will be one or two digits long.</td>
+<td>
+<code>1/04/2012 -&gt; 1</code>, <code>21/04/2012 -&gt; 21</code>
+</td>
+</tr> <tr>
+<td>dd</td>
+<td>Same as above, but always two digits.</td>
+<td>
+<code>1/04/2012 -&gt; 01</code>, <code>21/04/2012 -&gt; 21</code>
+</td>
+</tr> <tr>
+<td>ddd</td>
+<td>Three letter string which indicates the day of the week.</td>
+<td>
+<code>Saturday -&gt; Sat</code>, <code>Monday -&gt; Mon</code>
+</td>
+</tr> <tr>
+<td>dddd</td>
+<td>Full string for the day of the week.</td>
+<td>
+<code>Saturday -&gt; Saturday</code>, <code>Monday -&gt; Monday</code>
+</td>
+</tr> <tr>
+<td>h</td>
+<td>The hours in one digit if possible. Ranging from 0-12.</td>
+<td>
+<code>5pm -&gt; 5</code>, <code>2am -&gt; 2</code>
+</td>
+</tr> <tr>
+<td>hh</td>
+<td>The hours in two digits always. If the hour is one digit 0 is prepended.</td>
+<td>
+<code>5pm -&gt; 05</code>, <code>11am -&gt; 11</code>
+</td>
+</tr> <tr>
+<td>H</td>
+<td>The hours in one digit if possible, randing from 0-24.</td>
+<td>
+<code>5pm -&gt; 17</code>, <code>2am -&gt; 2</code>
+</td>
+</tr> <tr>
+<td>HH</td>
+<td>The hours in two digits always. 0 is prepended if the hour is one digit.</td>
+<td>
+<code>5pm -&gt; 17</code>, <code>2am -&gt; 02</code>
+</td>
+</tr> <tr>
+<td>m</td>
+<td>The minutes in 1 digit if possible.</td>
+<td>
+<code>5:30 -&gt; 30</code>, <code>2:01 -&gt; 1</code>
+</td>
+</tr> <tr>
+<td>mm</td>
+<td>Same as above but always 2 digits, 0 is prepended if the minute is one digit.</td>
+<td>
+<code>5:30 -&gt; 30</code>, <code>2:01 -&gt; 01</code>
+</td>
+</tr> <tr>
+<td>M</td>
+<td>The month in one digit if possible.</td>
+<td>
+<code>September -&gt; 9</code>, <code>December -&gt; 12</code>
+</td>
+</tr> <tr>
+<td>MM</td>
+<td>The month in two digits always. 0 is prepended.</td>
+<td>
+<code>September -&gt; 09</code>, <code>December -&gt; 12</code>
+</td>
+</tr> <tr>
+<td>MMM</td>
+<td>Abbreviated three-letter form of the month.</td>
+<td>
+<code>September -&gt; Sep</code>, <code>December -&gt; Dec</code>
+</td>
+</tr> <tr>
+<td>MMMM</td>
+<td>Full month string, properly capitalized.</td>
+<td><code>September -&gt; September</code></td>
+</tr> <tr>
+<td>s</td>
+<td>Seconds as one digit if possible.</td>
+<td><code>00:00:06 -&gt; 6</code></td>
+</tr> <tr>
+<td>ss</td>
+<td>Same as above but always two digits. 0 is prepended.</td>
+<td><code>00:00:06 -&gt; 06</code></td>
+</tr> <tr>
+<td>t</td>
+<td>
+<code>A</code> when time is in the AM. <code>P</code> when time is in the PM.</td>
+<td></td>
+</tr> <tr>
+<td>tt</td>
+<td>Same as above, but <code>AM</code> and <code>PM</code> instead of <code>A</code> and <code>P</code> respectively.</td>
+<td></td>
+</tr> <tr>
+<td>yy</td>
+<td>Displays the year to two digits.</td>
+<td><code>2012 -&gt; 12</code></td>
+</tr> <tr>
+<td>yyyy</td>
+<td>Displays the year to four digits.</td>
+<td><code>2012 -&gt; 2012</code></td>
+</tr> <tr>
+<td>z</td>
+<td>Displays the timezone offset from UTC. <code>Z</code> is parsed as <code>+0</code>
+</td>
+<td>
+<code>GMT+7 -&gt; +7</code>, <code>GMT-5 -&gt; -5</code>
+</td>
+</tr> <tr>
+<td>zz</td>
+<td>Same as above but with leading 0.</td>
+<td>
+<code>GMT+7 -&gt; +07</code>, <code>GMT-5 -&gt; -05</code>
+</td>
+</tr> <tr>
+<td>zzz</td>
+<td>Same as above but with <code>:mm</code> where <em>mm</em> represents minutes.</td>
+<td>
+<code>GMT+7 -&gt; +07:00</code>, <code>GMT-5 -&gt; -05:00</code>
+</td>
+</tr> </table>
+<p>Other strings can be inserted by putting them in <code>''</code>. For example <code>hh'-&gt;'mm</code> will give <code>01-&gt;56</code>. The following characters can be inserted without quoting them: <code>:</code> <code>-</code> <code>(</code> <code>)</code> <code>/</code> <code>[</code> <code>]</code> <code>,</code>. However you don't need to necessarily separate format specifiers, a unambiguous format string like <code>yyyyMMddhhmmss</code> is valid too.</p>   </dd> <dt id="countLeapYears"><pre id="countLeapYears,int" data-language="nim">proc countLeapYears(yearSpan: int): int {.raises: [], tags: [].}</pre></dt> <dd> <p>Returns the number of leap years spanned by a given number of years.</p> <p><strong>Note:</strong> For leap years, start date is assumed to be 1 AD. counts the number of leap years up to January 1st of a given year. Keep in mind that if specified year is a leap year, the leap day has not happened before January 1st of that year.</p>   </dd> <dt id="countDays"><pre id="countDays,int" data-language="nim">proc countDays(yearSpan: int): int {.raises: [], tags: [].}</pre></dt> <dd> Returns the number of days spanned by a given number of years.   </dd> <dt id="countYears"><pre id="countYears,int" data-language="nim">proc countYears(daySpan: int): int {.raises: [], tags: [].}</pre></dt> <dd> Returns the number of years spanned by a given number of days.   </dd> <dt id="countYearsAndDays"><pre id="countYearsAndDays,int" data-language="nim">proc countYearsAndDays(daySpan: int): tuple[years: int, days: int] {.raises: [], tags: [].}</pre></dt> <dd> Returns the number of years spanned by a given number of days and the remainder as days.   </dd> <dt id="getDayOfWeek"><pre id="getDayOfWeek,int,int,int" data-language="nim">proc getDayOfWeek(day, month, year: int): WeekDay {.raises: [], tags: [].}</pre></dt> <dd> Returns the day of the week enum from day, month and year.   </dd> <dt id="getDayOfWeekJulian"><pre id="getDayOfWeekJulian,int,int,int" data-language="nim">proc getDayOfWeekJulian(day, month, year: int): WeekDay {.raises: [], tags: [].}</pre></dt> <dd> Returns the day of the week enum from day, month and year, according to the Julian calendar.   </dd> <dt id="timeToTimeInfo"><pre id="timeToTimeInfo,Time" data-language="nim">proc timeToTimeInfo(t: Time): TimeInfo {.deprecated, raises: [], tags: [].}</pre></dt> <dd> <p>Converts a Time to TimeInfo.</p> <p><strong>Warning:</strong> This procedure is deprecated since version 0.14.0. Use <code>getLocalTime</code> or <code>getGMTime</code> instead.</p>   </dd> <dt id="timeToTimeInterval"><pre id="timeToTimeInterval,Time" data-language="nim">proc timeToTimeInterval(t: Time): TimeInterval {.deprecated, raises: [],
+    tags: [TimeEffect].}</pre></dt> <dd> <p>Converts a Time to a TimeInterval.</p> <p><strong>Warning:</strong> This procedure is deprecated since version 0.14.0. Use <code>toTimeInterval</code> instead.</p>   </dd> <dt id="toTimeInterval"><pre id="toTimeInterval,Time" data-language="nim">proc toTimeInterval(t: Time): TimeInterval {.raises: [], tags: [TimeEffect].}</pre></dt> <dd> <p>Converts a Time to a TimeInterval.</p> <p>To be used when diffing times.</p> <pre class="listing" data-language="nim">let a = fromSeconds(1_000_000_000)
+let b = fromSeconds(1_500_000_000)
+echo a, " ", b  # real dates
+echo a.toTimeInterval  # meaningless value, don't use it by itself
+echo b.toTimeInterval - a.toTimeInterval
+# (milliseconds: 0, seconds: -40, minutes: -6, hours: 1, days: -2, months: -2, years: 16)</pre>   </dd> <dt id="-"><pre id="-,Time,Time" data-language="nim">proc `-`(a, b: Time): int64 {.gcsafe, extern: "ntDiffTime", tags: [], raises: [],
+                         noSideEffect, gcsafe, locks: 0.}</pre></dt> <dd> computes the difference of two calendar times. Result is in seconds.<pre class="listing" data-language="nim">let a = fromSeconds(1_000_000_000)
+let b = fromSeconds(1_500_000_000)
+echo initInterval(seconds=int(b - a))
+# (milliseconds: 0, seconds: 20, minutes: 53, hours: 0, days: 5787, months: 0, years: 0)</pre>   </dd> <dt id="getStartMilsecs"><pre id="getStartMilsecs," data-language="nim">proc getStartMilsecs(): int {.deprecated, tags: [TimeEffect], gcsafe, locks: 0,
+                           raises: [].}</pre></dt> <dd> get the milliseconds from the start of the program. <strong>Deprecated since version 0.8.10.</strong> Use <code>epochTime</code> or <code>cpuTime</code> instead.   </dd> <dt id="getTime"><pre id="getTime," data-language="nim">proc getTime(): Time {.tags: [TimeEffect], gcsafe, locks: 0, raises: [].}</pre></dt> <dd> gets the current calendar time as a UNIX epoch value (number of seconds elapsed since 1970) with integer precission. Use epochTime for higher resolution.   </dd> <dt id="getLocalTime"><pre id="getLocalTime,Time" data-language="nim">proc getLocalTime(t: Time): TimeInfo {.tags: [TimeEffect], raises: [],
+                                   gcsafe, locks: 0.}</pre></dt> <dd> converts the calendar time <em>t</em> to broken-time representation, expressed relative to the user's specified time zone.   </dd> <dt id="getGMTime"><pre id="getGMTime,Time" data-language="nim">proc getGMTime(t: Time): TimeInfo {.tags: [TimeEffect], raises: [], gcsafe, locks: 0.}</pre></dt> <dd> converts the calendar time <em>t</em> to broken-down time representation, expressed in Coordinated Universal Time (UTC).   </dd> <dt id="toTime"><pre id="toTime,TimeInfo" data-language="nim">proc toTime(timeInfo: TimeInfo): Time {.tags: [TimeEffect], gcsafe, locks: 0, raises: [].}</pre></dt> <dd> converts a broken-down time structure to calendar time representation. The function ignores the specified contents of the structure members <em>weekday</em> and <em>yearday</em> and recomputes them from the other information in the broken-down time structure.   </dd> <dt id="timeInfoToTime"><pre id="timeInfoToTime,TimeInfo" data-language="nim">proc timeInfoToTime(timeInfo: TimeInfo): Time {.tags: [TimeEffect],
+    gcsafe, locks: 0, deprecated, raises: [].}</pre></dt> <dd> <p>converts a broken-down time structure to calendar time representation. The function ignores the specified contents of the structure members <em>weekday</em> and <em>yearday</em> and recomputes them from the other information in the broken-down time structure.</p> <p><strong>Warning:</strong> This procedure is deprecated since version 0.14.0. Use <code>toTime</code> instead.</p>   </dd> <dt id="unixTimeToWinTime"><pre id="unixTimeToWinTime,Time" data-language="nim">proc unixTimeToWinTime(t: Time): int64 {.raises: [], tags: [].}</pre></dt> <dd> converts a UNIX <em>Time</em> (<code>time_t</code>) to a Windows file time   </dd> <dt id="winTimeToUnixTime"><pre id="winTimeToUnixTime,int64" data-language="nim">proc winTimeToUnixTime(t: int64): Time {.raises: [], tags: [].}</pre></dt> <dd> converts a Windows time to a UNIX <em>Time</em> (<code>time_t</code>)   </dd> <dt id="getTimezone"><pre id="getTimezone," data-language="nim">proc getTimezone(): int {.tags: [TimeEffect], raises: [], gcsafe, locks: 0.}</pre></dt> <dd> returns the offset of the local (non-DST) timezone in seconds west of UTC.   </dd> <dt id="fromSeconds"><pre id="fromSeconds,float" data-language="nim">proc fromSeconds(since1970: float): Time {.tags: [], raises: [], gcsafe, locks: 0.}</pre></dt> <dd> Takes a float which contains the number of seconds since the unix epoch and returns a time object.   </dd> <dt id="toSeconds"><pre id="toSeconds,Time" data-language="nim">proc toSeconds(time: Time): float {.tags: [], raises: [], gcsafe, locks: 0.}</pre></dt> <dd> Returns the time in seconds since the unix epoch.   </dd> <dt id="epochTime"><pre id="epochTime," data-language="nim">proc epochTime(): float {.gcsafe, extern: "nt$1", tags: [TimeEffect], raises: [].}</pre></dt> <dd> gets time after the UNIX epoch (1970) in seconds. It is a float because sub-second resolution is likely to be supported (depending on the hardware/OS).   </dd> <dt id="cpuTime"><pre id="cpuTime," data-language="nim">proc cpuTime(): float {.gcsafe, extern: "nt$1", tags: [TimeEffect], raises: [].}</pre></dt> <dd> gets time spent that the CPU spent to run the current process in seconds. This may be more useful for benchmarking than <code>epochTime</code>. However, it may measure the real time instead (depending on the OS). The value of the result has no meaning. To generate useful timing values, take the difference between the results of two <code>cpuTime</code> calls:<pre class="listing" data-language="nim">var t0 = cpuTime()
+doWork()
+echo "CPU time [s] ", cpuTime() - t0</pre>   </dd> </dl>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2006–2017 Andreas Rumpf<br>Licensed under the MIT License.<br>
+    <a href="https://nim-lang.org/docs/times.html" class="_attribution-link" target="_blank">https://nim-lang.org/docs/times.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

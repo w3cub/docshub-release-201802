@@ -1,0 +1,391 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Winlean - Nim - W3cubDocs</title>
+  
+  <meta name="description" content=" This module implements a small wrapper for some needed Win API procedures, so that the Nim compiler does not depend on the huge Windows module. ">
+  <meta name="keywords" content="module, winlean, -, nim">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/nim/winlean/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/nim.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/nim/" class="_nav-link" title="" style="margin-left:0;">Nim</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _nim">
+				
+<h1 class="title">Module winlean</h1>  <p class="module-desc">This module implements a small wrapper for some needed Win API procedures, so that the Nim compiler does not depend on the huge Windows module.</p>  <h2 id="6">Imports</h2> <dl> <a href="../dynlib/">dynlib</a> </dl>  <h2 id="7">Types</h2> <dl> <dt id="WinChar"><pre id="WinChar">WinChar = Utf16Char</pre></dt>  <dt id="Handle"><pre id="Handle">Handle = int</pre></dt>  <dt id="LONG"><pre id="LONG">LONG = int32</pre></dt>  <dt id="ULONG"><pre id="ULONG">ULONG = int32</pre></dt>  <dt id="PULONG"><pre id="PULONG">PULONG = ptr int</pre></dt>  <dt id="WINBOOL"><pre id="WINBOOL">WINBOOL = int32</pre></dt>  <dt id="DWORD"><pre id="DWORD">DWORD = int32</pre></dt>  <dt id="PDWORD"><pre id="PDWORD">PDWORD = ptr DWORD</pre></dt>  <dt id="LPINT"><pre id="LPINT">LPINT = ptr int32</pre></dt>  <dt id="ULONG_PTR"><pre id="ULONG_PTR">ULONG_PTR = uint</pre></dt>  <dt id="PULONG_PTR"><pre id="PULONG_PTR">PULONG_PTR = ptr uint</pre></dt>  <dt id="HDC"><pre id="HDC">HDC = Handle</pre></dt>  <dt id="HGLRC"><pre id="HGLRC">HGLRC = Handle</pre></dt>  <dt id="SECURITY_ATTRIBUTES"><pre id="SECURITY_ATTRIBUTES" data-language="nim">SECURITY_ATTRIBUTES = object
+  nLength*: int32
+  lpSecurityDescriptor*: pointer
+  bInheritHandle*: WINBOOL</pre></dt>  <dt id="STARTUPINFO"><pre id="STARTUPINFO" data-language="nim">STARTUPINFO = object
+  cb*: int32
+  lpReserved*: cstring
+  lpDesktop*: cstring
+  lpTitle*: cstring
+  dwX*: int32
+  dwY*: int32
+  dwXSize*: int32
+  dwYSize*: int32
+  dwXCountChars*: int32
+  dwYCountChars*: int32
+  dwFillAttribute*: int32
+  dwFlags*: int32
+  wShowWindow*: int16
+  cbReserved2*: int16
+  lpReserved2*: pointer
+  hStdInput*: Handle
+  hStdOutput*: Handle
+  hStdError*: Handle</pre></dt>  <dt id="PROCESS_INFORMATION"><pre id="PROCESS_INFORMATION" data-language="nim">PROCESS_INFORMATION = object
+  hProcess*: Handle
+  hThread*: Handle
+  dwProcessId*: int32
+  dwThreadId*: int32</pre></dt>  <dt id="FILETIME"><pre id="FILETIME" data-language="nim">FILETIME = object
+  dwLowDateTime*: DWORD
+  dwHighDateTime*: DWORD</pre></dt> <dd> CANNOT BE int64 BECAUSE OF ALIGNMENT   </dd> <dt id="BY_HANDLE_FILE_INFORMATION"><pre id="BY_HANDLE_FILE_INFORMATION" data-language="nim">BY_HANDLE_FILE_INFORMATION = object
+  dwFileAttributes*: DWORD
+  ftCreationTime*: FILETIME
+  ftLastAccessTime*: FILETIME
+  ftLastWriteTime*: FILETIME
+  dwVolumeSerialNumber*: DWORD
+  nFileSizeHigh*: DWORD
+  nFileSizeLow*: DWORD
+  nNumberOfLinks*: DWORD
+  nFileIndexHigh*: DWORD
+  nFileIndexLow*: DWORD</pre></dt>  <dt id="OSVERSIONINFO"><pre id="OSVERSIONINFO" data-language="nim">OSVERSIONINFO = object
+  dwOSVersionInfoSize*: DWORD
+  dwMajorVersion*: DWORD
+  dwMinorVersion*: DWORD
+  dwBuildNumber*: DWORD
+  dwPlatformId*: DWORD
+  szCSDVersion*: array[0 .. 127, WinChar]</pre></dt>  <dt id="WIN32_FIND_DATA"><pre id="WIN32_FIND_DATA" data-language="nim">WIN32_FIND_DATA = object
+  dwFileAttributes*: int32
+  ftCreationTime*: FILETIME
+  ftLastAccessTime*: FILETIME
+  ftLastWriteTime*: FILETIME
+  nFileSizeHigh*: int32
+  nFileSizeLow*: int32
+  dwReserved0: int32
+  dwReserved1: int32
+  cFileName*: array[0 .. 260 - 1, WinChar]
+  cAlternateFileName*: array[0 .. 13, WinChar]</pre></dt>  <dt id="SocketHandle"><pre id="SocketHandle">SocketHandle = distinct int</pre></dt>  <dt id="WSAData"><pre id="WSAData" data-language="nim">WSAData = object
+  wVersion, wHighVersion: int16
+  szDescription: array[0 .. WSADESCRIPTION_LEN, char]
+  szSystemStatus: array[0 .. WSASYS_STATUS_LEN, char]
+  iMaxSockets, iMaxUdpDg: int16
+  lpVendorInfo: cstring</pre></dt>  <dt id="SockAddr"><pre id="SockAddr" data-language="nim">SockAddr = object
+  sa_family*: int16
+  sa_data*: array[0 .. 13, char]</pre></dt>  <dt id="InAddr"><pre id="InAddr" data-language="nim">InAddr = object
+  s_addr*: uint32</pre></dt>  <dt id="Sockaddr_in"><pre id="Sockaddr_in" data-language="nim">Sockaddr_in = object
+  sin_family*: int16
+  sin_port*: uint16
+  sin_addr*: InAddr
+  sin_zero*: array[0 .. 7, char]</pre></dt>  <dt id="In6_addr"><pre id="In6_addr" data-language="nim">In6_addr = object
+  bytes* {.importc: "u.Byte".}: array[0 .. 15, char]</pre></dt>  <dt id="Sockaddr_in6"><pre id="Sockaddr_in6" data-language="nim">Sockaddr_in6 = object
+  sin6_family*: int16
+  sin6_port*: uint16
+  sin6_flowinfo*: int32
+  sin6_addr*: In6_addr
+  sin6_scope_id*: int32</pre></dt>  <dt id="Sockaddr_in6_old"><pre id="Sockaddr_in6_old" data-language="nim">Sockaddr_in6_old = object
+  sin6_family*: int16
+  sin6_port*: int16
+  sin6_flowinfo*: int32
+  sin6_addr*: In6_addr</pre></dt>  <dt id="Servent"><pre id="Servent" data-language="nim">Servent = object
+  s_name*: cstring
+  s_aliases*: cstringArray
+  when defined(cpu64):
+      s_proto*: cstring
+      s_port*: int16
+
+  else:
+      s_port*: int16
+      s_proto*: cstring</pre></dt>  <dt id="Hostent"><pre id="Hostent" data-language="nim">Hostent = object
+  h_name*: cstring
+  h_aliases*: cstringArray
+  h_addrtype*: int16
+  h_length*: int16
+  h_addr_list*: cstringArray</pre></dt>  <dt id="TFdSet"><pre id="TFdSet" data-language="nim">TFdSet = object
+  fd_count*: cint
+  fd_array*: array[0 .. 64 - 1, SocketHandle]</pre></dt>  <dt id="Timeval"><pre id="Timeval" data-language="nim">Timeval = object
+  tv_sec*, tv_usec*: int32</pre></dt>  <dt id="AddrInfo"><pre id="AddrInfo" data-language="nim">AddrInfo = object
+  ai_flags*: cint
+  ai_family*: cint             ## Address family of socket.
+  ai_socktype*: cint           ## Socket type.
+  ai_protocol*: cint           ## Protocol of socket.
+  ai_addrlen*: csize           ## Length of socket address.
+  ai_canonname*: cstring       ## Canonical name of service location.
+  ai_addr*: ptr SockAddr        ## Socket address of socket.
+  ai_next*: ptr AddrInfo        ## Pointer to next in list.</pre></dt> <dd> Input flags.   </dd> <dt id="SockLen"><pre id="SockLen">SockLen = cuint</pre></dt>  <dt id="WOHandleArray"><pre id="WOHandleArray" data-language="nim">WOHandleArray = array[0 .. 0x00000040 - 1, Handle]</pre></dt>  <dt id="PWOHandleArray"><pre id="PWOHandleArray">PWOHandleArray = ptr WOHandleArray</pre></dt>  <dt id="OVERLAPPED"><pre id="OVERLAPPED" data-language="nim">OVERLAPPED = object
+  internal*: PULONG
+  internalHigh*: PULONG
+  offset*: DWORD
+  offsetHigh*: DWORD
+  hEvent*: Handle</pre></dt>  <dt id="POVERLAPPED"><pre id="POVERLAPPED">POVERLAPPED = ptr OVERLAPPED</pre></dt>  <dt id="POVERLAPPED_COMPLETION_ROUTINE"><pre id="POVERLAPPED_COMPLETION_ROUTINE" data-language="nim">POVERLAPPED_COMPLETION_ROUTINE = proc (para1: DWORD; para2: DWORD; para3: POVERLAPPED) {.
+    stdcall.}</pre></dt>  <dt id="GUID"><pre id="GUID" data-language="nim">GUID = object
+  D1*: int32
+  D2*: int16
+  D3*: int16
+  D4*: array[0 .. 7, int8]</pre></dt>  <dt id="TWSABuf"><pre id="TWSABuf" data-language="nim">TWSABuf = object
+  len*: ULONG
+  buf*: cstring</pre></dt>  <dt id="WSAPROC_ACCEPTEX"><pre id="WSAPROC_ACCEPTEX" data-language="nim">WSAPROC_ACCEPTEX = proc (sListenSocket: SocketHandle; sAcceptSocket: SocketHandle;
+                      lpOutputBuffer: pointer; dwReceiveDataLength: DWORD;
+                      dwLocalAddressLength: DWORD; dwRemoteAddressLength: DWORD;
+                      lpdwBytesReceived: ptr DWORD; lpOverlapped: POVERLAPPED): bool {.
+    stdcall, gcsafe.}</pre></dt>  <dt id="WSAPROC_CONNECTEX"><pre id="WSAPROC_CONNECTEX" data-language="nim">WSAPROC_CONNECTEX = proc (s: SocketHandle; name: ptr SockAddr; namelen: cint;
+                       lpSendBuffer: pointer; dwSendDataLength: DWORD;
+                       lpdwBytesSent: ptr DWORD; lpOverlapped: POVERLAPPED): bool {.
+    stdcall, gcsafe.}</pre></dt>  <dt id="WSAPROC_GETACCEPTEXSOCKADDRS"><pre id="WSAPROC_GETACCEPTEXSOCKADDRS" data-language="nim">WSAPROC_GETACCEPTEXSOCKADDRS = proc (lpOutputBuffer: pointer;
+                                  dwReceiveDataLength: DWORD;
+                                  dwLocalAddressLength: DWORD;
+                                  dwRemoteAddressLength: DWORD;
+                                  LocalSockaddr: ptr PSockAddr;
+                                  LocalSockaddrLength: ptr cint;
+                                  RemoteSockaddr: ptr PSockAddr;
+                                  RemoteSockaddrLength: ptr cint) {.stdcall, gcsafe.}</pre></dt>  <dt id="WAITORTIMERCALLBACK"><pre id="WAITORTIMERCALLBACK" data-language="nim">WAITORTIMERCALLBACK = proc (para1: pointer; para2: int32): void {.stdcall.}</pre></dt>  <dt id="KEY_EVENT_RECORD"><pre id="KEY_EVENT_RECORD" data-language="nim">KEY_EVENT_RECORD = object
+  eventType*: int16
+  bKeyDown*: WINBOOL
+  wRepeatCount*: int16
+  wVirtualKeyCode*: int16
+  wVirtualScanCode*: int16
+  uChar*: int16
+  dwControlKeyState*: DWORD</pre></dt>  <dt id="LPFIBER_START_ROUTINE"><pre id="LPFIBER_START_ROUTINE" data-language="nim">LPFIBER_START_ROUTINE = proc (param: pointer): void {.stdcall.}</pre></dt>  </dl>  <h2 id="8">Vars</h2> <dl> <dt id="SOMAXCONN"><pre id="SOMAXCONN">SOMAXCONN: cint</pre></dt>  <dt id="INVALID_SOCKET"><pre id="INVALID_SOCKET">INVALID_SOCKET: SocketHandle</pre></dt>  <dt id="SOL_SOCKET"><pre id="SOL_SOCKET">SOL_SOCKET: cint</pre></dt>  <dt id="SO_DEBUG"><pre id="SO_DEBUG">SO_DEBUG: cint</pre></dt> <dd> turn on debugging info recording   </dd> <dt id="SO_ACCEPTCONN"><pre id="SO_ACCEPTCONN">SO_ACCEPTCONN: cint</pre></dt>  <dt id="SO_REUSEADDR"><pre id="SO_REUSEADDR">SO_REUSEADDR: cint</pre></dt>  <dt id="SO_REUSEPORT"><pre id="SO_REUSEPORT">SO_REUSEPORT: cint</pre></dt>  <dt id="SO_KEEPALIVE"><pre id="SO_KEEPALIVE">SO_KEEPALIVE: cint</pre></dt>  <dt id="SO_DONTROUTE"><pre id="SO_DONTROUTE">SO_DONTROUTE: cint</pre></dt>  <dt id="SO_BROADCAST"><pre id="SO_BROADCAST">SO_BROADCAST: cint</pre></dt>  <dt id="SO_USELOOPBACK"><pre id="SO_USELOOPBACK">SO_USELOOPBACK: cint</pre></dt>  <dt id="SO_LINGER"><pre id="SO_LINGER">SO_LINGER: cint</pre></dt>  <dt id="SO_OOBINLINE"><pre id="SO_OOBINLINE">SO_OOBINLINE: cint</pre></dt>  <dt id="SO_DONTLINGER"><pre id="SO_DONTLINGER">SO_DONTLINGER: cint</pre></dt>  <dt id="SO_EXCLUSIVEADDRUSE"><pre id="SO_EXCLUSIVEADDRUSE">SO_EXCLUSIVEADDRUSE: cint</pre></dt>  <dt id="SO_ERROR"><pre id="SO_ERROR">SO_ERROR: cint</pre></dt>  <dt id="WSAID_CONNECTEX"><pre id="WSAID_CONNECTEX" data-language="nim">WSAID_CONNECTEX: GUID = GUID(D1: 0x25A207B9, D2: 0xDDF3'i16, D3: 0x00004660, D4: [0x8E'i8,
+    0xE9'i8, 0x76'i8, 0xE5'i8, 0x8C'i8, 0x74'i8, 0x06'i8, 0x3E'i8])</pre></dt>  <dt id="WSAID_ACCEPTEX"><pre id="WSAID_ACCEPTEX" data-language="nim">WSAID_ACCEPTEX: GUID = GUID(D1: 0xB5367DF1'i32, D2: 0xCBAC'i16, D3: 0x000011CF, D4: [
+    0x95'i8, 0xCA'i8, 0x00'i8, 0x80'i8, 0x5F'i8, 0x48'i8, 0xA1'i8, 0x92'i8])</pre></dt>  <dt id="WSAID_GETACCEPTEXSOCKADDRS"><pre id="WSAID_GETACCEPTEXSOCKADDRS" data-language="nim">WSAID_GETACCEPTEXSOCKADDRS: GUID = GUID(D1: 0xB5367DF2'i32, D2: 0xCBAC'i16,
+                                     D3: 0x000011CF, D4: [0x95'i8, 0xCA'i8, 0x00'i8,
+    0x80'i8, 0x5F'i8, 0x48'i8, 0xA1'i8, 0x92'i8])</pre></dt>  </dl>  <h2 id="10">Consts</h2> <dl> <dt id="useWinUnicode"><pre id="useWinUnicode">useWinUnicode = true</pre></dt>  <dt id="STARTF_USESHOWWINDOW"><pre id="STARTF_USESHOWWINDOW" data-language="nim">STARTF_USESHOWWINDOW = 1'i32</pre></dt>  <dt id="STARTF_USESTDHANDLES"><pre id="STARTF_USESTDHANDLES" data-language="nim">STARTF_USESTDHANDLES = 256'i32</pre></dt>  <dt id="HIGH_PRIORITY_CLASS"><pre id="HIGH_PRIORITY_CLASS" data-language="nim">HIGH_PRIORITY_CLASS = 128'i32</pre></dt>  <dt id="IDLE_PRIORITY_CLASS"><pre id="IDLE_PRIORITY_CLASS" data-language="nim">IDLE_PRIORITY_CLASS = 64'i32</pre></dt>  <dt id="NORMAL_PRIORITY_CLASS"><pre id="NORMAL_PRIORITY_CLASS" data-language="nim">NORMAL_PRIORITY_CLASS = 32'i32</pre></dt>  <dt id="REALTIME_PRIORITY_CLASS"><pre id="REALTIME_PRIORITY_CLASS" data-language="nim">REALTIME_PRIORITY_CLASS = 256'i32</pre></dt>  <dt id="WAIT_OBJECT_0"><pre id="WAIT_OBJECT_0" data-language="nim">WAIT_OBJECT_0 = 0'i32</pre></dt>  <dt id="WAIT_TIMEOUT"><pre id="WAIT_TIMEOUT" data-language="nim">WAIT_TIMEOUT = 0x00000102'i32</pre></dt>  <dt id="WAIT_FAILED"><pre id="WAIT_FAILED" data-language="nim">WAIT_FAILED = 0xFFFFFFFF'i32</pre></dt>  <dt id="INFINITE"><pre id="INFINITE">INFINITE = -1</pre></dt>  <dt id="STD_INPUT_HANDLE"><pre id="STD_INPUT_HANDLE">STD_INPUT_HANDLE = -10</pre></dt>  <dt id="STD_OUTPUT_HANDLE"><pre id="STD_OUTPUT_HANDLE">STD_OUTPUT_HANDLE = -11</pre></dt>  <dt id="STD_ERROR_HANDLE"><pre id="STD_ERROR_HANDLE">STD_ERROR_HANDLE = -12</pre></dt>  <dt id="DETACHED_PROCESS"><pre id="DETACHED_PROCESS" data-language="nim">DETACHED_PROCESS = 8'i32</pre></dt>  <dt id="SW_SHOWNORMAL"><pre id="SW_SHOWNORMAL" data-language="nim">SW_SHOWNORMAL = 1'i32</pre></dt>  <dt id="INVALID_HANDLE_VALUE"><pre id="INVALID_HANDLE_VALUE">INVALID_HANDLE_VALUE = -1</pre></dt>  <dt id="CREATE_UNICODE_ENVIRONMENT"><pre id="CREATE_UNICODE_ENVIRONMENT" data-language="nim">CREATE_UNICODE_ENVIRONMENT = 1024'i32</pre></dt>  <dt id="PIPE_ACCESS_DUPLEX"><pre id="PIPE_ACCESS_DUPLEX" data-language="nim">PIPE_ACCESS_DUPLEX = 0x00000003'i32</pre></dt>  <dt id="PIPE_ACCESS_INBOUND"><pre id="PIPE_ACCESS_INBOUND" data-language="nim">PIPE_ACCESS_INBOUND = 1'i32</pre></dt>  <dt id="PIPE_ACCESS_OUTBOUND"><pre id="PIPE_ACCESS_OUTBOUND" data-language="nim">PIPE_ACCESS_OUTBOUND = 2'i32</pre></dt>  <dt id="PIPE_NOWAIT"><pre id="PIPE_NOWAIT" data-language="nim">PIPE_NOWAIT = 0x00000001'i32</pre></dt>  <dt id="SYNCHRONIZE"><pre id="SYNCHRONIZE" data-language="nim">SYNCHRONIZE = 0x00100000'i32</pre></dt>  <dt id="FILE_FLAG_WRITE_THROUGH"><pre id="FILE_FLAG_WRITE_THROUGH" data-language="nim">FILE_FLAG_WRITE_THROUGH = 0x80000000'i32</pre></dt>  <dt id="CREATE_NO_WINDOW"><pre id="CREATE_NO_WINDOW" data-language="nim">CREATE_NO_WINDOW = 0x08000000'i32</pre></dt>  <dt id="FILE_ATTRIBUTE_ARCHIVE"><pre id="FILE_ATTRIBUTE_ARCHIVE" data-language="nim">FILE_ATTRIBUTE_ARCHIVE = 32'i32</pre></dt>  <dt id="FILE_ATTRIBUTE_COMPRESSED"><pre id="FILE_ATTRIBUTE_COMPRESSED" data-language="nim">FILE_ATTRIBUTE_COMPRESSED = 2048'i32</pre></dt>  <dt id="FILE_ATTRIBUTE_NORMAL"><pre id="FILE_ATTRIBUTE_NORMAL" data-language="nim">FILE_ATTRIBUTE_NORMAL = 128'i32</pre></dt>  <dt id="FILE_ATTRIBUTE_DIRECTORY"><pre id="FILE_ATTRIBUTE_DIRECTORY" data-language="nim">FILE_ATTRIBUTE_DIRECTORY = 16'i32</pre></dt>  <dt id="FILE_ATTRIBUTE_HIDDEN"><pre id="FILE_ATTRIBUTE_HIDDEN" data-language="nim">FILE_ATTRIBUTE_HIDDEN = 2'i32</pre></dt>  <dt id="FILE_ATTRIBUTE_READONLY"><pre id="FILE_ATTRIBUTE_READONLY" data-language="nim">FILE_ATTRIBUTE_READONLY = 1'i32</pre></dt>  <dt id="FILE_ATTRIBUTE_REPARSE_POINT"><pre id="FILE_ATTRIBUTE_REPARSE_POINT" data-language="nim">FILE_ATTRIBUTE_REPARSE_POINT = 1024'i32</pre></dt>  <dt id="FILE_ATTRIBUTE_SYSTEM"><pre id="FILE_ATTRIBUTE_SYSTEM" data-language="nim">FILE_ATTRIBUTE_SYSTEM = 4'i32</pre></dt>  <dt id="FILE_ATTRIBUTE_TEMPORARY"><pre id="FILE_ATTRIBUTE_TEMPORARY" data-language="nim">FILE_ATTRIBUTE_TEMPORARY = 256'i32</pre></dt>  <dt id="MAX_PATH"><pre id="MAX_PATH">MAX_PATH = 260</pre></dt>  <dt id="MOVEFILE_COPY_ALLOWED"><pre id="MOVEFILE_COPY_ALLOWED" data-language="nim">MOVEFILE_COPY_ALLOWED = 0x00000002'i32</pre></dt>  <dt id="MOVEFILE_CREATE_HARDLINK"><pre id="MOVEFILE_CREATE_HARDLINK" data-language="nim">MOVEFILE_CREATE_HARDLINK = 0x00000010'i32</pre></dt>  <dt id="MOVEFILE_DELAY_UNTIL_REBOOT"><pre id="MOVEFILE_DELAY_UNTIL_REBOOT" data-language="nim">MOVEFILE_DELAY_UNTIL_REBOOT = 0x00000004'i32</pre></dt>  <dt id="MOVEFILE_FAIL_IF_NOT_TRACKABLE"><pre id="MOVEFILE_FAIL_IF_NOT_TRACKABLE" data-language="nim">MOVEFILE_FAIL_IF_NOT_TRACKABLE = 0x00000020'i32</pre></dt>  <dt id="MOVEFILE_REPLACE_EXISTING"><pre id="MOVEFILE_REPLACE_EXISTING" data-language="nim">MOVEFILE_REPLACE_EXISTING = 0x00000001'i32</pre></dt>  <dt id="MOVEFILE_WRITE_THROUGH"><pre id="MOVEFILE_WRITE_THROUGH" data-language="nim">MOVEFILE_WRITE_THROUGH = 0x00000008'i32</pre></dt>  <dt id="WSADESCRIPTION_LEN"><pre id="WSADESCRIPTION_LEN">WSADESCRIPTION_LEN = 256</pre></dt>  <dt id="WSASYS_STATUS_LEN"><pre id="WSASYS_STATUS_LEN">WSASYS_STATUS_LEN = 128</pre></dt>  <dt id="FD_SETSIZE"><pre id="FD_SETSIZE">FD_SETSIZE = 64</pre></dt>  <dt id="MSG_PEEK"><pre id="MSG_PEEK">MSG_PEEK = 2</pre></dt>  <dt id="INADDR_ANY"><pre id="INADDR_ANY" data-language="nim">INADDR_ANY = 0'u32</pre></dt>  <dt id="INADDR_LOOPBACK"><pre id="INADDR_LOOPBACK">INADDR_LOOPBACK = 0x7F000001</pre></dt>  <dt id="INADDR_BROADCAST"><pre id="INADDR_BROADCAST">INADDR_BROADCAST = -1</pre></dt>  <dt id="INADDR_NONE"><pre id="INADDR_NONE">INADDR_NONE = -1</pre></dt>  <dt id="MAXIMUM_WAIT_OBJECTS"><pre id="MAXIMUM_WAIT_OBJECTS">MAXIMUM_WAIT_OBJECTS = 0x00000040</pre></dt>  <dt id="GENERIC_READ"><pre id="GENERIC_READ" data-language="nim">GENERIC_READ = 0x80000000'i32</pre></dt>  <dt id="GENERIC_WRITE"><pre id="GENERIC_WRITE" data-language="nim">GENERIC_WRITE = 0x40000000'i32</pre></dt>  <dt id="GENERIC_ALL"><pre id="GENERIC_ALL" data-language="nim">GENERIC_ALL = 0x10000000'i32</pre></dt>  <dt id="FILE_SHARE_READ"><pre id="FILE_SHARE_READ" data-language="nim">FILE_SHARE_READ = 1'i32</pre></dt>  <dt id="FILE_SHARE_DELETE"><pre id="FILE_SHARE_DELETE" data-language="nim">FILE_SHARE_DELETE = 4'i32</pre></dt>  <dt id="FILE_SHARE_WRITE"><pre id="FILE_SHARE_WRITE" data-language="nim">FILE_SHARE_WRITE = 2'i32</pre></dt>  <dt id="CREATE_ALWAYS"><pre id="CREATE_ALWAYS" data-language="nim">CREATE_ALWAYS = 2'i32</pre></dt>  <dt id="CREATE_NEW"><pre id="CREATE_NEW" data-language="nim">CREATE_NEW = 1'i32</pre></dt>  <dt id="OPEN_EXISTING"><pre id="OPEN_EXISTING" data-language="nim">OPEN_EXISTING = 3'i32</pre></dt>  <dt id="FILE_BEGIN"><pre id="FILE_BEGIN" data-language="nim">FILE_BEGIN = 0'i32</pre></dt>  <dt id="INVALID_SET_FILE_POINTER"><pre id="INVALID_SET_FILE_POINTER">INVALID_SET_FILE_POINTER = -1</pre></dt>  <dt id="NO_ERROR"><pre id="NO_ERROR" data-language="nim">NO_ERROR = 0'i32</pre></dt>  <dt id="PAGE_READONLY"><pre id="PAGE_READONLY" data-language="nim">PAGE_READONLY = 2'i32</pre></dt>  <dt id="PAGE_READWRITE"><pre id="PAGE_READWRITE" data-language="nim">PAGE_READWRITE = 4'i32</pre></dt>  <dt id="FILE_MAP_READ"><pre id="FILE_MAP_READ" data-language="nim">FILE_MAP_READ = 4'i32</pre></dt>  <dt id="FILE_MAP_WRITE"><pre id="FILE_MAP_WRITE" data-language="nim">FILE_MAP_WRITE = 2'i32</pre></dt>  <dt id="INVALID_FILE_SIZE"><pre id="INVALID_FILE_SIZE">INVALID_FILE_SIZE = -1</pre></dt>  <dt id="FILE_FLAG_BACKUP_SEMANTICS"><pre id="FILE_FLAG_BACKUP_SEMANTICS" data-language="nim">FILE_FLAG_BACKUP_SEMANTICS = 33554432'i32</pre></dt>  <dt id="FILE_FLAG_OPEN_REPARSE_POINT"><pre id="FILE_FLAG_OPEN_REPARSE_POINT" data-language="nim">FILE_FLAG_OPEN_REPARSE_POINT = 0x00200000'i32</pre></dt>  <dt id="DUPLICATE_SAME_ACCESS"><pre id="DUPLICATE_SAME_ACCESS">DUPLICATE_SAME_ACCESS = 2</pre></dt>  <dt id="FILE_READ_DATA"><pre id="FILE_READ_DATA">FILE_READ_DATA = 0x00000001</pre></dt>  <dt id="FILE_WRITE_DATA"><pre id="FILE_WRITE_DATA">FILE_WRITE_DATA = 0x00000002</pre></dt>  <dt id="ERROR_FILE_NOT_FOUND"><pre id="ERROR_FILE_NOT_FOUND">ERROR_FILE_NOT_FOUND = 2</pre></dt>  <dt id="ERROR_PATH_NOT_FOUND"><pre id="ERROR_PATH_NOT_FOUND">ERROR_PATH_NOT_FOUND = 3</pre></dt>  <dt id="ERROR_ACCESS_DENIED"><pre id="ERROR_ACCESS_DENIED">ERROR_ACCESS_DENIED = 5</pre></dt>  <dt id="ERROR_HANDLE_EOF"><pre id="ERROR_HANDLE_EOF">ERROR_HANDLE_EOF = 38</pre></dt>  <dt id="ERROR_BAD_ARGUMENTS"><pre id="ERROR_BAD_ARGUMENTS">ERROR_BAD_ARGUMENTS = 165</pre></dt>  <dt id="ERROR_IO_PENDING"><pre id="ERROR_IO_PENDING">ERROR_IO_PENDING = 997</pre></dt>  <dt id="FILE_FLAG_OVERLAPPED"><pre id="FILE_FLAG_OVERLAPPED">FILE_FLAG_OVERLAPPED = 1073741824</pre></dt>  <dt id="WSAECONNABORTED"><pre id="WSAECONNABORTED">WSAECONNABORTED = 10053</pre></dt>  <dt id="WSAEADDRINUSE"><pre id="WSAEADDRINUSE">WSAEADDRINUSE = 10048</pre></dt>  <dt id="WSAECONNRESET"><pre id="WSAECONNRESET">WSAECONNRESET = 10054</pre></dt>  <dt id="WSAEDISCON"><pre id="WSAEDISCON">WSAEDISCON = 10101</pre></dt>  <dt id="WSAENETRESET"><pre id="WSAENETRESET">WSAENETRESET = 10052</pre></dt>  <dt id="WSAETIMEDOUT"><pre id="WSAETIMEDOUT">WSAETIMEDOUT = 10060</pre></dt>  <dt id="WSANOTINITIALISED"><pre id="WSANOTINITIALISED">WSANOTINITIALISED = 10093</pre></dt>  <dt id="WSAENOTSOCK"><pre id="WSAENOTSOCK">WSAENOTSOCK = 10038</pre></dt>  <dt id="WSAEINPROGRESS"><pre id="WSAEINPROGRESS">WSAEINPROGRESS = 10036</pre></dt>  <dt id="WSAEINTR"><pre id="WSAEINTR">WSAEINTR = 10004</pre></dt>  <dt id="WSAEWOULDBLOCK"><pre id="WSAEWOULDBLOCK">WSAEWOULDBLOCK = 10035</pre></dt>  <dt id="ERROR_NETNAME_DELETED"><pre id="ERROR_NETNAME_DELETED">ERROR_NETNAME_DELETED = 64</pre></dt>  <dt id="STATUS_PENDING"><pre id="STATUS_PENDING">STATUS_PENDING = 0x00000103</pre></dt>  <dt id="IOC_OUT"><pre id="IOC_OUT">IOC_OUT = 0x40000000</pre></dt>  <dt id="IOC_IN"><pre id="IOC_IN" data-language="nim">IOC_IN = 0x0000000080000000'i64</pre></dt>  <dt id="IOC_WS2"><pre id="IOC_WS2">IOC_WS2 = 0x08000000</pre></dt>  <dt id="IOC_INOUT"><pre id="IOC_INOUT">IOC_INOUT = 3221225472</pre></dt>  <dt id="SIO_GET_EXTENSION_FUNCTION_POINTER"><pre id="SIO_GET_EXTENSION_FUNCTION_POINTER">SIO_GET_EXTENSION_FUNCTION_POINTER = 3355443206</pre></dt>  <dt id="SO_UPDATE_ACCEPT_CONTEXT"><pre id="SO_UPDATE_ACCEPT_CONTEXT">SO_UPDATE_ACCEPT_CONTEXT = 0x0000700B</pre></dt>  <dt id="AI_V4MAPPED"><pre id="AI_V4MAPPED">AI_V4MAPPED = 0x00000008</pre></dt>  <dt id="AF_UNSPEC"><pre id="AF_UNSPEC">AF_UNSPEC = 0</pre></dt>  <dt id="AF_INET"><pre id="AF_INET">AF_INET = 2</pre></dt>  <dt id="AF_INET6"><pre id="AF_INET6">AF_INET6 = 23</pre></dt>  <dt id="WT_EXECUTEDEFAULT"><pre id="WT_EXECUTEDEFAULT" data-language="nim">WT_EXECUTEDEFAULT = 0x00000000'i32</pre></dt>  <dt id="WT_EXECUTEINIOTHREAD"><pre id="WT_EXECUTEINIOTHREAD" data-language="nim">WT_EXECUTEINIOTHREAD = 0x00000001'i32</pre></dt>  <dt id="WT_EXECUTEINUITHREAD"><pre id="WT_EXECUTEINUITHREAD" data-language="nim">WT_EXECUTEINUITHREAD = 0x00000002'i32</pre></dt>  <dt id="WT_EXECUTEINWAITTHREAD"><pre id="WT_EXECUTEINWAITTHREAD" data-language="nim">WT_EXECUTEINWAITTHREAD = 0x00000004'i32</pre></dt>  <dt id="WT_EXECUTEONLYONCE"><pre id="WT_EXECUTEONLYONCE" data-language="nim">WT_EXECUTEONLYONCE = 0x00000008'i32</pre></dt>  <dt id="WT_EXECUTELONGFUNCTION"><pre id="WT_EXECUTELONGFUNCTION" data-language="nim">WT_EXECUTELONGFUNCTION = 0x00000010'i32</pre></dt>  <dt id="WT_EXECUTEINTIMERTHREAD"><pre id="WT_EXECUTEINTIMERTHREAD" data-language="nim">WT_EXECUTEINTIMERTHREAD = 0x00000020'i32</pre></dt>  <dt id="WT_EXECUTEINPERSISTENTIOTHREAD"><pre id="WT_EXECUTEINPERSISTENTIOTHREAD" data-language="nim">WT_EXECUTEINPERSISTENTIOTHREAD = 0x00000040'i32</pre></dt>  <dt id="WT_EXECUTEINPERSISTENTTHREAD"><pre id="WT_EXECUTEINPERSISTENTTHREAD" data-language="nim">WT_EXECUTEINPERSISTENTTHREAD = 0x00000080'i32</pre></dt>  <dt id="WT_TRANSFER_IMPERSONATION"><pre id="WT_TRANSFER_IMPERSONATION" data-language="nim">WT_TRANSFER_IMPERSONATION = 0x00000100'i32</pre></dt>  <dt id="PROCESS_TERMINATE"><pre id="PROCESS_TERMINATE" data-language="nim">PROCESS_TERMINATE = 0x00000001'i32</pre></dt>  <dt id="PROCESS_CREATE_THREAD"><pre id="PROCESS_CREATE_THREAD" data-language="nim">PROCESS_CREATE_THREAD = 0x00000002'i32</pre></dt>  <dt id="PROCESS_SET_SESSIONID"><pre id="PROCESS_SET_SESSIONID" data-language="nim">PROCESS_SET_SESSIONID = 0x00000004'i32</pre></dt>  <dt id="PROCESS_VM_OPERATION"><pre id="PROCESS_VM_OPERATION" data-language="nim">PROCESS_VM_OPERATION = 0x00000008'i32</pre></dt>  <dt id="PROCESS_VM_READ"><pre id="PROCESS_VM_READ" data-language="nim">PROCESS_VM_READ = 0x00000010'i32</pre></dt>  <dt id="PROCESS_VM_WRITE"><pre id="PROCESS_VM_WRITE" data-language="nim">PROCESS_VM_WRITE = 0x00000020'i32</pre></dt>  <dt id="PROCESS_DUP_HANDLE"><pre id="PROCESS_DUP_HANDLE" data-language="nim">PROCESS_DUP_HANDLE = 0x00000040'i32</pre></dt>  <dt id="PROCESS_CREATE_PROCESS"><pre id="PROCESS_CREATE_PROCESS" data-language="nim">PROCESS_CREATE_PROCESS = 0x00000080'i32</pre></dt>  <dt id="PROCESS_SET_QUOTA"><pre id="PROCESS_SET_QUOTA" data-language="nim">PROCESS_SET_QUOTA = 0x00000100'i32</pre></dt>  <dt id="PROCESS_SET_INFORMATION"><pre id="PROCESS_SET_INFORMATION" data-language="nim">PROCESS_SET_INFORMATION = 0x00000200'i32</pre></dt>  <dt id="PROCESS_QUERY_INFORMATION"><pre id="PROCESS_QUERY_INFORMATION" data-language="nim">PROCESS_QUERY_INFORMATION = 0x00000400'i32</pre></dt>  <dt id="PROCESS_SUSPEND_RESUME"><pre id="PROCESS_SUSPEND_RESUME" data-language="nim">PROCESS_SUSPEND_RESUME = 0x00000800'i32</pre></dt>  <dt id="PROCESS_QUERY_LIMITED_INFORMATION"><pre id="PROCESS_QUERY_LIMITED_INFORMATION" data-language="nim">PROCESS_QUERY_LIMITED_INFORMATION = 0x00001000'i32</pre></dt>  <dt id="PROCESS_SET_LIMITED_INFORMATION"><pre id="PROCESS_SET_LIMITED_INFORMATION" data-language="nim">PROCESS_SET_LIMITED_INFORMATION = 0x00002000'i32</pre></dt>  <dt id="FD_READ"><pre id="FD_READ" data-language="nim">FD_READ = 0x00000001'i32</pre></dt>  <dt id="FD_WRITE"><pre id="FD_WRITE" data-language="nim">FD_WRITE = 0x00000002'i32</pre></dt>  <dt id="FD_OOB"><pre id="FD_OOB" data-language="nim">FD_OOB = 0x00000004'i32</pre></dt>  <dt id="FD_ACCEPT"><pre id="FD_ACCEPT" data-language="nim">FD_ACCEPT = 0x00000008'i32</pre></dt>  <dt id="FD_CONNECT"><pre id="FD_CONNECT" data-language="nim">FD_CONNECT = 0x00000010'i32</pre></dt>  <dt id="FD_CLOSE"><pre id="FD_CLOSE" data-language="nim">FD_CLOSE = 0x00000020'i32</pre></dt>  <dt id="FD_QQS"><pre id="FD_QQS" data-language="nim">FD_QQS = 0x00000040'i32</pre></dt>  <dt id="FD_GROUP_QQS"><pre id="FD_GROUP_QQS" data-language="nim">FD_GROUP_QQS = 0x00000080'i32</pre></dt>  <dt id="FD_ROUTING_INTERFACE_CHANGE"><pre id="FD_ROUTING_INTERFACE_CHANGE" data-language="nim">FD_ROUTING_INTERFACE_CHANGE = 0x00000100'i32</pre></dt>  <dt id="FD_ADDRESS_LIST_CHANGE"><pre id="FD_ADDRESS_LIST_CHANGE" data-language="nim">FD_ADDRESS_LIST_CHANGE = 0x00000200'i32</pre></dt>  <dt id="FD_ALL_EVENTS"><pre id="FD_ALL_EVENTS" data-language="nim">FD_ALL_EVENTS = 0x000003FF'i32</pre></dt>  <dt id="FIBER_FLAG_FLOAT_SWITCH"><pre id="FIBER_FLAG_FLOAT_SWITCH">FIBER_FLAG_FLOAT_SWITCH = 0x00000001</pre></dt>  </dl>  <h2 id="12">Procs</h2> <dl> <dt id="getVersionExW"><pre id="getVersionExW,ptr.OSVERSIONINFO" data-language="nim">proc getVersionExW(lpVersionInfo: ptr OSVERSIONINFO): WINBOOL {.stdcall,
+    dynlib: "kernel32", importc: "GetVersionExW".}</pre></dt>  <dt id="getVersion"><pre id="getVersion," data-language="nim">proc getVersion(): DWORD {.stdcall, dynlib: "kernel32", importc: "GetVersion".}</pre></dt>  <dt id="closeHandle"><pre id="closeHandle,Handle" data-language="nim">proc closeHandle(hObject: Handle): WINBOOL {.stdcall, dynlib: "kernel32",
+    importc: "CloseHandle".}</pre></dt>  <dt id="readFile"><pre id="readFile,Handle,pointer,int32,ptr.int32,pointer" data-language="nim">proc readFile(hFile: Handle; Buffer: pointer; nNumberOfBytesToRead: int32;
+             lpNumberOfBytesRead: ptr int32; lpOverlapped: pointer): WINBOOL {.
+    stdcall, dynlib: "kernel32", importc: "ReadFile".}</pre></dt>  <dt id="writeFile"><pre id="writeFile,Handle,pointer,int32,ptr.int32,pointer" data-language="nim">proc writeFile(hFile: Handle; Buffer: pointer; nNumberOfBytesToWrite: int32;
+              lpNumberOfBytesWritten: ptr int32; lpOverlapped: pointer): WINBOOL {.
+    stdcall, dynlib: "kernel32", importc: "WriteFile".}</pre></dt>  <dt id="createPipe"><pre id="createPipe,Handle,Handle,SECURITY_ATTRIBUTES,int32" data-language="nim">proc createPipe(hReadPipe, hWritePipe: var Handle;
+               lpPipeAttributes: var SECURITY_ATTRIBUTES; nSize: int32): WINBOOL {.
+    stdcall, dynlib: "kernel32", importc: "CreatePipe".}</pre></dt>  <dt id="createNamedPipe"><pre id="createNamedPipe,WideCString,int32,int32,int32,int32,int32,int32,ptr.SECURITY_ATTRIBUTES" data-language="nim">proc createNamedPipe(lpName: WideCString; dwOpenMode, dwPipeMode, nMaxInstances,
+                                       nOutBufferSize, nInBufferSize,
+                                       nDefaultTimeOut: int32;
+                    lpSecurityAttributes: ptr SECURITY_ATTRIBUTES): Handle {.
+    stdcall, dynlib: "kernel32", importc: "CreateNamedPipeW".}</pre></dt>  <dt id="peekNamedPipe"><pre id="peekNamedPipe,Handle,pointer,int32,ptr.int32,ptr.int32,ptr.int32" data-language="nim">proc peekNamedPipe(hNamedPipe: Handle; lpBuffer: pointer = nil; nBufferSize: int32 = 0;
+                  lpBytesRead: ptr int32 = nil; lpTotalBytesAvail: ptr int32 = nil;
+                  lpBytesLeftThisMessage: ptr int32 = nil): bool {.stdcall,
+    dynlib: "kernel32", importc: "PeekNamedPipe".}</pre></dt>  <dt id="createProcessW"><pre id="createProcessW,WideCString,WideCString,ptr.SECURITY_ATTRIBUTES,ptr.SECURITY_ATTRIBUTES,WINBOOL,int32,WideCString,WideCString,STARTUPINFO,PROCESS_INFORMATION" data-language="nim">proc createProcessW(lpApplicationName, lpCommandLine: WideCString;
+                   lpProcessAttributes: ptr SECURITY_ATTRIBUTES;
+                   lpThreadAttributes: ptr SECURITY_ATTRIBUTES;
+                   bInheritHandles: WINBOOL; dwCreationFlags: int32;
+                   lpEnvironment, lpCurrentDirectory: WideCString;
+                   lpStartupInfo: var STARTUPINFO;
+                   lpProcessInformation: var PROCESS_INFORMATION): WINBOOL {.
+    stdcall, dynlib: "kernel32", importc: "CreateProcessW".}</pre></dt>  <dt id="suspendThread"><pre id="suspendThread,Handle" data-language="nim">proc suspendThread(hThread: Handle): int32 {.stdcall, dynlib: "kernel32",
+    importc: "SuspendThread".}</pre></dt>  <dt id="resumeThread"><pre id="resumeThread,Handle" data-language="nim">proc resumeThread(hThread: Handle): int32 {.stdcall, dynlib: "kernel32",
+                                        importc: "ResumeThread".}</pre></dt>  <dt id="waitForSingleObject"><pre id="waitForSingleObject,Handle,int32" data-language="nim">proc waitForSingleObject(hHandle: Handle; dwMilliseconds: int32): int32 {.stdcall,
+    dynlib: "kernel32", importc: "WaitForSingleObject".}</pre></dt>  <dt id="terminateProcess"><pre id="terminateProcess,Handle,int" data-language="nim">proc terminateProcess(hProcess: Handle; uExitCode: int): WINBOOL {.stdcall,
+    dynlib: "kernel32", importc: "TerminateProcess".}</pre></dt>  <dt id="getExitCodeProcess"><pre id="getExitCodeProcess,Handle,int32" data-language="nim">proc getExitCodeProcess(hProcess: Handle; lpExitCode: var int32): WINBOOL {.stdcall,
+    dynlib: "kernel32", importc: "GetExitCodeProcess".}</pre></dt>  <dt id="getStdHandle"><pre id="getStdHandle,int32" data-language="nim">proc getStdHandle(nStdHandle: int32): Handle {.stdcall, dynlib: "kernel32",
+    importc: "GetStdHandle".}</pre></dt>  <dt id="setStdHandle"><pre id="setStdHandle,int32,Handle" data-language="nim">proc setStdHandle(nStdHandle: int32; hHandle: Handle): WINBOOL {.stdcall,
+    dynlib: "kernel32", importc: "SetStdHandle".}</pre></dt>  <dt id="flushFileBuffers"><pre id="flushFileBuffers,Handle" data-language="nim">proc flushFileBuffers(hFile: Handle): WINBOOL {.stdcall, dynlib: "kernel32",
+    importc: "FlushFileBuffers".}</pre></dt>  <dt id="getLastError"><pre id="getLastError," data-language="nim">proc getLastError(): int32 {.importc: "GetLastError", stdcall, dynlib: "kernel32".}</pre></dt>  <dt id="setLastError"><pre id="setLastError,int32" data-language="nim">proc setLastError(error: int32) {.importc: "SetLastError", stdcall, dynlib: "kernel32".}</pre></dt>  <dt id="formatMessageW"><pre id="formatMessageW,int32,pointer,int32,int32,pointer,int32,pointer" data-language="nim">proc formatMessageW(dwFlags: int32; lpSource: pointer;
+                   dwMessageId, dwLanguageId: int32; lpBuffer: pointer; nSize: int32;
+                   Arguments: pointer): int32 {.importc: "FormatMessageW", stdcall,
+    dynlib: "kernel32".}</pre></dt>  <dt id="localFree"><pre id="localFree,pointer" data-language="nim">proc localFree(p: pointer) {.importc: "LocalFree", stdcall, dynlib: "kernel32".}</pre></dt>  <dt id="getCurrentDirectoryW"><pre id="getCurrentDirectoryW,int32,WideCString" data-language="nim">proc getCurrentDirectoryW(nBufferLength: int32; lpBuffer: WideCString): int32 {.
+    importc: "GetCurrentDirectoryW", dynlib: "kernel32", stdcall.}</pre></dt>  <dt id="setCurrentDirectoryW"><pre id="setCurrentDirectoryW,WideCString" data-language="nim">proc setCurrentDirectoryW(lpPathName: WideCString): int32 {.
+    importc: "SetCurrentDirectoryW", dynlib: "kernel32", stdcall.}</pre></dt>  <dt id="createDirectoryW"><pre id="createDirectoryW,WideCString,pointer" data-language="nim">proc createDirectoryW(pathName: WideCString; security: pointer = nil): int32 {.
+    importc: "CreateDirectoryW", dynlib: "kernel32", stdcall.}</pre></dt>  <dt id="removeDirectoryW"><pre id="removeDirectoryW,WideCString" data-language="nim">proc removeDirectoryW(lpPathName: WideCString): int32 {.importc: "RemoveDirectoryW",
+    dynlib: "kernel32", stdcall.}</pre></dt>  <dt id="setEnvironmentVariableW"><pre id="setEnvironmentVariableW,WideCString,WideCString" data-language="nim">proc setEnvironmentVariableW(lpName, lpValue: WideCString): int32 {.stdcall,
+    dynlib: "kernel32", importc: "SetEnvironmentVariableW".}</pre></dt>  <dt id="getModuleFileNameW"><pre id="getModuleFileNameW,Handle,WideCString,int32" data-language="nim">proc getModuleFileNameW(handle: Handle; buf: WideCString; size: int32): int32 {.
+    importc: "GetModuleFileNameW", dynlib: "kernel32", stdcall.}</pre></dt>  <dt id="createSymbolicLinkW"><pre id="createSymbolicLinkW,WideCString,WideCString,DWORD" data-language="nim">proc createSymbolicLinkW(lpSymlinkFileName, lpTargetFileName: WideCString;
+                        flags: DWORD): int32 {.importc: "CreateSymbolicLinkW",
+    dynlib: "kernel32", stdcall.}</pre></dt>  <dt id="createHardLinkW"><pre id="createHardLinkW,WideCString,WideCString,pointer" data-language="nim">proc createHardLinkW(lpFileName, lpExistingFileName: WideCString;
+                    security: pointer = nil): int32 {.importc: "CreateHardLinkW",
+    dynlib: "kernel32", stdcall.}</pre></dt>  <dt id="findFirstFileW"><pre id="findFirstFileW,WideCString,WIN32_FIND_DATA" data-language="nim">proc findFirstFileW(lpFileName: WideCString; lpFindFileData: var WIN32_FIND_DATA): Handle {.
+    stdcall, dynlib: "kernel32", importc: "FindFirstFileW".}</pre></dt>  <dt id="findNextFileW"><pre id="findNextFileW,Handle,WIN32_FIND_DATA" data-language="nim">proc findNextFileW(hFindFile: Handle; lpFindFileData: var WIN32_FIND_DATA): int32 {.
+    stdcall, dynlib: "kernel32", importc: "FindNextFileW".}</pre></dt>  <dt id="findClose"><pre id="findClose,Handle" data-language="nim">proc findClose(hFindFile: Handle) {.stdcall, dynlib: "kernel32", importc: "FindClose".}</pre></dt>  <dt id="getFullPathNameW"><pre id="getFullPathNameW,WideCString,int32,WideCString,WideCString" data-language="nim">proc getFullPathNameW(lpFileName: WideCString; nBufferLength: int32;
+                     lpBuffer: WideCString; lpFilePart: var WideCString): int32 {.
+    stdcall, dynlib: "kernel32", importc: "GetFullPathNameW".}</pre></dt>  <dt id="getFileAttributesW"><pre id="getFileAttributesW,WideCString" data-language="nim">proc getFileAttributesW(lpFileName: WideCString): int32 {.stdcall,
+    dynlib: "kernel32", importc: "GetFileAttributesW".}</pre></dt>  <dt id="setFileAttributesW"><pre id="setFileAttributesW,WideCString,int32" data-language="nim">proc setFileAttributesW(lpFileName: WideCString; dwFileAttributes: int32): WINBOOL {.
+    stdcall, dynlib: "kernel32", importc: "SetFileAttributesW".}</pre></dt>  <dt id="copyFileW"><pre id="copyFileW,WideCString,WideCString,WINBOOL" data-language="nim">proc copyFileW(lpExistingFileName, lpNewFileName: WideCString;
+              bFailIfExists: WINBOOL): WINBOOL {.importc: "CopyFileW", stdcall,
+    dynlib: "kernel32".}</pre></dt>  <dt id="moveFileW"><pre id="moveFileW,WideCString,WideCString" data-language="nim">proc moveFileW(lpExistingFileName, lpNewFileName: WideCString): WINBOOL {.
+    importc: "MoveFileW", stdcall, dynlib: "kernel32".}</pre></dt>  <dt id="moveFileExW"><pre id="moveFileExW,WideCString,WideCString,DWORD" data-language="nim">proc moveFileExW(lpExistingFileName, lpNewFileName: WideCString; flags: DWORD): WINBOOL {.
+    importc: "MoveFileExW", stdcall, dynlib: "kernel32".}</pre></dt>  <dt id="getEnvironmentStringsW"><pre id="getEnvironmentStringsW," data-language="nim">proc getEnvironmentStringsW(): WideCString {.stdcall, dynlib: "kernel32",
+    importc: "GetEnvironmentStringsW".}</pre></dt>  <dt id="freeEnvironmentStringsW"><pre id="freeEnvironmentStringsW,WideCString" data-language="nim">proc freeEnvironmentStringsW(para1: WideCString): int32 {.stdcall,
+    dynlib: "kernel32", importc: "FreeEnvironmentStringsW".}</pre></dt>  <dt id="getCommandLineW"><pre id="getCommandLineW," data-language="nim">proc getCommandLineW(): WideCString {.importc: "GetCommandLineW", stdcall,
+                                   dynlib: "kernel32".}</pre></dt>  <dt id="rdFileTime"><pre id="rdFileTime,FILETIME" data-language="nim">proc rdFileTime(f: FILETIME): int64 {.raises: [], tags: [].}</pre></dt>  <dt id="rdFileSize"><pre id="rdFileSize,WIN32_FIND_DATA" data-language="nim">proc rdFileSize(f: WIN32_FIND_DATA): int64 {.raises: [], tags: [].}</pre></dt>  <dt id="getSystemTimeAsFileTime"><pre id="getSystemTimeAsFileTime,FILETIME" data-language="nim">proc getSystemTimeAsFileTime(lpSystemTimeAsFileTime: var FILETIME) {.
+    importc: "GetSystemTimeAsFileTime", dynlib: "kernel32", stdcall.}</pre></dt>  <dt id="sleep"><pre id="sleep,int32" data-language="nim">proc sleep(dwMilliseconds: int32) {.stdcall, dynlib: "kernel32", importc: "Sleep".}</pre></dt>  <dt id="shellExecuteW"><pre id="shellExecuteW,Handle,WideCString,WideCString,WideCString,WideCString,int32" data-language="nim">proc shellExecuteW(HWND: Handle;
+                  lpOperation, lpFile, lpParameters, lpDirectory: WideCString;
+                  nShowCmd: int32): Handle {.stdcall, dynlib: "shell32.dll",
+    importc: "ShellExecuteW".}</pre></dt>  <dt id="getFileInformationByHandle"><pre id="getFileInformationByHandle,Handle,ptr.BY_HANDLE_FILE_INFORMATION" data-language="nim">proc getFileInformationByHandle(hFile: Handle; lpFileInformation: ptr BY_HANDLE_FILE_INFORMATION): WINBOOL {.
+    stdcall, dynlib: "kernel32", importc: "GetFileInformationByHandle".}</pre></dt>  <dt id="wsaGetLastError"><pre id="wsaGetLastError," data-language="nim">proc wsaGetLastError(): cint {.importc: "WSAGetLastError", dynlib: ws2dll.}</pre></dt>  <dt id="=="><pre id="==,SocketHandle,SocketHandle" data-language="nim">proc `==`(x, y: SocketHandle): bool {.borrow.}</pre></dt>  <dt id="getservbyname"><pre id="getservbyname,cstring,cstring" data-language="nim">proc getservbyname(name, proto: cstring): ptr Servent {.stdcall,
+    importc: "getservbyname", dynlib: ws2dll.}</pre></dt>  <dt id="getservbyport"><pre id="getservbyport,cint,cstring" data-language="nim">proc getservbyport(port: cint; proto: cstring): ptr Servent {.stdcall,
+    importc: "getservbyport", dynlib: ws2dll.}</pre></dt>  <dt id="gethostbyaddr"><pre id="gethostbyaddr,ptr.InAddr,cuint,cint" data-language="nim">proc gethostbyaddr(ip: ptr InAddr; len: cuint; theType: cint): ptr Hostent {.stdcall,
+    importc: "gethostbyaddr", dynlib: ws2dll.}</pre></dt>  <dt id="gethostbyname"><pre id="gethostbyname,cstring" data-language="nim">proc gethostbyname(name: cstring): ptr Hostent {.stdcall, importc: "gethostbyname",
+    dynlib: ws2dll.}</pre></dt>  <dt id="gethostname"><pre id="gethostname,cstring,cint" data-language="nim">proc gethostname(hostname: cstring; len: cint): cint {.stdcall, importc: "gethostname",
+    dynlib: ws2dll.}</pre></dt>  <dt id="socket"><pre id="socket,cint,cint,cint" data-language="nim">proc socket(af, typ, protocol: cint): SocketHandle {.stdcall, importc: "socket",
+    dynlib: ws2dll.}</pre></dt>  <dt id="closesocket"><pre id="closesocket,SocketHandle" data-language="nim">proc closesocket(s: SocketHandle): cint {.stdcall, importc: "closesocket",
+                                      dynlib: ws2dll.}</pre></dt>  <dt id="accept"><pre id="accept,SocketHandle,ptr.SockAddr,ptr.SockLen" data-language="nim">proc accept(s: SocketHandle; a: ptr SockAddr; addrlen: ptr SockLen): SocketHandle {.
+    stdcall, importc: "accept", dynlib: ws2dll.}</pre></dt>  <dt id="bindSocket"><pre id="bindSocket,SocketHandle,ptr.SockAddr,SockLen" data-language="nim">proc bindSocket(s: SocketHandle; name: ptr SockAddr; namelen: SockLen): cint {.stdcall,
+    importc: "bind", dynlib: ws2dll.}</pre></dt>  <dt id="connect"><pre id="connect,SocketHandle,ptr.SockAddr,SockLen" data-language="nim">proc connect(s: SocketHandle; name: ptr SockAddr; namelen: SockLen): cint {.stdcall,
+    importc: "connect", dynlib: ws2dll.}</pre></dt>  <dt id="getsockname"><pre id="getsockname,SocketHandle,ptr.SockAddr,ptr.SockLen" data-language="nim">proc getsockname(s: SocketHandle; name: ptr SockAddr; namelen: ptr SockLen): cint {.
+    stdcall, importc: "getsockname", dynlib: ws2dll.}</pre></dt>  <dt id="getpeername"><pre id="getpeername,SocketHandle,ptr.SockAddr,ptr.SockLen" data-language="nim">proc getpeername(s: SocketHandle; name: ptr SockAddr; namelen: ptr SockLen): cint {.
+    stdcall, importc, dynlib: ws2dll.}</pre></dt>  <dt id="getsockopt"><pre id="getsockopt,SocketHandle,cint,cint,pointer,ptr.SockLen" data-language="nim">proc getsockopt(s: SocketHandle; level, optname: cint; optval: pointer;
+               optlen: ptr SockLen): cint {.stdcall, importc: "getsockopt",
+                                        dynlib: ws2dll.}</pre></dt>  <dt id="setsockopt"><pre id="setsockopt,SocketHandle,cint,cint,pointer,SockLen" data-language="nim">proc setsockopt(s: SocketHandle; level, optname: cint; optval: pointer; optlen: SockLen): cint {.
+    stdcall, importc: "setsockopt", dynlib: ws2dll.}</pre></dt>  <dt id="listen"><pre id="listen,SocketHandle,cint" data-language="nim">proc listen(s: SocketHandle; backlog: cint): cint {.stdcall, importc: "listen",
+    dynlib: ws2dll.}</pre></dt>  <dt id="recv"><pre id="recv,SocketHandle,pointer,cint,cint" data-language="nim">proc recv(s: SocketHandle; buf: pointer; len, flags: cint): cint {.stdcall,
+    importc: "recv", dynlib: ws2dll.}</pre></dt>  <dt id="recvfrom"><pre id="recvfrom,SocketHandle,cstring,cint,cint,ptr.SockAddr,ptr.SockLen" data-language="nim">proc recvfrom(s: SocketHandle; buf: cstring; len, flags: cint; fromm: ptr SockAddr;
+             fromlen: ptr SockLen): cint {.stdcall, importc: "recvfrom", dynlib: ws2dll.}</pre></dt>  <dt id="select"><pre id="select,cint,ptr.TFdSet,ptr.TFdSet,ptr.TFdSet,ptr.Timeval" data-language="nim">proc select(nfds: cint; readfds, writefds, exceptfds: ptr TFdSet; timeout: ptr Timeval): cint {.
+    stdcall, importc: "select", dynlib: ws2dll.}</pre></dt>  <dt id="send"><pre id="send,SocketHandle,pointer,cint,cint" data-language="nim">proc send(s: SocketHandle; buf: pointer; len, flags: cint): cint {.stdcall,
+    importc: "send", dynlib: ws2dll.}</pre></dt>  <dt id="sendto"><pre id="sendto,SocketHandle,pointer,cint,cint,ptr.SockAddr,SockLen" data-language="nim">proc sendto(s: SocketHandle; buf: pointer; len, flags: cint; to: ptr SockAddr;
+           tolen: SockLen): cint {.stdcall, importc: "sendto", dynlib: ws2dll.}</pre></dt>  <dt id="shutdown"><pre id="shutdown,SocketHandle,cint" data-language="nim">proc shutdown(s: SocketHandle; how: cint): cint {.stdcall, importc: "shutdown",
+    dynlib: ws2dll.}</pre></dt>  <dt id="getnameinfo"><pre id="getnameinfo,ptr.SockAddr,SockLen,cstring,SockLen,cstring,SockLen,cint" data-language="nim">proc getnameinfo(a1: ptr SockAddr; a2: SockLen; a3: cstring; a4: SockLen; a5: cstring;
+                a6: SockLen; a7: cint): cint {.stdcall, importc: "getnameinfo",
+    dynlib: ws2dll.}</pre></dt>  <dt id="inet_addr"><pre id="inet_addr,cstring" data-language="nim">proc inet_addr(cp: cstring): uint32 {.stdcall, importc: "inet_addr", dynlib: ws2dll.}</pre></dt>  <dt id="FD_ISSET"><pre id="FD_ISSET,SocketHandle,TFdSet" data-language="nim">proc FD_ISSET(socket: SocketHandle; set: var TFdSet): cint {.raises: [], tags: [].}</pre></dt>  <dt id="FD_SET"><pre id="FD_SET,SocketHandle,TFdSet" data-language="nim">proc FD_SET(socket: SocketHandle; s: var TFdSet) {.raises: [], tags: [].}</pre></dt>  <dt id="FD_ZERO"><pre id="FD_ZERO,TFdSet" data-language="nim">proc FD_ZERO(s: var TFdSet) {.raises: [], tags: [].}</pre></dt>  <dt id="wsaStartup"><pre id="wsaStartup,int16,ptr.WSAData" data-language="nim">proc wsaStartup(wVersionRequired: int16; WSData: ptr WSAData): cint {.stdcall,
+    importc: "WSAStartup", dynlib: ws2dll.}</pre></dt>  <dt id="getaddrinfo"><pre id="getaddrinfo,cstring,cstring,ptr.AddrInfo,ptr.AddrInfo" data-language="nim">proc getaddrinfo(nodename, servname: cstring; hints: ptr AddrInfo;
+                res: var ptr AddrInfo): cint {.stdcall, importc: "getaddrinfo",
+    dynlib: ws2dll.}</pre></dt>  <dt id="freeaddrinfo"><pre id="freeaddrinfo,ptr.AddrInfo" data-language="nim">proc freeaddrinfo(ai: ptr AddrInfo) {.stdcall, importc: "freeaddrinfo", dynlib: ws2dll.}</pre></dt>  <dt id="inet_ntoa"><pre id="inet_ntoa,InAddr" data-language="nim">proc inet_ntoa(i: InAddr): cstring {.stdcall, importc, dynlib: ws2dll.}</pre></dt>  <dt id="waitForMultipleObjects"><pre id="waitForMultipleObjects,DWORD,PWOHandleArray,WINBOOL,DWORD" data-language="nim">proc waitForMultipleObjects(nCount: DWORD; lpHandles: PWOHandleArray;
+                           bWaitAll: WINBOOL; dwMilliseconds: DWORD): DWORD {.
+    stdcall, dynlib: "kernel32", importc: "WaitForMultipleObjects".}</pre></dt>  <dt id="duplicateHandle"><pre id="duplicateHandle,Handle,Handle,Handle,ptr.Handle,DWORD,WINBOOL,DWORD" data-language="nim">proc duplicateHandle(hSourceProcessHandle: Handle; hSourceHandle: Handle;
+                    hTargetProcessHandle: Handle; lpTargetHandle: ptr Handle;
+                    dwDesiredAccess: DWORD; bInheritHandle: WINBOOL;
+                    dwOptions: DWORD): WINBOOL {.stdcall, dynlib: "kernel32",
+    importc: "DuplicateHandle".}</pre></dt>  <dt id="getCurrentProcess"><pre id="getCurrentProcess," data-language="nim">proc getCurrentProcess(): Handle {.stdcall, dynlib: "kernel32",
+                                importc: "GetCurrentProcess".}</pre></dt>  <dt id="createFileW"><pre id="createFileW,WideCString,DWORD,DWORD,pointer,DWORD,DWORD,Handle" data-language="nim">proc createFileW(lpFileName: WideCString; dwDesiredAccess, dwShareMode: DWORD;
+                lpSecurityAttributes: pointer;
+                dwCreationDisposition, dwFlagsAndAttributes: DWORD;
+                hTemplateFile: Handle): Handle {.stdcall, dynlib: "kernel32",
+    importc: "CreateFileW".}</pre></dt>  <dt id="deleteFileW"><pre id="deleteFileW,WideCString" data-language="nim">proc deleteFileW(pathName: WideCString): int32 {.importc: "DeleteFileW",
+    dynlib: "kernel32", stdcall.}</pre></dt>  <dt id="setEndOfFile"><pre id="setEndOfFile,Handle" data-language="nim">proc setEndOfFile(hFile: Handle): WINBOOL {.stdcall, dynlib: "kernel32",
+                                        importc: "SetEndOfFile".}</pre></dt>  <dt id="setFilePointer"><pre id="setFilePointer,Handle,LONG,ptr.LONG,DWORD" data-language="nim">proc setFilePointer(hFile: Handle; lDistanceToMove: LONG;
+                   lpDistanceToMoveHigh: ptr LONG; dwMoveMethod: DWORD): DWORD {.
+    stdcall, dynlib: "kernel32", importc: "SetFilePointer".}</pre></dt>  <dt id="getFileSize"><pre id="getFileSize,Handle,ptr.DWORD" data-language="nim">proc getFileSize(hFile: Handle; lpFileSizeHigh: ptr DWORD): DWORD {.stdcall,
+    dynlib: "kernel32", importc: "GetFileSize".}</pre></dt>  <dt id="mapViewOfFileEx"><pre id="mapViewOfFileEx,Handle,DWORD,DWORD,DWORD,DWORD,pointer" data-language="nim">proc mapViewOfFileEx(hFileMappingObject: Handle; dwDesiredAccess: DWORD;
+                    dwFileOffsetHigh, dwFileOffsetLow: DWORD;
+                    dwNumberOfBytesToMap: DWORD; lpBaseAddress: pointer): pointer {.
+    stdcall, dynlib: "kernel32", importc: "MapViewOfFileEx".}</pre></dt>  <dt id="createFileMappingW"><pre id="createFileMappingW,Handle,pointer,DWORD,DWORD,DWORD,pointer" data-language="nim">proc createFileMappingW(hFile: Handle; lpFileMappingAttributes: pointer;
+                       flProtect, dwMaximumSizeHigh: DWORD;
+                       dwMaximumSizeLow: DWORD; lpName: pointer): Handle {.stdcall,
+    dynlib: "kernel32", importc: "CreateFileMappingW".}</pre></dt>  <dt id="unmapViewOfFile"><pre id="unmapViewOfFile,pointer" data-language="nim">proc unmapViewOfFile(lpBaseAddress: pointer): WINBOOL {.stdcall, dynlib: "kernel32",
+    importc: "UnmapViewOfFile".}</pre></dt>  <dt id="createIoCompletionPort"><pre id="createIoCompletionPort,Handle,Handle,ULONG_PTR,DWORD" data-language="nim">proc createIoCompletionPort(FileHandle: Handle; ExistingCompletionPort: Handle;
+                           CompletionKey: ULONG_PTR;
+                           NumberOfConcurrentThreads: DWORD): Handle {.stdcall,
+    dynlib: "kernel32", importc: "CreateIoCompletionPort".}</pre></dt>  <dt id="getQueuedCompletionStatus"><pre id="getQueuedCompletionStatus,Handle,PDWORD,PULONG_PTR,ptr.POVERLAPPED,DWORD" data-language="nim">proc getQueuedCompletionStatus(CompletionPort: Handle;
+                              lpNumberOfBytesTransferred: PDWORD;
+                              lpCompletionKey: PULONG_PTR;
+                              lpOverlapped: ptr POVERLAPPED; dwMilliseconds: DWORD): WINBOOL {.
+    stdcall, dynlib: "kernel32", importc: "GetQueuedCompletionStatus".}</pre></dt>  <dt id="getOverlappedResult"><pre id="getOverlappedResult,Handle,POVERLAPPED,DWORD,WINBOOL" data-language="nim">proc getOverlappedResult(hFile: Handle; lpOverlapped: POVERLAPPED;
+                        lpNumberOfBytesTransferred: var DWORD; bWait: WINBOOL): WINBOOL {.
+    stdcall, dynlib: "kernel32", importc: "GetOverlappedResult".}</pre></dt>  <dt id="WSAIoctl"><pre id="WSAIoctl,SocketHandle,DWORD,pointer,DWORD,pointer,DWORD,PDWORD,POVERLAPPED,POVERLAPPED_COMPLETION_ROUTINE" data-language="nim">proc WSAIoctl(s: SocketHandle; dwIoControlCode: DWORD; lpvInBuffer: pointer;
+             cbInBuffer: DWORD; lpvOutBuffer: pointer; cbOutBuffer: DWORD;
+             lpcbBytesReturned: PDWORD; lpOverlapped: POVERLAPPED;
+             lpCompletionRoutine: POVERLAPPED_COMPLETION_ROUTINE): cint {.stdcall,
+    importc: "WSAIoctl", dynlib: "Ws2_32.dll".}</pre></dt>  <dt id="WSARecv"><pre id="WSARecv,SocketHandle,ptr.TWSABuf,DWORD,PDWORD,PDWORD,POVERLAPPED,POVERLAPPED_COMPLETION_ROUTINE" data-language="nim">proc WSARecv(s: SocketHandle; buf: ptr TWSABuf; bufCount: DWORD;
+            bytesReceived, flags: PDWORD; lpOverlapped: POVERLAPPED;
+            completionProc: POVERLAPPED_COMPLETION_ROUTINE): cint {.stdcall,
+    importc: "WSARecv", dynlib: "Ws2_32.dll".}</pre></dt>  <dt id="WSARecvFrom"><pre id="WSARecvFrom,SocketHandle,ptr.TWSABuf,DWORD,PDWORD,PDWORD,ptr.SockAddr,ptr.cint,POVERLAPPED,POVERLAPPED_COMPLETION_ROUTINE" data-language="nim">proc WSARecvFrom(s: SocketHandle; buf: ptr TWSABuf; bufCount: DWORD;
+                bytesReceived: PDWORD; flags: PDWORD; name: ptr SockAddr;
+                namelen: ptr cint; lpOverlapped: POVERLAPPED;
+                completionProc: POVERLAPPED_COMPLETION_ROUTINE): cint {.stdcall,
+    importc: "WSARecvFrom", dynlib: "Ws2_32.dll".}</pre></dt>  <dt id="WSASend"><pre id="WSASend,SocketHandle,ptr.TWSABuf,DWORD,PDWORD,DWORD,POVERLAPPED,POVERLAPPED_COMPLETION_ROUTINE" data-language="nim">proc WSASend(s: SocketHandle; buf: ptr TWSABuf; bufCount: DWORD; bytesSent: PDWORD;
+            flags: DWORD; lpOverlapped: POVERLAPPED;
+            completionProc: POVERLAPPED_COMPLETION_ROUTINE): cint {.stdcall,
+    importc: "WSASend", dynlib: "Ws2_32.dll".}</pre></dt>  <dt id="WSASendTo"><pre id="WSASendTo,SocketHandle,ptr.TWSABuf,DWORD,PDWORD,DWORD,ptr.SockAddr,cint,POVERLAPPED,POVERLAPPED_COMPLETION_ROUTINE" data-language="nim">proc WSASendTo(s: SocketHandle; buf: ptr TWSABuf; bufCount: DWORD; bytesSent: PDWORD;
+              flags: DWORD; name: ptr SockAddr; namelen: cint;
+              lpOverlapped: POVERLAPPED;
+              completionProc: POVERLAPPED_COMPLETION_ROUTINE): cint {.stdcall,
+    importc: "WSASendTo", dynlib: "Ws2_32.dll".}</pre></dt>  <dt id="get_osfhandle"><pre id="get_osfhandle,FileHandle" data-language="nim">proc get_osfhandle(fd: FileHandle): Handle {.importc: "_get_osfhandle",
+    header: "&lt;io.h&gt;".}</pre></dt>  <dt id="getSystemTimes"><pre id="getSystemTimes,FILETIME,FILETIME,FILETIME" data-language="nim">proc getSystemTimes(lpIdleTime, lpKernelTime, lpUserTime: var FILETIME): WINBOOL {.
+    stdcall, dynlib: "kernel32", importc: "GetSystemTimes".}</pre></dt>  <dt id="getProcessTimes"><pre id="getProcessTimes,Handle,FILETIME,FILETIME,FILETIME,FILETIME" data-language="nim">proc getProcessTimes(hProcess: Handle; lpCreationTime, lpExitTime, lpKernelTime,
+                                    lpUserTime: var FILETIME): WINBOOL {.stdcall,
+    dynlib: "kernel32", importc: "GetProcessTimes".}</pre></dt>  <dt id="inet_ntop"><pre id="inet_ntop,cint,pointer,cstring,int32" data-language="nim">proc inet_ntop(family: cint; paddr: pointer; pStringBuffer: cstring;
+              stringBufSize: int32): cstring {.stdcall, raises: [Exception],
+    tags: [RootEffect].}</pre></dt>  <dt id="postQueuedCompletionStatus"><pre id="postQueuedCompletionStatus,Handle,DWORD,ULONG_PTR,pointer" data-language="nim">proc postQueuedCompletionStatus(CompletionPort: Handle;
+                               dwNumberOfBytesTransferred: DWORD;
+                               dwCompletionKey: ULONG_PTR; lpOverlapped: pointer): bool {.
+    stdcall, dynlib: "kernel32", importc: "PostQueuedCompletionStatus".}</pre></dt>  <dt id="registerWaitForSingleObject"><pre id="registerWaitForSingleObject,ptr.Handle,Handle,WAITORTIMERCALLBACK,pointer,ULONG,ULONG" data-language="nim">proc registerWaitForSingleObject(phNewWaitObject: ptr Handle; hObject: Handle;
+                                Callback: WAITORTIMERCALLBACK; Context: pointer;
+                                dwMilliseconds: ULONG; dwFlags: ULONG): bool {.
+    stdcall, dynlib: "kernel32", importc: "RegisterWaitForSingleObject".}</pre></dt>  <dt id="unregisterWait"><pre id="unregisterWait,Handle" data-language="nim">proc unregisterWait(WaitHandle: Handle): DWORD {.stdcall, dynlib: "kernel32",
+    importc: "UnregisterWait".}</pre></dt>  <dt id="openProcess"><pre id="openProcess,DWORD,WINBOOL,DWORD" data-language="nim">proc openProcess(dwDesiredAccess: DWORD; bInheritHandle: WINBOOL; dwProcessId: DWORD): Handle {.
+    stdcall, dynlib: "kernel32", importc: "OpenProcess".}</pre></dt>  <dt id="createEvent"><pre id="createEvent,ptr.SECURITY_ATTRIBUTES,DWORD,DWORD,ptr.Utf16Char" data-language="nim">proc createEvent(lpEventAttributes: ptr SECURITY_ATTRIBUTES; bManualReset: DWORD;
+                bInitialState: DWORD; lpName: ptr Utf16Char): Handle {.stdcall,
+    dynlib: "kernel32", importc: "CreateEventW".}</pre></dt>  <dt id="setEvent"><pre id="setEvent,Handle" data-language="nim">proc setEvent(hEvent: Handle): cint {.stdcall, dynlib: "kernel32", importc: "SetEvent".}</pre></dt>  <dt id="wsaEventSelect"><pre id="wsaEventSelect,SocketHandle,Handle,clong" data-language="nim">proc wsaEventSelect(s: SocketHandle; hEventObject: Handle; lNetworkEvents: clong): cint {.
+    stdcall, importc: "WSAEventSelect", dynlib: "ws2_32.dll".}</pre></dt>  <dt id="wsaCreateEvent"><pre id="wsaCreateEvent," data-language="nim">proc wsaCreateEvent(): Handle {.stdcall, importc: "WSACreateEvent",
+                             dynlib: "ws2_32.dll".}</pre></dt>  <dt id="wsaCloseEvent"><pre id="wsaCloseEvent,Handle" data-language="nim">proc wsaCloseEvent(hEvent: Handle): bool {.stdcall, importc: "WSACloseEvent",
+                                       dynlib: "ws2_32.dll".}</pre></dt>  <dt id="wsaResetEvent"><pre id="wsaResetEvent,Handle" data-language="nim">proc wsaResetEvent(hEvent: Handle): bool {.stdcall, importc: "WSAResetEvent",
+                                       dynlib: "ws2_32.dll".}</pre></dt>  <dt id="readConsoleInput"><pre id="readConsoleInput,Handle,pointer,cint,ptr.cint" data-language="nim">proc readConsoleInput(hConsoleInput: Handle; lpBuffer: pointer; nLength: cint;
+                     lpNumberOfEventsRead: ptr cint): cint {.stdcall,
+    dynlib: "kernel32", importc: "ReadConsoleInputW".}</pre></dt>  <dt id="CreateFiber"><pre id="CreateFiber,int,LPFIBER_START_ROUTINE,pointer" data-language="nim">proc CreateFiber(stackSize: int; fn: LPFIBER_START_ROUTINE; param: pointer): pointer {.
+    stdcall, discardable, dynlib: "kernel32", importc.}</pre></dt>  <dt id="CreateFiberEx"><pre id="CreateFiberEx,int,int,int32,LPFIBER_START_ROUTINE,pointer" data-language="nim">proc CreateFiberEx(stkCommit: int; stkReserve: int; flags: int32;
+                  fn: LPFIBER_START_ROUTINE; param: pointer): pointer {.stdcall,
+    discardable, dynlib: "kernel32", importc.}</pre></dt>  <dt id="ConvertThreadToFiber"><pre id="ConvertThreadToFiber,pointer" data-language="nim">proc ConvertThreadToFiber(param: pointer): pointer {.stdcall, discardable,
+    dynlib: "kernel32", importc.}</pre></dt>  <dt id="ConvertThreadToFiberEx"><pre id="ConvertThreadToFiberEx,pointer,int32" data-language="nim">proc ConvertThreadToFiberEx(param: pointer; flags: int32): pointer {.stdcall,
+    discardable, dynlib: "kernel32", importc.}</pre></dt>  <dt id="DeleteFiber"><pre id="DeleteFiber,pointer" data-language="nim">proc DeleteFiber(fiber: pointer): void {.stdcall, discardable, dynlib: "kernel32",
+                                     importc.}</pre></dt>  <dt id="SwitchToFiber"><pre id="SwitchToFiber,pointer" data-language="nim">proc SwitchToFiber(fiber: pointer): void {.stdcall, discardable, dynlib: "kernel32",
+                                       importc.}</pre></dt>  <dt id="GetCurrentFiber"><pre id="GetCurrentFiber," data-language="nim">proc GetCurrentFiber(): pointer {.stdcall, importc, header: "Windows.h".}</pre></dt>  </dl>  <h2 id="17">Templates</h2> <dl> <dt id="hasOverlappedIoCompleted"><pre id="hasOverlappedIoCompleted.t," data-language="nim">template hasOverlappedIoCompleted(lpOverlapped): bool</pre></dt>  <dt id="WSAIORW"><pre id="WSAIORW.t,," data-language="nim">template WSAIORW(x, y): untyped</pre></dt>  </dl>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2006–2017 Andreas Rumpf<br>Licensed under the MIT License.<br>
+    <a href="https://nim-lang.org/docs/winlean.html" class="_attribution-link" target="_blank">https://nim-lang.org/docs/winlean.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

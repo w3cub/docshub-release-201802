@@ -1,0 +1,115 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Terminal - Nim - W3cubDocs</title>
+  
+  <meta name="description" content="This module contains a few procedures to control the terminal (also called console). On UNIX, the implementation simply uses ANSI escape sequences &hellip;">
+  <meta name="keywords" content="module, terminal, -, nim">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/nim/terminal/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/nim.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/nim/" class="_nav-link" title="" style="margin-left:0;">Nim</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _nim">
+				
+<h1 class="title">Module terminal</h1>  <p class="module-desc">This module contains a few procedures to control the <em>terminal</em> (also called <em>console</em>). On UNIX, the implementation simply uses ANSI escape sequences and does not depend on any other module, on Windows it uses the Windows API. Changing the style is permanent even after program termination! Use the code <code>system.addQuitProc(resetAttributes)</code> to restore the defaults. Similarly, if you hide the cursor, make sure to unhide it with <code>showCursor</code> before quitting.</p>  <h2 id="6">Imports</h2> <dl> <a href="../macros/">macros</a>, <a href="../winlean/">winlean</a>, <a href="../os/">os</a> </dl>  <h2 id="7">Types</h2> <dl> <dt id="Style"><pre id="Style" data-language="nim">Style = enum
+  styleBright = 1,              ## bright text
+  styleDim,                   ## dim text
+  styleUnknown,               ## unknown
+  styleUnderscore = 4,          ## underscored text
+  styleBlink,                 ## blinking/bold text
+  styleReverse = 7,             ## unknown
+  styleHidden                 ## hidden text</pre></dt> <dd> different styles for text output   </dd> <dt id="ForegroundColor"><pre id="ForegroundColor" data-language="nim">ForegroundColor = enum
+  fgBlack = 30,                 ## black
+  fgRed,                      ## red
+  fgGreen,                    ## green
+  fgYellow,                   ## yellow
+  fgBlue,                     ## blue
+  fgMagenta,                  ## magenta
+  fgCyan,                     ## cyan
+  fgWhite                     ## white</pre></dt> <dd> terminal's foreground colors   </dd> <dt id="BackgroundColor"><pre id="BackgroundColor" data-language="nim">BackgroundColor = enum
+  bgBlack = 40,                 ## black
+  bgRed,                      ## red
+  bgGreen,                    ## green
+  bgYellow,                   ## yellow
+  bgBlue,                     ## blue
+  bgMagenta,                  ## magenta
+  bgCyan,                     ## cyan
+  bgWhite                     ## white</pre></dt> <dd> terminal's background colors   </dd> <dt id="TerminalCmd"><pre id="TerminalCmd" data-language="nim">TerminalCmd = enum
+  resetStyle                  ## reset attributes</pre></dt> <dd> commands that can be expressed as arguments   </dd> </dl>  <h2 id="12">Procs</h2> <dl> <dt id="terminalWidthIoctl"><pre id="terminalWidthIoctl,openArray[Handle]" data-language="nim">proc terminalWidthIoctl(handles: openArray[Handle]): int {.raises: [], tags: [].}</pre></dt>  <dt id="terminalHeightIoctl"><pre id="terminalHeightIoctl,openArray[Handle]" data-language="nim">proc terminalHeightIoctl(handles: openArray[Handle]): int {.raises: [], tags: [].}</pre></dt>  <dt id="terminalWidth"><pre id="terminalWidth," data-language="nim">proc terminalWidth(): int {.raises: [], tags: [].}</pre></dt>  <dt id="terminalHeight"><pre id="terminalHeight," data-language="nim">proc terminalHeight(): int {.raises: [], tags: [].}</pre></dt>  <dt id="terminalSize"><pre id="terminalSize," data-language="nim">proc terminalSize(): tuple[w, h: int] {.raises: [], tags: [].}</pre></dt> <dd> Returns the terminal width and height as a tuple. Internally calls <em>terminalWidth</em> and <em>terminalHeight</em>, so the same assumptions apply.   </dd> <dt id="hideCursor"><pre id="hideCursor,File" data-language="nim">proc hideCursor(f: File) {.raises: [OSError], tags: [].}</pre></dt> <dd> Hides the cursor.   </dd> <dt id="showCursor"><pre id="showCursor,File" data-language="nim">proc showCursor(f: File) {.raises: [OSError], tags: [].}</pre></dt> <dd> Shows the cursor.   </dd> <dt id="setCursorPos"><pre id="setCursorPos,File,int,int" data-language="nim">proc setCursorPos(f: File; x, y: int) {.raises: [OSError], tags: [].}</pre></dt> <dd> Sets the terminal's cursor to the (x,y) position. (0,0) is the upper left of the screen.   </dd> <dt id="setCursorXPos"><pre id="setCursorXPos,File,int" data-language="nim">proc setCursorXPos(f: File; x: int) {.raises: [OSError], tags: [].}</pre></dt> <dd> Sets the terminal's cursor to the x position. The y position is not changed.   </dd> <dt id="setCursorYPos"><pre id="setCursorYPos,File,int" data-language="nim">proc setCursorYPos(f: File; y: int) {.raises: [OSError], tags: [].}</pre></dt> <dd> Sets the terminal's cursor to the y position. The x position is not changed. <strong>Warning</strong>: This is not supported on UNIX!   </dd> <dt id="cursorUp"><pre id="cursorUp,File,int" data-language="nim">proc cursorUp(f: File; count = 1) {.raises: [OSError], tags: [].}</pre></dt> <dd> Moves the cursor up by <em>count</em> rows.   </dd> <dt id="cursorDown"><pre id="cursorDown,File,int" data-language="nim">proc cursorDown(f: File; count = 1) {.raises: [OSError], tags: [].}</pre></dt> <dd> Moves the cursor down by <em>count</em> rows.   </dd> <dt id="cursorForward"><pre id="cursorForward,File,int" data-language="nim">proc cursorForward(f: File; count = 1) {.raises: [OSError], tags: [].}</pre></dt> <dd> Moves the cursor forward by <em>count</em> columns.   </dd> <dt id="cursorBackward"><pre id="cursorBackward,File,int" data-language="nim">proc cursorBackward(f: File; count = 1) {.raises: [OSError], tags: [].}</pre></dt> <dd> Moves the cursor backward by <em>count</em> columns.   </dd> <dt id="eraseLine"><pre id="eraseLine,File" data-language="nim">proc eraseLine(f: File) {.raises: [OSError], tags: [].}</pre></dt> <dd> Erases the entire current line.   </dd> <dt id="eraseScreen"><pre id="eraseScreen,File" data-language="nim">proc eraseScreen(f: File) {.raises: [OSError], tags: [].}</pre></dt> <dd> Erases the screen with the background colour and moves the cursor to home.   </dd> <dt id="resetAttributes"><pre id="resetAttributes,File" data-language="nim">proc resetAttributes(f: File) {.raises: [], tags: [].}</pre></dt> <dd> Resets all attributes.   </dd> <dt id="setStyle"><pre id="setStyle,File,set[Style]" data-language="nim">proc setStyle(f: File; style: set[Style]) {.raises: [], tags: [].}</pre></dt> <dd> Sets the terminal style.   </dd> <dt id="writeStyled"><pre id="writeStyled,string,set[Style]" data-language="nim">proc writeStyled(txt: string; style: set[Style] = {styleBright}) {.raises: [IOError],
+    tags: [WriteIOEffect].}</pre></dt> <dd> Writes the text <em>txt</em> in a given <em>style</em> to stdout.   </dd> <dt id="setForegroundColor"><pre id="setForegroundColor,File,ForegroundColor" data-language="nim">proc setForegroundColor(f: File; fg: ForegroundColor; bright = false) {.raises: [],
+    tags: [].}</pre></dt> <dd> Sets the terminal's foreground color.   </dd> <dt id="setBackgroundColor"><pre id="setBackgroundColor,File,BackgroundColor" data-language="nim">proc setBackgroundColor(f: File; bg: BackgroundColor; bright = false) {.raises: [],
+    tags: [].}</pre></dt> <dd> Sets the terminal's background color.   </dd> <dt id="isatty"><pre id="isatty,File" data-language="nim">proc isatty(f: File): bool {.raises: [], tags: [].}</pre></dt> <dd> Returns true if <em>f</em> is associated with a terminal device.   </dd> <dt id="getch"><pre id="getch," data-language="nim">proc getch(): char {.raises: [AssertionError], tags: [].}</pre></dt> <dd> Read a single character from the terminal, blocking until it is entered. The character is not printed to the terminal.   </dd> <dt id="resetAttributes"><pre id="resetAttributes," data-language="nim">proc resetAttributes() {.noconv, raises: [], tags: [].}</pre></dt> <dd> Resets all attributes on stdout. It is advisable to register this as a quit proc with <code>system.addQuitProc(resetAttributes)</code>.   </dd> </dl>  <h2 id="16">Macros</h2> <dl> <dt id="styledWriteLine"><pre id="styledWriteLine.m,File,varargs[typed]" data-language="nim">macro styledWriteLine(f: File; m: varargs[typed]): untyped</pre></dt> <dd> <p>Similar to <code>writeLine</code>, but treating terminal style arguments specially. When some argument is <code>Style</code>, <code>set[Style]</code>, <code>ForegroundColor</code>, <code>BackgroundColor</code> or <code>TerminalCmd</code> then it is not sent directly to <code>f</code>, but instead corresponding terminal style proc is called.</p> <p>Example:</p> <pre class="listing" data-language="nim">proc error(msg: string) =
+  styledWriteLine(stderr, fgRed, "Error: ", resetStyle, msg)</pre>   </dd> <dt id="styledEcho"><pre id="styledEcho.m,varargs[untyped]" data-language="nim">macro styledEcho(args: varargs[untyped]): untyped</pre></dt> <dd> Echoes styles arguments to stdout using <code>styledWriteLine</code>.   </dd> </dl>  <h2 id="17">Templates</h2> <dl> <dt id="hideCursor"><pre id="hideCursor.t," data-language="nim">template hideCursor()</pre></dt>  <dt id="showCursor"><pre id="showCursor.t," data-language="nim">template showCursor()</pre></dt>  <dt id="setCursorPos"><pre id="setCursorPos.t,int,int" data-language="nim">template setCursorPos(x, y: int)</pre></dt>  <dt id="setCursorXPos"><pre id="setCursorXPos.t,int" data-language="nim">template setCursorXPos(x: int)</pre></dt>  <dt id="cursorUp"><pre id="cursorUp.t,int" data-language="nim">template cursorUp(count = 1)</pre></dt>  <dt id="cursorDown"><pre id="cursorDown.t,int" data-language="nim">template cursorDown(count = 1)</pre></dt>  <dt id="cursorForward"><pre id="cursorForward.t,int" data-language="nim">template cursorForward(count = 1)</pre></dt>  <dt id="cursorBackward"><pre id="cursorBackward.t,int" data-language="nim">template cursorBackward(count = 1)</pre></dt>  <dt id="eraseLine"><pre id="eraseLine.t," data-language="nim">template eraseLine()</pre></dt>  <dt id="eraseScreen"><pre id="eraseScreen.t," data-language="nim">template eraseScreen()</pre></dt>  <dt id="setStyle"><pre id="setStyle.t,set[Style]" data-language="nim">template setStyle(style: set[Style])</pre></dt>  <dt id="setForegroundColor"><pre id="setForegroundColor.t,ForegroundColor" data-language="nim">template setForegroundColor(fg: ForegroundColor; bright = false)</pre></dt>  <dt id="setBackgroundColor"><pre id="setBackgroundColor.t,BackgroundColor" data-language="nim">template setBackgroundColor(bg: BackgroundColor; bright = false)</pre></dt>  </dl>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2006–2017 Andreas Rumpf<br>Licensed under the MIT License.<br>
+    <a href="https://nim-lang.org/docs/terminal.html" class="_attribution-link" target="_blank">https://nim-lang.org/docs/terminal.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

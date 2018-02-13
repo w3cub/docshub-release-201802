@@ -1,0 +1,199 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Nre - Nim - W3cubDocs</title>
+  
+  <meta name="description" content=" A regular expression library for Nim using PCRE to do the hard work. ">
+  <meta name="keywords" content="module, nre, -, nim">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/nim/nre/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/nim.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/nim/" class="_nav-link" title="" style="margin-left:0;">Nim</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _nim">
+				
+<h1 class="title">Module nre</h1>  
+<h2 id="what-is-nre">What is NRE?</h2>
+<p>A regular expression library for Nim using PCRE to do the hard work.</p> <p><strong>Note</strong>: If you love <code>sequtils.toSeq</code> we have bad news for you. This library doesn't work with it due to documented compiler limitations. As a workaround, use this:</p> <pre class="listing">import nre except toSeq</pre> <h3 id="what-is-nre-licencing">Licencing</h3>
+<p>PCRE has <a href="http://pcre.sourceforge.net/license.txt" target="_blank">some additional terms</a> that you must agree to in order to use this module.</p> <h3 id="what-is-nre-example">Example</h3>
+<pre class="listing" data-language="nim">import nre
+
+let vowels = re"[aeoui]"
+
+for match in "moigagoo".findIter(vowels):
+  echo match.matchBounds
+# (a: 1, b: 1)
+# (a: 2, b: 2)
+# (a: 4, b: 4)
+# (a: 6, b: 6)
+# (a: 7, b: 7)
+
+let firstVowel = "foo".find(vowels)
+let hasVowel = firstVowel.isSome()
+if hasVowel:
+  let matchBounds = firstVowel.get().captureBounds[-1]
+  echo "first vowel @", matchBounds.get().a
+  # first vowel @1</pre>  <h2 id="6">Imports</h2> <dl> <a href="../pcre/">pcre</a>, <a href="../nre/private/util/">nre/private/util</a>, <a href="../tables/">tables</a>, <a href="../strutils/">strutils</a>, <a href="../math/">math</a>, <a href="../options/">options</a>, <a href="../unicode/">unicode</a> </dl>  <h2 id="7">Types</h2> <dl> <dt id="Regex"><pre id="Regex" data-language="nim">Regex = ref object
+  pattern*: string             ## not nil
+  pcreObj: ptr pcre.Pcre        ## not nil
+  pcreExtra: ptr pcre.ExtraData ## nil
+  captureNameToId: Table[string, int]</pre></dt> <dd> Represents the pattern that things are matched against, constructed with <code>re(string)</code>. Examples: <code>re"foo"</code>, <code>re(r"(*ANYCRLF)(?x)foo # comment".</code><dl>
+<dt><code>pattern: string</code></dt> <dd>the string that was used to create the pattern.</dd> <dt><code>captureCount: int</code></dt> <dd>the number of captures that the pattern has.</dd> <dt><code>captureNameId: Table[string, int]</code></dt> <dd>a table from the capture names to their numeric id.</dd> </dl> <h2 id="options">Options</h2>
+<p>The following options may appear anywhere in the pattern, and they affect the rest of it.</p> <ul class="simple">
+<li>
+<code>(?i)</code> - case insensitive</li> <li>
+<code>(?m)</code> - multi-line: <code>^</code> and <code>$</code> match the beginning and end of lines, not of the subject string</li> <li>
+<code>(?s)</code> - <code>.</code> also matches newline (<em>dotall</em>)</li> <li>
+<code>(?U)</code> - expressions are not greedy by default. <code>?</code> can be added to a qualifier to make it greedy</li> <li>
+<code>(?x)</code> - whitespace and comments (<code>#</code>) are ignored (<em>extended</em>)</li> <li>
+<code>(?X)</code> - character escapes without special meaning (<code>\w</code> vs. <code>\a</code>) are errors (<em>extra</em>)</li> </ul> <p>One or a combination of these options may appear only at the beginning of the pattern:</p> <ul class="simple">
+<li>
+<code>(*UTF8)</code> - treat both the pattern and subject as UTF-8</li> <li>
+<code>(*UCP)</code> - Unicode character properties; <code>\w</code> matches <code>я</code>
+</li> <li>
+<code>(*U)</code> - a combination of the two options above</li> <li>
+<code>(*FIRSTLINE*)</code> - fails if there is not a match on the first line</li> <li>
+<code>(*NO_AUTO_CAPTURE)</code> - turn off auto-capture for groups; <code>(?&lt;name&gt;...)</code> can be used to capture</li> <li>
+<code>(*CR)</code> - newlines are separated by <code>\r</code>
+</li> <li>
+<code>(*LF)</code> - newlines are separated by <code>\n</code> (UNIX default)</li> <li>
+<code>(*CRLF)</code> - newlines are separated by <code>\r\n</code> (Windows default)</li> <li>
+<code>(*ANYCRLF)</code> - newlines are separated by any of the above</li> <li>
+<code>(*ANY)</code> - newlines are separated by any of the above and Unicode newlines:<blockquote><p>single characters VT (vertical tab, U+000B), FF (form feed, U+000C), NEL (next line, U+0085), LS (line separator, U+2028), and PS (paragraph separator, U+2029). For the 8-bit library, the last two are recognized only in UTF-8 mode. — man pcre</p></blockquote> </li> <li>
+<code>(*JAVASCRIPT_COMPAT)</code> - JavaScript compatibility</li> <li>
+<code>(*NO_STUDY)</code> - turn off studying; study is enabled by default</li> </ul> <p>For more details on the leading option groups, see the <a href="http://man7.org/linux/man-pages/man3/pcresyntax.3.html#OPTION_SETTING" target="_blank">Option Setting</a> and the <a href="http://man7.org/linux/man-pages/man3/pcresyntax.3.html#NEWLINE_CONVENTION" target="_blank">Newline Convention</a> sections of the <a href="http://man7.org/linux/man-pages/man3/pcresyntax.3.html" target="_blank">PCRE syntax manual</a>.</p>   </dd> <dt id="RegexMatch"><pre id="RegexMatch" data-language="nim">RegexMatch = object
+  pattern*: Regex              ## The regex doing the matching.
+                ## Not nil.
+  str*: string                 ## The string that was matched against.
+             ## Not nil.
+  pcreMatchBounds: seq[Slice[cint]] ## First item is the bounds of the match
+                                  ## Other items are the captures
+                                  ## `a` is inclusive start, `b` is exclusive end</pre></dt> <dd> Usually seen as Option[RegexMatch], it represents the result of an execution. On failure, it is none, on success, it is some.<dl>
+<dt><code>pattern: Regex</code></dt> <dd>the pattern that is being matched</dd> <dt><code>str: string</code></dt> <dd>the string that was matched against</dd> <dt><code>captures[]: string</code></dt> <dd>the string value of whatever was captured at that id. If the value is invalid, then behavior is undefined. If the id is <code>-1</code>, then the whole match is returned. If the given capture was not matched, <code>nil</code> is returned.<ul class="simple">
+<li><code>"abc".match(re"(\w)").captures[0] == "a"</code></li> <li><code>"abc".match(re"(?&lt;letter&gt;\w)").captures["letter"] == "a"</code></li> <li><code>"abc".match(re"(\w)\w").captures[-1] == "ab"</code></li> </ul> </dd> <dt><code>captureBounds[]: Option[Slice[int]]</code></dt> <dd>gets the bounds of the given capture according to the same rules as the above. If the capture is not filled, then <code>None</code> is returned. The bounds are both inclusive.<ul class="simple">
+<li><code>"abc".match(re"(\w)").captureBounds[0] == 0 .. 0</code></li> <li><code>"abc".match(re"").captureBounds[-1] == 0 .. -1</code></li> <li><code>"abc".match(re"abc").captureBounds[-1] == 0 .. 2</code></li> </ul> </dd> <dt><code>match: string</code></dt> <dd>the full text of the match.</dd> <dt><code>matchBounds: Slice[int]</code></dt> <dd>the bounds of the match, as in <code>captureBounds[]</code>
+</dd> <dt><code>(captureBounds|captures).toTable</code></dt> <dd>returns a table with each named capture as a key.</dd> <dt><code>(captureBounds|captures).toSeq</code></dt> <dd>returns all the captures by their number.</dd> <dt><code>$: string</code></dt> <dd>same as <code>match</code>
+</dd> </dl>   </dd> <dt id="Captures"><pre id="Captures">Captures = distinct RegexMatch</pre></dt>  <dt id="CaptureBounds"><pre id="CaptureBounds">CaptureBounds = distinct RegexMatch</pre></dt>  <dt id="RegexError"><pre id="RegexError">RegexError = ref object of Exception</pre></dt>  <dt id="RegexInternalError"><pre id="RegexInternalError">RegexInternalError = ref object of RegexError</pre></dt> <dd> Internal error in the module, this probably means that there is a bug   </dd> <dt id="InvalidUnicodeError"><pre id="InvalidUnicodeError" data-language="nim">InvalidUnicodeError = ref object of RegexError
+  pos*: int                    ## the location of the invalid unicode in bytes</pre></dt> <dd> Thrown when matching fails due to invalid unicode in strings   </dd> <dt id="SyntaxError"><pre id="SyntaxError" data-language="nim">SyntaxError = ref object of RegexError
+  pos*: int                    ## the location of the syntax error in bytes
+  pattern*: string             ## the pattern that caused the problem</pre></dt> <dd> Thrown when there is a syntax error in the regular expression string passed in   </dd> <dt id="StudyError"><pre id="StudyError">StudyError = ref object of RegexError</pre></dt> <dd> Thrown when studying the regular expression failes for whatever reason. The message contains the error code.   </dd> </dl>  <h2 id="12">Procs</h2> <dl> <dt id="captureCount"><pre id="captureCount,Regex" data-language="nim">proc captureCount(pattern: Regex): int {.raises: [FieldError, ValueError], tags: [].}</pre></dt>  <dt id="captureNameId"><pre id="captureNameId,Regex" data-language="nim">proc captureNameId(pattern: Regex): Table[string, int] {.raises: [], tags: [].}</pre></dt>  <dt id="captureBounds"><pre id="captureBounds,RegexMatch" data-language="nim">proc captureBounds(pattern: RegexMatch): CaptureBounds {.raises: [], tags: [].}</pre></dt>  <dt id="captures"><pre id="captures,RegexMatch" data-language="nim">proc captures(pattern: RegexMatch): Captures {.raises: [], tags: [].}</pre></dt>  <dt id="[]"><pre id="[],CaptureBounds,int" data-language="nim">proc `[]`(pattern: CaptureBounds; i: int): Option[Slice[int]] {.raises: [], tags: [].}</pre></dt>  <dt id="[]"><pre id="[],Captures,int" data-language="nim">proc `[]`(pattern: Captures; i: int): string {.raises: [UnpackError], tags: [].}</pre></dt>  <dt id="match"><pre id="match,RegexMatch" data-language="nim">proc match(pattern: RegexMatch): string {.raises: [UnpackError], tags: [].}</pre></dt>  <dt id="matchBounds"><pre id="matchBounds,RegexMatch" data-language="nim">proc matchBounds(pattern: RegexMatch): Slice[int] {.raises: [UnpackError], tags: [].}</pre></dt>  <dt id="[]"><pre id="[],CaptureBounds,string" data-language="nim">proc `[]`(pattern: CaptureBounds; name: string): Option[Slice[int]] {.
+    raises: [KeyError], tags: [].}</pre></dt>  <dt id="[]"><pre id="[],Captures,string" data-language="nim">proc `[]`(pattern: Captures; name: string): string {.raises: [UnpackError, KeyError],
+    tags: [].}</pre></dt>  <dt id="toTable"><pre id="toTable,Captures,string" data-language="nim">proc toTable(pattern: Captures; default: string = nil): Table[string, string] {.
+    raises: [UnpackError, KeyError], tags: [].}</pre></dt>  <dt id="toTable"><pre id="toTable,CaptureBounds" data-language="nim">proc toTable(pattern: CaptureBounds; default = none(Slice[int])): Table[string,
+    Option[Slice[int]]] {.raises: [KeyError], tags: [].}</pre></dt>  <dt id="toSeq"><pre id="toSeq,CaptureBounds" data-language="nim">proc toSeq(pattern: CaptureBounds; default = none(Slice[int])): seq[Option[Slice[int]]] {.
+    raises: [FieldError, ValueError], tags: [].}</pre></dt>  <dt id="toSeq"><pre id="toSeq,Captures,string" data-language="nim">proc toSeq(pattern: Captures; default: string = nil): seq[string] {.
+    raises: [FieldError, ValueError, UnpackError], tags: [].}</pre></dt>  <dt id="$"><pre id="$,RegexMatch" data-language="nim">proc `$`(pattern: RegexMatch): string {.raises: [UnpackError], tags: [].}</pre></dt>  <dt id="=="><pre id="==,Regex,Regex" data-language="nim">proc `==`(a, b: Regex): bool {.raises: [], tags: [].}</pre></dt>  <dt id="=="><pre id="==,RegexMatch,RegexMatch" data-language="nim">proc `==`(a, b: RegexMatch): bool {.raises: [], tags: [].}</pre></dt>  <dt id="re"><pre id="re,string" data-language="nim">proc re(pattern: string): Regex {.raises: [KeyError, SyntaxError, StudyError,
+                                      FieldError, ValueError], tags: [].}</pre></dt>  <dt id="match"><pre id="match,string,Regex,int" data-language="nim">proc match(str: string; pattern: Regex; start = 0; endpos = int.high): Option[RegexMatch] {.raises: [
+    FieldError, ValueError, AssertionError, AccessViolationError,
+    RegexInternalError, InvalidUnicodeError], tags: [].}</pre></dt> <dd> Like ```find(...)`` &lt;#proc-find&gt;`_, but anchored to the start of the string. This means that <code>"foo".match(re"f") == true</code>, but <code>"foo".match(re"o") == false</code>.   </dd> <dt id="find"><pre id="find,string,Regex,int" data-language="nim">proc find(str: string; pattern: Regex; start = 0; endpos = int.high): Option[RegexMatch] {.raises: [
+    FieldError, ValueError, AssertionError, AccessViolationError,
+    RegexInternalError, InvalidUnicodeError], tags: [].}</pre></dt> <dd> Finds the given pattern in the string between the end and start positions.<dl>
+<dt><code>start</code></dt> <dd>The start point at which to start matching. <code>|abc</code> is <code>0</code>; <code>a|bc</code> is <code>1</code>
+</dd> <dt><code>endpos</code></dt> <dd>The maximum index for a match; <code>int.high</code> means the end of the string, otherwise it’s an inclusive upper bound.</dd> </dl>   </dd> <dt id="findAll"><pre id="findAll,string,Regex,int" data-language="nim">proc findAll(str: string; pattern: Regex; start = 0; endpos = int.high): seq[string] {.raises: [
+    FieldError, ValueError, UnpackError, AssertionError, AccessViolationError,
+    RegexInternalError, InvalidUnicodeError], tags: [].}</pre></dt>  <dt id="contains"><pre id="contains,string,Regex,int" data-language="nim">proc contains(str: string; pattern: Regex; start = 0; endpos = int.high): bool {.raises: [
+    FieldError, ValueError, AssertionError, AccessViolationError,
+    RegexInternalError, InvalidUnicodeError], tags: [].}</pre></dt> <dd> Determine if the string contains the given pattern between the end and start positions:<ul class="simple">
+<li>"abc".contains(re"bc") == true</li> <li>"abc".contains(re"cd") == false</li> <li>"abc".contains(re"a", start = 1) == false</li> </ul> <p>Same as <code>isSome(str.find(pattern, start, endpos))</code>.</p>   </dd> <dt id="split"><pre id="split,string,Regex,int" data-language="nim">proc split(str: string; pattern: Regex; maxSplit = - 1; start = 0): seq[string] {.raises: [
+    FieldError, ValueError, UnpackError, AssertionError, AccessViolationError,
+    RegexInternalError, InvalidUnicodeError], tags: [].}</pre></dt> <dd> Splits the string with the given regex. This works according to the rules that Perl and Javascript use:<ul class="simple">
+<li>If the match is zero-width, then the string is still split: <code>"123".split(r"") == @["1", "2", "3"]</code>.</li> <li>If the pattern has a capture in it, it is added after the string split: <code>"12".split(re"(\d)") == @["", "1", "", "2", ""]</code>.</li> <li>If <code>maxsplit != -1</code>, then the string will only be split <code>maxsplit - 1</code> times. This means that there will be <code>maxsplit</code> strings in the output seq. <code>"1.2.3".split(re"\.", maxsplit = 2) == @["1", "2.3"]</code>
+</li> </ul> <p><code>start</code> behaves the same as in ```find(...)`` &lt;#proc-find&gt;`_.</p>   </dd> <dt id="replace"><pre id="replace,string,Regex,proc(RegexMatch)" data-language="nim">proc replace(str: string; pattern: Regex; subproc: proc (match: RegexMatch): string): string {.raises: [
+    FieldError, ValueError, UnpackError, AssertionError, AccessViolationError,
+    RegexInternalError, InvalidUnicodeError], tags: [].}</pre></dt> <dd> <p>Replaces each match of Regex in the string with <code>sub</code>, which should never be or return <code>nil</code>.</p> <p>If <code>sub</code> is a <code>proc (RegexMatch): string</code>, then it is executed with each match and the return value is the replacement value.</p> <p>If <code>sub</code> is a <code>proc (string): string</code>, then it is executed with the full text of the match and and the return value is the replacement value.</p> <p>If <code>sub</code> is a string, the syntax is as follows:</p> <ul class="simple">
+<li>
+<code>$$</code> - literal <code>$</code>
+</li> <li>
+<code>$123</code> - capture number <code>123</code>
+</li> <li>
+<code>$foo</code> - named capture <code>foo</code>
+</li> <li>
+<code>${foo}</code> - same as above</li> <li>
+<code>$1$#</code> - first and second captures</li> <li>
+<code>$#</code> - first capture</li> <li>
+<code>$0</code> - full match</li> </ul> <p>If a given capture is missing, a <code>ValueError</code> exception is thrown.</p>   </dd> <dt id="replace"><pre id="replace,string,Regex,proc(string)" data-language="nim">proc replace(str: string; pattern: Regex; subproc: proc (match: string): string): string {.raises: [
+    FieldError, ValueError, UnpackError, AssertionError, AccessViolationError,
+    RegexInternalError, InvalidUnicodeError], tags: [].}</pre></dt>  <dt id="replace"><pre id="replace,string,Regex,string" data-language="nim">proc replace(str: string; pattern: Regex; sub: string): string {.raises: [FieldError,
+    ValueError, UnpackError, AssertionError, AccessViolationError,
+    RegexInternalError, InvalidUnicodeError, KeyError, Exception], tags: [].}</pre></dt>  <dt id="escapeRe"><pre id="escapeRe,string" data-language="nim">proc escapeRe(str: string): string {.raises: [FieldError, ValueError, UnpackError,
+    AssertionError, AccessViolationError, RegexInternalError, InvalidUnicodeError,
+    KeyError, Exception], tags: [].}</pre></dt> <dd> Escapes the string so it doesn’t match any special characters. Incompatible with the Extra flag (<code>X</code>).   </dd> </dl>  <h2 id="14">Iterators</h2> <dl> <dt id="items"><pre id="items.i,CaptureBounds" data-language="nim">iterator items(pattern: CaptureBounds; default = none(Slice[int])): Option[Slice[int]] {.
+    raises: [FieldError, ValueError], tags: [].}</pre></dt>  <dt id="items"><pre id="items.i,Captures,string" data-language="nim">iterator items(pattern: Captures; default: string = nil): string {.
+    raises: [FieldError, ValueError, UnpackError], tags: [].}</pre></dt>  <dt id="findIter"><pre id="findIter.i,string,Regex,int" data-language="nim">iterator findIter(str: string; pattern: Regex; start = 0; endpos = int.high): RegexMatch {.raises: [
+    FieldError, ValueError, UnpackError, AssertionError, AccessViolationError,
+    RegexInternalError, InvalidUnicodeError], tags: [].}</pre></dt> <dd> <p>Works the same as ```find(...)`` &lt;#proc-find&gt;`_, but finds every non-overlapping match. <code>"2222".find(re"22")</code> is <code>"22", "22"</code>, not <code>"22", "22", "22"</code>.</p> <p>Arguments are the same as ```find(...)`` &lt;#proc-find&gt;`_</p> <p>Variants:</p> <ul class="simple">
+<li>
+<code>proc findAll(...)</code> returns a <code>seq[string]</code>
+</li> </ul>   </dd> </dl>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2006–2017 Andreas Rumpf<br>Licensed under the MIT License.<br>
+    <a href="https://nim-lang.org/docs/nre.html" class="_attribution-link" target="_blank">https://nim-lang.org/docs/nre.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

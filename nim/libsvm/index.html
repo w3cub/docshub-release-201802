@@ -1,0 +1,138 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Libsvm - Nim - W3cubDocs</title>
+  
+  <meta name="description" content=" This module is a low level wrapper for libsvm. ">
+  <meta name="keywords" content="module, libsvm, -, nim">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/nim/libsvm/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/nim.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/nim/" class="_nav-link" title="" style="margin-left:0;">Nim</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _nim">
+				
+<h1 class="title">Module libsvm</h1>  <p class="module-desc">This module is a low level wrapper for <span id="libsvm_1">libsvm</span>.</p>  <h2 id="7">Types</h2> <dl> <dt id="Node"><pre id="Node" data-language="nim">Node = object
+  index*: cint
+  value*: cdouble</pre></dt>  <dt id="Problem"><pre id="Problem" data-language="nim">Problem = object
+  L*: cint
+  y*: ptr cdouble
+  x*: ptr ptr Node</pre></dt>  <dt id="Type"><pre id="Type" data-language="nim">Type = enum
+  C_SVC, NU_SVC, ONE_CLASS, EPSILON_SVR, NU_SVR</pre></dt>  <dt id="KernelType"><pre id="KernelType" data-language="nim">KernelType = enum
+  LINEAR, POLY, RBF, SIGMOID, PRECOMPUTED</pre></dt>  <dt id="Parameter"><pre id="Parameter" data-language="nim">Parameter = object
+  typ*: Type
+  kernelType*: KernelType
+  degree*: cint
+  gamma*: cdouble
+  coef0*: cdouble
+  cache_size*: cdouble
+  eps*: cdouble
+  C*: cdouble
+  nr_weight*: cint
+  weight_label*: ptr cint
+  weight*: ptr cdouble
+  nu*: cdouble
+  p*: cdouble
+  shrinking*: cint
+  probability*: cint</pre></dt>  <dt id="Model"><pre id="Model" data-language="nim">Model = object
+  param*: Parameter
+  nr_class*: cint
+  L*: cint
+  SV*: ptr ptr Node
+  sv_coef*: ptr ptr cdouble
+  rho*: ptr cdouble
+  probA*: ptr cdouble
+  probB*: ptr cdouble
+  label*: ptr cint
+  nSV*: ptr cint
+  free_sv*: cint</pre></dt>  </dl>  <h2 id="10">Consts</h2> <dl> <dt id="LIBSVM_VERSION"><pre id="LIBSVM_VERSION">LIBSVM_VERSION = 312</pre></dt>  <dt id="svmdll"><pre id="svmdll" data-language="nim">svmdll = "libsvm.dll"</pre></dt>  </dl>  <h2 id="12">Procs</h2> <dl> <dt id="train"><pre id="train,ptr.Problem,ptr.Parameter" data-language="nim">proc train(prob: ptr Problem; param: ptr Parameter): ptr Model {.cdecl,
+    importc: "svm_train", dynlib: svmdll.}</pre></dt>  <dt id="cross_validation"><pre id="cross_validation,ptr.Problem,ptr.Parameter,cint,ptr.cdouble" data-language="nim">proc cross_validation(prob: ptr Problem; param: ptr Parameter; nr_fold: cint;
+                     target: ptr cdouble) {.cdecl, importc: "svm_cross_validation",
+    dynlib: svmdll.}</pre></dt>  <dt id="save_model"><pre id="save_model,cstring,ptr.Model" data-language="nim">proc save_model(model_file_name: cstring; model: ptr Model): cint {.cdecl,
+    importc: "svm_save_model", dynlib: svmdll.}</pre></dt>  <dt id="load_model"><pre id="load_model,cstring" data-language="nim">proc load_model(model_file_name: cstring): ptr Model {.cdecl,
+    importc: "svm_load_model", dynlib: svmdll.}</pre></dt>  <dt id="get_svm_type"><pre id="get_svm_type,ptr.Model" data-language="nim">proc get_svm_type(model: ptr Model): cint {.cdecl, importc: "svm_get_svm_type",
+                                       dynlib: svmdll.}</pre></dt>  <dt id="get_nr_class"><pre id="get_nr_class,ptr.Model" data-language="nim">proc get_nr_class(model: ptr Model): cint {.cdecl, importc: "svm_get_nr_class",
+                                       dynlib: svmdll.}</pre></dt>  <dt id="get_labels"><pre id="get_labels,ptr.Model,ptr.cint" data-language="nim">proc get_labels(model: ptr Model; label: ptr cint) {.cdecl, importc: "svm_get_labels",
+    dynlib: svmdll.}</pre></dt>  <dt id="get_svr_probability"><pre id="get_svr_probability,ptr.Model" data-language="nim">proc get_svr_probability(model: ptr Model): cdouble {.cdecl,
+    importc: "svm_get_svr_probability", dynlib: svmdll.}</pre></dt>  <dt id="predict_values"><pre id="predict_values,ptr.Model,ptr.Node,ptr.cdouble" data-language="nim">proc predict_values(model: ptr Model; x: ptr Node; dec_values: ptr cdouble): cdouble {.
+    cdecl, importc: "svm_predict_values", dynlib: svmdll.}</pre></dt>  <dt id="predict"><pre id="predict,ptr.Model,ptr.Node" data-language="nim">proc predict(model: ptr Model; x: ptr Node): cdouble {.cdecl, importc: "svm_predict",
+    dynlib: svmdll.}</pre></dt>  <dt id="predict_probability"><pre id="predict_probability,ptr.Model,ptr.Node,ptr.cdouble" data-language="nim">proc predict_probability(model: ptr Model; x: ptr Node; prob_estimates: ptr cdouble): cdouble {.
+    cdecl, importc: "svm_predict_probability", dynlib: svmdll.}</pre></dt>  <dt id="free_model_content"><pre id="free_model_content,ptr.Model" data-language="nim">proc free_model_content(model_ptr: ptr Model) {.cdecl,
+    importc: "svm_free_model_content", dynlib: svmdll.}</pre></dt>  <dt id="free_and_destroy_model"><pre id="free_and_destroy_model,ptr.ptr.Model" data-language="nim">proc free_and_destroy_model(model_ptr_ptr: ptr ptr Model) {.cdecl,
+    importc: "svm_free_and_destroy_model", dynlib: svmdll.}</pre></dt>  <dt id="destroy_param"><pre id="destroy_param,ptr.Parameter" data-language="nim">proc destroy_param(param: ptr Parameter) {.cdecl, importc: "svm_destroy_param",
+                                       dynlib: svmdll.}</pre></dt>  <dt id="check_parameter"><pre id="check_parameter,ptr.Problem,ptr.Parameter" data-language="nim">proc check_parameter(prob: ptr Problem; param: ptr Parameter): cstring {.cdecl,
+    importc: "svm_check_parameter", dynlib: svmdll.}</pre></dt>  <dt id="check_probability_model"><pre id="check_probability_model,ptr.Model" data-language="nim">proc check_probability_model(model: ptr Model): cint {.cdecl,
+    importc: "svm_check_probability_model", dynlib: svmdll.}</pre></dt>  <dt id="set_print_string_function"><pre id="set_print_string_function,proc(cstring)" data-language="nim">proc set_print_string_function(print_func: proc (arg: cstring) {.cdecl.}) {.cdecl,
+    importc: "svm_set_print_string_function", dynlib: svmdll.}</pre></dt>  </dl>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2006–2017 Andreas Rumpf<br>Licensed under the MIT License.<br>
+    <a href="https://nim-lang.org/docs/libsvm.html" class="_attribution-link" target="_blank">https://nim-lang.org/docs/libsvm.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

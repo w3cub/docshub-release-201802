@@ -1,0 +1,540 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Mysql - Nim - W3cubDocs</title>
+  
+  <meta name="description" content=" © 2006–2017 Andreas RumpfLicensed under the MIT License. https&#58;&#47;&#47;nim-lang.org&#47;docs&#47;mysql.html ">
+  <meta name="keywords" content="module, mysql, -, nim">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/nim/mysql/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/nim.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/nim/" class="_nav-link" title="" style="margin-left:0;">Nim</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _nim">
+				
+<h1 class="title">Module mysql</h1>    <h2 id="7">Types</h2> <dl> <dt id="my_bool"><pre id="my_bool">my_bool = bool</pre></dt>  <dt id="Pmy_bool"><pre id="Pmy_bool">Pmy_bool = ptr my_bool</pre></dt>  <dt id="PVIO"><pre id="PVIO">PVIO = pointer</pre></dt>  <dt id="Pgptr"><pre id="Pgptr">Pgptr = ptr gptr</pre></dt>  <dt id="gptr"><pre id="gptr">gptr = cstring</pre></dt>  <dt id="Pmy_socket"><pre id="Pmy_socket">Pmy_socket = ptr my_socket</pre></dt>  <dt id="my_socket"><pre id="my_socket">my_socket = cint</pre></dt>  <dt id="PPByte"><pre id="PPByte">PPByte = pointer</pre></dt>  <dt id="cuint"><pre id="cuint">cuint = cint</pre></dt>  <dt id="Enum_server_command"><pre id="Enum_server_command" data-language="nim">Enum_server_command = enum
+  COM_SLEEP, COM_QUIT, COM_INIT_DB, COM_QUERY, COM_FIELD_LIST, COM_CREATE_DB,
+  COM_DROP_DB, COM_REFRESH, COM_SHUTDOWN, COM_STATISTICS, COM_PROCESS_INFO,
+  COM_CONNECT, COM_PROCESS_KILL, COM_DEBUG, COM_PING, COM_TIME, COM_DELAYED_INSERT,
+  COM_CHANGE_USER, COM_BINLOG_DUMP, COM_TABLE_DUMP, COM_CONNECT_OUT,
+  COM_REGISTER_SLAVE, COM_STMT_PREPARE, COM_STMT_EXECUTE, COM_STMT_SEND_LONG_DATA,
+  COM_STMT_CLOSE, COM_STMT_RESET, COM_SET_OPTION, COM_STMT_FETCH, COM_END</pre></dt>  <dt id="Pst_net"><pre id="Pst_net">Pst_net = ptr St_net</pre></dt>  <dt id="St_net"><pre id="St_net" data-language="nim">St_net = object
+  vio*: PVIO
+  buff*: cstring
+  buff_end*: cstring
+  write_pos*: cstring
+  read_pos*: cstring
+  fd*: my_socket
+  max_packet*: int
+  max_packet_size*: int
+  pkt_nr*: cuint
+  compress_pkt_nr*: cuint
+  write_timeout*: cuint
+  read_timeout*: cuint
+  retry_count*: cuint
+  fcntl*: cint
+  compress*: my_bool
+  remain_in_buf*: int
+  len*: int
+  buf_length*: int
+  where_b*: int
+  return_status*: ptr cint
+  reading_or_writing*: char
+  save_char*: cchar
+  no_send_ok*: my_bool
+  no_send_eof*: my_bool
+  no_send_error*: my_bool
+  last_error*: array[0 .. 200 - 1, char]
+  sqlstate*: array[0 .. 6 - 1, char]
+  last_errno*: cuint
+  error*: char
+  query_cache_query*: gptr
+  report_error*: my_bool
+  return_errno*: my_bool</pre></dt>  <dt id="NET"><pre id="NET">NET = St_net</pre></dt>  <dt id="PNET"><pre id="PNET">PNET = ptr NET</pre></dt>  <dt id="Enum_field_types"><pre id="Enum_field_types" data-language="nim">Enum_field_types = enum
+  TYPE_DECIMAL, TYPE_TINY, TYPE_SHORT, TYPE_LONG, TYPE_FLOAT, TYPE_DOUBLE, TYPE_NULL,
+  TYPE_TIMESTAMP, TYPE_LONGLONG, TYPE_INT24, TYPE_DATE, TYPE_TIME, TYPE_DATETIME,
+  TYPE_YEAR, TYPE_NEWDATE, TYPE_VARCHAR, TYPE_BIT, TYPE_NEWDECIMAL = 246,
+  TYPE_ENUM = 247, TYPE_SET = 248, TYPE_TINY_BLOB = 249, TYPE_MEDIUM_BLOB = 250,
+  TYPE_LONG_BLOB = 251, TYPE_BLOB = 252, TYPE_VAR_STRING = 253, TYPE_STRING = 254,
+  TYPE_GEOMETRY = 255</pre></dt>  <dt id="Enum_shutdown_level"><pre id="Enum_shutdown_level" data-language="nim">Enum_shutdown_level = enum
+  SHUTDOWN_DEFAULT = 0, SHUTDOWN_WAIT_CONNECTIONS = 1, SHUTDOWN_WAIT_TRANSACTIONS = 2,
+  SHUTDOWN_WAIT_UPDATES = 8, SHUTDOWN_WAIT_ALL_BUFFERS = 16,
+  SHUTDOWN_WAIT_CRITICAL_BUFFERS = 17, KILL_QUERY = 254, KILL_CONNECTION = 255</pre></dt>  <dt id="Enum_cursor_type"><pre id="Enum_cursor_type" data-language="nim">Enum_cursor_type = enum
+  CURSOR_TYPE_NO_CURSOR = 0, CURSOR_TYPE_READ_ONLY = 1, CURSOR_TYPE_FOR_UPDATE = 2,
+  CURSOR_TYPE_SCROLLABLE = 4</pre></dt>  <dt id="Enum_mysql_set_option"><pre id="Enum_mysql_set_option" data-language="nim">Enum_mysql_set_option = enum
+  OPTION_MULTI_STATEMENTS_ON, OPTION_MULTI_STATEMENTS_OFF</pre></dt>  <dt id="Psockaddr"><pre id="Psockaddr">Psockaddr = ptr Sockaddr</pre></dt>  <dt id="Sockaddr"><pre id="Sockaddr">Sockaddr = object</pre></dt>  <dt id="Prand_struct"><pre id="Prand_struct">Prand_struct = ptr Rand_struct</pre></dt>  <dt id="Rand_struct"><pre id="Rand_struct" data-language="nim">Rand_struct = object
+  seed1*: int
+  seed2*: int
+  max_value*: int
+  max_value_dbl*: cdouble</pre></dt>  <dt id="Item_result"><pre id="Item_result" data-language="nim">Item_result = enum
+  STRING_RESULT, REAL_RESULT, INT_RESULT, ROW_RESULT, DECIMAL_RESULT</pre></dt>  <dt id="PItem_result"><pre id="PItem_result">PItem_result = ptr Item_result</pre></dt>  <dt id="Pst_udf_args"><pre id="Pst_udf_args">Pst_udf_args = ptr St_udf_args</pre></dt>  <dt id="St_udf_args"><pre id="St_udf_args" data-language="nim">St_udf_args = object
+  arg_count*: cuint
+  arg_type*: PItem_result
+  args*: cstringArray
+  lengths*: ptr int
+  maybe_null*: cstring
+  attributes*: cstringArray
+  attribute_lengths*: ptr int</pre></dt>  <dt id="UDF_ARGS"><pre id="UDF_ARGS">UDF_ARGS = St_udf_args</pre></dt>  <dt id="PUDF_ARGS"><pre id="PUDF_ARGS">PUDF_ARGS = ptr UDF_ARGS</pre></dt>  <dt id="Pst_udf_init"><pre id="Pst_udf_init">Pst_udf_init = ptr St_udf_init</pre></dt>  <dt id="St_udf_init"><pre id="St_udf_init" data-language="nim">St_udf_init = object
+  maybe_null*: my_bool
+  decimals*: cuint
+  max_length*: int
+  theptr*: cstring
+  const_item*: my_bool</pre></dt>  <dt id="UDF_INIT"><pre id="UDF_INIT">UDF_INIT = St_udf_init</pre></dt>  <dt id="PUDF_INIT"><pre id="PUDF_INIT">PUDF_INIT = ptr UDF_INIT</pre></dt>  <dt id="Pst_mysql_field"><pre id="Pst_mysql_field">Pst_mysql_field = ptr St_mysql_field</pre></dt>  <dt id="St_mysql_field"><pre id="St_mysql_field" data-language="nim">St_mysql_field = object
+  name*: cstring
+  org_name*: cstring
+  table*: cstring
+  org_table*: cstring
+  db*: cstring
+  catalog*: cstring
+  def*: cstring
+  len*: int
+  max_length*: int
+  name_length*: cuint
+  org_name_length*: cuint
+  table_length*: cuint
+  org_table_length*: cuint
+  db_length*: cuint
+  catalog_length*: cuint
+  def_length*: cuint
+  flags*: cuint
+  decimals*: cuint
+  charsetnr*: cuint
+  ftype*: Enum_field_types
+  extension*: pointer</pre></dt>  <dt id="FIELD"><pre id="FIELD">FIELD = St_mysql_field</pre></dt>  <dt id="PFIELD"><pre id="PFIELD">PFIELD = ptr FIELD</pre></dt>  <dt id="PROW"><pre id="PROW">PROW = ptr ROW</pre></dt>  <dt id="ROW"><pre id="ROW">ROW = cstringArray</pre></dt>  <dt id="PFIELD_OFFSET"><pre id="PFIELD_OFFSET">PFIELD_OFFSET = ptr FIELD_OFFSET</pre></dt>  <dt id="FIELD_OFFSET"><pre id="FIELD_OFFSET">FIELD_OFFSET = cuint</pre></dt>  <dt id="my_ulonglong"><pre id="my_ulonglong">my_ulonglong = int64</pre></dt>  <dt id="Pmy_ulonglong"><pre id="Pmy_ulonglong">Pmy_ulonglong = ptr my_ulonglong</pre></dt>  <dt id="Pst_mysql_rows"><pre id="Pst_mysql_rows">Pst_mysql_rows = ptr St_mysql_rows</pre></dt>  <dt id="St_mysql_rows"><pre id="St_mysql_rows" data-language="nim">St_mysql_rows = object
+  next*: Pst_mysql_rows
+  data*: ROW
+  len*: int</pre></dt>  <dt id="ROWS"><pre id="ROWS">ROWS = St_mysql_rows</pre></dt>  <dt id="PROWS"><pre id="PROWS">PROWS = ptr ROWS</pre></dt>  <dt id="PROW_OFFSET"><pre id="PROW_OFFSET">PROW_OFFSET = ptr ROW_OFFSET</pre></dt>  <dt id="ROW_OFFSET"><pre id="ROW_OFFSET">ROW_OFFSET = ROWS</pre></dt>  <dt id="Pst_used_mem"><pre id="Pst_used_mem">Pst_used_mem = ptr St_used_mem</pre></dt>  <dt id="St_used_mem"><pre id="St_used_mem" data-language="nim">St_used_mem = object
+  next*: Pst_used_mem
+  left*: cuint
+  size*: cuint</pre></dt>  <dt id="USED_MEM"><pre id="USED_MEM">USED_MEM = St_used_mem</pre></dt>  <dt id="PUSED_MEM"><pre id="PUSED_MEM">PUSED_MEM = ptr USED_MEM</pre></dt>  <dt id="Pst_mem_root"><pre id="Pst_mem_root">Pst_mem_root = ptr St_mem_root</pre></dt>  <dt id="St_mem_root"><pre id="St_mem_root" data-language="nim">St_mem_root = object
+  free*: PUSED_MEM
+  used*: PUSED_MEM
+  pre_alloc*: PUSED_MEM
+  min_malloc*: cuint
+  block_size*: cuint
+  block_num*: cuint
+  first_block_usage*: cuint
+  error_handler*: proc () {.cdecl.}</pre></dt>  <dt id="MEM_ROOT"><pre id="MEM_ROOT">MEM_ROOT = St_mem_root</pre></dt>  <dt id="PMEM_ROOT"><pre id="PMEM_ROOT">PMEM_ROOT = ptr MEM_ROOT</pre></dt>  <dt id="Pst_mysql_data"><pre id="Pst_mysql_data">Pst_mysql_data = ptr St_mysql_data</pre></dt>  <dt id="St_mysql_data"><pre id="St_mysql_data" data-language="nim">St_mysql_data = object
+  rows*: my_ulonglong
+  fields*: cuint
+  data*: PROWS
+  alloc*: MEM_ROOT
+  prev_ptr*: ptr PROWS</pre></dt>  <dt id="DATA"><pre id="DATA">DATA = St_mysql_data</pre></dt>  <dt id="PDATA"><pre id="PDATA">PDATA = ptr DATA</pre></dt>  <dt id="Option"><pre id="Option" data-language="nim">Option = enum
+  OPT_CONNECT_TIMEOUT, OPT_COMPRESS, OPT_NAMED_PIPE, INIT_COMMAND,
+  READ_DEFAULT_FILE, READ_DEFAULT_GROUP, SET_CHARSET_DIR, SET_CHARSET_NAME,
+  OPT_LOCAL_INFILE, OPT_PROTOCOL, SHARED_MEMORY_BASE_NAME, OPT_READ_TIMEOUT,
+  OPT_WRITE_TIMEOUT, OPT_USE_RESULT, OPT_USE_REMOTE_CONNECTION,
+  OPT_USE_EMBEDDED_CONNECTION, OPT_GUESS_CONNECTION, SET_CLIENT_IP, SECURE_AUTH,
+  REPORT_DATA_TRUNCATION, OPT_RECONNECT</pre></dt>  <dt id="St_dynamic_array"><pre id="St_dynamic_array" data-language="nim">St_dynamic_array = object
+  buffer*: cstring
+  elements*: cuint
+  max_element*: cuint
+  alloc_increment*: cuint
+  size_of_element*: cuint</pre></dt>  <dt id="DYNAMIC_ARRAY"><pre id="DYNAMIC_ARRAY">DYNAMIC_ARRAY = St_dynamic_array</pre></dt>  <dt id="Pst_dynamic_array"><pre id="Pst_dynamic_array">Pst_dynamic_array = ptr St_dynamic_array</pre></dt>  <dt id="Pst_mysql_options"><pre id="Pst_mysql_options">Pst_mysql_options = ptr St_mysql_options</pre></dt>  <dt id="St_mysql_options"><pre id="St_mysql_options" data-language="nim">St_mysql_options = object
+  connect_timeout*: cuint
+  read_timeout*: cuint
+  write_timeout*: cuint
+  port*: cuint
+  protocol*: cuint
+  client_flag*: int
+  host*: cstring
+  user*: cstring
+  password*: cstring
+  unix_socket*: cstring
+  db*: cstring
+  init_commands*: Pst_dynamic_array
+  my_cnf_file*: cstring
+  my_cnf_group*: cstring
+  charset_dir*: cstring
+  charset_name*: cstring
+  ssl_key*: cstring
+  ssl_cert*: cstring
+  ssl_ca*: cstring
+  ssl_capath*: cstring
+  ssl_cipher*: cstring
+  shared_memory_base_name*: cstring
+  max_allowed_packet*: int
+  use_ssl*: my_bool
+  compress*: my_bool
+  named_pipe*: my_bool
+  rpl_probe*: my_bool
+  rpl_parse*: my_bool
+  no_master_reads*: my_bool
+  separate_thread*: my_bool
+  methods_to_use*: Option
+  client_ip*: cstring
+  secure_auth*: my_bool
+  report_data_truncation*: my_bool
+  local_infile_init*: proc (para1: var pointer; para2: cstring; para3: pointer): cint {.
+      cdecl.}
+  local_infile_read*: proc (para1: pointer; para2: cstring; para3: cuint): cint
+  local_infile_end*: proc (para1: pointer)
+  local_infile_error*: proc (para1: pointer; para2: cstring; para3: cuint): cint
+  local_infile_userdata*: pointer</pre></dt>  <dt id="Status"><pre id="Status" data-language="nim">Status = enum
+  STATUS_READY, STATUS_GET_RESULT, STATUS_USE_RESULT</pre></dt>  <dt id="Protocol_type"><pre id="Protocol_type" data-language="nim">Protocol_type = enum
+  PROTOCOL_DEFAULT, PROTOCOL_TCP, PROTOCOL_SOCKET, PROTOCOL_PIPE, PROTOCOL_MEMORY</pre></dt>  <dt id="Rpl_type"><pre id="Rpl_type" data-language="nim">Rpl_type = enum
+  RPL_MASTER, RPL_SLAVE, RPL_ADMIN</pre></dt>  <dt id="Charset_info_st"><pre id="Charset_info_st" data-language="nim">Charset_info_st = object
+  number*: cuint
+  primary_number*: cuint
+  binary_number*: cuint
+  state*: cuint
+  csname*: cstring
+  name*: cstring
+  comment*: cstring
+  tailoring*: cstring
+  ftype*: cstring
+  to_lower*: cstring
+  to_upper*: cstring
+  sort_order*: cstring
+  contractions*: ptr int16
+  sort_order_big*: ptr ptr int16
+  tab_to_uni*: ptr int16
+  tab_from_uni*: pointer
+  state_map*: cstring
+  ident_map*: cstring
+  strxfrm_multiply*: cuint
+  mbminlen*: cuint
+  mbmaxlen*: cuint
+  min_sort_char*: int16
+  max_sort_char*: int16
+  escape_with_backslash_is_dangerous*: my_bool
+  cset*: pointer
+  coll*: pointer</pre></dt>  <dt id="CHARSET_INFO"><pre id="CHARSET_INFO">CHARSET_INFO = Charset_info_st</pre></dt>  <dt id="Pcharset_info_st"><pre id="Pcharset_info_st">Pcharset_info_st = ptr Charset_info_st</pre></dt>  <dt id="Pcharacter_set"><pre id="Pcharacter_set">Pcharacter_set = ptr Character_set</pre></dt>  <dt id="Character_set"><pre id="Character_set" data-language="nim">Character_set = object
+  number*: cuint
+  state*: cuint
+  csname*: cstring
+  name*: cstring
+  comment*: cstring
+  dir*: cstring
+  mbminlen*: cuint
+  mbmaxlen*: cuint</pre></dt>  <dt id="MY_CHARSET_INFO"><pre id="MY_CHARSET_INFO">MY_CHARSET_INFO = Character_set</pre></dt>  <dt id="PMY_CHARSET_INFO"><pre id="PMY_CHARSET_INFO">PMY_CHARSET_INFO = ptr MY_CHARSET_INFO</pre></dt>  <dt id="Pst_mysql_methods"><pre id="Pst_mysql_methods">Pst_mysql_methods = ptr St_mysql_methods</pre></dt>  <dt id="Pst_mysql"><pre id="Pst_mysql">Pst_mysql = ptr St_mysql</pre></dt>  <dt id="St_mysql"><pre id="St_mysql" data-language="nim">St_mysql = object
+  net*: NET
+  connector_fd*: gptr
+  host*: cstring
+  user*: cstring
+  passwd*: cstring
+  unix_socket*: cstring
+  server_version*: cstring
+  host_info*: cstring
+  info*: cstring
+  db*: cstring
+  charset*: Pcharset_info_st
+  fields*: PFIELD
+  field_alloc*: MEM_ROOT
+  affected_rows*: my_ulonglong
+  insert_id*: my_ulonglong
+  extra_info*: my_ulonglong
+  thread_id*: int
+  packet_length*: int
+  port*: cuint
+  client_flag*: int
+  server_capabilities*: int
+  protocol_version*: cuint
+  field_count*: cuint
+  server_status*: cuint
+  server_language*: cuint
+  warning_count*: cuint
+  options*: St_mysql_options
+  status*: Status
+  free_me*: my_bool
+  reconnect*: my_bool
+  scramble*: array[0 .. 21 - 1, char]
+  rpl_pivot*: my_bool
+  master*: Pst_mysql
+  next_slave*: Pst_mysql
+  last_used_slave*: Pst_mysql
+  last_used_con*: Pst_mysql
+  stmts*: pointer
+  methods*: Pst_mysql_methods
+  thd*: pointer
+  unbuffered_fetch_owner*: Pmy_bool</pre></dt>  <dt id="MySQL"><pre id="MySQL">MySQL = St_mysql</pre></dt>  <dt id="PMySQL"><pre id="PMySQL">PMySQL = ptr MySQL</pre></dt>  <dt id="Pst_mysql_res"><pre id="Pst_mysql_res">Pst_mysql_res = ptr St_mysql_res</pre></dt>  <dt id="St_mysql_res"><pre id="St_mysql_res" data-language="nim">St_mysql_res = object
+  row_count*: my_ulonglong
+  fields*: PFIELD
+  data*: PDATA
+  data_cursor*: PROWS
+  lengths*: ptr int
+  handle*: PMySQL
+  field_alloc*: MEM_ROOT
+  field_count*: cuint
+  current_field*: cuint
+  row*: ROW
+  current_row*: ROW
+  eof*: my_bool
+  unbuffered_fetch_cancelled*: my_bool
+  methods*: Pst_mysql_methods</pre></dt>  <dt id="RES"><pre id="RES">RES = St_mysql_res</pre></dt>  <dt id="PRES"><pre id="PRES">PRES = ptr RES</pre></dt>  <dt id="Pst_mysql_stmt"><pre id="Pst_mysql_stmt">Pst_mysql_stmt = ptr St_mysql_stmt</pre></dt>  <dt id="PSTMT"><pre id="PSTMT">PSTMT = ptr STMT</pre></dt>  <dt id="St_mysql_methods"><pre id="St_mysql_methods" data-language="nim">St_mysql_methods = object
+  read_query_result*: proc (MySQL: PMySQL): my_bool {.cdecl.}
+  advanced_command*: proc (MySQL: PMySQL; command: Enum_server_command;
+                         header: cstring; header_length: int; arg: cstring;
+                         arg_length: int; skip_check: my_bool): my_bool
+  read_rows*: proc (MySQL: PMySQL; fields: PFIELD; fields_count: cuint): PDATA
+  use_result*: proc (MySQL: PMySQL): PRES
+  fetch_lengths*: proc (fto: ptr int; column: ROW; field_count: cuint)
+  flush_use_result*: proc (MySQL: PMySQL)
+  list_fields*: proc (MySQL: PMySQL): PFIELD
+  read_prepare_result*: proc (MySQL: PMySQL; stmt: PSTMT): my_bool
+  stmt_execute*: proc (stmt: PSTMT): cint
+  read_binary_rows*: proc (stmt: PSTMT): cint
+  unbuffered_fetch*: proc (MySQL: PMySQL; row: cstringArray): cint
+  free_embedded_thd*: proc (MySQL: PMySQL)
+  read_statistics*: proc (MySQL: PMySQL): cstring
+  next_result*: proc (MySQL: PMySQL): my_bool
+  read_change_user_result*: proc (MySQL: PMySQL; buff: cstring; passwd: cstring): cint
+  read_rowsfrom_cursor*: proc (stmt: PSTMT): cint</pre></dt>  <dt id="METHODS"><pre id="METHODS">METHODS = St_mysql_methods</pre></dt>  <dt id="PMETHODS"><pre id="PMETHODS">PMETHODS = ptr METHODS</pre></dt>  <dt id="Pst_mysql_manager"><pre id="Pst_mysql_manager">Pst_mysql_manager = ptr St_mysql_manager</pre></dt>  <dt id="St_mysql_manager"><pre id="St_mysql_manager" data-language="nim">St_mysql_manager = object
+  net*: NET
+  host*: cstring
+  user*: cstring
+  passwd*: cstring
+  port*: cuint
+  free_me*: my_bool
+  eof*: my_bool
+  cmd_status*: cint
+  last_errno*: cint
+  net_buf*: cstring
+  net_buf_pos*: cstring
+  net_data_end*: cstring
+  net_buf_size*: cint
+  last_error*: array[0 .. 256 - 1, char]</pre></dt>  <dt id="MANAGER"><pre id="MANAGER">MANAGER = St_mysql_manager</pre></dt>  <dt id="PMANAGER"><pre id="PMANAGER">PMANAGER = ptr MANAGER</pre></dt>  <dt id="Pst_mysql_parameters"><pre id="Pst_mysql_parameters">Pst_mysql_parameters = ptr St_mysql_parameters</pre></dt>  <dt id="St_mysql_parameters"><pre id="St_mysql_parameters" data-language="nim">St_mysql_parameters = object
+  p_max_allowed_packet*: ptr int
+  p_net_buffer_length*: ptr int</pre></dt>  <dt id="PARAMETERS"><pre id="PARAMETERS">PARAMETERS = St_mysql_parameters</pre></dt>  <dt id="PPARAMETERS"><pre id="PPARAMETERS">PPARAMETERS = ptr PARAMETERS</pre></dt>  <dt id="Enum_mysql_stmt_state"><pre id="Enum_mysql_stmt_state" data-language="nim">Enum_mysql_stmt_state = enum
+  STMT_INIT_DONE = 1, STMT_PREPARE_DONE, STMT_EXECUTE_DONE, STMT_FETCH_DONE</pre></dt>  <dt id="Pst_mysql_bind"><pre id="Pst_mysql_bind">Pst_mysql_bind = ptr St_mysql_bind</pre></dt>  <dt id="St_mysql_bind"><pre id="St_mysql_bind" data-language="nim">St_mysql_bind = object
+  len*: int
+  is_null*: Pmy_bool
+  buffer*: pointer
+  error*: Pmy_bool
+  buffer_type*: Enum_field_types
+  buffer_length*: int
+  row_ptr*: ptr byte
+  offset*: int
+  length_value*: int
+  param_number*: cuint
+  pack_length*: cuint
+  error_value*: my_bool
+  is_unsigned*: my_bool
+  long_data_used*: my_bool
+  is_null_value*: my_bool
+  store_param_func*: proc (net: PNET; param: Pst_mysql_bind) {.cdecl.}
+  fetch_result*: proc (para1: Pst_mysql_bind; para2: PFIELD; row: PPByte)
+  skip_result*: proc (para1: Pst_mysql_bind; para2: PFIELD; row: PPByte)</pre></dt>  <dt id="BIND"><pre id="BIND">BIND = St_mysql_bind</pre></dt>  <dt id="PBIND"><pre id="PBIND">PBIND = ptr BIND</pre></dt>  <dt id="St_mysql_stmt"><pre id="St_mysql_stmt" data-language="nim">St_mysql_stmt = object
+  mem_root*: MEM_ROOT
+  mysql*: PMySQL
+  params*: PBIND
+  `bind`*: PBIND
+  fields*: PFIELD
+  result*: DATA
+  data_cursor*: PROWS
+  affected_rows*: my_ulonglong
+  insert_id*: my_ulonglong
+  read_row_func*: proc (stmt: Pst_mysql_stmt; row: PPByte): cint {.cdecl.}
+  stmt_id*: int
+  flags*: int
+  prefetch_rows*: int
+  server_status*: cuint
+  last_errno*: cuint
+  param_count*: cuint
+  field_count*: cuint
+  state*: Enum_mysql_stmt_state
+  last_error*: array[0 .. 200 - 1, char]
+  sqlstate*: array[0 .. 6 - 1, char]
+  send_types_to_server*: my_bool
+  bind_param_done*: my_bool
+  bind_result_done*: char
+  unbuffered_fetch_cancelled*: my_bool
+  update_max_length*: my_bool</pre></dt>  <dt id="STMT"><pre id="STMT">STMT = St_mysql_stmt</pre></dt>  <dt id="Enum_stmt_attr_type"><pre id="Enum_stmt_attr_type" data-language="nim">Enum_stmt_attr_type = enum
+  STMT_ATTR_UPDATE_MAX_LENGTH, STMT_ATTR_CURSOR_TYPE, STMT_ATTR_PREFETCH_ROWS</pre></dt>  </dl>  <h2 id="10">Consts</h2> <dl> <dt id="NAME_LEN"><pre id="NAME_LEN">NAME_LEN = 64</pre></dt>  <dt id="HOSTNAME_LENGTH"><pre id="HOSTNAME_LENGTH">HOSTNAME_LENGTH = 60</pre></dt>  <dt id="USERNAME_LENGTH"><pre id="USERNAME_LENGTH">USERNAME_LENGTH = 16</pre></dt>  <dt id="SERVER_VERSION_LENGTH"><pre id="SERVER_VERSION_LENGTH">SERVER_VERSION_LENGTH = 60</pre></dt>  <dt id="SQLSTATE_LENGTH"><pre id="SQLSTATE_LENGTH">SQLSTATE_LENGTH = 5</pre></dt>  <dt id="LOCAL_HOST"><pre id="LOCAL_HOST" data-language="nim">LOCAL_HOST = "localhost"</pre></dt>  <dt id="LOCAL_HOST_NAMEDPIPE"><pre id="LOCAL_HOST_NAMEDPIPE" data-language="nim">LOCAL_HOST_NAMEDPIPE = '.'</pre></dt>  <dt id="NAMEDPIPE"><pre id="NAMEDPIPE" data-language="nim">NAMEDPIPE = "MySQL"</pre></dt>  <dt id="SERVICENAME"><pre id="SERVICENAME" data-language="nim">SERVICENAME = "MySQL"</pre></dt>  <dt id="SCRAMBLE_LENGTH"><pre id="SCRAMBLE_LENGTH">SCRAMBLE_LENGTH = 20</pre></dt>  <dt id="SCRAMBLE_LENGTH_323"><pre id="SCRAMBLE_LENGTH_323">SCRAMBLE_LENGTH_323 = 8</pre></dt>  <dt id="SCRAMBLED_PASSWORD_CHAR_LENGTH"><pre id="SCRAMBLED_PASSWORD_CHAR_LENGTH">SCRAMBLED_PASSWORD_CHAR_LENGTH = 41</pre></dt>  <dt id="SCRAMBLED_PASSWORD_CHAR_LENGTH_323"><pre id="SCRAMBLED_PASSWORD_CHAR_LENGTH_323">SCRAMBLED_PASSWORD_CHAR_LENGTH_323 = 16</pre></dt>  <dt id="NOT_NULL_FLAG"><pre id="NOT_NULL_FLAG">NOT_NULL_FLAG = 1</pre></dt>  <dt id="PRI_KEY_FLAG"><pre id="PRI_KEY_FLAG">PRI_KEY_FLAG = 2</pre></dt>  <dt id="UNIQUE_KEY_FLAG"><pre id="UNIQUE_KEY_FLAG">UNIQUE_KEY_FLAG = 4</pre></dt>  <dt id="MULTIPLE_KEY_FLAG"><pre id="MULTIPLE_KEY_FLAG">MULTIPLE_KEY_FLAG = 8</pre></dt>  <dt id="BLOB_FLAG"><pre id="BLOB_FLAG">BLOB_FLAG = 16</pre></dt>  <dt id="UNSIGNED_FLAG"><pre id="UNSIGNED_FLAG">UNSIGNED_FLAG = 32</pre></dt>  <dt id="ZEROFILL_FLAG"><pre id="ZEROFILL_FLAG">ZEROFILL_FLAG = 64</pre></dt>  <dt id="BINARY_FLAG"><pre id="BINARY_FLAG">BINARY_FLAG = 128</pre></dt>  <dt id="ENUM_FLAG"><pre id="ENUM_FLAG">ENUM_FLAG = 256</pre></dt>  <dt id="AUTO_INCREMENT_FLAG"><pre id="AUTO_INCREMENT_FLAG">AUTO_INCREMENT_FLAG = 512</pre></dt>  <dt id="TIMESTAMP_FLAG"><pre id="TIMESTAMP_FLAG">TIMESTAMP_FLAG = 1024</pre></dt>  <dt id="SET_FLAG"><pre id="SET_FLAG">SET_FLAG = 2048</pre></dt>  <dt id="NO_DEFAULT_VALUE_FLAG"><pre id="NO_DEFAULT_VALUE_FLAG">NO_DEFAULT_VALUE_FLAG = 4096</pre></dt>  <dt id="NUM_FLAG"><pre id="NUM_FLAG">NUM_FLAG = 32768</pre></dt>  <dt id="PART_KEY_FLAG"><pre id="PART_KEY_FLAG">PART_KEY_FLAG = 16384</pre></dt>  <dt id="GROUP_FLAG"><pre id="GROUP_FLAG">GROUP_FLAG = 32768</pre></dt>  <dt id="UNIQUE_FLAG"><pre id="UNIQUE_FLAG">UNIQUE_FLAG = 65536</pre></dt>  <dt id="BINCMP_FLAG"><pre id="BINCMP_FLAG">BINCMP_FLAG = 131072</pre></dt>  <dt id="REFRESH_GRANT"><pre id="REFRESH_GRANT">REFRESH_GRANT = 1</pre></dt>  <dt id="REFRESH_LOG"><pre id="REFRESH_LOG">REFRESH_LOG = 2</pre></dt>  <dt id="REFRESH_TABLES"><pre id="REFRESH_TABLES">REFRESH_TABLES = 4</pre></dt>  <dt id="REFRESH_HOSTS"><pre id="REFRESH_HOSTS">REFRESH_HOSTS = 8</pre></dt>  <dt id="REFRESH_STATUS"><pre id="REFRESH_STATUS">REFRESH_STATUS = 16</pre></dt>  <dt id="REFRESH_THREADS"><pre id="REFRESH_THREADS">REFRESH_THREADS = 32</pre></dt>  <dt id="REFRESH_SLAVE"><pre id="REFRESH_SLAVE">REFRESH_SLAVE = 64</pre></dt>  <dt id="REFRESH_MASTER"><pre id="REFRESH_MASTER">REFRESH_MASTER = 128</pre></dt>  <dt id="REFRESH_READ_LOCK"><pre id="REFRESH_READ_LOCK">REFRESH_READ_LOCK = 16384</pre></dt>  <dt id="REFRESH_FAST"><pre id="REFRESH_FAST">REFRESH_FAST = 32768</pre></dt>  <dt id="REFRESH_QUERY_CACHE"><pre id="REFRESH_QUERY_CACHE">REFRESH_QUERY_CACHE = 65536</pre></dt>  <dt id="REFRESH_QUERY_CACHE_FREE"><pre id="REFRESH_QUERY_CACHE_FREE">REFRESH_QUERY_CACHE_FREE = 0x00020000</pre></dt>  <dt id="REFRESH_DES_KEY_FILE"><pre id="REFRESH_DES_KEY_FILE">REFRESH_DES_KEY_FILE = 0x00040000</pre></dt>  <dt id="REFRESH_USER_RESOURCES"><pre id="REFRESH_USER_RESOURCES">REFRESH_USER_RESOURCES = 0x00080000</pre></dt>  <dt id="CLIENT_LONG_PASSWORD"><pre id="CLIENT_LONG_PASSWORD">CLIENT_LONG_PASSWORD = 1</pre></dt>  <dt id="CLIENT_FOUND_ROWS"><pre id="CLIENT_FOUND_ROWS">CLIENT_FOUND_ROWS = 2</pre></dt>  <dt id="CLIENT_LONG_FLAG"><pre id="CLIENT_LONG_FLAG">CLIENT_LONG_FLAG = 4</pre></dt>  <dt id="CLIENT_CONNECT_WITH_DB"><pre id="CLIENT_CONNECT_WITH_DB">CLIENT_CONNECT_WITH_DB = 8</pre></dt>  <dt id="CLIENT_NO_SCHEMA"><pre id="CLIENT_NO_SCHEMA">CLIENT_NO_SCHEMA = 16</pre></dt>  <dt id="CLIENT_COMPRESS"><pre id="CLIENT_COMPRESS">CLIENT_COMPRESS = 32</pre></dt>  <dt id="CLIENT_ODBC"><pre id="CLIENT_ODBC">CLIENT_ODBC = 64</pre></dt>  <dt id="CLIENT_LOCAL_FILES"><pre id="CLIENT_LOCAL_FILES">CLIENT_LOCAL_FILES = 128</pre></dt>  <dt id="CLIENT_IGNORE_SPACE"><pre id="CLIENT_IGNORE_SPACE">CLIENT_IGNORE_SPACE = 256</pre></dt>  <dt id="CLIENT_PROTOCOL_41"><pre id="CLIENT_PROTOCOL_41">CLIENT_PROTOCOL_41 = 512</pre></dt>  <dt id="CLIENT_INTERACTIVE"><pre id="CLIENT_INTERACTIVE">CLIENT_INTERACTIVE = 1024</pre></dt>  <dt id="CLIENT_SSL"><pre id="CLIENT_SSL">CLIENT_SSL = 2048</pre></dt>  <dt id="CLIENT_IGNORE_SIGPIPE"><pre id="CLIENT_IGNORE_SIGPIPE">CLIENT_IGNORE_SIGPIPE = 4096</pre></dt>  <dt id="CLIENT_TRANSACTIONS"><pre id="CLIENT_TRANSACTIONS">CLIENT_TRANSACTIONS = 8192</pre></dt>  <dt id="CLIENT_RESERVED"><pre id="CLIENT_RESERVED">CLIENT_RESERVED = 16384</pre></dt>  <dt id="CLIENT_SECURE_CONNECTION"><pre id="CLIENT_SECURE_CONNECTION">CLIENT_SECURE_CONNECTION = 32768</pre></dt>  <dt id="CLIENT_MULTI_STATEMENTS"><pre id="CLIENT_MULTI_STATEMENTS">CLIENT_MULTI_STATEMENTS = 65536</pre></dt>  <dt id="CLIENT_MULTI_RESULTS"><pre id="CLIENT_MULTI_RESULTS">CLIENT_MULTI_RESULTS = 131072</pre></dt>  <dt id="CLIENT_REMEMBER_OPTIONS"><pre id="CLIENT_REMEMBER_OPTIONS">CLIENT_REMEMBER_OPTIONS: int = 2147483648</pre></dt>  <dt id="SERVER_STATUS_IN_TRANS"><pre id="SERVER_STATUS_IN_TRANS">SERVER_STATUS_IN_TRANS = 1</pre></dt>  <dt id="SERVER_STATUS_AUTOCOMMIT"><pre id="SERVER_STATUS_AUTOCOMMIT">SERVER_STATUS_AUTOCOMMIT = 2</pre></dt>  <dt id="SERVER_STATUS_MORE_RESULTS"><pre id="SERVER_STATUS_MORE_RESULTS">SERVER_STATUS_MORE_RESULTS = 4</pre></dt>  <dt id="SERVER_MORE_RESULTS_EXISTS"><pre id="SERVER_MORE_RESULTS_EXISTS">SERVER_MORE_RESULTS_EXISTS = 8</pre></dt>  <dt id="SERVER_QUERY_NO_GOOD_INDEX_USED"><pre id="SERVER_QUERY_NO_GOOD_INDEX_USED">SERVER_QUERY_NO_GOOD_INDEX_USED = 16</pre></dt>  <dt id="SERVER_QUERY_NO_INDEX_USED"><pre id="SERVER_QUERY_NO_INDEX_USED">SERVER_QUERY_NO_INDEX_USED = 32</pre></dt>  <dt id="SERVER_STATUS_CURSOR_EXISTS"><pre id="SERVER_STATUS_CURSOR_EXISTS">SERVER_STATUS_CURSOR_EXISTS = 64</pre></dt>  <dt id="SERVER_STATUS_LAST_ROW_SENT"><pre id="SERVER_STATUS_LAST_ROW_SENT">SERVER_STATUS_LAST_ROW_SENT = 128</pre></dt>  <dt id="SERVER_STATUS_DB_DROPPED"><pre id="SERVER_STATUS_DB_DROPPED">SERVER_STATUS_DB_DROPPED = 256</pre></dt>  <dt id="SERVER_STATUS_NO_BACKSLASH_ESCAPES"><pre id="SERVER_STATUS_NO_BACKSLASH_ESCAPES">SERVER_STATUS_NO_BACKSLASH_ESCAPES = 512</pre></dt>  <dt id="ERRMSG_SIZE"><pre id="ERRMSG_SIZE">ERRMSG_SIZE = 200</pre></dt>  <dt id="NET_READ_TIMEOUT"><pre id="NET_READ_TIMEOUT">NET_READ_TIMEOUT = 30</pre></dt>  <dt id="NET_WRITE_TIMEOUT"><pre id="NET_WRITE_TIMEOUT">NET_WRITE_TIMEOUT = 60</pre></dt>  <dt id="NET_WAIT_TIMEOUT"><pre id="NET_WAIT_TIMEOUT">NET_WAIT_TIMEOUT = 28800</pre></dt>  <dt id="ONLY_KILL_QUERY"><pre id="ONLY_KILL_QUERY">ONLY_KILL_QUERY = 1</pre></dt>  <dt id="MAX_TINYINT_WIDTH"><pre id="MAX_TINYINT_WIDTH">MAX_TINYINT_WIDTH = 3</pre></dt>  <dt id="MAX_SMALLINT_WIDTH"><pre id="MAX_SMALLINT_WIDTH">MAX_SMALLINT_WIDTH = 5</pre></dt>  <dt id="MAX_MEDIUMINT_WIDTH"><pre id="MAX_MEDIUMINT_WIDTH">MAX_MEDIUMINT_WIDTH = 8</pre></dt>  <dt id="MAX_INT_WIDTH"><pre id="MAX_INT_WIDTH">MAX_INT_WIDTH = 10</pre></dt>  <dt id="MAX_BIGINT_WIDTH"><pre id="MAX_BIGINT_WIDTH">MAX_BIGINT_WIDTH = 20</pre></dt>  <dt id="MAX_CHAR_WIDTH"><pre id="MAX_CHAR_WIDTH">MAX_CHAR_WIDTH = 255</pre></dt>  <dt id="MAX_BLOB_WIDTH"><pre id="MAX_BLOB_WIDTH">MAX_BLOB_WIDTH = 8192</pre></dt>  <dt id="packet_error"><pre id="packet_error">packet_error = -1</pre></dt>  <dt id="CLIENT_MULTI_QUERIES"><pre id="CLIENT_MULTI_QUERIES">CLIENT_MULTI_QUERIES = 65536</pre></dt>  <dt id="FIELD_TYPE_DECIMAL"><pre id="FIELD_TYPE_DECIMAL">FIELD_TYPE_DECIMAL = TYPE_DECIMAL</pre></dt>  <dt id="FIELD_TYPE_NEWDECIMAL"><pre id="FIELD_TYPE_NEWDECIMAL">FIELD_TYPE_NEWDECIMAL = TYPE_NEWDECIMAL</pre></dt>  <dt id="FIELD_TYPE_TINY"><pre id="FIELD_TYPE_TINY">FIELD_TYPE_TINY = TYPE_TINY</pre></dt>  <dt id="FIELD_TYPE_SHORT"><pre id="FIELD_TYPE_SHORT">FIELD_TYPE_SHORT = TYPE_SHORT</pre></dt>  <dt id="FIELD_TYPE_LONG"><pre id="FIELD_TYPE_LONG">FIELD_TYPE_LONG = TYPE_LONG</pre></dt>  <dt id="FIELD_TYPE_FLOAT"><pre id="FIELD_TYPE_FLOAT">FIELD_TYPE_FLOAT = TYPE_FLOAT</pre></dt>  <dt id="FIELD_TYPE_DOUBLE"><pre id="FIELD_TYPE_DOUBLE">FIELD_TYPE_DOUBLE = TYPE_DOUBLE</pre></dt>  <dt id="FIELD_TYPE_NULL"><pre id="FIELD_TYPE_NULL">FIELD_TYPE_NULL = TYPE_NULL</pre></dt>  <dt id="FIELD_TYPE_TIMESTAMP"><pre id="FIELD_TYPE_TIMESTAMP">FIELD_TYPE_TIMESTAMP = TYPE_TIMESTAMP</pre></dt>  <dt id="FIELD_TYPE_LONGLONG"><pre id="FIELD_TYPE_LONGLONG">FIELD_TYPE_LONGLONG = TYPE_LONGLONG</pre></dt>  <dt id="FIELD_TYPE_INT24"><pre id="FIELD_TYPE_INT24">FIELD_TYPE_INT24 = TYPE_INT24</pre></dt>  <dt id="FIELD_TYPE_DATE"><pre id="FIELD_TYPE_DATE">FIELD_TYPE_DATE = TYPE_DATE</pre></dt>  <dt id="FIELD_TYPE_TIME"><pre id="FIELD_TYPE_TIME">FIELD_TYPE_TIME = TYPE_TIME</pre></dt>  <dt id="FIELD_TYPE_DATETIME"><pre id="FIELD_TYPE_DATETIME">FIELD_TYPE_DATETIME = TYPE_DATETIME</pre></dt>  <dt id="FIELD_TYPE_YEAR"><pre id="FIELD_TYPE_YEAR">FIELD_TYPE_YEAR = TYPE_YEAR</pre></dt>  <dt id="FIELD_TYPE_NEWDATE"><pre id="FIELD_TYPE_NEWDATE">FIELD_TYPE_NEWDATE = TYPE_NEWDATE</pre></dt>  <dt id="FIELD_TYPE_ENUM"><pre id="FIELD_TYPE_ENUM">FIELD_TYPE_ENUM = TYPE_ENUM</pre></dt>  <dt id="FIELD_TYPE_SET"><pre id="FIELD_TYPE_SET">FIELD_TYPE_SET = TYPE_SET</pre></dt>  <dt id="FIELD_TYPE_TINY_BLOB"><pre id="FIELD_TYPE_TINY_BLOB">FIELD_TYPE_TINY_BLOB = TYPE_TINY_BLOB</pre></dt>  <dt id="FIELD_TYPE_MEDIUM_BLOB"><pre id="FIELD_TYPE_MEDIUM_BLOB">FIELD_TYPE_MEDIUM_BLOB = TYPE_MEDIUM_BLOB</pre></dt>  <dt id="FIELD_TYPE_LONG_BLOB"><pre id="FIELD_TYPE_LONG_BLOB">FIELD_TYPE_LONG_BLOB = TYPE_LONG_BLOB</pre></dt>  <dt id="FIELD_TYPE_BLOB"><pre id="FIELD_TYPE_BLOB">FIELD_TYPE_BLOB = TYPE_BLOB</pre></dt>  <dt id="FIELD_TYPE_VAR_STRING"><pre id="FIELD_TYPE_VAR_STRING">FIELD_TYPE_VAR_STRING = TYPE_VAR_STRING</pre></dt>  <dt id="FIELD_TYPE_STRING"><pre id="FIELD_TYPE_STRING">FIELD_TYPE_STRING = TYPE_STRING</pre></dt>  <dt id="FIELD_TYPE_CHAR"><pre id="FIELD_TYPE_CHAR">FIELD_TYPE_CHAR = TYPE_TINY</pre></dt>  <dt id="FIELD_TYPE_INTERVAL"><pre id="FIELD_TYPE_INTERVAL">FIELD_TYPE_INTERVAL = TYPE_ENUM</pre></dt>  <dt id="FIELD_TYPE_GEOMETRY"><pre id="FIELD_TYPE_GEOMETRY">FIELD_TYPE_GEOMETRY = TYPE_GEOMETRY</pre></dt>  <dt id="FIELD_TYPE_BIT"><pre id="FIELD_TYPE_BIT">FIELD_TYPE_BIT = TYPE_BIT</pre></dt>  <dt id="SHUTDOWN_KILLABLE_CONNECT"><pre id="SHUTDOWN_KILLABLE_CONNECT" data-language="nim">SHUTDOWN_KILLABLE_CONNECT = '\x01'</pre></dt>  <dt id="SHUTDOWN_KILLABLE_TRANS"><pre id="SHUTDOWN_KILLABLE_TRANS" data-language="nim">SHUTDOWN_KILLABLE_TRANS = '\x02'</pre></dt>  <dt id="SHUTDOWN_KILLABLE_LOCK_TABLE"><pre id="SHUTDOWN_KILLABLE_LOCK_TABLE" data-language="nim">SHUTDOWN_KILLABLE_LOCK_TABLE = '\x04'</pre></dt>  <dt id="SHUTDOWN_KILLABLE_UPDATE"><pre id="SHUTDOWN_KILLABLE_UPDATE" data-language="nim">SHUTDOWN_KILLABLE_UPDATE = '\x08'</pre></dt>  <dt id="NET_HEADER_SIZE"><pre id="NET_HEADER_SIZE">NET_HEADER_SIZE = 4</pre></dt>  <dt id="COMP_HEADER_SIZE"><pre id="COMP_HEADER_SIZE">COMP_HEADER_SIZE = 3</pre></dt>  <dt id="NULL_LENGTH"><pre id="NULL_LENGTH">NULL_LENGTH: int = -1</pre></dt>  <dt id="STMT_HEADER"><pre id="STMT_HEADER">STMT_HEADER = 4</pre></dt>  <dt id="LONG_DATA_HEADER"><pre id="LONG_DATA_HEADER">LONG_DATA_HEADER = 6</pre></dt>  <dt id="CLIENT_NET_READ_TIMEOUT"><pre id="CLIENT_NET_READ_TIMEOUT">CLIENT_NET_READ_TIMEOUT = 31536000</pre></dt>  <dt id="CLIENT_NET_WRITE_TIMEOUT"><pre id="CLIENT_NET_WRITE_TIMEOUT">CLIENT_NET_WRITE_TIMEOUT = 31536000</pre></dt>  <dt id="COUNT_ERROR"><pre id="COUNT_ERROR">COUNT_ERROR = -1</pre></dt>  <dt id="ALLOC_MAX_BLOCK_TO_DROP"><pre id="ALLOC_MAX_BLOCK_TO_DROP">ALLOC_MAX_BLOCK_TO_DROP = 4096</pre></dt>  <dt id="ALLOC_MAX_BLOCK_USAGE_BEFORE_DROP"><pre id="ALLOC_MAX_BLOCK_USAGE_BEFORE_DROP">ALLOC_MAX_BLOCK_USAGE_BEFORE_DROP = 10</pre></dt>  <dt id="MAX_MYSQL_MANAGER_ERR"><pre id="MAX_MYSQL_MANAGER_ERR">MAX_MYSQL_MANAGER_ERR = 256</pre></dt>  <dt id="MAX_MYSQL_MANAGER_MSG"><pre id="MAX_MYSQL_MANAGER_MSG">MAX_MYSQL_MANAGER_MSG = 256</pre></dt>  <dt id="MANAGER_OK"><pre id="MANAGER_OK">MANAGER_OK = 200</pre></dt>  <dt id="MANAGER_INFO"><pre id="MANAGER_INFO">MANAGER_INFO = 250</pre></dt>  <dt id="MANAGER_ACCESS"><pre id="MANAGER_ACCESS">MANAGER_ACCESS = 401</pre></dt>  <dt id="MANAGER_CLIENT_ERR"><pre id="MANAGER_CLIENT_ERR">MANAGER_CLIENT_ERR = 450</pre></dt>  <dt id="MANAGER_INTERNAL_ERR"><pre id="MANAGER_INTERNAL_ERR">MANAGER_INTERNAL_ERR = 500</pre></dt>  <dt id="LOCAL_INFILE_ERROR_LEN"><pre id="LOCAL_INFILE_ERROR_LEN">LOCAL_INFILE_ERROR_LEN = 512</pre></dt>  <dt id="NO_DATA"><pre id="NO_DATA">NO_DATA = 100</pre></dt>  <dt id="DATA_TRUNCATED"><pre id="DATA_TRUNCATED">DATA_TRUNCATED = 101</pre></dt>  </dl>  <h2 id="12">Procs</h2> <dl> <dt id="my_net_init"><pre id="my_net_init,PNET,PVIO" data-language="nim">proc my_net_init(net: PNET; vio: PVIO): my_bool {.cdecl, dynlib: lib,
+    importc: "my_net_init".}</pre></dt>  <dt id="my_net_local_init"><pre id="my_net_local_init,PNET" data-language="nim">proc my_net_local_init(net: PNET) {.cdecl, dynlib: lib, importc: "my_net_local_init".}</pre></dt>  <dt id="net_end"><pre id="net_end,PNET" data-language="nim">proc net_end(net: PNET) {.cdecl, dynlib: lib, importc: "net_end".}</pre></dt>  <dt id="net_clear"><pre id="net_clear,PNET" data-language="nim">proc net_clear(net: PNET) {.cdecl, dynlib: lib, importc: "net_clear".}</pre></dt>  <dt id="net_realloc"><pre id="net_realloc,PNET,int" data-language="nim">proc net_realloc(net: PNET; len: int): my_bool {.cdecl, dynlib: lib,
+    importc: "net_realloc".}</pre></dt>  <dt id="net_flush"><pre id="net_flush,PNET" data-language="nim">proc net_flush(net: PNET): my_bool {.cdecl, dynlib: lib, importc: "net_flush".}</pre></dt>  <dt id="my_net_write"><pre id="my_net_write,PNET,cstring,int" data-language="nim">proc my_net_write(net: PNET; packet: cstring; length: int): my_bool {.cdecl, dynlib: lib,
+    importc: "my_net_write".}</pre></dt>  <dt id="net_write_command"><pre id="net_write_command,PNET,char,cstring,int,cstring,int" data-language="nim">proc net_write_command(net: PNET; command: char; header: cstring; head_len: int;
+                      packet: cstring; length: int): my_bool {.cdecl, dynlib: lib,
+    importc: "net_write_command".}</pre></dt>  <dt id="net_real_write"><pre id="net_real_write,PNET,cstring,int" data-language="nim">proc net_real_write(net: PNET; packet: cstring; length: int): cint {.cdecl, dynlib: lib,
+    importc: "net_real_write".}</pre></dt>  <dt id="my_net_read"><pre id="my_net_read,PNET" data-language="nim">proc my_net_read(net: PNET): int {.cdecl, dynlib: lib, importc: "my_net_read".}</pre></dt>  <dt id="my_connect"><pre id="my_connect,my_socket,Psockaddr,cuint,cuint" data-language="nim">proc my_connect(s: my_socket; name: Psockaddr; namelen: cuint; timeout: cuint): cint {.
+    cdecl, dynlib: lib, importc: "my_connect".}</pre></dt>  <dt id="randominit"><pre id="randominit,Prand_struct,int,int" data-language="nim">proc randominit(para1: Prand_struct; seed1: int; seed2: int) {.cdecl, dynlib: lib,
+    importc: "randominit".}</pre></dt>  <dt id="my_rnd"><pre id="my_rnd,Prand_struct" data-language="nim">proc my_rnd(para1: Prand_struct): cdouble {.cdecl, dynlib: lib, importc: "my_rnd".}</pre></dt>  <dt id="create_random_string"><pre id="create_random_string,cstring,cuint,Prand_struct" data-language="nim">proc create_random_string(fto: cstring; len: cuint; rand_st: Prand_struct) {.cdecl,
+    dynlib: lib, importc: "create_random_string".}</pre></dt>  <dt id="hash_password"><pre id="hash_password,int,cstring,cuint" data-language="nim">proc hash_password(fto: int; password: cstring; password_len: cuint) {.cdecl,
+    dynlib: lib, importc: "hash_password".}</pre></dt>  <dt id="make_scrambled_password_323"><pre id="make_scrambled_password_323,cstring,cstring" data-language="nim">proc make_scrambled_password_323(fto: cstring; password: cstring) {.cdecl,
+    dynlib: lib, importc: "make_scrambled_password_323".}</pre></dt>  <dt id="scramble_323"><pre id="scramble_323,cstring,cstring,cstring" data-language="nim">proc scramble_323(fto: cstring; message: cstring; password: cstring) {.cdecl,
+    dynlib: lib, importc: "scramble_323".}</pre></dt>  <dt id="check_scramble_323"><pre id="check_scramble_323,cstring,cstring,int" data-language="nim">proc check_scramble_323(para1: cstring; message: cstring; salt: int): my_bool {.cdecl,
+    dynlib: lib, importc: "check_scramble_323".}</pre></dt>  <dt id="get_salt_from_password_323"><pre id="get_salt_from_password_323,ptr.int,cstring" data-language="nim">proc get_salt_from_password_323(res: ptr int; password: cstring) {.cdecl, dynlib: lib,
+    importc: "get_salt_from_password_323".}</pre></dt>  <dt id="make_password_from_salt_323"><pre id="make_password_from_salt_323,cstring,ptr.int" data-language="nim">proc make_password_from_salt_323(fto: cstring; salt: ptr int) {.cdecl, dynlib: lib,
+    importc: "make_password_from_salt_323".}</pre></dt>  <dt id="octet2hex"><pre id="octet2hex,cstring,cstring,cuint" data-language="nim">proc octet2hex(fto: cstring; str: cstring; length: cuint): cstring {.cdecl, dynlib: lib,
+    importc: "octet2hex".}</pre></dt>  <dt id="make_scrambled_password"><pre id="make_scrambled_password,cstring,cstring" data-language="nim">proc make_scrambled_password(fto: cstring; password: cstring) {.cdecl, dynlib: lib,
+    importc: "make_scrambled_password".}</pre></dt>  <dt id="scramble"><pre id="scramble,cstring,cstring,cstring" data-language="nim">proc scramble(fto: cstring; message: cstring; password: cstring) {.cdecl, dynlib: lib,
+    importc: "scramble".}</pre></dt>  <dt id="check_scramble"><pre id="check_scramble,cstring,cstring,pointer" data-language="nim">proc check_scramble(reply: cstring; message: cstring; hash_stage2: pointer): my_bool {.
+    cdecl, dynlib: lib, importc: "check_scramble".}</pre></dt>  <dt id="get_salt_from_password"><pre id="get_salt_from_password,pointer,cstring" data-language="nim">proc get_salt_from_password(res: pointer; password: cstring) {.cdecl, dynlib: lib,
+    importc: "get_salt_from_password".}</pre></dt>  <dt id="make_password_from_salt"><pre id="make_password_from_salt,cstring,pointer" data-language="nim">proc make_password_from_salt(fto: cstring; hash_stage2: pointer) {.cdecl, dynlib: lib,
+    importc: "make_password_from_salt".}</pre></dt>  <dt id="get_tty_password"><pre id="get_tty_password,cstring" data-language="nim">proc get_tty_password(opt_message: cstring): cstring {.cdecl, dynlib: lib,
+    importc: "get_tty_password".}</pre></dt>  <dt id="errno_to_sqlstate"><pre id="errno_to_sqlstate,cuint" data-language="nim">proc errno_to_sqlstate(errno: cuint): cstring {.cdecl, dynlib: lib,
+    importc: "mysql_errno_to_sqlstate".}</pre></dt>  <dt id="modify_defaults_file"><pre id="modify_defaults_file,cstring,cstring,cstring,cstring,cint" data-language="nim">proc modify_defaults_file(file_location: cstring; option: cstring;
+                         option_value: cstring; section_name: cstring;
+                         remove_option: cint): cint {.cdecl, dynlib: lib,
+    importc: "load_defaults".}</pre></dt>  <dt id="load_defaults"><pre id="load_defaults,cstring,cstringArray,ptr.cint,ptr.cstringArray" data-language="nim">proc load_defaults(conf_file: cstring; groups: cstringArray; argc: ptr cint;
+                  argv: ptr cstringArray): cint {.cdecl, dynlib: lib,
+    importc: "load_defaults".}</pre></dt>  <dt id="my_init"><pre id="my_init," data-language="nim">proc my_init(): my_bool {.cdecl, dynlib: lib, importc: "my_init".}</pre></dt>  <dt id="my_thread_init"><pre id="my_thread_init," data-language="nim">proc my_thread_init(): my_bool {.cdecl, dynlib: lib, importc: "my_thread_init".}</pre></dt>  <dt id="my_thread_end"><pre id="my_thread_end," data-language="nim">proc my_thread_end() {.cdecl, dynlib: lib, importc: "my_thread_end".}</pre></dt>  <dt id="server_init"><pre id="server_init,cint,cstringArray,cstringArray" data-language="nim">proc server_init(argc: cint; argv: cstringArray; groups: cstringArray): cint {.cdecl,
+    dynlib: lib, importc: "mysql_server_init".}</pre></dt>  <dt id="server_end"><pre id="server_end," data-language="nim">proc server_end() {.cdecl, dynlib: lib, importc: "mysql_server_end".}</pre></dt>  <dt id="library_init"><pre id="library_init,cint,cstringArray,cstringArray" data-language="nim">proc library_init(argc: cint; argv: cstringArray; groups: cstringArray): cint {.cdecl,
+    dynlib: lib, importc: "mysql_server_init".}</pre></dt>  <dt id="library_end"><pre id="library_end," data-language="nim">proc library_end() {.cdecl, dynlib: lib, importc: "mysql_server_end".}</pre></dt>  <dt id="get_parameters"><pre id="get_parameters," data-language="nim">proc get_parameters(): PPARAMETERS {.stdcall, dynlib: lib,
+                                  importc: "mysql_get_parameters".}</pre></dt>  <dt id="thread_init"><pre id="thread_init," data-language="nim">proc thread_init(): my_bool {.stdcall, dynlib: lib, importc: "mysql_thread_init".}</pre></dt>  <dt id="thread_end"><pre id="thread_end," data-language="nim">proc thread_end() {.stdcall, dynlib: lib, importc: "mysql_thread_end".}</pre></dt>  <dt id="num_rows"><pre id="num_rows,PRES" data-language="nim">proc num_rows(res: PRES): my_ulonglong {.stdcall, dynlib: lib,
+                                     importc: "mysql_num_rows".}</pre></dt>  <dt id="num_fields"><pre id="num_fields,PRES" data-language="nim">proc num_fields(res: PRES): cuint {.stdcall, dynlib: lib, importc: "mysql_num_fields".}</pre></dt>  <dt id="eof"><pre id="eof,PRES" data-language="nim">proc eof(res: PRES): my_bool {.stdcall, dynlib: lib, importc: "mysql_eof".}</pre></dt>  <dt id="fetch_field_direct"><pre id="fetch_field_direct,PRES,cuint" data-language="nim">proc fetch_field_direct(res: PRES; fieldnr: cuint): PFIELD {.stdcall, dynlib: lib,
+    importc: "mysql_fetch_field_direct".}</pre></dt>  <dt id="fetch_fields"><pre id="fetch_fields,PRES" data-language="nim">proc fetch_fields(res: PRES): PFIELD {.stdcall, dynlib: lib,
+                                   importc: "mysql_fetch_fields".}</pre></dt>  <dt id="row_tell"><pre id="row_tell,PRES" data-language="nim">proc row_tell(res: PRES): ROW_OFFSET {.stdcall, dynlib: lib, importc: "mysql_row_tell".}</pre></dt>  <dt id="field_tell"><pre id="field_tell,PRES" data-language="nim">proc field_tell(res: PRES): FIELD_OFFSET {.stdcall, dynlib: lib,
+                                       importc: "mysql_field_tell".}</pre></dt>  <dt id="field_count"><pre id="field_count,PMySQL" data-language="nim">proc field_count(MySQL: PMySQL): cuint {.stdcall, dynlib: lib,
+                                     importc: "mysql_field_count".}</pre></dt>  <dt id="affected_rows"><pre id="affected_rows,PMySQL" data-language="nim">proc affected_rows(MySQL: PMySQL): my_ulonglong {.stdcall, dynlib: lib,
+    importc: "mysql_affected_rows".}</pre></dt>  <dt id="insert_id"><pre id="insert_id,PMySQL" data-language="nim">proc insert_id(MySQL: PMySQL): my_ulonglong {.stdcall, dynlib: lib,
+    importc: "mysql_insert_id".}</pre></dt>  <dt id="errno"><pre id="errno,PMySQL" data-language="nim">proc errno(MySQL: PMySQL): cuint {.stdcall, dynlib: lib, importc: "mysql_errno".}</pre></dt>  <dt id="error"><pre id="error,PMySQL" data-language="nim">proc error(MySQL: PMySQL): cstring {.stdcall, dynlib: lib, importc: "mysql_error".}</pre></dt>  <dt id="sqlstate"><pre id="sqlstate,PMySQL" data-language="nim">proc sqlstate(MySQL: PMySQL): cstring {.stdcall, dynlib: lib, importc: "mysql_sqlstate".}</pre></dt>  <dt id="warning_count"><pre id="warning_count,PMySQL" data-language="nim">proc warning_count(MySQL: PMySQL): cuint {.stdcall, dynlib: lib,
+                                       importc: "mysql_warning_count".}</pre></dt>  <dt id="info"><pre id="info,PMySQL" data-language="nim">proc info(MySQL: PMySQL): cstring {.stdcall, dynlib: lib, importc: "mysql_info".}</pre></dt>  <dt id="thread_id"><pre id="thread_id,PMySQL" data-language="nim">proc thread_id(MySQL: PMySQL): int {.stdcall, dynlib: lib, importc: "mysql_thread_id".}</pre></dt>  <dt id="character_set_name"><pre id="character_set_name,PMySQL" data-language="nim">proc character_set_name(MySQL: PMySQL): cstring {.stdcall, dynlib: lib,
+    importc: "mysql_character_set_name".}</pre></dt>  <dt id="set_character_set"><pre id="set_character_set,PMySQL,cstring" data-language="nim">proc set_character_set(MySQL: PMySQL; csname: cstring): int32 {.stdcall, dynlib: lib,
+    importc: "mysql_set_character_set".}</pre></dt>  <dt id="init"><pre id="init,PMySQL" data-language="nim">proc init(MySQL: PMySQL): PMySQL {.stdcall, dynlib: lib, importc: "mysql_init".}</pre></dt>  <dt id="ssl_set"><pre id="ssl_set,PMySQL,cstring,cstring,cstring,cstring,cstring" data-language="nim">proc ssl_set(MySQL: PMySQL; key: cstring; cert: cstring; ca: cstring; capath: cstring;
+            cipher: cstring): my_bool {.stdcall, dynlib: lib, importc: "mysql_ssl_set".}</pre></dt>  <dt id="change_user"><pre id="change_user,PMySQL,cstring,cstring,cstring" data-language="nim">proc change_user(MySQL: PMySQL; user: cstring; passwd: cstring; db: cstring): my_bool {.
+    stdcall, dynlib: lib, importc: "mysql_change_user".}</pre></dt>  <dt id="real_connect"><pre id="real_connect,PMySQL,cstring,cstring,cstring,cstring,cuint,cstring,int" data-language="nim">proc real_connect(MySQL: PMySQL; host: cstring; user: cstring; passwd: cstring;
+                 db: cstring; port: cuint; unix_socket: cstring; clientflag: int): PMySQL {.
+    stdcall, dynlib: lib, importc: "mysql_real_connect".}</pre></dt>  <dt id="select_db"><pre id="select_db,PMySQL,cstring" data-language="nim">proc select_db(MySQL: PMySQL; db: cstring): cint {.stdcall, dynlib: lib,
+    importc: "mysql_select_db".}</pre></dt>  <dt id="query"><pre id="query,PMySQL,cstring" data-language="nim">proc query(MySQL: PMySQL; q: cstring): cint {.stdcall, dynlib: lib,
+                                        importc: "mysql_query".}</pre></dt>  <dt id="send_query"><pre id="send_query,PMySQL,cstring,int" data-language="nim">proc send_query(MySQL: PMySQL; q: cstring; len: int): cint {.stdcall, dynlib: lib,
+    importc: "mysql_send_query".}</pre></dt>  <dt id="real_query"><pre id="real_query,PMySQL,cstring,int" data-language="nim">proc real_query(MySQL: PMySQL; q: cstring; len: int): cint {.stdcall, dynlib: lib,
+    importc: "mysql_real_query".}</pre></dt>  <dt id="store_result"><pre id="store_result,PMySQL" data-language="nim">proc store_result(MySQL: PMySQL): PRES {.stdcall, dynlib: lib,
+                                     importc: "mysql_store_result".}</pre></dt>  <dt id="use_result"><pre id="use_result,PMySQL" data-language="nim">proc use_result(MySQL: PMySQL): PRES {.stdcall, dynlib: lib,
+                                   importc: "mysql_use_result".}</pre></dt>  <dt id="master_query"><pre id="master_query,PMySQL,cstring,int" data-language="nim">proc master_query(MySQL: PMySQL; q: cstring; len: int): my_bool {.stdcall, dynlib: lib,
+    importc: "mysql_master_query".}</pre></dt>  <dt id="master_send_query"><pre id="master_send_query,PMySQL,cstring,int" data-language="nim">proc master_send_query(MySQL: PMySQL; q: cstring; len: int): my_bool {.stdcall,
+    dynlib: lib, importc: "mysql_master_send_query".}</pre></dt>  <dt id="slave_query"><pre id="slave_query,PMySQL,cstring,int" data-language="nim">proc slave_query(MySQL: PMySQL; q: cstring; len: int): my_bool {.stdcall, dynlib: lib,
+    importc: "mysql_slave_query".}</pre></dt>  <dt id="slave_send_query"><pre id="slave_send_query,PMySQL,cstring,int" data-language="nim">proc slave_send_query(MySQL: PMySQL; q: cstring; len: int): my_bool {.stdcall,
+    dynlib: lib, importc: "mysql_slave_send_query".}</pre></dt>  <dt id="get_character_set_info"><pre id="get_character_set_info,PMySQL,PMY_CHARSET_INFO" data-language="nim">proc get_character_set_info(MySQL: PMySQL; charset: PMY_CHARSET_INFO) {.stdcall,
+    dynlib: lib, importc: "mysql_get_character_set_info".}</pre></dt>  <dt id="set_local_infile_default"><pre id="set_local_infile_default,PMySQL" data-language="nim">proc set_local_infile_default(MySQL: PMySQL) {.cdecl, dynlib: lib,
+    importc: "mysql_set_local_infile_default".}</pre></dt>  <dt id="enable_rpl_parse"><pre id="enable_rpl_parse,PMySQL" data-language="nim">proc enable_rpl_parse(MySQL: PMySQL) {.stdcall, dynlib: lib,
+                                    importc: "mysql_enable_rpl_parse".}</pre></dt>  <dt id="disable_rpl_parse"><pre id="disable_rpl_parse,PMySQL" data-language="nim">proc disable_rpl_parse(MySQL: PMySQL) {.stdcall, dynlib: lib,
+                                     importc: "mysql_disable_rpl_parse".}</pre></dt>  <dt id="rpl_parse_enabled"><pre id="rpl_parse_enabled,PMySQL" data-language="nim">proc rpl_parse_enabled(MySQL: PMySQL): cint {.stdcall, dynlib: lib,
+    importc: "mysql_rpl_parse_enabled".}</pre></dt>  <dt id="enable_reads_from_master"><pre id="enable_reads_from_master,PMySQL" data-language="nim">proc enable_reads_from_master(MySQL: PMySQL) {.stdcall, dynlib: lib,
+    importc: "mysql_enable_reads_from_master".}</pre></dt>  <dt id="disable_reads_from_master"><pre id="disable_reads_from_master,PMySQL" data-language="nim">proc disable_reads_from_master(MySQL: PMySQL) {.stdcall, dynlib: lib,
+    importc: "mysql_disable_reads_from_master".}</pre></dt>  <dt id="reads_from_master_enabled"><pre id="reads_from_master_enabled,PMySQL" data-language="nim">proc reads_from_master_enabled(MySQL: PMySQL): my_bool {.stdcall, dynlib: lib,
+    importc: "mysql_reads_from_master_enabled".}</pre></dt>  <dt id="rpl_query_type"><pre id="rpl_query_type,cstring,cint" data-language="nim">proc rpl_query_type(q: cstring; length: cint): Rpl_type {.stdcall, dynlib: lib,
+    importc: "mysql_rpl_query_type".}</pre></dt>  <dt id="rpl_probe"><pre id="rpl_probe,PMySQL" data-language="nim">proc rpl_probe(MySQL: PMySQL): my_bool {.stdcall, dynlib: lib,
+                                     importc: "mysql_rpl_probe".}</pre></dt>  <dt id="set_master"><pre id="set_master,PMySQL,cstring,cuint,cstring,cstring" data-language="nim">proc set_master(MySQL: PMySQL; host: cstring; port: cuint; user: cstring; passwd: cstring): cint {.
+    stdcall, dynlib: lib, importc: "mysql_set_master".}</pre></dt>  <dt id="add_slave"><pre id="add_slave,PMySQL,cstring,cuint,cstring,cstring" data-language="nim">proc add_slave(MySQL: PMySQL; host: cstring; port: cuint; user: cstring; passwd: cstring): cint {.
+    stdcall, dynlib: lib, importc: "mysql_add_slave".}</pre></dt>  <dt id="shutdown"><pre id="shutdown,PMySQL,Enum_shutdown_level" data-language="nim">proc shutdown(MySQL: PMySQL; shutdown_level: Enum_shutdown_level): cint {.stdcall,
+    dynlib: lib, importc: "mysql_shutdown".}</pre></dt>  <dt id="dump_debug_info"><pre id="dump_debug_info,PMySQL" data-language="nim">proc dump_debug_info(MySQL: PMySQL): cint {.stdcall, dynlib: lib,
+                                        importc: "mysql_dump_debug_info".}</pre></dt>  <dt id="refresh"><pre id="refresh,PMySQL,cuint" data-language="nim">proc refresh(sql: PMySQL; refresh_options: cuint): cint {.stdcall, dynlib: lib,
+    importc: "mysql_refresh".}</pre></dt>  <dt id="kill"><pre id="kill,PMySQL,int" data-language="nim">proc kill(MySQL: PMySQL; pid: int): cint {.stdcall, dynlib: lib, importc: "mysql_kill".}</pre></dt>  <dt id="set_server_option"><pre id="set_server_option,PMySQL,Enum_mysql_set_option" data-language="nim">proc set_server_option(MySQL: PMySQL; option: Enum_mysql_set_option): cint {.stdcall,
+    dynlib: lib, importc: "mysql_set_server_option".}</pre></dt>  <dt id="ping"><pre id="ping,PMySQL" data-language="nim">proc ping(MySQL: PMySQL): cint {.stdcall, dynlib: lib, importc: "mysql_ping".}</pre></dt>  <dt id="stat"><pre id="stat,PMySQL" data-language="nim">proc stat(MySQL: PMySQL): cstring {.stdcall, dynlib: lib, importc: "mysql_stat".}</pre></dt>  <dt id="get_server_info"><pre id="get_server_info,PMySQL" data-language="nim">proc get_server_info(MySQL: PMySQL): cstring {.stdcall, dynlib: lib,
+    importc: "mysql_get_server_info".}</pre></dt>  <dt id="get_client_info"><pre id="get_client_info," data-language="nim">proc get_client_info(): cstring {.stdcall, dynlib: lib,
+                               importc: "mysql_get_client_info".}</pre></dt>  <dt id="get_client_version"><pre id="get_client_version," data-language="nim">proc get_client_version(): int {.stdcall, dynlib: lib,
+                              importc: "mysql_get_client_version".}</pre></dt>  <dt id="get_host_info"><pre id="get_host_info,PMySQL" data-language="nim">proc get_host_info(MySQL: PMySQL): cstring {.stdcall, dynlib: lib,
+    importc: "mysql_get_host_info".}</pre></dt>  <dt id="get_server_version"><pre id="get_server_version,PMySQL" data-language="nim">proc get_server_version(MySQL: PMySQL): int {.stdcall, dynlib: lib,
+    importc: "mysql_get_server_version".}</pre></dt>  <dt id="get_proto_info"><pre id="get_proto_info,PMySQL" data-language="nim">proc get_proto_info(MySQL: PMySQL): cuint {.stdcall, dynlib: lib,
+                                        importc: "mysql_get_proto_info".}</pre></dt>  <dt id="list_dbs"><pre id="list_dbs,PMySQL,cstring" data-language="nim">proc list_dbs(MySQL: PMySQL; wild: cstring): PRES {.stdcall, dynlib: lib,
+    importc: "mysql_list_dbs".}</pre></dt>  <dt id="list_tables"><pre id="list_tables,PMySQL,cstring" data-language="nim">proc list_tables(MySQL: PMySQL; wild: cstring): PRES {.stdcall, dynlib: lib,
+    importc: "mysql_list_tables".}</pre></dt>  <dt id="list_processes"><pre id="list_processes,PMySQL" data-language="nim">proc list_processes(MySQL: PMySQL): PRES {.stdcall, dynlib: lib,
+                                       importc: "mysql_list_processes".}</pre></dt>  <dt id="options"><pre id="options,PMySQL,Option,cstring" data-language="nim">proc options(MySQL: PMySQL; option: Option; arg: cstring): cint {.stdcall, dynlib: lib,
+    importc: "mysql_options".}</pre></dt>  <dt id="free_result"><pre id="free_result,PRES" data-language="nim">proc free_result(result: PRES) {.stdcall, dynlib: lib, importc: "mysql_free_result".}</pre></dt>  <dt id="data_seek"><pre id="data_seek,PRES,my_ulonglong" data-language="nim">proc data_seek(result: PRES; offset: my_ulonglong) {.stdcall, dynlib: lib,
+    importc: "mysql_data_seek".}</pre></dt>  <dt id="row_seek"><pre id="row_seek,PRES,ROW_OFFSET" data-language="nim">proc row_seek(result: PRES; offset: ROW_OFFSET): ROW_OFFSET {.stdcall, dynlib: lib,
+    importc: "mysql_row_seek".}</pre></dt>  <dt id="field_seek"><pre id="field_seek,PRES,FIELD_OFFSET" data-language="nim">proc field_seek(result: PRES; offset: FIELD_OFFSET): FIELD_OFFSET {.stdcall,
+    dynlib: lib, importc: "mysql_field_seek".}</pre></dt>  <dt id="fetch_row"><pre id="fetch_row,PRES" data-language="nim">proc fetch_row(result: PRES): ROW {.stdcall, dynlib: lib, importc: "mysql_fetch_row".}</pre></dt>  <dt id="fetch_lengths"><pre id="fetch_lengths,PRES" data-language="nim">proc fetch_lengths(result: PRES): ptr int {.stdcall, dynlib: lib,
+                                       importc: "mysql_fetch_lengths".}</pre></dt>  <dt id="fetch_field"><pre id="fetch_field,PRES" data-language="nim">proc fetch_field(result: PRES): PFIELD {.stdcall, dynlib: lib,
+                                     importc: "mysql_fetch_field".}</pre></dt>  <dt id="list_fields"><pre id="list_fields,PMySQL,cstring,cstring" data-language="nim">proc list_fields(MySQL: PMySQL; table: cstring; wild: cstring): PRES {.stdcall,
+    dynlib: lib, importc: "mysql_list_fields".}</pre></dt>  <dt id="escape_string"><pre id="escape_string,cstring,cstring,int" data-language="nim">proc escape_string(fto: cstring; `from`: cstring; from_length: int): int {.stdcall,
+    dynlib: lib, importc: "mysql_escape_string".}</pre></dt>  <dt id="hex_string"><pre id="hex_string,cstring,cstring,int" data-language="nim">proc hex_string(fto: cstring; `from`: cstring; from_length: int): int {.stdcall,
+    dynlib: lib, importc: "mysql_hex_string".}</pre></dt>  <dt id="real_escape_string"><pre id="real_escape_string,PMySQL,cstring,cstring,int" data-language="nim">proc real_escape_string(MySQL: PMySQL; fto: cstring; `from`: cstring; len: int): int {.
+    stdcall, dynlib: lib, importc: "mysql_real_escape_string".}</pre></dt>  <dt id="debug"><pre id="debug,cstring" data-language="nim">proc debug(debug: cstring) {.stdcall, dynlib: lib, importc: "mysql_debug".}</pre></dt>  <dt id="myodbc_remove_escape"><pre id="myodbc_remove_escape,PMySQL,cstring" data-language="nim">proc myodbc_remove_escape(MySQL: PMySQL; name: cstring) {.stdcall, dynlib: lib,
+    importc: "myodbc_remove_escape".}</pre></dt>  <dt id="thread_safe"><pre id="thread_safe," data-language="nim">proc thread_safe(): cuint {.stdcall, dynlib: lib, importc: "mysql_thread_safe".}</pre></dt>  <dt id="embedded"><pre id="embedded," data-language="nim">proc embedded(): my_bool {.stdcall, dynlib: lib, importc: "mysql_embedded".}</pre></dt>  <dt id="manager_init"><pre id="manager_init,PMANAGER" data-language="nim">proc manager_init(con: PMANAGER): PMANAGER {.stdcall, dynlib: lib,
+    importc: "mysql_manager_init".}</pre></dt>  <dt id="manager_connect"><pre id="manager_connect,PMANAGER,cstring,cstring,cstring,cuint" data-language="nim">proc manager_connect(con: PMANAGER; host: cstring; user: cstring; passwd: cstring;
+                    port: cuint): PMANAGER {.stdcall, dynlib: lib,
+    importc: "mysql_manager_connect".}</pre></dt>  <dt id="manager_close"><pre id="manager_close,PMANAGER" data-language="nim">proc manager_close(con: PMANAGER) {.stdcall, dynlib: lib,
+                                 importc: "mysql_manager_close".}</pre></dt>  <dt id="manager_command"><pre id="manager_command,PMANAGER,cstring,cint" data-language="nim">proc manager_command(con: PMANAGER; cmd: cstring; cmd_len: cint): cint {.stdcall,
+    dynlib: lib, importc: "mysql_manager_command".}</pre></dt>  <dt id="manager_fetch_line"><pre id="manager_fetch_line,PMANAGER,cstring,cint" data-language="nim">proc manager_fetch_line(con: PMANAGER; res_buf: cstring; res_buf_size: cint): cint {.
+    stdcall, dynlib: lib, importc: "mysql_manager_fetch_line".}</pre></dt>  <dt id="read_query_result"><pre id="read_query_result,PMySQL" data-language="nim">proc read_query_result(MySQL: PMySQL): my_bool {.stdcall, dynlib: lib,
+    importc: "mysql_read_query_result".}</pre></dt>  <dt id="stmt_init"><pre id="stmt_init,PMySQL" data-language="nim">proc stmt_init(MySQL: PMySQL): PSTMT {.stdcall, dynlib: lib, importc: "mysql_stmt_init".}</pre></dt>  <dt id="stmt_prepare"><pre id="stmt_prepare,PSTMT,cstring,int" data-language="nim">proc stmt_prepare(stmt: PSTMT; query: cstring; len: int): cint {.stdcall, dynlib: lib,
+    importc: "mysql_stmt_prepare".}</pre></dt>  <dt id="stmt_execute"><pre id="stmt_execute,PSTMT" data-language="nim">proc stmt_execute(stmt: PSTMT): cint {.stdcall, dynlib: lib,
+                                   importc: "mysql_stmt_execute".}</pre></dt>  <dt id="stmt_fetch"><pre id="stmt_fetch,PSTMT" data-language="nim">proc stmt_fetch(stmt: PSTMT): cint {.stdcall, dynlib: lib, importc: "mysql_stmt_fetch".}</pre></dt>  <dt id="stmt_fetch_column"><pre id="stmt_fetch_column,PSTMT,PBIND,cuint,int" data-language="nim">proc stmt_fetch_column(stmt: PSTMT; `bind`: PBIND; column: cuint; offset: int): cint {.
+    stdcall, dynlib: lib, importc: "mysql_stmt_fetch_column".}</pre></dt>  <dt id="stmt_store_result"><pre id="stmt_store_result,PSTMT" data-language="nim">proc stmt_store_result(stmt: PSTMT): cint {.stdcall, dynlib: lib,
+                                        importc: "mysql_stmt_store_result".}</pre></dt>  <dt id="stmt_param_count"><pre id="stmt_param_count,PSTMT" data-language="nim">proc stmt_param_count(stmt: PSTMT): int {.stdcall, dynlib: lib,
+                                      importc: "mysql_stmt_param_count".}</pre></dt>  <dt id="stmt_attr_set"><pre id="stmt_attr_set,PSTMT,Enum_stmt_attr_type,pointer" data-language="nim">proc stmt_attr_set(stmt: PSTMT; attr_type: Enum_stmt_attr_type; attr: pointer): my_bool {.
+    stdcall, dynlib: lib, importc: "mysql_stmt_attr_set".}</pre></dt>  <dt id="stmt_attr_get"><pre id="stmt_attr_get,PSTMT,Enum_stmt_attr_type,pointer" data-language="nim">proc stmt_attr_get(stmt: PSTMT; attr_type: Enum_stmt_attr_type; attr: pointer): my_bool {.
+    stdcall, dynlib: lib, importc: "mysql_stmt_attr_get".}</pre></dt>  <dt id="stmt_bind_param"><pre id="stmt_bind_param,PSTMT,PBIND" data-language="nim">proc stmt_bind_param(stmt: PSTMT; bnd: PBIND): my_bool {.stdcall, dynlib: lib,
+    importc: "mysql_stmt_bind_param".}</pre></dt>  <dt id="stmt_bind_result"><pre id="stmt_bind_result,PSTMT,PBIND" data-language="nim">proc stmt_bind_result(stmt: PSTMT; bnd: PBIND): my_bool {.stdcall, dynlib: lib,
+    importc: "mysql_stmt_bind_result".}</pre></dt>  <dt id="stmt_close"><pre id="stmt_close,PSTMT" data-language="nim">proc stmt_close(stmt: PSTMT): my_bool {.stdcall, dynlib: lib,
+                                    importc: "mysql_stmt_close".}</pre></dt>  <dt id="stmt_reset"><pre id="stmt_reset,PSTMT" data-language="nim">proc stmt_reset(stmt: PSTMT): my_bool {.stdcall, dynlib: lib,
+                                    importc: "mysql_stmt_reset".}</pre></dt>  <dt id="stmt_free_result"><pre id="stmt_free_result,PSTMT" data-language="nim">proc stmt_free_result(stmt: PSTMT): my_bool {.stdcall, dynlib: lib,
+    importc: "mysql_stmt_free_result".}</pre></dt>  <dt id="stmt_send_long_data"><pre id="stmt_send_long_data,PSTMT,cuint,cstring,int" data-language="nim">proc stmt_send_long_data(stmt: PSTMT; param_number: cuint; data: cstring; len: int): my_bool {.
+    stdcall, dynlib: lib, importc: "mysql_stmt_send_long_data".}</pre></dt>  <dt id="stmt_result_metadata"><pre id="stmt_result_metadata,PSTMT" data-language="nim">proc stmt_result_metadata(stmt: PSTMT): PRES {.stdcall, dynlib: lib,
+    importc: "mysql_stmt_result_metadata".}</pre></dt>  <dt id="stmt_param_metadata"><pre id="stmt_param_metadata,PSTMT" data-language="nim">proc stmt_param_metadata(stmt: PSTMT): PRES {.stdcall, dynlib: lib,
+    importc: "mysql_stmt_param_metadata".}</pre></dt>  <dt id="stmt_errno"><pre id="stmt_errno,PSTMT" data-language="nim">proc stmt_errno(stmt: PSTMT): cuint {.stdcall, dynlib: lib, importc: "mysql_stmt_errno".}</pre></dt>  <dt id="stmt_error"><pre id="stmt_error,PSTMT" data-language="nim">proc stmt_error(stmt: PSTMT): cstring {.stdcall, dynlib: lib,
+                                    importc: "mysql_stmt_error".}</pre></dt>  <dt id="stmt_sqlstate"><pre id="stmt_sqlstate,PSTMT" data-language="nim">proc stmt_sqlstate(stmt: PSTMT): cstring {.stdcall, dynlib: lib,
+                                       importc: "mysql_stmt_sqlstate".}</pre></dt>  <dt id="stmt_row_seek"><pre id="stmt_row_seek,PSTMT,ROW_OFFSET" data-language="nim">proc stmt_row_seek(stmt: PSTMT; offset: ROW_OFFSET): ROW_OFFSET {.stdcall, dynlib: lib,
+    importc: "mysql_stmt_row_seek".}</pre></dt>  <dt id="stmt_row_tell"><pre id="stmt_row_tell,PSTMT" data-language="nim">proc stmt_row_tell(stmt: PSTMT): ROW_OFFSET {.stdcall, dynlib: lib,
+    importc: "mysql_stmt_row_tell".}</pre></dt>  <dt id="stmt_data_seek"><pre id="stmt_data_seek,PSTMT,my_ulonglong" data-language="nim">proc stmt_data_seek(stmt: PSTMT; offset: my_ulonglong) {.stdcall, dynlib: lib,
+    importc: "mysql_stmt_data_seek".}</pre></dt>  <dt id="stmt_num_rows"><pre id="stmt_num_rows,PSTMT" data-language="nim">proc stmt_num_rows(stmt: PSTMT): my_ulonglong {.stdcall, dynlib: lib,
+    importc: "mysql_stmt_num_rows".}</pre></dt>  <dt id="stmt_affected_rows"><pre id="stmt_affected_rows,PSTMT" data-language="nim">proc stmt_affected_rows(stmt: PSTMT): my_ulonglong {.stdcall, dynlib: lib,
+    importc: "mysql_stmt_affected_rows".}</pre></dt>  <dt id="stmt_insert_id"><pre id="stmt_insert_id,PSTMT" data-language="nim">proc stmt_insert_id(stmt: PSTMT): my_ulonglong {.stdcall, dynlib: lib,
+    importc: "mysql_stmt_insert_id".}</pre></dt>  <dt id="stmt_field_count"><pre id="stmt_field_count,PSTMT" data-language="nim">proc stmt_field_count(stmt: PSTMT): cuint {.stdcall, dynlib: lib,
+                                        importc: "mysql_stmt_field_count".}</pre></dt>  <dt id="commit"><pre id="commit,PMySQL" data-language="nim">proc commit(MySQL: PMySQL): my_bool {.stdcall, dynlib: lib, importc: "mysql_commit".}</pre></dt>  <dt id="rollback"><pre id="rollback,PMySQL" data-language="nim">proc rollback(MySQL: PMySQL): my_bool {.stdcall, dynlib: lib, importc: "mysql_rollback".}</pre></dt>  <dt id="autocommit"><pre id="autocommit,PMySQL,my_bool" data-language="nim">proc autocommit(MySQL: PMySQL; auto_mode: my_bool): my_bool {.stdcall, dynlib: lib,
+    importc: "mysql_autocommit".}</pre></dt>  <dt id="more_results"><pre id="more_results,PMySQL" data-language="nim">proc more_results(MySQL: PMySQL): my_bool {.stdcall, dynlib: lib,
+                                        importc: "mysql_more_results".}</pre></dt>  <dt id="next_result"><pre id="next_result,PMySQL" data-language="nim">proc next_result(MySQL: PMySQL): cint {.stdcall, dynlib: lib,
+                                    importc: "mysql_next_result".}</pre></dt>  <dt id="close"><pre id="close,PMySQL" data-language="nim">proc close(sock: PMySQL) {.stdcall, dynlib: lib, importc: "mysql_close".}</pre></dt>  <dt id="net_safe_read"><pre id="net_safe_read,PMySQL" data-language="nim">proc net_safe_read(MySQL: PMySQL): cuint {.cdecl, dynlib: lib, importc: "net_safe_read".}</pre></dt>  <dt id="IS_PRI_KEY"><pre id="IS_PRI_KEY,int32" data-language="nim">proc IS_PRI_KEY(n: int32): bool {.raises: [], tags: [].}</pre></dt>  <dt id="IS_NOT_NULL"><pre id="IS_NOT_NULL,int32" data-language="nim">proc IS_NOT_NULL(n: int32): bool {.raises: [], tags: [].}</pre></dt>  <dt id="IS_BLOB"><pre id="IS_BLOB,int32" data-language="nim">proc IS_BLOB(n: int32): bool {.raises: [], tags: [].}</pre></dt>  <dt id="IS_NUM_FIELD"><pre id="IS_NUM_FIELD,Pst_mysql_field" data-language="nim">proc IS_NUM_FIELD(f: Pst_mysql_field): bool {.raises: [], tags: [].}</pre></dt>  <dt id="IS_NUM"><pre id="IS_NUM,Enum_field_types" data-language="nim">proc IS_NUM(t: Enum_field_types): bool {.raises: [], tags: [].}</pre></dt>  <dt id="INTERNAL_NUM_FIELD"><pre id="INTERNAL_NUM_FIELD,Pst_mysql_field" data-language="nim">proc INTERNAL_NUM_FIELD(f: Pst_mysql_field): bool {.raises: [], tags: [].}</pre></dt>  <dt id="reload"><pre id="reload,PMySQL" data-language="nim">proc reload(x: PMySQL): cint {.raises: [], tags: [].}</pre></dt>  </dl>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2006–2017 Andreas Rumpf<br>Licensed under the MIT License.<br>
+    <a href="https://nim-lang.org/docs/mysql.html" class="_attribution-link" target="_blank">https://nim-lang.org/docs/mysql.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

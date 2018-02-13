@@ -1,0 +1,352 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Niminst - Nim - W3cubDocs</title>
+  
+  <meta name="description" content="niminst is a tool to generate an installer for a Nim program. Currently it can create an installer for Windows via Inno Setup as well as &hellip;">
+  <meta name="keywords" content="niminst, user&#39;s, manual, -, nim">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/nim/niminst/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/nim.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/nim/" class="_nav-link" title="" style="margin-left:0;">Nim</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _nim">
+				
+<h1 class="title">niminst User's manual</h1>   <h2 id="introduction">Introduction</h2>
+<p>niminst is a tool to generate an installer for a Nim program. Currently it can create an installer for Windows via <a href="http://www.jrsoftware.org/isinfo.php" target="_blank">Inno Setup</a> as well as installation/deinstallation scripts for UNIX. Later versions will support Linux' package management systems.</p> <p>niminst works by reading a configuration file that contains all the information that it needs to generate an installer for the different operating systems.</p> <h2 id="configuration-file">Configuration file</h2>
+<p>niminst uses the Nim <a href="../parsecfg/">parsecfg</a> module to parse the configuration file. Here's an example of how the syntax looks like:</p> <pre data-language="nim"># This is a comment.
+; this too.
+
+[Common]
+cc=gcc     # '=' and ':' are the same
+--verbose
+
+[Windows]
+isConsoleApplication=False ; another comment
+
+[Posix]
+isConsoleApplication=True
+
+key1: "in this string backslash escapes are interpreted\n"
+key2: r"in this string not"
+key3: """triple quotes strings
+are also supported. They may span
+multiple lines."""
+
+--"long option with spaces": r"c:\myfiles\test.txt"</pre> <p>The value of a key-value pair can reference user-defined variables via the <code>$variable</code> notation: They can be defined in the command line with the <code>--var:name=value</code> switch. This is useful to not hard-coding the program's version number into the configuration file, for instance.</p> <p>It follows a description of each possible section and how it affects the generated installers.</p> <h3 id="configuration-file-project-section">Project section</h3>
+<p>The project section gathers general information about your project. It must contain the following key-value pairs:</p> <table>
+<tr>
+<th>Key</th>
+<th>description</th>
+</tr> <tr>
+<td><code>Name</code></td>
+<td>the project's name; this needs to be a single word</td>
+</tr> <tr>
+<td><code>DisplayName</code></td>
+<td>the project's long name; this can contain spaces. If not specified, this is the same as <code>Name</code>.</td>
+</tr> <tr>
+<td><code>Version</code></td>
+<td>the project's version</td>
+</tr> <tr>
+<td><code>OS</code></td>
+<td>the OSes to generate C code for; for example: <code>"windows;linux;macosx"</code>
+</td>
+</tr> <tr>
+<td><code>CPU</code></td>
+<td>the CPUs to generate C code for; for example: <code>"i386;amd64;powerpc"</code>
+</td>
+</tr> <tr>
+<td><code>Authors</code></td>
+<td>the project's authors</td>
+</tr> <tr>
+<td><code>Description</code></td>
+<td>the project's description</td>
+</tr> <tr>
+<td><code>App</code></td>
+<td>the application's type: "Console" or "GUI". If "Console", niminst generates a special batch file for Windows to open up the command line shell.</td>
+</tr> <tr>
+<td><code>License</code></td>
+<td>the filename of the application's license</td>
+</tr> </table> <h3 id="configuration-file-files-key">
+<code>files</code> key</h3>
+<p>Many sections support the <code>files</code> key. Listed filenames can be separated by semicolon or the <code>files</code> key can be repeated. Wildcards in filenames are supported. If it is a directory name, all files in the directory are used:</p>
+<pre data-language="nim">[Config]
+Files: "configDir"
+Files: "otherconfig/*.conf;otherconfig/*.cfg"</pre> <h3 id="configuration-file-config-section">Config section</h3>
+<p>The <code>config</code> section currently only supports the <code>files</code> key. Listed files will be installed into the OS's configuration directory.</p> <h3 id="configuration-file-documentation-section">Documentation section</h3>
+<p>The <code>documentation</code> section supports the <code>files</code> key. Listed files will be installed into the OS's native documentation directory (which might be <code>$appdir/doc</code>).</p> <p>There is a <code>start</code> key which determines whether the Windows installer generates a link to e.g. the <code>index.html</code> of your documentation.</p> <h3 id="configuration-file-other-section">Other section</h3>
+<p>The <code>other</code> section currently only supports the <code>files</code> key. Listed files will be installed into the application installation directory (<code>$appdir</code>).</p> <h3 id="configuration-file-lib-section">Lib section</h3>
+<p>The <code>lib</code> section currently only supports the <code>files</code> key. Listed files will be installed into the OS's native library directory (which might be <code>$appdir/lib</code>).</p> <h3 id="configuration-file-windows-section">Windows section</h3>
+<p>The <code>windows</code> section supports the <code>files</code> key for Windows specific files. Listed files will be installed into the application installation directory (<code>$appdir</code>).</p> <p>Other possible options are:</p> <table>
+<tr>
+<th>Key</th>
+<th>description</th>
+</tr> <tr>
+<td><code>BinPath</code></td>
+<td>paths to add to the Windows <code>%PATH%</code> environment variable. Example: <code>BinPath: r"bin;dist\mingw\bin"</code>
+</td>
+</tr> <tr>
+<td><code>InnoSetup</code></td>
+<td>boolean flag whether an Inno Setup installer should be generated for Windows. Example: <code>InnoSetup: "Yes"</code>
+</td>
+</tr> </table> <h3 id="configuration-file-unixbin-section">UnixBin section</h3>
+<p>The <code>UnixBin</code> section currently only supports the <code>files</code> key. Listed files will be installed into the OS's native bin directory (e.g. <code>/usr/local/bin</code>). The exact location depends on the installation path the user specifies when running the <code>install.sh</code> script.</p> <h3 id="configuration-file-unix-section">Unix section</h3>
+<p>Possible options are:</p> <table>
+<tr>
+<th>Key</th>
+<th>description</th>
+</tr> <tr>
+<td><code>InstallScript</code></td>
+<td>boolean flag whether an installation shell script should be generated. Example: <code>InstallScript: "Yes"</code>
+</td>
+</tr> <tr>
+<td><code>UninstallScript</code></td>
+<td>boolean flag whether a deinstallation shell script should be generated. Example: <code>UninstallScript: "Yes"</code>
+</td>
+</tr> </table> <h3 id="configuration-file-innosetup-section">InnoSetup section</h3>
+<p>Possible options are:</p> <table>
+<tr>
+<th>Key</th>
+<th>description</th>
+</tr> <tr>
+<td><code>path</code></td>
+<td>Path to Inno Setup. Example: <code>path = r"c:\inno setup 5\iscc.exe"</code>
+</td>
+</tr> <tr>
+<td><code>flags</code></td>
+<td>Flags to pass to Inno Setup. Example: <code>flags = "/Q"</code>
+</td>
+</tr> </table> <h3 id="configuration-file-c-compiler-section">C_Compiler section</h3>
+<p>Possible options are:</p> <table>
+<tr>
+<th>Key</th>
+<th>description</th>
+</tr> <tr>
+<td><code>path</code></td>
+<td>Path to the C compiler.</td>
+</tr> <tr>
+<td><code>flags</code></td>
+<td>Flags to pass to the C Compiler. Example: <code>flags = "-w"</code>
+</td>
+</tr> </table> <h2 id="real-world-example">Real world example</h2>
+<p>The installers for the Nim compiler itself are generated by niminst. Have a look at its configuration file:</p> <pre data-language="nim">; This config file holds configuration information about the Nim compiler
+; and project.
+
+[Project]
+Name: "Nim"
+Version: "$version"
+Platforms: """
+  windows: i386;amd64
+  linux: i386;amd64;powerpc64;arm;sparc;mips;mipsel;mips64;mips64el;powerpc;powerpc64el;arm64
+  macosx: i386;amd64;powerpc64
+  solaris: i386;amd64;sparc;sparc64
+  freebsd: i386;amd64
+  netbsd: i386;amd64
+  openbsd: i386;amd64
+  dragonfly: i386;amd64
+  haiku: i386;amd64
+  android: i386;arm;arm64
+"""
+
+Authors: "Andreas Rumpf"
+Description: """This is the Nim Compiler. Nim is a new statically typed,
+imperative programming language, that supports procedural, functional, object
+oriented and generic programming styles while remaining simple and efficient.
+A special feature that Nim inherited from Lisp is that Nim's abstract
+syntax tree (AST) is part of the specification - this allows a powerful macro
+system which can be used to create domain specific languages.
+
+Nim is a compiled, garbage-collected systems programming language
+which has an excellent productivity/performance ratio. Nim's design
+focuses on the 3E: efficiency, expressiveness, elegance (in the order of
+priority)."""
+
+App: Console
+License: "copying.txt"
+
+[Config]
+Files: "config/nim.cfg"
+Files: "config/nimdoc.cfg"
+Files: "config/nimdoc.tex.cfg"
+
+[Documentation]
+; Files: "doc/*.html"
+; Files: "doc/*.cfg"
+; Files: "doc/*.pdf"
+; Files: "doc/*.ini"
+Files: "doc/html/overview.html"
+Start: "doc/html/overview.html"
+
+
+[Other]
+Files: "readme.txt;copying.txt;install.txt"
+Files: "makefile"
+Files: "koch.nim"
+Files: "install_nimble.nims"
+Files: "install_tools.nims"
+
+Files: "icons/nim.ico"
+Files: "icons/nim.rc"
+Files: "icons/nim.res"
+Files: "icons/nim_icon.o"
+Files: "icons/koch.ico"
+Files: "icons/koch.rc"
+Files: "icons/koch.res"
+Files: "icons/koch_icon.o"
+
+Files: "compiler"
+Files: "doc"
+Files: "doc/html"
+Files: "tools"
+Files: "nimsuggest"
+Files: "nimsuggest/tests/*.nim"
+Files: "web/website.ini"
+Files: "web/ticker.html"
+Files: "web/*.nim"
+Files: "web/*.rst"
+Files: "web/*.csv"
+Files: "web/news/*.rst"
+Files: "bin/nimblepkg/*.nim"
+Files: "bin/nimblepkg/*.cfg"
+
+[Lib]
+Files: "lib"
+
+[Other]
+Files: "examples"
+Files: "dist/nimble"
+Files: "dist/nimsuggest"
+
+Files: "tests"
+
+[Windows]
+Files: "bin/nim.exe"
+Files: "bin/c2nim.exe"
+Files: "bin/nimgrep.exe"
+Files: "bin/nimsuggest.exe"
+Files: "bin/nimble.exe"
+Files: "bin/vccexe.exe"
+Files: "bin/nimgrab.exe"
+
+Files: "koch.exe"
+Files: "finish.exe"
+; Files: "bin/downloader.exe"
+
+; Files: "dist/mingw"
+Files: r"tools\start.bat"
+BinPath: r"bin;dist\mingw\bin;dist"
+
+;           Section | dir | zipFile | size hint (in KB) | url | exe start menu entry
+Download: r"Documentation|doc|docs.zip|13824|https://nim-lang.org/download/docs-${version}.zip|overview.html"
+Download: r"C Compiler (MingW)|dist|mingw.zip|82944|https://nim-lang.org/download/${mingw}.zip"
+Download: r"Support DLLs|bin|nim_dlls.zip|479|https://nim-lang.org/download/dlls.zip"
+Download: r"Aporia Text Editor|dist|aporia.zip|97997|https://nim-lang.org/download/aporia-0.4.0.zip|aporia-0.4.0\bin\aporia.exe"
+; for now only NSIS supports optional downloads
+
+[WinBin]
+Files: "$NIMINSTDEPS/makelink.exe"
+Files: "$NIMINSTDEPS/7zG.exe"
+Files: "$NIMINSTDEPS/*.dll"
+
+[UnixBin]
+Files: "bin/nim"
+
+
+[Unix]
+InstallScript: "yes"
+UninstallScript: "yes"
+
+
+[InnoSetup]
+path = r"c:\Program Files (x86)\Inno Setup 5\iscc.exe"
+flags = "/Q"
+
+[NSIS]
+flags = "/V0"
+
+[C_Compiler]
+path = r""
+flags = "-w"
+
+
+[deb]
+buildDepends: "gcc (&gt;= 4:4.3.2)"
+pkgDepends: "gcc (&gt;= 4:4.3.2)"
+shortDesc: "The Nim Compiler"
+licenses: "bin/nim,MIT;lib/*,MIT;"
+
+[nimble]
+pkgName: "compiler"
+pkgFiles: "compiler/*;doc/basicopt.txt;doc/advopt.txt"</pre>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2006–2017 Andreas Rumpf<br>Licensed under the MIT License.<br>
+    <a href="https://nim-lang.org/docs/niminst.html" class="_attribution-link" target="_blank">https://nim-lang.org/docs/niminst.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

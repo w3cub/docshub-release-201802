@@ -1,0 +1,116 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Fsmonitor - Nim - W3cubDocs</title>
+  
+  <meta name="description" content=" This module allows you to monitor files or directories for changes using asyncio. ">
+  <meta name="keywords" content="module, fsmonitor, -, nim">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/nim/fsmonitor/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/nim.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/nim/" class="_nav-link" title="" style="margin-left:0;">Nim</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _nim">
+				
+<h1 class="title">Module fsmonitor</h1>  
+<p>This module allows you to monitor files or directories for changes using asyncio.</p> <p><strong>Warning</strong>: This module will likely disappear soon and be moved into a new Nimble package.</p> <p>Windows support is not yet implemented.</p> <p><strong>Note:</strong> This module uses <code>inotify</code> on Linux (Other Unixes are not yet supported). <code>inotify</code> was merged into the 2.6.13 Linux kernel, this module will therefore not work with any Linux kernel prior to that, unless it has been patched to support inotify.</p>  <h2 id="6">Imports</h2> <dl> <a href="../posix/">posix</a>, <a href="../inotify/">inotify</a>, <a href="../os/">os</a>, <a href="../asyncio/">asyncio</a>, <a href="../tables/">tables</a> </dl>  <h2 id="7">Types</h2> <dl> <dt id="FSMonitor"><pre id="FSMonitor">FSMonitor = ref FSMonitorObj</pre></dt>  <dt id="MonitorEventType"><pre id="MonitorEventType" data-language="nim">MonitorEventType = enum
+  MonitorAccess,              ## File was accessed.
+  MonitorAttrib,              ## Metadata changed.
+  MonitorCloseWrite,          ## Writable file was closed.
+  MonitorCloseNoWrite,        ## Non-writable file closed.
+  MonitorCreate,              ## Subfile was created.
+  MonitorDelete,              ## Subfile was deleted.
+  MonitorDeleteSelf,          ## Watched file/directory was itself deleted.
+  MonitorModify,              ## File was modified.
+  MonitorMoveSelf,            ## Self was moved.
+  MonitorMoved,               ## File was moved.
+  MonitorOpen,                ## File was opened.
+  MonitorAll                  ## Filter for all event types.</pre></dt> <dd> Monitor event type   </dd> <dt id="MonitorEvent"><pre id="MonitorEvent" data-language="nim">MonitorEvent = object
+  case kind*: MonitorEventType
+  of MonitorMoveSelf, MonitorMoved:
+      oldPath*: string         ## Old absolute location
+      newPath*: string         ## New absolute location
+    
+  else:
+      fullname*: string        ## Absolute filename of the file/directory affected.
+    
+  name*: string                ## Non absolute filepath of the file/directory
+              ## affected relative to the directory watched.
+              ## "" if this event refers to the file/directory
+              ## watched.
+  wd*: cint                    ## Watch descriptor.</pre></dt> <dd> Type of the event.   </dd> </dl>  <h2 id="12">Procs</h2> <dl> <dt id="newMonitor"><pre id="newMonitor," data-language="nim">proc newMonitor(): FSMonitor {.raises: [OSError], tags: [].}</pre></dt> <dd> Creates a new file system monitor.   </dd> <dt id="add"><pre id="add,FSMonitor,string" data-language="nim">proc add(monitor: FSMonitor; target: string; filters = {MonitorAll}): cint {.discardable,
+    raises: [OSError], tags: [].}</pre></dt> <dd> Adds <code>target</code> which may be a directory or a file to the list of watched paths of <code>monitor</code>. You can specify the events to report using the <code>filters</code> parameter.   </dd> <dt id="del"><pre id="del,FSMonitor,cint" data-language="nim">proc del(monitor: FSMonitor; wd: cint) {.raises: [OSError], tags: [].}</pre></dt> <dd> <p>Removes watched directory or file as specified by <code>wd</code> from <code>monitor</code>.</p> <p>If <code>wd</code> is not a part of <code>monitor</code> an EOS error is raised.</p>   </dd> <dt id="register"><pre id="register,Dispatcher,FSMonitor,proc(FSMonitor,MonitorEvent)" data-language="nim">proc register(d: Dispatcher; monitor: FSMonitor;
+             handleEvent: proc (m: FSMonitor; ev: MonitorEvent) {.closure.}) {.
+    raises: [], tags: [].}</pre></dt> <dd> Registers <code>monitor</code> with dispatcher <code>d</code>.   </dd> </dl>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2006–2017 Andreas Rumpf<br>Licensed under the MIT License.<br>
+    <a href="https://nim-lang.org/docs/fsmonitor.html" class="_attribution-link" target="_blank">https://nim-lang.org/docs/fsmonitor.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>
