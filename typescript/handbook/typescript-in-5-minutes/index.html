@@ -1,0 +1,149 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>TypeScript in 5 Minutes - TypeScript - W3cubDocs</title>
+  
+  <meta name="description" content=" Let’s get started by building a simple web application with TypeScript. ">
+  <meta name="keywords" content="typescript, minutes, -">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/typescript/handbook/typescript-in-5-minutes/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/typescript.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/typescript/" class="_nav-link" title="" style="margin-left:0;">TypeScript</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _typescript">
+				
+<h1 class="post-title">TypeScript in 5 minutes</h1>     <p>Let’s get started by building a simple web application with TypeScript.</p> <h2 id="installing-typescript">Installing TypeScript</h2> <p>There are two main ways to get the TypeScript tools:</p> <ul> <li>Via npm (the Node.js package manager)</li> <li>By installing TypeScript’s Visual Studio plugins</li> </ul> <p>Visual Studio 2017 and Visual Studio 2015 Update 3 include TypeScript by default. If you didn’t install TypeScript with Visual Studio, you can still <a href="https://www.typescriptlang.org/#download-links" target="_blank">download it</a>.</p> <p>For NPM users:</p> <pre data-language="shell">&gt; npm install -g typescript
+</pre> <h2 id="building-your-first-typescript-file">Building your first TypeScript file</h2> <p>In your editor, type the following JavaScript code in <code>greeter.ts</code>:</p> <pre data-language="typescript">function greeter(person) {
+  return "Hello, " + person;
+}
+
+var user = "Jane User";
+
+document.body.innerHTML = greeter(user);
+</pre> <h2 id="compiling-your-code">Compiling your code</h2> <p>We used a <code>.ts</code> extension, but this code is just JavaScript. You could have copy/pasted this straight out of an existing JavaScript app.</p> <p>At the command line, run the TypeScript compiler:</p> <pre data-language="shell">tsc greeter.ts
+</pre> <p>The result will be a file <code>greeter.js</code> which contains the same JavaScript that you fed in. We’re up and running using TypeScript in our JavaScript app!</p> <p>Now we can start taking advantage of some of the new tools TypeScript offers. Add a <code>: string</code> type annotation to the ‘person’ function argument as shown here:</p> <pre data-language="typescript">function greeter(person: string) {
+  return "Hello, " + person;
+}
+
+var user = "Jane User";
+
+document.body.innerHTML = greeter(user);
+</pre> <h2 id="type-annotations">Type annotations</h2> <p>Type annotations in TypeScript are lightweight ways to record the intended contract of the function or variable. In this case, we intend the greeter function to be called with a single string parameter. We can try changing the call greeter to pass an array instead:</p> <pre data-language="typescript">function greeter(person: string) {
+  return "Hello, " + person;
+}
+
+var user = [0, 1, 2];
+
+document.body.innerHTML = greeter(user);
+</pre> <p>Re-compiling, you’ll now see an error:</p> <pre data-language="shell">error TS2345: Argument of type 'number[]' is not assignable to parameter of type 'string'.
+</pre> <p>Similarly, try removing all the arguments to the greeter call. TypeScript will let you know that you have called this function with an unexpected number of parameters. In both cases, TypeScript can offer static analysis based on both the structure of your code, and the type annotations you provide.</p> <p>Notice that although there were errors, the <code>greeter.js</code> file is still created. You can use TypeScript even if there are errors in your code. But in this case, TypeScript is warning that your code will likely not run as expected.</p> <h2 id="interfaces">Interfaces</h2> <p>Let’s develop our sample further. Here we use an interface that describes objects that have a firstName and lastName field. In TypeScript, two types are compatible if their internal structure is compatible. This allows us to implement an interface just by having the shape the interface requires, without an explicit <code>implements</code> clause.</p> <pre data-language="typescript">interface Person {
+  firstName: string;
+  lastName: string;
+}
+
+function greeter(person: Person) {
+  return "Hello, " + person.firstName + " " + person.lastName;
+}
+
+var user = { firstName: "Jane", lastName: "User" };
+
+document.body.innerHTML = greeter(user);
+</pre> <h2 id="classes">Classes</h2> <p>Finally, let’s extend the example one last time with classes. TypeScript supports new features in JavaScript, like support for class-based object-oriented programming.</p> <p>Here we’re going to create a <code>Student</code> class with a constructor and a few public fields. Notice that classes and interfaces play well together, letting the programmer decide on the right level of abstraction.</p> <p>Also of note, the use of <code>public</code> on arguments to the constructor is a shorthand that allows us to automatically create properties with that name.</p> <pre data-language="typescript">class Student {
+  fullName: string;
+  constructor(public firstName: string, public middleInitial: string, public lastName: string) {
+    this.fullName = firstName + " " + middleInitial + " " + lastName;
+  }
+}
+
+interface Person {
+  firstName: string;
+  lastName: string;
+}
+
+function greeter(person : Person) {
+  return "Hello, " + person.firstName + " " + person.lastName;
+}
+
+var user = new Student("Jane", "M.", "User");
+
+document.body.innerHTML = greeter(user);
+</pre> <p>Re-run <code>tsc greeter.ts</code> and you’ll see the generated JavaScript is the same as the earlier code. Classes in TypeScript are just a shorthand for the same prototype-based OO that is frequently used in JavaScript.</p> <h2 id="running-your-typescript-web-app">Running your TypeScript web app</h2> <p>Now type the following in <code>greeter.html</code>:</p> <pre data-language="html">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+  &lt;head&gt;&lt;title&gt;TypeScript Greeter&lt;/title&gt;&lt;/head&gt;
+  &lt;body&gt;
+    &lt;script src="greeter.js"&gt;&lt;/script&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</pre> <p>Open <code>greeter.html</code> in the browser to run your first simple TypeScript web application!</p> <p>Optional: Open <code>greeter.ts</code> in Visual Studio, or copy the code into the TypeScript playground. You can hover over identifiers to see their types. Notice that in some cases these types are inferred automatically for you. Re-type the last line, and see completion lists and parameter help based on the types of the DOM elements. Put your cursor on the reference to the greeter function, and hit F12 to go to its definition. Notice, too, that you can right-click on a symbol and use refactoring to rename it.</p> <p>The type information provided works together with the tools to work with JavaScript at application scale. For more examples of what’s possible in TypeScript, see the Samples section of the website.</p> <p><img src="data:image/png;base64,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" alt="Visual Studio picture"></p>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © Microsoft and other contributors<br>Licensed under the Apache License, Version 2.0.<br>
+    <a href="https://www.typescriptlang.org/docs/handbook/typescript-in-5-minutes.html" class="_attribution-link" target="_blank">https://www.typescriptlang.org/docs/handbook/typescript-in-5-minutes.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>
