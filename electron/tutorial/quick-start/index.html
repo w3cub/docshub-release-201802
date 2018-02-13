@@ -1,0 +1,167 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Quick Start - Electron - W3cubDocs</title>
+  
+  <meta name="description" content="Electron enables you to create desktop applications with pure JavaScript by providing a runtime with rich native (operating system) APIs. You could &hellip;">
+  <meta name="keywords" content="quick, start, -, electron">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/electron/tutorial/quick-start/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/electron.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/electron/" class="_nav-link" title="" style="margin-left:0;">Electron</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _electron">
+				
+<h1 id="quick-start">Quick Start</h1> <p>Electron enables you to create desktop applications with pure JavaScript by providing a runtime with rich native (operating system) APIs. You could see it as a variant of the Node.js runtime that is focused on desktop applications instead of web servers.</p> <p>This doesn’t mean Electron is a JavaScript binding to graphical user interface (GUI) libraries. Instead, Electron uses web pages as its GUI, so you could also see it as a minimal Chromium browser, controlled by JavaScript.</p> <h3 id="main-process">Main Process</h3> <p>In Electron, the process that runs <code>package.json</code>’s <code>main</code> script is called <strong>the main process</strong>. The script that runs in the main process can display a GUI by creating web pages.</p> <h3 id="renderer-process">Renderer Process</h3> <p>Since Electron uses Chromium for displaying web pages, Chromium’s multi-process architecture is also used. Each web page in Electron runs in its own process, which is called <strong>the renderer process</strong>.</p> <p>In normal browsers, web pages usually run in a sandboxed environment and are not allowed access to native resources. Electron users, however, have the power to use Node.js APIs in web pages allowing lower level operating system interactions.</p> <h3 id="differences-between-main-process-and-renderer-process">Differences Between Main Process and Renderer Process</h3> <p>The main process creates web pages by creating <code>BrowserWindow</code> instances. Each <code>BrowserWindow</code> instance runs the web page in its own renderer process. When a <code>BrowserWindow</code> instance is destroyed, the corresponding renderer process is also terminated.</p> <p>The main process manages all web pages and their corresponding renderer processes. Each renderer process is isolated and only cares about the web page running in it.</p> <p>In web pages, calling native GUI related APIs is not allowed because managing native GUI resources in web pages is very dangerous and it is easy to leak resources. If you want to perform GUI operations in a web page, the renderer process of the web page must communicate with the main process to request that the main process perform those operations.</p> <p>In Electron, we have several ways to communicate between the main process and renderer processes. Like <a href="../../api/ipc-renderer/"><code>ipcRenderer</code></a> and <a href="../../api/ipc-main/"><code>ipcMain</code></a> modules for sending messages, and the <a href="../../api/remote/">remote</a> module for RPC style communication. There is also an FAQ entry on <a href="../../faq/#how-to-share-data-between-web-pages">how to share data between web pages</a>.</p> <h2 id="write-your-first-electron-app">Write your First Electron App</h2> <p>Generally, an Electron app is structured like this:</p> <pre data-language="text">your-app/
+├── package.json
+├── main.js
+└── index.html</pre> <p>The format of <code>package.json</code> is exactly the same as that of Node’s modules, and the script specified by the <code>main</code> field is the startup script of your app, which will run the main process. An example of your <code>package.json</code> might look like this:</p> <pre data-language="json">{
+  "name"    : "your-app",
+  "version" : "0.1.0",
+  "main"    : "main.js"
+}</pre> <p><strong>Note</strong>: If the <code>main</code> field is not present in <code>package.json</code>, Electron will attempt to load an <code>index.js</code>.</p> <p>The <code>main.js</code> should create windows and handle system events, a typical example being:</p> <pre data-language="javascript">const {app, BrowserWindow} = require('electron')
+const path = require('path')
+const url = require('url')
+
+// Keep a global reference of the window object, if you don't, the window will
+// be closed automatically when the JavaScript object is garbage collected.
+let win
+
+function createWindow () {
+  // Create the browser window.
+  win = new BrowserWindow({width: 800, height: 600})
+
+  // and load the index.html of the app.
+  win.loadURL(url.format({
+    pathname: path.join(__dirname, 'index.html'),
+    protocol: 'file:',
+    slashes: true
+  }))
+
+  // Open the DevTools.
+  win.webContents.openDevTools()
+
+  // Emitted when the window is closed.
+  win.on('closed', () =&gt; {
+    // Dereference the window object, usually you would store windows
+    // in an array if your app supports multi windows, this is the time
+    // when you should delete the corresponding element.
+    win = null
+  })
+}
+
+// This method will be called when Electron has finished
+// initialization and is ready to create browser windows.
+// Some APIs can only be used after this event occurs.
+app.on('ready', createWindow)
+
+// Quit when all windows are closed.
+app.on('window-all-closed', () =&gt; {
+  // On macOS it is common for applications and their menu bar
+  // to stay active until the user quits explicitly with Cmd + Q
+  if (process.platform !== 'darwin') {
+    app.quit()
+  }
+})
+
+app.on('activate', () =&gt; {
+  // On macOS it's common to re-create a window in the app when the
+  // dock icon is clicked and there are no other windows open.
+  if (win === null) {
+    createWindow()
+  }
+})
+
+// In this file you can include the rest of your app's specific main process
+// code. You can also put them in separate files and require them here.</pre> <p>Finally the <code>index.html</code> is the web page you want to show:</p> <pre data-language="html">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+  &lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;title&gt;Hello World!&lt;/title&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;h1&gt;Hello World!&lt;/h1&gt;
+    We are using node &lt;script&gt;document.write(process.versions.node)&lt;/script&gt;,
+    Chrome &lt;script&gt;document.write(process.versions.chrome)&lt;/script&gt;,
+    and Electron &lt;script&gt;document.write(process.versions.electron)&lt;/script&gt;.
+  &lt;/body&gt;
+&lt;/html&gt;</pre> <h2 id="run-your-app">Run your app</h2> <p>Once you’ve created your initial <code>main.js</code>, <code>index.html</code>, and <code>package.json</code> files, you’ll probably want to try running your app locally to test it and make sure it’s working as expected.</p> <h3 id="electron"><code>electron</code></h3> <p><a href="https://github.com/electron-userland/electron-prebuilt" target="_blank"><code>electron</code></a> is an <code>npm</code> module that contains pre-compiled versions of Electron.</p> <p>If you’ve installed it globally with <code>npm</code>, then you will only need to run the following in your app’s source directory:</p> <pre data-language="bash">electron .</pre> <p>If you’ve installed it locally, then run:</p> <h4 id="macos--linux">macOS / Linux</h4> <pre data-language="bash">$ ./node_modules/.bin/electron .</pre> <h4 id="windows">Windows</h4> <pre data-language="">$ .\node_modules\.bin\electron .</pre> <h3 id="manually-downloaded-electron-binary">Manually Downloaded Electron Binary</h3> <p>If you downloaded Electron manually, you can also use the included binary to execute your app directly.</p> <h4 id="macos">macOS</h4> <pre data-language="bash">$ ./Electron.app/Contents/MacOS/Electron your-app/</pre> <h4 id="linux">Linux</h4> <pre data-language="bash">$ ./electron/electron your-app/</pre> <h4 id="windows-1">Windows</h4> <pre data-language="">$ .\electron\electron.exe your-app\</pre> <p><code>Electron.app</code> here is part of the Electron’s release package, you can download it from <a href="https://github.com/electron/electron/releases" target="_blank">here</a>.</p> <h3 id="run-as-a-distribution">Run as a distribution</h3> <p>After you’re done writing your app, you can create a distribution by following the <a href="../application-distribution/">Application Distribution</a> guide and then executing the packaged app.</p> <h3 id="try-this-example">Try this Example</h3> <p>Clone and run the code in this tutorial by using the <a href="https://github.com/electron/electron-quick-start" target="_blank"><code>electron/electron-quick-start</code></a> repository.</p> <p><strong>Note</strong>: Running this requires <a href="https://git-scm.com" target="_blank">Git</a> and <a href="https://nodejs.org/en/download/" target="_blank">Node.js</a> (which includes <a href="https://npmjs.org" target="_blank">npm</a>) on your system.</p> <pre data-language="bash"># Clone the repository
+$ git clone https://github.com/electron/electron-quick-start
+# Go into the repository
+$ cd electron-quick-start
+# Install dependencies
+$ npm install
+# Run the app
+$ npm start</pre> <p>For more example apps, see the <a href="https://electron.atom.io/community/#boilerplates" target="_blank">list of boilerplates</a> created by the awesome electron community.</p>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2013–2017 GitHub Inc.<br>Licensed under the MIT license.<br>
+    <a href="https://electron.atom.io/docs/tutorial/quick-start/" class="_attribution-link" target="_blank">https://electron.atom.io/docs/tutorial/quick-start/</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

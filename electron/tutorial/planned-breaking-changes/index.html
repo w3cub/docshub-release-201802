@@ -1,0 +1,189 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Planned Breaking API Changes - Electron - W3cubDocs</title>
+  
+  <meta name="description" content=" The following list includes the APIs that will be removed in Electron 2.0. ">
+  <meta name="keywords" content="planned, breaking, api, changes, -, electron">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/electron/tutorial/planned-breaking-changes/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/electron.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/electron/" class="_nav-link" title="" style="margin-left:0;">Electron</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _electron">
+				
+<h1 id="planned-breaking-api-changes">Planned Breaking API Changes</h1> <p>The following list includes the APIs that will be removed in Electron 2.0.</p> <p>There is no timetable for when this release will occur but deprecation warnings will be added at least 90 days beforehand.</p> <h2 id="app"><code>app</code></h2> <pre data-language="js">// Deprecated
+app.getAppMemoryInfo()
+// Replace with
+app.getAppMetrics()</pre> <h2 id="browserwindow"><code>BrowserWindow</code></h2> <pre data-language="js">// Deprecated
+let optionsA = {webPreferences: {blinkFeatures: ''}}
+let windowA = new BrowserWindow(optionsA)
+// Replace with
+let optionsB = {webPreferences: {enableBlinkFeatures: ''}}
+let windowB = new BrowserWindow(optionsB)</pre> <pre data-language="js">// Deprecated
+let optionsA = {titleBarStyle: 'hidden-inset'}
+let windowA = new BrowserWindow(optionsA)
+// Replace with
+let optionsB = {titleBarStyle: 'hiddenInset'}
+let windowB = new BrowserWindow(optionsB)</pre> <h2 id="clipboard"><code>clipboard</code></h2> <pre data-language="js">// Deprecated
+clipboard.readRtf()
+// Replace with
+clipboard.readRTF()
+
+// Deprecated
+clipboard.writeRtf()
+// Replace with
+clipboard.writeRTF()
+
+// Deprecated
+clipboard.readHtml()
+// Replace with
+clipboard.readHTML()
+
+// Deprecated
+clipboard.writeHtml()
+// Replace with
+clipboard.writeHTML()</pre> <h2 id="crashreporter"><code>crashReporter</code></h2> <pre data-language="js">// Deprecated
+crashReporter.start({
+  companyName: 'Crashly',
+  submitURL: 'https://crash.server.com',
+  autoSubmit: true
+})
+// Replace with
+crashReporter.start({
+  companyName: 'Crashly',
+  submitURL: 'https://crash.server.com',
+  uploadToServer: true
+})</pre> <h2 id="menu"><code>menu</code></h2> <pre data-language="js">// Deprecated
+menu.popup(browserWindow, 100, 200, 2)
+// Replace with
+menu.popup(browserWindow, {x: 100, y: 200, positioningItem: 2})</pre> <h2 id="nativeimage"><code>nativeImage</code></h2> <pre data-language="js">// Deprecated
+nativeImage.toPng()
+// Replace with
+nativeImage.toPNG()
+
+// Deprecated
+nativeImage.toJpeg()
+// Replace with
+nativeImage.toJPEG()
+
+// Deprecated
+nativeImage.createFromBuffer(buffer, 1.0)
+// Replace with
+nativeImage.createFromBuffer(buffer, {
+  scaleFactor: 1.0
+})</pre> <h2 id="process"><code>process</code></h2> <pre data-language="js">// Deprecated
+process.versions['atom-shell']
+// Replace with
+process.versions.electron</pre> <ul> <li>
+<code>process.versions.electron</code> and <code>process.version.chrome</code> will be made read-only properties for consistency with the other <code>process.versions</code> properties set by Node.</li> </ul> <h2 id="session"><code>session</code></h2> <pre data-language="js">// Deprecated
+ses.setCertificateVerifyProc(function (hostname, certificate, callback) {
+  callback(true)
+})
+// Replace with
+ses.setCertificateVerifyProc(function (request, callback) {
+  callback(0)
+})</pre> <h2 id="tray"><code>Tray</code></h2> <pre data-language="js">// Deprecated
+tray.setHighlightMode(true)
+// Replace with
+tray.setHighlightMode('on')
+
+// Deprecated
+tray.setHighlightMode(false)
+// Replace with
+tray.setHighlightMode('off')</pre> <h2 id="webcontents"><code>webContents</code></h2> <pre data-language="js">// Deprecated
+webContents.openDevTools({detach: true})
+// Replace with
+webContents.openDevTools({mode: 'detach'})</pre> <pre data-language="js">// Deprecated
+webContents.setZoomLevelLimits(1, 2)
+// Replace with
+webContents.setVisualZoomLevelLimits(1, 2)</pre> <h2 id="webframe"><code>webFrame</code></h2> <pre data-language="js">// Deprecated
+webFrame.setZoomLevelLimits(1, 2)
+// Replace with
+webFrame.setVisualZoomLevelLimits(1, 2)
+
+// Deprecated
+webFrame.registerURLSchemeAsSecure('app')
+// Replace with
+protocol.registerStandardSchemes(['app'], {secure: true})
+
+// Deprecated
+webFrame.registerURLSchemeAsPrivileged('app', {secure: true})
+// Replace with
+protocol.registerStandardSchemes(['app'], {secure: true})</pre> <h2 id="webview"><code>&lt;webview&gt;</code></h2> <pre data-language="js">// Deprecated
+webview.setZoomLevelLimits(1, 2)
+// Replace with
+webview.setVisualZoomLevelLimits(1, 2)</pre> <h2 id="node-headers-url">Node Headers URL</h2> <p>This is the URL specified as <code>disturl</code> in a <code>.npmrc</code> file or as the <code>--dist-url</code> command line flag when building native Node modules.</p> <p>Deprecated: https://atom.io/download/atom-shell</p> <p>Replace with: https://atom.io/download/electron</p> <h2 id="duplicate-arm-assets">Duplicate ARM Assets</h2> <p>Each Electron release includes two identical ARM builds with slightly different filenames, like <code>electron-v1.7.3-linux-arm.zip</code> and <code>electron-v1.7.3-linux-armv7l.zip</code>. The asset with the <code>v7l</code> prefix was added to clarify to users which ARM version it supports, and to disambiguate it from future armv6l and arm64 assets that may be produced.</p> <p>The file <em>without the prefix</em> is still being published to avoid breaking any setups that may be consuming it. Starting at 2.0, the un-prefixed file will no longer be published.</p> <p>For details, see <a href="https://github.com/electron/electron/pull/6986" target="_blank">6986</a> and <a href="https://github.com/electron/electron/pull/7189" target="_blank">7189</a>.</p> <h2 id="fixme-comments">
+<code>FIXME</code> comments</h2> <p>The <code>FIXME</code> string is used in code comments to denote things that should be fixed for the 2.0 release. See https://github.com/electron/electron/search?q=fixme</p>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2013–2017 GitHub Inc.<br>Licensed under the MIT license.<br>
+    <a href="https://electron.atom.io/docs/tutorial/planned-breaking-changes/" class="_attribution-link" target="_blank">https://electron.atom.io/docs/tutorial/planned-breaking-changes/</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

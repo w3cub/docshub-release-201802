@@ -1,0 +1,143 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Releasing - Electron - W3cubDocs</title>
+  
+  <meta name="description" content=" This document describes the process for releasing a new version of Electron. ">
+  <meta name="keywords" content="releasing, -, electron">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/electron/development/releasing/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/electron.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/electron/" class="_nav-link" title="" style="margin-left:0;">Electron</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _electron">
+				
+<h1 id="releasing">Releasing</h1> <p>This document describes the process for releasing a new version of Electron.</p> <h2 id="create-a-temporary-branch">Create a temporary branch</h2> <p>Create a new branch from <code>master</code>. Name it <code>release</code> or anything you like.</p> <p>Note: If you are creating a backport release, you’ll check out <code>1-6-x</code>, <code>1-7-x</code>, etc instead of <code>master</code>.</p> <pre data-language="sh">git checkout master
+git pull
+git checkout -b release</pre> <p>This branch is created as a precaution to prevent any merged PRs from sneaking into a release between the time the temporary release branch is created and the CI builds are complete.</p> <h2 id="check-for-extant-drafts">Check for extant drafts</h2> <p>The upload script <a href="https://github.com/electron/electron/blob/7961a97d7ddbed657c6c867cc8426e02c236c077/script/upload.py#L173-L181" target="_blank">looks for an existing draft release</a>. To prevent your new release from clobbering an existing draft, check <a href="https://github.com/electron/electron/releases" target="_blank">the releases page</a> and make sure there are no drafts.</p> <h2 id="bump-the-version">Bump the version</h2> <p>Run the <code>bump-version</code> script, passing <code>major</code>, <code>minor</code>, or <code>patch</code> as an argument:</p> <pre data-language="sh">npm run bump-version -- patch
+git push origin HEAD</pre> <p>This will bump the version number in several files. See <a href="https://github.com/electron/electron/commit/78ec1b8f89b3886b856377a1756a51617bc33f5a" target="_blank">this bump commit</a> for an example.</p> <p>Most releases will be <code>patch</code> level. Upgrades to Chrome or other major changes should use <code>minor</code>. For more info, see <a href="../../tutorial/electron-versioning/">electron-versioning</a>.</p> <h2 id="wait-for-builds-hourglass_flowing_sand">Wait for builds <img class="emoji" title=":hourglass_flowing_sand:" alt=":hourglass_flowing_sand:" src="data:image/png;base64,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" height="20" width="20"> </h2> <p>The presence of the word <a href="https://github.com/electron/electron/blob/7961a97d7ddbed657c6c867cc8426e02c236c077/script/cibuild-linux#L3-L6" target="_blank"><code>Bump</code></a> in the commit message created by the <code>bump-version</code> script will <a href="https://github.com/electron/electron/blob/7961a97d7ddbed657c6c867cc8426e02c236c077/script/cibuild#L82-L96" target="_blank">trigger the release process</a>.</p> <p>To monitor the build progress, see the following pages:</p> <ul> <li> <a href="http://208.52.191.140:8080/view/All/builds" target="_blank">208.52.191.140:8080/view/All/builds</a> for Mac and Windows</li> <li> <a href="https://jenkins.githubapp.com/label/chromium/" target="_blank">jenkins.githubapp.com/label/chromium/</a> for Linux</li> </ul> <h2 id="compile-release-notes">Compile release notes</h2> <p>Writing release notes is a good way to keep yourself busy while the builds are running. For prior art, see existing releases on <a href="https://github.com/electron/electron/releases" target="_blank">the releases page</a>.</p> <p>Tips:</p> <ul> <li>Each listed item should reference a PR on electron/electron, not an issue, nor a PR from another repo like libcc.</li> <li>No need to use link markup when referencing PRs. Strings like <code>#123</code> will automatically be converted to links on github.com.</li> <li>To see the version of Chromium, V8, and Node in every version of Electron, visit <a href="https://atom.io/download/electron/index.json" target="_blank">atom.io/download/electron/index.json</a>.</li> </ul> <h3 id="patch-releases">Patch releases</h3> <p>For a <code>patch</code> release, use the following format:</p> <pre data-language="">## Bug Fixes
+
+* Fixed a cross-platform thing. #123
+
+### Linux
+
+* Fixed a Linux thing. #123
+
+### macOS
+
+* Fixed a macOS thing. #123
+
+### Windows
+
+* Fixed a Windows thing. #1234
+
+## API Changes
+
+* Changed a thing. #123
+
+### Linux
+
+* Changed a Linux thing. #123
+
+### macOS
+
+* Changed a macOS thing. #123
+
+### Windows
+
+* Changed a Windows thing. #123</pre> <h3 id="minor-releases">Minor releases</h3> <p>For a <code>minor</code> release (which is normally a Chromium update, and possibly also a Node update), e.g. <code>1.8.0</code>, use this format:</p> <pre data-language="">**Note:** This is a beta release. This is the first release running on upgraded versions of Chrome/Node.js/V8 and most likely will have have some instability and/or regressions.
+
+Please file new issues for any bugs you find in it.
+
+This release is published to [npm](https://www.npmjs.com/package/electron) under the `beta` tag and can be installed via `npm install electron@beta`.
+
+## Upgrades
+
+- Upgraded from Chrome `oldVersion` to `newVersion`. #123
+- Upgraded from Node `oldVersion` to `newVersion`. #123
+- Upgraded from v8 `oldVersion` to `newVersion`. #9116
+
+## Other Changes
+
+- Some other change. #123</pre> <h2 id="edit-the-release-draft">Edit the release draft</h2> <ol> <li>Visit <a href="https://github.com/electron/electron/releases" target="_blank">the releases page</a> and you’ll see a new draft release with placeholder release notes.</li> <li>Edit the release and add release notes.</li> <li>Ensure the <code>prerelease</code> checkbox is checked. This should happen automatically for Electron versions &gt;=1.7</li> <li>Click ‘Save draft’. <strong>Do not click ‘Publish release’!</strong> </li> <li>Wait for all builds to pass before proceeding.</li> </ol> <h2 id="merge-temporary-branch">Merge temporary branch</h2> <p>Merge the temporary back into master, without creating a merge commit:</p> <pre data-language="sh">git merge release master --no-commit
+git push origin master</pre> <p>If this fails, rebase with master and rebuild:</p> <pre data-language="sh">git pull
+git checkout release
+git rebase master
+git push origin HEAD</pre> <h2 id="run-local-debug-build">Run local debug build</h2> <p>Run local debug build to verify that you are actually building the version you want. Sometimes you thought you were doing a release for a new version, but you’re actually not.</p> <pre data-language="sh">npm run build
+npm start</pre> <p>Verify the window is displaying the current updated version.</p> <h2 id="set-environment-variables">Set environment variables</h2> <p>You’ll need to set the following environment variables to publish a release. Ask another team member for these credentials.</p> <ul> <li><code>ELECTRON_S3_BUCKET</code></li> <li><code>ELECTRON_S3_ACCESS_KEY</code></li> <li><code>ELECTRON_S3_SECRET_KEY</code></li> <li> <code>ELECTRON_GITHUB_TOKEN</code> - A personal access token with “repo” scope.</li> </ul> <p>You will only need to do this once.</p> <h2 id="publish-the-release">Publish the release</h2> <p>This script will download the binaries and generate the node headers and the .lib linker used on Windows by node-gyp to build native modules.</p> <pre data-language="sh">npm run release</pre> <p>Note: Many distributions of Python still ship with old HTTPS certificates. You may see a <code>InsecureRequestWarning</code>, but it can be disregarded.</p> <h2 id="delete-the-temporary-branch">Delete the temporary branch</h2> <pre data-language="sh">git checkout master
+git branch -D release # delete local branch
+git push origin :release # delete remote branch</pre> <h2 id="promoting-a-release-on-npm">Promoting a release on npm</h2> <p>New releases are published to npm with the <code>beta</code> tag. Every release should eventually get promoted to stable unless there’s a good reason not to.</p> <p>Releases are normally given around two weeks in the wild before being promoted. Before promoting a release, check to see if there are any bug reports against that version, e.g. issues labeled with <code>version/1.7.x</code>.</p> <p>It’s also good to ask users in Slack if they’re using the beta versions successfully.</p> <p>To see what’s beta and stable at any given time:</p> <pre data-language="">$ npm dist-tag ls electron  
+beta: 1.7.5
+latest: 1.6.11</pre> <p>To promote a beta version to stable (aka <code>latest</code>):</p> <pre data-language="">npm dist-tag add electron@1.2.3 latest</pre>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2013–2017 GitHub Inc.<br>Licensed under the MIT license.<br>
+    <a href="https://electron.atom.io/docs/development/releasing/" class="_attribution-link" target="_blank">https://electron.atom.io/docs/development/releasing/</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

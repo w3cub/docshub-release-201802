@@ -1,0 +1,113 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Upgrading Chrome Checklist - Electron - W3cubDocs</title>
+  
+  <meta name="description" content=" This document is meant to serve as an overview of what steps are needed on each Chrome upgrade in Electron. ">
+  <meta name="keywords" content="upgrading, chrome, checklist, -, electron">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/electron/development/upgrading-chrome/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/electron.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/electron/" class="_nav-link" title="" style="margin-left:0;">Electron</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _electron">
+				
+<h1 id="upgrading-chrome-checklist">Upgrading Chrome Checklist</h1> <p>This document is meant to serve as an overview of what steps are needed on each Chrome upgrade in Electron.</p> <p>These are things to do in addition to updating the Electron code for any Chrome/Node API changes.</p> <ul> <li>Verify the new Chrome version is available from https://github.com/zcbenz/chromium-source-tarball/releases</li> <li>Update the <code>VERSION</code> file at the root of the <code>electron/libchromiumcontent</code> repository</li> <li>Update the <code>CLANG_REVISION</code> in <code>script/update-clang.sh</code> to match the version Chrome is using in <code>libchromiumcontent/src/tools/clang/scripts/update.py</code>
+</li> <li>Upgrade <code>vendor/node</code> to the Node release that corresponds to the v8 version being used in the new Chrome release. See the v8 versions in Node on https://nodejs.org/en/download/releases for more details</li> <li>Upgrade <code>vendor/crashpad</code> for any crash reporter changes needed</li> <li>Upgrade <code>vendor/depot_tools</code> for any build tools changes needed</li> <li>Update the <code>libchromiumcontent</code> SHA-1 to download in <code>script/lib/config.py</code>
+</li> <li>Open a pull request on <code>electron/libchromiumcontent</code> with the changes</li> <li>Open a pull request on <code>electron/electron</code> with the changes <ul> <li>This should include upgrading the submodules in <code>vendor/</code> as needed</li> </ul> </li> <li>Verify debug builds succeed on: <ul> <li>macOS</li> <li>32-bit Windows</li> <li>64-bit Window</li> <li>32-bit Linux</li> <li>64-bit Linux</li> <li>ARM Linux</li> </ul> </li> <li>Verify release builds succeed on: <ul> <li>macOS</li> <li>32-bit Windows</li> <li>64-bit Window</li> <li>32-bit Linux</li> <li>64-bit Linux</li> <li>ARM Linux</li> </ul> </li> <li>Verify tests pass on: <ul> <li>macOS</li> <li>32-bit Windows</li> <li>64-bit Window</li> <li>32-bit Linux</li> <li>64-bit Linux</li> <li>ARM Linux</li> </ul> </li> </ul> <h2 id="verify-ffmpeg-support">Verify ffmpeg Support</h2> <p>Electron ships with a version of <code>ffmpeg</code> that includes proprietary codecs by default. A version without these codecs is built and distributed with each release as well. Each Chrome upgrade should verify that switching this version is still supported.</p> <p>You can verify Electron’s support for multiple <code>ffmpeg</code> builds by loading the following page. It should work with the default <code>ffmpeg</code> library distributed with Electron and not work with the <code>ffmpeg</code> library built without proprietary codecs.</p> <pre data-language="html">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+  &lt;head&gt;
+    &lt;meta charset="utf-8"&gt;
+    &lt;title&gt;Proprietary Codec Check&lt;/title&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;p&gt;Checking if Electron is using proprietary codecs by loading video from http://www.quirksmode.org/html5/videos/big_buck_bunny.mp4&lt;/p&gt;
+    &lt;p id="outcome"&gt;&lt;/p&gt;
+    &lt;video style="display:none" src="http://www.quirksmode.org/html5/videos/big_buck_bunny.mp4" autoplay&gt;&lt;/video&gt;
+    &lt;script&gt;
+      const video = document.querySelector('video')
+      video.addEventListener('error', ({target}) =&gt; {
+        if (target.error.code === target.error.MEDIA_ERR_SRC_NOT_SUPPORTED) {
+          document.querySelector('#outcome').textContent = 'Not using proprietary codecs, video emitted source not supported error event.'
+        } else {
+          document.querySelector('#outcome').textContent = `Unexpected error: ${target.error.code}`
+        }
+      })
+      video.addEventListener('playing', () =&gt; {
+        document.querySelector('#outcome').textContent = 'Using proprietary codecs, video started playing.'
+      })
+    &lt;/script&gt;
+  &lt;/body&gt;
+&lt;/html&gt;</pre> <h2 id="links">Links</h2> <ul> <li><a href="https://www.chromium.org/developers/calendar" target="_blank">Chrome Release Schedule</a></li> </ul>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2013–2017 GitHub Inc.<br>Licensed under the MIT license.<br>
+    <a href="https://electron.atom.io/docs/development/upgrading-chrome/" class="_attribution-link" target="_blank">https://electron.atom.io/docs/development/upgrading-chrome/</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

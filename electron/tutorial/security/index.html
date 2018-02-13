@@ -1,0 +1,101 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Security, Native Capabilities, and Your Responsibility - Electron - W3cubDocs</title>
+  
+  <meta name="description" content="As web developers, we usually enjoy the strong security net of the browser - the risks associated with the code we write are relatively small. Our &hellip;">
+  <meta name="keywords" content="security, native, capabilities, and, your, responsibility, -, electron">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/electron/tutorial/security/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/electron.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/electron/" class="_nav-link" title="" style="margin-left:0;">Electron</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _electron">
+				
+<h1 id="security-native-capabilities-and-your-responsibility">Security, Native Capabilities, and Your Responsibility</h1> <p>As web developers, we usually enjoy the strong security net of the browser - the risks associated with the code we write are relatively small. Our websites are granted limited powers in a sandbox, and we trust that our users enjoy a browser built by a large team of engineers that is able to quickly respond to newly discovered security threats.</p> <p>When working with Electron, it is important to understand that Electron is not a web browser. It allows you to build feature-rich desktop applications with familiar web technologies, but your code wields much greater power. JavaScript can access the filesystem, user shell, and more. This allows you to build high quality native applications, but the inherent security risks scale with the additional powers granted to your code.</p> <p>With that in mind, be aware that displaying arbitrary content from untrusted sources poses a severe security risk that Electron is not intended to handle. In fact, the most popular Electron apps (Atom, Slack, Visual Studio Code, etc) display primarily local content (or trusted, secure remote content without Node integration) – if your application executes code from an online source, it is your responsibility to ensure that the code is not malicious.</p> <h2 id="reporting-security-issues">Reporting Security Issues</h2> <p>For information on how to properly disclose an Electron vulnerability, see <a href="https://github.com/electron/electron/tree/master/SECURITY.md" target="_blank">SECURITY.md</a></p> <h2 id="chromium-security-issues-and-upgrades">Chromium Security Issues and Upgrades</h2> <p>While Electron strives to support new versions of Chromium as soon as possible, developers should be aware that upgrading is a serious undertaking - involving hand-editing dozens or even hundreds of files. Given the resources and contributions available today, Electron will often not be on the very latest version of Chromium, lagging behind by either days or weeks.</p> <p>We feel that our current system of updating the Chromium component strikes an appropriate balance between the resources we have available and the needs of the majority of applications built on top of the framework. We definitely are interested in hearing more about specific use cases from the people that build things on top of Electron. Pull requests and contributions supporting this effort are always very welcome.</p> <h2 id="ignoring-above-advice">Ignoring Above Advice</h2> <p>A security issue exists whenever you receive code from a remote destination and execute it locally. As an example, consider a remote website being displayed inside a browser window. If an attacker somehow manages to change said content (either by attacking the source directly, or by sitting between your app and the actual destination), they will be able to execute native code on the user’s machine.</p> <blockquote> <p><img class="emoji" title=":warning:" alt=":warning:" src="data:image/png;base64,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" height="20" width="20"> Under no circumstances should you load and execute remote code with Node integration enabled. Instead, use only local files (packaged together with your application) to execute Node code. To display remote content, use the <code>webview</code> tag and make sure to disable the <code>nodeIntegration</code>.</p> </blockquote> <h4 id="checklist">Checklist</h4> <p>This is not bulletproof, but at the least, you should attempt the following:</p> <ul> <li>Only display secure (https) content</li> <li>Disable the Node integration in all renderers that display remote content (setting <code>nodeIntegration</code> to <code>false</code> in <code>webPreferences</code>)</li> <li>Enable context isolation in all renderers that display remote content (setting <code>contextIsolation</code> to <code>true</code> in <code>webPreferences</code>)</li> <li>Use <code>ses.setPermissionRequestHandler()</code> in all sessions that load remote content</li> <li>Do not disable <code>webSecurity</code>. Disabling it will disable the same-origin policy.</li> <li>Define a <a href="http://www.html5rocks.com/en/tutorials/security/content-security-policy/" target="_blank"><code>Content-Security-Policy</code></a> , and use restrictive rules (i.e. <code>script-src 'self'</code>)</li> <li> <a href="https://github.com/nylas/N1/blob/0abc5d5defcdb057120d726b271933425b75b415/static/index.js#L6-L8" target="_blank">Override and disable <code>eval</code></a> , which allows strings to be executed as code.</li> <li>Do not set <code>allowRunningInsecureContent</code> to true.</li> <li>Do not enable <code>experimentalFeatures</code> or <code>experimentalCanvasFeatures</code> unless you know what you’re doing.</li> <li>Do not use <code>blinkFeatures</code> unless you know what you’re doing.</li> <li>WebViews: Do not add the <code>nodeintegration</code> attribute.</li> <li>WebViews: Do not use <code>disablewebsecurity</code> </li> <li>WebViews: Do not use <code>allowpopups</code> </li> <li>WebViews: Do not use <code>insertCSS</code> or <code>executeJavaScript</code> with remote CSS/JS.</li> <li>WebViews: Verify the options and params of all <code>&lt;webview&gt;</code> tags before they get attached using the <code>will-attach-webview</code> event:</li> </ul> <pre data-language="js">app.on('web-contents-created', (event, contents) =&gt; {
+  contents.on('will-attach-webview', (event, webPreferences, params) =&gt; {
+    // Strip away preload scripts if unused or verify their location is legitimate
+    delete webPreferences.preload
+    delete webPreferences.preloadURL
+
+    // Disable node integration
+    webPreferences.nodeIntegration = false
+
+    // Verify URL being loaded
+    if (!params.src.startsWith('https://yourapp.com/')) {
+      event.preventDefault()
+    }
+  })
+})</pre> <p>Again, this list merely minimizes the risk, it does not remove it. If your goal is to display a website, a browser will be a more secure option.</p>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2013–2017 GitHub Inc.<br>Licensed under the MIT license.<br>
+    <a href="https://electron.atom.io/docs/tutorial/security/" class="_attribution-link" target="_blank">https://electron.atom.io/docs/tutorial/security/</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

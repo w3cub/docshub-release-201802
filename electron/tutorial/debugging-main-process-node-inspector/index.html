@@ -1,0 +1,93 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Debugging the Main Process in Node-inspector - Electron - W3cubDocs</title>
+  
+  <meta name="description" content="node-inspector provides a familiar DevTools GUI that can be used in Chrome to debug Electron’s main process, however, because node-inspector relies &hellip;">
+  <meta name="keywords" content="debugging, main, process, node-inspector, -, electron">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/electron/tutorial/debugging-main-process-node-inspector/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/electron.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/electron/" class="_nav-link" title="" style="margin-left:0;">Electron</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _electron">
+				
+<h1 id="debugging-the-main-process-in-node-inspector">Debugging the Main Process in node-inspector</h1> <p><a href="https://github.com/node-inspector/node-inspector" target="_blank"><code>node-inspector</code></a> provides a familiar DevTools GUI that can be used in Chrome to debug Electron’s main process, however, because <code>node-inspector</code> relies on some native Node modules they must be rebuilt to target the version of Electron you wish to debug. You can either rebuild the <code>node-inspector</code> dependencies yourself, or let <a href="https://github.com/enlight/electron-inspector" target="_blank"><code>electron-inspector</code></a> do it for you, both approaches are covered in this document.</p> <p><strong>Note</strong>: At the time of writing the latest release of <code>node-inspector</code> (0.12.8) can’t be rebuilt to target Electron 1.3.0 or later without patching one of its dependencies. If you use <code>electron-inspector</code> it will take care of this for you.</p> <h2 id="use-electron-inspector-for-debugging">Use <code>electron-inspector</code> for Debugging</h2> <h3 id="1-install-the-node-gyp-required-tools">1. Install the <a href="https://github.com/nodejs/node-gyp#installation" target="_blank">node-gyp required tools</a>
+</h3> <h3 id="2-install-electron-rebuild-if-you-havent-done-so-already">2. Install <a href="https://github.com/electron/electron-rebuild" target="_blank"><code>electron-rebuild</code></a>, if you haven’t done so already.</h3> <pre data-language="shell">npm install electron-rebuild --save-dev</pre> <h3 id="3-install-electron-inspector">3. Install <a href="https://github.com/enlight/electron-inspector" target="_blank"><code>electron-inspector</code></a>
+</h3> <pre data-language="shell">npm install electron-inspector --save-dev</pre> <h3 id="4-start-electron">4. Start Electron</h3> <p>Launch Electron with the <code>--debug</code> switch:</p> <pre data-language="shell">electron --debug=5858 your/app</pre> <p>or, to pause execution on the first line of JavaScript:</p> <pre data-language="shell">electron --debug-brk=5858 your/app</pre> <h3 id="5-start-electron-inspector">5. Start electron-inspector</h3> <p>On macOS / Linux:</p> <pre data-language="shell">node_modules/.bin/electron-inspector</pre> <p>On Windows:</p> <pre data-language="shell">node_modules\\.bin\\electron-inspector</pre> <p><code>electron-inspector</code> will need to rebuild <code>node-inspector</code> dependencies on the first run, and any time you change your Electron version. The rebuild process may require an internet connection to download Node headers and libs, and may take a few minutes.</p> <h3 id="6-load-the-debugger-ui">6. Load the debugger UI</h3> <p>Open http://127.0.0.1:8080/debug?ws=127.0.0.1:8080&amp;port=5858 in the Chrome browser. You may have to click pause if starting with <code>--debug-brk</code> to force the UI to update.</p> <h2 id="use-node-inspector-for-debugging">Use <code>node-inspector</code> for Debugging</h2> <h3 id="1-install-the-node-gyp-required-tools-1">1. Install the <a href="https://github.com/nodejs/node-gyp#installation" target="_blank">node-gyp required tools</a>
+</h3> <h3 id="2-install-node-inspector">2. Install <a href="https://github.com/node-inspector/node-inspector" target="_blank"><code>node-inspector</code></a>
+</h3> <pre data-language="bash">$ npm install node-inspector</pre> <h3 id="3-install-node-pre-gyp">3. Install <a href="https://github.com/mapbox/node-pre-gyp" target="_blank"><code>node-pre-gyp</code></a>
+</h3> <pre data-language="bash">$ npm install node-pre-gyp</pre> <h3 id="4-recompile-the-node-inspector-v8-modules-for-electron">4. Recompile the <code>node-inspector</code> <code>v8</code> modules for Electron</h3> <p><strong>Note:</strong> Update the target argument to be your Electron version number</p> <pre data-language="bash">$ node_modules/.bin/node-pre-gyp --target=1.2.5 --runtime=electron --fallback-to-build --directory node_modules/v8-debug/ --dist-url=https://atom.io/download/atom-shell reinstall
+$ node_modules/.bin/node-pre-gyp --target=1.2.5 --runtime=electron --fallback-to-build --directory node_modules/v8-profiler/ --dist-url=https://atom.io/download/atom-shell reinstall</pre> <p>See also <a href="../using-native-node-modules/#how-to-install-native-modules">How to install native modules</a>.</p> <h3 id="5-enable-debug-mode-for-electron">5. Enable debug mode for Electron</h3> <p>You can either start Electron with a debug flag like:</p> <pre data-language="bash">$ electron --debug=5858 your/app</pre> <p>or, to pause your script on the first line:</p> <pre data-language="bash">$ electron --debug-brk=5858 your/app</pre> <h3 id="6-start-the-node-inspector-server-using-electron">6. Start the <a href="https://github.com/node-inspector/node-inspector" target="_blank"><code>node-inspector</code></a> server using Electron</h3> <pre data-language="bash">$ ELECTRON_RUN_AS_NODE=true path/to/electron.exe node_modules/node-inspector/bin/inspector.js</pre> <h3 id="7-load-the-debugger-ui">7. Load the debugger UI</h3> <p>Open http://127.0.0.1:8080/debug?ws=127.0.0.1:8080&amp;port=5858 in the Chrome browser. You may have to click pause if starting with <code>--debug-brk</code> to see the entry line.</p>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2013–2017 GitHub Inc.<br>Licensed under the MIT license.<br>
+    <a href="https://electron.atom.io/docs/tutorial/debugging-main-process-node-inspector/" class="_attribution-link" target="_blank">https://electron.atom.io/docs/tutorial/debugging-main-process-node-inspector/</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>
