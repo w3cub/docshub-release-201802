@@ -1,0 +1,285 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Default Parameters - JavaScript - W3cubDocs</title>
+  
+  <meta name="description" content=" Default function parameters allow formal parameters to be initialized with default values if no value or undefined is passed. ">
+  <meta name="keywords" content="default, parameters, -, javascript">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/javascript/functions/default_parameters/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/javascript.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/javascript/" class="_nav-link" title="" style="margin-left:0;">JavaScript</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _mdn">
+				
+<h1>Default parameters</h1> <p><strong>Default function parameters</strong> allow formal parameters to be initialized with default values if no value or <code>undefined</code> is passed.</p> <iframe src="https://interactive-examples.mdn.mozilla.net/pages/js/functions-default.html" height="250" width="100%" class="interactive interactive-js" frameborder="0"></iframe>  <h2 id="Syntax">Syntax</h2> <pre class="syntaxbox">function [<em>name</em>]([<em>param1</em>[ = defaultValue1 ][, ..., <em>paramN</em>[ = defaultValueN ]]]) {
+   <em>statements</em>
+}
+</pre> <h2 id="Description">Description</h2> <p>In JavaScript, parameters of functions default to <code><a href="../../global_objects/undefined/"><code>undefined</code></a></code>. However, in some situations it might be useful to set a different default value. This is where default parameters can help.</p> <p>In the past, the general strategy for setting defaults was to test parameter values in the body of the function and assign a value if they are <code>undefined</code>. If in the following example, no value is provided for <code>b</code> in the call, its value would be <code>undefined</code> when evaluating <code>a*b</code> and the call to <code>multiply</code> would have returned <code>NaN</code>. However, this is caught with the second line in this example:</p> <pre data-language="js">function multiply(a, b) {
+  b = (typeof b !== 'undefined') ?  b : 1;
+  return a * b;
+}
+
+multiply(5, 2); // 10
+multiply(5, 1); // 5
+multiply(5);    // 5
+</pre> <p>With default parameters in ES2015, the check in the function body is no longer necessary. Now, you can simply put <code>1</code> as the default value for <code>b</code> in the function head:</p> <pre data-language="js">function multiply(a, b = 1) {
+  return a * b;
+}
+
+multiply(5, 2); // 10
+multiply(5, 1); // 5
+multiply(5);    // 5
+</pre> <h2 id="Examples">Examples</h2> <h3 id="Passing_undefined_vs._other_falsy_values">Passing <code>undefined</code> vs. other falsy values</h3> <p>In the second call here, even if the second argument is set explicitly to <code>undefined</code> (though not <code>null</code> or other <em>falsy values</em>) when calling, the value of the <code>num</code> argument is the default one.</p> <pre data-language="js">function test(num = 1) {
+  console.log(typeof num);
+}
+
+test();          // 'number' (num is set to 1)
+test(undefined); // 'number' (num is set to 1 too)
+
+// test with other falsy values:
+test('');        // 'string' (num is set to '')
+test(null);      // 'object' (num is set to null)
+</pre> <h3 id="Evaluated_at_call_time">Evaluated at call time</h3> <p>The default argument gets evaluated at call time, so unlike e.g. in Python, a new object is created each time the function is called.</p> <pre data-language="js">function append(value, array = []) {
+  array.push(value);
+  return array;
+}
+
+append(1); //[1]
+append(2); //[2], not [1, 2]
+
+</pre> <p>This even applies to functions and variables:</p> <pre data-language="js">function callSomething(thing = something()) {
+ return thing;
+}
+
+function something() {
+  return 'sth';
+}
+
+callSomething();  //sth</pre> <h3 id="Default_parameters_are_available_to_later_default_parameters">Default parameters are available to later default parameters</h3> <p>Parameters already encountered are available to later default parameters:</p> <pre data-language="js">function singularAutoPlural(singular, plural = singular + 's', 
+                            rallyingCry = plural + ' ATTACK!!!') {
+  return [singular, plural, rallyingCry]; 
+}
+
+//["Gecko","Geckos", "Geckos ATTACK!!!"]
+singularAutoPlural('Gecko');
+
+//["Fox","Foxes", "Foxes ATTACK!!!"]
+singularAutoPlural('Fox', 'Foxes');
+
+//["Deer", "Deer", "Deer ... change."]
+singularAutoPlural('Deer', 'Deer', 'Deer peaceably and respectfully \
+   petition the government for positive change.')
+</pre> <p>This functionality is approximated in a straight forward fashion and demonstrates how many edge cases are handled.</p> <pre data-language="js">function go() {
+  return ':P';
+}
+
+function withDefaults(a, b = 5, c = b, d = go(), e = this, 
+                      f = arguments, g = this.value) {
+  return [a, b, c, d, e, f, g];
+}
+
+function withoutDefaults(a, b, c, d, e, f, g) {
+  switch (arguments.length) {
+    case 0:
+      a;
+    case 1:
+      b = 5;
+    case 2:
+      c = b;
+    case 3:
+      d = go();
+    case 4:
+      e = this;
+    case 5:
+      f = arguments;
+    case 6:
+      g = this.value;
+    default:
+  }
+  return [a, b, c, d, e, f, g];
+}
+
+withDefaults.call({value: '=^_^='});
+// [undefined, 5, 5, ":P", {value:"=^_^="}, arguments, "=^_^="]
+
+
+withoutDefaults.call({value: '=^_^='});
+// [undefined, 5, 5, ":P", {value:"=^_^="}, arguments, "=^_^="]
+</pre> <h3 id="Functions_defined_inside_function_body">Functions defined inside function body</h3> <p>Introduced in Gecko 33 (Firefox 33 / Thunderbird 33 / SeaMonkey 2.30). Functions declared in the function body cannot be referred inside default parameters and throw a <a href="../../global_objects/referenceerror/"><code>ReferenceError</code></a> (currently a <a href="../../global_objects/typeerror/"><code>TypeError</code></a> in SpiderMonkey, see <a href="https://bugzilla.mozilla.org/show_bug.cgi?id=1022967" target="_blank">bug 1022967</a>). Default parameters are always executed first, function declarations inside the function body evaluate afterwards.</p> <pre data-language="js">// Doesn't work! Throws ReferenceError.
+function f(a = go()) {
+  function go() { return ':P'; }
+}
+</pre> <h3 id="Parameters_without_defaults_after_default_parameters">Parameters without defaults after default parameters</h3> <p>Prior to Gecko 26 (Firefox 26 / Thunderbird 26 / SeaMonkey 2.23 / Firefox OS 1.2), the following code resulted in a <a href="../../global_objects/syntaxerror/"><code>SyntaxError</code></a>. This has been fixed in <a href="https://bugzilla.mozilla.org/show_bug.cgi?id=777060" target="_blank">bug 777060</a> and works as expected in later versions. Parameters are still set left-to-right, overwriting default parameters even if there are later parameters without defaults.</p> <pre data-language="js">function f(x = 1, y) { 
+  return [x, y]; 
+}
+
+f(); // [1, undefined]
+f(2); // [2, undefined]
+</pre> <h3 id="Destructured_parameter_with_default_value_assignment">Destructured parameter with default value assignment</h3> <p>You can use default value assignment with the <a href="../../operators/destructuring_assignment/">destructuring assignment</a> notation:</p> <pre data-language="js">function f([x, y] = [1, 2], {z: z} = {z: 3}) { 
+  return x + y + z; 
+}
+
+f(); // 6</pre> <h2 id="Specifications">Specifications</h2> <div class="_table"><table class="standard-table"> <tbody> <tr> <th scope="col">Specification</th> <th scope="col">Status</th> <th scope="col">Comment</th> </tr> <tr> <td><a href="https://www.ecma-international.org/ecma-262/6.0/#sec-function-definitions" hreflang="en" target="_blank">ECMAScript 2015 (6th Edition, ECMA-262)<br><small>The definition of 'Function Definitions' in that specification.</small></a></td> <td><span class="spec-Standard">Standard</span></td> <td>Initial definition.</td> </tr> <tr> <td><a href="https://tc39.github.io/ecma262/#sec-function-definitions" hreflang="en" target="_blank">ECMAScript Latest Draft (ECMA-262)<br><small>The definition of 'Function Definitions' in that specification.</small></a></td> <td><span class="spec-Draft">Draft</span></td> <td> </td> </tr> </tbody> </table></div> <h2 id="Browser_compatibility">Browser compatibility</h2>   <div class="bc-old">
+<div class="_table"><table class="compat-table">
+<thead><tr>
+<th>Feature</th>
+<th>Chrome</th>
+<th>Edge</th>
+<th>Firefox</th>
+<th>Internet Explorer</th>
+<th>Opera</th>
+<th>Safari</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Functions/Default_parameters" target="_blank">Basic support</a></td>
+<td class="full-support">49</td>
+<td class="full-support">14</td>
+<td class="full-support">15</td>
+<td class="no-support"><span> No</span></td>
+<td class="full-support">45</td>
+<td class="full-support">10</td>
+</tr>
+<tr>
+<td>Parameters without defaults after default parameters</td>
+<td class="full-support">49</td>
+<td class="full-support">14</td>
+<td class="full-support">26</td>
+<td class="no-support"><span> No</span></td>
+<td class="full-support">45</td>
+<td class="full-support">10</td>
+</tr>
+<tr>
+<td>Destructured parameter with default value assignment</td>
+<td class="full-support">49</td>
+<td class="unknown-support"><span> ?</span></td>
+<td class="full-support">41</td>
+<td class="no-support"><span> No</span></td>
+<td class="unknown-support"><span> ?</span></td>
+<td class="unknown-support"><span> ?</span></td>
+</tr>
+</tbody>
+</table></div>
+<div class="_table"><table class="compat-table">
+<thead><tr>
+<th>Feature</th>
+<th>Android webview</th>
+<th>Chrome for Android</th>
+<th>Edge mobile</th>
+<th>Firefox for Android</th>
+<th>Opera Android</th>
+<th>iOS Safari</th>
+<th>Samsung Internet</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Functions/Default_parameters" target="_blank">Basic support</a></td>
+<td class="full-support">49</td>
+<td class="full-support">49</td>
+<td class="full-support">14</td>
+<td class="full-support">15</td>
+<td class="full-support">45</td>
+<td class="full-support">10</td>
+<td class="unknown-support"><span> ?</span></td>
+</tr>
+<tr>
+<td>Parameters without defaults after default parameters</td>
+<td class="full-support">49</td>
+<td class="full-support">49</td>
+<td class="full-support">14</td>
+<td class="full-support">26</td>
+<td class="full-support">45</td>
+<td class="full-support">10</td>
+<td class="unknown-support"><span> ?</span></td>
+</tr>
+<tr>
+<td>Destructured parameter with default value assignment</td>
+<td class="full-support">49</td>
+<td class="full-support">49</td>
+<td class="unknown-support"><span> ?</span></td>
+<td class="full-support">41</td>
+<td class="unknown-support"><span> ?</span></td>
+<td class="unknown-support"><span> ?</span></td>
+<td class="unknown-support"><span> ?</span></td>
+</tr>
+</tbody>
+</table></div>
+</div>  <h2 id="See_also">See also</h2> <ul> <li><a href="http://wiki.ecmascript.org/doku.php?id=harmony:parameter_default_values" rel="external" target="_blank">Original proposal at ecmascript.org</a></li> </ul>
+<div class="_attribution">
+  <p class="_attribution-p">
+    <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Default_parameters%24edit" class="_attribution-link" target="_blank">Edit this page on MDN</a>
+  </p>
+</div>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2005–2018 Mozilla Developer Network and individual contributors.<br>Licensed under the Creative Commons Attribution-ShareAlike License v2.5 or later.<br>
+    <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Default_parameters" class="_attribution-link" target="_blank">https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Default_parameters</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>
