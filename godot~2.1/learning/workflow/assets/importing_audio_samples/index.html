@@ -1,0 +1,91 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Importing Audio Samples - Godot 2.1 - W3cubDocs</title>
+  
+  <meta name="description" content="Importing Audio Samples into the game engine is a process that should be easier than it really is. Most readers are probably thinking “Why not just &hellip;">
+  <meta name="keywords" content="importing, audio, samples, -, godot, godot~2.1">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/godot~2.1/learning/workflow/assets/importing_audio_samples/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/godot~2.1.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/godot~2.1/" class="_nav-link" title="" style="margin-left:0;">Godot 2.1</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _sphinx_simple">
+				
+<h1 id="doc-importing-audio-samples">Importing audio samples</h1>  <h2 id="why-importing">Why importing?</h2> <p>Importing Audio Samples into the game engine is a process that should be easier than it really is. Most readers are probably thinking “Why not just copy the wav files to a folder inside the project and be over with it?”</p> <p>It’s not usually that simple. Most game engines use uncompressed audio (in memory, at least) for sound effects. The reason for this is because it’s really cheap to play back and resample. Compressed streamed audio (such as ogg files) takes a large amount of processor to decode so no more than one or two are streamed simultaneously. However, with sound effects, one expects a dozen of them to be playing at the same time in several situations.</p> <p>Because of this, sound effects are loaded uncompressed into memory, and here is where the problems begin.</p> <p>As is usual with graphics, the situation where programmers don’t really know about audio and audio engineers don’t know about programming is also common in the industry. This leads to a scenario where a project ends up wasting resources unnecessarily.</p> <p>To be more precise, SFX artists tend to work with audio formats that give them a lot of room for tweaking the audio with a low noise floor and minimum aliasing, such as 96kHz, 24 bits. In many cases, they work in stereo too. Added to that, many times they add effects with an infinite or really long fadeout, such as reverb, which leads to apparent trailing silences. Finally, many DAWs also add silence at the beginning when normalizing to wav.</p> <p>These often result in extremely large files to integration into a game engine with sound effects taking dozens of megabytes.</p>  <h3 id="how-much-does-quality-matter">How much does quality matter?</h3> <p>First of all, it is important to know that Godot has an internal reverb generator. Sound effects can go to four different setups (small, medium and large room, as well as hall), with different send amounts. This saves SFX artists the need to add reverb to the sound effects, reducing their size greatly and ensuring correct trimming. Say no to SFX with baked reverb!</p> <img alt="../../../_images/reverb.png" src="http://docs.godotengine.org/en/2.1/_images/reverb.png"> <p>Another common problem is that, while it’s useful for working inside a DAW, high bit depths (24 bits) and high sampling rate (96kHz) are completely unnecessary for use in a game, as there is no <a href="http://www.youtube.com/watch?v=cIQ9IXSUzuM" target="_blank">audible difference</a>. If positional sound is going to be used (for 2D and 3D), the panning and stereo reverb will be provided by the engine, so there is little need for stereo sound. How does this affect the resource usage? Look at the following comparison:</p> <table class="docutils">  <thead valign="bottom"> <tr>
+<th class="head">Format</th> <th class="head">1 Second of Audio</th> <th class="head">Frame Size</th> </tr> </thead>  <tr>
+<td>24 bits, 96 kHz, Stereo</td> <td>576kb</td> <td>12</td> </tr> <tr>
+<td>16 bits, 44 kHz, Mono</td> <td>88kb</td> <td>2</td> </tr> <tr>
+<td>16 bits, IMA-ADPCM</td> <td>22kb</td> <td>1/2</td> </tr>  </table> <p>As seen, for being no audible difference, the 16 bits, 44kHz, mono conversion takes <em>6 times less memory</em> than the 24 bits, 96kHz, Stereo version. The IMA-ADPCM version (using computationally-light audio compression) takes <em>24 times less memory</em> than what was exported from the DAW.</p>   <h3 id="trimming">Trimming</h3> <p>One last issue that happens often is that the waveform files received have silences at the beginning and at the end. These are inserted by DAWs when saving to a waveform, increase their size unnecessarily and add latency to the moment they are played back. Trimming them solves this, but it takes effort for the SFX artist, as they have to do it in a separate application. In the worst case, they may not even know the silences are being added.</p> <img alt="../../../_images/trim.png" src="http://docs.godotengine.org/en/2.1/_images/trim.png">    <h2 id="id1">Importing audio samples</h2> <p>Godot has a simple screen for importing audio samples to the engine. SFX artists only have to save the wav files to a folder outside the project, and the import dialog will fix the files for inclusion, as well as doing it automatically every time they are modified and re-imported.</p> <img alt="../../../_images/importaudio.png" src="http://docs.godotengine.org/en/2.1/_images/importaudio.png"> <p>In this screen, the quality of the audio can be limited to what is needed, and trimming is done automatically. In addition, several samples can be loaded and batch-converted, just as textures can.</p>  <h3 id="looping">Looping</h3> <p>Godot supports looping in the samples (Tools such as Sound Forge or Audition can add loop points to wav files). This is useful for sound effects such as engines, machine guns, etc. Ping-pong looping is also supported.</p> <p>As an alternative, the import screen has a “loop” option that enables looping for the entire sample when importing.</p>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2014–2017 Juan Linietsky, Ariel Manzur and the Godot community<br>Licensed under the Creative Commons Attribution Unported License v3.0.<br>
+    <a href="http://docs.godotengine.org/en/2.1/learning/workflow/assets/importing_audio_samples.html" class="_attribution-link" target="_blank">http://docs.godotengine.org/en/2.1/learning/workflow/assets/importing_audio_samples.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

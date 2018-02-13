@@ -1,0 +1,87 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>High Dynamic Range - Godot 2.1 - W3cubDocs</title>
+  
+  <meta name="description" content="Normally, an artist does all the 3D modelling, then all the texturing, looks at his or her awesome looking model in the 3D DCC and says “looks &hellip;">
+  <meta name="keywords" content="high, dynamic, range, -, godot, godot~2.1">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/godot~2.1/learning/features/3d/high_dynamic_range/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/godot~2.1.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/godot~2.1/" class="_nav-link" title="" style="margin-left:0;">Godot 2.1</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _sphinx_simple">
+				
+<h1 id="doc-high-dynamic-range">High dynamic range</h1>  <h2 id="introduction">Introduction</h2> <p>Normally, an artist does all the 3D modelling, then all the texturing, looks at his or her awesome looking model in the 3D DCC and says “looks fantastic, ready for integration!” then goes into the game, lighting is setup and the game runs.</p> <p>So where does all this HDR stuff thing come from? The idea is that instead of dealing with colors that go from black to white (0 to 1), we use colors whiter than white (for example, 0 to 8 times white).</p> <p>To be more practical, imagine that in a regular scene, the intensity of a light (generally 1.0) is set to 5.0. The whole scene will turn very bright (towards white) and look horrible.</p> <p>After this the luminance of the scene is computed by averaging the luminance of every pixel of it, and this value is used to bring the scene back to normal ranges. This last operation is called tone-mapping. Finally, we are at a similar place from where we started:</p> <img alt="../../../_images/hdr_tonemap.png" src="http://docs.godotengine.org/en/2.1/_images/hdr_tonemap.png"> <p>Except the scene is more contrasted, because there is a higher light range in play. What is this all useful for? The idea is that the scene luminance will change while you move through the world, allowing situations like this to happen:</p> <img alt="../../../_images/hdr_cave.png" src="http://docs.godotengine.org/en/2.1/_images/hdr_cave.png"> <p>Additionally, it is possible to set a threshold value to send to the glow buffer depending on the pixel luminance. This allows for more realistic light bleeding effects in the scene.</p>   <h2 id="linear-color-space">Linear color space</h2> <p>The problem with this technique is that computer monitors apply a gamma curve to adapt better to the way the human eye sees. Artists create their art on the screen too, so their art has an implicit gamma curve applied to it.</p> <p>The color space where images created in computer monitors exist is called “sRGB”. All visual content that people have on their computers or download from the internet (such as pictures, movies, etc.) is in this colorspace.</p> <img alt="../../../_images/hdr_gamma.png" src="http://docs.godotengine.org/en/2.1/_images/hdr_gamma.png"> <p>The mathematics of HDR require that we multiply the scene by different values to adjust the luminance and exposure to different light ranges, and this curve gets in the way as we need colors in linear space for this.</p>   <h2 id="linear-color-space-asset-pipeline">Linear color space &amp; asset pipeline</h2> <p>Working in HDR is not just pressing a switch. First, imported image assets must be converted to linear space on import. There are two ways to do this:</p>  <h3 id="srgb-linear-conversion-on-image-import">SRGB -&gt; linear conversion on image import</h3> <p>This is the most compatible way of using linear-space assets and it will work everywhere including all mobile devices. The main issue with this is loss of quality, as sRGB exists to avoid this same problem. Using 8 bits per channel to represent linear colors is inefficient from the point of view of the human eye. These textures might be later compressed too, which makes the problem worse.</p> <p>In any case though, this is the easy solution that works everywhere.</p>   <h3 id="hardware-srgb-linear-conversion">Hardware sRGB -&gt; linear conversion.</h3> <p>This is the most correct way to use assets in linear-space, as the texture sampler on the GPU will do the conversion after reading the texel using floating point. This works fine on PC and consoles, but most mobile devices do no support it, or do not support it on compressed texture format (iOS for example).</p>   <h3 id="linear-srgb-at-the-end">Linear -&gt; sRGB at the end.</h3> <p>After all the rendering is done, the linear-space rendered image must be converted back to sRGB. To do this, simply enable sRGB conversion in the current <a href="../../../../classes/class_environment/#class-environment"><span class="std std-ref">Environment</span></a> (more on that below).</p> <p>Keep in mind that sRGB [STRIKEOUT:&gt; Linear and Linear]&gt; sRGB conversions must always be <strong>both</strong> enabled. Failing to enable one of them will result in horrible visuals suitable only for avant garde experimental indie games.</p>    <h2 id="parameters-of-hdr">Parameters of HDR</h2> <p>HDR is found in the <a href="../../../../classes/class_environment/#class-environment"><span class="std std-ref">Environment</span></a> resource. These are found most of the time inside a <a href="../../../../classes/class_worldenvironment/#class-worldenvironment"><span class="std std-ref">WorldEnvironment</span></a> node, or set in a camera. There are many parameters for HDR:</p> <img alt="../../../_images/hdr_parameters.png" src="http://docs.godotengine.org/en/2.1/_images/hdr_parameters.png">  <h3 id="tonemapper">ToneMapper</h3> <p>The ToneMapper is the heart of the algorithm. Many options for tonemappers are provided:</p> <ul class="simple"> <li>Linear: Simplest tonemapper. It does its job for adjusting scene brightness, but if the differences in light are too big, it will cause colors to be too saturated.</li> <li>Log: Similar to linear, but not as extreme.</li> <li>Reinhardt: Classical tonemapper (modified so it will not desaturate as much)</li> <li>ReinhardtAutoWhite: Same as above, but uses the max scene luminance to adjust the white value.</li> </ul>   <h3 id="exposure">Exposure</h3> <p>The same exposure parameter as in real cameras. Controls how much light enters the camera. Higher values will result in a brighter scene and lower values will result in a darker scene.</p>   <h3 id="white">White</h3> <p>Maximum value of white.</p>   <h3 id="glow-threshold">Glow threshold</h3> <p>Determine above which value (from 0 to 1 after the scene is tonemapped), light will start bleeding.</p>   <h3 id="glow-scale">Glow scale</h3> <p>Determine how much light will bleed.</p>   <h3 id="min-luminance">Min luminance</h3> <p>Lower bound value of light for the scene at which the tonemapper stops working. This allows dark scenes to remain dark.</p>   <h3 id="max-luminance">Max luminance</h3> <p>Upper bound value of light for the scene at which the tonemapper stops working. This allows bright scenes to remain saturated.</p>   <h3 id="exposure-adjustment-speed">Exposure adjustment speed</h3> <p>Auto-exposure will change slowly and will take a while to adjust (like in real cameras). Bigger values means faster adjustment.</p>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2014–2017 Juan Linietsky, Ariel Manzur and the Godot community<br>Licensed under the Creative Commons Attribution Unported License v3.0.<br>
+    <a href="http://docs.godotengine.org/en/2.1/learning/features/3d/high_dynamic_range.html" class="_attribution-link" target="_blank">http://docs.godotengine.org/en/2.1/learning/features/3d/high_dynamic_range.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

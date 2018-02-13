@@ -1,0 +1,97 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Pausing Games - Godot 2.1 - W3cubDocs</title>
+  
+  <meta name="description" content="In most games it is desirable to, at some point, interrupt the game to do something else, such as taking a break or changing options. However this &hellip;">
+  <meta name="keywords" content="pausing, games, -, godot, godot~2.1">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/godot~2.1/learning/features/misc/pausing_games/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/godot~2.1.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/godot~2.1/" class="_nav-link" title="" style="margin-left:0;">Godot 2.1</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _sphinx_simple">
+				
+<h1 id="doc-pausing-games">Pausing games</h1>  <h2 id="pause">Pause?</h2> <p>In most games it is desirable to, at some point, interrupt the game to do something else, such as taking a break or changing options. However this is not as simple as it seems. The game might be stopped, but it might be desirable that some menus and animations continue working.</p> <p>Implementing a fine-grained control for what can be paused (and what can not) is a lot of work, so a simple framework for pausing is provided in Godot.</p>   <h2 id="how-pausing-works">How pausing works</h2> <p>To set pause mode, the pause state must be set. This is done by calling <a href="../../../../classes/class_scenetree/#class-scenetree-set-pause"><span class="std std-ref">SceneTree.set_pause()</span></a> with a “true” argument:</p> <pre data-language="gdscript">get_tree().set_pause(true)
+</pre> <p>Doing so will have the following behavior:</p> <ul class="simple"> <li>2D and 3D physics will be stopped.</li> <li>_process and _fixed_process will not be called anymore in nodes.</li> <li>_input and _input_event will not be called anymore either.</li> </ul> <p>This effectively stops the whole game. Calling this function from a script, by default, will result in an unrecoverable state (nothing will work anymore!).</p>   <h2 id="white-listing-nodes">White-listing nodes</h2> <p>Before enabling pause, make sure that nodes that must keep working during pause are white-listed. This is done by editing the “Pause Mode” property in a node:</p> <img alt="../../../_images/pausemode.png" src="http://docs.godotengine.org/en/2.1/_images/pausemode.png"> <p>By default all nodes have this property in the “Inherit” state. This means, that they will only process (or not) depending on what this same property is set on the parent node. If the parent is set to “Inherit” , then the grandparent will be checked and so on. Ultimately, if a state can’t be found in any of the grandparents, the pause state in SceneTree is used. This means that, by default, when the game is paused every node will be paused.</p> <p>So the three possible states for a node are:</p> <ul class="simple"> <li>
+<strong>Inherit</strong>: Process depending on the state of the parent, grandparent, etc. The first parent that has a non-Inherit state.</li> <li>
+<strong>Stop</strong>: Stop the node no matter what (and children in Inherit mode). When paused this node will not process.</li> <li>
+<strong>Process</strong>: Process the node no matter what (and children in Inherit mode). Paused or not this node will process.</li> </ul>   <h2 id="example">Example</h2> <p>An example of this is creating a popup or panel with controls inside, and set its pause mode to “Process” then just hide it:</p> <img alt="../../../_images/pause_popup.png" src="http://docs.godotengine.org/en/2.1/_images/pause_popup.png"> <p>Just by setting the root of the pause popup to “Process”, all children and grandchildren will inherit that state. This way, this branch of the scene tree will continue working when paused.</p> <p>Finally, make it so when a pause button is pressed (any button will do), enable the pause and show the pause screen.</p> <pre data-language="gdscript">func _on_pause_button_pressed():
+    get_tree().set_pause(true)
+    get_node("pause_popup").show()
+</pre> <p>To remove the pause, just do the opposite when the pause screen is closed:</p> <pre data-language="gdscript">func _on_pause_popup_close_pressed():
+    get_node("pause_popup").hide()
+    get_tree().set_pause(false)
+</pre> <p>And that should be all!</p>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2014–2017 Juan Linietsky, Ariel Manzur and the Godot community<br>Licensed under the Creative Commons Attribution Unported License v3.0.<br>
+    <a href="http://docs.godotengine.org/en/2.1/learning/features/misc/pausing_games.html" class="_attribution-link" target="_blank">http://docs.godotengine.org/en/2.1/learning/features/misc/pausing_games.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

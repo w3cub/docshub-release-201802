@@ -1,0 +1,217 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Services for iOS - Godot 2.1 - W3cubDocs</title>
+  
+  <meta name="description" content=" At the moment, there are 2 iOS APIs partially implemented, GameCenter and Storekit. Both use the same model of asynchronous calls explained below. ">
+  <meta name="keywords" content="services, for, ios, -, godot, godot~2.1">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/godot~2.1/learning/features/platform/services_for_ios/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/godot~2.1.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/godot~2.1/" class="_nav-link" title="" style="margin-left:0;">Godot 2.1</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _sphinx_simple">
+				
+<h1 id="doc-services-for-ios">Services for iOS</h1> <p>At the moment, there are 2 iOS APIs partially implemented, GameCenter and Storekit. Both use the same model of asynchronous calls explained below.</p>  <h2 id="asynchronous-methods">Asynchronous methods</h2> <p>When requesting an asynchronous operation, the method will look like this:</p> <pre data-language="gdscript">Error purchase(Variant p_params);
+</pre> <p>The parameter will usually be a Dictionary, with the information necessary to make the request, and the call will have 2 phases. First, the method will immediately return an Error value. If the Error is not ‘OK’, the call operation is completed, with an error probably caused locally (no internet connection, API incorrectly configured, etc). If the error value is ‘OK’, a response event will be produced and added to the ‘pending events’ queue. Example:</p> <pre data-language="python">func on_purchase_pressed():
+    var result = InAppStore.purchase( { "product_id": "my_product" } )
+    if result == OK:
+        animation.play("busy") # show the "waiting for response" animation
+    else:
+        show_error()
+
+# put this on a 1 second timer or something
+func check_events():
+    while InAppStore.get_pending_event_count() &gt; 0:
+        var event = InAppStore.pop_pending_event()
+        if event.type == "purchase":
+            if event.result == "ok":
+                show_success(event.product_id)
+            else:
+                show_error()
+</pre> <p>Remember that when a call returns OK, the API will <em>always</em> produce an event through the pending_event interface, even if it’s an error, or a network timeout, etc. You should be able to, for example, safely block the interface waiting for a reply from the server. If any of the APIs don’t behave this way it should be treated as a bug.</p> <p>The pending event interface consists of 2 methods:</p> <ul class="simple"> <li>
+<code>get_pending_event_count()</code> Returns the number of pending events on the queue.</li> <li>
+<code>Variant pop_pending_event()</code> Pops the first event from the queue and returns it.</li> </ul>   <h2 id="store-kit">Store Kit</h2> <p>Implemented in platform/iphone/in_app_store.mm</p> <p>The Store Kit API is accessible through the “InAppStore” singleton (will always be available from gdscript). It is initialized automatically. It has 2 methods for purchasing:</p> <ul class="simple"> <li><code>Error purchase(Variant p_params);</code></li> <li><code>Error request_product_info(Variant p_params);</code></li> </ul> <p>and the pending_event interface</p> <pre data-language="gdscript">int get_pending_event_count();
+Variant pop_pending_event();
+</pre>  <h3 id="purchase">purchase</h3> <p>Purchases a product id through the Store Kit API.</p>  <h4 id="parameters">Parameters</h4> <p>Takes a Dictionary as a parameter, with one field, <code>product_id</code>, a string with your product id. Example:</p> <pre data-language="gdscript">var result = InAppStore.purchase( { "product_id": "my_product" } )
+</pre>   <h4 id="response-event">Response event</h4> <p>The response event will be a dictionary with the following fields:</p> <p>On error:</p> <pre data-language="gdscript">{
+  "type": "purchase",
+  "result": "error",
+  "product_id": "the product id requested"
+}
+</pre> <p>On success:</p> <pre data-language="gdscript">{
+  "type": "purchase",
+  "result": "ok",
+  "product_id": "the product id requested"
+}
+</pre>    <h3 id="request-product-info">request_product_info</h3> <p>Requests the product info on a list of product IDs.</p>  <h4 id="id1">Parameters</h4> <p>Takes a Dictionary as a parameter, with one field, <code>product_ids</code>, a string array with a list of product ids. Example:</p> <pre data-language="gdscript">var result = InAppStore.request_product_info( { "product_ids": ["my_product1", "my_product2"] } )
+</pre>   <h4 id="id2">Response event</h4> <p>The response event will be a dictionary with the following fields:</p> <pre data-language="gdscript">{
+  "type": "product_info",
+  "result": "ok",
+  "invalid_ids": [ list of requested ids that were invalid ],
+  "ids": [ list of ids that were valid ],
+  "titles": [ list of valid product titles (corresponds with list of valid ids) ],
+  "descriptions": [ list of valid product descriptions ] ,
+  "prices": [ list of valid product prices ],
+  "localized_prices": [ list of valid product localized prices ],
+}
+</pre>     <h2 id="game-center">Game Center</h2> <p>Implemented in platform/iphone/game_center.mm</p> <p>The Game Center API is available through the “GameCenter” singleton. It has 6 methods:</p> <ul class="simple"> <li><code>Error post_score(Variant p_score);</code></li> <li><code>Erroraward_achievement(Variant p_params);</code></li> <li><code>Error reset_achievements();</code></li> <li><code>Error request_achievements();</code></li> <li><code>Error request_achievement_descriptions();</code></li> <li><code>Error show_game_center(Variant p_params);</code></li> </ul> <p>plus the standard pending event interface.</p>  <h3 id="post-score">post_score</h3> <p>Posts a score to a Game Center leaderboard.</p>  <h4 id="id3">Parameters</h4> <p>Takes a Dictionary as a parameter, with 2 fields:</p> <ul class="simple"> <li>
+<code>score</code> a float number</li> <li>
+<code>category</code> a string with the category name</li> </ul> <p>Example:</p> <pre data-language="gdscript">var result = GameCenter.post_score( { "value": 100, "category": "my_leaderboard", } )
+</pre>   <h4 id="id4">Response event</h4> <p>The response event will be a dictionary with the following fields:</p> <p>On error:</p> <pre data-language="gdscript">{
+  "type": "post_score",
+  "result": "error",
+  "error_code": the value from NSError::code,
+  "error_description": the value from NSError::localizedDescription,
+}
+</pre> <p>On success:</p> <pre data-language="gdscript">{
+  "type": "post_score",
+  "result": "ok",
+}
+</pre>    <h3 id="award-achievement">award_achievement</h3> <p>Modifies the progress of a Game Center achievement.</p>  <h4 id="id5">Parameters</h4> <p>Takes a Dictionary as a parameter, with 3 fields:</p> <ul class="simple"> <li>
+<code>name</code> (string) the achievement name</li> <li>
+<code>progress</code> (float) the achievement progress from 0.0 to 100.0 (passed to <code>GKAchievement::percentComplete</code>)</li> <li>
+<code>show_completion_banner</code> (bool) whether Game Center should display an achievement banner at the top of the screen</li> </ul> <p>Example:</p> <pre data-language="gdscript">var result = award_achievement( { "name": "hard_mode_completed", "progress": 6.1 } )
+</pre>   <h4 id="id6">Response event</h4> <p>The response event will be a dictionary with the following fields:</p> <p>On error:</p> <pre data-language="gdscript">{
+  "type": "award_achievement",
+  "result": "error",
+  "error_code": the error code taken from NSError::code,
+}
+</pre> <p>On success:</p> <pre data-language="gdscript">{
+  "type": "award_achievement",
+  "result": "ok",
+}
+</pre>    <h3 id="reset-achievements">reset_achievements</h3> <p>Clears all Game Center achievements. The function takes no parameters.</p>  <h4 id="id7">Response event</h4> <p>The response event will be a dictionary with the following fields:</p> <p>On error:</p> <pre data-language="gdscript">{
+  "type": "reset_achievements",
+  "result": "error",
+  "error_code": the value from NSError::code
+}
+</pre> <p>On success:</p> <pre data-language="gdscript">{
+  "type": "reset_achievements",
+  "result": "ok",
+}
+</pre>    <h3 id="request-achievements">request_achievements</h3> <p>Request all the Game Center achievements the player has made progress on. The function takes no parameters.</p>  <h4 id="id8">Response event</h4> <p>The response event will be a dictionary with the following fields:</p> <p>On error:</p> <pre data-language="gdscript">{
+  "type": "achievements",
+  "result": "error",
+  "error_code": the value from NSError::code
+}
+</pre> <p>On success:</p> <pre data-language="gdscript">{
+  "type": "achievements",
+  "result": "ok",
+  "names": [ list of the name of each achievement ],
+  "progress": [ list of the progress made on each achievement ]
+}
+</pre>    <h3 id="request-achievement-descriptions">request_achievement_descriptions</h3> <p>Request the descriptions of all existing Game Center achievements regardless of progress. The function takes no parameters.</p>  <h4 id="id9">Response event</h4> <p>The response event will be a dictionary with the following fields:</p> <p>On error:</p> <pre data-language="gdscript">{
+  "type": "achievement_descriptions",
+  "result": "error",
+  "error_code": the value from NSError::code
+}
+</pre> <p>On success:</p> <pre data-language="gdscript">{
+  "type": "achievement_descriptions",
+  "result": "ok",
+  "names": [ list of the name of each achievement ],
+  "titles": [ list of the title of each achievement ]
+  "unachieved_descriptions": [ list of the description of each achievement when it is unachieved ]
+  "achieved_descriptions": [ list of the description of each achievement when it is achieved ]
+  "maximum_points": [ list of the points earned by completing each achievement ]
+  "hidden": [ list of booleans indicating whether each achievement is initially visible ]
+  "replayable": [ list of booleans indicating whether each achievement can be earned more than once ]
+}
+</pre>    <h3 id="show-game-center">show_game_center</h3> <p>Displays the built in Game Center overlay showing leaderboards, achievements, and challenges.</p>  <h4 id="id10">Parameters</h4> <p>Takes a Dictionary as a parameter, with 2 fields:</p> <ul class="simple"> <li>
+<code>view</code> (string) (optional) the name of the view to present. Accepts “default”, “leaderboards”, “achievements”, or “challenges”. Defaults to “default”.</li> <li>
+<code>leaderboard_name</code> (string) (optional) the name of the leaderboard to present. Only used when “view” is “leaderboards” (or “default” is configured to show leaderboards). If not specified, Game Center will display the aggregate leaderboard.</li> </ul> <p>Examples:</p> <pre data-language="gdscript">var result = show_game_center( { "view": "leaderboards", "leaderboard_name": "best_time_leaderboard" } )
+var result = show_game_center( { "view": "achievements" } )
+</pre>   <h4 id="id11">Response event</h4> <p>The response event will be a dictionary with the following fields:</p> <p>On close:</p> <pre data-language="gdscript">{
+  "type": "show_game_center",
+  "result": "ok",
+}
+</pre>     <h2 id="multi-platform-games">Multi-platform games</h2> <p>When working on a multi-platform game, you won’t always have the “GameCenter” singleton available (for example when running on PC or Android). Because the gdscript compiler looks up the singletons at compile time, you can’t just query the singletons to see and use what you need inside a conditional block, you need to also define them as valid identifiers (local variable or class member). This is an example of how to work around this in a class:</p> <pre data-language="python">var GameCenter = null # define it as a class member
+
+func post_score(p_score):
+    if GameCenter == null:
+        return
+    GameCenter.post_score( { "value": p_score, "category": "my_leaderboard" } )
+
+func check_events():
+    while GameCenter.get_pending_event_count() &gt; 0:
+        # do something with events here
+        pass
+
+func _ready():
+    # check if the singleton exists
+    if Globals.has_singleton("GameCenter"):
+        GameCenter = Globals.get_singleton("GameCenter")
+        # connect your timer here to the "check_events" function
+</pre>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2014–2017 Juan Linietsky, Ariel Manzur and the Godot community<br>Licensed under the Creative Commons Attribution Unported License v3.0.<br>
+    <a href="http://docs.godotengine.org/en/2.1/learning/features/platform/services_for_ios.html" class="_attribution-link" target="_blank">http://docs.godotengine.org/en/2.1/learning/features/platform/services_for_ios.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

@@ -1,0 +1,94 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Multiple Resolutions - Godot 2.1 - W3cubDocs</title>
+  
+  <meta name="description" content=" A base screen resolution for the project can be specified in the project settings. ">
+  <meta name="keywords" content="multiple, resolutions, -, godot, godot~2.1">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/godot~2.1/learning/features/viewports/multiple_resolutions/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/godot~2.1.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/godot~2.1/" class="_nav-link" title="" style="margin-left:0;">Godot 2.1</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _sphinx_simple">
+				
+<h1 id="doc-multiple-resolutions">Multiple resolutions</h1>  <h2 id="base-resolution">Base resolution</h2> <p>A base screen resolution for the project can be specified in the project settings.</p> <img alt="../../../_images/screenres.png" src="http://docs.godotengine.org/en/2.1/_images/screenres.png"> <p>However, what it does is not completely obvious. When running on PC, the engine will attempt to set this resolution (or use something smaller if it fails). On mobile, consoles or devices with a fixed resolution or full screen rendering, this resolution will be ignored and the native resolution will be used instead. To compensate for this, Godot offers many ways to control how the screen will resize and stretch to different screen sizes.</p>   <h2 id="resizing">Resizing</h2> <p>There are several types of devices, with several types of screens, which in turn have different pixel density and resolutions. Handling all of them can be a lot of work, so Godot tries to make the developer’s life a little easier. The <a href="../../../../classes/class_viewport/#class-viewport"><span class="std std-ref">Viewport</span></a> node has several functions to handle resizing, and the root node of the scene tree is always a viewport (scenes loaded are instanced as a child of it, and it can always be accessed by calling <code>get_tree().get_root()</code> or <code>get_node("/root")</code>).</p> <p>In any case, while changing the root Viewport params is probably the most flexible way to deal with the problem, it can be a lot of work, code and guessing, so Godot provides a simple set of parameters in the project settings to handle multiple resolutions.</p>   <h2 id="stretch-settings">Stretch settings</h2> <p>Stretch settings are located in the project settings, it’s just a bunch of configuration variables that provide several options:</p> <img alt="../../../_images/stretchsettings.png" src="http://docs.godotengine.org/en/2.1/_images/stretchsettings.png">   <h2 id="stretch-mode">Stretch mode</h2> <ul class="simple"> <li>
+<strong>Disabled</strong>: The first is the stretch mode. By default this is disabled, which means no stretching happens (the bigger the screen or window, the bigger the resolution, always matching pixels 1:1).</li> <li>
+<strong>2D</strong>: In this mode, the resolution specified in display/width and display/height in the project settings will be stretched to cover the whole screen. This means that 3D will be unaffected (will just render to higher-res) and 2D will also be rendered at higher-res, just enlarged.</li> <li>
+<strong>Viewport</strong>: Viewport scaling is different, the root <a href="../../../../classes/class_viewport/#class-viewport"><span class="std std-ref">Viewport</span></a> is set as a render target, and still renders precisely to the resolution specified in the <code>display/</code> section of the project settings. Finally, this viewport is copied and scaled to fit the screen. This mode is useful when working with pixel-precise games, or just for the sake of rendering to a lower resolution for improving performance.</li> </ul> <img alt="../../../_images/stretch.png" src="http://docs.godotengine.org/en/2.1/_images/stretch.png">   <h2 id="stretch-aspect">Stretch aspect</h2> <ul class="simple"> <li>
+<strong>Ignore</strong>: Ignore the aspect ratio when stretching the screen. This means that the original resolution will be stretched to fit the new one, even if it’s wider or narrower.</li> <li>
+<strong>Keep</strong>: Keep aspect ratio when stretching the screen. This means that the original resolution will be kept when fitting the new one, and black bars will be added to the sides or the top/bottom of the screen.</li> <li>
+<strong>Keep Width</strong>: Keep aspect ratio when stretching the screen, but if the resulting screen is taller than the specified resolution, it will be stretched vertically (and more vertical resolution will be reported in the viewport, proportionally). This is usually the best option for creating GUIs or HUDs that scale, so some controls can be anchored to the bottom (<a href="../../gui/size_and_anchors/#doc-size-and-anchors"><span class="std std-ref">Size and anchors</span></a>).</li> <li>
+<strong>Keep Height</strong>: Keep aspect ratio when stretching the screen, but if the resulting screen is wider than the specified resolution, it will be stretched horizontally (and more horizontal resolution will be reported in the viewport, proportionally). This is usually the best option for 2D games that scroll horizontally (like runners or platformers).</li> </ul>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2014–2017 Juan Linietsky, Ariel Manzur and the Godot community<br>Licensed under the Creative Commons Attribution Unported License v3.0.<br>
+    <a href="http://docs.godotengine.org/en/2.1/learning/features/viewports/multiple_resolutions.html" class="_attribution-link" target="_blank">http://docs.godotengine.org/en/2.1/learning/features/viewports/multiple_resolutions.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

@@ -1,0 +1,89 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>3D Performance and Limitations - Godot 2.1 - W3cubDocs</title>
+  
+  <meta name="description" content="Godot follows a balanced performance philosophy. In performance world, there are always trade-offs, which consist in trading speed for usability and &hellip;">
+  <meta name="keywords" content="d, performance, and, limitations, -, godot, godot~2.1">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/godot~2.1/learning/features/3d/3d_performance_and_limitations/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/godot~2.1.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/godot~2.1/" class="_nav-link" title="" style="margin-left:0;">Godot 2.1</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _sphinx_simple">
+				
+<h1 id="doc-3d-performance-and-limitations">3D performance and limitations</h1>  <h2 id="introduction">Introduction</h2> <p>Godot follows a balanced performance philosophy. In performance world, there are always trade-offs, which consist in trading speed for usability and flexibility. Some practical examples of this are:</p> <ul class="simple"> <li>Rendering objects efficiently in high amounts is easy, but when a large scene must be rendered it can become inefficient. To solve this, visibility computation must be added to the rendering, which makes rendering less efficient, but at the same time less objects are rendered, so efficiency overall improves.</li> <li>Configuring the properties of every material for every object that needs to be renderer is also slow. To solve this, objects are sorted by material to reduce the costs, but at the same time sorting has a cost.</li> <li>In 3D physics a similar situation happens. The best algorithms to handle large amounts of physics objects (such as SAP) are very slow at insertion/removal of objects and ray-casting. Algorithms that allow faster insertion and removal, as well as ray-casting will not be able to handle as many active objects.</li> </ul> <p>And there are many more examples of this! Game engines strive to be general purpose in nature, so balanced algorithms are always favored over algorithms that might be the fast in some situations and slow in others.. or algorithms that are fast but make usability more difficult.</p> <p>Godot is not an exception and, while it is designed to have backends swappable for different algorithms, the default ones (or more like, the only ones that are there for now) prioritize balance and flexibility over performance.</p> <p>With this clear, the aim of this tutorial is to explain how to get the maximum performance out of Godot.</p>   <h2 id="rendering">Rendering</h2> <p>3D rendering is one of the most difficult areas to get performance from, so this section will have a list of tips.</p>  <h3 id="reuse-shaders-and-materials">Reuse shaders and materials</h3> <p>Godot renderer is a little different to what is out there. It’s designed to minimize GPU state changes as much as possible. <a href="../../../../classes/class_fixedmaterial/#class-fixedmaterial"><span class="std std-ref">FixedMaterial</span></a> does a good job at reusing materials that need similar shaders but, if custom shaders are used, make sure to reuse them as much as possible. Godot’s priorities will be like this:</p> <ul class="simple"> <li>
+<strong>Reusing Materials</strong>: The less amount of different materials in the scene, the faster the rendering will be. If a scene has a huge amount of objects (in the hundreds or thousands) try reusing the materials or in the worst case use atlases.</li> <li>
+<strong>Reusing Shaders</strong>: If materials can’t be reused, at least try to re-use shaders (or FixedMaterials with different parameters but same configuration).</li> </ul> <p>If a scene has, for example, 20.000 objects with 20.000 different materials each, rendering will be really slow. If the same scene has 20.000 objects, but only uses 100 materials, rendering will be blazing fast.</p>   <h3 id="pixels-cost-vs-vertex-cost">Pixels cost vs vertex cost</h3> <p>It is a common thought that the lower the polygons in a model, the faster it will be rendered. This is <em>really</em> relative and depends on many factors.</p> <p>On a modern PC and consoles, vertex cost is low. Very low. GPUs originally only rendered triangles, so all the vertices:</p> <ol class="arabic simple"> <li>Had to be transformed by the CPU (including clipping).</li> <li>Had to be sent to the GPU memory from the main RAM.</li> </ol> <p>Nowadays, all this is handled inside the GPU, so the performance is extremely high. 3D artists usually have the wrong feeling about polycount performance because 3D DCCs (such as Blender, Max, etc.) need to keep geometry in CPU memory in order for it to be edited, reducing actual performance. Truth is, a model rendered by a 3D engine is much more optimal than how 3D DCCs display them.</p> <p>On mobile devices, the story is different. PC and Console GPUs are brute-force monsters that can pull as much electricity as they need from the power grid. Mobile GPUs are limited to a tiny battery, so they need to be a lot more power efficient.</p> <p>To be more efficient, mobile GPUs attempt to avoid <em>overdraw</em>. This means, the same pixel on the screen being rendered (as in, with lighting calculation, etc.) more than once. Imagine a town with several buildings, GPUs don’t really know what is visible and what is hidden until they draw it. A house might be drawn and then another house in front of it (rendering happened twice for the same pixel!). PC GPUs normally don’t care much about this and just throw more pixel processors to the hardware to increase performance (but this also increases power consumption).</p> <p>On mobile, pulling more power is not an option, so a technique called “Tile Based Rendering” is used (almost every mobile hardware uses a variant of it), which divide the screen into a grid. Each cell keeps the list of triangles drawn to it and sorts them by depth to minimize <em>overdraw</em>. This technique improves performance and reduces power consumption, but takes a toll on vertex performance. As a result, less vertices and triangles can be processed for drawing.</p> <p>Generally, this is not so bad, but there is a corner case on mobile that must be avoided, which is to have small objects with a lot of geometry within a small portion of the screen. This forces mobile GPUs to put a lot of strain on a single screen cell, considerably decreasing performance (as all the other cells must wait for it to complete in order to display the frame).</p> <p>To make it short, do not worry about vertex count so much on mobile, but avoid concentration of vertices in small parts of the screen. If, for example, a character, NPC, vehicle, etc. is far away (so it looks tiny), use a smaller level of detail (LOD) model instead.</p> <p>An extra situation where vertex cost must be considered is objects that have extra processing per vertex, such as:</p> <ul class="simple"> <li>Skinning (skeletal animation)</li> <li>Morphs (shape keys)</li> <li>Vertex Lit Objects (common on mobile)</li> </ul>   <h3 id="texture-compression">Texture compression</h3> <p>Godot offers to compress textures of 3D models when imported (VRAM compression). Video RAM compression is not as efficient in size as PNG or JPG when stored, but increase performance enormously when drawing.</p> <p>This is because the main goal of texture compression is bandwidth reduction between memory and the GPU.</p> <p>In 3D, the shapes of objects depend more on the geometry than the texture, so compression is generally not noticeable. In 2D, compression depends more on shapes inside the textures, so the artifacting resulting from the compression is more noticeable.</p> <p>As a warning, most Android devices do not support texture compression of textures with transparency (only opaque), so keep this in mind.</p>   <h3 id="transparent-objects">Transparent objects</h3> <p>As mentioned before, Godot sorts objects by material and shader to improve performance. This, however, can not be done on transparent objects. Transparent objects are rendered from back to front to make blending with what is behind work. As a result, please try to keep transparent objects to a minimum! If an object has a small section with transparency, try to make that section a separate material.</p>   <h3 id="level-of-detail-lod">Level of detail (LOD)</h3> <p>As also mentioned before, using objects with less vertices can improve performance in some cases. Godot has a very simple system to use level of detail, <a href="../../../../classes/class_geometryinstance/#class-geometryinstance"><span class="std std-ref">GeometryInstance</span></a> based objects have a visibility range that can be defined. Having several GeometryInstance objects in different ranges works as LOD.</p>   <h3 id="use-instancing-multimesh">Use instancing (MultiMesh)</h3> <p>If several identical objects have to be drawn in the same place or nearby, try using <a href="../../../../classes/class_multimesh/#class-multimesh"><span class="std std-ref">MultiMesh</span></a> instead. MultiMesh allows drawing of dozens of thousands of objects at very little performance cost, making it ideal for flocks, grass, particles, etc.</p>   <h3 id="bake-lighting">Bake lighting</h3> <p>Small lights are usually not a performance issue. Shadows a little more. In general, if several lights need to affect a scene, it’s ideal to bake it (<span class="xref std std-ref">doc_light_baking</span>). Baking can also improve the scene quality by adding indirect light bounces.</p> <p>If working on mobile, baking to texture is recommended, since this method is even faster.</p>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2014–2017 Juan Linietsky, Ariel Manzur and the Godot community<br>Licensed under the Creative Commons Attribution Unported License v3.0.<br>
+    <a href="http://docs.godotengine.org/en/2.1/learning/features/3d/3d_performance_and_limitations.html" class="_attribution-link" target="_blank">http://docs.godotengine.org/en/2.1/learning/features/3d/3d_performance_and_limitations.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

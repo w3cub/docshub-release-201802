@@ -1,0 +1,90 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Managing Image Files - Godot 2.1 - W3cubDocs</title>
+  
+  <meta name="description" content="If you have read the previous tutorials on Resources and File system, at this point you know that regular image files (.png, .jpg, etc.) are treated &hellip;">
+  <meta name="keywords" content="managing, image, files, -, godot, godot~2.1">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/godot~2.1/learning/workflow/assets/managing_image_files/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/godot~2.1.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/godot~2.1/" class="_nav-link" title="" style="margin-left:0;">Godot 2.1</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _sphinx_simple">
+				
+<h1 id="doc-managing-image-files">Managing image files</h1> <p>If you have read the previous tutorials on <a href="../../../step_by_step/resources/#doc-resources"><span class="std std-ref">Resources</span></a> and <a href="../../../step_by_step/filesystem/#doc-filesystem"><span class="std std-ref">File system</span></a>, at this point you know that regular image files (.png, .jpg, etc.) are treated as regular resources in Godot.</p> <p>Unlike texture resources (.tex files), image files contain no extra information on tiling (texture repeat), mipmaps or filtering. Editing this information and saving the texture back will not have any effect, since such formats can’t contain that information.</p>  <h2 id="image-loader">Image loader</h2> <p>Loading of images is done by the image loader. The behavior of the loader for all image files can be changed in the Project Settings dialog (Scene -&gt; Project Settings). There is a section with values that are used for all image resources:</p> <img alt="../../../_images/imgloader.png" src="http://docs.godotengine.org/en/2.1/_images/imgloader.png">   <h2 id="image-loader-options">Image loader options</h2>  <h3 id="filter">Filter</h3> <p>Filter is used when the image is stretched more than its original size, so a texel in the image is bigger than a pixel on the screen. Turning off the filter produces a retro-like look:</p> <img alt="../../../_images/imagefilter.png" src="http://docs.godotengine.org/en/2.1/_images/imagefilter.png">   <h3 id="repeat">Repeat</h3> <p>Repeat is mainly used for 3D textures, so it’s off by default (textures are imported with the scenes and usually are not in the project as image files). When using UV coordinates (something not as common in 2D), and the UV value goes beyond the 0,0,1,1 rect, the texture repeats instead of clamping to the edge.</p>   <h3 id="mipmaps">Mipmaps</h3> <p>When the mipmaps option is enabled, Godot will generate mipmaps. Mipmaps are versions of the image shrunk by half in both axes, recursively, until the image is 1 pixel of size. When the 3D hardware needs to shrink the image, it finds the largest mipmap it can scale from, and scales from there. This improves performance and image quality.</p> <img alt="../../../_images/mipmaps.png" src="http://docs.godotengine.org/en/2.1/_images/mipmaps.png"> <p>When mipmaps are disabled, images start distorting badly when shrunk excessively:</p> <img alt="../../../_images/imagemipmap.png" src="http://docs.godotengine.org/en/2.1/_images/imagemipmap.png">   <h3 id="alpha-blending">Alpha blending</h3> <p>The <a href="http://en.wikipedia.org/wiki/Alpha_compositing" target="_blank">blending equation</a> used by applications like Photoshop is too complex for real-time. There are better approximations such as <a href="http://blogs.msdn.com/b/shawnhar/archive/2009/11/06/premultiplied-alpha.aspx?Redirected=true" target="_blank">pre-multiplied alpha</a>, but they impose more stress in the asset pipeline. In the end, we are left with textures that have artifacts in the edges, because apps such as Photoshop store white pixels in completely transparent areas. Such white pixels end up showing thanks to the texture filter (when active).</p> <p>Godot has an option to fix the edges of the image (by painting invisible pixels the same color as the visible neighbours):</p> <img alt="../../../_images/fixedborder.png" src="http://docs.godotengine.org/en/2.1/_images/fixedborder.png"> <p>To do this, open the image from the resources tab, or edit it from the property editor from another node or resource, then go to the object options and select “Fix Alpha Edges”, then save it.</p> <img alt="../../../_images/imagefixalpha.png" src="http://docs.godotengine.org/en/2.1/_images/imagefixalpha.png"> <p>Since fixing this in so many images can be a little annoying, both Texture Import and Image Export can also perform this operation.</p>   <h3 id="texture-import">Texture import</h3> <p>Sometimes, it might be desirable to change the above settings per image. Unfortunately, the image loader settings are global. Texture flags also can’t be saved in a regular .png or .jpg file.</p> <p>For such cases, the image can be imported as a texture (.tex), where the individual flags can be changed. Godot also keeps track of the original file and will re-import if it changes.</p> <p>Importing also allows conversion to other formats (WebP, or RAM compression) which might be of use in some cases. More information on the <a href="../importing_textures/#doc-importing-textures"><span class="std std-ref">Importing textures</span></a> page.</p>   <h3 id="image-export">Image export</h3> <p>It is also possible to convert images to other formats (WebP or RAM compression) on export, as well as instructing the exporter to create an Atlas for a set of images. It is also possible to ask the exporter to scale all images (or selected groups).</p> <p>More information on the <a href="../exporting_images/#doc-exporting-images"><span class="std std-ref">Exporting images</span></a> page.</p>    <h2 id="fixing-pngs-iccp-chunk">Fixing PNGs iCCP chunk</h2> <p>With the upgrade of libpng to 1.6.23, libpng became more strict in terms of enforcing iCC profile correctness. This means that it now warns when it comes across an image with a non-conforming iCC chunk.</p>  WARNING: _png_warn_function: iCCP: known incorrect sRGB profile <p>This can be fixed by either using a tool that exports PNGs with the correct iCC profile (in some tools this profile can even be manually changed on export) or using a tool that removes/fixes the iCC chunks.</p>  <h3 id="linux-mac">Linux/Mac</h3> <p>Using ImageMagicks <code>convert</code> or <code>mogrify</code> fixes these warnings. To fix all PNGs in a project folder do:</p> <pre data-language="shell">$ find . -type f -name "*.png" -exec convert {} {} \;
+</pre> <p><code>pngcheck</code> is also useful in locating the non-conforming images:</p> <pre data-language="shell">find . -type f -name "*.png" -exec pngcheck {} \;
+</pre>   <h3 id="windows">Windows</h3> <p>Using <code>optiPNG &lt;http://optipng.sourceforge.net/&gt;</code> fixes these warnings on Windows. To fix a PNG inplace do:</p> <pre data-language="shell">optipng -clobber -strip all file.png
+</pre>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2014–2017 Juan Linietsky, Ariel Manzur and the Godot community<br>Licensed under the Creative Commons Attribution Unported License v3.0.<br>
+    <a href="http://docs.godotengine.org/en/2.1/learning/workflow/assets/managing_image_files.html" class="_attribution-link" target="_blank">http://docs.godotengine.org/en/2.1/learning/workflow/assets/managing_image_files.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

@@ -1,0 +1,247 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Binary Serialization API - Godot 2.1 - W3cubDocs</title>
+  
+  <meta name="description" content="Godot has a simple serialization API based on Variant. It’s used for converting data types to an array of bytes efficiently. This API is used in the &hellip;">
+  <meta name="keywords" content="binary, serialization, api, -, godot, godot~2.1">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/godot~2.1/learning/features/misc/binary_serialization_api/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/godot~2.1.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/godot~2.1/" class="_nav-link" title="" style="margin-left:0;">Godot 2.1</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _sphinx_simple">
+				
+<h1 id="doc-binary-serialization-api">Binary serialization API</h1>  <h2 id="introduction">Introduction</h2> <p>Godot has a simple serialization API based on Variant. It’s used for converting data types to an array of bytes efficiently. This API is used in the functions <code>get_var</code> and <code>store_var</code> of <a href="../../../../classes/class_file/#class-file"><span class="std std-ref">File</span></a> as well as the packet APIs for <a href="../../../../classes/class_packetpeer/#class-packetpeer"><span class="std std-ref">PacketPeer</span></a>. This format is not used for binary scenes and resources.</p>   <h2 id="packet-specification">Packet specification</h2> <p>The packet is designed to be always padded to 4 bytes. All values are little endian encoded. All packets have a 4 byte header representing an integer, specifying the type of data:</p> <table class="docutils">  <thead valign="bottom"> <tr>
+<th class="head">Type</th> <th class="head">Value</th> </tr> </thead>  <tr>
+<td>0</td> <td>null</td> </tr> <tr>
+<td>1</td> <td>bool</td> </tr> <tr>
+<td>2</td> <td>integer</td> </tr> <tr>
+<td>3</td> <td>float</td> </tr> <tr>
+<td>4</td> <td>string</td> </tr> <tr>
+<td>5</td> <td>vector2</td> </tr> <tr>
+<td>6</td> <td>rect2</td> </tr> <tr>
+<td>7</td> <td>vector3</td> </tr> <tr>
+<td>8</td> <td>matrix32</td> </tr> <tr>
+<td>9</td> <td>plane</td> </tr> <tr>
+<td>10</td> <td>quaternion</td> </tr> <tr>
+<td>11</td> <td>aabb (rect3)</td> </tr> <tr>
+<td>12</td> <td>matrix3x3</td> </tr> <tr>
+<td>13</td> <td>transform (matrix 4x3)</td> </tr> <tr>
+<td>14</td> <td>color</td> </tr> <tr>
+<td>15</td> <td>image</td> </tr> <tr>
+<td>16</td> <td>node path</td> </tr> <tr>
+<td>17</td> <td>rid (unsupported)</td> </tr> <tr>
+<td>18</td> <td>object (unsupported)</td> </tr> <tr>
+<td>19</td> <td>input event</td> </tr> <tr>
+<td>20</td> <td>dictionary</td> </tr> <tr>
+<td>21</td> <td>array</td> </tr> <tr>
+<td>22</td> <td>ByteArray</td> </tr> <tr>
+<td>23</td> <td>IntArray</td> </tr> <tr>
+<td>24</td> <td>FloatArray</td> </tr> <tr>
+<td>25</td> <td>StringArray</td> </tr> <tr>
+<td>26</td> <td>Vector2Array</td> </tr> <tr>
+<td>27</td> <td>Vector3Array</td> </tr> <tr>
+<td>28</td> <td>ColorArray</td> </tr>  </table> <p>Following this is the actual packet contents, which varies for each type of packet:</p>  <h3 id="null">0: null</h3>   <h3 id="bool">1: bool</h3> <table class="docutils">  <thead valign="bottom"> <tr>
+<th class="head">Offset</th> <th class="head">Len</th> <th class="head">Type</th> <th class="head">Description</th> </tr> </thead>  <tr>
+<td>4</td> <td>4</td> <td>Integer</td> <td>0 for False, 1 for True</td> </tr>  </table>   <h3 id="integer">2: integer</h3> <table class="docutils">  <thead valign="bottom"> <tr>
+<th class="head">Offset</th> <th class="head">Len</th> <th class="head">Type</th> <th class="head">Description</th> </tr> </thead>  <tr>
+<td>4</td> <td>4</td> <td>Integer</td> <td>Signed, 32-Bit Integer</td> </tr>  </table>   <h3 id="float">3: float</h3> <table class="docutils">  <thead valign="bottom"> <tr>
+<th class="head">Offset</th> <th class="head">Len</th> <th class="head">Type</th> <th class="head">Description</th> </tr> </thead>  <tr>
+<td>4</td> <td>4</td> <td>Float</td> <td>IEE 754 32-Bits Float</td> </tr>  </table>   <h3 id="string">4: string</h3> <table class="docutils">  <thead valign="bottom"> <tr>
+<th class="head">Offset</th> <th class="head">Len</th> <th class="head">Type</th> <th class="head">Description</th> </tr> </thead>  <tr>
+<td>4</td> <td>4</td> <td>Integer</td> <td>String Length (in Bytes)</td> </tr> <tr>
+<td>8</td> <td>X</td> <td>Bytes</td> <td>UTF-8 Encoded String</td> </tr>  </table> <p>This field is padded to 4 bytes.</p>   <h3 id="vector2">5: vector2</h3> <table class="docutils">  <thead valign="bottom"> <tr>
+<th class="head">Offset</th> <th class="head">Len</th> <th class="head">Type</th> <th class="head">Description</th> </tr> </thead>  <tr>
+<td>4</td> <td>4</td> <td>Float</td> <td>X Coordinate</td> </tr> <tr>
+<td>8</td> <td>4</td> <td>Float</td> <td>Y Coordinate</td> </tr>  </table>   <h3 id="rect2">6: rect2</h3> <table class="docutils">  <thead valign="bottom"> <tr>
+<th class="head">Offset</th> <th class="head">Len</th> <th class="head">Type</th> <th class="head">Description</th> </tr> </thead>  <tr>
+<td>4</td> <td>4</td> <td>Float</td> <td>X Coordinate</td> </tr> <tr>
+<td>8</td> <td>4</td> <td>Float</td> <td>Y Coordinate</td> </tr> <tr>
+<td>12</td> <td>4</td> <td>Float</td> <td>X Size</td> </tr> <tr>
+<td>16</td> <td>4</td> <td>Float</td> <td>Y Size</td> </tr>  </table>   <h3 id="vector3">7: vector3</h3> <table class="docutils">  <thead valign="bottom"> <tr>
+<th class="head">Offset</th> <th class="head">Len</th> <th class="head">Type</th> <th class="head">Description</th> </tr> </thead>  <tr>
+<td>4</td> <td>4</td> <td>Float</td> <td>X Coordinate</td> </tr> <tr>
+<td>8</td> <td>4</td> <td>Float</td> <td>Y Coordinate</td> </tr> <tr>
+<td>12</td> <td>4</td> <td>Float</td> <td>Z Coordinate</td> </tr>  </table>   <h3 id="matrix32">8: matrix32</h3> <table class="docutils">  <thead valign="bottom"> <tr>
+<th class="head">Offset</th> <th class="head">Len</th> <th class="head">Type</th> <th class="head">Description</th> </tr> </thead>  <tr>
+<td>4</td> <td>4</td> <td>Float</td> <td>[0][0]</td> </tr> <tr>
+<td>8</td> <td>4</td> <td>Float</td> <td>[0][1]</td> </tr> <tr>
+<td>12</td> <td>4</td> <td>Float</td> <td>[1][0]</td> </tr> <tr>
+<td>16</td> <td>4</td> <td>Float</td> <td>[1][1]</td> </tr> <tr>
+<td>20</td> <td>4</td> <td>Float</td> <td>[2][0]</td> </tr> <tr>
+<td>24</td> <td>4</td> <td>Float</td> <td>[2][1]</td> </tr>  </table>   <h3 id="plane">9: plane</h3> <table class="docutils">  <thead valign="bottom"> <tr>
+<th class="head">Offset</th> <th class="head">Len</th> <th class="head">Type</th> <th class="head">Description</th> </tr> </thead>  <tr>
+<td>4</td> <td>4</td> <td>Float</td> <td>Normal X</td> </tr> <tr>
+<td>8</td> <td>4</td> <td>Float</td> <td>Normal Y</td> </tr> <tr>
+<td>12</td> <td>4</td> <td>Float</td> <td>Normal Z</td> </tr> <tr>
+<td>16</td> <td>4</td> <td>Float</td> <td>Distance</td> </tr>  </table>   <h3 id="quaternion">10: quaternion</h3> <table class="docutils">  <thead valign="bottom"> <tr>
+<th class="head">Offset</th> <th class="head">Len</th> <th class="head">Type</th> <th class="head">Description</th> </tr> </thead>  <tr>
+<td>4</td> <td>4</td> <td>Float</td> <td>Imaginary X</td> </tr> <tr>
+<td>8</td> <td>4</td> <td>Float</td> <td>Imaginary Y</td> </tr> <tr>
+<td>12</td> <td>4</td> <td>Float</td> <td>Imaginary Z</td> </tr> <tr>
+<td>16</td> <td>4</td> <td>Float</td> <td>Real W</td> </tr>  </table>   <h3 id="aabb-rect3">11: aabb (rect3)</h3> <table class="docutils">  <thead valign="bottom"> <tr>
+<th class="head">Offset</th> <th class="head">Len</th> <th class="head">Type</th> <th class="head">Description</th> </tr> </thead>  <tr>
+<td>4</td> <td>4</td> <td>Float</td> <td>X Coordinate</td> </tr> <tr>
+<td>8</td> <td>4</td> <td>Float</td> <td>Y Coordinate</td> </tr> <tr>
+<td>12</td> <td>4</td> <td>Float</td> <td>Z Coordinate</td> </tr> <tr>
+<td>16</td> <td>4</td> <td>Float</td> <td>X Size</td> </tr> <tr>
+<td>20</td> <td>4</td> <td>Float</td> <td>Y Size</td> </tr> <tr>
+<td>24</td> <td>4</td> <td>Float</td> <td>Z Size</td> </tr>  </table>   <h3 id="matrix3x3">12: matrix3x3</h3> <table class="docutils">  <thead valign="bottom"> <tr>
+<th class="head">Offset</th> <th class="head">Len</th> <th class="head">Type</th> <th class="head">Description</th> </tr> </thead>  <tr>
+<td>4</td> <td>4</td> <td>Float</td> <td>[0][0]</td> </tr> <tr>
+<td>8</td> <td>4</td> <td>Float</td> <td>[0][1]</td> </tr> <tr>
+<td>12</td> <td>4</td> <td>Float</td> <td>[0][2]</td> </tr> <tr>
+<td>16</td> <td>4</td> <td>Float</td> <td>[1][0]</td> </tr> <tr>
+<td>20</td> <td>4</td> <td>Float</td> <td>[1][1]</td> </tr> <tr>
+<td>24</td> <td>4</td> <td>Float</td> <td>[1][2]</td> </tr> <tr>
+<td>28</td> <td>4</td> <td>Float</td> <td>[2][0]</td> </tr> <tr>
+<td>32</td> <td>4</td> <td>Float</td> <td>[2][1]</td> </tr> <tr>
+<td>36</td> <td>4</td> <td>Float</td> <td>[2][2]</td> </tr>  </table>   <h3 id="transform-matrix-4x3">13: transform (matrix 4x3)</h3> <table class="docutils">  <thead valign="bottom"> <tr>
+<th class="head">Offset</th> <th class="head">Len</th> <th class="head">Type</th> <th class="head">Description</th> </tr> </thead>  <tr>
+<td>4</td> <td>4</td> <td>Float</td> <td>[0][0]</td> </tr> <tr>
+<td>8</td> <td>4</td> <td>Float</td> <td>[0][1]</td> </tr> <tr>
+<td>12</td> <td>4</td> <td>Float</td> <td>[0][2]</td> </tr> <tr>
+<td>16</td> <td>4</td> <td>Float</td> <td>[1][0]</td> </tr> <tr>
+<td>20</td> <td>4</td> <td>Float</td> <td>[1][1]</td> </tr> <tr>
+<td>24</td> <td>4</td> <td>Float</td> <td>[1][2]</td> </tr> <tr>
+<td>28</td> <td>4</td> <td>Float</td> <td>[2][0]</td> </tr> <tr>
+<td>32</td> <td>4</td> <td>Float</td> <td>[2][1]</td> </tr> <tr>
+<td>36</td> <td>4</td> <td>Float</td> <td>[2][2]</td> </tr> <tr>
+<td>40</td> <td>4</td> <td>Float</td> <td>[3][0]</td> </tr> <tr>
+<td>44</td> <td>4</td> <td>Float</td> <td>[3][1]</td> </tr> <tr>
+<td>48</td> <td>4</td> <td>Float</td> <td>[3][2]</td> </tr>  </table>   <h3 id="color">14: color</h3> <table class="docutils">  <thead valign="bottom"> <tr>
+<th class="head">Offset</th> <th class="head">Len</th> <th class="head">Type</th> <th class="head">Description</th> </tr> </thead>  <tr>
+<td>4</td> <td>4</td> <td>Float</td> <td>Red (0..1)</td> </tr> <tr>
+<td>8</td> <td>4</td> <td>Float</td> <td>Green (0..1)</td> </tr> <tr>
+<td>12</td> <td>4</td> <td>Float</td> <td>Blue (0..1)</td> </tr> <tr>
+<td>16</td> <td>4</td> <td>Float</td> <td>Alpha (0..1)</td> </tr>  </table>   <h3 id="image">15: image</h3> <table class="docutils">  <thead valign="bottom"> <tr>
+<th class="head">Offset</th> <th class="head">Len</th> <th class="head">Type</th> <th class="head">Description</th> </tr> </thead>  <tr>
+<td>4</td> <td>4</td> <td>Integer</td> <td>Format (see FORMAT_* in “Image”:class_image</td> </tr> <tr>
+<td>8</td> <td>4</td> <td>Integer</td> <td>Mip-Maps (0 means no mip-maps).</td> </tr> <tr>
+<td>12</td> <td>4</td> <td>Integer</td> <td>Width (Pixels)</td> </tr> <tr>
+<td>16</td> <td>4</td> <td>Integer</td> <td>Height (Pixels)</td> </tr> <tr>
+<td>20</td> <td>4</td> <td>Integer</td> <td>Data Length</td> </tr> <tr>
+<td>24..24+DataLength</td> <td>1</td> <td>Byte</td> <td>Image Data</td> </tr>  </table> <p>This field is padded to 4 bytes.</p>   <h3 id="node-path">16: node path</h3> <table class="docutils">  <thead valign="bottom"> <tr>
+<th class="head">Offset</th> <th class="head">Len</th> <th class="head">Type</th> <th class="head">Description</th> </tr> </thead>  <tr>
+<td>4</td> <td>4</td> <td>Integer</td> <td>String Length, or New Format (val&amp;0x80000000!=0 and NameCount=val&amp;0x7FFFFFFF)</td> </tr>  </table>  <h4 id="for-old-format">For old format:</h4> <table class="docutils">  <thead valign="bottom"> <tr>
+<th class="head">Offset</th> <th class="head">Len</th> <th class="head">Type</th> <th class="head">Description</th> </tr> </thead>  <tr>
+<td>8</td> <td>X</td> <td>Bytes</td> <td>UTF-8 Encoded String</td> </tr>  </table> <p>Padded to 4 bytes.</p>   <h4 id="for-new-format">For new format:</h4> <table class="docutils">  <thead valign="bottom"> <tr>
+<th class="head">Offset</th> <th class="head">Len</th> <th class="head">Type</th> <th class="head">Description</th> </tr> </thead>  <tr>
+<td>4</td> <td>4</td> <td>Integer</td> <td>Sub-Name Count</td> </tr> <tr>
+<td>8</td> <td>4</td> <td>Integer</td> <td>Flags (absolute: val&amp;1 != 0 )</td> </tr>  </table> <p>For each Name and Sub-Name</p> <table class="docutils">  <thead valign="bottom"> <tr>
+<th class="head">Offset</th> <th class="head">Len</th> <th class="head">Type</th> <th class="head">Description</th> </tr> </thead>  <tr>
+<td>X+0</td> <td>4</td> <td>Integer</td> <td>String Length</td> </tr> <tr>
+<td>X+4</td> <td>X</td> <td>Bytes</td> <td>UTF-8 Encoded String</td> </tr>  </table> <p>Every name string is padded to 4 bytes.</p>    <h3 id="rid-unsupported">17: rid (unsupported)</h3>   <h3 id="object-unsupported">18: object (unsupported)</h3>   <h3 id="input-event">19: input event</h3>   <h3 id="dictionary">20: dictionary</h3> <table class="docutils">  <thead valign="bottom"> <tr>
+<th class="head">Offset</th> <th class="head">Len</th> <th class="head">Type</th> <th class="head">Description</th> </tr> </thead>  <tr>
+<td>4</td> <td>4</td> <td>Integer</td> <td>val&amp;0x7FFFFFFF = elements, val&amp;0x80000000 = shared (bool)</td> </tr>  </table> <p>Then what follows is, for amount of “elements”, pairs of key and value, one after the other, using this same format.</p>   <h3 id="array">21: array</h3> <table class="docutils">  <thead valign="bottom"> <tr>
+<th class="head">Offset</th> <th class="head">Len</th> <th class="head">Type</th> <th class="head">Description</th> </tr> </thead>  <tr>
+<td>4</td> <td>4</td> <td>Integer</td> <td>val&amp;0x7FFFFFFF = elements, val&amp;0x80000000 = shared (bool)</td> </tr>  </table> <p>Then what follows is, for amount of “elements”, values one after the other, using this same format.</p>   <h3 id="class-bytearray">22: <span class="xref std std-ref">class_ByteArray</span>
+</h3> <table class="docutils">  <thead valign="bottom"> <tr>
+<th class="head">Offset</th> <th class="head">Len</th> <th class="head">Type</th> <th class="head">Description</th> </tr> </thead>  <tr>
+<td>4</td> <td>4</td> <td>Integer</td> <td>Array Length (Bytes)</td> </tr> <tr>
+<td>8..8+length</td> <td>1</td> <td>Byte</td> <td>Byte (0..255)</td> </tr>  </table> <p>The array data is padded to 4 bytes.</p>   <h3 id="class-intarray">23: <a href="../../../../classes/class_intarray/#class-intarray"><span class="std std-ref">IntArray</span></a>
+</h3> <table class="docutils">  <thead valign="bottom"> <tr>
+<th class="head">Offset</th> <th class="head">Len</th> <th class="head">Type</th> <th class="head">Description</th> </tr> </thead>  <tr>
+<td>4</td> <td>4</td> <td>Integer</td> <td>Array Length (Integers)</td> </tr> <tr>
+<td>8..8+length*4</td> <td>4</td> <td>Integer</td> <td>32 Bits Signed Integer</td> </tr>  </table>   <h3 id="class-floatarray">24: <span class="xref std std-ref">class_FloatArray</span>
+</h3> <table class="docutils">  <thead valign="bottom"> <tr>
+<th class="head">Offset</th> <th class="head">Len</th> <th class="head">Type</th> <th class="head">Description</th> </tr> </thead>  <tr>
+<td>4</td> <td>4</td> <td>Integer</td> <td>Array Length (Floats)</td> </tr> <tr>
+<td>8..8+length*4</td> <td>4</td> <td>Integer</td> <td>32 Bits IEE 754 Float</td> </tr>  </table>   <h3 id="class-stringarray">25: <a href="../../../../classes/class_stringarray/#class-stringarray"><span class="std std-ref">StringArray</span></a>
+</h3> <table class="docutils">  <thead valign="bottom"> <tr>
+<th class="head">Offset</th> <th class="head">Len</th> <th class="head">Type</th> <th class="head">Description</th> </tr> </thead>  <tr>
+<td>4</td> <td>4</td> <td>Integer</td> <td>Array Length (Strings)</td> </tr>  </table> <p>For each String:</p> <table class="docutils">  <thead valign="bottom"> <tr>
+<th class="head">Offset</th> <th class="head">Len</th> <th class="head">Type</th> <th class="head">Description</th> </tr> </thead>  <tr>
+<td>X+0</td> <td>4</td> <td>Integer</td> <td>String Length</td> </tr> <tr>
+<td>X+4</td> <td>X</td> <td>Bytes</td> <td>UTF-8 Encoded String</td> </tr>  </table> <p>Every string is is padded to 4 bytes.</p>   <h3 id="class-vector2array">26: <a href="../../../../classes/class_vector2array/#class-vector2array"><span class="std std-ref">Vector2Array</span></a>
+</h3> <table class="docutils">  <thead valign="bottom"> <tr>
+<th class="head">Offset</th> <th class="head">Len</th> <th class="head">Type</th> <th class="head">Description</th> </tr> </thead>  <tr>
+<td>4</td> <td>4</td> <td>Integer</td> <td>Array Length</td> </tr> <tr>
+<td>8..8+length*8</td> <td>4</td> <td>Float</td> <td>X Coordinate</td> </tr> <tr>
+<td>8..12+length*8</td> <td>4</td> <td>Float</td> <td>Y Coordinate</td> </tr>  </table>   <h3 id="class-vector3array">27: <a href="../../../../classes/class_vector3array/#class-vector3array"><span class="std std-ref">Vector3Array</span></a>
+</h3> <table class="docutils">  <thead valign="bottom"> <tr>
+<th class="head">Offset</th> <th class="head">Len</th> <th class="head">Type</th> <th class="head">Description</th> </tr> </thead>  <tr>
+<td>4</td> <td>4</td> <td>Integer</td> <td>Array Length</td> </tr> <tr>
+<td>8..8+length*12</td> <td>4</td> <td>Float</td> <td>X Coordinate</td> </tr> <tr>
+<td>8..12+length*12</td> <td>4</td> <td>Float</td> <td>Y Coordinate</td> </tr> <tr>
+<td>8..16+length*12</td> <td>4</td> <td>Float</td> <td>Z Coordinate</td> </tr>  </table>   <h3 id="class-colorarray">28: <a href="../../../../classes/class_colorarray/#class-colorarray"><span class="std std-ref">ColorArray</span></a>
+</h3> <table class="docutils">  <thead valign="bottom"> <tr>
+<th class="head">Offset</th> <th class="head">Len</th> <th class="head">Type</th> <th class="head">Description</th> </tr> </thead>  <tr>
+<td>4</td> <td>4</td> <td>Integer</td> <td>Array Length</td> </tr> <tr>
+<td>8..8+length*16</td> <td>4</td> <td>Float</td> <td>Red (0..1)</td> </tr> <tr>
+<td>8..12+length*16</td> <td>4</td> <td>Float</td> <td>Green (0..1)</td> </tr> <tr>
+<td>8..16+length*16</td> <td>4</td> <td>Float</td> <td>Blue (0..1)</td> </tr> <tr>
+<td>8..20+length*16</td> <td>4</td> <td>Float</td> <td>Alpha (0..1)</td> </tr>  </table>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2014–2017 Juan Linietsky, Ariel Manzur and the Godot community<br>Licensed under the Creative Commons Attribution Unported License v3.0.<br>
+    <a href="http://docs.godotengine.org/en/2.1/learning/features/misc/binary_serialization_api.html" class="_attribution-link" target="_blank">http://docs.godotengine.org/en/2.1/learning/features/misc/binary_serialization_api.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

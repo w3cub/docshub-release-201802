@@ -1,0 +1,87 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Exporting for the Web - Godot 2.1 - W3cubDocs</title>
+  
+  <meta name="description" content="Exporting for the web generates several files to be served from a web server, including a default HTML page for presentation. A custom HTML file can &hellip;">
+  <meta name="keywords" content="exporting, for, web, -, godot, godot~2.1">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/godot~2.1/learning/workflow/export/exporting_for_web/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/godot~2.1.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/godot~2.1/" class="_nav-link" title="" style="margin-left:0;">Godot 2.1</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _sphinx_simple">
+				
+<h1 id="doc-exporting-for-web">Exporting for the Web</h1> <p>Exporting for the web generates several files to be served from a web server, including a default HTML page for presentation. A custom HTML file can be used, see <a href="http://docs.godotengine.org/en/2.1/development/compiling/compiling_for_web.html#doc-compiling-for-web" target="_blank"><span class="std std-ref">Compiling for the Web</span></a>.</p> <p>The default HTML file is designed to fit the game perfectly without cutting off parts of the canvas when the browser window is scaled to the game’s dimensions. This way it can be inserted into an <code>&lt;iframe&gt;</code> with the game’s size, as is common on most web game hosting sites.</p> <p>Web export uses <em>asm.js</em>, a highly optimizable subset of JavaScript. A 64-bit browser is required to run games in asm.js format. Most notably, this is a problem with Firefox, which on Windows is shipped as a 32-bit application by default.</p>  <h2 id="serving-the-files">Serving the files</h2> <p>The default <code>.html</code> file can be used as <code>DirectoryIndex</code> and can be renamed to e.g. <code>index.html</code> at any time, its name is never depended on. It can also be inserted into another HTML file as an <code>&lt;iframe&gt;</code> element. Users must allow <strong>third-party</strong> cookies when playing a game presented in an iframe.</p> <p>The other exported files are served as they are next to the <code>.html</code> file, names unchanged.</p> <p>The <code>.mem</code> and <code>.pck</code> files are binary, usually delivered with the MIME-type <code>application/octet-stream</code>.</p> <p>Delivering the files with gzip compression is recommended especially for the <code>.pck</code>, <code>.asm.js</code> and <code>.mem</code> files, which are usually large in size.</p>   <h2 id="export-options">Export options</h2> <p>Turning on <strong>Debugging Enabled</strong> when exporting will, in addition to enabling various debug features of the engine, display a debug output below the canvas, displaying JavaScript and engine errors. If controls are enabled as well, display of this output can be toggled. You can also use the browser-integrated developer console, usually opened with the F12 key, which often shows more information, including WebGL errors.</p> <p><strong>Memory Size</strong> is fixed and must thus be set during export. Try using no more than necessary to strain users’ browsers as little as possible.</p> <p><strong>Enable Run</strong> will add a button between the <em>Stop scene</em> and <em>Play edited Scene</em> buttons in the editor to quickly open the game in the default browser for testing.</p> <p>The remaining options customize the generated HTML page:</p> <p><strong>Title</strong> is the content of the <code>&lt;title&gt;</code> element of the page, usually used by browsers as the tab and window name. The title set here is only displayed until the game is started, afterwards the title is set to the application name set in the project settings.</p> <p><strong>Head Include</strong> and <strong>Style Include</strong> are appended into the <code>&lt;head&gt;</code> and CSS <code>&lt;style&gt;</code> elements respectively. This allows, for example, linking web fonts for use in the page.</p> <p><strong>Font Family</strong> is the CSS <code>font-family</code> used on the page, without terminating semicolon.</p> <p><strong>Controls Enabled</strong> toggles display of controls, offering e.g. a toggle for output display in debug mode and a fullscreen button. In the default page, the controls are displayed in the top-right corner on top of the canvas, which can get in the way in games that use the cursor.</p>   <h2 id="web-export-limitations">Web export limitations</h2>  <h3 id="exported-files-must-not-be-reused">Exported files must not be reused</h3> <p>The exported files ending with <code>.html</code> and <code>fs.js</code> are adjusted on export specifically for that game’s version and the given export options. They must not be reused in futher exports.</p>   <h3 id="some-functions-must-be-called-from-input-callbacks">Some functions must be called from input callbacks</h3> <p>Browsers do not allow arbitrarily <strong>entering full screen</strong> at any time. The same goes for <strong>capturing the cursor</strong>. Instead, these actions have to occur as a response to a JavaScript input event. In Godot, this is most easily done by entering full screen from within an input callback such as <code>_input</code> or <code>_unhandled_input</code>.</p>   <h3 id="starting-exported-games-from-the-local-file-system">Starting exported games from the local file system</h3> <p>Many browsers will not load exported projects when <strong>opened locally</strong> per <code>file://</code> protocol. To get around this, use a local server.</p> <p>Python offers an easy method for this, using <code>python -m SimpleHTTPServer</code> with Python 2 or <code>python -m http.server</code> with Python 3 will serve the current working directory on <code>http://localhost:8000</code>.</p>   <h3 id="locale-lookup">Locale lookup</h3> <p>Godot tries to detect the user’s locale using information provided by the browser, but this is rather unreliable. A better way is to use CGI to read the HTTP <code>Accept-Language</code> header. If you assign its value to the JavaScript property <code>Module.locale</code> after the <code>Module</code> objects is created, but before the engine starts, Godot will use that value to initialize the locale. In any case, users should always be offered the option to configure the locale manually.</p>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2014–2017 Juan Linietsky, Ariel Manzur and the Godot community<br>Licensed under the Creative Commons Attribution Unported License v3.0.<br>
+    <a href="http://docs.godotengine.org/en/2.1/learning/workflow/export/exporting_for_web.html" class="_attribution-link" target="_blank">http://docs.godotengine.org/en/2.1/learning/workflow/export/exporting_for_web.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

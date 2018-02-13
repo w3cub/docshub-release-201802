@@ -1,0 +1,134 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Singletons (AutoLoad) - Godot 2.1 - W3cubDocs</title>
+  
+  <meta name="description" content=" Scene singletons are very useful, catering to a common use case where you need to store persistent information between scenes. ">
+  <meta name="keywords" content="singletons, autoload, -, godot, godot~2.1">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/godot~2.1/learning/step_by_step/singletons_autoload/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/godot~2.1.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/godot~2.1/" class="_nav-link" title="" style="margin-left:0;">Godot 2.1</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _sphinx_simple">
+				
+<h1 id="doc-singletons-autoload">Singletons (AutoLoad)</h1>  <h2 id="introduction">Introduction</h2> <p>Scene singletons are very useful, catering to a common use case where you need to store persistent information between scenes.</p> <p>Albeit very powerful, the scene system by itself has a few drawbacks:</p> <ul class="simple"> <li>There is no common place to store information (e.g. a player’s items etc.) required by more than one scene.</li> <li>While it is possible for a scene that loads and unloads other scenes as its children to store information common to these child scenes, it is no longer possible to run these scenes by themselves and expect them to work correctly.</li> <li>While information can be stored to disk in `user://` and this information can be loaded by scenes that require it, continuously saving and loading this data when changing scenes is cumbersome and may be slow.</li> </ul> <p>However there is still a need in Godot to create parts of a scene that:</p> <ul class="simple"> <li>Are always loaded, no matter which scene is opened from the editor</li> <li>Can store global variables, such as player information, items, money etc. and share information between scenes</li> <li>Can handle switching scenes and transitions</li> <li>Acts like a singleton, since GDScript does not support global variables by design.</li> </ul> <p>Auto-loading nodes and scripts caters to this need.</p>   <h2 id="autoload">AutoLoad</h2> <p>You can use AutoLoad to load a scene, or a script that inherits from Node (a node will be created and the script will be set to it).</p> <p>To autoload a scene or script, select Scene &gt; Project Settings from the menu and switch to the AutoLoad tab. Each entry in the list requires a name, which is used as the name of the node, and the node is always added to the root viewport before any other scenes are loaded.</p> <img alt="../../_images/singleton.png" src="http://docs.godotengine.org/en/2.1/_images/singleton.png"> <p>This means that any node can access a singleton named “playervariables” with:</p> <pre data-language="gdscript">var player_vars = get_node("/root/playervariables")
+</pre>   <h2 id="custom-scene-switcher">Custom scene switcher</h2> <p>This short tutorial will explain how to make a scene switcher using autoload. For simple scene switching, the <a href="../../../classes/class_scenetree/#class-scenetree-change-scene"><span class="std std-ref">SceneTree.change_scene()</span></a> method suffices (described in <a href="../scene_tree/#doc-scene-tree"><span class="std std-ref">SceneTree</span></a>), so this method is for more complex behavior when switching between scenes.</p> <p>First download the template from here: <a href="http://docs.godotengine.org/en/2.1/_downloads/autoload.zip" download="" target="_blank"><code>autoload.zip</code></a>, then open it.</p> <p>Two scenes are present, scene_a.scn and scene_b.scn on an otherwise empty project. Each are identical and contain a button connected to a callback for switching to the other scene. When the project runs, it starts in scene_a.scn. However, this currently does nothing and pressing the button does not work.</p>   <h2 id="global-gd">global.gd</h2> <p>First of all, create a global.gd script. The easy way to create a resource from scratch is from the new resource button in the inspector tab:</p> <img alt="../../_images/newscript.png" src="http://docs.godotengine.org/en/2.1/_images/newscript.png"> <p>Save the script as <code>global.gd</code>:</p> <img alt="../../_images/saveasscript.png" src="http://docs.godotengine.org/en/2.1/_images/saveasscript.png"> <p>The script should open in the script editor. The next step is to add it to AutoLoad list. Select Scene &gt; Project Settings from the menu, switch to the AutoLoad tab and add a new entry with name “global” that points to this file:</p> <img alt="../../_images/addglobal.png" src="http://docs.godotengine.org/en/2.1/_images/addglobal.png"> <p>Now, whenever you run any of your scenes, the script is always loaded.</p> <p>Returning to our script, the current scene needs to be fetched in the <code>_ready()</code> function. Both the current scene and <code>global.gd</code> are children of root, but the autoloaded nodes are always first. This means that the last child of root is always the loaded scene.</p> <p>Note: Make sure that global.gd extends Node, otherwise it won’t be loaded!</p> <pre data-language="gdscript">extends Node
+
+var current_scene = null
+
+func _ready():
+        var root = get_tree().get_root()
+        current_scene = root.get_child( root.get_child_count() -1 )
+</pre> <p>Next up is the function for changing the scene. This function frees the current scene and replaces it with the requested one.</p> <pre data-language="gdscript">func goto_scene(path):
+
+    # This function will usually be called from a signal callback,
+    # or some other function from the running scene.
+    # Deleting the current scene at this point might be
+    # a bad idea, because it may be inside of a callback or function of it.
+    # The worst case will be a crash or unexpected behavior.
+
+    # The way around this is deferring the load to a later time, when
+    # it is ensured that no code from the current scene is running:
+
+    call_deferred("_deferred_goto_scene",path)
+
+
+func _deferred_goto_scene(path):
+
+    # Immediately free the current scene,
+    # there is no risk here.
+    current_scene.free()
+
+    # Load new scene
+    var s = ResourceLoader.load(path)
+
+    # Instance the new scene
+    current_scene = s.instance()
+
+    # Add it to the active scene, as child of root
+    get_tree().get_root().add_child(current_scene)
+
+    # optional, to make it compatible with the SceneTree.change_scene() API
+    get_tree().set_current_scene( current_scene )
+</pre> <p>As mentioned in the comments above, we really want to avoid the situation of having the current scene being deleted while being used (code from functions of it being run), so using <a href="../../../classes/class_object/#class-object-call-deferred"><span class="std std-ref">Object.call_deferred()</span></a> is desired at this point. The result is that execution of the commands in the second function will happen at a later time when no code from the current scene is running.</p> <p>Finally, all that is left is to fill the empty functions in scene_a.gd and scene_b.gd:</p> <pre data-language="gdscript">#add to scene_a.gd
+
+func _on_goto_scene_pressed():
+        get_node("/root/global").goto_scene("res://scene_b.scn")
+</pre> <p>and</p> <pre data-language="gdscript">#add to scene_b.gd
+
+func _on_goto_scene_pressed():
+        get_node("/root/global").goto_scene("res://scene_a.scn")
+</pre> <p>Now if you run the project, you can switch between both scenes by pressing the button!</p> <p>To load scenes with a progress bar, check out the next tutorial, <a href="../../features/misc/background_loading/#doc-background-loading"><span class="std std-ref">Background loading</span></a></p>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2014–2017 Juan Linietsky, Ariel Manzur and the Godot community<br>Licensed under the Creative Commons Attribution Unported License v3.0.<br>
+    <a href="http://docs.godotengine.org/en/2.1/learning/step_by_step/singletons_autoload.html" class="_attribution-link" target="_blank">http://docs.godotengine.org/en/2.1/learning/step_by_step/singletons_autoload.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

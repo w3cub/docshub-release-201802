@@ -1,0 +1,92 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>SceneTree - Godot 2.1 - W3cubDocs</title>
+  
+  <meta name="description" content=" This is where things start getting abstract, but don’t panic, as there’s not really more depth than this. ">
+  <meta name="keywords" content="scenetree, -, godot, godot~2.1">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/godot~2.1/learning/step_by_step/scene_tree/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/godot~2.1.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/godot~2.1/" class="_nav-link" title="" style="margin-left:0;">Godot 2.1</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _sphinx_simple">
+				
+<h1 id="doc-scene-tree">SceneTree</h1>  <h2 id="introduction">Introduction</h2> <p>This is where things start getting abstract, but don’t panic, as there’s not really more depth than this.</p> <p>In previous tutorials, everything revolves around the concept of nodes, scenes are made of them, and they become active once they enter the <em>scene tree</em>.</p> <p>This concept deserves going into a little more detail. In fact, the scene system is not even a core component of Godot, as it is possible to skip it and write a script (or C++ code) that talks directly to the servers. But making a game that way would be a lot of work.</p>   <h2 id="mainloop">MainLoop</h2> <p>The way Godot works internally is as follows. There is the <a href="../../../classes/class_os/#class-os"><span class="std std-ref">OS</span></a> class, which is the only instance that runs at the beginning. Afterwards, all drivers, servers, scripting languages, scene system, etc are loaded.</p> <p>When initialization is complete, <a href="../../../classes/class_os/#class-os"><span class="std std-ref">OS</span></a> needs to be supplied a <a href="../../../classes/class_mainloop/#class-mainloop"><span class="std std-ref">MainLoop</span></a> to run. Up to this point, all this is internals working (you can check main/main.cpp file in the source code if you are ever interested to see how this works internally).</p> <p>The user program, or game, starts in the MainLoop. This class has a few methods, for initialization, idle (frame-syncronized callback), fixed (physics-synchronized callback), and input. Again, this is really low level and when making games in Godot, writing your own MainLoop does not even make sense.</p>   <h2 id="id1">SceneTree</h2> <p>One of the ways to explain how Godot works, is that it’s a high level game engine over a low level middleware.</p> <p>The scene system is the game engine, while the <a href="../../../classes/class_os/#class-os"><span class="std std-ref">OS</span></a> and servers are the low level API.</p> <p>In any case, the scene system provides its own main loop to OS, <a href="../../../classes/class_scenetree/#class-scenetree"><span class="std std-ref">SceneTree</span></a>. This is automatically instanced and set when running a scene, no need to do any extra work.</p> <p>It’s important to know that this class exists because it has a few important uses:</p> <ul class="simple"> <li>It contains the root <a href="../../../classes/class_viewport/#class-viewport"><span class="std std-ref">Viewport</span></a>, to which a scene is added as a child when it’s first opened, to become part of the <em>Scene Tree</em> (more on that next)</li> <li>It contains information about the groups, and has means to call all nodes in a group, or get a list of them.</li> <li>It contains some global state functionality, such as setting pause mode, or quitting the process.</li> </ul> <p>When a node is part of the Scene Tree, the <a href="../../../classes/class_scenetree/#class-scenetree"><span class="std std-ref">SceneTree</span></a> singleton can be obtained by simply calling <a href="../../../classes/class_node/#class-node-get-tree"><span class="std std-ref">Node.get_tree()</span></a>.</p>   <h2 id="root-viewport">Root viewport</h2> <p>The root <a href="../../../classes/class_viewport/#class-viewport"><span class="std std-ref">Viewport</span></a> is always at the top of the scene. From a node, it can be obtained in two different ways:</p> <pre data-language="gdscript">get_tree().get_root() # access via scenemainloop
+get_node("/root") # access via absolute path
+</pre> <p>This node contains the main viewport, anything that is a child of a <a href="../../../classes/class_viewport/#class-viewport"><span class="std std-ref">Viewport</span></a> is drawn inside of it by default, so it makes sense that the top of all nodes is always a node of this type, otherwise nothing would be seen!</p> <p>While other viewports can be created in the scene (for split-screen effects and such), this one is the only one that is never created by the user. It’s created automatically inside SceneTree.</p>   <h2 id="scene-tree">Scene tree</h2> <p>When a node is connected, directly or indirectly, to the root viewport, it becomes part of the <em>scene tree</em>.</p> <p>This means that, as explained in previous tutorials, it will get the _enter_tree() and _ready() callbacks (as well as _exit_tree()).</p> <img alt="../../_images/activescene.png" src="http://docs.godotengine.org/en/2.1/_images/activescene.png"> <p>When nodes enter the <em>Scene Tree</em>, they become active. They get access to everything they need to process, get input, display 2D and 3D, notifications, play sound, groups, etc. When they are removed from the <em>scene tree</em>, they lose access.</p>   <h2 id="tree-order">Tree order</h2> <p>Most node operations in Godot, such as drawing 2D, processing or getting notifications are done in tree order. This means that parents and siblings with a smaller rank in the tree order will get notified before the current node.</p> <img alt="../../_images/toptobottom.png" src="http://docs.godotengine.org/en/2.1/_images/toptobottom.png">   <h2 id="becoming-active-by-entering-the-scene-tree">“Becoming active” by entering the <em>Scene Tree</em>
+</h2> <ol class="arabic simple"> <li>A scene is loaded from disk or created by scripting.</li> <li>The root node of that scene (only one root, remember?) is added as either a child of the “root” Viewport (from SceneTree), or to any child or grand-child of it.</li> <li>Every node of the newly added scene, will receive the “enter_tree” notification ( _enter_tree() callback in GDScript) in top-to-bottom order.</li> <li>An extra notification, “ready” ( _ready() callback in GDScript) is provided for convenience, when a node and all its children are inside the active scene.</li> <li>When a scene (or part of it) is removed, they receive the “exit scene” notification ( _exit_tree() callback in GDScript) in bottom-to-top order</li> </ol>   <h2 id="changing-current-scene">Changing current scene</h2> <p>After a scene is loaded, it is often desired to change this scene for another one. The simple way to do this is to use the <a href="../../../classes/class_scenetree/#class-scenetree-change-scene"><span class="std std-ref">SceneTree.change_scene()</span></a> function:</p> <pre data-language="gdscript">func _my_level_was_completed():
+    get_tree().change_scene("res://levels/level2.scn")
+</pre> <p>This is a quick and useful way to switch scenes, but has the drawback that the game will stall until the new scene is loaded and running. At some point in your game, it may be desired to create proper loading screens with progress bar, animated indicators or thread (background) loading. This must be done manually using autoloads (see next chapter!) and <a href="../../features/misc/background_loading/#doc-background-loading"><span class="std std-ref">Background loading</span></a>.</p>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2014–2017 Juan Linietsky, Ariel Manzur and the Godot community<br>Licensed under the Creative Commons Attribution Unported License v3.0.<br>
+    <a href="http://docs.godotengine.org/en/2.1/learning/step_by_step/scene_tree.html" class="_attribution-link" target="_blank">http://docs.godotengine.org/en/2.1/learning/step_by_step/scene_tree.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

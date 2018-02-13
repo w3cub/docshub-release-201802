@@ -1,0 +1,108 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>GUI Tutorial - Godot 2.1 - W3cubDocs</title>
+  
+  <meta name="description" content="If there is something that most programmers hate with passion, it is programming graphical user interfaces (GUIs). It’s boring, tedious and &hellip;">
+  <meta name="keywords" content="gui, tutorial, -, godot, godot~2.1">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/godot~2.1/learning/step_by_step/gui_tutorial/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/godot~2.1.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/godot~2.1/" class="_nav-link" title="" style="margin-left:0;">Godot 2.1</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _sphinx_simple">
+				
+<h1 id="doc-gui-tutorial">GUI tutorial</h1>  <h2 id="introduction">Introduction</h2> <p>If there is something that most programmers hate with passion, it is programming graphical user interfaces (GUIs). It’s boring, tedious and unchallenging. Several aspects make matters worse, such as:</p> <ul class="simple"> <li>Pixel alignment of UI elements is difficult (such that it looks just like the designer intends).</li> <li>UIs are changed constantly due to design and usability issues that appear during testing.</li> <li>Handling proper screen re-sizing for different display resolutions.</li> <li>Animating several screen components, to make it look less static.</li> </ul> <p>GUI programming is one of the leading causes of programmer burnout. During the development of Godot (and previous engine iterations), several techniques and philosophies for UI development were put into practice, such as immediate mode, containers, anchors, scripting, etc. This was always done with the main goal of reducing the stress programmers had to face while putting together user interfaces.</p> <p>In the end, the resulting UI subsystem in Godot is an efficient solution to this problem, and works by mixing together a few different approaches. While the learning curve is a little steeper than in other toolkits, developers can put together complex user interfaces in very little time, by sharing the same set of tools with designers and animators.</p>   <h2 id="control">Control</h2> <p>The basic node for UI elements is <a href="../../../classes/class_control/#class-control"><span class="std std-ref">Control</span></a> (sometimes called “Widget” or “Box” in other toolkits). Every node that provides user interface functionality descends from it.</p> <p>When controls are put in a scene tree as a child of another control, its coordinates (position, size) are always relative to the parent. This sets the basis for editing complex user interfaces quickly and visually.</p>   <h2 id="input-and-drawing">Input and drawing</h2> <p>Controls receive input events by means of the <a href="../../../classes/class_control/#class-control-input-event"><span class="std std-ref">Control._input_event()</span></a> callback. Only one control, the one in focus, will receive keyboard/joypad events (see <a href="../../../classes/class_control/#class-control-set-focus-mode"><span class="std std-ref">Control.set_focus_mode()</span></a> and <a href="../../../classes/class_control/#class-control-grab-focus"><span class="std std-ref">Control.grab_focus()</span></a>).</p> <p>Mouse motion events are received by the control directly below the mouse pointer. When a control receives a mouse button pressed event, all subsequent motion events are received by the pressed control until that button is released, even if the pointer moves outside the control boundary.</p> <p>Like any class that inherits from <a href="../../../classes/class_canvasitem/#class-canvasitem"><span class="std std-ref">CanvasItem</span></a> (Control does), a <a href="../../../classes/class_canvasitem/#class-canvasitem-draw"><span class="std std-ref">CanvasItem._draw()</span></a> callback will be received at the beginning and every time the control needs to be redrawn (the programmer needs to call <a href="../../../classes/class_canvasitem/#class-canvasitem-update"><span class="std std-ref">CanvasItem.update()</span></a> to enqueue the CanvasItem for redraw). If the control is not visible (yet another CanvasItem property), the control does not receive any input.</p> <p>In general though, the programmer does not need to deal with drawing and input events directly when building UIs (that is more useful when creating custom controls). Instead, controls emit different kinds of signals with contextual information for when action occurs. For example, a <a href="../../../classes/class_button/#class-button"><span class="std std-ref">Button</span></a> emits a “pressed” signal when pressed, a <a href="../../../classes/class_slider/#class-slider"><span class="std std-ref">Slider</span></a> will emit a “value_changed” when dragged, etc.</p>   <h2 id="custom-control-mini-tutorial">Custom control mini tutorial</h2> <p>Before going into more depth, creating a custom control will be a good way to get the picture on how controls works, as they are not as complex as it might seem.</p> <p>Additionally, even though Godot comes with dozens of controls for different purposes, it happens often that it’s easier to attain a specific functionality by creating a new one.</p> <p>To begin, create a single-node scene. The node is of type “Control” and has a certain area of the screen in the 2D editor, like this:</p> <img alt="../../_images/singlecontrol.png" src="http://docs.godotengine.org/en/2.1/_images/singlecontrol.png"> <p>Add a script to that node, with the following code:</p> <pre data-language="gdscript">extends Control
+
+var tapped=false
+
+func _draw():
+
+    var r = Rect2( Vector2(), get_size() )
+    if (tapped):
+        draw_rect(r, Color(1,0,0) )
+    else:
+        draw_rect(r, Color(0,0,1) )
+
+func _input_event(ev):
+
+    if (ev.type==InputEvent.MOUSE_BUTTON and ev.pressed):
+        tapped=true
+        update()
+</pre> <p>Then run the scene. When the rectangle is clicked/tapped, it will change color from blue to red. That synergy between the events and the drawing is pretty much how most controls work internally.</p> <img alt="../../_images/ctrl_normal.png" src="http://docs.godotengine.org/en/2.1/_images/ctrl_normal.png"> <img alt="../../_images/ctrl_tapped.png" src="http://docs.godotengine.org/en/2.1/_images/ctrl_tapped.png">   <h2 id="ui-complexity">UI complexity</h2> <p>As mentioned before, Godot includes dozens of controls ready for use in a user interface. Such controls are divided in two categories. The first is a small set of controls that work well for creating most game user interfaces. The second (and most controls are of this type) are meant for complex user interfaces and uniform skinning through styles. A description is presented as follows to help understand which one should be used in which case.</p>   <h2 id="simplified-ui-controls">Simplified UI controls</h2> <p>This set of controls is enough for most games, where complex interactions or ways to present information are not necessary. They can be skinned easily with regular textures.</p> <ul class="simple"> <li>
+<a href="../../../classes/class_label/#class-label"><span class="std std-ref">Label</span></a>: Node used for showing text.</li> <li>
+<a href="../../../classes/class_textureframe/#class-textureframe"><span class="std std-ref">TextureFrame</span></a>: Displays a single texture, which can be scaled or kept fixed.</li> <li>
+<a href="../../../classes/class_texturebutton/#class-texturebutton"><span class="std std-ref">TextureButton</span></a>: Displays a simple textured button, states such as pressed, hover, disabled, etc. can be set.</li> <li>
+<a href="../../../classes/class_textureprogress/#class-textureprogress"><span class="std std-ref">TextureProgress</span></a>: Displays a single textured progress bar.</li> </ul> <p>Additionally, re-positioning of controls is most efficiently done with anchors in this case (see the <a href="../../features/gui/size_and_anchors/#doc-size-and-anchors"><span class="std std-ref">Size and anchors</span></a> tutorial for more information).</p> <p>In any case, it will happen often that even for simple games, more complex UI behaviors are required. An example of this is a scrolling list of elements (for a high score table, for example), which needs a <a href="../../../classes/class_scrollcontainer/#class-scrollcontainer"><span class="std std-ref">ScrollContainer</span></a> and a <a href="../../../classes/class_vboxcontainer/#class-vboxcontainer"><span class="std std-ref">VBoxContainer</span></a>. These kind of more advanced controls can be mixed with the regular ones seamlessly (they are all controls after all).</p>   <h2 id="complex-ui-controls">Complex UI controls</h2> <p>The rest of the controls (and there are dozens of them!) are meant for another set of scenarios, most commonly:</p> <ul class="simple"> <li>Games that require complex UIs, such as PC RPGs, MMOs, strategy, sims, etc.</li> <li>Creating custom development tools to speed up content creation.</li> <li>Creating Godot Editor Plugins, to extend the engine functionality.</li> </ul> <p>Re-positioning controls for these kind of interfaces is more commonly done with containers (see the <a href="../../features/gui/size_and_anchors/#doc-size-and-anchors"><span class="std std-ref">Size and anchors</span></a> tutorial for more information).</p>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2014–2017 Juan Linietsky, Ariel Manzur and the Godot community<br>Licensed under the Creative Commons Attribution Unported License v3.0.<br>
+    <a href="http://docs.godotengine.org/en/2.1/learning/step_by_step/gui_tutorial.html" class="_attribution-link" target="_blank">http://docs.godotengine.org/en/2.1/learning/step_by_step/gui_tutorial.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

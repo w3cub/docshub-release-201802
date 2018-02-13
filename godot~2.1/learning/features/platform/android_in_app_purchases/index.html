@@ -1,0 +1,123 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Android In-app Purchases - Godot 2.1 - W3cubDocs</title>
+  
+  <meta name="description" content=" Godot engine has integrated GooglePaymentsV3 module with which we can implement in-app purchases in our game. ">
+  <meta name="keywords" content="android, in-app, purchases, -, godot, godot~2.1">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/godot~2.1/learning/features/platform/android_in_app_purchases/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/godot~2.1.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/godot~2.1/" class="_nav-link" title="" style="margin-left:0;">Godot 2.1</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _sphinx_simple">
+				
+<h1 id="doc-android-in-app-purchases">Android in-app purchases</h1> <p>Godot engine has integrated GooglePaymentsV3 module with which we can implement in-app purchases in our game.</p> <p>The Godot engine demo project repository has an android-iap example project. It includes a gdscript interface for android IAP.</p> <p>Check the repository here <a href="https://github.com/godotengine/godot-demo-projects" target="_blank">https://github.com/godotengine/godot-demo-projects</a></p> <p>Find the iap.gd script in</p> <pre data-language="shell">godot-demo-projects/misc/android_iap
+</pre> <p>Add it to the Autoload list and name it as IAP so that we can reference it anywhere in the game.</p>  <h2 id="getting-the-product-details">Getting the product details</h2> <p>When starting our game, we will need to get the item details from Google such as the product price, description and localized price string etc.</p> <pre data-language="shell">#First listen to the sku details update callback
+IAP.connect("sku_details_complete",self,"sku_details_complete")
+
+#Then ask google the details for these items
+IAP.sku_details_query(["pid1","pid2"]) #pid1 and pid2 are our product ids entered in Googleplay dashboard
+
+
+#This will be called when sku details are retrieved successfully
+func sku_details_complete():
+    print(IAP.sku_details) #This will print the details as JSON format, refer the format in iap.gd
+    print(IAP.sku_details["pid1"].price) #print formatted localized price
+</pre> <p>We can use the IAP details to display the title, price and/or description on our shop scene.</p>   <h2 id="check-if-user-purchased-an-item">Check if user purchased an item</h2> <p>When starting our game, we can check if the user has purchased any product. YOU SHOULD DO THIS ONLY AFTER 2/3 SECONDS AFTER YOUR GAME IS LOADED. If we do this as the first thing when the game is launched, IAP might not be initialized and our game will crash on start.</p> <pre data-language="shell">#Add a listener first
+IAP.connect("has_purchased",self,"iap_has_purchased")
+IAP.request_purchased() #Ask Google for all purchased items
+
+#This will call for each and every user purchased products
+func iap_has_purchased(item_name):
+    print(item_name) #print the name of purchased items
+</pre> <p>Google IAP policy says the game should restore the user’s purchases if the user replaces his phone or reinstall the same app. We can use the above code to do check what products the user has purchased and we can make our game respond accordingly.</p>   <h2 id="simple-purchase">Simple Purchase</h2> <p>We can put this purchase logic on a product’s buy button.</p> <pre data-language="shell">#First listen for purchase_success callback
+IAP.connect("purchase_success",self,"purchase_success_callback")
+
+#Then call purchase like this
+IAP.purchase("pid1") #replace pid1 with your product id
+IAP.purchase("pid2") #replace pid2 with your another product id
+
+#This function will be called when the purchase is a success
+func purchase_success_callback(item):
+    print(item + " has purchased")
+</pre> <p>We can also implement other signals for the purchase flow and improve the user experience as you needed.</p> <p><code>purchase_fail</code> - When the purchase is failed due to any reason</p> <p><code>purchase_cancel</code> - When the user cancels the purchase</p> <p><code>purchase_owned</code> - When the user already bought the product earlier</p>   <h2 id="consumables-and-non-consumables">Consumables and Non-Consumables</h2> <p>There are two types of products - consumables and non-consumables. <strong>Consumables</strong> are purchased and used, for eg: healing potions which can be purchased again and again. <strong>Non-consumables</strong> are one time purchases, for eg: Level packs.</p> <p>Google doesn’t have this separation in their dashboard. If our product is a consumable, and if a user has purchased it, it will not be available for purchase until it is consumed. So we should call the consume method for our consumables and don’t call consume for your non-consumables.</p> <pre data-language="shell">IAP.connnect("consume_success",self,"on_consume_success")
+IAP.consume("pid")
+
+func on_consume_success(item):
+    print(item + " consumed")
+</pre> <p>If our game has only consumables, we don’t have to do this. We can set it to consume the item automatically after a purchase.</p> <pre data-language="shell">IAP.set_auto_consume(true)
+</pre> <p>If our game has only non-consumables, we can</p> <pre data-language="shell">IAP.set_auto_consume(false)
+</pre> <p>We should set the auto consume value only once when the game starts.</p>   <h2 id="testing">Testing</h2> <p>If we add a gmail id as a tester in Google dashboard, that tester can purchase items and he will not be charged. Another way to test IAP is using redeem codes generated by us for our game because the purchase flow is the same.</p> <p>Third way of testing is in development side. If we put the product ids as shown below, we will get a static fixed response according to the product id. This is a quick way of testing things before going to the dashboard.</p> <ul class="simple"> <li>android.test.purchased</li> <li>android.test.canceled</li> <li>android.test.refunded</li> <li>android.test.item_unavailable</li> </ul>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2014–2017 Juan Linietsky, Ariel Manzur and the Godot community<br>Licensed under the Creative Commons Attribution Unported License v3.0.<br>
+    <a href="http://docs.godotengine.org/en/2.1/learning/features/platform/android_in_app_purchases.html" class="_attribution-link" target="_blank">http://docs.godotengine.org/en/2.1/learning/features/platform/android_in_app_purchases.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

@@ -1,0 +1,99 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>GUI Skinning - Godot 2.1 - W3cubDocs</title>
+  
+  <meta name="description" content="This tutorial is about advanced skinning of an user interface. Most games generally don’t need this, as they end up just relying on Label, &hellip;">
+  <meta name="keywords" content="gui, skinning, -, godot, godot~2.1">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/godot~2.1/learning/features/gui/gui_skinning/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/godot~2.1.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/godot~2.1/" class="_nav-link" title="" style="margin-left:0;">Godot 2.1</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _sphinx_simple">
+				
+<h1 id="doc-gui-skinning">GUI skinning</h1>  <h2 id="oh-beautiful-gui">Oh beautiful GUI!</h2> <p>This tutorial is about advanced skinning of an user interface. Most games generally don’t need this, as they end up just relying on <a href="../../../../classes/class_label/#class-label"><span class="std std-ref">Label</span></a>, <a href="../../../../classes/class_textureframe/#class-textureframe"><span class="std std-ref">TextureFrame</span></a>, <a href="../../../../classes/class_texturebutton/#class-texturebutton"><span class="std std-ref">TextureButton</span></a> and <a href="../../../../classes/class_textureprogress/#class-textureprogress"><span class="std std-ref">TextureProgress</span></a>.</p> <p>However, many types of games often need complex user interfaces, like MMOs, traditional RPGs, Simulators, Strategy, etc. These kind of interfaces are also common in some games that include editors to create content, or interfaces for network connectivity.</p> <p>Godot user interface uses these kind of controls with the default theme, but they can be skinned to resemble pretty much any kind of user interface.</p>   <h2 id="theme">Theme</h2> <p>The GUI is skinned through the <a href="../../../../classes/class_theme/#class-theme"><span class="std std-ref">Theme</span></a> resource. Theme contains all the information required to change the entire visual styling of all controls. Theme options are named, so it’s not obvious which name changes what (specialy from code), but several tools are provided. The ultimate place to look at what each theme option is for each control, which will always be more up to date than any documentation is the file <a href="https://github.com/godotengine/godot/blob/master/scene/resources/default_theme/default_theme.cpp" target="_blank">scene/resources/default_theme/default_theme.cpp</a>. The rest of this document will explain the different tools used to customize the theme.</p> <p>A Theme can be applied to any control in the scene. As a result, all children and grand-children controls will use that same theme too (unless another theme is specified further down the tree). If a value is not found in a theme, it will be searched in themes higher up in the hierarchy towards the root. If nothing was found, the default theme is used. This system allows for flexible overriding of themes in complex user interfaces.</p>   <h2 id="theme-options">Theme options</h2> <p>Each kind of option in a theme can be:</p> <ul class="simple"> <li>
+<strong>An integer constant</strong>: A single numerical constant. Generally used to define spacing between compoments or alignment.</li> <li>
+<strong>A Color</strong>: A single color, with or without transparency. Colors are usually applied to fonts and icons.</li> <li>
+<strong>A Texture</strong>: A single image. Textures are not often used, but when they are they represent handles to pick or icons in a complex control (such as file dialog).</li> <li>
+<strong>A Font</strong>: Every control that uses text can be assigned the fonts used to draw strings.</li> <li>
+<strong>A StyleBox</strong>: Stylebox is a resource that defines how to draw a panel in varying sizes (more information on them later).</li> </ul> <p>Every option is associated to:</p> <ul class="simple"> <li>A name (the name of the option)</li> <li>A Control (the name of the control)</li> </ul> <p>An example usage:</p> <pre data-language="gdscript">var t = Theme.new()
+t.set_color("font_color","Label",Color(1.0,1.0,1.0))
+
+var l = Label.new()
+l.set_theme(t)
+</pre> <p>In the example above, a new theme is created. The “font_color” option is changed and then applied to a label. As a result, the label (and all children and grand children labels) will use that color.</p> <p>It is possible to override those options without using the theme directly and only for a specific control by using the override API in <a href="../../../../classes/class_control/#class-control-add-color-override"><span class="std std-ref">Control.add_color_override()</span></a>:</p> <pre data-language="gdscript">var l = Label.new()
+l.add_color_override("font_color",Color(1.0,1.0,1.0))
+</pre> <p>In the inline help of Godot (in the script tab) you can check which theme options are overrideable, or check the <a href="../../../../classes/class_control/#class-control"><span class="std std-ref">Control</span></a> class reference.</p>   <h2 id="customizing-a-control">Customizing a control</h2> <p>If only a few controls need to be skinned, it is often not necessary to create a new theme. Controls offer their theme options as special kinds of properties. If checked, overriding will take place:</p> <img alt="../../../_images/themecheck.png" src="http://docs.godotengine.org/en/2.1/_images/themecheck.png"> <p>As can be see in the image above, theme options have little check-boxes. If checked, they can be used to override the value of the theme just for that control.</p>   <h2 id="creating-a-theme">Creating a theme</h2> <p>The simplest way to create a theme is to edit a theme resource. Create a Theme from the resource menu, the editor will appear immediately. Following to this, save it (to, as example, mytheme.thm):</p> <img alt="../../../_images/themecheck.png" src="http://docs.godotengine.org/en/2.1/_images/themecheck.png"> <p>This will create an empty theme that can later be loaded and assigned to controls.</p>   <h2 id="example-theming-a-button">Example: theming a button</h2> <p>Take some assets (<a href="http://docs.godotengine.org/en/2.1/_downloads/skin_assets.zip" download="" target="_blank"><code>skin_assets.zip</code></a>), go to the “theme” menu and select “Add Class Item”:</p> <img alt="../../../_images/themeci.png" src="http://docs.godotengine.org/en/2.1/_images/themeci.png"> <p>A menu will appear promting the type of control to create. Select “Button”:</p> <img alt="../../../_images/themeci2.png" src="http://docs.godotengine.org/en/2.1/_images/themeci2.png"> <p>Immediately, all button theme options will appear in the property editor, where they can be edited:</p> <img alt="../../../_images/themeci3.png" src="http://docs.godotengine.org/en/2.1/_images/themeci3.png"> <p>Select the “normal” stylebox and create a new “StyleBoxTexture”, then edit it. A texture stylebox basically contains a texture and the size of the margins that will not stretch when the texture is stretched. This is called “3x3” stretching:</p> <img alt="../../../_images/sb1.png" src="http://docs.godotengine.org/en/2.1/_images/sb1.png"> <p>Repeat the steps and add the other assets. There is no hover or disabled image in the example files, so use the same stylebox as in normal. Set the supplied font as the button font and change the font color to black. Soon, your button will look different and retro:</p> <img alt="../../../_images/sb2.png" src="http://docs.godotengine.org/en/2.1/_images/sb2.png"> <p>Save this theme to the .thm file. Go to the 2D editor and create a few buttons:</p> <img alt="../../../_images/skinbuttons1.png" src="http://docs.godotengine.org/en/2.1/_images/skinbuttons1.png"> <p>Now, go to the root node of the scene and locate the “theme” property, replace it by the theme that was just created. It should look like this:</p> <img alt="../../../_images/skinbuttons2.png" src="http://docs.godotengine.org/en/2.1/_images/skinbuttons2.png"> <p>Congratulations! You have created a reusable GUI Theme!</p>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2014–2017 Juan Linietsky, Ariel Manzur and the Godot community<br>Licensed under the Creative Commons Attribution Unported License v3.0.<br>
+    <a href="http://docs.godotengine.org/en/2.1/learning/features/gui/gui_skinning.html" class="_attribution-link" target="_blank">http://docs.godotengine.org/en/2.1/learning/features/gui/gui_skinning.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

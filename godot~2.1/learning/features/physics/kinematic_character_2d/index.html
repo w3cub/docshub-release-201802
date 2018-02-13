@@ -1,0 +1,160 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Kinematic Character (2D) - Godot 2.1 - W3cubDocs</title>
+  
+  <meta name="description" content="Yes, the name sounds strange. “Kinematic Character”. What is that? The reason is that when physics engines came out, they were called “Dynamics” &hellip;">
+  <meta name="keywords" content="kinematic, character, d, -, godot, godot~2.1">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/godot~2.1/learning/features/physics/kinematic_character_2d/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/godot~2.1.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/godot~2.1/" class="_nav-link" title="" style="margin-left:0;">Godot 2.1</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _sphinx_simple">
+				
+<h1 id="doc-kinematic-character-2d">Kinematic Character (2D)</h1>  <h2 id="introduction">Introduction</h2> <p>Yes, the name sounds strange. “Kinematic Character”. What is that? The reason is that when physics engines came out, they were called “Dynamics” engines (because they dealt mainly with collision responses). Many attempts were made to create a character controller using the dynamics engines but it wasn’t as easy as it seems. Godot has one of the best implementations of dynamic character controller you can find (as it can be seen in the 2d/platformer demo), but using it requieres a considerable level of skill and understanding of physics engines (or a lot of patience with trial and error).</p> <p>Some physics engines such as Havok seem to swear by dynamic character controllers as the best alternative, while others (PhysX) would rather promote the Kinematic one.</p> <p>So, what is really the difference?:</p> <ul class="simple"> <li>A <strong>dynamic character controller</strong> uses a rigid body with infinite inertial tensor. Basically, it’s a rigid body that can’t rotate. Physics engines always let objects collide, then solve their collisions all together. This makes dynamic character controllers able to interact with other physics objects seamlessly (as seen in the platformer demo), however these interactions are not always predictable. Collisions also can take more than one frame to be solved, so a few collisions may seem to displace a tiny bit. Those problems can be fixed, but require a certain amount of skill.</li> <li>A <strong>kinematic character controller</strong> is assumed to always begin in a non-colliding state, and will always move to a non colliding state. If it starts in a colliding state, it will try to free itself (like rigid bodies do) but this is the exception, not the rule. This makes their control and motion a lot more predictable and easier to program. However, as a downside, they can’t directly interact with other physics objects (unless done by hand in code).</li> </ul> <p>This short tutorial will focus on the kinematic character controller. Basically, the oldschool way of handling collisions (which is not necessarily simpler under the hood, but well hidden and presented as a nice and simple API).</p>   <h2 id="fixed-process">Fixed process</h2> <p>To manage the logic of a kinematic body or character, it is always advised to use fixed process, which is called the same amount of times per second, always. This makes physics and motion calculation work in a more predictable way than using regular process, which might have spikes or lose precision if the frame rate is too high or too low.</p> <pre data-language="gdscript">extends KinematicBody2D
+
+func _fixed_process(delta):
+    pass
+
+func _ready():
+    set_fixed_process(true)
+</pre>   <h2 id="scene-setup">Scene setup</h2> <p>To have something to test, here’s the scene (from the tilemap tutorial): <a href="http://docs.godotengine.org/en/2.1/_downloads/kbscene.zip" download="" target="_blank"><code>kbscene.zip</code></a>. We’ll be creating a new scene for the character. Use the robot sprite and create a scene like this:</p> <img alt="../../../_images/kbscene.png" src="http://docs.godotengine.org/en/2.1/_images/kbscene.png"> <p>Let’s add a circular collision shape to the collision body, create a new CircleShape2D in the shape property of CollisionShape2D. Set the radius to 30:</p> <img alt="../../../_images/kbradius.png" src="http://docs.godotengine.org/en/2.1/_images/kbradius.png"> <p><strong>Note: As mentioned before in the physics tutorial, the physics engine can’t handle scale on most types of shapes (only collision polygons, planes and segments work), so always change the parameters (such as radius) of the shape instead of scaling it. The same is also true for the kinematic/rigid/static bodies themselves, as their scale affect the shape scale.</strong></p> <p>Now create a script for the character, the one used as an example above should work as a base.</p> <p>Finally, instance that character scene in the tilemap, and make the map scene the main one, so it runs when pressing play.</p> <img alt="../../../_images/kbinstance.png" src="http://docs.godotengine.org/en/2.1/_images/kbinstance.png">   <h2 id="moving-the-kinematic-character">Moving the Kinematic character</h2> <p>Go back to the character scene, and open the script, the magic begins now! Kinematic body will do nothing by default, but it has a really useful function called <a href="../../../../classes/class_kinematicbody2d/#class-kinematicbody2d-move"><span class="std std-ref">KinematicBody2D.move()</span></a>. This function takes a <a href="../../../../classes/class_vector2/#class-vector2"><span class="std std-ref">Vector2</span></a> as an argument, and tries to apply that motion to the kinematic body. If a collision happens, it stops right at the moment of the collision.</p> <p>So, let’s move our sprite downwards until it hits the floor:</p> <pre data-language="gdscript">extends KinematicBody2D
+
+func _fixed_process(delta):
+    move( Vector2(0,1) ) #move down 1 pixel per physics frame
+
+func _ready():
+    set_fixed_process(true)
+</pre> <p>The result is that the character will move, but stop right when hitting the floor. Pretty cool, huh?</p> <p>The next step will be adding gravity to the mix, this way it behaves a little more like an actual game character:</p> <pre data-language="gdscript">extends KinematicBody2D
+
+const GRAVITY = 200.0
+var velocity = Vector2()
+
+func _fixed_process(delta):
+
+    velocity.y += delta * GRAVITY
+
+    var motion = velocity * delta
+    move( motion )
+
+func _ready():
+    set_fixed_process(true)
+</pre> <p>Now the character falls smoothly. Let’s make it walk to the sides, left and right when touching the directional keys. Remember that the values being used (for speed at least) is pixels/second.</p> <p>This adds simple walking support by pressing left and right:</p> <pre data-language="gdscript">extends KinematicBody2D
+
+const GRAVITY = 200.0
+const WALK_SPEED = 200
+
+var velocity = Vector2()
+
+func _fixed_process(delta):
+
+    velocity.y += delta * GRAVITY
+
+    if (Input.is_action_pressed("ui_left")):
+        velocity.x = -WALK_SPEED
+    elif (Input.is_action_pressed("ui_right")):
+        velocity.x =  WALK_SPEED
+    else:
+        velocity.x = 0
+
+    var motion = velocity * delta
+    move(motion)
+
+func _ready():
+    set_fixed_process(true)
+</pre> <p>And give it a try.</p>   <h2 id="problem">Problem?</h2> <p>And... it doesn’t work very well. If you go to the left against a wall, it gets stuck unless you release the arrow key. Once it is on the floor, it also gets stuck and it won’t walk. What is going on??</p> <p>The answer is, what it seems like it should be simple, it isn’t that simple in reality. If the motion can’t be completed, the character will stop moving. It’s as simple as that. This diagram should illustrate better what is going on:</p> <img alt="../../../_images/motion_diagram.png" src="http://docs.godotengine.org/en/2.1/_images/motion_diagram.png"> <p>Basically, the desired motion vector will never complete because it hits the floor and the wall too early in the motion trajectory and that makes it stop there. Remember that even though the character is on the floor, the gravity is always turning the motion vector downwards.</p>   <h2 id="solution">Solution!</h2> <p>The solution? This situation is solved by “sliding” by the collision normal. KinematicBody2D provides two useful functions:</p> <ul class="simple"> <li><a href="../../../../classes/class_kinematicbody2d/#class-kinematicbody2d-is-colliding"><span class="std std-ref">KinematicBody2D.is_colliding()</span></a></li> <li><a href="../../../../classes/class_kinematicbody2d/#class-kinematicbody2d-get-collision-normal"><span class="std std-ref">KinematicBody2D.get_collision_normal()</span></a></li> </ul> <p>So what we want to do is this:</p> <img alt="../../../_images/motion_reflect.png" src="http://docs.godotengine.org/en/2.1/_images/motion_reflect.png"> <p>When colliding, the function <code>move()</code> returns the “remainder” of the motion vector. That means, if the motion vector is 40 pixels, but collision happened at 10 pixels, the same vector but 30 pixels long is returned.</p> <p>The correct way to solve the motion is, then, to slide by the normal this way:</p> <pre data-language="gdscript">func _fixed_process(delta):
+
+    velocity.y += delta * GRAVITY
+    if (Input.is_action_pressed("ui_left")):
+        velocity.x = - WALK_SPEED
+    elif (Input.is_action_pressed("ui_right")):
+        velocity.x =   WALK_SPEED
+    else:
+        velocity.x = 0
+
+    var motion = velocity * delta
+    motion = move(motion)
+
+    if (is_colliding()):
+        var n = get_collision_normal()
+        motion = n.slide(motion)
+        velocity = n.slide(velocity)
+        move(motion)
+
+
+func _ready():
+    set_fixed_process(true)
+</pre> <p>Note that not only the motion has been modified but also the velocity. This makes sense as it helps keep the new direction too.</p> <p>The normal can also be used to detect that the character is on floor, by checking the angle. If the normal points up (or at least, within a certain threshold), the character can be determined to be there.</p> <p>A more complete demo can be found in the demo zip distributed with the engine, or in the <a href="https://github.com/godotengine/godot-demo-projects/tree/master/2d/kinematic_char" target="_blank">https://github.com/godotengine/godot-demo-projects/tree/master/2d/kinematic_char</a>.</p>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2014–2017 Juan Linietsky, Ariel Manzur and the Godot community<br>Licensed under the Creative Commons Attribution Unported License v3.0.<br>
+    <a href="http://docs.godotengine.org/en/2.1/learning/features/physics/kinematic_character_2d.html" class="_attribution-link" target="_blank">http://docs.godotengine.org/en/2.1/learning/features/physics/kinematic_character_2d.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

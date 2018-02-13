@@ -1,0 +1,107 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Command Line Tutorial - Godot 2.1 - W3cubDocs</title>
+  
+  <meta name="description" content="Some developers like using the command line extensively. Godot is designed to be friendly to them, so here are the steps for working entirely from &hellip;">
+  <meta name="keywords" content="command, line, tutorial, -, godot, godot~2.1">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/godot~2.1/learning/editor/command_line_tutorial/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/godot~2.1.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/godot~2.1/" class="_nav-link" title="" style="margin-left:0;">Godot 2.1</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _sphinx_simple">
+				
+<h1 id="doc-command-line-tutorial">Command line tutorial</h1> <p>Some developers like using the command line extensively. Godot is designed to be friendly to them, so here are the steps for working entirely from the command line. Given the engine relies on little to no external libraries, initialization times are pretty fast, making it suitable for this workflow.</p>  <h2 id="path">Path</h2> <p>It is recommended that your godot binary is in your PATH environment variable, so it can be executed easily from any place by typing <code>godot</code>. You can do so on Linux by placing the Godot binary in <code>/usr/local/bin</code> and making sure it is called <code>godot</code>.</p>   <h2 id="creating-a-project">Creating a project</h2> <p>Creating a project from the command line is simple, just navigate the shell to the desired place and just make an engine.cfg file exist, even if empty.</p> <pre data-language="shell">user@host:~$ mkdir newgame
+user@host:~$ cd newgame
+user@host:~/newgame$ touch engine.cfg
+</pre> <p>That alone makes for an empty Godot project.</p>   <h2 id="running-the-editor">Running the editor</h2> <p>Running the editor is done by executing godot with the <code>-e</code> flag. This must be done from within the project directory, or a subdirectory, otherwise the command is ignored and the project manager appears.</p> <pre data-language="shell">user@host:~/newgame$ godot -e
+</pre> <p>If a scene has been created and saved, it can be edited later by running the same code with that scene as argument.</p> <pre data-language="shell">user@host:~/newgame$ godot -e scene.xml
+</pre>   <h2 id="erasing-a-scene">Erasing a scene</h2> <p>Godot is friends with your filesystem, and will not create extra metadata files, simply use <code>rm</code> to erase a file. Make sure nothing references that scene, or else an error will be thrown upon opening.</p> <pre data-language="shell">user@host:~/newgame$ rm scene.xml
+</pre>   <h2 id="running-the-game">Running the game</h2> <p>To run the game, simply execute Godot within the project directory or subdirectory.</p> <pre data-language="shell">user@host:~/newgame$ godot
+</pre> <p>When a specific scene needs to be tested, pass that scene to the command line.</p> <pre data-language="shell">user@host:~/newgame$ godot scene.xml
+</pre>   <h2 id="debugging">Debugging</h2> <p>Catching errors in the command line can be a difficult task because they just fly by. For this, a command line debugger is provided by adding <code>-d</code>. It works for both running the game or a simple scene.</p> <pre data-language="shell">user@host:~/newgame$ godot -d
+</pre> <pre data-language="shell">user@host:~/newgame$ godot -d scene.xml
+</pre>   <h2 id="exporting">Exporting</h2> <p>Exporting the project from the command line is also supported. This is specially useful for continuous integration setups. The version of Godot that is headless (server build, no video) is ideal for this.</p> <pre data-language="shell">user@host:~/newgame$ godot -export "Linux X11" /var/builds/project
+user@host:~/newgame$ godot -export Android /var/builds/project.apk
+</pre> <p>The platform names recognized by the <code>-export</code> switch are the same as displayed in the export wizard of the editor. To get a list of supported platforms from the command line, just try exporting to a non-recognized platform and the full listing of platforms your configuration supports will be shown.</p> <p>To export a debug version of the game, use the <code>-export_debug</code> switch instead of <code>-export</code>. Their parameters and usage are the same.</p>   <h2 id="running-a-script">Running a script</h2> <p>It is possible to run a simple .gd script from the command line. This feature is specially useful in very large projects, for batch conversion of assets or custom import/export.</p> <p>The script must inherit from SceneTree or MainLoop.</p> <p>Here is a simple example of how it works:</p> <pre data-language="python">#sayhello.gd
+extends SceneTree
+
+func _init():
+    print("Hello!")
+    quit()
+</pre> <p>And how to run it:</p> <pre data-language="shell">user@host:~/newgame$ godot -s sayhello.gd
+Hello!
+</pre> <p>If no engine.cfg exists at the path, current path is assumed to be the current working directory (unless <code>-path</code> is specified).</p>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2014–2017 Juan Linietsky, Ariel Manzur and the Godot community<br>Licensed under the Creative Commons Attribution Unported License v3.0.<br>
+    <a href="http://docs.godotengine.org/en/2.1/learning/editor/command_line_tutorial.html" class="_attribution-link" target="_blank">http://docs.godotengine.org/en/2.1/learning/editor/command_line_tutorial.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

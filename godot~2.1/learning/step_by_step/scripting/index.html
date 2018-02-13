@@ -1,0 +1,107 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Scripting - Godot 2.1 - W3cubDocs</title>
+  
+  <meta name="description" content="Much has been said about tools that allow users to create video games without programming. It’s been a dream for many independent developers to &hellip;">
+  <meta name="keywords" content="scripting, -, godot, godot~2.1">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/godot~2.1/learning/step_by_step/scripting/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/godot~2.1.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/godot~2.1/" class="_nav-link" title="" style="margin-left:0;">Godot 2.1</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _sphinx_simple">
+				
+<h1 id="doc-scripting">Scripting</h1>  <h2 id="introduction">Introduction</h2> <p>Much has been said about tools that allow users to create video games without programming. It’s been a dream for many independent developers to create games without learning how to code. This need has been around for a long time, even inside companies, where game designers wish to have more control of the game flow.</p> <p>Many products have been shipped promising a no-programming environment, but the result is often incomplete, too complex or inefficient compared to traditional code. As a result, programming is here to stay for a long time. In fact, the general direction in game engines has been to add tools that try to reduce the amount of code that needs to be written for specific tasks, to speed up development.</p> <p>In that sense, Godot has taken some useful design decisions towards that goal. The first and most important is the scene system. The aim of it is not obvious at first, but works well later on. That is, to relieve programmers from the responsibility of architecting code.</p> <p>When designing games using the scene system, the whole project is fragmented into <em>complementary</em> scenes (not individual ones). Scenes complement each other, instead of being separate. There will be plenty of examples about this later on, but it’s very important to remember it.</p> <p>For those with a good amount of programming expertise, this means a different design pattern to MVC. Godot promises efficiency at the expense of dropping the MVC habits, which are replaced by the <em>scenes as a complement</em> pattern.</p> <p>Godot also uses the <a href="http://c2.com/cgi/wiki?EmbedVsExtend" target="_blank">extend</a> pattern for scripting, meaning that scripts extend from all the available engine classes.</p>   <h2 id="gdscript">GDScript</h2> <p><a href="../../scripting/gdscript/gdscript_basics/#doc-gdscript"><span class="std std-ref">GDScript</span></a> is a dynamically typed scripting language to fit inside Godot. It was designed with the following goals:</p> <ul class="simple"> <li>First and most importantly, making it simple, familiar and as easy to learn as possible.</li> <li>Making the code readable and error safe. The syntax is mostly borrowed from Python.</li> </ul> <p>Programmers generally take a few days to learn it, and within two weeks feel comfortable with it.</p> <p>As with most dynamically typed languages, the higher productivity (code is easier to learn, faster to write, no compilation, etc) is balanced with a performance penalty. But most critical code is written in C++ already in the engine (vector ops, physics, math, indexing, etc), resulting in a more than sufficient performance for most types of games.</p> <p>In any case, if more performance is required, critical sections can be rewritten in C++ and exposed transparently to the script. This allows the replacement of a GDScript class with a C++ class without altering the rest of the game.</p>   <h2 id="scripting-a-scene">Scripting a scene</h2> <p>Before continuing, please make sure to read the <a href="../../scripting/gdscript/gdscript_basics/#doc-gdscript"><span class="std std-ref">GDScript</span></a> reference. It’s a simple language and the reference is short, it will not take more than a few minutes to get an overview of the concepts.</p>  <h3 id="scene-setup">Scene setup</h3> <p>This tutorial will begin by scripting a simple GUI scene. Use the add node dialog to create the following hierarchy, with the following nodes:</p> <ul class="simple"> <li>Panel<ul> <li>Label</li> <li>Button</li> </ul> </li> </ul> <p>It should look like this in the scene tree:</p> <img alt="../../_images/scripting_scene_tree.png" src="http://docs.godotengine.org/en/2.1/_images/scripting_scene_tree.png"> <p>Use the 2D editor to position and resize the button and label so that they look like the image below. You can set the text in the Inspector pane.</p> <img alt="../../_images/label_button_example.png" src="http://docs.godotengine.org/en/2.1/_images/label_button_example.png"> <p>Finally, save the scene, a fitting name could be “sayhello.scn”</p>   <h3 id="doc-scripting-adding-a-script">Adding a script</h3> <p id="adding-a-script">Right click on the panel node, then select “Add Script” in the context menu:</p> <img alt="../../_images/add_script.png" src="http://docs.godotengine.org/en/2.1/_images/add_script.png"> <p>The script creation dialog will pop up. This dialog allows to select the language, class name, etc. GDScript does not use class names in script files, so that field is not editable. The script should inherit from “Panel” (as it is meant to extend the node, which is of Panel type, this is automatically filled).</p> <p>Enter a path name for the script and then select “Create”:</p> <img alt="../../_images/script_create.png" src="http://docs.godotengine.org/en/2.1/_images/script_create.png"> <p>Once this is done, the script will be created and added to the node. You can see this both as an extra icon in the node, as well as in the script property:</p> <img alt="../../_images/script_added.png" src="http://docs.godotengine.org/en/2.1/_images/script_added.png"> <p>To edit the script, select either of the highlighted buttons. This will bring you to the script editor where an existing template will be included by default:</p> <img alt="../../_images/script_template.png" src="http://docs.godotengine.org/en/2.1/_images/script_template.png"> <p>There is not much in there. The “_ready()” function is called when the node (and all its children) entered the active scene. (Remember, it’s not a constructor, the constructor is “_init()” ).</p>   <h3 id="the-role-of-the-script">The role of the script</h3> <p>A script adds behavior to a node. It is used to control the node functions as well as other nodes (children, parent, siblings, etc). The local scope of the script is the node (just like in regular inheritance) and the virtual functions of the node are captured by the script.</p> <img alt="../../_images/brainslug.jpg" src="http://docs.godotengine.org/en/2.1/_images/brainslug.jpg">   <h3 id="handling-a-signal">Handling a signal</h3> <p>Signals are used mostly in GUI nodes (although other nodes have them too). Signals are “emitted” when some specific kind of action happens, and can be connected to any function of any script instance. In this step, the “pressed” signal from the button will be connected to a custom function.</p> <p>An interface for connecting signals to your scripts exists in the editor. You can access this by selecting the node in the scene tree and then selecting the “Node” tab. Make sure that you have “Signals” selected.</p> <img alt="../../_images/signals.png" src="http://docs.godotengine.org/en/2.1/_images/signals.png"> <p>In any case, at this point it is clear that we are interested in the “pressed” signal. Instead of using the visual interface, we will opt to code the connection.</p> <p>For this, a function exists that is probably the one most used by Godot programmers, namely <a href="../../../classes/class_node/#class-node-get-node"><span class="std std-ref">Node.get_node()</span></a>. This function uses paths to fetch nodes in the current tree or anywhere in the scene, relative to the node holding the script.</p> <p>To fetch the button, the following must be used:</p> <pre data-language="gdscript">get_node("Button")
+</pre> <p>Next, a callback will be added that will change the label’s text when the button is pressed:</p> <pre data-language="gdscript">func _on_button_pressed():
+    get_node("Label").set_text("HELLO!")
+</pre> <p>Finally, the button “pressed” signal will be connected to that callback in _ready(), by using <a href="../../../classes/class_object/#class-object-connect"><span class="std std-ref">Object.connect()</span></a>.</p> <pre data-language="gdscript">func _ready():
+    get_node("Button").connect("pressed",self,"_on_button_pressed")
+</pre> <p>The final script should look like this:</p> <pre data-language="gdscript">extends Panel
+
+# member variables here, example:
+
+# var a=2
+# var b="textvar"
+
+func _on_button_pressed():
+    get_node("Label").set_text("HELLO!")
+
+func _ready():
+    get_node("Button").connect("pressed",self,"_on_button_pressed")
+</pre> <p>Running the scene should have the expected result when pressing the button:</p> <img alt="../../_images/scripting_hello.png" src="http://docs.godotengine.org/en/2.1/_images/scripting_hello.png"> <p><strong>Note:</strong> As it is a common misunderstanding in this tutorial, let’s clarify again that get_node(path) works by returning the <em>immediate</em> children of the node controlled by the script (in this case, <em>Panel</em>), so <em>Button</em> must be a child of <em>Panel</em> for the above code to work. To give this clarification more context, if <em>Button</em> were a child of <em>Label</em>, the code to obtain it would be:</p> <pre data-language="gdscript"># not for this case
+# but just in case
+get_node("Label/Button")
+</pre> <p>Also, remember that nodes are referenced by name, not by type.</p>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2014–2017 Juan Linietsky, Ariel Manzur and the Godot community<br>Licensed under the Creative Commons Attribution Unported License v3.0.<br>
+    <a href="http://docs.godotengine.org/en/2.1/learning/step_by_step/scripting.html" class="_attribution-link" target="_blank">http://docs.godotengine.org/en/2.1/learning/step_by_step/scripting.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

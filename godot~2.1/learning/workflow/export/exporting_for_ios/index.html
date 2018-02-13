@@ -1,0 +1,88 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Exporting for iOS - Godot 2.1 - W3cubDocs</title>
+  
+  <meta name="description" content="Exporting for iOS is done manually at the moment. These are the steps to load your game in an XCode project, where you can deploy to a device, &hellip;">
+  <meta name="keywords" content="exporting, for, ios, -, godot, godot~2.1">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/godot~2.1/learning/workflow/export/exporting_for_ios/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/godot~2.1.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/godot~2.1/" class="_nav-link" title="" style="margin-left:0;">Godot 2.1</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _sphinx_simple">
+				
+<h1 id="doc-exporting-for-ios">Exporting for iOS</h1> <p>Exporting for iOS is done manually at the moment. These are the steps to load your game in an XCode project, where you can deploy to a device, publish, etc.</p>  <h2 id="requirements">Requirements</h2> <ul class="simple"> <li>Download XCode for iOS</li> <li>Download the export templates: <a href="https://godotengine.org/download" target="_blank">https://godotengine.org/download</a>
+</li> <li>Since there is no automatic deployer yet, unzip export_templates.tpz manually and extract GodotiOSXCode.zip from it.</li> </ul> <p>The zip contains an XCode project, godot_ios.xcodeproj, an empty data.pck file and the engine executable. Open the project, and modify the game name, icon, organization, provisioning signing certificate identities (??), etc.</p>   <h2 id="add-your-project-data">Add your project data</h2> <p>Using the Godot editor, <a href="../exporting_for_pc/#doc-exporting-for-pc"><span class="std std-ref">Exporting for PC</span></a>, to obtain the data.pck file. Replace the empty data.pck in the XCode project with the new one, and run/archive.</p> <p>If you want to test your scenes on the iOS device as you edit them, you can add your game directory to the project (instead of data.pck), and add a property “godot_path” to Info.plist, with the name of your directory as its value.</p> <img alt="../../../_images/godot_path.png" src="http://docs.godotengine.org/en/2.1/_images/godot_path.png"> <p>Alternatively you can add all the files from your game directly, with “engine.cfg” at the root.</p>   <h2 id="loading-files-from-a-host">Loading files from a host</h2> <p>Sometimes your game becomes too big and deploying to the device takes too long every time you run. In that case you can deploy only the engine executable, and serve the game files from your computer.</p>  <h3 id="setting-up-the-file-host">Setting up the file host</h3> <p>On your PC, open the editor, and click the righ-most icon on the top-center group of icons, and select “Enable File Server”. The icon turns red. Your PC will open a port and accept connections to serve files from your project’s directory (so enable your local firewall accordingly).</p> <img alt="../../../_images/rfs_server.png" src="http://docs.godotengine.org/en/2.1/_images/rfs_server.png">   <h3 id="setting-up-the-game">Setting up the game</h3> <p>On XCode, click on your app name (top left, next to the “Stop” button), and select “Edit Scheme”. Go to the “Arguments” tab, and add 2 arguments, “-rfs” and the IP of your PC.</p> <img alt="../../../_images/edit_scheme.png" src="http://docs.godotengine.org/en/2.1/_images/edit_scheme.png"> <p>When you run, your device will connect to the host and open the files remotely. Note that the directory with the game data (“platformer”) is no longer added to the project, only the engine executable.</p>    <h2 id="services-for-ios">Services for iOS</h2> <p>Special iOS services can be used in Godot. Check out the <a href="../../../features/platform/services_for_ios/#doc-services-for-ios"><span class="std std-ref">Services for iOS</span></a> page.</p>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2014–2017 Juan Linietsky, Ariel Manzur and the Godot community<br>Licensed under the Creative Commons Attribution Unported License v3.0.<br>
+    <a href="http://docs.godotengine.org/en/2.1/learning/workflow/export/exporting_for_ios.html" class="_attribution-link" target="_blank">http://docs.godotengine.org/en/2.1/learning/workflow/export/exporting_for_ios.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

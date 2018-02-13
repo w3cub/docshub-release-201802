@@ -1,0 +1,121 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Project Organization - Godot 2.1 - W3cubDocs</title>
+  
+  <meta name="description" content="This tutorial is aimed to propose a simple workflow on how to organize projects. Since Godot allows the programmer to use the file-system as he or &hellip;">
+  <meta name="keywords" content="project, organization, -, godot, godot~2.1">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/godot~2.1/learning/workflow/project_setup/project_organization/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/godot~2.1.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/godot~2.1/" class="_nav-link" title="" style="margin-left:0;">Godot 2.1</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _sphinx_simple">
+				
+<h1 id="doc-project-organization">Project organization</h1>  <h2 id="introduction">Introduction</h2> <p>This tutorial is aimed to propose a simple workflow on how to organize projects. Since Godot allows the programmer to use the file-system as he or she pleases, figuring out a way to organize the projects when starting to use the engine can be a little challenging. Because of this, a simple workflow will be described, which can be used or not, but should work as a starting point.</p> <p>Additionally, using version control can be challenging so this proposition will include that too.</p>   <h2 id="organization">Organization</h2> <p>Other game engines often work by having an asset database, where you can browse images, models, sounds, etc. Godot is more scene-based in nature so most of the time the assets are bundled inside the scenes or just exist as files but are referenced from scenes.</p>   <h2 id="importing-game-folder">Importing &amp; game folder</h2> <p>It is very often necessary to use asset importing in Godot. As the source assets for importing are also recognized as resources by the engine, this can become a problem if both are inside the project folder, because at the time of export the exporter will recognize them and export both.</p> <p>To solve this, it is a good practice to have your game folder inside another folder (the actual project folder). This allows to have the game assets separated from the source assets, and also allows to use version control (such as svn or git) for both. Here is an example:</p> <pre data-language="gdscript">myproject/art/models/house.max
+myproject/art/models/sometexture.png
+myproject/sound/door_open.wav
+myproject/sound/door_close.wav
+myproject/translations/sheet.csv
+</pre> <p>Then also, the game itself is, in this case, inside a game/ folder:</p> <pre data-language="gdscript">myproject/game/engine.cfg
+myproject/game/scenes/house/house.scn
+myproject/game/scenes/house/sometexture.tex
+myproject/game/sound/door_open.smp
+myproject/game/sound/door_close.smp
+myproject/game/translations/sheet.en.xl
+myproject/game/translations/sheet.es.xl
+</pre> <p>Following this layout, many things can be done:</p> <ul class="simple"> <li>The whole project is still inside a folder (myproject/).</li> <li>Exporting the project will not export the .wav and .png files which were imported.</li> <li>myproject/ can be put directly inside a VCS (like svn or git) for version control, both game and source assets are kept track of.</li> <li>If a team is working on the project, assets can be re-imported by other project members, because Godot keeps track of source assets using relative paths.</li> </ul>   <h2 id="scene-organization">Scene organization</h2> <p>Inside the game folder, a question that often arises is how to organize the scenes in the filesystem. Many developers try asset-type based organization and end up having a mess after a while, so the best answer is probably to organize them based on how the game works and not based on asset type. Here are some examples.</p> <p>If you were organizing your project based on asset type, it would look like this:</p> <pre data-language="gdscript">game/engine.cfg
+game/scenes/scene1.scn
+game/scenes/scene2.scn
+game/textures/texturea.png
+game/textures/another.tex
+game/sounds/sound1.smp
+game/sounds/sound2.wav
+game/music/music1.ogg
+</pre> <p>Which is generally a bad idea. When a project starts growing beyond a certain point, this becomes unmanageable. It’s really difficult to tell what belongs to what.</p> <p>It’s generally a better idea to use game-context based organization, something like this:</p> <pre data-language="gdscript">game/engine.cfg
+game/scenes/house/house.scn
+game/scenes/house/texture.tex
+game/scenes/valley/canyon.scn
+game/scenes/valley/rock.scn
+game/scenes/valley/rock.tex
+game/scenes/common/tree.scn
+game/scenes/common/tree.tex
+game/player/player.scn
+game/player/player.gd
+game/npc/theking.scn
+game/npc/theking.gd
+game/gui/main_screen/main_sceen.scn
+game/gui/options/options.scn
+</pre> <p>This model or similar models allows projects to grow to really large sizes and still be completely manageable. Notice that everything is based on parts of the game that can be named or described, like the settings screen or the valley. Since everything in Godot is done with scenes, and everything that can be named or described can be a scene, this workflow is very smooth and easygoing.</p>   <h2 id="cache-files">Cache files</h2> <p>Godot uses a hidden file called ”.fscache” at the root of the project. On it, it caches project files and is used to quickly know when one is modified. Make sure to <strong>not commit this file</strong> to git or svn, as it contains local information and might confuse another editor instance in another computer.</p>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2014–2017 Juan Linietsky, Ariel Manzur and the Godot community<br>Licensed under the Creative Commons Attribution Unported License v3.0.<br>
+    <a href="http://docs.godotengine.org/en/2.1/learning/workflow/project_setup/project_organization.html" class="_attribution-link" target="_blank">http://docs.godotengine.org/en/2.1/learning/workflow/project_setup/project_organization.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

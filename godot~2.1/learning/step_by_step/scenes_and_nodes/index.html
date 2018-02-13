@@ -1,0 +1,87 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Scenes and Nodes - Godot 2.1 - W3cubDocs</title>
+  
+  <meta name="description" content="Imagine for a second that you are not a game developer anymore. Instead, you’re a chef! Change your hipster outfit for a toque and a double breasted &hellip;">
+  <meta name="keywords" content="scenes, and, nodes, -, godot, godot~2.1">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/godot~2.1/learning/step_by_step/scenes_and_nodes/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/godot~2.1.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/godot~2.1/" class="_nav-link" title="" style="margin-left:0;">Godot 2.1</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _sphinx_simple">
+				
+<h1 id="doc-scenes-and-nodes">Scenes and nodes</h1>  <h2 id="introduction">Introduction</h2> <img alt="../../_images/chef.png" src="http://docs.godotengine.org/en/2.1/_images/chef.png"> <p>Imagine for a second that you are not a game developer anymore. Instead, you’re a chef! Change your hipster outfit for a toque and a double breasted jacket. Now, instead of making games, you create new and delicious recipes for your guests.</p> <p>So, how does a chef create a recipe? Recipes are divided into two sections: the first is the ingredients and the second is the instructions to prepare it. This way, anyone can follow the recipe and savor your magnificent creation.</p> <p>Making games in Godot feels pretty much the same way. Using the engine feels like being in a kitchen. In this kitchen, <em>nodes</em> are like a refrigerator full of fresh ingredients to cook with.</p> <p>There are many types of nodes, some show images, others play sound, other nodes display 3D models, etc. There’s dozens of them.</p>   <h2 id="nodes">Nodes</h2> <p>But let’s start with the basics. A node is a basic element for creating a game, it has the following characteristics:</p> <ul class="simple"> <li>Has a name.</li> <li>Has editable properties.</li> <li>Can receive a callback to process every frame.</li> <li>Can be extended (to have more functions).</li> <li>Can be added to other nodes as children.</li> </ul> <img alt="../../_images/tree.png" src="http://docs.godotengine.org/en/2.1/_images/tree.png"> <p>The last one is very important. Nodes can have other nodes as children. When arranged in this way, the nodes become a <strong>tree</strong>.</p> <p>In Godot, the ability to arrange nodes in this way creates a powerful tool for organizing projects. Since different nodes have different functions, combining them allows for creation of more complex functions.</p> <p>This is probably not clear yet and makes little sense, but everything will click a few sections ahead. The most important fact to remember for now is that nodes exist and can be arranged this way.</p>   <h2 id="scenes">Scenes</h2> <img alt="../../_images/scene_tree_example.png" src="http://docs.godotengine.org/en/2.1/_images/scene_tree_example.png"> <p>Now that the concept of nodes has been defined, the next logical step is to explain what a Scene is.</p> <p>A scene is composed of a group of nodes organized hierarchically (in tree fashion). It has the following properties:</p> <ul class="simple"> <li>A scene always has only one root node.</li> <li>Scenes can be saved to disk and loaded back.</li> <li>Scenes can be <em>instanced</em> (more on that later).</li> <li>Running a game means running a scene.</li> <li>There can be several scenes in a project, but for it to start, one of them must be selected to be loaded first.</li> </ul> <p>Basically, the Godot editor is a <strong>scene editor</strong>. It has plenty of tools for editing 2D and 3D scenes as well as user interfaces, but the editor is based on the concept of editing a scene and the nodes that compose it.</p>   <h2 id="creating-a-new-project">Creating a new project</h2> <p>Theory is boring, so let’s change the subject and go practical. Following a long tradition in tutorials, the first project will be a Hello World. For this, the editor will be used.</p> <p>When the godot executable is run outside a project, the Project Manager appears. This helps developers manage their projects.</p> <img alt="../../_images/project_manager.png" src="http://docs.godotengine.org/en/2.1/_images/project_manager.png"> <p>To create a new project, the “New Project” option must be used. Choose and create a path for the project and specify the project name:</p> <img alt="../../_images/create_new_project.png" src="http://docs.godotengine.org/en/2.1/_images/create_new_project.png">   <h2 id="editor">Editor</h2> <p>Once the “New Project” is created, the next step is opening it. This will open the Godot editor. Here is how the editor looks when freshly opened:</p> <img alt="../../_images/empty_editor.png" src="http://docs.godotengine.org/en/2.1/_images/empty_editor.png"> <p>As mentioned before, making games in Godot feels like being in a kitchen, so let’s open the refrigerator and add some fresh nodes to the project. We’ll begin with a Hello World! To do this, the “New Node” button must be pressed (looks like a plus symbol):</p> <img alt="../../_images/newnode_button.png" src="http://docs.godotengine.org/en/2.1/_images/newnode_button.png"> <p>This will open the Create Node dialog, showing the long list of nodes that can be created:</p> <img alt="../../_images/node_classes.png" src="http://docs.godotengine.org/en/2.1/_images/node_classes.png"> <p>From there, select the “Label” node first. Searching for it is probably the quickest way:</p> <img alt="../../_images/node_search_label.png" src="http://docs.godotengine.org/en/2.1/_images/node_search_label.png"> <p>And finally, create the Label! A lot happens when Create is pressed:</p> <img alt="../../_images/editor_with_label.png" src="http://docs.godotengine.org/en/2.1/_images/editor_with_label.png"> <p>First of all, the scene is changed to the 2D editor (because Label is a 2D Node type), and the Label appears, selected, at the top left corner of the viewport.</p> <p>The node appears in the scene tree editor (box in the top left corner), and the label properties appear in the Inspector (box on the right side).</p> <p>The next step will be to change the “Text” Property of the label, let’s change it to “Hello, World!”:</p> <img alt="../../_images/hw.png" src="http://docs.godotengine.org/en/2.1/_images/hw.png"> <p>Ok, everything’s ready to run the scene! Press the PLAY SCENE Button on the top bar (or hit F6):</p> <img alt="../../_images/playscene.png" src="http://docs.godotengine.org/en/2.1/_images/playscene.png"> <p>Aaaand... Oops.</p> <img alt="../../_images/neversaved.png" src="http://docs.godotengine.org/en/2.1/_images/neversaved.png"> <p>Scenes need to be saved to be run, so save the scene to something like hello.scn in Scene -&gt; Save:</p> <img alt="../../_images/save_scene.png" src="http://docs.godotengine.org/en/2.1/_images/save_scene.png"> <p>And here’s when something funny happens. The file dialog is a special file dialog, and only allows you to save inside the project. The project root is “<a href="#">res://</a>” which means “resource path”. This means that files can only be saved inside the project. For the future, when doing file operations in Godot, remember that “<a href="#">res://</a>” is the resource path, and no matter the platform or install location, it is the way to locate where resource files are from inside the game.</p> <p>After saving the scene and pressing run scene again, the “Hello, World!” demo should finally execute:</p> <img alt="../../_images/helloworld.png" src="http://docs.godotengine.org/en/2.1/_images/helloworld.png"> <p>Success!</p>   <h2 id="doc-scenes-and-nodes-configuring-the-project">Configuring the project</h2> <p id="configuring-the-project">Ok, It’s time to do some configuration to the project. Right now, the only way to run something is to execute the current scene. Projects, however, have several scenes so one of them must be set as the main scene. This scene is the one that will be loaded at the time the project is run.</p> <p>These settings are all stored in the engine.cfg file, which is a plaintext file in win.ini format, for easy editing. There are dozens of settings that can be changed in this file to alter how a project executes, so to make matters simpler, a project setting dialog exists, which is sort of a frontend to editing engine.cfg</p> <p>To access that dialog, simply go to Scene -&gt; Project Settings.</p> <p>Once the window opens, the task will be to select a main scene. This can be done easily by changing the application/main_scene property and selecting ‘hello.scn’.</p> <img alt="../../_images/main_scene.png" src="http://docs.godotengine.org/en/2.1/_images/main_scene.png"> <p>With this change, pressing the regular Play button (or F5) will run the project, no matter which scene is being edited.</p> <p>Going back to the project settings dialog. This dialog provides a lot of options that can be added to engine.cfg, and shows their default values. If the default value is ok, then there isn’t any need to change it.</p> <p>When a value is changed, a tick is marked to the left of the name. This means that the property will be saved to the engine.cfg file and remembered.</p> <p>As a side note, for future reference and a little out of context (this is the first tutorial after all!), it is also possible to add custom configuration options and read them in run-time using the <a href="../../../classes/class_globals/#class-globals"><span class="std std-ref">Globals</span></a> singleton.</p>   <h2 id="to-be-continued">To be continued...</h2> <p>This tutorial talks about “scenes and nodes”, but so far there has been only <em>one</em> scene and <em>one</em> node! Don’t worry, the next tutorial will deal with that...</p>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2014–2017 Juan Linietsky, Ariel Manzur and the Godot community<br>Licensed under the Creative Commons Attribution Unported License v3.0.<br>
+    <a href="http://docs.godotengine.org/en/2.1/learning/step_by_step/scenes_and_nodes.html" class="_attribution-link" target="_blank">http://docs.godotengine.org/en/2.1/learning/step_by_step/scenes_and_nodes.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

@@ -1,0 +1,90 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Importing Fonts - Godot 2.1 - W3cubDocs</title>
+  
+  <meta name="description" content="Fonts in modern operating systems are created as scalable vector graphics. They are stored as a collection of curves (usually one for each character &hellip;">
+  <meta name="keywords" content="importing, fonts, -, godot, godot~2.1">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/godot~2.1/learning/workflow/assets/importing_fonts/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/godot~2.1.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/godot~2.1/" class="_nav-link" title="" style="margin-left:0;">Godot 2.1</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _sphinx_simple">
+				
+<h1 id="doc-importing-fonts">Importing fonts</h1>  <h2 id="what-is-a-font">What is a font?</h2> <p>Fonts in modern operating systems are created as scalable vector graphics. They are stored as a collection of curves (usually one for each character), which are independent of the screen resolution, and stored in standardized file formats, such as TTF (TrueType) or OTF (OpenType).</p> <p>Rendering such fonts to bitmaps is a complex process, which employs different methods to convert curves to pixels depending on context and target size. Due to this, this rendering process must be done by using the CPU. Game engines use the GPU to render, and 3D APIs don’t really support the means to do this efficiently, so fonts have to be converted to a format that is friendly to the GPU when imported to a project.</p>   <h2 id="converting-fonts">Converting fonts</h2> <p>This conversion process consists of rendering a vector font to a given point size and storing all the resulting characters in a bitmap texture. The bitmap texture is then used by the GPU to draw a small quad for each character and form readable strings.</p> <img alt="../../../_images/bitmapfont.png" src="http://docs.godotengine.org/en/2.1/_images/bitmapfont.png"> <p>The drawback of this process is that fonts must be pre-imported in the specific sizes that they will use in the project. However, given that that bitmap fonts compress really well, this is not as bad as it sounds.</p>   <h2 id="importing-a-font">Importing a font</h2> <p>Fonts are imported via the Font import dialog. The dialog will ask for a font, a size, some options and a target resource file to save.</p> <img alt="../../../_images/fontimport.png" src="http://docs.godotengine.org/en/2.1/_images/fontimport.png"> <p>The dialog is fully dynamic, which means that any change will be reflected in the font preview window. The user can tweak almost every parameter and get instant feedback on how the font will look.</p> <p>Since the resulting font is a bitmap, a few more options were added to make the imported font look even nicer. These options were added to please graphic designers, who love putting gradients, outlines and shadows in fonts, as well as changing all the inter-spaces available :). These options will be explained in the next section.</p>  <h3 id="extra-spacing">Extra spacing</h3> <p>It is possible to add more space for:</p> <ul class="simple"> <li>
+<strong>Characters</strong>, the space between them can be varied.</li> <li>
+<strong>“space” character</strong>, so the distance between words is bigger.</li> <li>
+<strong>Top and Bottom margins</strong>, this changes the spacing between lines as well as the space between the top and bottom lines and the borders.</li> </ul> <img alt="../../../_images/fontspacing.png" src="http://docs.godotengine.org/en/2.1/_images/fontspacing.png">   <h3 id="shadows-outline">Shadows &amp; outline</h3> <p>Fonts can have a shadow. For this, the font is drawn again, below the original, in a different color, and then blurred with a Gaussian kernel of different sizes. The resulting shadow can be adjusted with an exponential function to make it softer or more like an outline. A second shadow is also provided to create some added effects, like a bump or outline+shadow.</p> <img alt="../../../_images/shadowoutline.png" src="http://docs.godotengine.org/en/2.1/_images/shadowoutline.png">   <h3 id="gradients">Gradients</h3> <p>Gradients are also another of the visual effects that graphic designers often use. To show how much we love them, we added those too. Gradients can be provided as a simple curve between two colors, or a special png file with a hand drawn gradient.</p> <img alt="../../../_images/fontgradients.png" src="http://docs.godotengine.org/en/2.1/_images/fontgradients.png">    <h2 id="internationalization">Internationalization</h2> <p>Colors, shadows and gradients are beautiful, but it’s time we get to serious business. Developing games for Asian markets is a common practice in today’s globalized world and app stores.</p> <p>Here’s when things get tricky with using bitmap fonts. Asian alphabets (Chinese, Japanese and Korean) contain dozens of thousands of characters. Generating bitmap fonts with every single of them is pretty expensive, as the resulting textures are huge. If the font size is small enough, it can be done without much trouble, but when the fonts become bigger, we run out of video ram pretty quickly!</p> <p>To solve this, Godot allows the user to specify a text file (in UTF-8 format) where it expects to find all the characters that will be used in the project. This seems difficult to provide at first, and more to keep up to date, but it becomes rather easy when one realizes that the .csv with the translations can be used as such a source file (see the <a href="../importing_translations/#doc-importing-translations"><span class="std std-ref">Importing translations</span></a> section). As Godot re-imports assets when their dependencies change, both the translation and font files will be updated and re-imported automatically if the translation csv changes.</p> <p>Another cool trick for using a text file as limit of which characters can be imported is when using really large fonts. For example, the user might want to use a super large font, but only to show numbers. For this, he or she writes a numbers.txt file that contains “1234567890”, and Godot will only limit itself to import data, thus saving a lot of video memory.</p>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2014–2017 Juan Linietsky, Ariel Manzur and the Godot community<br>Licensed under the Creative Commons Attribution Unported License v3.0.<br>
+    <a href="http://docs.godotengine.org/en/2.1/learning/workflow/assets/importing_fonts.html" class="_attribution-link" target="_blank">http://docs.godotengine.org/en/2.1/learning/workflow/assets/importing_fonts.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

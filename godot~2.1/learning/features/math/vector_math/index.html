@@ -1,0 +1,270 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Vector Math - Godot 2.1 - W3cubDocs</title>
+  
+  <meta name="description" content="This small tutorial aims to be a short and practical introduction to vector math, useful for 3D but also 2D games. Again, vector math is not only &hellip;">
+  <meta name="keywords" content="vector, math, -, godot, godot~2.1">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/godot~2.1/learning/features/math/vector_math/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/godot~2.1.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/godot~2.1/" class="_nav-link" title="" style="margin-left:0;">Godot 2.1</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _sphinx_simple">
+				
+<h1 id="doc-vector-math">Vector math</h1>  <h2 id="introduction">Introduction</h2> <p>This small tutorial aims to be a short and practical introduction to vector math, useful for 3D but also 2D games. Again, vector math is not only useful for 3D but <em>also</em> 2D games. It is an amazing tool once you get the grasp of it and makes programming of complex behaviors much simpler.</p> <p>It often happens that young programmers rely too much on the <em>incorrect</em> math for solving a wide array of problems, for example using only trigonometry instead of vector of math for 2D games.</p> <p>This tutorial will focus on practical usage, with immediate application to the art of game programming.</p>   <h2 id="coordinate-systems-2d">Coordinate systems (2D)</h2> <p>Typically, we define coordinates as an (x,y) pair, x representing the horizontal offset and y the vertical one. This makes sense given the screen is just a rectangle in two dimensions. As an example, here is a position in 2D space:</p> <img alt="../../../_images/tutovec1.png" src="http://docs.godotengine.org/en/2.1/_images/tutovec1.png"> <p>A position can be anywhere in space. The position (0,0) has a name, it’s called the <strong>origin</strong>. Remember this term well because it has more implicit uses later. The (0,0) of a n-dimensions coordinate system is the <strong>origin</strong>.</p> <p>In vector math, coordinates have two different uses, both equally important. They are used to represent a <em>position</em> but also a <em>vector</em>. The same position as before, when imagined as a vector, has a different meaning.</p> <img alt="../../../_images/tutovec2.png" src="http://docs.godotengine.org/en/2.1/_images/tutovec2.png"> <p>When imagined as a vector, two properties can be inferred, the <strong>direction</strong> and the <strong>magnitude</strong>. Every position in space can be a vector, with the exception of the <strong>origin</strong>. This is because coordinates (0,0) can’t represent direction (magnitude 0).</p> <img alt="../../../_images/tutovec2b.png" src="http://docs.godotengine.org/en/2.1/_images/tutovec2b.png">  <h3 id="direction">Direction</h3> <p>Direction is simply towards where the vector points to. Imagine an arrow that starts at the <strong>origin</strong> and goes towards a [STRIKEOUT:position]. The tip of the arrow is in the position, so it always points outwards, away from the origin. Imagining vectors as arrows helps a lot.</p> <img alt="../../../_images/tutovec3b.png" src="http://docs.godotengine.org/en/2.1/_images/tutovec3b.png">   <h3 id="magnitude">Magnitude</h3> <p>Finally, the length of the vector is the distance from the origin to the position. Obtaining the length from a vector is easy, just use the <a href="http://en.wikipedia.org/wiki/Pythagorean_theorem" target="_blank">Pythagorean Theorem</a>.</p> <pre data-language="gdscript">var len = sqrt( x*x + y*y )
+</pre>   <h3 id="but-angles">But... angles?</h3> <p>But why not using an <em>angle</em>? After all, we could also think of a vector as an angle and a magnitude, instead of a direction and a magnitude. Angles also are a more familiar concept.</p> <p>To say truth, angles are not that useful in vector math, and most of the time they are not dealt with directly. Maybe they work in 2D, but in 3D a lot of what can usually be done with angles does not work anymore.</p> <p>Still, using angles is still not an excuse, even for 2D. Most of what takes a lot of work with angles in 2D, is still much more natural easier to accomplish with vector math. In vector math, angles are useful only as measure, but take little part in the math. So, give up the trigonometry already, prepare to embrace vectors!</p> <p>In any case, obtaining an angle from a vector is easy and can be accomplished with trig... er, what was that? I mean, the <a href="../../../../classes/class_@gdscript/#class-gdscript-atan2"><span class="std std-ref">atan2()</span></a> function.</p>    <h2 id="vectors-in-godot">Vectors in Godot</h2> <p>To make examples easier, it is worth explaining how vectors are implemented in GDScript. GDscript has both <a href="../../../../classes/class_vector2/#class-vector2"><span class="std std-ref">Vector2</span></a> and <a href="../../../../classes/class_vector3/#class-vector3"><span class="std std-ref">Vector3</span></a>, for 2D and 3D math respectively. Godot uses Vector classes as both position and direction. They also contain x and y (for 2D) and x, y and z (for 3D) member variables.</p> <pre data-language="gdscript"># create a vector with coordinates (2,5)
+var a = Vector2(2,5)
+# create a vector and assign x and y manually
+var b = Vector2()
+b.x = 7
+b.y = 8
+</pre> <p>When operating with vectors, it is not necessary to operate on the members directly (in fact this is much slower). Vectors support regular arithmetic operations:</p> <pre data-language="gdscript"># add a and b
+var c = a + b
+# will result in c vector, with value (9,13)
+</pre> <p>It is the same as doing:</p> <pre data-language="gdscript">var c = Vector2()
+c.x = a.x + b.x
+c.y = a.y + b.y
+</pre> <p>Except the former is way more efficient and readable.</p> <p>Regular arithmetic operations such as addition, subtraction, multiplication and division are supported.</p> <p>Vector multiplication and division can also be mixed with single-digit numbers, also named <strong>scalars</strong>.</p> <pre data-language="gdscript"># multiplication of vector by scalar
+var c = a*2.0
+# will result in c vector, with value (4,10)
+</pre> <p>Which is the same as doing</p> <pre data-language="gdscript">var c = Vector2()
+c.x = a.x*2.0
+c.y = a.y*2.0
+</pre> <p>Except, again, the former is way more efficient and readable.</p>   <h2 id="perpendicular-vectors">Perpendicular vectors</h2> <p>Rotating a 2D vector 90° degrees to either side, left or right, is really easy, just swap x and y, then negate either x or y (direction of rotation depends on which is negated).</p> <img alt="../../../_images/tutovec15.png" src="http://docs.godotengine.org/en/2.1/_images/tutovec15.png"> <p>Example:</p> <pre data-language="gdscript">var v = Vector2(0,1)
+
+# rotate right (clockwise)
+var v_right = Vector2(v.y, -v.x)
+
+# rotate left (counter-clockwise)
+var v_left = Vector2(-v.y, v.x)
+</pre> <p>This is a handy trick that is often of use. It is impossible to do with 3D vectors, because there are an infinite amount of perpendicular vectors.</p>   <h2 id="unit-vectors">Unit vectors</h2> <p>Ok, so we know what a vector is. It has a <strong>direction</strong> and a <strong>magnitude</strong>. We also know how to use them in Godot. The next step is learning about <strong>unit vectors</strong>. Any vector with <strong>magnitude</strong> of length 1 is considered a <strong>unit vector</strong>. In 2D, imagine drawing a circle of radius one. That circle contains all unit vectors in existence for 2 dimensions:</p> <img alt="../../../_images/tutovec3.png" src="http://docs.godotengine.org/en/2.1/_images/tutovec3.png"> <p>So, what is so special about unit vectors? Unit vectors are amazing. In other words, unit vectors have <strong>several, very useful properties</strong>.</p> <p>Can’t wait to know more about the fantastic properties of unit vectors, but one step at a time. So, how is a unit vector created from a regular vector?</p>  <h3 id="normalization">Normalization</h3> <p>Taking any vector and reducing its <strong>magnitude</strong> to 1.0 while keeping its <strong>direction</strong> is called <strong>normalization</strong>. Normalization is performed by dividing the x and y (and z in 3D) components of a vector by its magnitude:</p> <pre data-language="gdscript">var a = Vector2(2,4)
+var m = sqrt(a.x*a.x + a.y*a.y)
+a.x /= m
+a.y /= m
+</pre> <p>As you might have guessed, if the vector has magnitude 0 (meaning, it’s not a vector but the <strong>origin</strong> also called <em>null vector</em>), a division by zero occurs and the universe goes through a second big bang, except in reverse polarity and then back. As a result, humanity is safe but Godot will print an error. Remember! Vector(0,0) can’t be normalized!.</p> <p>Of course, Vector2 and Vector3 already provide a method to do this:</p> <pre data-language="gdscript">a = a.normalized()
+</pre>    <h2 id="dot-product">Dot product</h2> <p>OK, the <strong>dot product</strong> is the most important part of vector math. Without the dot product, Quake would have never been made. This is the most important section of the tutorial, so make sure to grasp it properly. Most people trying to understand vector math give up here because, despite how simple it is, they can’t make head or tails from it. Why? Here’s why, it’s because...</p> <p>The dot product takes two vectors and returns a <strong>scalar</strong>:</p> <pre data-language="gdscript">var s = a.x*b.x + a.y*b.y
+</pre> <p>Yes, pretty much that. Multiply <strong>x</strong> from vector <strong>a</strong> by <strong>x</strong> from vector <strong>b</strong>. Do the same with y and add it together. In 3D it’s pretty much the same:</p> <pre data-language="gdscript">var s = a.x*b.x + a.y*b.y + a.z*b.z
+</pre> <p>I know, it’s totally meaningless! You can even do it with a built-in function:</p> <pre data-language="gdscript">var s = a.dot(b)
+</pre> <p>The order of two vectors does <em>not</em> matter, <code>a.dot(b)</code> returns the same value as <code>b.dot(a)</code>.</p> <p>This is where despair begins and books and tutorials show you this formula:</p> <img alt="../../../_images/tutovec4.png" src="http://docs.godotengine.org/en/2.1/_images/tutovec4.png"> <p>And you realize it’s time to give up making 3D games or complex 2D games. How can something so simple be so complex? Someone else will have to make the next Zelda or Call of Duty. Top down RPGs don’t look so bad after all. Yeah I hear someone did pretty will with one of those on Steam...</p> <p>So this is your moment, this is your time to shine. <strong>DO NOT GIVE UP</strong>! At this point, this tutorial will take a sharp turn and focus on what makes the dot product useful. This is, <strong>why</strong> it is useful. We will focus one by one in the use cases for the dot product, with real-life applications. No more formulas that don’t make any sense. Formulas will make sense <em>once you learn</em> what they are useful for.</p>  <h3 id="siding">Siding</h3> <p>The first useful and most important property of the dot product is to check what side stuff is looking at. Let’s imagine we have any two vectors, <strong>a</strong> and <strong>b</strong>. Any <strong>direction</strong> or <strong>magnitude</strong> (neither <strong>origin</strong>). Does not matter what they are, but let’s imagine we compute the dot product between them.</p> <pre data-language="gdscript">var s = a.dot(b)
+</pre> <p>The operation will return a single floating point number (but since we are in vector world, we call them <strong>scalar</strong>, will keep using that term from now on). This number will tell us the following:</p> <ul class="simple"> <li>If the number is greater than zero, both are looking towards the same direction (the angle between them is &lt; 90° degrees).</li> <li>If the number is less than zero, both are looking towards opposite direction (the angle between them is &gt; 90° degrees).</li> <li>If the number is zero, vectors are shaped in L (the angle between them <em>is</em> 90° degrees).</li> </ul> <img alt="../../../_images/tutovec5.png" src="http://docs.godotengine.org/en/2.1/_images/tutovec5.png"> <p>So let’s think of a real use-case scenario. Imagine Snake is going through a forest, and then there is an enemy nearby. How can we quickly tell if the enemy has seen discovered Snake? In order to discover him, the enemy must be able to <em>see</em> Snake. Let’s say, then that:</p> <ul class="simple"> <li>Snake is in position <strong>A</strong>.</li> <li>The enemy is in position <strong>B</strong>.</li> <li>The enemy is <em>facing</em> towards direction vector <strong>F</strong>.</li> </ul> <img alt="../../../_images/tutovec6.png" src="http://docs.godotengine.org/en/2.1/_images/tutovec6.png"> <p>So, let’s create a new vector <strong>BA</strong> that goes from the guard (<strong>B</strong>) to Snake (<strong>A</strong>), by subtracting the two:</p> <pre data-language="gdscript">var BA = A - B
+</pre> <img alt="../../../_images/tutovec7.png" src="http://docs.godotengine.org/en/2.1/_images/tutovec7.png"> <p>Ideally, if the guard was looking straight towards snake, to make eye to eye contact, it would do it in the same direction as vector BA.</p> <p>If the dot product between <strong>F</strong> and <strong>BA</strong> is greater than 0, then Snake will be discovered. This happens because we will be able to tell that the guard is facing towards him:</p> <pre data-language="gdscript">if (BA.dot(F) &gt; 0):
+    print("!")
+</pre> <p>Seems Snake is safe so far.</p>    <h2 id="siding-with-unit-vectors">Siding with unit vectors</h2> <p>Ok, so now we know that dot product between two vectors will let us know if they are looking towards the same side, opposite sides or are just perpendicular to each other.</p> <p>This works the same with all vectors, no matter the magnitude so <strong>unit vectors</strong> are not the exception. However, using the same property with unit vectors yields an even more interesting result, as an extra property is added:</p> <ul class="simple"> <li>If both vectors are facing towards the exact same direction (parallel to each other, angle between them is 0°), the resulting scalar is <strong>1</strong>.</li> <li>If both vectors are facing towards the exact opposite direction (parallel to each other, but angle between them is 180°), the resulting scalar is <strong>-1</strong>.</li> </ul> <p>This means that dot product between unit vectors is always between the range of 1 and -1. So Again...</p> <ul class="simple"> <li>If their angle is <strong>0°</strong> dot product is <strong>1</strong>.</li> <li>If their angle is <strong>90°</strong>, then dot product is <strong>0</strong>.</li> <li>If their angle is <strong>180°</strong>, then dot product is <strong>-1</strong>.</li> </ul> <p>Uh.. this is oddly familiar... seen this before... where?</p> <p>Let’s take two unit vectors. The first one is pointing up, the second too but we will rotate it all the way from up (0°) to down (180° degrees)...</p> <img alt="../../../_images/tutovec8.png" src="http://docs.godotengine.org/en/2.1/_images/tutovec8.png"> <p>While plotting the resulting scalar!</p> <img alt="../../../_images/tutovec9.png" src="http://docs.godotengine.org/en/2.1/_images/tutovec9.png"> <p>Aha! It all makes sense now, this is a <a href="http://mathworld.wolfram.com/Cosine.html" target="_blank">Cosine</a> function!</p> <p>We can say that, then, as a rule...</p> <p>The <strong>dot product</strong> between two <strong>unit vectors</strong> is the <strong>cosine</strong> of the <strong>angle</strong> between those two vectors. So, to obtain the angle between two vectors, we must do:</p> <pre data-language="gdscript">var angle_in_radians = acos( a.dot(b) )
+</pre> <p>What is this useful for? Well obtaining the angle directly is probably not as useful, but just being able to tell the angle is useful for reference. One example is in the <a href="https://github.com/godotengine/godot-demo-projects/blob/master/2d/kinematic_char/player.gd#L79" target="_blank">Kinematic Character</a> demo, when the character moves in a certain direction then we hit an object. How to tell if what we hit is the floor?</p> <p>By comparing the normal of the collision point with a previously computed angle.</p> <p>The beauty of this is that the same code works exactly the same and without modification in <a href="https://github.com/godotengine/godot-demo-projects/blob/master/3d/kinematic_char/cubio.gd#L57" target="_blank">3D</a>. Vector math is, in a great deal, dimension-amount-independent, so adding or removing an axis only adds very little complexity.</p>   <h2 id="planes">Planes</h2> <p>The dot product has another interesting property with unit vectors. Imagine that perpendicular to that vector (and through the origin) passes a plane. Planes divide the entire space into positive (over the plane) and negative (under the plane), and (contrary to popular belief) you can also use their math in 2D:</p> <img alt="../../../_images/tutovec10.png" src="http://docs.godotengine.org/en/2.1/_images/tutovec10.png"> <p>Unit vectors that are perpendicular to a surface (so, they describe the orientation of the surface) are called <strong>unit normal vectors</strong>. Though, usually they are just abbreviated as *normals. Normals appear in planes, 3D geometry (to determine where each face or vertex is siding), etc. A <strong>normal</strong> <em>is</em> a <strong>unit vector</strong>, but it’s called <em>normal</em> because of its usage. (Just like we call Origin to (0,0)!).</p> <p>It’s as simple as it looks. The plane passes by the origin and the surface of it is perpendicular to the unit vector (or <em>normal</em>). The side towards the vector points to is the positive half-space, while the other side is the negative half-space. In 3D this is exactly the same, except that the plane is an infinite surface (imagine an infinite, flat sheet of paper that you can orient and is pinned to the origin) instead of a line.</p>  <h3 id="distance-to-plane">Distance to plane</h3> <p>Now that it’s clear what a plane is, let’s go back to the dot product. The dot product between a <strong>unit vector</strong> and any <strong>point in space</strong> (yes, this time we do dot product between vector and position), returns the <strong>distance from the point to the plane</strong>:</p> <pre data-language="gdscript">var distance = normal.dot(point)
+</pre> <p>But not just the absolute distance, if the point is in the negative half space the distance will be negative, too:</p> <img alt="../../../_images/tutovec11.png" src="http://docs.godotengine.org/en/2.1/_images/tutovec11.png"> <p>This allows us to tell which side of the plane a point is.</p>   <h3 id="away-from-the-origin">Away from the origin</h3> <p>I know what you are thinking! So far this is nice, but <em>real</em> planes are everywhere in space, not only passing through the origin. You want real <em>plane</em> action and you want it <em>now</em>.</p> <p>Remember that planes not only split space in two, but they also have <em>polarity</em>. This means that it is possible to have perfectly overlapping planes, but their negative and positive half-spaces are swapped.</p> <p>With this in mind, let’s describe a full plane as a <strong>normal</strong> <em>N</em> and a <strong>distance from the origin</strong> scalar <em>D</em>. Thus, our plane is represented by N and D. For example:</p> <img alt="../../../_images/tutovec12.png" src="http://docs.godotengine.org/en/2.1/_images/tutovec12.png"> <p>For 3D math, Godot provides a <a href="../../../../classes/class_plane/#class-plane"><span class="std std-ref">Plane</span></a> built-in type that handles this.</p> <p>Basically, N and D can represent any plane in space, be it for 2D or 3D (depending on the amount of dimensions of N) and the math is the same for both. It’s the same as before, but D is the distance from the origin to the plane, travelling in N direction. As an example, imagine you want to reach a point in the plane, you will just do:</p> <pre data-language="gdscript">var point_in_plane = N*D
+</pre> <p>This will stretch (resize) the normal vector and make it touch the plane. This math might seem confusing, but it’s actually much simpler than it seems. If we want to tell, again, the distance from the point to the plane, we do the same but adjusting for distance:</p> <pre data-language="gdscript">var distance = N.dot(point) - D
+</pre> <p>The same thing, using a built-in function:</p> <pre data-language="gdscript">var distance = plane.distance_to(point)
+</pre> <p>This will, again, return either a positive or negative distance.</p> <p>Flipping the polarity of the plane is also very simple, just negate both N and D. This will result in a plane in the same position, but with inverted negative and positive half spaces:</p> <pre data-language="gdscript">N = -N
+D = -D
+</pre> <p>Of course, Godot also implements this operator in <a href="../../../../classes/class_plane/#class-plane"><span class="std std-ref">Plane</span></a>, so doing:</p> <pre data-language="gdscript">var inverted_plane = -plane
+</pre> <p>Will work as expected.</p> <p>So, remember, a plane is just that and its main practical use is calculating the distance to it. So, why is it useful to calculate the distance from a point to a plane? It’s extremely useful! Let’s see some simple examples..</p>   <h3 id="constructing-a-plane-in-2d">Constructing a plane in 2D</h3> <p>Planes clearly don’t come out of nowhere, so they must be built. Constructing them in 2D is easy, this can be done from either a normal (unit vector) and a point, or from two points in space.</p> <p>In the case of a normal and a point, most of the work is done, as the normal is already computed, so just calculate D from the dot product of the normal and the point.</p> <pre data-language="gdscript">var N = normal
+var D = normal.dot(point)
+</pre> <p>For two points in space, there are actually two planes that pass through them, sharing the same space but with normal pointing to the opposite directions. To compute the normal from the two points, the direction vector must be obtained first, and then it needs to be rotated 90° degrees to either side:</p> <pre data-language="gdscript"># calculate vector from a to b
+var dvec = (point_b - point_a).normalized()
+# rotate 90 degrees
+var normal = Vector2(dvec.y,-dev.x)
+# or alternatively
+# var normal = Vector2(-dvec.y,dev.x)
+# depending the desired side of the normal
+</pre> <p>The rest is the same as the previous example, either point_a or point_b will work since they are in the same plane:</p> <pre data-language="gdscript">var N = normal
+var D = normal.dot(point_a)
+# this works the same
+# var D = normal.dot(point_b)
+</pre> <p>Doing the same in 3D is a little more complex and will be explained further down.</p>   <h3 id="some-examples-of-planes">Some examples of planes</h3> <p>Here is a simple example of what planes are useful for. Imagine you have a <a href="http://www.mathsisfun.com/definitions/convex.html" target="_blank">convex</a> polygon. For example, a rectangle, a trapezoid, a triangle, or just any polygon where faces that don’t bend inwards.</p> <p>For every segment of the polygon, we compute the plane that passes by that segment. Once we have the list of planes, we can do neat things, for example checking if a point is inside the polygon.</p> <p>We go through all planes, if we can find a plane where the distance to the point is positive, then the point is outside the polygon. If we can’t, then the point is inside.</p> <img alt="../../../_images/tutovec13.png" src="http://docs.godotengine.org/en/2.1/_images/tutovec13.png"> <p>Code should be something like this:</p> <pre data-language="gdscript">var inside = true
+for p in planes:
+    # check if distance to plane is positive
+    if (N.dot(point) - D &gt; 0):
+        inside = false
+        break # with one that fails, it's enough
+</pre> <p>Pretty cool, huh? But this gets much better! With a little more effort, similar logic will let us know when two convex polygons are overlapping too. This is called the Separating Axis Theorem (or SAT) and most physics engines use this to detect collision.</p> <p>The idea is really simple! With a point, just checking if a plane returns a positive distance is enough to tell if the point is outside. With another polygon, we must find a plane where <em>all the **other*</em> polygon points* return a positive distance to it. This check is performed with the planes of A against the points of B, and then with the planes of B against the points of A:</p> <img alt="../../../_images/tutovec14.png" src="http://docs.godotengine.org/en/2.1/_images/tutovec14.png"> <p>Code should be something like this:</p> <pre data-language="gdscript">var overlapping = true
+
+for p in planes_of_A:
+    var all_out = true
+    for v in points_of_B:
+        if (p.distance_to(v) &lt; 0):
+            all_out = false
+            break
+
+    if (all_out):
+        # a separating plane was found
+        # do not continue testing
+        overlapping = false
+        break
+
+if (overlapping):
+    # only do this check if no separating plane
+    # was found in planes of A
+    for p in planes_of_B:
+        var all_out = true
+        for v in points_of_A:
+            if (p.distance_to(v) &lt; 0):
+                all_out = false
+                break
+
+        if (all_out):
+            overlapping = false
+            break
+
+if (overlapping):
+    print("Polygons Collided!")
+</pre> <p>As you can see, planes are quite useful, and this is the tip of the iceberg. You might be wondering what happens with non convex polygons. This is usually just handled by splitting the concave polygon into smaller convex polygons, or using a technique such as BSP (which is not used much nowadays).</p>   <h3 id="cross-product">Cross product</h3> <p>Quite a lot can be done with the dot product! But the party would not be complete without the cross product. Remember back at the beginning of this tutorial? Specifically how to obtain a perpendicular (rotated 90 degrees) vector by swapping x and y, then negating either of them for right (clockwise) or left (counter-clockwise) rotation? That ended up being useful for calculating a 2D plane normal from two points.</p> <p>As mentioned before, no such thing exists in 3D because a 3D vector has infinite perpendicular vectors. It would also not make sense to obtain a 3D plane from 2 points, as 3 points are needed instead.</p> <p>To aid in this kind stuff, the brightest minds of humanity’s top mathematicians brought us the <strong>cross product</strong>.</p> <p>The cross product takes two vectors and returns another vector. The returned third vector is always perpendicular to the first two. The source vectors, of course, must not be the same, and must not be parallel or opposite, else the resulting vector will be (0,0,0):</p> <img alt="../../../_images/tutovec16.png" src="http://docs.godotengine.org/en/2.1/_images/tutovec16.png"> <p>The formula for the cross product is:</p> <pre data-language="gdscript">var c = Vector3()
+c.x = (a.y * b.z) - (a.z * b.y)
+c.y = (a.z * b.x) - (a.x * b.z)
+c.z = (a.x * b.y) - (a.y * b.x)
+</pre> <p>This can be simplified, in Godot, to:</p> <pre data-language="gdscript">var c = a.cross(b)
+</pre> <p>However, unlike the dot product, doing <code>a.cross(b)</code> and <code>b.cross(a)</code> will yield different results. Specifically, the returned vector will be negated in the second case. As you might have realized, this coincides with creating perpendicular vectors in 2D. In 3D, there are also two possible perpendicular vectors to a pair of 2D vectors.</p> <p>Also, the resulting cross product of two unit vectors is <em>not</em> a unit vector. Result will need to be renormalized.</p>    <h2 id="area-of-a-triangle">Area of a triangle</h2> <p>Cross product can be used to obtain the surface area of a triangle in 3D. Given a triangle consisting of 3 points, <strong>A</strong>, <strong>B</strong> and <strong>C</strong>:</p> <img alt="../../../_images/tutovec17.png" src="http://docs.godotengine.org/en/2.1/_images/tutovec17.png"> <p>Take any of them as a pivot and compute the adjacent vectors to the other two points. As example, we will use B as a pivot:</p> <pre data-language="gdscript">var BA = A - B
+var BC = C - B
+</pre> <img alt="../../../_images/tutovec18.png" src="http://docs.godotengine.org/en/2.1/_images/tutovec18.png"> <p>Compute the cross product between <strong>BA</strong> and <strong>BC</strong> to obtain the perpendicular vector <strong>P</strong>:</p> <pre data-language="gdscript">var P = BA.cross(BC)
+</pre> <img alt="../../../_images/tutovec19.png" src="http://docs.godotengine.org/en/2.1/_images/tutovec19.png"> <p>The length (magnitude) of <strong>P</strong> is the surface area of the parallelogram built by the two vectors <strong>BA</strong> and <strong>BC</strong>, therefore the surface area of the triangle is half of it.</p> <pre data-language="gdscript">var area = P.length()/2
+</pre>   <h2 id="plane-of-the-triangle">Plane of the triangle</h2> <p>With <strong>P</strong> computed from the previous step, normalize it to get the normal of the plane.</p> <pre data-language="gdscript">var N = P.normalized()
+</pre> <p>And obtain the distance by doing the dot product of P with any of the 3 points of the <strong>ABC</strong> triangle:</p> <pre data-language="gdscript">var D = P.dot(A)
+</pre> <p>Fantastic! You computed the plane from a triangle!</p> <p>Here’s some useful info (that you can find in Godot source code anyway). Computing a plane from a triangle can result in 2 planes, so a sort of convention needs to be set. This usually depends (in video games and 3D visualization) to use the front-facing side of the triangle.</p> <p>In Godot, front-facing triangles are those that, when looking at the camera, are in clockwise order. Triangles that look Counter-clockwise when looking at the camera are not drawn (this helps to draw less, so the back-part of the objects is not drawn).</p> <p>To make it a little clearer, in the image below, the triangle <strong>ABC</strong> appears clock-wise when looked at from the <em>Front Camera</em>, but to the <em>Rear Camera</em> it appears counter-clockwise so it will not be drawn.</p> <img alt="../../../_images/tutovec20.png" src="http://docs.godotengine.org/en/2.1/_images/tutovec20.png"> <p>Normals of triangles often are sided towards the direction they can be viewed from, so in this case, the normal of triangle ABC would point towards the front camera:</p> <img alt="../../../_images/tutovec21.png" src="http://docs.godotengine.org/en/2.1/_images/tutovec21.png"> <p>So, to obtain N, the correct formula is:</p> <pre data-language="gdscript"># clockwise normal from triangle formula
+var N = (A-C).cross(A-B).normalized()
+# for counter-clockwise:
+# var N = (A-B).cross(A-C).normalized()
+var D = N.dot(A)
+</pre>   <h2 id="collision-detection-in-3d">Collision detection in 3D</h2> <p>This is another bonus bit, a reward for being patient and keeping up with this long tutorial. Here is another piece of wisdom. This might not be something with a direct use case (Godot already does collision detection pretty well) but It’s a really cool algorithm to understand anyway, because it’s used by almost all physics engines and collision detection libraries :)</p> <p>Remember that converting a convex shape in 2D to an array of 2D planes was useful for collision detection? You could detect if a point was inside any convex shape, or if two 2D convex shapes were overlapping.</p> <p>Well, this works in 3D too, if two 3D polyhedral shapes are colliding, you won’t be able to find a separating plane. If a separating plane is found, then the shapes are definitely not colliding.</p> <p>To refresh a bit a separating plane means that all vertices of polygon A are in one side of the plane, and all vertices of polygon B are in the other side. This plane is always one of the face-planes of either polygon A or polygon B.</p> <p>In 3D though, there is a problem to this approach, because it is possible that, in some cases a separating plane can’t be found. This is an example of such situation:</p> <img alt="../../../_images/tutovec22.png" src="http://docs.godotengine.org/en/2.1/_images/tutovec22.png"> <p>To avoid it, some extra planes need to be tested as separators, these planes are the cross product between the edges of polygon A and the edges of polygon B</p> <img alt="../../../_images/tutovec23.png" src="http://docs.godotengine.org/en/2.1/_images/tutovec23.png"> <p>So the final algorithm is something like:</p> <pre data-language="gdscript">var overlapping = true
+
+for p in planes_of_A:
+    var all_out = true
+    for v in points_of_B:
+        if (p.distance_to(v) &lt; 0):
+            all_out = false
+            break
+
+    if (all_out):
+        # a separating plane was found
+        # do not continue testing
+        overlapping = false
+        break
+
+if (overlapping):
+    # only do this check if no separating plane
+    # was found in planes of A
+    for p in planes_of_B:
+        var all_out = true
+        for v in points_of_A:
+            if (p.distance_to(v) &lt; 0):
+                all_out = false
+                break
+
+        if (all_out):
+            overlapping = false
+            break
+
+if (overlapping):
+    for ea in edges_of_A:
+        for eb in edges_of_B:
+            var n = ea.cross(eb)
+            if (n.length() == 0):
+                continue
+
+            var max_A = -1e20 # tiny number
+            var min_A = 1e20 # huge number
+
+            # we are using the dot product directly
+            # so we can map a maximum and minimum range
+            # for each polygon, then check if they
+            # overlap.
+
+            for v in points_of_A:
+                var d = n.dot(v)
+                if (d &gt; max_A):
+                    max_A = d
+                if (d &lt; min_A):
+                    min_A = d
+
+            var max_B = -1e20 # tiny number
+            var min_B = 1e20 # huge number
+
+            for v in points_of_B:
+                var d = n.dot(v)
+                if (d &gt; max_B):
+                    max_B = d
+                if (d &lt; min_B):
+                    min_B = d
+
+            if (min_A &gt; max_B or min_B &gt; max_A):
+                # not overlapping!
+                overlapping = false
+                break
+
+        if (not overlapping):
+            break
+
+if (overlapping):
+   print("Polygons collided!")
+</pre> <p>This was all! Hope it was helpful, and please give feedback and let know if something in this tutorial is not clear! You should be now ready for the next challenge... <a href="../matrices_and_transforms/#doc-matrices-and-transforms"><span class="std std-ref">Matrices and transforms</span></a>!</p>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2014–2017 Juan Linietsky, Ariel Manzur and the Godot community<br>Licensed under the Creative Commons Attribution Unported License v3.0.<br>
+    <a href="http://docs.godotengine.org/en/2.1/learning/features/math/vector_math.html" class="_attribution-link" target="_blank">http://docs.godotengine.org/en/2.1/learning/features/math/vector_math.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

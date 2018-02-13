@@ -1,0 +1,99 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Viewports - Godot 2.1 - W3cubDocs</title>
+  
+  <meta name="description" content="Godot has a small but very useful feature called viewports. Viewports are, as they name implies, rectangles where the world is drawn. They have &hellip;">
+  <meta name="keywords" content="viewports, -, godot, godot~2.1">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/godot~2.1/learning/features/viewports/viewports/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/godot~2.1.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/godot~2.1/" class="_nav-link" title="" style="margin-left:0;">Godot 2.1</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _sphinx_simple">
+				
+<h1 id="doc-viewports">Viewports</h1>  <h2 id="introduction">Introduction</h2> <p>Godot has a small but very useful feature called viewports. Viewports are, as they name implies, rectangles where the world is drawn. They have three main uses, but can flexibly adapted to a lot more. All this is done via the <a href="../../../../classes/class_viewport/#class-viewport"><span class="std std-ref">Viewport</span></a> node.</p> <img alt="../../../_images/viewportnode.png" src="http://docs.godotengine.org/en/2.1/_images/viewportnode.png"> <p>The main uses in question are:</p> <ul class="simple"> <li>
+<strong>Scene Root</strong>: The root of the active scene is always a Viewport. This is what displays the scenes created by the user. (You should know this by having read previous tutorials!)</li> <li>
+<strong>Sub-Viewports</strong>: These can be created when a Viewport is a child of a <a href="../../../../classes/class_control/#class-control"><span class="std std-ref">Control</span></a>.</li> <li>
+<strong>Render Targets</strong>: Viewports can be set to “RenderTarget” mode. This means that the viewport is not directly visible, but its contents can be accessed via a <a href="../../../../classes/class_texture/#class-texture"><span class="std std-ref">Texture</span></a>.</li> </ul>   <h2 id="input">Input</h2> <p>Viewports are also responsible of delivering properly adjusted and scaled input events to all its children nodes. Both the root viewport and sub-viewports do this automatically, but render targets do not. Because of this, the user must do it manually via the <a href="../../../../classes/class_viewport/#class-viewport-input"><span class="std std-ref">Viewport.input()</span></a> function if needed.</p>   <h2 id="listener">Listener</h2> <p>Godot supports 3D sound (in both 2D and 3D nodes), more on this can be found in another tutorial (one day..). For this type of sound to be audible, the viewport needs to be enabled as a listener (for 2D or 3D). If you are using a custom viewport to display your world, don’t forget to enable this!</p>   <h2 id="cameras-2d-3d">Cameras (2D &amp; 3D)</h2> <p>When using a 2D or 3D <a href="../../../../classes/class_camera/#class-camera"><span class="std std-ref">Camera</span></a> / <a href="../../../../classes/class_camera2d/#class-camera2d"><span class="std std-ref">Camera2D</span></a>, cameras will always display on the closest parent viewport (going towards the root). For example, in the following hierarchy:</p> <ul class="simple"> <li>Viewport<ul> <li>Camera</li> </ul> </li> </ul> <p>Camera will display on the parent viewport, but in the following one:</p> <ul class="simple"> <li>Camera<ul> <li>Viewport</li> </ul> </li> </ul> <p>It will not (or may display in the root viewport if this is a subscene).</p> <p>There can be only one active camera per viewport, so if there is more than one, make sure that the desired one has the “current” property set, or make it the current camera by calling:</p> <pre data-language="gdscript">camera.make_current()
+</pre>   <h2 id="scale-stretching">Scale &amp; stretching</h2> <p>Viewports have a “rect” property. X and Y are often not used (only the root viewport really uses them), while WIDTH AND HEIGHT represent the size of the viewport in pixels. For Sub-Viewports, these values are overridden by the ones from the parent control, but for render targets this sets their resolution.</p> <p>It is also possible to scale the 2D content and make it believe the viewport resolution is other than the one specified in the rect, by calling:</p> <pre data-language="gdscript">viewport.set_size_override(w,h) #custom size for 2D
+viewport.set_size_override_stretch(true/false) #enable stretch for custom size
+</pre> <p>The root viewport uses this for the stretch options in the project settings.</p>   <h2 id="worlds">Worlds</h2> <p>For 3D, a Viewport will contain a <a href="../../../../classes/class_world/#class-world"><span class="std std-ref">World</span></a>. This is basically the universe that links physics and rendering together. Spatial-base nodes will register using the World of the closest viewport. By default, newly created viewports do not contain a World but use the same as a parent viewport (root viewport does contain one though, which is the one objects are rendered to by default). A world can be set in a viewport using the “world” property, and that will separate all children nodes of that viewport from interacting with the parent viewport world. This is specially useful in scenarios where, for example, you might want to show a separate character in 3D imposed over the game (like in Starcraft).</p> <p>As a helper for situations where you want to create viewports that display single objects and don’t want to create a world, viewport has the option to use its own World. This is very useful when you want to instance 3D characters or objects in the 2D world.</p> <p>For 2D, each Viewport always contains its own <a href="../../../../classes/class_world2d/#class-world2d"><span class="std std-ref">World2D</span></a>. This suffices in most cases, but in case sharing them may be desired, it is possible to do so by calling the viewport API manually.</p>   <h2 id="capture">Capture</h2> <p>It is possible to query a capture of the viewport contents. For the root viewport this is effectively a screen capture. This is done with the following API:</p> <pre data-language="gdscript"># queues a screen capture, will not happen immediately
+viewport.queue_screen_capture()
+</pre> <p>After a frame or two (check _process()), the capture will be ready, get it back by using:</p> <pre data-language="gdscript">var capture = viewport.get_screen_capture()
+</pre> <p>If the returned image is empty, capture still didn’t happen, wait a little more, as this API is asyncronous.</p>   <h2 id="sub-viewport">Sub-viewport</h2> <p>If the viewport is a child of a control, it will become active and display anything it has inside. The layout is something like this:</p> <ul class="simple"> <li>Control<ul> <li>Viewport</li> </ul> </li> </ul> <p>The viewport will cover the area of its parent control completely.</p> <img alt="../../../_images/subviewport.png" src="http://docs.godotengine.org/en/2.1/_images/subviewport.png">   <h2 id="render-target">Render target</h2> <p>To set as a render target, just toggle the “render target” property of the viewport to enabled. Note that whatever is inside will not be visible in the scene editor. To display the contents, the render target texture must be used. This can be requested via code using (for example):</p> <pre data-language="gdscript">var rtt = viewport.get_render_target_texture()
+sprite.set_texture(rtt)
+</pre> <p>By default, re-rendering of the render target happens when the render target texture has been drawn in a frame. If visible, it will be rendered, otherwise it will not. This behavior can be changed to manual rendering (once), or always render, no matter if visible or not.</p> <p>A few classes are created to make this easier in most common cases inside the editor:</p> <ul class="simple"> <li>
+<a href="../../../../classes/class_viewportsprite/#class-viewportsprite"><span class="std std-ref">ViewportSprite</span></a> (for 2D).</li> <li>ViewportQuad (for 3D).</li> <li>ViewportFrame (for GUI).</li> </ul> <p><em>TODO: Review the doc, ViewportQuad and ViewportFrame don’t exist in 2.0.</em></p> <p>Make sure to check the viewport demos! Viewport folder in the demos archive available to download, or <a href="https://github.com/godotengine/godot-demo-projects/tree/master/viewport" target="_blank">https://github.com/godotengine/godot-demo-projects/tree/master/viewport</a></p>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2014–2017 Juan Linietsky, Ariel Manzur and the Godot community<br>Licensed under the Creative Commons Attribution Unported License v3.0.<br>
+    <a href="http://docs.godotengine.org/en/2.1/learning/features/viewports/viewports.html" class="_attribution-link" target="_blank">http://docs.godotengine.org/en/2.1/learning/features/viewports/viewports.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

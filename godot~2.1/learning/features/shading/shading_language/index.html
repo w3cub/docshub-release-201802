@@ -1,0 +1,393 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Shading Language - Godot 2.1 - W3cubDocs</title>
+  
+  <meta name="description" content=" Godot uses a simplified shader language (almost a subset of GLSL). Shaders can be used for&#58; ">
+  <meta name="keywords" content="shading, language, -, godot, godot~2.1">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/godot~2.1/learning/features/shading/shading_language/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/godot~2.1.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/godot~2.1/" class="_nav-link" title="" style="margin-left:0;">Godot 2.1</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _sphinx_simple">
+				
+<h1 id="doc-shading-language">Shading language</h1>  <h2 id="introduction">Introduction</h2> <p>Godot uses a simplified shader language (almost a subset of GLSL). Shaders can be used for:</p> <ul class="simple"> <li>Materials</li> <li>Post-Processing</li> <li>2D</li> </ul> <p>and are divided in <em>Vertex</em>, <em>Fragment</em> and <em>Light</em> sections.</p>   <h2 id="language">Language</h2>  <h3 id="typing">Typing</h3> <p>The language is statically type and supports only a few operations. Arrays, classes, structures, etc are not supported. Several built-in datatypes are provided:</p>   <h3 id="data-types">Data types</h3> <table class="docutils">  <thead valign="bottom"> <tr>
+<th class="head">DataType</th> <th class="head">Description</th> </tr> </thead>  <tr>
+<td><em>void</em></td> <td>Void</td> </tr> <tr>
+<td><em>bool</em></td> <td>boolean (true or false)</td> </tr> <tr>
+<td><em>float</em></td> <td>floating point</td> </tr> <tr>
+<td><em>vec2</em></td> <td>2-component vector, float subindices (x,y or r,g )</td> </tr> <tr>
+<td><em>vec3</em></td> <td>3-component vector, float subindices (x,y,z or r,g,b )</td> </tr> <tr>
+<td>
+<em>vec4</em>, <em>color</em>
+</td> <td>4-component vector, float subindices (x,y,z,w or r,g,b,a )</td> </tr> <tr>
+<td><em>mat2</em></td> <td>2x2 matrix, vec3 subindices (x,y)</td> </tr> <tr>
+<td><em>mat3</em></td> <td>3x3 matrix, vec3 subindices (x,y,z)</td> </tr> <tr>
+<td><em>mat4</em></td> <td>4x4 matrix, vec4 subindices (x,y,z,w)</td> </tr> <tr>
+<td><em>texture</em></td> <td>texture sampler, can only be used as uniform</td> </tr> <tr>
+<td><em>cubemap</em></td> <td>cubemap sampler, can only be used as uniform</td> </tr>  </table>   <h3 id="syntax">Syntax</h3> <p>The syntax is similar to C, with statements ending with <code>;</code> and comments as <code>//</code> and <code>/* */</code>. Example:</p> <pre data-language="gdscript">float a = 3;
+vec3 b;
+b.x = a;
+</pre>   <h3 id="swizzling">Swizzling</h3> <p>It is possible to use swizzling to reassigning subindices or groups of subindices, in order:</p> <pre data-language="gdscript">vec3 a = vec3(1,2,3);
+vec3 b = a.zyx; // b will contain vec3(3,2,1)
+vec2 c = a.xy; // c will contain vec2(1,2)
+vec4 d = a.xyzz; // d will contain vec4(1,2,3,3)
+</pre>   <h3 id="constructors">Constructors</h3> <p>Constructors take the regular amount of elements, but can also accept less if the element has more subindices, for example:</p> <pre data-language="gdscript">vec3 a = vec3(1,vec2(2,3));
+vec3 b = vec3(a);
+vec3 c = vec3(vec2(2,3),1);
+vec4 d = vec4(a,5);
+mat3 m = mat3(a,b,c);
+</pre>   <h3 id="conditionals">Conditionals</h3> <p>For now, only the <code>if</code> conditional is supported. Example:</p> <pre data-language="gdscript">if (a &lt; b) {
+    c = b;
+}
+</pre>   <h3 id="uniforms">Uniforms</h3> <p>A variable can be declared as uniform. In this case, its value will come from outside the shader (it will be the responsibility of the material or whatever using the shader to provide it).</p> <pre data-language="gdscript">uniform vec3 direction;
+uniform color tint;
+
+vec3 result = tint.rgb * direction;
+</pre>   <h3 id="functions">Functions</h3> <p>Simple support for functions is provided. Functions can’t access uniforms or other shader variables.</p> <pre data-language="gdscript">vec3 addtwo(vec3 a, vec3 b) {
+    return a+b;
+}
+
+vec3 c = addtwo(vec3(1,1,1), vec3(2,2,2));
+</pre>    <h2 id="built-in-functions">Built-in functions</h2> <p>Several built-in functions are provided for convenience, listed as follows:</p> <table class="docutils">  <thead valign="bottom"> <tr>
+<th class="head">Function</th> <th class="head">Description</th> </tr> </thead>  <tr>
+<td>float <em>sin</em> ( float )</td> <td>Sine</td> </tr> <tr>
+<td>float <em>cos</em> ( float )</td> <td>Cosine</td> </tr> <tr>
+<td>float <em>tan</em> ( float )</td> <td>Tangent</td> </tr> <tr>
+<td>float <em>asin</em> ( float )</td> <td>arc-Sine</td> </tr> <tr>
+<td>float <em>acos</em> ( float )</td> <td>arc-Cosine</td> </tr> <tr>
+<td>float <em>atan</em> ( float )</td> <td>arc-Tangent</td> </tr> <tr>
+<td>vec_type <em>pow</em> ( vec_type, float )</td> <td>Power</td> </tr> <tr>
+<td>vec_type <em>pow</em> ( vec_type, vec_type )</td> <td>Power (Vec. Exponent)</td> </tr> <tr>
+<td>vec_type <em>exp</em> ( vec_type )</td> <td>Base-e Exponential</td> </tr> <tr>
+<td>vec_type <em>log</em> ( vec_type )</td> <td>Natural Logarithm</td> </tr> <tr>
+<td>vec_type <em>sqrt</em> ( vec_type )</td> <td>Square Root</td> </tr> <tr>
+<td>vec_type <em>abs</em> ( vec_type )</td> <td>Absolute</td> </tr> <tr>
+<td>vec_type <em>sign</em> ( vec_type )</td> <td>Sign</td> </tr> <tr>
+<td>vec_type <em>floor</em> ( vec_type )</td> <td>Floor</td> </tr> <tr>
+<td>vec_type <em>trunc</em> ( vec_type )</td> <td>Trunc</td> </tr> <tr>
+<td>vec_type <em>ceil</em> ( vec_type )</td> <td>Ceiling</td> </tr> <tr>
+<td>vec_type <em>fract</em> ( vec_type )</td> <td>Fractional</td> </tr> <tr>
+<td>vec_type <em>mod</em> ( vec_type,vec_type )</td> <td>Remainder</td> </tr> <tr>
+<td>vec_type <em>min</em> ( vec_type,vec_type )</td> <td>Minimum</td> </tr> <tr>
+<td>vec_type <em>min</em> ( vec_type,vec_type )</td> <td>Maximum</td> </tr> <tr>
+<td>vec_type <em>clamp</em> ( vec_type value,vec_type min, vec_type max )</td> <td>Clamp to Min-Max</td> </tr> <tr>
+<td>vec_type <em>mix</em> ( vec_type a,vec_type b, float c )</td> <td>Linear Interpolate</td> </tr> <tr>
+<td>vec_type <em>mix</em> ( vec_type a,vec_type b, vec_type c )</td> <td>Linear Interpolate (Vector Coef.)</td> </tr> <tr>
+<td>vec_type <em>step</em> ( vec_type a,vec_type b)</td> <td>` a[i] &lt; b[i] ? 0.0 : 1.0`</td> </tr> <tr>
+<td>vec_type <em>smoothstep</em> ( vec_type a,vec_type b,vec_type c)</td> <td> </td> </tr> <tr>
+<td>float <em>length</em> ( vec_type )</td> <td>Vector Length</td> </tr> <tr>
+<td>float <em>distance</em> ( vec_type, vec_type )</td> <td>Distance between vector.</td> </tr> <tr>
+<td>float <em>dot</em> ( vec_type, vec_type )</td> <td>Dot Product</td> </tr> <tr>
+<td>vec3 <em>cross</em> ( vec3, vec3 )</td> <td>Cross Product</td> </tr> <tr>
+<td>vec_type <em>normalize</em> ( vec_type )</td> <td>Normalize to unit length</td> </tr> <tr>
+<td>vec3 <em>reflect</em> ( vec3, vec3 )</td> <td>Reflect</td> </tr> <tr>
+<td>color <em>tex</em> ( texture, vec2 )</td> <td>Read from a texture in normalized coords</td> </tr> <tr>
+<td>color <em>texcube</em> ( texture, vec3 )</td> <td>Read from a cubemap</td> </tr> <tr>
+<td>color <em>texscreen</em> ( vec2 )</td> <td>Read from screen (generates a copy)</td> </tr>  </table>   <h2 id="built-in-variables">Built-in variables</h2> <p>Depending on the shader type, several built-in variables are available, listed as follows:</p>  <h3 id="material-3d-vertexshader">Material (3D) - VertexShader</h3> <table class="docutils">  <thead valign="bottom"> <tr>
+<th class="head">Variable</th> <th class="head">Description</th> </tr> </thead>  <tr>
+<td>const vec3 <em>SRC_VERTEX</em>
+</td> <td>Model-Space Vertex</td> </tr> <tr>
+<td>const vec3 <em>SRC_NORMAL</em>
+</td> <td>Model-Space Normal</td> </tr> <tr>
+<td>const vec3 <em>SRC_TANGENT</em>
+</td> <td>Model-Space Tangent</td> </tr> <tr>
+<td>const float <em>SRC_BINORMALF</em>
+</td> <td>Direction to Compute Binormal</td> </tr> <tr>
+<td>vec3 <em>VERTEX</em>
+</td> <td>View-Space Vertex</td> </tr> <tr>
+<td>vec3 <em>NORMAL</em>
+</td> <td>View-Space Normal</td> </tr> <tr>
+<td>vec3 <em>TANGENT</em>
+</td> <td>View-Space Tangent</td> </tr> <tr>
+<td>vec3 <em>BINORMAL</em>
+</td> <td>View-Space Binormal</td> </tr> <tr>
+<td>vec2 <em>UV</em>
+</td> <td>UV</td> </tr> <tr>
+<td>vec2 <em>UV2</em>
+</td> <td>UV2</td> </tr> <tr>
+<td>color <em>COLOR</em>
+</td> <td>Vertex Color</td> </tr> <tr>
+<td>out vec4 <em>VAR1</em>
+</td> <td>Varying 1 Output</td> </tr> <tr>
+<td>out vec4 <em>VAR2</em>
+</td> <td>Varying 2 Output</td> </tr> <tr>
+<td>out float <em>SPEC_EXP</em>
+</td> <td>Specular Exponent (for Vertex Lighting)</td> </tr> <tr>
+<td>out float <em>POINT_SIZE</em>
+</td> <td>Point Size (for points)</td> </tr> <tr>
+<td>const mat4 <em>WORLD_MATRIX</em>
+</td> <td>Object World Matrix</td> </tr> <tr>
+<td>const mat4 <em>INV_CAMERA_MATRIX</em>
+</td> <td>Inverse Camera Matrix</td> </tr> <tr>
+<td>const mat4 <em>PROJECTION_MATRIX</em>
+</td> <td>Projection Matrix</td> </tr> <tr>
+<td>const mat4 <em>MODELVIEW_MATRIX</em>
+</td> <td>(InvCamera * Projection)</td> </tr> <tr>
+<td>const float <em>INSTANCE_ID</em>
+</td> <td>Instance ID (for multimesh)</td> </tr> <tr>
+<td>const float <em>TIME</em>
+</td> <td>Time (in seconds)</td> </tr>  </table>   <h3 id="material-3d-fragmentshader">Material (3D) - FragmentShader</h3> <table class="docutils">  <thead valign="bottom"> <tr>
+<th class="head">Variable</th> <th class="head">Description</th> </tr> </thead>  <tr>
+<td>const vec3 <em>VERTEX</em>
+</td> <td>View-Space vertex</td> </tr> <tr>
+<td>const vec4 <em>POSITION</em>
+</td> <td>View-Space Position</td> </tr> <tr>
+<td>const vec3 <em>NORMAL</em>
+</td> <td>View-Space Normal</td> </tr> <tr>
+<td>const vec3 <em>TANGENT</em>
+</td> <td>View-Space Tangent</td> </tr> <tr>
+<td>const vec3 <em>BINORMAL</em>
+</td> <td>View-Space Binormal</td> </tr> <tr>
+<td>const vec3 <em>NORMALMAP</em>
+</td> <td>Alternative to NORMAL, use for normal texture output.</td> </tr> <tr>
+<td>const vec3 <em>NORMALMAP_DEPTH</em>
+</td> <td>Complementary to the above, allows changing depth of normalmap.</td> </tr> <tr>
+<td>const vec2 <em>UV</em>
+</td> <td>UV</td> </tr> <tr>
+<td>const vec2 <em>UV2</em>
+</td> <td>UV2</td> </tr> <tr>
+<td>const color <em>COLOR</em>
+</td> <td>Vertex Color</td> </tr> <tr>
+<td>const vec4 <em>VAR1</em>
+</td> <td>Varying 1</td> </tr> <tr>
+<td>const vec4 <em>VAR2</em>
+</td> <td>Varying 2</td> </tr> <tr>
+<td>const vec2 <em>SCREEN_UV</em>
+</td> <td>Screen Texture Coordinate (for using with texscreen)</td> </tr> <tr>
+<td>const float <em>TIME</em>
+</td> <td>Time (in seconds)</td> </tr> <tr>
+<td>const vec2 <em>POINT_COORD</em>
+</td> <td>UV for point, when drawing point sprites.</td> </tr> <tr>
+<td>out vec3 <em>DIFFUSE</em>
+</td> <td>Diffuse Color</td> </tr> <tr>
+<td>out vec4 <em>DIFFUSE_ALPHA</em>
+</td> <td>Diffuse Color with Alpha (using this sends geometry to alpha pipeline)</td> </tr> <tr>
+<td>out vec3 <em>SPECULAR</em>
+</td> <td>Specular Color</td> </tr> <tr>
+<td>out vec3 <em>EMISSION</em>
+</td> <td>Emission Color</td> </tr> <tr>
+<td>out float <em>SPEC_EXP</em>
+</td> <td>Specular Exponent (Fragment Version)</td> </tr> <tr>
+<td>out float <em>GLOW</em>
+</td> <td>Glow</td> </tr> <tr>
+<td>out mat4 <em>INV_CAMERA_MATRIX</em>
+</td> <td>Inverse camera matrix, can be used to obtain world coords (see example below).</td> </tr>  </table>   <h3 id="material-3d-lightshader">Material (3D) - LightShader</h3> <table class="docutils">  <thead valign="bottom"> <tr>
+<th class="head">Variable</th> <th class="head">Description</th> </tr> </thead>  <tr>
+<td>const vec3 <em>NORMAL</em>
+</td> <td>View-Space normal</td> </tr> <tr>
+<td>const vec3 <em>LIGHT_DIR</em>
+</td> <td>View-Space Light Direction</td> </tr> <tr>
+<td>const vec3 <em>EYE_VEC</em>
+</td> <td>View-Space Eye-Point Vector</td> </tr> <tr>
+<td>const vec3 <em>DIFFUSE</em>
+</td> <td>Material Diffuse Color</td> </tr> <tr>
+<td>const vec3 <em>LIGHT_DIFFUSE</em>
+</td> <td>Light Diffuse Color</td> </tr> <tr>
+<td>const vec3 <em>SPECULAR</em>
+</td> <td>Material Specular Color</td> </tr> <tr>
+<td>const vec3 <em>LIGHT_SPECULAR</em>
+</td> <td>Light Specular Color</td> </tr> <tr>
+<td>const float <em>SPECULAR_EXP</em>
+</td> <td>Specular Exponent</td> </tr> <tr>
+<td>const vec1 <em>SHADE_PARAM</em>
+</td> <td>Generic Shade Parameter</td> </tr> <tr>
+<td>const vec2 <em>POINT_COORD</em>
+</td> <td>Current UV for Point Sprite</td> </tr> <tr>
+<td>out vec2 <em>LIGHT</em>
+</td> <td>Resulting Light</td> </tr> <tr>
+<td>const float <em>TIME</em>
+</td> <td>Time (in seconds)</td> </tr>  </table>   <h3 id="canvasitem-2d-vertexshader">CanvasItem (2D) - VertexShader</h3> <table class="docutils">  <thead valign="bottom"> <tr>
+<th class="head">Variable</th> <th class="head">Description</th> </tr> </thead>  <tr>
+<td>const vec2 <em>SRC_VERTEX</em>
+</td> <td>CanvasItem space vertex.</td> </tr> <tr>
+<td>vec2 <em>UV</em>
+</td> <td>UV</td> </tr> <tr>
+<td>out vec2 <em>VERTEX</em>
+</td> <td>Output LocalSpace vertex.</td> </tr> <tr>
+<td>out vec2 <em>WORLD_VERTEX</em>
+</td> <td>Output WorldSpace vertex. (use this or the one above)</td> </tr> <tr>
+<td>color <em>COLOR</em>
+</td> <td>Vertex Color</td> </tr> <tr>
+<td>out vec4 <em>VAR1</em>
+</td> <td>Varying 1 Output</td> </tr> <tr>
+<td>out vec4 <em>VAR2</em>
+</td> <td>Varying 2 Output</td> </tr> <tr>
+<td>out float <em>POINT_SIZE</em>
+</td> <td>Point Size (for points)</td> </tr> <tr>
+<td>const mat4 <em>WORLD_MATRIX</em>
+</td> <td>Object World Matrix</td> </tr> <tr>
+<td>const mat4 <em>EXTRA_MATRIX</em>
+</td> <td>Extra (user supplied) matrix via CanvasItem.draw_set_transform(). Identity by default.</td> </tr> <tr>
+<td>const mat4 <em>PROJECTION_MATRIX</em>
+</td> <td>Projection Matrix (model coords to screen).</td> </tr> <tr>
+<td>const float <em>TIME</em>
+</td> <td>Time (in seconds)</td> </tr> <tr>
+<td>const bool <em>AT_LIGHT_PASS</em>
+</td> <td>Whether the shader is being run for a lighting pass (happens per affecting light)</td> </tr>  </table>   <h3 id="canvasitem-2d-fragmentshader">CanvasItem (2D) - FragmentShader</h3> <table class="docutils">  <thead valign="bottom"> <tr>
+<th class="head">Variable</th> <th class="head">Description</th> </tr> </thead>  <tr>
+<td>const vec4 <em>SRC_COLOR</em>
+</td> <td>Vertex color</td> </tr> <tr>
+<td>const vec4 <em>POSITION</em>
+</td> <td>Screen Position</td> </tr> <tr>
+<td>vec2 <em>UV</em>
+</td> <td>UV</td> </tr> <tr>
+<td>out color <em>COLOR</em>
+</td> <td>Output Color</td> </tr> <tr>
+<td>out vec3 <em>NORMAL</em>
+</td> <td>Optional Normal (used for 2D Lighting)</td> </tr> <tr>
+<td>out vec3 <em>NORMALMAP</em>
+</td> <td>Optional Normal in standard normalmap format (flipped y and Z from 0 to 1)</td> </tr> <tr>
+<td>out float <em>NORMALMAP_DEPTH</em>
+</td> <td>Depth option for above normalmap output, default value is 1.0</td> </tr> <tr>
+<td>const texture <em>TEXTURE</em>
+</td> <td>Current texture in use for CanvasItem</td> </tr> <tr>
+<td>const vec2 <em>TEXTURE_PIXEL_SIZE</em>
+</td> <td>Pixel size for current 2D texture</td> </tr> <tr>
+<td>in vec4 <em>VAR1</em>
+</td> <td>Varying 1 Output</td> </tr> <tr>
+<td>in vec4 <em>VAR2</em>
+</td> <td>Varying 2 Output</td> </tr> <tr>
+<td>const vec2 <em>SCREEN_UV</em>
+</td> <td>Screen Texture Coordinate (for using with texscreen)</td> </tr> <tr>
+<td>const vec2 <em>POINT_COORD</em>
+</td> <td>Current UV for Point Sprite</td> </tr> <tr>
+<td>const float <em>TIME</em>
+</td> <td>Time (in seconds)</td> </tr> <tr>
+<td>const bool <em>AT_LIGHT_PASS</em>
+</td> <td>Whether the shader is being run for a lighting pass (happens per affecting light)</td> </tr>  </table>   <h3 id="canvasitem-2d-lightshader">CanvasItem (2D) - LightShader</h3> <table class="docutils">  <thead valign="bottom"> <tr>
+<th class="head">Variable</th> <th class="head">Description</th> </tr> </thead>  <tr>
+<td>const vec4 <em>POSITION</em>
+</td> <td>Screen Position</td> </tr> <tr>
+<td>in vec3 <em>NORMAL</em>
+</td> <td>Input Normal</td> </tr> <tr>
+<td>in vec2 <em>UV</em>
+</td> <td>UV</td> </tr> <tr>
+<td>in color <em>COLOR</em>
+</td> <td>Input Color</td> </tr> <tr>
+<td>const texture <em>TEXTURE</em>
+</td> <td>Current texture in use for CanvasItem</td> </tr> <tr>
+<td>const vec2 <em>TEXTURE_PIXEL_SIZE</em>
+</td> <td>Pixel size for current 2D texture</td> </tr> <tr>
+<td>in vec4 <em>VAR1</em>
+</td> <td>Varying 1 Output</td> </tr> <tr>
+<td>in vec4 <em>VAR2</em>
+</td> <td>Varying 2 Output</td> </tr> <tr>
+<td>const vec2 <em>SCREEN_UV</em>
+</td> <td>Screen Texture Coordinate (for using with texscreen)</td> </tr> <tr>
+<td>const vec2 <em>POINT_COORD</em>
+</td> <td>Current UV for Point Sprite</td> </tr> <tr>
+<td>const float <em>TIME</em>
+</td> <td>Time (in seconds)</td> </tr> <tr>
+<td>vec2 <em>LIGHT_VEC</em>
+</td> <td>Vector from light to fragment, can be modified to alter shadow computation.</td> </tr> <tr>
+<td>const float <em>LIGHT_HEIGHT</em>
+</td> <td>Height of Light</td> </tr> <tr>
+<td>const color <em>LIGHT_COLOR</em>
+</td> <td>Color of Light</td> </tr> <tr>
+<td>const color <em>LIGHT_SHADOW_COLOR</em>
+</td> <td>Color of Light shadow</td> </tr> <tr>
+<td>vec2 <em>LIGHT_UV</em>
+</td> <td>UV for light image</td> </tr> <tr>
+<td>color <em>SHADOW</em>
+</td> <td>Light shadow color override</td> </tr> <tr>
+<td>out vec4 <em>LIGHT</em>
+</td> <td>Light Output (shader is ignored if this is not used)</td> </tr>  </table>    <h2 id="examples">Examples</h2> <p>Material that reads a texture, a color and multiples them, fragment program:</p> <pre data-language="gdscript">uniform color modulate;
+uniform texture source;
+
+DIFFUSE = modulate.rgb * tex(source, UV).rgb;
+</pre> <p>Material that glows from red to white:</p> <pre data-language="gdscript">DIFFUSE = vec3(1,0,0) + vec3(1,1,1) * mod(TIME, 1.0);
+</pre> <p>Standard Blinn Lighting Shader</p> <pre data-language="gdscript">float NdotL = max(0.0, dot(NORMAL, LIGHT_DIR));
+vec3 half_vec = normalize(LIGHT_DIR + EYE_VEC);
+float eye_light = max(dot(NORMAL, half_vec), 0.0);
+LIGHT = LIGHT_DIFFUSE + DIFFUSE + NdotL;
+if (NdotL &gt; 0.0) {
+    LIGHT += LIGHT_SPECULAR + SPECULAR + pow(eye_light, SPECULAR_EXP);
+};
+</pre> <p>Obtaining world-space normal and position in material fragment program:</p> <pre data-language="gdscript">// Use reverse multiply because INV_CAMERA_MATRIX is world2cam
+
+vec4 invcamx = INV_CAMERA_MATRIX.x;
+vec4 invcamy = INV_CAMERA_MATRIX.y;
+vec4 invcamz = INV_CAMERA_MATRIX.z;
+vec4 invcamw = INV_CAMERA_MATRIX.w;
+
+mat3 invcam = mat3(invcamx.xyz, invcamy.xyz, invcamz.xyz);
+
+vec3 world_normal = NORMAL * invcam;
+vec3 world_pos = (VERTEX - invcamw.xyz) * invcam;
+</pre>   <h2 id="notes">Notes</h2> <ul class="simple"> <li>
+<strong>Do not</strong> use DIFFUSE_ALPHA unless you really intend to use transparency. Transparent materials must be sorted by depth and slow down the rendering pipeline. For opaque materials, just use DIFFUSE.</li> <li>
+<strong>Do not</strong> use DISCARD unless you really need it. Discard makes rendering slower, specially on mobile devices.</li> <li>TIME may reset after a while (may last an hour or so), it’s meant for effects that vary over time.</li> <li>In general, every built-in variable not used results in less shader code generated, so writing a single giant shader with a lot of code and optional scenarios is often not a good idea.</li> </ul>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2014–2017 Juan Linietsky, Ariel Manzur and the Godot community<br>Licensed under the Creative Commons Attribution Unported License v3.0.<br>
+    <a href="http://docs.godotengine.org/en/2.1/learning/features/shading/shading_language.html" class="_attribution-link" target="_blank">http://docs.godotengine.org/en/2.1/learning/features/shading/shading_language.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

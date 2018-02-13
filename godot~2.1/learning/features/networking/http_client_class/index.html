@@ -1,0 +1,172 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>HTTP Client Class - Godot 2.1 - W3cubDocs</title>
+  
+  <meta name="description" content=" Here’s an example of using the HTTPClient class. It’s just a script, so it can be run by executing&#58; ">
+  <meta name="keywords" content="http, client, class, -, godot, godot~2.1">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/godot~2.1/learning/features/networking/http_client_class/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/godot~2.1.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/godot~2.1/" class="_nav-link" title="" style="margin-left:0;">Godot 2.1</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _sphinx_simple">
+				
+<h1 id="doc-http-client-class">HTTP client class</h1> <p>Here’s an example of using the <a href="../../../../classes/class_httpclient/#class-httpclient"><span class="std std-ref">HTTPClient</span></a> class. It’s just a script, so it can be run by executing:</p> <pre data-language="gdscript">c:\godot&gt; godot -s http_test.gd
+</pre> <p>It will connect and fetch a website.</p> <pre data-language="gdscript">extends SceneTree
+
+# HTTPClient demo
+# This simple class can do HTTP requests, it will not block but it needs to be polled
+
+func _init():
+
+    var err=0
+    var http = HTTPClient.new() # Create the Client
+
+    var err = http.connect("www.php.net",80) # Connect to host/port
+    assert(err==OK) # Make sure connection was OK
+
+    # Wait until resolved and connected
+    while( http.get_status()==HTTPClient.STATUS_CONNECTING or http.get_status()==HTTPClient.STATUS_RESOLVING):
+        http.poll()
+        print("Connecting..")
+        OS.delay_msec(500)
+
+    assert( http.get_status() == HTTPClient.STATUS_CONNECTED ) # Could not connect
+
+    # Some headers
+
+    var headers=[
+        "User-Agent: Pirulo/1.0 (Godot)",
+        "Accept: */*"
+    ]
+
+    err = http.request(HTTPClient.METHOD_GET,"/ChangeLog-5.php",headers) # Request a page from the site (this one was chunked..)
+
+    assert( err == OK ) # Make sure all is OK
+
+    while (http.get_status() == HTTPClient.STATUS_REQUESTING):
+        # Keep polling until the request is going on
+        http.poll()
+        print("Requesting..")
+        OS.delay_msec(500)
+
+
+    assert( http.get_status() == HTTPClient.STATUS_BODY or http.get_status() == HTTPClient.STATUS_CONNECTED ) # Make sure request finished well.
+
+    print("response? ",http.has_response()) # Site might not have a response.
+
+
+    if (http.has_response()):
+        # If there is a response..
+
+        var headers = http.get_response_headers_as_dictionary() # Get response headers
+        print("code: ",http.get_response_code()) # Show response code
+        print("**headers:\\n",headers) # Show headers
+
+        # Getting the HTTP Body
+
+        if (http.is_response_chunked()):
+            # Does it use chunks?
+            print("Response is Chunked!")
+        else:
+            # Or just plain Content-Length
+            var bl = http.get_response_body_length()
+            print("Response Length: ",bl)
+
+        # This method works for both anyway
+
+        var rb = RawArray() # Array that will hold the data
+
+        while(http.get_status()==HTTPClient.STATUS_BODY):
+            # While there is body left to be read
+            http.poll()
+            var chunk = http.read_response_body_chunk() # Get a chunk
+            if (chunk.size()==0):
+                # Got nothing, wait for buffers to fill a bit
+                OS.delay_usec(1000)
+            else:
+                rb = rb + chunk # Append to read buffer
+
+
+        # Done!
+
+        print("bytes got: ",rb.size())
+        var text = rb.get_string_from_ascii()
+        print("Text: ",text)
+
+
+    quit()
+</pre>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2014–2017 Juan Linietsky, Ariel Manzur and the Godot community<br>Licensed under the Creative Commons Attribution Unported License v3.0.<br>
+    <a href="http://docs.godotengine.org/en/2.1/learning/features/networking/http_client_class.html" class="_attribution-link" target="_blank">http://docs.godotengine.org/en/2.1/learning/features/networking/http_client_class.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

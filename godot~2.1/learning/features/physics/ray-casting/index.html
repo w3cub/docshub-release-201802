@@ -1,0 +1,124 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Ray-casting - Godot 2.1 - W3cubDocs</title>
+  
+  <meta name="description" content="One of the most common tasks in game development is casting a ray (or custom shaped object) and checking what it hits. This enables complex &hellip;">
+  <meta name="keywords" content="ray-casting, -, godot, godot~2.1">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/godot~2.1/learning/features/physics/ray-casting/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/godot~2.1.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/godot~2.1/" class="_nav-link" title="" style="margin-left:0;">Godot 2.1</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _sphinx_simple">
+				
+<h1 id="doc-ray-casting">Ray-casting</h1>  <h2 id="introduction">Introduction</h2> <p>One of the most common tasks in game development is casting a ray (or custom shaped object) and checking what it hits. This enables complex behaviors, AI, etc. to take place. This tutorial will explain how to do this in 2D and 3D.</p> <p>Godot stores all the low level game information in servers, while the scene is just a frontend. As such, ray casting is generally a lower-level task. For simple raycasts, node such as <a href="../../../../classes/class_raycast/#class-raycast"><span class="std std-ref">RayCast</span></a> and <a href="../../../../classes/class_raycast2d/#class-raycast2d"><span class="std std-ref">RayCast2D</span></a> will work, as they will return every frame what the result of a raycast is.</p> <p>Many times, though, ray-casting needs to be a more interactive process so a way to do this by code must exist.</p>   <h2 id="space">Space</h2> <p>In the physics world, Godot stores all the low level collision and physics information in a <em>space</em>. The current 2d space (for 2D Physics) can be obtained by calling <a href="../../../../classes/class_canvasitem/#class-canvasitem-get-world-2d"><span class="std std-ref">CanvasItem.get_world_2d().get_space()</span></a>. For 3D, it’s <a href="../../../../classes/class_spatial/#class-spatial-get-world"><span class="std std-ref">Spatial.get_world().get_space()</span></a>.</p> <p>The resulting space <a href="../../../../classes/class_rid/#class-rid"><span class="std std-ref">RID</span></a> can be used in <a href="../../../../classes/class_physicsserver/#class-physicsserver"><span class="std std-ref">PhysicsServer</span></a> and <a href="../../../../classes/class_physics2dserver/#class-physics2dserver"><span class="std std-ref">Physics2DServer</span></a> respectively for 3D and 2D.</p>   <h2 id="accessing-space">Accessing space</h2> <p>Godot physics runs by default in the same thread as game logic, but may be set to run on a separate thread to work more efficiently. Due to this, the only time accessing space is safe is during the <a href="../../../../classes/class_node/#class-node-fixed-process"><span class="std std-ref">Node._fixed_process()</span></a> callback. Accessing it from outside this function may result in an error due to space being <em>locked</em>.</p> <p>To perform queries into physics space, the <a href="../../../../classes/class_physics2ddirectspacestate/#class-physics2ddirectspacestate"><span class="std std-ref">Physics2DDirectSpaceState</span></a> and <a href="../../../../classes/class_physicsdirectspacestate/#class-physicsdirectspacestate"><span class="std std-ref">PhysicsDirectSpaceState</span></a> must be used.</p> <p>In code, for 2D spacestate, this code must be used:</p> <pre data-language="gdscript">func _fixed_process(delta):
+    var space_rid = get_world_2d().get_space()
+    var space_state = Physics2DServer.space_get_direct_state(space_rid)
+</pre> <p>Of course, there is a simpler shortcut:</p> <pre data-language="gdscript">func _fixed_process(delta):
+    var space_state = get_world_2d().get_direct_space_state()
+</pre> <p>For 3D:</p> <pre data-language="gdscript">func _fixed_process(delta):
+    var space_state = get_world().get_direct_space_state()
+</pre>   <h2 id="raycast-query">Raycast query</h2> <p>For performing a 2D raycast query, the method <a href="../../../../classes/class_physics2ddirectspacestate/#class-physics2ddirectspacestate-intersect-ray"><span class="std std-ref">Physics2DDirectSpaceState.intersect_ray()</span></a> must be used, for example:</p> <pre data-language="gdscript">func _fixed_process(delta):
+    var space_state = get_world().get_direct_space_state()
+    # use global coordinates, not local to node
+    var result = space_state.intersect_ray( Vector2(0,0), Vector2(50,100) )
+</pre> <p>Result is a dictionary. If the ray didn’t hit anything, the dictionary will be empty. If it did hit something it will contain collision information:</p> <pre data-language="gdscript">if (not result.empty()):
+    print("Hit at point: ",result.position)
+</pre> <p>The collision result dictionary, when something hit, has this format:</p> <pre data-language="gdscript">{
+   position:Vector2 # point in world space for collision
+   normal:Vector2 # normal in world space for collision
+   collider:Object # Object collided or null (if unassociated)
+   collider_id:ObjectID # Object it collided against
+   rid:RID # RID it collided against
+   shape:int # shape index of collider
+   metadata:Variant() # metadata of collider
+}
+
+# in case of 3D, Vector3 is returned.
+</pre>   <h2 id="collision-exceptions">Collision exceptions</h2> <p>It is a very common case to attempt casting a ray from a character or another game scene to try to infer properties of the world around it. The problem with this is that the same character has a collider, so the ray can never leave the origin (it will keep hitting its own collider), as evidenced in the following image.</p> <img alt="../../../_images/raycast_falsepositive.png" src="http://docs.godotengine.org/en/2.1/_images/raycast_falsepositive.png"> <p>To avoid self-intersection, the intersect_ray() function can take an optional third parameter which is an array of exceptions. This is an example of how to use it from a KinematicBody2D or any other collisionobject based node:</p> <pre data-language="gdscript">extends KinematicBody2D
+
+func _fixed_process(delta):
+    var space_state = get_world().get_direct_space_state()
+    var result = space_state.intersect_ray( get_global_pos(), enemy_pos, [ self ] )
+</pre> <p>The extra argument is a list of exceptions, can be objects or RIDs.</p>   <h2 id="d-ray-casting-from-screen">3D ray casting from screen</h2> <p>Casting a ray from screen to 3D physics space is useful for object picking. There is not much of a need to do this because <a href="../../../../classes/class_collisionobject/#class-collisionobject"><span class="std std-ref">CollisionObject</span></a> has an “input_event” signal that will let you know when it was clicked, but in case there is any desire to do it manually, here’s how.</p> <p>To cast a ray from the screen, the <a href="../../../../classes/class_camera/#class-camera"><span class="std std-ref">Camera</span></a> node is needed. Camera can be in two projection modes, perspective and orthogonal. Because of this, both the ray origin and direction must be obtained. (origin changes in orthogonal, while direction changes in perspective):</p> <img alt="../../../_images/raycast_projection.png" src="http://docs.godotengine.org/en/2.1/_images/raycast_projection.png"> <p>To obtain it using a camera, the following code can be used:</p> <pre data-language="gdscript">const ray_length = 1000
+
+func _input(ev):
+    if ev.type==InputEvent.MOUSE_BUTTON and ev.pressed and ev.button_index==1:
+
+          var camera = get_node("camera")
+          var from = camera.project_ray_origin(ev.pos)
+          var to = from + camera.project_ray_normal(ev.pos) * ray_length
+</pre> <p>Of course, remember that during <code>_input()</code>, space may be locked, so save your query for <code>_fixed_process()</code>.</p>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2014–2017 Juan Linietsky, Ariel Manzur and the Godot community<br>Licensed under the Creative Commons Attribution Unported License v3.0.<br>
+    <a href="http://docs.godotengine.org/en/2.1/learning/features/physics/ray-casting.html" class="_attribution-link" target="_blank">http://docs.godotengine.org/en/2.1/learning/features/physics/ray-casting.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

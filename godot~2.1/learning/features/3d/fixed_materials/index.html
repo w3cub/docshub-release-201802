@@ -1,0 +1,95 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Fixed Materials - Godot 2.1 - W3cubDocs</title>
+  
+  <meta name="description" content="Fixed materials (originally Fixed Pipeline Materials) are the most common type of materials, using the most common material options found in 3D DCCs &hellip;">
+  <meta name="keywords" content="fixed, materials, -, godot, godot~2.1">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/godot~2.1/learning/features/3d/fixed_materials/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/godot~2.1.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/godot~2.1/" class="_nav-link" title="" style="margin-left:0;">Godot 2.1</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _sphinx_simple">
+				
+<h1 id="doc-fixed-materials">Fixed materials</h1>  <h2 id="introduction">Introduction</h2> <p>Fixed materials (originally Fixed Pipeline Materials) are the most common type of materials, using the most common material options found in 3D DCCs (such as Maya, 3DS Max or Blender). The big advantage of using them is that 3D artists are very familiar with this layout. They also allow to try out different things quickly without the need of writing shaders. Fixed Materials inherit from <a href="../../../../classes/class_material/#class-material"><span class="std std-ref">Material</span></a>, which also has several options. If you haven’t read it before, reading the <a href="../materials/#doc-materials"><span class="std std-ref">Materials</span></a> tutorial is recommended.</p>   <h2 id="options">Options</h2> <p>Here is the list of all the options available for fixed materials:</p> <img alt="../../../_images/fixed_materials.png" src="http://docs.godotengine.org/en/2.1/_images/fixed_materials.png"> <p>From this point, every option will be explained in detail:</p>   <h2 id="fixed-flags">Fixed flags</h2> <p>These are a set of flags that control general aspects of the material.</p>  <h3 id="use-alpha">Use alpha</h3> <p>This flag needs to be active for transparent materials to blend with what is behind, otherwise display will always be opaque. Do not enable this flag unless the material really needs it, because it can severely affect performance and quality. Materials with transparency also won’t cast shadows (unless they contain opaque areas and the “opaque pre-pass” hint is turned on, see the <a href="../materials/#doc-materials"><span class="std std-ref">Materials</span></a> tutorial for more information).</p> <img alt="../../../_images/fixed_material_alpha.png" src="http://docs.godotengine.org/en/2.1/_images/fixed_material_alpha.png">   <h3 id="use-vertex-colors">Use vertex colors</h3> <p>Vertex color painting is a very common technique to add detail to a geometry. 3D DCCs all support this, and many even support baking occlusion to it. Godot allows this information to be used in the fixed material by modulating the diffuse color when enabled.</p> <img alt="../../../_images/fixed_material_vcols.png" src="http://docs.godotengine.org/en/2.1/_images/fixed_material_vcols.png">   <h3 id="point-size">Point size</h3> <p>Point size is used to set the point size (in pixels) for when rendering points. This feature is mostly used in tools and HUDs.</p>   <h3 id="discard-alpha">Discard alpha</h3> <p>When alpha is enabled (see above) the transparent pixels are blended with what is behind them. In some combinations (of using alpha to render depth) it may be possible that transparent pixels cover other objects.</p> <p>If this is the case, enable this option for the material. This option is often used in combination with “opaque pre-pass” hint (see the <a href="../materials/#doc-materials"><span class="std std-ref">Materials</span></a> tutorial for more information).</p>    <h2 id="parameters">Parameters</h2>  <h3 id="diffuse-specular-emission-and-specular-exponent">Diffuse, specular, emission and specular exponent</h3> <p>These are the base colors for the material.</p> <ul class="simple"> <li>Diffuse color is responsible for the light that reaches the material, and is diffusely back-scattered then. This color varies by the angle between the face and the light and the distance to the light source (in the case of spot and omni lights). It is the color that best represents the material. It can also have alpha (transparency).</li> <li>Specular color is the color of the reflected light and responsible for shines. It is affected by the specular exponent.</li> <li>Emission is the color of the light generated within the material (although it will not lit anything else around unless baking). This color is constant.</li> <li>Specular Exponent (or “Shininess”/”Intensity” in some 3D DCCs) is the way light is reflected. If the value is high, light is reflected completely, otherwise it is diffused more and more.</li> </ul> <p>Below is an example of how they interact:</p> <img alt="../../../_images/fixed_material_colors.png" src="http://docs.godotengine.org/en/2.1/_images/fixed_material_colors.png">   <h3 id="shader-shader-param">Shader &amp; shader param</h3> <p>Regular shader materials allow custom lighting code. Fixed materials come with four predefined shader types:</p> <ul class="simple"> <li>
+<strong>Lambert</strong>: The standard diffuse light, where the amount of light is proportional to the angle from the light emitter.</li> <li>
+<strong>Wrap</strong>: A variation on Lambert, where the “coverage” of the light can be changed. This is useful for many types of materials such as wood, clay, hair, etc.</li> <li>
+<strong>Velvet</strong>: This is similar to Lambert, but adds light scattering in the edges. It’s useful for leathers and some types of metals.</li> <li>
+<strong>Toon</strong>: Standard toon shading with a coverage parameter. The specular component also becomes toon-ized.</li> </ul> <img alt="../../../_images/fixed_material_shader.png" src="http://docs.godotengine.org/en/2.1/_images/fixed_material_shader.png">   <h3 id="detail-detail-mix">Detail &amp; detail mix</h3> <p>Detail is a second diffuse texture which can be mixed with the first one (more on textures later!). Detail blend and mix control how these are added together, here’s an example of what detail textures are for:</p> <img alt="../../../_images/fixed_material_detail.png" src="http://docs.godotengine.org/en/2.1/_images/fixed_material_detail.png">   <h3 id="normal-depth">Normal depth</h3> <p>Normal depth controls the strength and the direction of normal-mapping. If it is set to 1 (the default), the un-scaled normal map is applied. Values larger than 1 make normal-mapping more pronounced (dents and bumps become larger), while values smaller than 1 reduce the effect. A normal depth of 0 disables normal-mapping. Negative values invert the normal map so dents become bumps and vice versa. Here is an example showing the influence of the normal depth on the outcome:</p> <img alt="../../../_images/fixed_material_normal_depth.png" src="http://docs.godotengine.org/en/2.1/_images/fixed_material_normal_depth.png">   <h3 id="glow">Glow</h3> <p>This value controls how much of the color is sent to the glow buffer. It can be greater than 1 for a stronger effect. For glow to work, a WorldEnvironment must exist with Glow activated.</p> <img alt="../../../_images/fixed_material_glow.png" src="http://docs.godotengine.org/en/2.1/_images/fixed_material_glow.png">   <h3 id="blend-mode">Blend mode</h3> <p>Objects are usually blended in Mix mode. Other blend modes (Add and Sub) exist for special cases (usually particle effects, light rays, etc.) but materials can be set to them:</p> <img alt="../../../_images/fixed_material_blend.png" src="http://docs.godotengine.org/en/2.1/_images/fixed_material_blend.png">   <h3 id="point-size-line-width">Point size, line width</h3> <p>When drawing points or lines, the size of them can be adjusted here per material.</p>    <h2 id="textures">Textures</h2> <p>Almost all of the parameters above can have a texture assigned to them. There are four options to where they can get their UV coordinates:</p> <ul class="simple"> <li>
+<strong>UV Coordinates (UV Array)</strong>: This is the regular UV coordinate array that was imported with the model.</li> <li>
+<strong>UV x UV XForm</strong>: UV Coordinates multiplied by the UV Xform matrix.</li> <li>
+<strong>UV2 Coordinates</strong>: Some imported models might have come with a second set of UV coordinates. These are common for detail textures or for baked light textures.</li> <li>
+<strong>Sphere</strong>: Spherical coordinates (difference of the normal at the pixel by the camera normal).</li> </ul> <p>The value of every pixel of the texture is multiplied by the original parameter. This means that if a texture is loaded for diffuse, it will be multiplied by the color of the diffuse color parameter. Same applies to all the others except for specular exponent, which is replaced.</p>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2014–2017 Juan Linietsky, Ariel Manzur and the Godot community<br>Licensed under the Creative Commons Attribution Unported License v3.0.<br>
+    <a href="http://docs.godotengine.org/en/2.1/learning/features/3d/fixed_materials.html" class="_attribution-link" target="_blank">http://docs.godotengine.org/en/2.1/learning/features/3d/fixed_materials.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

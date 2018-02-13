@@ -1,0 +1,123 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Importing Textures - Godot 2.1 - W3cubDocs</title>
+  
+  <meta name="description" content="In most cases you don’t want images imported when dealing with 2D and GUI. Just copy them to the filesystem. Read the tutorial on Managing image &hellip;">
+  <meta name="keywords" content="importing, textures, -, godot, godot~2.1">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/godot~2.1/learning/workflow/assets/importing_textures/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/godot~2.1.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/godot~2.1/" class="_nav-link" title="" style="margin-left:0;">Godot 2.1</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _sphinx_simple">
+				
+<h1 id="doc-importing-textures">Importing textures</h1>  <h2 id="do-not-import-them-in-most-cases">Do NOT import them in most cases</h2> <p>In most cases you <strong>don’t</strong> want images imported when dealing with 2D and GUI. Just copy them to the filesystem. Read the tutorial on <a href="../managing_image_files/#doc-managing-image-files"><span class="std std-ref">Managing image files</span></a> before continuing! For 3D, textures are always imported by the 3D scene importer, so importing those is only useful when importing a texture used for 3D that doesn’t come with the 3D scene (for example, in a shader). The flags and options are the same as here, so reading the rest of the document might help too.</p>   <h2 id="ok-you-might-want-to-import-them">OK, you <em>might</em> want to import them</h2> <p>So, if you have read the previous tutorial on the texture exporter, the texture importer gives you more fine-grained control on how textures are imported. If you want to change flags such as repeat, filter, mipmaps, fix edges, etc. <strong>*PER texture*</strong>, importing them is the best way to accomplish this (since you can’t save such flags in a standard image file).</p>   <h2 id="lack-of-mipmaps">Lack of MipMaps</h2> <p>Images in 3D hardware are scaled with a (bi)linear filter, but this method has limitations. When images are shrunk too much, two problems arise:</p> <ul class="simple"> <li>
+<strong>Aliasing</strong>: Pixels are skipped too much, and the image shows discontinuities. This decreases quality.</li> <li>
+<strong>Cache Misses</strong>: Pixels being read are too far apart, so texture cache reads a lot more data than it should. This decreases performance.</li> </ul> <img alt="../../../_images/imagemipmap.png" src="http://docs.godotengine.org/en/2.1/_images/imagemipmap.png"> <p>To solve this, mipmaps are created. Mipmaps are versions of the image shrunk by half in both axis, recursively, until the image is 1 pixel of size. When the 3D hardware needs to shrink the image, it finds the largest mipmap it can scale from, and scales from there. This improves performance and image quality.</p> <img alt="../../../_images/mipmaps.png" src="http://docs.godotengine.org/en/2.1/_images/mipmaps.png"> <p>Godot automatically creates mipmaps upon load for standard image files. This process is time consuming (although not much) and makes load times a little worse. Pre-importing the textures allows the automatic generation of mipmaps.</p>   <h2 id="unwanted-mipmaps">Unwanted MipMaps</h2> <p>Remember the previous point about mipmaps? Yes, they are cool, but mobile GPUs only support them if the textures are in power of 2 dimensions (i.e. 256x256 or 512x128). In these platforms, Godot will stretch and enlarge the texture to the closest power of 2 size and then generate the mipmaps. This process takes more of a performance hit and it might degrade the quality a little more.</p> <p>Because of this, there are some scenarios when it may be desirable to not use them, and just use a linear filter. One of them is when working with graphical user interfaces (GUIs). Usually they are made of large images and don’t stretch much. Even if the screen resolution is in a larger or smaller value than original art, the amount of stretch is not as much and the art can retain the quality. Pre-importing the textures also allows the disabling of mipmap generation.</p>   <h2 id="blending-artifacts">Blending artifacts</h2> <p>The <a href="http://en.wikipedia.org/wiki/Alpha_compositing" target="_blank">blending equation</a> used by applications like Photoshop is too complex for realtime. There are better approximations such as <a href="http://blogs.msdn.com/b/shawnhar/archive/2009/11/06/premultiplied-alpha.aspx?Redirected=true" target="_blank">pre-multiplied alpha</a>, but they impose more stress in the asset pipeline. In the end, we are left with textures that have artifacts in the edges, because apps such as Photoshop store white pixels in completely transparent areas. Such white pixels end up showing thanks to the texture filter.</p> <p>Godot has an option to fix the edges of the image (by painting invisible pixels the same color as the visible neighbours):</p> <img alt="../../../_images/fixedborder.png" src="http://docs.godotengine.org/en/2.1/_images/fixedborder.png"> <p>However, this must be done every time the image changes. Pre-Importing the textures makes sure that every time the original file changes, this artifact is fixed upon automatic re-import.</p>   <h2 id="texture-flags">Texture flags</h2> <p>Textures have flags. The user can choose for them to repeat or clamp to edges (when UVs exceed the 0,0,1,1 boundary). The magnifying filter can also be turned off (for a Minecraft-like effect). Such values can not be edited in standard file formats (png, jpg, etc.), but can be edited and saved in Godot .tex files. Then again, the user may not want to change the values every time the texture changes. Pre-Importing the textures also takes care of that.</p>   <h2 id="texture-compression">Texture compression</h2> <p>Aside from the typical texture compression, which saves space on disk (.png, jpg, etc.), there are also texture compression formats that save space in memory (more specifically video memory. This allows to have much better looking textures in games without running out of memory, and decrease memory bandwidth when reading them so they are a big plus.</p> <p>There are several video texture compression formats, none of which are standard. Apple uses PVRTC. PC GPUs, consoles and nVidia Android devices use S3TC (BC), other chipsets use other formats. OpenGL ES 3.0 standardized on ETC format, but we are still a few years away from that working everywhere.</p> <p>Still, when using this option, Godot converts and compresses to the relevant format depending on the target platform (as long as the user pre-imported the texture and specified video ram compression!).</p> <p>This kind of compression is often not desirable for many types of 2D games and UIs because it is lossy, creating visual artifacts. This is especially noticeable on games that use the trendy vectory social game artwork. However, the fact that it saves space and improves performance may make up for it.</p> <p>The 3D scene importer always imports textures with this option turned on.</p>   <h2 id="atlases">Atlases</h2> <p>Remember how mobile GPUs have this limitation of textures having to be in power of 2 sizes to be able to generate mimpmaps for optimum stretching? What if we have a lot of images in different random sizes? All will have to be scaled and mipmapped when loaded (using more CPU and memory) or when imported (taking more storage space). This is probably still OK, but there is a tool that can help improve this situation.</p> <p>Atlases are big textures that fit a lot of small textures inside efficiently. Godot supports creating atlases in the importer, and the imported files are just small resources that reference a region of the bigger texture.</p> <p>Atlases can be a nice solution to save some space on GUI or 2D artwork by packing everything together. The current importer is not as useful for 3D though (3D Atlases are created differently, and not all 3D models can use them).</p> <p>As a small plus, atlases can decrease the amount of “state changes” when drawing. If a lot of objects that are drawn using several different textures are converted to an atlas, then the texture rebinds per object will go from dozens or hundreds to one. This will give the performance a small boost.</p>   <h2 id="artists-use-psd">Artists use PSD</h2> <p>Still wondering whether to use the texture importer or not? Remember that in the end, artists will often use Photoshop anyway, so it may be wiser to just let the import subsystem to take care of importing and converting the PSD files instead of asking the artist to save a png and copy it to the project every time.</p>   <h2 id="texture-importer">Texture importer</h2> <p>Finally! It’s time to take a look at the texture importer. There are 3 options in the import menu. They are pretty much (almost) the same dialog with a different set of defaults.</p> <img alt="../../../_images/importtex.png" src="http://docs.godotengine.org/en/2.1/_images/importtex.png"> <p>When selected, the texture import dialog will appear. This is the default one for 2D textures:</p> <img alt="../../../_images/import_images.png" src="http://docs.godotengine.org/en/2.1/_images/import_images.png"> <p>Each import option has a function, explained as follows:</p>  <h3 id="source-texture-s">Source texture(s)</h3> <p>One or more source images can be selected from the same folder (this importer can do batch-conversion). This can be from inside or outside the project.</p>   <h3 id="target-path">Target path</h3> <p>A destination folder must be provided. It must be inside the project, as textures will be converted and saved to it. Extensions will be changed to .tex (Godot resource file for textures), but names will be kept.</p>   <h3 id="texture-format">Texture format</h3> <p>This combo allows to change the texture format (compression in this case):</p> <img alt="../../../_images/compressopts.png" src="http://docs.godotengine.org/en/2.1/_images/compressopts.png"> <p>Each of the four options described in this table together with their advantages and disadvantages ( <img alt="good" src="http://docs.godotengine.org/en/2.1/_images/good.png"> = Best, <img alt="bad" src="http://docs.godotengine.org/en/2.1/_images/bad.png"> =Worst ):</p> <table class="docutils">  <thead valign="bottom"> <tr>
+<th class="head"> </th> <th class="head">Uncompressed</th> <th class="head">Compress Lossless (PNG)</th> <th class="head">Compress Lossy (WebP)</th> <th class="head">Compress VRAM</th> </tr> </thead>  <tr>
+<td>Description</td> <td>Stored as raw pixels</td> <td>Stored as PNG</td> <td>Stored as WebP</td> <td>Stored as S3TC/BC,PVRTC/ETC, depending on platform</td> </tr> <tr>
+<td>Size on Disk</td> <td>
+<img alt="bad" src="http://docs.godotengine.org/en/2.1/_images/bad.png"> Large</td> <td>
+<img alt="regular" src="http://docs.godotengine.org/en/2.1/_images/regular.png"> Small</td> <td>
+<img alt="good" src="http://docs.godotengine.org/en/2.1/_images/good.png"> Very Small</td> <td>
+<img alt="regular" src="http://docs.godotengine.org/en/2.1/_images/regular.png"> Small</td> </tr> <tr>
+<td>Memory Usage</td> <td>
+<img alt="bad" src="http://docs.godotengine.org/en/2.1/_images/bad.png"> Large</td> <td>
+<img alt="bad" src="http://docs.godotengine.org/en/2.1/_images/bad.png"> Large</td> <td>
+<img alt="bad" src="http://docs.godotengine.org/en/2.1/_images/bad.png"> Large</td> <td>
+<img alt="good" src="http://docs.godotengine.org/en/2.1/_images/good.png"> Small</td> </tr> <tr>
+<td>Performance</td> <td>
+<img alt="regular" src="http://docs.godotengine.org/en/2.1/_images/regular.png"> Normal</td> <td>
+<img alt="regular" src="http://docs.godotengine.org/en/2.1/_images/regular.png"> Normal</td> <td>
+<img alt="regular" src="http://docs.godotengine.org/en/2.1/_images/regular.png"> Normal</td> <td>
+<img alt="good" src="http://docs.godotengine.org/en/2.1/_images/good.png"> Fast</td> </tr> <tr>
+<td>Quality Loss</td> <td>
+<img alt="good" src="http://docs.godotengine.org/en/2.1/_images/good.png"> None</td> <td>
+<img alt="good" src="http://docs.godotengine.org/en/2.1/_images/good.png"> None</td> <td>
+<img alt="regular" src="http://docs.godotengine.org/en/2.1/_images/regular.png"> Slight</td> <td>
+<img alt="bad" src="http://docs.godotengine.org/en/2.1/_images/bad.png"> Moderate</td> </tr> <tr>
+<td>Load Time</td> <td>
+<img alt="regular" src="http://docs.godotengine.org/en/2.1/_images/regular.png"> Normal</td> <td>
+<img alt="bad" src="http://docs.godotengine.org/en/2.1/_images/bad.png"> Slow</td> <td>
+<img alt="bad" src="http://docs.godotengine.org/en/2.1/_images/bad.png"> Slow</td> <td>
+<img alt="good" src="http://docs.godotengine.org/en/2.1/_images/good.png"> Fast</td> </tr>  </table>   <h3 id="texture-options">Texture options</h3> <p>Provided are a small amount of options for fine grained import control:</p> <ul class="simple"> <li>
+<strong>Streaming Format</strong> - This does nothing as of yet, but a texture format for streaming different mipmap levels is planned. Big engines have support for this.</li> <li>
+<strong>Fix Border Alpha</strong> - This will fix texture borders to avoid the white auras created by white invisible pixels (see the rant above).</li> <li>
+<strong>Alpha Bit Hint</strong> - Godot auto-detects if the texture needs alpha bit support for transparency (instead of full range), which is useful for compressed formats such as BC. This forces alpha to be 0 or 1.</li> <li>
+<strong>Compress Extra</strong> - Some VRAM compressions have alternate formats that compress more at the expense of quality (PVRTC2 for example). If this is ticked, texture will be smaller but look worse.</li> <li>
+<strong>No MipMaps</strong> - Force imported texture to NOT use mipmaps. This may be desirable in some cases for 2D (as explained in the rant above), though it’s NEVER desirable for 3D.</li> <li>
+<strong>Repeat</strong> - Texture will repeat when UV coordinates go beyond 1 and below 0. This is often desirable in 3D, but may generate artifacts in 2D.</li> <li>
+<strong>Filter</strong> - Enables linear filtering when a texture texel is larger than a screen pixel. This is usually turned on, unless it’s required for artistic purposes (Minecraft look, for example).</li> </ul>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2014–2017 Juan Linietsky, Ariel Manzur and the Godot community<br>Licensed under the Creative Commons Attribution Unported License v3.0.<br>
+    <a href="http://docs.godotengine.org/en/2.1/learning/workflow/assets/importing_textures.html" class="_attribution-link" target="_blank">http://docs.godotengine.org/en/2.1/learning/workflow/assets/importing_textures.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

@@ -1,0 +1,90 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Materials - Godot 2.1 - W3cubDocs</title>
+  
+  <meta name="description" content="Materials can be applied to most visible 3D objects. Basically they describe how light interacts with that object. There are many types of materials &hellip;">
+  <meta name="keywords" content="materials, -, godot, godot~2.1">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/godot~2.1/learning/features/3d/materials/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/godot~2.1.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/godot~2.1/" class="_nav-link" title="" style="margin-left:0;">Godot 2.1</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _sphinx_simple">
+				
+<h1 id="doc-materials">Materials</h1>  <h2 id="introduction">Introduction</h2> <p>Materials can be applied to most visible 3D objects. Basically they describe how light interacts with that object. There are many types of materials, but the main ones are the <a href="../../../../classes/class_fixedmaterial/#class-fixedmaterial"><span class="std std-ref">FixedMaterial</span></a> and the <a href="../../../../classes/class_shadermaterial/#class-shadermaterial"><span class="std std-ref">ShaderMaterial</span></a>. Tutorials for each of them exist <a href="../fixed_materials/#doc-fixed-materials"><span class="std std-ref">Fixed materials</span></a> and <a href="../../shading/shader_materials/#doc-shader-materials"><span class="std std-ref">Shader materials</span></a>.</p> <p>This tutorial is about the basic properties shared between them.</p> <img alt="../../../_images/material_flags.png" src="http://docs.godotengine.org/en/2.1/_images/material_flags.png">   <h2 id="flags">Flags</h2> <p>Materials, no matter which type they are, have an associated set of flags. Their use will be explained in the following.</p>  <h3 id="visible">Visible</h3> <p>Toggles whether the material is visible. If unchecked, the object will not be shown.</p>   <h3 id="double-sided-inverted-faces">Double sided &amp; inverted faces</h3> <p>Godot by default only shows geometry faces (triangles) when their front-side faces the camera. If looking at the front-side of a face, its vertices have to be oriented clockwise by definition. For closed objects, the back-side of faces is never visible because they are hidden by other faces. SO not drawing invisible triangles (whose vertices are oriented counter-clockwise on the view plane) saves a lot of GPU power.</p> <p>However, for flat or open objects, the back-side of faces might be visible and needs to be drawn as well. The “double sided” flag makes sure that no matter the facing, the triangle will always be drawn. It is also possible to invert this check and draw only counter-clockwise looking faces, though it’s not very useful except for a few cases (like drawing outlines).</p>   <h3 id="unshaded">Unshaded</h3> <p>Objects are always black unless light affects them, and their shading changes according to the type and direction of lights. When this flag is turned on, the diffuse color is displayed right the same as it appears in the texture or parameter:</p> <img alt="../../../_images/material_unshaded.png" src="http://docs.godotengine.org/en/2.1/_images/material_unshaded.png">   <h3 id="on-top">On top</h3> <p>When this flag is turned on, the object will be drawn after everything else has been drawn and without a depth test. This is generally useful for objects which shall never be hidden by other objects such as HUD effects or gizmos.</p>   <h3 id="ligthmap-on-uv2">Ligthmap on UV2</h3> <p>When using lightmapping (see the <span class="xref std std-ref">doc_light_baking</span> tutorial), this option determines that the lightmap should be accessed on the UV2 array instead of regular UV.</p>    <h2 id="parameters">Parameters</h2> <p>Some parameters also exist for controlling drawing and blending:</p>  <h3 id="blend-mode">Blend mode</h3> <p>Objects are usually blended in Mix mode. Other blend modes (Add and Sub) exist for special cases (usually particle effects, light rays, etc.) but materials can be set to them:</p> <img alt="../../../_images/fixed_material_blend.png" src="http://docs.godotengine.org/en/2.1/_images/fixed_material_blend.png">   <h3 id="line-width">Line width</h3> <p>When drawing lines, the size of them can be adjusted here per material.</p>   <h3 id="depth-draw-mode">Depth draw mode</h3> <p>This is a tricky but very useful setting. By default, opaque objects are drawn using the depth buffer and translucent objects are not (but are sorted by depth). This behavior can be changed here. The options are:</p> <ul class="simple"> <li>
+<strong>Always</strong>: Draw objects with depth always, even those with alpha. This often results in glitches like the one in the first image (which is why it’s not the default).</li> <li>
+<strong>Opaque Only</strong>: Draw objects with depth only when they are opaque, and do not set depth for alpha. This is the default because it’s fast, but it’s not the most correct setting. Objects with transparency that self-intersect will always look wrong, especially those that mix opaque and transparent areas, like grass, tree leaves, etc. Objects with transparency also can’t cast shadows, this is evident in the second image.</li> <li>
+<strong>Alpha Pre-Pass</strong>: The same as above, but a depth pass is performed for the opaque areas of objects with transparency. This makes objects with transparency look much more correct. In the third image it is evident how the leaves cast shadows between them and into the floor. This setting is turned off by default because, while on PC this is not very costly, mobile devices suffer a lot when this setting is turned on, so use it with care.</li> <li>
+<strong>Never</strong>: Never use the depth buffer for this material. This is mostly useful in combination with the “On Top” flag explained above.</li> </ul> <img alt="../../../_images/material_depth_draw.png" src="http://docs.godotengine.org/en/2.1/_images/material_depth_draw.png"><div class="_attribution">
+  <p class="_attribution-p">
+    © 2014–2017 Juan Linietsky, Ariel Manzur and the Godot community<br>Licensed under the Creative Commons Attribution Unported License v3.0.<br>
+    <a href="http://docs.godotengine.org/en/2.1/learning/features/3d/materials.html" class="_attribution-link" target="_blank">http://docs.godotengine.org/en/2.1/learning/features/3d/materials.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

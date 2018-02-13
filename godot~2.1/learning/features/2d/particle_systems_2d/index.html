@@ -1,0 +1,88 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Particle Systems (2D) - Godot 2.1 - W3cubDocs</title>
+  
+  <meta name="description" content="A simple (but flexible enough for most uses) particle system is provided. Particle systems are used to simulate complex physical effects such as &hellip;">
+  <meta name="keywords" content="particle, systems, d, -, godot, godot~2.1">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/godot~2.1/learning/features/2d/particle_systems_2d/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/godot~2.1.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/godot~2.1/" class="_nav-link" title="" style="margin-left:0;">Godot 2.1</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _sphinx_simple">
+				
+<h1 id="doc-particle-systems-2d">Particle Systems (2D)</h1>  <h2 id="intro">Intro</h2> <p>A simple (but flexible enough for most uses) particle system is provided. Particle systems are used to simulate complex physical effects such as sparks, fire, magic particles, smoke, mist, magic, etc.</p> <p>The idea is that a “particle” is emitted at a fixed interval and with a fixed lifetime. During his lifetime, every particle will have the same base behavior. What makes every particle different and provides a more organic look is the “randomness” associated to each parameter. In essence, creating a particle system means setting base physics parameters and then adding randomness to them.</p>  <h3 id="particles2d">Particles2D</h3> <p>Particle systems are added to the scene via the <a href="../../../../classes/class_particles2d/#class-particles2d"><span class="std std-ref">Particles2D</span></a> node. They are enabled by default and start emitting white points downwards (as affected by the gravity). This provides a reasonable starting point to start adapting it to our needs.</p> <img alt="../../../_images/particles1.png" src="http://docs.godotengine.org/en/2.1/_images/particles1.png">   <h3 id="texture">Texture</h3> <p>A particle system uses a single texture (in the future this might be extended to animated textures via spritesheet). The texture is set via the relevant texture property:</p> <img alt="../../../_images/particles2.png" src="http://docs.godotengine.org/en/2.1/_images/particles2.png">    <h2 id="physics-variables">Physics variables</h2> <p>Before taking a look at the global parameters for the particle system, let’s first see what happens when the physics variables are tweaked.</p>   <h2 id="direction">Direction</h2> <p>This is the base angle at which particles emit. Default is 0 (down):</p> <img alt="../../../_images/paranim1.gif" src="http://docs.godotengine.org/en/2.1/_images/paranim1.gif"> <p>Changing it will change the emissor direction, but gravity will still affect them:</p> <img alt="../../../_images/paranim2.gif" src="http://docs.godotengine.org/en/2.1/_images/paranim2.gif"> <p>This parameter is useful because, by rotating the node, gravity will also be rotated. Changing direction keeps them separate.</p>   <h2 id="spread">Spread</h2> <p>Spread is the angle at which particles will randomly be emitted. Increasing the spread will increase the angle. A spread of 180 will emit in all directions.</p> <img alt="../../../_images/paranim3.gif" src="http://docs.godotengine.org/en/2.1/_images/paranim3.gif">   <h2 id="linear-velocity">Linear velocity</h2> <p>Linear velocity is the speed at which particles will be emitted (in pixels/sec). Speed might later be modified by gravity or other accelerations (as described further below).</p> <img alt="../../../_images/paranim4.gif" src="http://docs.godotengine.org/en/2.1/_images/paranim4.gif">   <h2 id="spin-velocity">Spin velocity</h2> <p>Spin velocity is the speed at which particles turn around their center (in degrees/sec).</p> <img alt="../../../_images/paranim5.gif" src="http://docs.godotengine.org/en/2.1/_images/paranim5.gif">   <h2 id="orbit-velocity">Orbit velocity</h2> <p>Orbit velocity is used to make particles turn around their center.</p> <img alt="../../../_images/paranim6.gif" src="http://docs.godotengine.org/en/2.1/_images/paranim6.gif">   <h2 id="gravity-direction-strength">Gravity direction &amp; strength</h2> <p>Gravity can be modified as in direction and strength. Gravity affects every particle currently alive.</p> <img alt="../../../_images/paranim7.gif" src="http://docs.godotengine.org/en/2.1/_images/paranim7.gif">   <h2 id="radial-acceleration">Radial acceleration</h2> <p>If this acceleration is positive, particles are accelerated away from the center. If negative, they are absorbed towards it.</p> <img alt="../../../_images/paranim8.gif" src="http://docs.godotengine.org/en/2.1/_images/paranim8.gif">   <h2 id="tangential-acceleration">Tangential acceleration</h2> <p>This acceleration will use the tangent vector to the center. Combining with radial acceleration can do nice effects.</p> <img alt="../../../_images/paranim9.gif" src="http://docs.godotengine.org/en/2.1/_images/paranim9.gif">   <h2 id="damping">Damping</h2> <p>Damping applies friction to the particles, forcing them to stop. It is specially useful for sparks or explosions, which usually begin with a high linear velocity and then stop as they fade.</p> <img alt="../../../_images/paranim10.gif" src="http://docs.godotengine.org/en/2.1/_images/paranim10.gif">   <h2 id="initial-angle">Initial angle</h2> <p>Determines the initial angle of the particle (in degress). This parameter is mostly useful randomized.</p> <img alt="../../../_images/paranim11.gif" src="http://docs.godotengine.org/en/2.1/_images/paranim11.gif">   <h2 id="initial-final-size">Initial &amp; final size</h2> <p>Determines the initial and final scales of the particle.</p> <img alt="../../../_images/paranim12.gif" src="http://docs.godotengine.org/en/2.1/_images/paranim12.gif">   <h2 id="color-phases">Color phases</h2> <p>Particles can use up to 4 color phases. Each color phase can include transparency.</p> <p>Phases must provide an offset value from 0 to 1, and always in ascending order. For example, a color will begin at offset 0 and end in offset 1, but 4 colors might use different offsets, such as 0, 0.2, 0.8 and 1.0 for the different phases:</p> <img alt="../../../_images/particlecolorphases.png" src="http://docs.godotengine.org/en/2.1/_images/particlecolorphases.png"> <p>Will result in:</p> <img alt="../../../_images/paranim13.gif" src="http://docs.godotengine.org/en/2.1/_images/paranim13.gif">   <h2 id="global-parameters">Global parameters</h2> <p>These parameters affect the behavior of the entire system.</p>   <h2 id="lifetime">Lifetime</h2> <p>The time in seconds that every particle will stay alive. When lifetime ends, a new particle is created to replace it.</p> <p>Lifetime: 0.5</p> <img alt="../../../_images/paranim14.gif" src="http://docs.godotengine.org/en/2.1/_images/paranim14.gif"> <p>Lifetime: 4.0</p> <img alt="../../../_images/paranim15.gif" src="http://docs.godotengine.org/en/2.1/_images/paranim15.gif">   <h2 id="timescale">Timescale</h2> <p>It happens often that the effect achieved is perfect, except too fast or too slow. Timescale helps adjust the overall speed.</p> <p>Timescale everything 2x:</p> <img alt="../../../_images/paranim16.gif" src="http://docs.godotengine.org/en/2.1/_images/paranim16.gif">   <h2 id="preprocess">Preprocess</h2> <p>Particle systems begin with 0 particles emitted, then start emitting. This can be an inconvenience when just loading a scene and systems like a torch, mist, etc begin emitting the moment you enter. Preprocess is used to let the system process a given amount of seconds before it is actually shown the first time.</p>   <h2 id="emit-timeout">Emit timeout</h2> <p>This variable will switch emission off after given amount of seconds being on. When zero, itś disabled.</p>   <h2 id="offset">Offset</h2> <p>Allows to move the emission center away from the center</p>   <h2 id="half-extents">Half extents</h2> <p>Makes the center (by default 1 pixel) wider, to the size in pixels desired. Particles will emit randomly inside this area.</p> <img alt="../../../_images/paranim17.gif" src="http://docs.godotengine.org/en/2.1/_images/paranim17.gif"> <p>It is also possible to set an emission mask by using this value. Check the “Particles” menu on the 2D scene editor viewport and select your favorite texture. Opaque pixels will be used as potential emission location, while transparent ones will be ignored:</p> <img alt="../../../_images/paranim19.gif" src="http://docs.godotengine.org/en/2.1/_images/paranim19.gif">   <h2 id="local-space">Local space</h2> <p>By default this option is on, and it means that the space that particles are emitted to is contained within the node. If the node is moved, all particles are moved with it:</p> <img alt="../../../_images/paranim20.gif" src="http://docs.godotengine.org/en/2.1/_images/paranim20.gif"> <p>If disabled, particles will emit to global space, meaning that if the node is moved, the emissor is moved too:</p> <img alt="../../../_images/paranim21.gif" src="http://docs.godotengine.org/en/2.1/_images/paranim21.gif">   <h2 id="explosiveness">Explosiveness</h2> <p>If lifetime is 1 and there are 10 particles, it means every particle will be emitted every 0.1 seconds. The explosiveness parameter changes this, and forces particles to be emitted all together. Ranges are:</p> <ul class="simple"> <li>0: Emit all particles together.</li> <li>1: Emit particles at equal interval.</li> </ul> <p>Values in the middle are also allowed. This feature is useful for creating explosions or sudden bursts of particles:</p> <img alt="../../../_images/paranim18.gif" src="http://docs.godotengine.org/en/2.1/_images/paranim18.gif">   <h2 id="randomness">Randomness</h2> <p>All physics parameters can be randomized. Random variables go from 0 to 1. the formula to randomize a parameter is:</p> <pre data-language="gdscript">initial_value = param_value + param_value*randomness
+</pre>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2014–2017 Juan Linietsky, Ariel Manzur and the Godot community<br>Licensed under the Creative Commons Attribution Unported License v3.0.<br>
+    <a href="http://docs.godotengine.org/en/2.1/learning/features/2d/particle_systems_2d.html" class="_attribution-link" target="_blank">http://docs.godotengine.org/en/2.1/learning/features/2d/particle_systems_2d.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

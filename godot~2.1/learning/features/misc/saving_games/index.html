@@ -1,0 +1,149 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Saving Games - Godot 2.1 - W3cubDocs</title>
+  
+  <meta name="description" content="Save games can be complicated. It can be desired to store more information than the current level or number of stars earned on a level. More &hellip;">
+  <meta name="keywords" content="saving, games, -, godot, godot~2.1">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/godot~2.1/learning/features/misc/saving_games/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/godot~2.1.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/godot~2.1/" class="_nav-link" title="" style="margin-left:0;">Godot 2.1</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _sphinx_simple">
+				
+<h1 id="doc-saving-games">Saving games</h1>  <h2 id="introduction">Introduction</h2> <p>Save games can be complicated. It can be desired to store more information than the current level or number of stars earned on a level. More advanced save games may need to store additional information about an arbitrary number of objects. This will allow the save function to scale as the game grows more complex.</p>   <h2 id="identify-persistent-objects">Identify persistent objects</h2> <p>First we should identify what objects we want to keep between game sessions and what information we want to keep from those objects. For this tutorial, we will use groups to mark and handle objects to be saved but other methods are certainly possible.</p> <p>We will start by adding objects we wish to save to the “Persist” group. As in the <a href="../../../step_by_step/scripting_continued/#doc-scripting-continued"><span class="std std-ref">Scripting (continued)</span></a> tutorial, we can do this through the GUI or through script. Let’s add the relevant nodes using the GUI:</p> <img alt="../../../_images/groups.png" src="http://docs.godotengine.org/en/2.1/_images/groups.png"> <p>Once this is done when we need to save the game we can get all objects to save them and then tell them all to save with this script:</p> <pre data-language="gdscript">var savenodes = get_tree().get_nodes_in_group("Persist")
+    for i in savenodes:
+    # Now we can call our save function on each node.
+</pre>   <h2 id="serializing">Serializing</h2> <p>The next step is to serialize the data. This makes it much easier to read and store to disk. In this case, we’re assuming each member of group Persist is an instanced node and thus has a path. GDScript has helper functions for this, such as <a href="../../../../classes/class_dictionary/#class-dictionary-to-json"><span class="std std-ref">Dictionary.to_json()</span></a> and <a href="../../../../classes/class_dictionary/#class-dictionary-parse-json"><span class="std std-ref">Dictionary.parse_json()</span></a>, so we will use a dictionary. Our node needs to contain a save function that returns this data. The save function will look like this:</p> <pre data-language="gdscript">func save():
+    var savedict = {
+        filename=get_filename(),
+        parent=get_parent().get_path(),
+        posx=get_pos().x, #Vector2 is not supported by json
+        posy=get_pos().y,
+        attack=attack,
+        defense=defense,
+        currenthealth=currenthealth,
+        maxhealth=maxhealth,
+        damage=damage,
+        regen=regen,
+        experience=experience,
+        TNL=TNL,
+        level=level,
+        AttackGrowth=AttackGrowth,
+        DefenseGrowth=DefenseGrowth,
+        HealthGrowth=HealthGrowth,
+        isalive=isalive,
+        last_attack=last_attack
+    }
+    return savedict
+</pre> <p>This gives us a dictionary with the style <code>{ "variable_name":that_variables_value }</code> which will be useful when loading.</p>   <h2 id="saving-and-reading-data">Saving and reading data</h2> <p>As covered in the <a href="../../../step_by_step/filesystem/#doc-filesystem"><span class="std std-ref">File system</span></a> tutorial, we’ll need to open a file and write to it and then later read from it. Now that we have a way to call our groups and get their relevant data, let’s use to_json() to convert it into an easily stored string and store them in a file. Doing it this way ensures that each line is its own object so we have an easy way to pull the data out of the file as well.</p> <pre data-language="gdscript"># Note: This can be called from anywhere inside the tree.  This function is path independent.
+# Go through everything in the persist category and ask them to return a dict of relevant variables
+func save_game():
+    var savegame = File.new()
+    savegame.open("user://savegame.save", File.WRITE)
+    var savenodes = get_tree().get_nodes_in_group("Persist")
+    for i in savenodes:
+        var nodedata = i.save()
+        savegame.store_line(nodedata.to_json())
+    savegame.close()
+</pre> <p>Game saved! Loading is fairly simple as well. For that we’ll read each line, use parse_json() to read it back to a dict, and then iterate over the dict to read our values. But we’ll need to first create the object and we can use the filename and parent values to achieve that. Here is our load function:</p> <pre data-language="gdscript"># Note: This can be called from anywhere inside the tree.  This function is path independent.
+func load_game():
+    var savegame = File.new()
+    if !savegame.file_exists("user://savegame.save"):
+        return #Error!  We don't have a save to load
+
+    # We need to revert the game state so we're not cloning objects during loading.  This will vary wildly depending on the needs of a project, so take care with this step.
+    # For our example, we will accomplish this by deleting savable objects.
+    var savenodes = get_tree().get_nodes_in_group("Persist")
+    for i in savenodes:
+        i.queue_free()
+
+    # Load the file line by line and process that dictionary to restore the object it represents
+    var currentline = {} # dict.parse_json() requires a declared dict.
+    savegame.open("user://savegame.save", File.READ)
+    while (!savegame.eof_reached()):
+        currentline.parse_json(savegame.get_line())
+        # First we need to create the object and add it to the tree and set its position.
+        var newobject = load(currentline["filename"]).instance()
+        get_node(currentline["parent"]).add_child(newobject)
+        newobject.set_pos(Vector2(currentline["posx"],currentline["posy"]))
+        # Now we set the remaining variables.
+        for i in currentline.keys():
+            if (i == "filename" or i == "parent" or i == "posx" or i == "posy"):
+                continue
+            newobject.set(i, currentline[i])
+    savegame.close()
+</pre> <p>And now we can save and load an arbitrary number of objects laid out almost anywhere across the scene tree! Each object can store different data depending on what it needs to save.</p>   <h2 id="some-notes">Some notes</h2> <p>We may have glossed over a step, but setting the game state to one fit to start loading data can be very complicated. This step will need to be heavily customized based on the needs of an individual project.</p> <p>This implementation assumes no Persist objects are children of other Persist objects. Doing so would create invalid paths. If this is one of the needs of a project this needs to be considered. Saving objects in stages (parent objects first) so they are available when child objects are loaded will make sure they’re available for the add_child() call. There will also need to be some way to link children to parents as the nodepath will likely be invalid.</p>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2014–2017 Juan Linietsky, Ariel Manzur and the Godot community<br>Licensed under the Creative Commons Attribution Unported License v3.0.<br>
+    <a href="http://docs.godotengine.org/en/2.1/learning/features/misc/saving_games.html" class="_attribution-link" target="_blank">http://docs.godotengine.org/en/2.1/learning/features/misc/saving_games.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

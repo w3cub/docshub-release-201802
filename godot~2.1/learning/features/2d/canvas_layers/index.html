@@ -1,0 +1,90 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Canvas Layers - Godot 2.1 - W3cubDocs</title>
+  
+  <meta name="description" content="Regular 2D nodes, such as Node2D or Control both inherit from CanvasItem, which is the base for all 2D nodes. CanvasItems can be arranged in trees &hellip;">
+  <meta name="keywords" content="canvas, layers, -, godot, godot~2.1">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/godot~2.1/learning/features/2d/canvas_layers/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/godot~2.1.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/godot~2.1/" class="_nav-link" title="" style="margin-left:0;">Godot 2.1</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _sphinx_simple">
+				
+<h1 id="doc-canvas-layers">Canvas layers</h1>  <h2 id="viewport-and-canvas-items">Viewport and Canvas items</h2> <p>Regular 2D nodes, such as <a href="../../../../classes/class_node2d/#class-node2d"><span class="std std-ref">Node2D</span></a> or <a href="../../../../classes/class_control/#class-control"><span class="std std-ref">Control</span></a> both inherit from <a href="../../../../classes/class_canvasitem/#class-canvasitem"><span class="std std-ref">CanvasItem</span></a>, which is the base for all 2D nodes. CanvasItems can be arranged in trees and they will inherit their transform. This means that when moving the parent, the children will be moved too.</p> <p>These nodes are placed as direct or indirect children to a <a href="../../../../classes/class_viewport/#class-viewport"><span class="std std-ref">Viewport</span></a>, and will be displayed through it.</p> <p>Viewport has a property “canvas_transform” <a href="../../../../classes/class_viewport/#class-viewport-set-canvas-transform"><span class="std std-ref">Viewport.set_canvas_transform()</span></a>, which allows to transform all the CanvasItem hierarchy by a custom <a href="../../../../classes/class_matrix32/#class-matrix32"><span class="std std-ref">Matrix32</span></a> transform. Nodes such as <a href="../../../../classes/class_camera2d/#class-camera2d"><span class="std std-ref">Camera2D</span></a>, work by changing that transform.</p> <p>Changing the canvas transform is useful because it is a lot more efficient than moving the root canvas item (and hence the whole scene). Canvas transform is a simple matrix that offsets the whole 2D drawing, so it’s the most efficient way to do scrolling.</p>   <h2 id="not-enough">Not enough...</h2> <p>But this is not enough. There are often situations where the game or application may not want <em>everything</em> transformed by the canvas transform. Examples of this are:</p> <ul class="simple"> <li>
+<strong>Parallax Backgrounds</strong>: Backgrounds that move slower than the rest of the stage.</li> <li>
+<strong>HUD</strong>: Head’s up display, or user interface. If the world moves, the life counter, score, etc. must stay static.</li> <li>
+<strong>Transitions</strong>: Effects used for transitions (fades, blends) may also want it to remain at a fixed location.</li> </ul> <p>How can these problems be solved in a single scene tree?</p>   <h2 id="canvaslayers">CanvasLayers</h2> <p>The answer is <a href="../../../../classes/class_canvaslayer/#class-canvaslayer"><span class="std std-ref">CanvasLayer</span></a>, which is a node that adds a separate 2D rendering layer for all its children and grand-children. Viewport children will draw by default at layer “0”, while a CanvasLayer will draw at any numeric layer. Layers with a greater number will be drawn above those with a smaller number. CanvasLayers also have their own transform, and do not depend of the transform of other layers. This allows the UI to be fixed in-place, while the world moves.</p> <p>An example of this is creating a parallax background. This can be done with a CanvasLayer at layer “-1”. The screen with the points, life counter and pause button can also be created at layer “1”.</p> <p>Here’s a diagram of how it looks:</p> <img alt="../../../_images/canvaslayers.png" src="http://docs.godotengine.org/en/2.1/_images/canvaslayers.png"> <p>CanvasLayers are independent of tree order, and they only depend on their layer number, so they can be instantiated when needed.</p>   <h2 id="performance">Performance</h2> <p>Even though there shouldn’t be any performance limitation, it is not advised to use excessive amount of layers to arrange drawing order of nodes. The most optimal way will always be arranging them by tree order. 2d nodes also have a property for controlling their drawing order (see <a href="../../../../classes/class_node2d/#class-node2d-set-z"><span class="std std-ref">Node2D.set_z()</span></a>).</p>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2014–2017 Juan Linietsky, Ariel Manzur and the Godot community<br>Licensed under the Creative Commons Attribution Unported License v3.0.<br>
+    <a href="http://docs.godotengine.org/en/2.1/learning/features/2d/canvas_layers.html" class="_attribution-link" target="_blank">http://docs.godotengine.org/en/2.1/learning/features/2d/canvas_layers.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

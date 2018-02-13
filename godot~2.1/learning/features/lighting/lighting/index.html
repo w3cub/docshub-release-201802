@@ -1,0 +1,93 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Lighting - Godot 2.1 - W3cubDocs</title>
+  
+  <meta name="description" content=" Lights emit light that mix with the materials and produces a visible result. Light can come from several types of sources in a scene&#58; ">
+  <meta name="keywords" content="lighting, -, godot, godot~2.1">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/godot~2.1/learning/features/lighting/lighting/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/godot~2.1.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/godot~2.1/" class="_nav-link" title="" style="margin-left:0;">Godot 2.1</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _sphinx_simple">
+				
+<h1 id="doc-lighting">Lighting</h1>  <h2 id="introduction">Introduction</h2> <p>Lights emit light that mix with the materials and produces a visible result. Light can come from several types of sources in a scene:</p> <ul class="simple"> <li>From the Material itself, in the form of the emission color (though it does not affect nearby objects unless baked).</li> <li>Light Nodes: Directional, Omni and Spot.</li> <li>Ambient Light in the <a href="../../../../classes/class_environment/#class-environment"><span class="std std-ref">Environment</span></a>.</li> <li>Baked Light (read <span class="xref std std-ref">doc_light_baking</span>).</li> </ul> <p>The emission color is a material property. You can read more about it in the <a href="../../3d/fixed_materials/#doc-fixed-materials"><span class="std std-ref">Fixed materials</span></a> tutorial.</p>   <h2 id="light-nodes">Light nodes</h2> <p>As mentioned before, there are three types of light nodes: Directional, Omni and Spot. Each has different uses and will be described in detail below, but first let’s take a look at the common parameters for lights:</p> <img alt="../../../_images/light_params.png" src="http://docs.godotengine.org/en/2.1/_images/light_params.png"> <p>Each one has a specific function:</p> <ul class="simple"> <li>
+<strong>Enabled</strong>: Light is emitted only if this flag is set.</li> <li>
+<strong>Bake Mode</strong>: When using the light baker, the role of this light can be defined in this enumerator. The role will be followed even if the light is disabled, which allows to configure a light and then disable it for baking.</li> <li>
+<strong>Energy</strong>: This value is a multiplier for the light, it’s specially useful for <a href="../../3d/high_dynamic_range/#doc-high-dynamic-range"><span class="std std-ref">High dynamic range</span></a> and for Spot and Omni lights, because it can create very bright spots near the emitter.</li> <li>
+<strong>Diffuse and Specular</strong>: These light values get multiplied by the material light and diffuse colors. A white value does not mean that light will be white, but that the material color will be kept.</li> <li>
+<strong>Operator</strong>: It is possible to make some lights negative for a darkening effect.</li> <li>
+<strong>Projector</strong>: Lights can project a texture for the diffuse light (currently only supported in Spot light).</li> </ul>  <h3 id="directional-light">Directional light</h3> <p>This is the most common type of light and represents a light source very far away (such as the sun). It is also the cheapest light to compute and should be used whenever possible (although it’s not the cheapest shadow-map to compute, but more on that later).</p> <p>Directional light models an infinite number of parallel light rays covering the whole scene. The directional light node is represented by a big arrow, which indicates the direction of the light rays. However, the position of the node does not affect the lighting at all, and can be anywhere.</p> <img alt="../../../_images/light_directional.png" src="http://docs.godotengine.org/en/2.1/_images/light_directional.png"> <p>Every face whose front-side is hit by the light rays is lit, the others stay dark. Most light types have specific parameters but directional lights are pretty simple in nature so they don’t.</p>   <h3 id="omni-light">Omni light</h3> <p>Omni light is a point source that emits light spherically in all directions up to a given radius (distance from the node’s position). The radius is a parameter of the light and can be controlled by the user. Just as in real life, the intensity of omni light decreases with the distance and vanishes at the defined radius. Omni light sources should be used to represent lamps or bulbs or any other light source that originates approximately in a point.</p> <img alt="../../../_images/light_omni.png" src="http://docs.godotengine.org/en/2.1/_images/light_omni.png"> <p>In reality, the attenuation of omni light is proportional to the squared distance from the point source. This can be easily understood if you imagine a sphere around the omni light with a certain radius. No matter how large the sphere is, the number of rays passing through it is always the same. If the radius of the sphere is doubled, the area of the sphere increases by four. In other words, the density of rays (the number of rays per square area) decreases quadratically with the distance.</p> <p>Inverse-quadratic attenuation curves are inconvenient for artists: they never reach zero and have almost infinitely large values near the emitter. So Godot simulates omni light with an artist-controlled exponential curve instead.</p> <img alt="../../../_images/light_attenuation.png" src="http://docs.godotengine.org/en/2.1/_images/light_attenuation.png">   <h3 id="spot-light">Spot light</h3> <p>Spot lights are similar to omni lights, except they emit light only into a cone (or “cutoff”). They are useful to simulate flashlights, car lights, etc. This kind of light is also attenuated towards the opposite direction it points to.</p> <img alt="../../../_images/light_spot.png" src="http://docs.godotengine.org/en/2.1/_images/light_spot.png">    <h2 id="ambient-light">Ambient light</h2> <p>Ambient light can be found in the properties of a WorldEnvironment (remember only one of such can be instanced per scene). Ambient light consists of a uniform light and energy. This light is applied the same to every single pixel of the rendered scene, except to objects that used baked light.</p>   <h2 id="baked-light">Baked light</h2> <p>Baked light stands for pre-computed ambient light. It can serve multiple purposes, such as baking light emitters that are not going to be used in real-time, and baking light bounces from real-time lights to add more realism to a scene (see <span class="xref std std-ref">doc_light_baking</span> tutorial for more information).</p>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2014–2017 Juan Linietsky, Ariel Manzur and the Godot community<br>Licensed under the Creative Commons Attribution Unported License v3.0.<br>
+    <a href="http://docs.godotengine.org/en/2.1/learning/features/lighting/lighting.html" class="_attribution-link" target="_blank">http://docs.godotengine.org/en/2.1/learning/features/lighting/lighting.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

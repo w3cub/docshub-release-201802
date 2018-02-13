@@ -1,0 +1,90 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Introduction to 3D - Godot 2.1 - W3cubDocs</title>
+  
+  <meta name="description" content="Creating a 3D game can be challenging. That extra Z coordinate makes many of the common techniques that helped to make 2D games simple no longer &hellip;">
+  <meta name="keywords" content="introduction, d, -, godot, godot~2.1">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/godot~2.1/learning/features/3d/introduction_to_3d/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/godot~2.1.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/godot~2.1/" class="_nav-link" title="" style="margin-left:0;">Godot 2.1</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _sphinx_simple">
+				
+<h1 id="doc-introduction-to-3d">Introduction to 3D</h1> <p>Creating a 3D game can be challenging. That extra Z coordinate makes many of the common techniques that helped to make 2D games simple no longer work. To aid in this transition, it is worth mentioning that Godot uses very similar APIs for 2D and 3D. Most nodes are the same and are present in both 2D and 3D versions. In fact, it is worth checking the 3D platformer tutorial, or the 3D kinematic character tutorials, which are almost identical to their 2D counterparts.</p> <p>In 3D, math is a little more complex than in 2D, so also checking the <a href="../../math/vector_math/#doc-vector-math"><span class="std std-ref">Vector math</span></a> in the wiki (which were specially created for game developers, not mathematicians or engineers) will help pave the way into efficiently developing 3D games.</p>  <h2 id="spatial-node">Spatial node</h2> <p><a href="../../../../classes/class_node2d/#class-node2d"><span class="std std-ref">Node2D</span></a> is the base node for 2D. <a href="../../../../classes/class_control/#class-control"><span class="std std-ref">Control</span></a> is the base node for everything GUI. Following this reasoning, the 3D engine uses the <a href="../../../../classes/class_spatial/#class-spatial"><span class="std std-ref">Spatial</span></a> node for everything 3D.</p> <img alt="../../../_images/tuto_3d1.png" src="http://docs.godotengine.org/en/2.1/_images/tuto_3d1.png"> <p>Spatial nodes have a local transform, which is relative to the parent node (as long as the parent node is also <strong>or inherits</strong> of type Spatial). This transform can be accessed as a 4x3 <a href="../../../../classes/class_transform/#class-transform"><span class="std std-ref">Transform</span></a>, or as 3 <a href="../../../../classes/class_vector3/#class-vector3"><span class="std std-ref">Vector3</span></a> members representing location, Euler rotation (x,y and z angles) and scale.</p> <img alt="../../../_images/tuto_3d2.png" src="http://docs.godotengine.org/en/2.1/_images/tuto_3d2.png">   <h2 id="d-content">3D content</h2> <p>Unlike 2D, where loading image content and drawing is straightforward, 3D is a little more difficult. The content needs to be created with special 3D tool (usually referred to as DCCs) and exported to an exchange file format in order to be imported in Godot (3D formats are not as standardized as images).</p>  <h3 id="dcc-created-models">DCC-created models</h3> <p>There are two pipelines to import 3D models in Godot. The first and most common one is through the <a href="../importing_3d_scenes/#doc-importing-3d-scenes"><span class="std std-ref">Importing 3D scenes</span></a> importer, which allows to import entire scenes (just as they look in the DCC), including animation, skeletal rigs, blend shapes, etc.</p> <p>The second pipeline is through the <a href="../importing_3d_meshes/#doc-importing-3d-meshes"><span class="std std-ref">Importing 3D meshes</span></a> importer. This second method allows importing simple .OBJ files as mesh resources, which can be then put inside a <a href="../../../../classes/class_meshinstance/#class-meshinstance"><span class="std std-ref">MeshInstance</span></a> node for display.</p>   <h3 id="generated-geometry">Generated geometry</h3> <p>It is possible to create custom geometry by using the <a href="../../../../classes/class_mesh/#class-mesh"><span class="std std-ref">Mesh</span></a> resource directly, simply create your arrays and use the <a href="../../../../classes/class_mesh/#class-mesh-add-surface"><span class="std std-ref">Mesh.add_surface()</span></a> function. A helper class is also available, <a href="../../../../classes/class_surfacetool/#class-surfacetool"><span class="std std-ref">SurfaceTool</span></a>, which provides a more straightforward API and helpers for indexing, generating normals, tangents, etc.</p> <p>In any case, this method is meant for generating static geometry (models that will not be updated often), as creating vertex arrays and submitting them to the 3D API has a significant performance cost.</p>   <h3 id="immediate-geometry">Immediate geometry</h3> <p>If, instead, there is a requirement to generate simple geometry that will be updated often, Godot provides a special node, <a href="../../../../classes/class_immediategeometry/#class-immediategeometry"><span class="std std-ref">ImmediateGeometry</span></a> which provides an OpenGL 1.x style immediate-mode API to create points, lines, triangles, etc.</p>   <h3 id="d-in-3d">2D in 3D</h3> <p>While Godot packs a powerful 2D engine, many types of games use 2D in a 3D environment. By using a fixed camera (either orthogonal or perspective) that does not rotate, nodes such as <a href="../../../../classes/class_sprite3d/#class-sprite3d"><span class="std std-ref">Sprite3D</span></a> and <a href="../../../../classes/class_animatedsprite3d/#class-animatedsprite3d"><span class="std std-ref">AnimatedSprite3D</span></a> can be used to create 2D games that take advantage of mixing with 3D backgrounds, more realistic parallax, lighting/shadow effects, etc.</p> <p>The disadvantage is, of course, that added complexity and reduced performance in comparison to plain 2D, as well as the lack of reference of working in pixels.</p>    <h2 id="environment">Environment</h2> <p>Besides editing a scene, it is often common to edit the environment. Godot provides a <a href="../../../../classes/class_worldenvironment/#class-worldenvironment"><span class="std std-ref">WorldEnvironment</span></a> node that allows changing the background color, mode (as in, put a skybox), and applying several types of built-in post-processing effects. Environments can also be overridden in the Camera.</p>   <h2 id="d-viewport">3D viewport</h2> <p>Editing 3D scenes is done in the 3D tab. This tab can be selected manually, but it will be automatically enabled when a Spatial node is selected.</p> <img alt="../../../_images/tuto_3d3.png" src="http://docs.godotengine.org/en/2.1/_images/tuto_3d3.png"> <p>Default 3D scene navigation controls are similar to Blender (aiming to have some sort of consistency in the free software pipeline..), but options are included to customize mouse buttons and behavior to be similar to other tools in Editor Settings:</p> <img alt="../../../_images/tuto_3d4.png" src="http://docs.godotengine.org/en/2.1/_images/tuto_3d4.png">  <h3 id="coordinate-system">Coordinate system</h3> <p>Godot uses the <a href="http://en.wikipedia.org/wiki/Metric_system" target="_blank">metric</a> system for everything. 3D Physics and other areas are tuned for this, so attempting to use a different scale is usually a bad idea (unless you know what you are doing).</p> <p>When working with 3D assets, it’s always best to work in the correct scale (set your DCC to metric). Godot allows scaling post-import and, while this works in most cases, in rare situations it may introduce floating point precision issues (and thus, glitches or artifacts) in delicate areas such as rendering or physics. So, make sure your artists always work in the right scale!</p> <p>The Y coordinate is used for “up”, though for most objects that need alignment (like lights, cameras, capsule collider, vehicle, etc.), the Z axis is used as a “pointing towards” direction. This convention roughly means that:</p> <ul class="simple"> <li>
+<strong>X</strong> is sides</li> <li>
+<strong>Y</strong> is up/down</li> <li>
+<strong>Z</strong> is front/back</li> </ul>   <h3 id="space-and-manipulation-gizmos">Space and manipulation gizmos</h3> <p>Moving objects in the 3D view is done through the manipulator gizmos. Each axis is represented by a color: Red, Green, Blue represent X,Y,Z respectively. This convention applies to the grid and other gizmos too (and also to the shader language, ordering of components for Vector3,Color,etc.).</p> <img alt="../../../_images/tuto_3d5.png" src="http://docs.godotengine.org/en/2.1/_images/tuto_3d5.png"> <p>Some useful keybindings:</p> <ul class="simple"> <li>To snap motion or rotation, press the “s” key while moving, scaling or rotating.</li> <li>To center the view on the selected object, press the “f” key.</li> </ul>   <h3 id="view-menu">View menu</h3> <p>The view options are controlled by the “[ view ]” menu. Pay attention to this little menu inside the window because it is often overlooked!</p> <img alt="../../../_images/tuto_3d6.png" src="http://docs.godotengine.org/en/2.1/_images/tuto_3d6.png">   <h3 id="default-lighting">Default lighting</h3> <p>The 3D view has by some default options on lighting:</p> <ul class="simple"> <li>There is a directional light that makes objects visible while editing turned on by default. It is no longer visible when running the game.</li> <li>There is subtle default environment light to avoid places not reached by the light to remain visible. It is also no longer visible when running the game (and when the default light is turned off).</li> </ul> <p>These can be turned off by toggling the “Default Light” option:</p> <img alt="../../../_images/tuto_3d8.png" src="http://docs.godotengine.org/en/2.1/_images/tuto_3d8.png"> <p>Customizing this (and other default view options) is also possible via the settings menu:</p> <img alt="../../../_images/tuto_3d7.png" src="http://docs.godotengine.org/en/2.1/_images/tuto_3d7.png"> <p>Which opens this window, allowing to customize ambient light color and default light direction:</p> <img alt="../../../_images/tuto_3d9.png" src="http://docs.godotengine.org/en/2.1/_images/tuto_3d9.png">   <h3 id="cameras">Cameras</h3> <p>No matter how many objects are placed in 3D space, nothing will be displayed unless a <a href="../../../../classes/class_camera/#class-camera"><span class="std std-ref">Camera</span></a> is also added to the scene. Cameras can either work in orthogonal or perspective projections:</p> <img alt="../../../_images/tuto_3d10.png" src="http://docs.godotengine.org/en/2.1/_images/tuto_3d10.png"> <p>Cameras are associated and only display to a parent or grand-parent viewport. Since the root of the scene tree is a viewport, cameras will display on it by default, but if sub-viewports (either as render target or picture-in-picture) are desired, they need their own children cameras to display.</p> <img alt="../../../_images/tuto_3d11.png" src="http://docs.godotengine.org/en/2.1/_images/tuto_3d11.png"> <p>When dealing with multiple cameras, the following rules are followed for each viewport:</p> <ul class="simple"> <li>If no cameras are present in the scene tree, the first one that enters it will become the active camera. Further cameras entering the scene will be ignored (unless they are set as <em>current</em>).</li> <li>If a camera has the “<em>current</em>” property set, it will be used regardless of any other camera in the scene. If the property is set, it will become active, replacing the previous camera.</li> <li>If an active camera leaves the scene tree, the first camera in tree-order will take its place.</li> </ul>   <h3 id="lights">Lights</h3> <p>There is no limitation on the number of lights nor of types of lights in Godot. As many as desired can be added (as long as performance allows). Shadow maps are, however, limited. The more they are used, the less the quality overall.</p> <p>It is possible to use <span class="xref std std-ref">doc_light_baking</span>, to avoid using large amount of real-time lights and improve performance.</p>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2014–2017 Juan Linietsky, Ariel Manzur and the Godot community<br>Licensed under the Creative Commons Attribution Unported License v3.0.<br>
+    <a href="http://docs.godotengine.org/en/2.1/learning/features/3d/introduction_to_3d.html" class="_attribution-link" target="_blank">http://docs.godotengine.org/en/2.1/learning/features/3d/introduction_to_3d.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

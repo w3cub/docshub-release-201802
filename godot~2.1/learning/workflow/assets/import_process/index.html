@@ -1,0 +1,92 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Import Process - Godot 2.1 - W3cubDocs</title>
+  
+  <meta name="description" content="One of the most difficult things to get right when creating game engines is managing the import process. That means, getting the assets that artists &hellip;">
+  <meta name="keywords" content="import, process, -, godot, godot~2.1">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/godot~2.1/learning/workflow/assets/import_process/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/godot~2.1.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/godot~2.1/" class="_nav-link" title="" style="margin-left:0;">Godot 2.1</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _sphinx_simple">
+				
+<h1 id="doc-import-process">Import process</h1>  <h2 id="what-is-it-for">What is it for?</h2> <p>One of the most difficult things to get right when creating game engines is managing the import process. That means, getting the assets that artists make into the game, in a way that functions optimally.</p> <p>Artists use certain tools and formats, and programmers would rather have their data in a different format. This is because artists put their focus on creating assets with the best quality possible, while programmers have to make sure they actually run at decent speed (or run at all), use a certain amount of memory, and don’t take ages loading from disk.</p> <p>One would think that just writing a converter/importer would be enough, but this is not all there is to it. The same way programmers iterate several times over their code, artists keep making changes to their assets. This generates a bottleneck, because <em>someone</em> has to keep re-importing that artwork, right? And importing assets is often something that has to be agreed by both parties, as the programmer needs to decide how the artwork is imported and the artists needs to see how it looks.</p> <p>The goal to establishing an import process is that both can agree on how the rules under which the assets are going to be imported the first time, and the system will apply those rules automatically each time the asset is re-imported.</p> <p>Godot does not do the re-import process automatically, though. It gives the team the option to do it at any time ( a red icon on the top right of the screen, allows the ability to do it at any desired time).</p>   <h2 id="does-it-always-work">Does it always work?</h2> <p>The aim of the import system is that it works well enough for most common cases and projects. What is there has been tested and seems to cover most needs.</p> <p>However, as mentioned before, this is one of the most difficult areas of writing a game engine. It may happen often (specially on large projects, ports, or projects with unusual requirement) that what is provided is not enough. It’s easy to say that the engine is open source and that the programmer should make their own if they don’t like what is there, but that would be making a huge disservice to the users and not the right attitude. Because of that, we made sure to provide as many tools and helpers as possible to support a custom import process, for example:</p> <ul class="simple"> <li>Access to the internals of almost all data structures is provided to the scripting and C++ API, as well as saving and loading in all supported file formats.</li> <li>Some importers (like the 3D asset importer) support scripts to modify the data being imported.</li> <li>Support for creating custom import plugins is also provided, even for replacing the existing ones.</li> <li>If all else fails, Godot supports adding custom resource loaders, to load data in alternative formats, without intermediate conversion.</li> </ul> <p>Both the import system and the custom tools provided will improve over time as more use cases are revealed to us.</p>   <h2 id="importing-assets">Importing assets</h2>  <h3 id="source-asset-location">Source asset location</h3> <p>To begin, it is a good idea to define where the original assets created by the artists (before they are imported) will be located. Normally, Godot does not mind much about the location, but if the project has several developers, it is a good idea to understand the simple rule for it to work for everyone.</p> <p>First of all, it would be really good for this location to <strong>not</strong> be inside the project path (where engine.cfg is located, or any sub-folder). Godot expects regular resources in there, and may consider many of the files used as source art as regular resources. This would lead to it bundling all of them when the project is exported, something which is undesired.</p> <p>Now that it is clear that this location must be outside the project folder, the rule that Godot uses to reference external assets can be explained. When an asset is imported, the engine stores a relative path from the project path to the asset (In windows, this works as long as they are on the same drive, otherwise an absolute path is stored). This ensures that the same asset can be re-imported in another computer.</p> <p>The usual approach to this, when using a VCS such as Git, Mercurial or Subversion, is to create the project in a subfolder, so both the game’s project files and the source assets can be committed to a same repository. For example, the repository layout can look like this:</p> <pre data-language="gdscript">source_assets/sfx/explosion.wav
+source_assets/sfx/crash.wav
+source_assets/fonts/myfont.ttf
+source_assets/translation/strings.csv
+source_assets/art/niceart.psd
+game/engine.cfg
+</pre> <p>In the above example, artists, musician, translators, etc. can work in the source_assets/ folder, then import the assets to the game/ folder. When the repository is updated, anyone can re-import the assets if they changed.</p>   <h3 id="import-dialogs">Import dialogs</h3> <p>Godot provides for importing several types of assets, all of them can be accessed from the import dialog:</p> <img alt="../../../_images/import.png" src="http://docs.godotengine.org/en/2.1/_images/import.png"> <p>Each of the dialogs shares a similar function, a source file (or several of them) must be provided, as well as a target destination inside the project folders. Once imported, Godot saves this information as metadata in the imported asset itself.</p> <img alt="../../../_images/importdialogs.png" src="http://docs.godotengine.org/en/2.1/_images/importdialogs.png"> <p>More information about each specific type of asset can be found in specific sections, such as <a href="../import_textures/">Importing Textures</a>.</p>   <h3 id="tracking-changes-and-re-importing">Tracking changes and re-importing</h3> <p>Godot tracks changes in the source assets constantly. If at least one asset has been found to be modified (md5 is different than when it was imported), a small red indicator will appear in the top right corner of the screen.</p> <img alt="../../../_images/changes.png" src="http://docs.godotengine.org/en/2.1/_images/changes.png"> <p>From that moment onward, the user can choose to re-import at any given time by clicking on the red-icon. When this action is done, a dialog will pop-up showing which resources can be re-imported (all selected by default).</p> <p>Accepting that dialog will immediately re-import the resources and will update any of them currently in use in the editor (like a texture, model or audio file).</p> <img alt="../../../_images/changed.png" src="http://docs.godotengine.org/en/2.1/_images/changed.png">   <h3 id="manually-re-importing">Manually re-importing</h3> <p>The re-import process is automatic, but it may be desired at some point to change the settings of an already imported file, so it can be re-imported differently. For this, the Import Settings window is provided.</p> <img alt="../../../_images/isettings.png" src="http://docs.godotengine.org/en/2.1/_images/isettings.png"> <p>This screen allows the user to re-open the corresponding import-window to re-import that asset again, with the ability to change any of the settings.</p> <img alt="../../../_images/reimported.png" src="http://docs.godotengine.org/en/2.1/_images/reimported.png"><div class="_attribution">
+  <p class="_attribution-p">
+    © 2014–2017 Juan Linietsky, Ariel Manzur and the Godot community<br>Licensed under the Creative Commons Attribution Unported License v3.0.<br>
+    <a href="http://docs.godotengine.org/en/2.1/learning/workflow/assets/import_process.html" class="_attribution-link" target="_blank">http://docs.godotengine.org/en/2.1/learning/workflow/assets/import_process.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>
