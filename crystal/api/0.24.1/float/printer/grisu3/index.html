@@ -1,0 +1,109 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Float&#58;&#58;Printer&#58;&#58;Grisu3 - Crystal - W3cubDocs</title>
+  
+  <meta name="description" content=" Generates the digits of input number w. ">
+  <meta name="keywords" content="module, float, printer, grisu, -, crystal">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/crystal/api/0.24.1/float/printer/grisu3/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/crystal.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/crystal/" class="_nav-link" title="" style="margin-left:0;">Crystal</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _crystal">
+				
+<h1 class="type-name"> module Float::Printer::Grisu3 </h1> <h2>Extended Modules</h2> <ul class="other-types-list"> <li class="other-type"><a href="../grisu3/">Float::Printer::Grisu3</a></li> </ul> <h2>Defined in:</h2> <a href="https://github.com/crystal-lang/crystal/blob/80a975cf0a98a4ce8464d0069145131667becd70/src/float/printer/grisu3.cr#L34" target="_blank">float/printer/grisu3.cr</a> <br> <h2>Instance Method Summary</h2> <ul class="list-summary"> <li class="entry-summary"> <a href="#digit_gen%28low%3ADiyFP%2Cw%3ADiyFP%2Chigh%3ADiyFP%2Cbuffer_p%29%3ATuple%28Bool%2CInt32%2CInt32%29-instance-method" class="signature"><strong>#digit_gen</strong>(low : DiyFP, w : DiyFP, high : DiyFP, buffer_p) : Tuple(Bool, Int32, Int32)</a> <div class="summary"><p>Generates the digits of input number w.</p></div> </li> <li class="entry-summary"> <a href="#grisu3%28v%3AFloat64%7CFloat32%2Cbuffer_p%29%3ATuple%28Bool%2CInt32%2CInt32%29-instance-method" class="signature"><strong>#grisu3</strong>(v : Float64 | Float32, buffer_p) : Tuple(Bool, Int32, Int32)</a> <div class="summary"><p>Provides a decimal representation of <em>v</em>.</p></div> </li> <li class="entry-summary"> <a href="#round_weed%28buffer_p%2Clength%2Cdistance_too_high_w%2Cunsafe_interval%2Crest%2Cten_kappa%2Cunit%29-instance-method" class="signature"><strong>#round_weed</strong>(buffer_p, length, distance_too_high_w, unsafe_interval, rest, ten_kappa, unit)</a> <div class="summary"><p>Adjusts the last digit of the generated number, and screens out generated solutions that may be inaccurate.</p></div> </li> </ul>  <h2>Instance Method Detail</h2> <div class="entry-detail" id="digit_gen(low:DiyFP,w:DiyFP,high:DiyFP,buffer_p):Tuple(Bool,Int32,Int32)-instance-method"> <h3 class="signature">def <strong>digit_gen</strong>(low : <a href="../diyfp/">DiyFP</a>, w : <a href="../diyfp/">DiyFP</a>, high : <a href="../diyfp/">DiyFP</a>, buffer_p) : <a href="../../../tuple/">Tuple</a>(<a href="../../../bool/">Bool</a>, <a href="../../../int32/">Int32</a>, <a href="../../../int32/">Int32</a>)<a href="https://github.com/crystal-lang/crystal/blob/80a975cf0a98a4ce8464d0069145131667becd70/src/float/printer/grisu3.cr#L200" target="_blank" class="view-source">Source</a>
+</h3> <div class="doc">
+<p>Generates the digits of input number w. w is a floating-point number (DiyFp), consisting of a significand and an exponent. Its exponent is bounded by kMinimalTargetExponent and kMaximalTargetExponent.</p> <pre data-language="crystal">  Hence -60 &lt;= w.e() &lt;= -32.</pre> <p>Returns false if it fails, in which case the generated digits in the buffer should not be used. Preconditions:</p> <ul>
+<li>low, w and high are correct up to 1 ulp (unit in the last place). That is, their error must be less than a unit of their last digits.</li>
+<li>low.e() == w.e() == high.e()</li>
+<li>low &lt; w &lt; high, and taking into account their error: low~ &lt;= high~</li>
+<li>kMinimalTargetExponent &lt;= w.e() &lt;= kMaximalTargetExponent Postconditions: returns false if procedure fails. otherwise:</li>
+<ul>
+<li>buffer is not null-terminated, but len contains the number of digits.</li>
+<li>buffer contains the shortest possible decimal digit-sequence</li>
+</ul> </ul>
+<pre data-language="crystal">  such that LOW &lt; buffer * 10^kappa &lt; HIGH, where LOW and HIGH are the
+  correct values of low and high (without their error).
+* if more than one decimal representation gives the minimal number of
+  decimal digits then the one closest to W (where W is the correct value
+  of w) is chosen.</pre> <p>Remark: this procedure takes into account the imprecision of its input numbers. If the precision is not enough to guarantee all the postconditions then false is returned. This usually happens rarely (~0.5%).</p> <p>Say, for the sake of example, that w.e() == -48, and w.f() == 0x1234567890abcdef w's value can be computed by w.f() * 2^w.e() We can obtain w's integral digits by simply shifting w.f() by -w.e(). -&gt; w's integral part is 0x1234 w's fractional part is therefore 0x567890abcdef. Printing w's integral part is easy (simply print 0x1234 in decimal). In order to print its fraction we repeatedly multiply the fraction by 10 and get each digit. Example the first digit after the point would be computed by (0x567890abcdef * 10) &gt;&gt; 48. -&gt; 3 The whole thing becomes slightly more complicated because we want to stop once we have enough digits. That is, once the digits inside the buffer represent 'w' we can stop. Everything inside the interval low - high represents w. However we have to pay attention to low, high and w's imprecision.</p>
+</div>   </div> <div class="entry-detail" id="grisu3(v:Float64|Float32,buffer_p):Tuple(Bool,Int32,Int32)-instance-method"> <h3 class="signature">def <strong>grisu3</strong>(v : <a href="../../../float64/">Float64</a> | <a href="../../../float32/">Float32</a>, buffer_p) : <a href="../../../tuple/">Tuple</a>(<a href="../../../bool/">Bool</a>, <a href="../../../int32/">Int32</a>, <a href="../../../int32/">Int32</a>)<a href="https://github.com/crystal-lang/crystal/blob/80a975cf0a98a4ce8464d0069145131667becd70/src/float/printer/grisu3.cr#L310" target="_blank" class="view-source">Source</a>
+</h3> <div class="doc">
+<p>Provides a decimal representation of <em>v</em>.</p> <p>Returns a <code><a href="../../../tuple/">Tuple</a></code> of <code>{status, decimal_exponent, length}</code> <em>status</em> will be true if it succeeds, otherwise the result cannot be trusted. There will be <em>length</em> digits inside the buffer (not null-terminated). If the function returns satatus as true true then</p> <pre data-language="crystal">   v == (buffer * 10^decimal_exponent).to_f</pre> <p>The digits in the buffer are the shortest representation possible: no</p> <ol><li>09999999999999999 instead of 0.1. The shorter representation will even be chosen even if the longer one would be closer to <em>v</em>. The last digit will be closest to the actual <em>v</em>. That is, even if several digits might correctly yield <em>v</em> when read again, the closest will be computed.</li></ol>
+</div>   </div> <div class="entry-detail" id="round_weed(buffer_p,length,distance_too_high_w,unsafe_interval,rest,ten_kappa,unit)-instance-method"> <h3 class="signature">def <strong>round_weed</strong>(buffer_p, length, distance_too_high_w, unsafe_interval, rest, ten_kappa, unit)<a href="https://github.com/crystal-lang/crystal/blob/80a975cf0a98a4ce8464d0069145131667becd70/src/float/printer/grisu3.cr#L52" target="_blank" class="view-source">Source</a>
+</h3> <div class="doc">
+<p>Adjusts the last digit of the generated number, and screens out generated solutions that may be inaccurate. A solution may be inaccurate if it is outside the safe interval, or if we cannot prove that it is closer to the input than a neighboring representation of the same length.</p> <p>Input: * buffer pointer containing the digits of too_high / 10^kappa</p> <pre data-language="crystal">   * the buffer</pre> <p>Output: returns true if the buffer is guaranteed to contain the closest representable number to the input. Modifies the generated digits in the buffer to approach (round towards) w.</p>
+</div>   </div>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2012–2017 Manas Technology Solutions.<br>Licensed under the Apache License, Version 2.0.<br>
+    <a href="https://crystal-lang.org/api/0.24.1/Float/Printer/Grisu3.html" class="_attribution-link" target="_blank">https://crystal-lang.org/api/0.24.1/Float/Printer/Grisu3.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>
