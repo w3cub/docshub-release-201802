@@ -1,0 +1,155 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Rails&#58;&#58;Command&#58;&#58;Base - Ruby on Rails 5.1 - W3cubDocs</title>
+  
+  <meta name="description" content=" Use Rails&#39; default banner. ">
+  <meta name="keywords" content="class, rails, command, base, -, ruby, on, rails~5.1">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/rails~5.1/rails/command/base/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/rails~5.1.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/rails~5.1/" class="_nav-link" title="" style="margin-left:0;">Ruby on Rails 5.1</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _rdoc">
+				
+<h1 id="class-Rails::Command::Base" class="class"> class Rails::Command::Base </h1>
+<dl class="meta">
+<dt>Parent:</dt>
+<dd class="meta-parent">Thor</dd>
+<dt>Included modules:</dt>
+<dd class="meta-includes"><a class="include" href="../actions/">Rails::Command::Actions</a></dd>
+</dl>  <section id="5Buntitled-5D" class="documentation-section"> <section id="public-class-5Buntitled-5D-method-details" class="method-section"> <header> <h3>Public Class Methods</h3> </header> <div class="method-detail "> <div class="method-heading" id="method-c-banner"> <span class="method-name">banner</span><span class="method-args">(*)</span> <a class="method-click-advice">Show source</a> </div> <div class="method-description"> <p>Use Rails' default banner.</p> <div class="method-source-code" id="banner-source"> <pre class="ruby" data-language="ruby"># File railties/lib/rails/command/base.rb, line 75
+def banner(*)
+  "#{executable} #{arguments.map(&amp;:usage).join(' ')} [options]".squish!
+end</pre> </div> </div> </div> <div class="method-detail "> <div class="method-heading" id="method-c-base_name"> <span class="method-name">base_name</span><span class="method-args">()</span> <a class="method-click-advice">Show source</a> </div> <div class="method-description"> <p>Sets the <a href="../base/#method-c-base_name">::base_name</a> taking into account the current class namespace.</p> <pre class="ruby" data-language="ruby">Rails::Command::TestCommand.base_name # =&gt; 'rails'
+</pre> <div class="method-source-code" id="base_name-source"> <pre class="ruby" data-language="ruby"># File railties/lib/rails/command/base.rb, line 82
+def base_name
+  @base_name ||= begin
+    if base = name.to_s.split("::").first
+      base.underscore
+    end
+  end
+end</pre> </div> </div> </div> <div class="method-detail "> <div class="method-heading" id="method-c-command_name"> <span class="method-name">command_name</span><span class="method-args">()</span> <a class="method-click-advice">Show source</a> </div> <div class="method-description"> <p>Return command name without namespaces.</p> <pre class="ruby" data-language="ruby">Rails::Command::TestCommand.command_name # =&gt; 'test'
+</pre> <div class="method-source-code" id="command_name-source"> <pre class="ruby" data-language="ruby"># File railties/lib/rails/command/base.rb, line 93
+def command_name
+  @command_name ||= begin
+    if command = name.to_s.split("::").last
+      command.chomp!("Command")
+      command.underscore
+    end
+  end
+end</pre> </div> </div> </div> <div class="method-detail "> <div class="method-heading" id="method-c-default_command_root"> <span class="method-name">default_command_root</span><span class="method-args">()</span> <a class="method-click-advice">Show source</a> </div> <div class="method-description"> <p>Default file root to place extra files a command might need, placed one folder above the command file.</p> <p>For a `Rails::Command::TestCommand` placed in `rails/command/test_command.rb` would return `rails/test`.</p> <div class="method-source-code" id="default_command_root-source"> <pre class="ruby" data-language="ruby"># File railties/lib/rails/command/base.rb, line 115
+def default_command_root
+  path = File.expand_path(File.join("../commands", command_root_namespace), __dir__)
+  path if File.exist?(path)
+end</pre> </div> </div> </div> <div class="method-detail "> <div class="method-heading" id="method-c-desc"> <span class="method-name">desc</span><span class="method-args">(usage = nil, description = nil, options = {})</span> <a class="method-click-advice">Show source</a> </div> <div class="method-description"> <p>Tries to get the description from a USAGE file one folder above the command root.</p> <div class="method-calls-super"> Calls superclass method </div> <div class="method-source-code" id="desc-source"> <pre class="ruby" data-language="ruby"># File railties/lib/rails/command/base.rb, line 25
+def desc(usage = nil, description = nil, options = {})
+  if usage
+    super
+  else
+    @desc ||= ERB.new(File.read(usage_path)).result(binding) if usage_path
+  end
+end</pre> </div> </div> </div> <div class="method-detail "> <div class="method-heading" id="method-c-engine-3F"> <span class="method-name">engine?</span><span class="method-args">()</span> <a class="method-click-advice">Show source</a> </div> <div class="method-description"> <p>Returns true when the app is a Rails engine.</p> <div class="method-source-code" id="engine-3F-source"> <pre class="ruby" data-language="ruby"># File railties/lib/rails/command/base.rb, line 19
+def engine?
+  defined?(ENGINE_ROOT)
+end</pre> </div> </div> </div> <div class="method-detail "> <div class="method-heading" id="method-c-executable"> <span class="method-name">executable</span><span class="method-args">()</span> <a class="method-click-advice">Show source</a> </div> <div class="method-description"> <div class="method-source-code" id="executable-source"> <pre class="ruby" data-language="ruby"># File railties/lib/rails/command/base.rb, line 70
+def executable
+  "bin/rails #{command_name}"
+end</pre> </div> </div> </div> <div class="method-detail "> <div class="method-heading" id="method-c-hide_command-21"> <span class="method-name">hide_command!</span><span class="method-args">()</span> <a class="method-click-advice">Show source</a> </div> <div class="method-description"> <p>Convenience method to hide this command from the available ones when running rails command.</p> <div class="method-source-code" id="hide_command-21-source"> <pre class="ruby" data-language="ruby"># File railties/lib/rails/command/base.rb, line 46
+def hide_command!
+  Rails::Command.hidden_commands &lt;&lt; self
+end</pre> </div> </div> </div> <div class="method-detail "> <div class="method-heading" id="method-c-namespace"> <span class="method-name">namespace</span><span class="method-args">(name = nil)</span> <a class="method-click-advice">Show source</a> </div> <div class="method-description"> <p>Convenience method to get the namespace from the class name. It's the same as Thor default except that the <a href="../../command/">Command</a> at the end of the class is removed.</p> <div class="method-calls-super"> Calls superclass method </div> <div class="method-source-code" id="namespace-source"> <pre class="ruby" data-language="ruby"># File railties/lib/rails/command/base.rb, line 36
+def namespace(name = nil)
+  if name
+    super
+  else
+    @namespace ||= super.chomp("_command").sub(/:command:/, ":")
+  end
+end</pre> </div> </div> </div> <div class="method-detail "> <div class="method-heading" id="method-c-printing_commands"> <span class="method-name">printing_commands</span><span class="method-args">()</span> <a class="method-click-advice">Show source</a> </div> <div class="method-description"> <div class="method-source-code" id="printing_commands-source"> <pre class="ruby" data-language="ruby"># File railties/lib/rails/command/base.rb, line 66
+def printing_commands
+  namespaced_commands
+end</pre> </div> </div> </div> <div class="method-detail "> <div class="method-heading" id="method-c-usage_path"> <span class="method-name">usage_path</span><span class="method-args">()</span> <a class="method-click-advice">Show source</a> </div> <div class="method-description"> <p>Path to lookup a USAGE description in a file.</p> <div class="method-source-code" id="usage_path-source"> <pre class="ruby" data-language="ruby"># File railties/lib/rails/command/base.rb, line 103
+def usage_path
+  if default_command_root
+    path = File.join(default_command_root, "USAGE")
+    path if File.exist?(path)
+  end
+end</pre> </div> </div> </div> </section> <section id="public-instance-5Buntitled-5D-method-details" class="method-section"> <header> <h3>Public Instance Methods</h3> </header> <div class="method-detail "> <div class="method-heading" id="method-i-help"> <span class="method-name">help</span><span class="method-args">()</span> <a class="method-click-advice">Show source</a> </div> <div class="method-description"> <div class="method-calls-super"> Calls superclass method </div> <div class="method-source-code" id="help-source"> <pre class="ruby" data-language="ruby"># File railties/lib/rails/command/base.rb, line 146
+def help
+  if command_name = self.class.command_name
+    self.class.command_help(shell, command_name)
+  else
+    super
+  end
+end</pre> </div> </div> </div> </section> </section><div class="_attribution">
+  <p class="_attribution-p">
+    © 2004–2017 David Heinemeier Hansson<br>Licensed under the MIT License.<br>
+    
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>
