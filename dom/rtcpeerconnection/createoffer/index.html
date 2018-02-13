@@ -1,0 +1,136 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>RTCPeerConnection.createOffer - DOM - W3cubDocs</title>
+  
+  <meta name="description" content="The createOffer() method of the RTCPeerConnection interface initiates the creation of an SDP offer which includes information about any &hellip;">
+  <meta name="keywords" content="rtcpeerconnection, createoffer, -, dom">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/dom/rtcpeerconnection/createoffer/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/dom.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/dom/" class="_nav-link" title="" style="margin-left:0;">DOM</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _mdn">
+				
+<h1>RTCPeerConnection.createOffer</h1> <p>The <code>createOffer()</code> method of the <a href="../../rtcpeerconnection/"><code>RTCPeerConnection</code></a> interface initiates the creation of an <a href="https://developer.mozilla.org/en-US/docs/Glossary/SDP" target="_blank">SDP</a> offer which includes information about any <a href="../../mediastreamtrack/"><code>MediaStreamTrack</code></a>s already attached to the WebRTC session, codec and options supported by the browser, and any candidates already gathered by the <a href="https://developer.mozilla.org/en-US/docs/Glossary/ICE" target="_blank">ICE</a> agent, for the purpose of being sent over the signaling channel to a potential peer to request a connection or to update the configuration of an existing connection.</p> <p>The return value is a <a href="https://developer.mozilla.org/en-US/docs/Web/API/Promise" target="_blank"><code>Promise</code></a> which, when the offer has been created, is resolved with a <a href="../../rtcsessiondescription/"><code>RTCSessionDescription</code></a> object containing the newly-created offer.</p> <h2 id="Syntax">Syntax</h2> <pre class="syntaxbox"><em>aPromise</em> = <em>myPeerConnection</em>.createOffer([<em>options</em>]);
+
+<em>myPeerConnection</em>.createOffer(<em>successCallback</em>, <em>failureCallback, </em>[<em>options</em>]) 
+</pre> <h3 id="Parameters">Parameters</h3> <dl> <dt>
+<code>options</code> <span class="inlineIndicator optional optionalInline">Optional</span>
+</dt> <dd>An <code><a href="#RTCOfferOptions_dictionary">RTCOfferOptions</a></code> dictionary providing options requested for the offer.</dd> </dl> <h4 id="RTCOfferOptions_dictionary">RTCOfferOptions dictionary</h4> <p>The <code>RTCOfferOptions</code> dictionary is used to customize the offer created by this method.</p> <dl> <dt>
+<code>iceRestart</code> <span class="inlineIndicator optional optionalInline">Optional</span>
+</dt> <dd>To restart ICE on an active connection, set this to <code>true</code>. This will cause the returned offer to have different credentials than those already in place. If you then apply the returned offer, ICE will restart. Specify <code>false</code> to keep the same credentials and therefore not restart ICE. <code>false</code>.</dd> <dt>
+<code>voiceActivityDetection</code> <span class="inlineIndicator optional optionalInline">Optional</span>
+</dt> <dd>Some codecs and hardware are able to detect when audio begins and ends by watching for "silence" (or relatively low sound levels) to occur. This reduces network bandwidth used for audio by only sending audio data when there's actually something to broadcast. However, in some cases, this is unwanted. For example, in the case of music or other non-voice transmission, this can cause loss of important low-volume sounds. Also, emergency calls should never cut audio when quiet. <code>true</code> (voice activity detection <em>enabled</em>).</dd> </dl> <dl> <dt> <h3 id="Deprecated_parameters">Deprecated parameters</h3> </dt> </dl> <p>In older code and documentation, you may see a callback-based version of this function. This has been deprecated and its use is <strong>strongly</strong> discouraged. You should update any existing code to use the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise" target="_blank"><code>Promise</code></a>-based version of <code>createOffer()</code> instead. The parameters for this form of <code>createOffer()</code> are described below, to aid in updating existing code.</p> <dl> <dt>
+<code>successCallback</code> 
+</dt> <dd>An <a href="https://developer.mozilla.org/en-US/docs/Web/API/RTCSessionDescriptionCallback" target="_blank"><code>RTCSessionDescriptionCallback</code></a> which will be passed a single <a href="../../rtcsessiondescription/"><code>RTCSessionDescription</code></a> object describing the newly-created offer.</dd> <dt>
+<code>errorCallback</code> 
+</dt> <dd>An <a href="https://developer.mozilla.org/en-US/docs/Web/API/RTCPeerConnectionErrorCallback" target="_blank"><code>RTCPeerConnectionErrorCallback</code></a> which will be passed a single <a href="../../domexception/"><code>DOMException</code></a> object explaining why the request to create an offer failed.</dd> <dt>
+<code>options</code> <span class="inlineIndicator optional optionalInline">Optional</span>
+</dt> <dd>An optional <code><a href="#RTCOfferOptions_dictionary">RTCOfferOptions</a></code> dictionary providing options requested for the offer.</dd> </dl> <h3 id="Return_value">Return value</h3> <p>A <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise" target="_blank"><code>Promise</code></a> whose fulfillment handler will receive an object conforming to the <a href="https://developer.mozilla.org/en-US/docs/Web/API/RTCSessionDescriptionInit" target="_blank"><code>RTCSessionDescriptionInit</code></a> dictionary which contains the SDP describing the generated offer. That received offer should be delivered through the signaling server to a remote peer.</p> <h2 id="Example">Example</h2> <p>Here we see a handler for the <code><a href="https://developer.mozilla.org/en-US/docs/Web/Events/negotiationneeded" target="_blank">negotiationneeded</a></code> event which creates the offer and sends it to the remote system over a signaling channel.</p> <div class="note"> <p>Keep in mind that this is part of the signaling process, the transport layer for which is an implementation detail that's entirely up to you. In this case, a <a href="../../websockets_api/">WebSocket</a> connection is used to send a <a href="https://developer.mozilla.org/en-US/docs/Glossary/JSON" target="_blank">JSON</a> message with a <code>type</code> field with the value "video-offer" to the other peer. The contents of the object being passed to the <code>sendToServer()</code> function, along with everything else in the promise fulfillment handler, depend entirely on your design.</p> </div> <pre data-language="js">  myPeerConnection.createOffer().then(function(offer) {
+    return myPeerConnection.setLocalDescription(offer);
+  })
+  .then(function() {
+    sendToServer({
+      name: myUsername,
+      target: targetUsername,
+      type: "video-offer",
+      sdp: myPeerConnection.localDescription
+    });
+  })
+  .catch(function(reason) {
+    // An error occurred, so handle the failure to connect
+  });</pre> <p>In this code, the offer is created, and once successful, the local end of the <a href="../../rtcpeerconnection/"><code>RTCPeerConnection</code></a> is configured to match by passing the offer (which is represented using an object conforming to <a href="https://developer.mozilla.org/en-US/docs/Web/API/RTCSessionDescriptionInit" target="_blank"><code>RTCSessionDescriptionInit</code></a>) into <a href="../setlocaldescription/"><code>setLocalDescription()</code></a>. Once that's done, the offer is sent to the remote system over the signaling channel; in this case, by using a custom function called <code>sendToServer()</code>. The implementation of the signaling server is independent from the WebRTC specification, so it doesn't matter how the offer is sent as long as both the caller and potential receiver are using the same one.</p> <p>Use <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/catch" target="_blank"><code>Promise.catch()</code></a> to trap and handle errors.</p> <p>See <a href="../../webrtc_api/signaling_and_video_calling/">Signaling and video calling</a> for the complete example from which this snippet is derived; this will help you to understand how the signaling code here works.</p> <h2 id="Specifications">Specifications</h2> <div class="_table"><table class="standard-table"> <tbody> <tr> <th scope="col">Specification</th> <th scope="col">Status</th> <th scope="col">Comment</th> </tr> <tr> <td><a href="https://w3c.github.io/webrtc-pc/#dom-rtcpeerconnection-createoffer" hreflang="en" target="_blank">WebRTC 1.0: Real-time Communication Between Browsers<br><small>The definition of 'createOffer()' in that specification.</small></a></td> <td><span class="spec-WD">Working Draft</span></td> <td>Initial definition.</td> </tr> </tbody> </table></div> <h2 id="Browser_compatibility">Browser compatibility</h2>   <div class="_table"><table class="compat-table"> <tbody> <tr> <th>Feature</th> <th>Chrome</th> <th>Edge</th> <th>Firefox (Gecko)</th> <th>Internet Explorer</th> <th>Opera</th> <th>Safari (WebKit)</th> </tr> <tr> <td>Basic support</td> <td>
+<span style="color: #888;">(Yes)</span><sup>[1][2]</sup>
+</td> <td><span style="color: #888;">(Yes)</span></td> <td>
+<a href="https://developer.mozilla.org/en-US/Firefox/Releases/22" target="_blank">22</a> (22)<sup>[3]</sup>
+</td> <td><span style="color: rgb(255, 153, 0);">?</span></td> <td><span style="color: rgb(255, 153, 0);">?</span></td> <td><span style="color: rgb(255, 153, 0);">?</span></td> </tr> <tr> <td>Promise-based version</td> <td>52.0</td> <td><span style="color: rgb(255, 153, 0);">?</span></td> <td>
+<a href="https://developer.mozilla.org/en-US/Firefox/Releases/37" target="_blank">37</a> (37)</td> <td><span style="color: rgb(255, 153, 0);">?</span></td> <td><span style="color: rgb(255, 153, 0);">?</span></td> <td><span style="color: rgb(255, 153, 0);">?</span></td> </tr> <tr> <td>
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/RTCSessionDescriptionInit" target="_blank"><code>RTCSessionDescriptionInit</code></a> returned</td> <td><span style="color: rgb(255, 153, 0);">?</span></td> <td><span style="color: rgb(255, 153, 0);">?</span></td> <td> </td> <td><span style="color: rgb(255, 153, 0);">?</span></td> <td><span style="color: rgb(255, 153, 0);">?</span></td> <td><span style="color: rgb(255, 153, 0);">?</span></td> </tr> <tr> <td>Errors represented by <a href="../../domexception/"><code>DOMException</code></a>, not <a href="https://developer.mozilla.org/en-US/docs/Web/API/DOMError" target="_blank"><code>DOMError</code></a>
+</td> <td><span style="color: #888;">(Yes)</span></td> <td><span style="color: #888;">(Yes)</span></td> <td>
+<a href="https://developer.mozilla.org/en-US/Firefox/Releases/58" target="_blank">58</a> (58)</td> <td><span style="color: #f00;">No support</span></td> <td><span style="color: #888;">(Yes)</span></td> <td><span style="color: #f00;">No support</span></td> </tr> </tbody> </table></div>   <div class="_table"><table class="compat-table"> <tbody> <tr> <th>Feature</th> <th>Android Webview</th> <th>Chrome for Android</th> <th>Edge</th> <th>Firefox Mobile (Gecko)</th> <th>Firefox OS</th> <th>IE Mobile</th> <th>Opera Mobile</th> <th>Safari Mobile</th> </tr> <tr> <td>Basic support</td> <td>
+<span style="color: #888;">(Yes)</span><sup>[1][2]</sup>
+</td> <td>
+<span style="color: #888;">(Yes)</span><sup>[1][2]</sup>
+</td> <td><span style="color: #888;">(Yes)</span></td> <td>24.0 (24)<sup>[3]</sup>
+</td> <td>37<sup>[3]</sup>
+</td> <td><span style="color: rgb(255, 153, 0);">?</span></td> <td><span style="color: rgb(255, 153, 0);">?</span></td> <td><span style="color: rgb(255, 153, 0);">?</span></td> </tr> <tr> <td>Promise-based version</td> <td>52.0</td> <td>52.0</td> <td><span style="color: rgb(255, 153, 0);">?</span></td> <td>37.0 (37)</td> <td><span style="color: rgb(255, 153, 0);">?</span></td> <td><span style="color: rgb(255, 153, 0);">?</span></td> <td><span style="color: rgb(255, 153, 0);">?</span></td> <td><span style="color: rgb(255, 153, 0);">?</span></td> </tr> <tr> <td>
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/RTCSessionDescriptionInit" target="_blank"><code>RTCSessionDescriptionInit</code></a> returned</td> <td><span style="color: rgb(255, 153, 0);">?</span></td> <td><span style="color: rgb(255, 153, 0);">?</span></td> <td><span style="color: rgb(255, 153, 0);">?</span></td> <td>53.0 (53)</td> <td><span style="color: rgb(255, 153, 0);">?</span></td> <td><span style="color: rgb(255, 153, 0);">?</span></td> <td><span style="color: rgb(255, 153, 0);">?</span></td> <td><span style="color: rgb(255, 153, 0);">?</span></td> </tr> <tr> <td>Errors represented by <a href="../../domexception/"><code>DOMException</code></a>, not <a href="https://developer.mozilla.org/en-US/docs/Web/API/DOMError" target="_blank"><code>DOMError</code></a>
+</td> <td><span style="color: #888;">(Yes)</span></td> <td><span style="color: #888;">(Yes)</span></td> <td><span style="color: #888;">(Yes)</span></td> <td>58.0 (58)</td> <td> </td> <td><span style="color: #f00;">No support</span></td> <td><span style="color: #888;">(Yes)</span></td> <td><span style="color: #f00;">No support</span></td> </tr> </tbody> </table></div>  <p>[1] The callback-based version of this method was deprecated in Chrome 49.</p> <p>[2] Though this method is not prefixed, the interface it belongs to was until Chrome 56</p> <p>[3] Starting in Firefox 46, VP9 support was added, but disabled by default. To enable it, set the preference <code>media.peerconnection.video.vp9_enabled</code> to <code>true</code> using <code>about:config</code>. If you enable VP9 in Firefox 46 through Firefox 50, it's the preferred video codec. Starting in Firefox 51, it's enabled by default but VP8 is preferred.</p>
+<div class="_attribution">
+  <p class="_attribution-p">
+    <a href="https://developer.mozilla.org/en-US/docs/Web/API/RTCPeerConnection/createOffer%24edit" class="_attribution-link" target="_blank">Edit this page on MDN</a>
+  </p>
+</div>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2005–2018 Mozilla Developer Network and individual contributors.<br>Licensed under the Creative Commons Attribution-ShareAlike License v2.5 or later.<br>
+    <a href="https://developer.mozilla.org/en-US/docs/Web/API/RTCPeerConnection/createOffer" class="_attribution-link" target="_blank">https://developer.mozilla.org/en-US/docs/Web/API/RTCPeerConnection/createOffer</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

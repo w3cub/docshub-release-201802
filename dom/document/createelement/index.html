@@ -1,0 +1,129 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>document.createElement - DOM - W3cubDocs</title>
+  
+  <meta name="description" content="In an HTML document, the Document.createElement() method creates the HTML element specified by tagName, or an HTMLUnknownElement if tagName isn&#39; &hellip;">
+  <meta name="keywords" content="document, createelement, -, dom">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/dom/document/createelement/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/dom.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/dom/" class="_nav-link" title="" style="margin-left:0;">DOM</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _mdn">
+				
+<h1>document.createElement</h1> <p>In an <a href="https://developer.mozilla.org/en-US/docs/Web/HTML" target="_blank">HTML</a> document, the <code>Document.createElement()</code> method creates the HTML element specified by <code>tagName</code>, or an <a href="../../htmlunknownelement/"><code>HTMLUnknownElement</code></a> if <code>tagName</code> isn't recognized. In a <a href="https://developer.mozilla.org/en-US/docs/Mozilla/Tech/XUL" target="_blank">XUL</a> document, it creates the specified XUL element. In other documents, it creates an element with a <code>null</code> namespace URI.</p> <p>To explicitly specify the namespace URI for the element, use <a href="https://developer.mozilla.org/en-US/docs/Web/API/document/createElementNS" target="_blank"><code>document.createElementNS()</code></a>.</p> <h2 id="Syntax">Syntax</h2> <pre data-language="js"><var>var <em>element</em></var> = <var>document</var>.createElement(<em><var>tagName[, options]</var></em>);
+</pre> <h3 id="Parameters">Parameters</h3> <dl> <dt><code>tagName</code></dt> <dd>A string that specifies the type of element to be created. The <a href="../../node/nodename/"><code>nodeName</code></a> of the created element is initialized with the value of <code>tagName</code>. Don't use qualified names (like "html:a") with this method. When called on an HTML document, <code>createElement()</code> converts <code>tagName</code> to lower case before creating the element. In Firefox, Opera, and Chrome, <code>createElement(null)</code> works like <code>createElement("null")</code>.</dd> <dt>
+<code>options</code><span class="inlineIndicator optional optionalInline">Optional</span>
+</dt> <dd>An optional <code>ElementCreationOptions</code> object containing a single property named <code>is</code>, whose value is the tag name for a custom element previously defined using <code>customElements.define()</code>. For backwards compatibility with previous versions of the <a href="https://www.w3.org/TR/custom-elements/" target="_blank">Custom Elements specification</a>, some browsers will allow you to pass a string here instead of an object, where the string's value is the custom element's tag name. See <a href="https://developers.google.com/web/fundamentals/primers/customelements/#extendhtml" target="_blank">Extending native HTML elements</a> for more information on how to use this parameter.</dd> <dd>The new element will be given an <code>is</code> attribute whose value is the custom element's tag name. Custom elements are an experimental feature only available in some browsers.</dd> </dl> <h3 id="Return_value">Return value</h3> <p>The new <a href="../../element/"><code>Element</code></a>.</p> <h2 id="Example">Example</h2> <p>This creates a new <code>&lt;div&gt;</code> and inserts it before the element with the ID "<code>div1</code>".</p> <h3 id="HTML">HTML</h3> <pre data-language="html">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+  &lt;title&gt;||Working with elements||&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;div id="div1"&gt;The text above has been created dynamically.&lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</pre> <h3 id="JavaScript"><span style="line-height: normal;">JavaScript</span></h3> <pre data-language="js">document.body.onload = addElement;
+
+function addElement () { 
+  // create a new div element 
+  var newDiv = document.createElement("div"); 
+  // and give it some content 
+  var newContent = document.createTextNode("Hi there and greetings!"); 
+  // add the text node to the newly created div
+  newDiv.appendChild(newContent);  
+
+  // add the newly created element and its content into the DOM 
+  var currentDiv = document.getElementById("div1"); 
+  document.body.insertBefore(newDiv, currentDiv); 
+}</pre> <p><iframe class="live-sample-frame sample-code-frame" width="500" height="50" id="frame_Example" src="https://mdn.mozillademos.org/en-US/docs/Web/API/Document/createElement%24samples/Example?revision=1330103" frameborder="0"></iframe></p> <h2 id="Specifications">Specifications</h2> <div class="_table"><table class="standard-table"> <tbody> <tr> <th scope="col">Specification</th> <th scope="col">Status</th> <th scope="col">Comment</th> </tr> <tr> <td><a href="https://dom.spec.whatwg.org/#dom-document-createelement" hreflang="en" target="_blank">DOM<br><small>The definition of 'Document.createElement' in that specification.</small></a></td> <td><span class="spec-Living">Living Standard</span></td> <td> </td> </tr> </tbody> </table></div> <h2 id="Browser_compatibility">Browser compatibility</h2>   <div class="_table"><table class="compat-table"> <tbody> <tr> <th>Feature</th> <th>Chrome</th> <th>Edge</th> <th>Firefox (Gecko)</th> <th>Internet Explorer</th> <th>Opera</th> <th>Safari (WebKit)</th> </tr> <tr> <td>Basic support</td> <td><span style="color: #888;">(Yes)</span></td> <td><span style="color: #888;">(Yes)</span></td> <td>
+<span style="color: #888;">(Yes)</span><sup>[1][2]</sup>
+</td> <td><span style="color: #888;">(Yes)</span></td> <td><span style="color: #888;">(Yes)</span></td> <td><span style="color: #888;">(Yes)</span></td> </tr> <tr> <td>
+<code>options</code> argument</td> <td>
+<span style="color: #888;">(Yes)</span><sup>[3]</sup>
+</td> <td><span style="color: rgb(255, 153, 0);">?</span></td> <td>
+<a href="https://developer.mozilla.org/en-US/Firefox/Releases/50" target="_blank">50</a> (50)<sup>[4][5]</sup>
+</td> <td><span style="color: rgb(255, 153, 0);">?</span></td> <td><span style="color: rgb(255, 153, 0);">?</span></td> <td><span style="color: rgb(255, 153, 0);">?</span></td> </tr> </tbody> </table></div>   <div class="_table"><table class="compat-table"> <tbody> <tr> <th>Feature</th> <th>Android</th> <th>Android Webview</th> <th>Edge</th> <th>Firefox Mobile (Gecko)</th> <th>IE Phone</th> <th>Opera Mobile</th> <th>Safari Mobile</th> <th>Chrome for Android</th> </tr> <tr> <td>Basic support</td> <td><span style="color: #888;">(Yes)</span></td> <td><span style="color: #888;">(Yes)</span></td> <td><span style="color: #888;">(Yes)</span></td> <td><span style="color: #888;">(Yes)</span></td> <td><span style="color: #888;">(Yes)</span></td> <td><span style="color: #888;">(Yes)</span></td> <td><span style="color: #888;">(Yes)</span></td> <td><span style="color: #888;">(Yes)</span></td> </tr> <tr> <td>
+<code>options</code> argument</td> <td><span style="color: #888;">(Yes)</span></td> <td>
+<span style="color: #888;">(Yes)</span><sup>[3]</sup>
+</td> <td><span style="color: rgb(255, 153, 0);">?</span></td> <td><span style="color: rgb(255, 153, 0);">?</span></td> <td><span style="color: rgb(255, 153, 0);">?</span></td> <td><span style="color: rgb(255, 153, 0);">?</span></td> <td><span style="color: rgb(255, 153, 0);">?</span></td> <td>
+<span style="color: #888;">(Yes)</span><sup>[3]</sup>
+</td> </tr> </tbody> </table></div>  <p>[1] Starting with Gecko 22.0 (Firefox 22.0 / Thunderbird 22.0 / SeaMonkey 2.19) <code>createElement()</code> no longer uses the <a href="../../htmlspanelement/"><code>HTMLSpanElement</code></a> interface when the argument is "bgsounds", "multicol", or "image". Instead, <code>HTMLUnknownElement</code> is used for "bgsound" and "multicol" and <a href="../../htmlelement/"><code>HTMLElement</code></a> <code>HTMLElement</code> is used for "image".</p> <p>[2] The Gecko implementation of <code>createElement</code> doesn't conform to the DOM spec for XUL and XHTML documents: <code>localName</code> and <code>namespaceURI</code> are not set to <code>null</code> on the created element. See <a href="https://bugzilla.mozilla.org/show_bug.cgi?id=280692" target="_blank">bug 280692</a> for details.</p> <p>[3] In previous versions of the specification, this argument was just a string whose value was the custom element's tag name. For example it could take <code>document.createElement("button", "custom-button")</code> rather than <code>document.createElement("button", {id: "custom-button"})</code>. For the sake of backwards compatibility, Chrome accepts both forms, though the string form is deprecated.</p> <p>[4] See [3] above: like Chrome, Firefox accepts a string instead of an object here, but only from version 51 onwards. In version 50, <code>options</code> must be an object.</p> <p>[5] To experiment with custom elements in Firefox, you must set the <code>dom.webcomponents.enabled</code> and <code>dom.webcomponents.customelements.enabled</code> preferences to <code>true</code>.</p> <h3 id="Quantum_CSS_notes">Quantum CSS notes</h3> <ul> <li>In Gecko, when you create a detached subtree (e.g. a <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/div" target="_blank"><code>&lt;div&gt;</code></a> created using <code>createElement()</code> that is not yet inserted into the DOM), the subtree's root element is set as a block-level element. In Firefox's new parallel CSS engine (also known as <a href="https://wiki.mozilla.org/Quantum" target="_blank">Quantum CSS</a> or <a href="https://wiki.mozilla.org/Quantum/Stylo" target="_blank">Stylo</a>, planned for release in Firefox 57), this is set as inline, as per spec (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=1374994" target="_blank">bug 1374994</a>).</li> </ul> <h2 name="See_also" id="See_also">See also</h2> <ul> <li><a href="../../node/removechild/"><code>Node.removeChild()</code></a></li> <li><a href="../../node/replacechild/"><code>Node.replaceChild()</code></a></li> <li><a href="../../node/appendchild/"><code>Node.appendChild()</code></a></li> <li><a href="../../node/insertbefore/"><code>Node.insertBefore()</code></a></li> <li><a href="../../node/haschildnodes/"><code>Node.hasChildNodes()</code></a></li> </ul>
+<div class="_attribution">
+  <p class="_attribution-p">
+    <a href="https://developer.mozilla.org/en-US/docs/Web/API/document/createElement%24edit" class="_attribution-link" target="_blank">Edit this page on MDN</a>
+  </p>
+</div>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2005–2018 Mozilla Developer Network and individual contributors.<br>Licensed under the Creative Commons Attribution-ShareAlike License v2.5 or later.<br>
+    <a href="https://developer.mozilla.org/en-US/docs/Web/API/document/createElement" class="_attribution-link" target="_blank">https://developer.mozilla.org/en-US/docs/Web/API/document/createElement</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

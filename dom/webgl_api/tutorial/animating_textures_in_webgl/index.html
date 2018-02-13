@@ -1,0 +1,184 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>WebGL API&#58; Animating Textures in WebGL - DOM - W3cubDocs</title>
+  
+  <meta name="description" content=" « Previous ">
+  <meta name="keywords" content="webgl, api, animating, textures, -, dom">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/dom/webgl_api/tutorial/animating_textures_in_webgl/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/dom.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/dom/" class="_nav-link" title="" style="margin-left:0;">DOM</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _mdn">
+				
+<h1>WebGL API: Animating textures in WebGL</h1> <div style="text-align: right;" class="prevnext"> <p><a href="../lighting_in_webgl/" style="float: left;">« Previous</a><br></p> </div> <p>In this demonstration, we build upon the previous example by replacing our static textures with the frames of a playing mp4 video file. This is actually pretty easy to do, but is fun to look at, so let's get started. Similar code can be used to use any sort of data (such as a <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/canvas" target="_blank"><code>&lt;canvas&gt;</code></a>) as the source for your textures.</p> <h2 id="Getting_access_to_the_video">Getting access to the video</h2> <p>The first step is to create the <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/video" target="_blank"><code>&lt;video&gt;</code></a> element that we'll use to retrieve the video frames:</p> <pre data-language="js">// will set to true when video can be copied to texture
+var copyVideo = false;
+
+function setupVideo(url) {
+  const video = document.createElement('video');
+
+  var playing = false;
+  var timeupdate = false;
+
+  video.autoplay = true;
+  video.muted = true;
+  video.loop = true;
+
+  // Waiting for these 2 events ensures
+  // there is data in the video
+
+  video.addEventListener('playing', function() {
+     playing = true;
+     checkReady();
+  }, true);
+
+  video.addEventListener('timeupdate', function() {
+     timeupdate = true;
+     checkReady();
+  }, true);
+
+  video.src = url;
+  video.play();
+
+  function checkReady() {
+    if (playing &amp;&amp; timeupdate) {
+      copyVideo = true;
+    }
+  }
+
+  return video;
+}
+
+</pre> <p>First we create a video element. We set it to autoplay, mute the sound, and loop the video. We then setup 2 events to see that the video is playing and the time has been updated. We need both of these checks because it is an error to try to upload a video to WebGL that has no data available yet. Checking for both of these events guarantees there is data available and it's safe to start uploading video to a WebGL texture. In the code above we check if we got both of those events and if so we set a global variable, <code>copyVideo</code>, to true to tell us it's safe to start copying the video to a texture.</p> <p>And finally we set the <code>src</code> attribute to start and call <code>play</code> to start loading and playing the video.</p> <h2 id="Using_the_video_frames_as_a_texture">Using the video frames as a texture</h2> <p>The next change is to <code>initTexture()</code>, which becomes much simpler, since it no longer needs to load an image file. Instead, all it does is create an empty texture object, put a single pixel it in and set its filtering for later use:</p> <pre data-language="js">function initTexture(gl, url) {
+  const texture = gl.createTexture();
+  gl.bindTexture(gl.TEXTURE_2D, texture);
+
+  // Because video has to be download over the internet
+  // they might take a moment until it's ready so
+  // put a single pixel in the texture so we can
+  // use it immediately.
+  const level = 0;
+  const internalFormat = gl.RGBA;
+  const width = 1;
+  const height = 1;
+  const border = 0;
+  const srcFormat = gl.RGBA;
+  const srcType = gl.UNSIGNED_BYTE;
+  const pixel = new Uint8Array([0, 0, 255, 255]);  // opaque blue
+  gl.texImage2D(gl.TEXTURE_2D, level, internalFormat,
+                width, height, border, srcFormat, srcType,
+                pixel);
+
+  // Turn off mips and set  wrapping to clamp to edge so it
+  // will work regardless of the dimensions of the video.
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+
+  return texture;
+}
+</pre> Here's what the <code>updateTexture()</code> function looks like; this is where the real work is done: <pre data-language="js">function updateTexture(gl, texture, video) {
+  const level = 0;
+  const internalFormat = gl.RGBA;
+  const srcFormat = gl.RGBA;
+  const srcType = gl.UNSIGNED_BYTE;
+  gl.bindTexture(gl.TEXTURE_2D, texture);
+  gl.texImage2D(gl.TEXTURE_2D, level, internalFormat,
+                srcFormat, srcType, video);
+}
+</pre> <p>You've seen this code before. It's nearly identical to the image onload function in the previous example, except when we call <code>texImage2D()</code>, instead of passing an <code>Image</code> object, we pass in the <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/video" target="_blank"><code>&lt;video&gt;</code></a> element. WebGL knows how to pull the current frame out and use it as a texture.</p> <p>If <code>copyVideo</code> is true then <code>updateTexture()</code> is called each time just before we call the <code>drawScene()</code> function.</p> <pre data-language="js">  var then = 0;
+
+  // Draw the scene repeatedly
+  function render(now) {
+    now *= 0.001;  // convert to seconds
+    const deltaTime = now - then;
+    then = now;
+
+    if (copyVideo) {
+      updateTexture(gl, texture, video);
+    }
+
+    drawScene(gl, programInfo, buffers, texture, deltaTime);
+
+    requestAnimationFrame(render);
+  }
+  requestAnimationFrame(render);
+</pre> <p>That's all there is to it!</p> <p><iframe src="https://mdn.github.io/webgl-examples/tutorial/sample8/index.html" height="510" width="670" class="live-sample-frame" frameborder="0"></iframe></p> <p><a href="https://github.com/mdn/webgl-examples/tree/gh-pages/tutorial/sample8" target="_blank">View the complete code</a> | <a href="http://mdn.github.io/webgl-examples/tutorial/sample8/" target="_blank">Open this demo on a new page</a></p> <h2 id="See_also">See also</h2> <ul> <li><a href="https://developer.mozilla.org/en/Using_HTML5_audio_and_video" target="_blank">Using audio and video in Firefox</a></li> </ul> <div style="text-align: right;" class="prevnext"> <p><a href="../lighting_in_webgl/" style="float: left;">« Previous</a><br></p> </div>
+<div class="_attribution">
+  <p class="_attribution-p">
+    <a href="https://developer.mozilla.org/en-US/docs/Web/API/WebGL_API/Tutorial/Animating_textures_in_WebGL%24edit" class="_attribution-link" target="_blank">Edit this page on MDN</a>
+  </p>
+</div>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2005–2018 Mozilla Developer Network and individual contributors.<br>Licensed under the Creative Commons Attribution-ShareAlike License v2.5 or later.<br>
+    <a href="https://developer.mozilla.org/en-US/docs/Web/API/WebGL_API/Tutorial/Animating_textures_in_WebGL" class="_attribution-link" target="_blank">https://developer.mozilla.org/en-US/docs/Web/API/WebGL_API/Tutorial/Animating_textures_in_WebGL</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

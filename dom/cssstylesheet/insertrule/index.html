@@ -1,0 +1,144 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>CSSStyleSheet.insertRule - DOM - W3cubDocs</title>
+  
+  <meta name="description" content=" CSSStyleSheet.insertRule() method inserts a new CSS rule into the current style sheet, with some restrictions. ">
+  <meta name="keywords" content="cssstylesheet, insertrule, -, dom">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/dom/cssstylesheet/insertrule/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/dom.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/dom/" class="_nav-link" title="" style="margin-left:0;">DOM</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _mdn">
+				
+<h1>CSSStyleSheet.insertRule</h1> <p><strong>CSSStyleSheet.insertRule() </strong>method inserts a new CSS rule into the current style sheet, with some <a href="#Restrictions">restrictions</a>.</p> <p>More specifically, though <strong>insertRule()</strong> is exclusively a method of the <a href="../../cssstylesheet/"><code>CSSStyleSheet</code></a>, it actually inserts the rule into <a href="../../cssstylesheet/"><code>CSSStyleSheet</code></a>.cssRules, the <a href="../../cssrulelist/"><code>CSSRuleList</code></a> therein.</p> <p>What the rule must contain depends on its type: For rule-sets the rule specifies both the selector and the style declaration. For at-rules, the rule specifies both the at-identifier and the rule content.</p> <h2 id="Syntax">Syntax</h2> <pre class="syntaxbox"><var>stylesheet</var>.insertRule(<var>rule</var>[, <var>index</var>])</pre> <h3 id="Parameters">Parameters</h3> <dl> <dt>rule</dt> <dd>A <a href="../../domstring/"><code>DOMString</code></a> containing the rule to be inserted, where rule specifies <a href="https://developer.mozilla.org/en-US/docs/Web/Guide/CSS/Getting_Started/Selectors" target="_blank">selector</a> and declaration, or at-identifier and rule content.</dd> <dt>index <span class="inlineIndicator optional optionalInline">Optional</span>
+</dt> <dd>An unsigned integer not greater than <code>s<em>tylesheet</em>.cssRules.length</code> representing the position in <a href="../../cssstylesheet/"><code>CSSStyleSheet</code></a>.cssRules to insert at. In older implementations, this was required. See Browser compatibility for details. The default is 0. </dd> </dl> <h3 id="Return_value">Return value</h3> <p>The index within the style sheet's rule-list of the newly inserted rule.</p> <h3 id="Restrictions">Restrictions</h3> <p>CSS stylesheet rule-lists have a number of intuitive and not-so-intuitive <a href="https://drafts.csswg.org/cssom/#insert-a-css-rule" target="_blank">restrictions</a> affecting how and where rules can be inserted. Violating these will likely cause an error raised as a <a href="../../domexception/"><code>DOMException</code></a> </p> <ul> <li>If index &gt; number of rules in the stylesheet (the <a href="../../cssrulelist/"><code>CSSRuleList</code></a>.length), then aborts with IndexSizeError.</li> <li>If rule cannot be inserted at index 0 due to some CSS constraint, then aborts with HierarchyRequestError.</li> <li>If more than one rule is given in the rule parameter, then aborts with SyntaxError</li> <li>If trying to insert an @import at-rule after a style rule, then aborts with HierarchyRequestError.</li> <li>If rule is @namespace at-rule and list has more than just @import at-rules and/or @namespace at-rules, then aborts with InvalidStateError.</li> </ul> <h2 id="Examples">Examples</h2> <h3 id="Example_1">Example 1</h3> <pre data-language="js">// push a new rule onto the top of my stylesheet
+myStyle.insertRule("#blanc { color: white }", 0); 
+</pre> <h3 id="Example_2">Example 2</h3> <pre data-language="js">/**
+ * Add a stylesheet rule to the document (may be better practice, however,
+ * to dynamically change classes, so style information can be kept in
+ * genuine stylesheets (and avoid adding extra elements to the DOM))
+ * Note that an array is needed for declarations and rules since ECMAScript does
+ * not afford a predictable object iteration order and since CSS is 
+ * order-dependent (i.e., it is cascading); those without need of
+ * cascading rules could build a more accessor-friendly object-based API.
+ * @param {Array} rules Accepts an array of JSON-encoded declarations
+ * @example
+addStylesheetRules([
+  ['h2', // Also accepts a second argument as an array of arrays instead
+    ['color', 'red'],
+    ['background-color', 'green', true] // 'true' for !important rules 
+  ], 
+  ['.myClass', 
+    ['background-color', 'yellow']
+  ]
+]);
+ */
+function addStylesheetRules (rules) {
+  var styleEl = document.createElement('style'),
+      styleSheet;
+
+  // Append style element to head
+  document.head.appendChild(styleEl);
+
+  // Grab style sheet
+  styleSheet = styleEl.sheet;
+
+  for (var i = 0, rl = rules.length; i &lt; rl; i++) {
+    var j = 1, rule = rules[i], selector = rules[i][0], propStr = '';
+    // If the second argument of a rule is an array of arrays, correct our variables.
+    if (Object.prototype.toString.call(rule[1][0]) === '[object Array]') {
+      rule = rule[1];
+      j = 0;
+    }
+
+    for (var pl = rule.length; j &lt; pl; j++) {
+      var prop = rule[j];
+      propStr += prop[0] + ':' + prop[1] + (prop[2] ? ' !important' : '') + ';\n';
+    }
+
+    // Insert CSS Rule
+    styleSheet.insertRule(selector + '{' + propStr + '}', styleSheet.cssRules.length);
+  }
+}</pre> <h2 id="Specifications">Specifications</h2> <div class="_table"><table class="standard-table"> <tbody> <tr> <th scope="col">Specification</th> <th scope="col">Status</th> <th scope="col">Comment</th> </tr> <tr> <td><a href="https://drafts.csswg.org/cssom/#dom-cssstylesheet-insertrule" hreflang="en" target="_blank">CSS Object Model (CSSOM)<br><small>The definition of 'CSSStyleSheet.insertRule' in that specification.</small></a></td> <td><span class="spec-WD">Working Draft</span></td> <td>No change from <a href="https://www.w3.org/TR/DOM-Level-2-Style/" hreflang="en" target="_blank">Document Object Model (DOM) Level 2 Style Specification</a>.</td> </tr> <tr> <td><a href="https://www.w3.org/TR/DOM-Level-2-Style/css.html#CSS-CSSStyleSheet-insertRule" hreflang="en" target="_blank">Document Object Model (DOM) Level 2 Style Specification<br><small>The definition of 'CSSStyleSheet.insertRule' in that specification.</small></a></td> <td><span class="spec-Obsolete">Obsolete</span></td> <td>Initial definition</td> </tr> </tbody> </table></div> <h2 id="Browser_compatibility">Browser compatibility</h2>   <div class="_table"><table class="compat-table"> <tbody> <tr> <th>Feature</th> <th>Chrome</th> <th>Edge</th> <th>Firefox (Gecko)</th> <th>Internet Explorer</th> <th>Opera</th> <th>Safari</th> </tr> <tr> <td>Basic support</td> <td><span style="color: #888;">(Yes)</span></td> <td><span style="color: #888;">(Yes)</span></td> <td><span style="color: #888;">(Yes)</span></td> <td>9</td> <td><span style="color: #888;">(Yes)</span></td> <td><span style="color: #888;">(Yes)</span></td> </tr> <tr> <td>
+<code>index</code> is optional</td> <td>60</td> <td><span style="color: rgb(255, 153, 0);">?</span></td> <td><span style="color: rgb(255, 153, 0);">?</span></td> <td><span style="color: rgb(255, 153, 0);">?</span></td> <td>47</td> <td><span style="color: rgb(255, 153, 0);">?</span></td> </tr> </tbody> </table></div>   <div class="_table"><table class="compat-table"> <tbody> <tr> <th>Feature</th> <th>Android Webview</th> <th>Chrome for Android</th> <th>Edge</th> <th>Firefox Mobile (Gecko)</th> <th>IE Mobile</th> <th>Opera Mobile</th> <th>Safari Mobile</th> </tr> <tr> <td>Basic support</td> <td><span style="color: #888;">(Yes)</span></td> <td><span style="color: #888;">(Yes)</span></td> <td><span style="color: #888;">(Yes)</span></td> <td><span style="color: #888;">(Yes)</span></td> <td><span style="color: #888;">(Yes)</span></td> <td><span style="color: #888;">(Yes)</span></td> <td><span style="color: #888;">(Yes)</span></td> </tr> <tr> <td>
+<code>index</code> is optional</td> <td>60</td> <td>60</td> <td><span style="color: rgb(255, 153, 0);">?</span></td> <td><span style="color: rgb(255, 153, 0);">?</span></td> <td><span style="color: rgb(255, 153, 0);">?</span></td> <td>47</td> <td><span style="color: rgb(255, 153, 0);">?</span></td> </tr> </tbody> </table></div>  <h3 id="Legacy_browser_support">Legacy browser support</h3> <ul> <li> <h4 id="Internet_Explorer_-_pre_v9"><strong>Internet Explorer - pre v9</strong></h4> <strong>addRule</strong>(<var>selector</var>, <var>rule</var> [, <var>index</var>]); -- Example:<code> addRule('pre', 'font: 14px verdana'); // add rule at end</code><br> <br> <em>Also note the non-standard <code><a href="http://www.quirksmode.org/dom/w3c_css.html#change" target="_blank">removeRule()</a> </code> and <code><a href="http://www.quirksmode.org/dom/w3c_css.html#access" target="_blank">.rules</a> </code> instead of <a href="../deleterule/"><code>deleteRule()</code></a> and <a href="../../cssstylesheet/"><code>.cssRules</code></a> respectively.</em>
+</li> </ul> <h2 id="See_also">See also</h2> <ul> <li><a href="../deleterule/"><code>CSSStyleSheet.deleteRule</code></a></li> <li><a href="http://www-archive.mozilla.org/docs/web-developer/css1technote/css1tojs.html#priority" target="_blank">Cross-Browser CSS-rules ordering (CSS1)</a></li> <li><a href="http://www.quirksmode.org/dom/w3c_css.html" target="_blank">Quirksmode - CSS</a></li> </ul>
+<div class="_attribution">
+  <p class="_attribution-p">
+    <a href="https://developer.mozilla.org/en-US/docs/Web/API/CSSStyleSheet/insertRule%24edit" class="_attribution-link" target="_blank">Edit this page on MDN</a>
+  </p>
+</div>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2005–2018 Mozilla Developer Network and individual contributors.<br>Licensed under the Creative Commons Attribution-ShareAlike License v2.5 or later.<br>
+    <a href="https://developer.mozilla.org/en-US/docs/Web/API/CSSStyleSheet/insertRule" class="_attribution-link" target="_blank">https://developer.mozilla.org/en-US/docs/Web/API/CSSStyleSheet/insertRule</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

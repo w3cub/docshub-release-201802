@@ -1,0 +1,119 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>RTCPeerConnection.addIceCandidate - DOM - W3cubDocs</title>
+  
+  <meta name="description" content=" This is an experimental technologyCheck the Browser compatibility table carefully before using this in production. ">
+  <meta name="keywords" content="rtcpeerconnection, addicecandidate, -, dom">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/dom/rtcpeerconnection/addicecandidate/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/dom.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/dom/" class="_nav-link" title="" style="margin-left:0;">DOM</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _mdn">
+				
+<h1>RTCPeerConnection.addIceCandidate</h1>
+<div class="notice experimental"> <p> <strong>This is an <a href="https://developer.mozilla.org/en-US/docs/MDN/Contribute/Guidelines/Conventions_definitions#Experimental" target="_blank">experimental technology</a></strong><br>Check the <a href="#Browser_compatibility">Browser compatibility table</a> carefully before using this in production.</p> </div> <p>When a web site or app using <a href="../../rtcpeerconnection/"><code>RTCPeerConnection</code></a> receives a new ICE candidate from the remote peer over its signaling channel, it delivers the newly-received candidate to the browser's <a href="https://developer.mozilla.org/en-US/docs/Glossary/ICE" target="_blank">ICE</a> agent by calling <code><strong>RTCPeerConnection.addIceCandidate()</strong></code>. This adds this new remote candidate to the <code>RTCPeerConnection</code>'s remote description, which describes the state of the remote end of the connection.</p> <p>If the value of the specified object'<code>s</code> <a href="https://developer.mozilla.org/en-US/docs/Web/API/RTCIceCandidate/candidate" target="_blank"><code>candidate</code></a> is an empty string (<code>""</code>), it signals that all remote candidates have been delivered.</p> <p>During negotiation, your app will likely receive many candidates which you'll deliver to the ICE agent in this way, allowing it to build up a list of potential connection methods. This is covered in more detail in the articles <a href="../../webrtc_api/connectivity/">WebRTC connectivity</a> and <a href="../../webrtc_api/signaling_and_video_calling/">Signaling and video calling</a>.</p> <h2 id="Syntax">Syntax</h2> <pre class="syntaxbox"><em>aPromise </em>= <em>pc</em>.addIceCandidate(<em>candidate</em>);
+
+addIceCandidate(<em>candidate</em>, <em>successCallback</em>, <em>failureCallback</em>); 
+</pre> <h3 id="Parameters">Parameters</h3> <dl> <dt><code>candidate</code></dt> <dd>An object conforming to the <a href="https://developer.mozilla.org/en-US/docs/Web/API/RTCIceCandidateInit" target="_blank"><code>RTCIceCandidateInit</code></a> dictionary; the contents of the object should be constructed from a message received over the signaling channel, describing a newly received ICE candidate that's ready to be delivered to the local ICE agent.</dd> </dl> <h3 id="Deprecated_parameters">Deprecated parameters</h3> <p>In older code and documentation, you may see a callback-based version of this function. This has been deprecated and its use is <strong>strongly</strong> discouraged. You should update any existing code to use the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise" target="_blank"><code>Promise</code></a>-based version of <code>addIceCandidate()</code> instead. The parameters for this form of <code>addIceCandidate()</code> are described below, to aid in updating existing code.</p> <dl> <dt>
+<code>successCallback</code> 
+</dt> <dd>A function to be called when the ICE candidate has been successfully added. This function receives no input parameters and doesn't return a value.</dd> <dt>
+<code>failureCallback</code> 
+</dt> <dd>A function to be called if attempting to add the ICE candidate fails. Receives as input a <a href="../../domexception/"><code>DOMException</code></a> object describing why failure occurred.</dd> </dl> <h3 id="Return_value">Return value</h3> <p>A <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise" target="_blank"><code>Promise</code></a> which is fulfilled when the candidate has been successfully added to the remote peer's description by the ICE agent. The promise does not receive any input parameters.</p> <h3 id="Exceptions">Exceptions</h3> <p>When an error occurs while attempting to add the ICE candidate, the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise" target="_blank"><code>Promise</code></a> returned by this method is rejected, returning one of the errors below as the <a href="../../domexception/name/"><code>name</code></a> attribute in the specified <a href="../../domexception/"><code>DOMException</code></a> object passed to the rejection handler.</p> <dl> <dt><code>TypeError</code></dt> <dd>The specified candidate doesn't have values for both <a href="https://developer.mozilla.org/en-US/docs/Web/API/RTCIceCandidate/sdpMid" target="_blank"><code>sdpMid</code></a> and <a href="https://developer.mozilla.org/en-US/docs/Web/API/RTCIceCandidate/sdpMLineIndex" target="_blank"><code>sdpMLineIndex</code></a>.</dd> <dt><code>InvalidStateError</code></dt> <dd>The <code>RTCPeerConnection</code> currently has no remote peer established (<a href="../remotedescription/"><code>remoteDescription</code></a> is <code>null</code>).</dd> <dt><code>OperationError</code></dt> <dd>A non-<code>null</code> value was specified for <a href="https://developer.mozilla.org/en-US/docs/Web/API/RTCIceCandidate/sdpMid" target="_blank"><code>sdpMid</code></a>, but the value doesn't match the mid of any media description in the <code>remoteDescription</code>, or <a href="https://developer.mozilla.org/en-US/docs/Web/API/RTCIceCandidate/sdpMLineIndex" target="_blank"><code>sdpMLineIndex</code></a> is greater than or equal to the number of media descriptions in <code>remoteDescription</code>. This error can also be thrown if a value is given for <a href="https://developer.mozilla.org/en-US/docs/Web/API/RTCIceCandidate/ufrag" target="_blank"><code>ufrag</code></a> that doesn't match the value of <code>ufrag</code> in any of the remote description being selected.<br> <br> <code>OperationError</code> also occurs if the attempt to add the candidate fails for any other reason.</dd> </dl> <h2 id="Example">Example</h2> <p>This code snippet shows how to construct a candidate object from a string which contains SDP describing a candidate. This string previously arrived over the signaling channel.</p> <pre data-language="js">// |receivedSDP| is an SDP string received over the signaling channel
+// by our handler for "new ICE candidate" messages.
+
+let candidate = new RTCIceCandidate(receivedSDP);
+
+pc.addIceCandidate(candidate).then(_=&gt;{
+  // Do stuff when the candidate is successfully passed to the ICE agent
+}).catch(e=&gt;{
+  console.log("Error: Failure during addIceCandidate()");
+});</pre> <h2 id="Specifications">Specifications</h2> <div class="_table"><table class="standard-table"> <thead> <tr> <th scope="col">Specification</th> <th scope="col">Status</th> <th scope="col">Comment</th> </tr> </thead> <tbody> <tr> <td><a href="https://w3c.github.io/webrtc-pc/#widl-RTCPeerConnection-addIceCandidate-Promise-void--RTCIceCandidateInit-RTCIceCandidate-candidate" hreflang="en" target="_blank">WebRTC 1.0: Real-time Communication Between Browsers<br><small>The definition of 'RTCPeerConnection.addIceCandidate()' in that specification.</small></a></td> <td><span class="spec-WD">Working Draft</span></td> <td>Initial specification.</td> </tr> <tr> <td>
+<a href="https://w3c.github.io/webrtc-pc/#widl-RTCPeerConnection-addIceCandidate-void-RTCIceCandidateInit-RTCIceCandidate-candidate-VoidFunction-successCallback-RTCPeerConnectionErrorCallback-failureCallback" hreflang="en" target="_blank">WebRTC 1.0: Real-time Communication Between Browsers<br><small>The definition of 'RTCPeerConnection.addIceCandidate()' in that specification.</small></a> 
+</td> <td><span class="spec-WD">Working Draft</span></td> <td>Initial specification.</td> </tr> </tbody> </table></div> <h2 id="Browser_compatibility">Browser compatibility</h2>   <div class="_table"><table class="compat-table"> <tbody> <tr> <th>Feature</th> <th>Chrome</th> <th>Edge</th> <th>Firefox (Gecko)</th> <th>Internet Explorer</th> <th>Opera</th> <th>Safari</th> </tr> <tr> <td>Basic support</td> <td>
+<span style="color: #888;">(Yes)</span>[1]</td> <td><span style="color: #888;">(Yes)</span></td> <td>
+<a href="https://developer.mozilla.org/en-US/Firefox/Releases/22" target="_blank">22</a> (22) [2]</td> <td><span style="color: #f00;">No support</span></td> <td><span style="color: #888;">(Yes)</span></td> <td><span style="color: rgb(255, 153, 0);">?</span></td> </tr> <tr> <td>Promise-based version</td> <td>50</td> <td><span style="color: rgb(255, 153, 0);">?</span></td> <td>
+<a href="https://developer.mozilla.org/en-US/Firefox/Releases/37" target="_blank">37</a> (37)</td> <td><span style="color: rgb(255, 153, 0);">?</span></td> <td><span style="color: rgb(255, 153, 0);">?</span></td> <td><span style="color: rgb(255, 153, 0);">?</span></td> </tr> <tr> <td>
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/RTCIceCandidateInit" target="_blank"><code>RTCIceCandidateInit</code></a> as input</td> <td><span style="color: rgb(255, 153, 0);">?</span></td> <td><span style="color: rgb(255, 153, 0);">?</span></td> <td>
+<a href="https://developer.mozilla.org/en-US/Firefox/Releases/53" target="_blank">53</a> (53)</td> <td><span style="color: rgb(255, 153, 0);">?</span></td> <td><span style="color: rgb(255, 153, 0);">?</span></td> <td><span style="color: rgb(255, 153, 0);">?</span></td> </tr> </tbody> </table></div>   <div class="_table"><table class="compat-table"> <tbody> <tr> <th>Feature</th> <th>Android Webview</th> <th>Chrome for Android</th> <th>Edge</th> <th>Firefox Mobile (Gecko)</th> <th>IE Mobile</th> <th>Opera Mobile</th> <th>Safari Mobile</th> </tr> <tr> <td>Basic support</td> <td>
+<span style="color: #888;">(Yes)</span>[1]</td> <td>
+<span style="color: #888;">(Yes)</span>[1]</td> <td><span style="color: #888;">(Yes)</span></td> <td>22.0 (22)</td> <td><span style="color: #f00;">No support</span></td> <td><span style="color: rgb(255, 153, 0);">?</span></td> <td><span style="color: rgb(255, 153, 0);">?</span></td> </tr> <tr> <td>Promise-based version</td> <td>50</td> <td>50</td> <td><span style="color: rgb(255, 153, 0);">?</span></td> <td>37.0 (37)</td> <td><span style="color: rgb(255, 153, 0);">?</span></td> <td><span style="color: rgb(255, 153, 0);">?</span></td> <td><span style="color: rgb(255, 153, 0);">?</span></td> </tr> <tr> <td>
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/RTCIceCandidateInit" target="_blank"><code>RTCIceCandidateInit</code></a> as input</td> <td><span style="color: rgb(255, 153, 0);">?</span></td> <td><span style="color: rgb(255, 153, 0);">?</span></td> <td><span style="color: rgb(255, 153, 0);">?</span></td> <td>53.0 (53)</td> <td><span style="color: rgb(255, 153, 0);">?</span></td> <td><span style="color: rgb(255, 153, 0);">?</span></td> <td><span style="color: rgb(255, 153, 0);">?</span></td> </tr> </tbody> </table></div>  <p>[1] Though this method is not prefixed, the interface it belongs to was until Chrome 56.</p> <p>[2] Though this method is not prefixed, the interface it belongs to was until Firefox 44.</p> <h2 id="See_also">See also</h2> <ul> <li><a href="../../webrtc_api/">WebRTC API</a></li> <li><a href="../../webrtc_api/signaling_and_video_calling/">Signaling and video calling</a></li> <li><a href="../../webrtc_api/protocols/">WebRTC architecture overview</a></li> <li><a href="../../webrtc_api/connectivity/">WebRTC connectivity</a></li> <li><a href="../../webrtc_api/session_lifetime/">Lifetime of a WebRTC session</a></li> </ul>
+<div class="_attribution">
+  <p class="_attribution-p">
+    <a href="https://developer.mozilla.org/en-US/docs/Web/API/RTCPeerConnection/addIceCandidate%24edit" class="_attribution-link" target="_blank">Edit this page on MDN</a>
+  </p>
+</div>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2005–2018 Mozilla Developer Network and individual contributors.<br>Licensed under the Creative Commons Attribution-ShareAlike License v2.5 or later.<br>
+    <a href="https://developer.mozilla.org/en-US/docs/Web/API/RTCPeerConnection/addIceCandidate" class="_attribution-link" target="_blank">https://developer.mozilla.org/en-US/docs/Web/API/RTCPeerConnection/addIceCandidate</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

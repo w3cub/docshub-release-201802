@@ -1,0 +1,111 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>NodeList - DOM - W3cubDocs</title>
+  
+  <meta name="description" content=" NodeList objects are collections of nodes such as those returned by properties such as Node.childNodes and the document.querySelectorAll() method. ">
+  <meta name="keywords" content="nodelist, -, dom">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/dom/nodelist/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/dom.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/dom/" class="_nav-link" title="" style="margin-left:0;">DOM</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _mdn">
+				
+<h1>NodeList</h1> <p><code>NodeList</code> objects are collections of nodes such as those returned by properties such as <a href="../node/childnodes/"><code>Node.childNodes</code></a> and the <a href="../document/queryselectorall/"><code>document.querySelectorAll()</code></a> method.</p> <div class="note"> <p>Although <code>NodeList</code> is not an <code>Array</code>, it is possible to iterate on it using <code>forEach()</code>. Several older browsers have not implemented this method yet. You can also convert it to an <code>Array</code> using <code>Array.from</code>.</p> </div> <p>In some cases, the <code>NodeList</code> is a <em>live collection</em>, which means that changes in the DOM are reflected in the collection. For example, <a href="../node/childnodes/"><code>Node.childNodes</code></a> is live:</p> <pre data-language="js">var parent = document.getElementById('parent');
+var child_nodes = parent.childNodes;
+console.log(child_nodes.length); // let's assume "2"
+parent.appendChild(document.createElement('div'));
+console.log(child_nodes.length); // should output "3"
+</pre> <p>In other cases, the <code>NodeList</code> is a <em>static collection, </em>meaning any subsequent change in the DOM does not affect the content of the collection. <a href="../document/queryselectorall/"><code>document.querySelectorAll()</code></a> returns a static <code>NodeList</code>.</p> <p>It's good to keep this distinction in mind when you choose how to iterate over the items in the <code>NodeList</code>, and how you cache the length of the list in particular.</p> <h2 id="Properties">Properties</h2> <dl> <dt><a href="../nodelist/length/"><code>NodeList.length</code></a></dt> <dd>The number of nodes in the <code>NodeList</code>.</dd> </dl> <h2 id="Methods">Methods</h2> <dl> <dt><a href="../nodelist/item/"><code>NodeList.item()</code></a></dt> <dd>Returns an item in the list by its index, or <code>null</code> if the index is out-of-bounds; can be used as an alternative to simply accessing <code>nodeList[idx]</code> (which instead returns <code>undefined</code> when <code>idx</code> is out-of-bounds).</dd> <dt><a href="../nodelist/entries/"><code>NodeList.entries()</code></a></dt> <dd>Returns an <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols" target="_blank"><code>iterator</code></a> allowing to go through all key/value pairs contained in this object.</dd> <dt><a href="../nodelist/foreach/"><code>NodeList.forEach()</code></a></dt> <dd>Executes a provided function once per <code>NodeList</code> element.</dd> <dt><a href="../nodelist/keys/"><code>NodeList.keys()</code></a></dt> <dd>Returns an <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols" target="_blank"><code>iterator</code></a> allowing to go through all keys of the key/value pairs contained in this object.</dd> <dt><a href="../nodelist/values/"><code>NodeList.values()</code></a></dt> <dd>Returns an <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols" target="_blank"><code>iterator</code></a> allowing to go through all values of the key/value pairs contained in this object.</dd> </dl> <h2 id="Example">Example</h2> <p>It's possible to loop over the items in a <code>NodeList</code> using:</p> <pre data-language="js">for (var i = 0; i &lt; myNodeList.length; i++) {
+  var item = myNodeList[i];  // Calling myNodeList.item(i) isn't necessary in JavaScript
+}
+</pre> <p>Don't be tempted to use <code><a href="https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Statements/for...in" target="_blank">for...in</a></code> or <code><a href="https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Statements/for_each...in" target="_blank">for each...in</a></code> to enumerate the items in the list, since that will also enumerate the length and item properties of the <code>NodeList</code> and cause errors if your script assumes it only has to deal with <a href="../element/"><code>element</code></a> objects. Also, <code>for..in</code> is not guaranteed to visit the properties in any particular order.</p> <p><code><a href="https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Statements/for...of" target="_blank">for...of</a></code> loops will loop over <code>NodeList</code> objects correctly:</p> <pre data-language="js">var list = document.querySelectorAll( 'input[type=checkbox]' );
+for (var item of list) {
+  item.checked = true;
+}</pre> <p>Recent browsers also support iterator methods, <a href="../nodelist/foreach/"><code>forEach()</code></a>, as well as <a href="../nodelist/entries/"><code>entries()</code></a>, <a href="../nodelist/values/"><code>values()</code></a>, and <a href="../nodelist/keys/"><code>keys()</code></a></p> <p>There is also an Internet Explorer compatible way to use <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/forEach" target="_blank"><code>Array.prototype.forEach</code></a> for iteration.</p> <pre data-language="js">var list = document.querySelectorAll( 'input[type=checkbox]' );
+Array.prototype.forEach.call(list, function (item) {
+  item.checked = true;
+});</pre> <h2 name="Specifications" id="Specifications">Specifications</h2> <div class="_table"><table class="standard-table"> <thead> <tr> <th scope="col">Specification</th> <th scope="col">Status</th> <th scope="col">Comment</th> </tr> </thead> <tbody> <tr> <td><a href="https://dom.spec.whatwg.org/#interface-nodelist" hreflang="en" target="_blank">DOM<br><small>The definition of 'NodeList' in that specification.</small></a></td> <td><span class="spec-Living">Living Standard</span></td> <td> </td> </tr> <tr> <td><a href="https://www.w3.org/TR/DOM-Level-3-Core/core.html#ID-536297177" hreflang="en" target="_blank">Document Object Model (DOM) Level 3 Core Specification<br><small>The definition of 'NodeList' in that specification.</small></a></td> <td><span class="spec-Obsolete">Obsolete</span></td> <td> </td> </tr> <tr> <td><a href="https://www.w3.org/TR/DOM-Level-2-Core/core.html#ID-536297177" hreflang="en" target="_blank">Document Object Model (DOM) Level 2 Core Specification<br><small>The definition of 'NodeList' in that specification.</small></a></td> <td><span class="spec-Obsolete">Obsolete</span></td> <td> </td> </tr> <tr> <td><a href="https://www.w3.org/TR/REC-DOM-Level-1/level-one-core.html#ID-536297177" hreflang="en" target="_blank">Document Object Model (DOM) Level 1 Specification<br><small>The definition of 'NodeList' in that specification.</small></a></td> <td><span class="spec-Obsolete">Obsolete</span></td> <td>Initial definition.</td> </tr> </tbody> </table></div> <h2 id="Browser_compatibility">Browser compatibility</h2>   <div class="_table"><table class="compat-table"> <tbody> <tr> <th>Feature</th> <th>Chrome</th> <th>Edge</th> <th>Firefox (Gecko)</th> <th>Internet Explorer</th> <th>Opera</th> <th>Safari</th> </tr> <tr> <td>Basic support</td> <td><span style="color: #888;">(Yes)</span></td> <td><span style="color: #888;">(Yes)</span></td> <td><span style="color: #888;">(Yes)</span></td> <td><span style="color: #888;">(Yes)</span></td> <td><span style="color: #888;">(Yes)</span></td> <td><span style="color: #888;">(Yes)</span></td> </tr> <tr> <td>
+<code>entries()</code>, <code>keys()</code>, <code>values()</code>, <code>forEach()</code>
+</td> <td>51</td> <td><span style="color: #f00;">No support</span></td> <td>
+<a href="https://developer.mozilla.org/en-US/Firefox/Releases/50" target="_blank">50</a> (50)</td> <td><span style="color: #f00;">No support</span></td> <td>38</td> <td>10 (maybe prior)</td> </tr> </tbody> </table></div>   <div class="_table"><table class="compat-table"> <tbody> <tr> <th>Feature</th> <th>Android</th> <th>Android Webview</th> <th>Edge</th> <th>Firefox Mobile (Gecko)</th> <th>Firefox OS (Gecko)</th> <th>IE Mobile</th> <th>Opera Mobile</th> <th>Safari Mobile</th> <th>Chrome for Android</th> </tr> <tr> <td>Basic support</td> <td><span style="color: #888;">(Yes)</span></td> <td><span style="color: #888;">(Yes)</span></td> <td><span style="color: #888;">(Yes)</span></td> <td><span style="color: #888;">(Yes)</span></td> <td><span style="color: #888;">(Yes)</span></td> <td><span style="color: #888;">(Yes)</span></td> <td><span style="color: #888;">(Yes)</span></td> <td><span style="color: #888;">(Yes)</span></td> <td><span style="color: #888;">(Yes)</span></td> </tr> <tr> <td>
+<code>entries()</code>, <code>keys()</code>, <code>values()</code>, <code>forEach()</code>
+</td> <td><span style="color: rgb(255, 153, 0);">?</span></td> <td><span style="color: rgb(255, 153, 0);">?</span></td> <td><span style="color: rgb(255, 153, 0);">?</span></td> <td>50.0 (50)</td> <td><span style="color: rgb(255, 153, 0);">?</span></td> <td><span style="color: #f00;">No support</span></td> <td><span style="color: rgb(255, 153, 0);">?</span></td> <td>10 (maybe prior)</td> <td>51</td> </tr> </tbody> </table></div>
+<div class="_attribution">
+  <p class="_attribution-p">
+    <a href="https://developer.mozilla.org/en-US/docs/Web/API/NodeList%24edit" class="_attribution-link" target="_blank">Edit this page on MDN</a>
+  </p>
+</div>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2005–2018 Mozilla Developer Network and individual contributors.<br>Licensed under the Creative Commons Attribution-ShareAlike License v2.5 or later.<br>
+    <a href="https://developer.mozilla.org/en-US/docs/Web/API/NodeList" class="_attribution-link" target="_blank">https://developer.mozilla.org/en-US/docs/Web/API/NodeList</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

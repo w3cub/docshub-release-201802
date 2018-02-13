@@ -1,0 +1,94 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>RTCStatsReport - DOM - W3cubDocs</title>
+  
+  <meta name="description" content=" Draft This page is not complete. ">
+  <meta name="keywords" content="rtcstatsreport, -, dom">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/dom/rtcstatsreport/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/dom.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/dom/" class="_nav-link" title="" style="margin-left:0;">DOM</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _mdn">
+				
+<h1>RTCStatsReport</h1> <div class="overheadIndicator draft"> <p><strong>Draft</strong><br> This page is not complete.</p> <em>This page is currently incomplete and under active construction. Please be aware that it's not going to answer all of your questions just yet.</em> </div> <p>The <code><strong>RTCStatsReport</strong></code> interface is used to provide statistics data about WebRTC connections as returned by the <a href="https://developer.mozilla.org/en-US/docs/Web/API/RTCPeerConnection/getStats" target="_blank"><code>RTCPeerConnection.getStats()</code></a>, <a href="../rtcrtpreceiver/getstats/"><code>RTCRtpReceiver.getStats()</code></a>, and <a href="../rtcrtpsender/getstats/"><code>RTCRtpSender.getStats()</code></a> methods. This object consists of a mapping of strings which identify a category of statistics to objects which contains the various measured values for each.</p> <p>Calling <code>getStats()</code> on an <a href="../rtcpeerconnection/"><code>RTCPeerConnection</code></a> lets you specifiy whether you wish to obtain statistics for outbound, inbound, or all streams on the connection. The <a href="../rtcrtpreceiver/"><code>RTCRtpReceiver</code></a> and <a href="../rtcrtpsender/"><code>RTCRtpSender</code></a> versions of <code>getStats()</code> specifically only return the incoming and outgoing streams, respectively.</p> <h2 id="The_RTCStats_subdictionaries">The RTCStats subdictionaries</h2> <p>The full <code>RTCStatsReport</code> interface is made up of a mapping of strings to subdictionaries which contain the statistics for each category, such as ICE candidate or media stream statistics. Each of these subdictionaries has in common the following values:</p> <dl> <dt><code>timestamp</code></dt> <dd>A <a href="../domhighrestimestamp/"><code>DOMHighResTimeStamp</code></a> object which indicates the time at which the data was handled by the local WebRTC layer; for example, for statistics related to received RCTP packets, this would indicate the time at which the data was received by the local endpoint (the remote timestamp is available as well in one of the fields defined within one of the other subdictionaries. The time is specified relative to the UNIX epoch (the first moment of January 1, 1970, UTC).</dd> <dt><code>type</code></dt> <dd>A string, taken from the enum type <code><a href="#RTCStatsType">RTCStatsType</a></code>,</dd> <dt><code>id</code></dt> <dd>A <a href="../domstring/"><code>DOMString</code></a> which uniquely identifies the object which was inspected to produce this object based on <code>RTCStats</code>. This allows any two <code>RTCStats</code>-based objects which were produced from the same data to be correlated to one another. The format of this ID is not defined by the specification, so it cannot be relied upon to have any particular format, structure, or meaning beyond that.</dd> </dl> <p>From a definition standpoint, these values are defined in the <code>RTCStats</code> dictionary in <code>RTCStatsReport</code>'s WebIDL file.</p> <h3 id="RTCRTPStreamStats">RTCRTPStreamStats</h3> <p><code>RTCRTPStreamStats</code> is the base class for all RTP-related statistics reports. It's based on <a href="#RTCStats">RTCStats</a> and adds the following additional fields.</p> <h4 id="Standard_fields_included_for_all_media_types">Standard fields included for all media types</h4> <dl> <dt><code>ssrc</code></dt> <dd>The 32-bit integer which identifies the source of the RTP packets this <code>RTCRTPStreamStats</code> object covers. This value is generated per the <a href="http://tools.ietf.org/html/3550" target="_blank">RFC 3550</a> specification.</dd> <dt><code>mediaType</code></dt> <dd>A <a href="../domstring/"><code>DOMString</code></a> which identifies the type of media being carried on the associated <a href="../mediastreamtrack/"><code>MediaStreamTrack</code></a>. This must be either <code>"audio"</code> or <code>"video"</code>, and will match the media type included in <a href="https://developer.mozilla.org/en-US/docs/Web/API/RTCCodecStats/codec" target="_blank"><code>RTCCodecStats.codec</code></a>.</dd> <dt><code>trackId</code></dt> <dd>A <a href="../domstring/"><code>DOMString</code></a> which uniquely identifies the <a href="https://developer.mozilla.org/en-US/docs/Web/API/RTCMediaStreamTrackStats" target="_blank"><code>RTCMediaStreamTrackStats</code></a> object representing the associated <a href="../mediastreamtrack/"><code>MediaStreamTrack</code></a>. This is <strong><em>not</em></strong> the same as the value of <a href="../mediastreamtrack/id/"><code>MediaStreamTrack.id</code></a>.</dd> <dt><code>transportId</code></dt> <dd>A <a href="../domstring/"><code>DOMString</code></a> uniquely identifying the object which was inspected to produce the <a href="https://developer.mozilla.org/en-US/docs/Web/API/RTCTransportStats" target="_blank"><code>RTCTransportStats</code></a> object associated with this RTP stream.</dd> <dt><code>codecId</code></dt> <dd>A <a href="../domstring/"><code>DOMString</code></a> which uniquely identifies the object which was inspected to produce the <a href="https://developer.mozilla.org/en-US/docs/Web/API/RTCCodecStats" target="_blank"><code>RTCCodecStats</code></a> object associated with this RTP stream.</dd> </dl> <h4 id="Local-only_measurements">Local-only measurements</h4> <p>These properties are computed locally, and are only available to the device receiving the media stream. Their primary purpose is to examine the error resiliency of the connection, as they provide information about lost packets, lost frames, and how heavily compressed the data is.</p> <dl> <dt><code>firCount</code></dt> <dd>A count of the total number of Full Intra Request (FIR) packets received by the sender. This statistic is only available to the device which is receiving the stream and is only available for video tracks. A FIR packet is sent by the receiving end of the stream when it falls behind or has lost packets and is unable to continue decoding the stream; the sending end of the stream receives the FIR packet and responds by sending a full frame instead of a delta frame, thereby letting the receiver "catch up." The higher this number is, the more often a problem of this nature arose, which can be a sign of network congestion or an overburdened receiving device.</dd> <dt><code>pliCount</code></dt> <dd>The number of times the receiving end of the stream sent a Picture Loss Indiciation (PLI) packet to the sender, indicating that it has lost some amount of encoded video data for one or more frames. Only the receiver has this value, and it's only valid for video tracks.</dd> <dt><code>nackCount</code></dt> <dd>The number of times the receiver notified the sender that one or more RTP packets has been lost by sending a Negative ACKnowledgement (NACK, also called "Generic NACK") packet to the sender. This value is only available to the receiver.</dd> <dt><code>sliCount</code></dt> <dd>The number of times the receiver notified the sender that one or more consecutive (in scan order) encoded video macroblocks have been lost or corrupted; this notification is sent by the receiver to the sender using a Slice Loss Indication (SLI) packet. This is a fairly technical part of how codecs work and while the higher this value is, the more errors occurred in the stream, generally most of the time this value is only interesting to very intensively hardcore media developers.</dd> <dt><code>qpSum</code></dt> <dd>The sum of the Quantization Parameter (QP) values associated with every frame received to date on the video track described by this <code>RTCStats</code> object. In general, the higher this number is, the more heavily compressed the video track was. Combined with <a href="https://developer.mozilla.org/en-US/docs/Web/API/RTCReceivedRTPStreamStats/framesDecoded" target="_blank"><code>RTCReceivedRTPStreamStats.framesDecoded</code></a> or <a href="https://developer.mozilla.org/en-US/docs/Web/API/RTCSentRTPStreamStats/framesEncoded" target="_blank"><code>RTCSentRTPStreamStats.framesEncoded</code></a>, you can approximate the average QP over those frames, keeping in mind that codecs often vary the quantizer values even within frames. Also keep in mind that the values of QP can vary from codec to codec, so this value is only potentially useful when compared against the same codec.</dd> </dl> <h3 id="RTCInboundRTPStreamStats">RTCInboundRTPStreamStats</h3> <p>Contains statistics about inbound RTP streaming. The <code>RTCInboundRTPStreamStats</code> dictionary is based upon both <code>RTCStats</code> and <code>RTCRTPStreamStats</code> and includes all properties from those dictionaries, as well as the following:</p> <dl> <dt><code>bytesReceived</code></dt> <dd>...</dd> <dt><code>jitter</code></dt> <dd>...</dd> <dt><code>packetsDiscarded</code></dt> <dd>...</dd> <dt><code>packetsLost</code></dt> <dd>...</dd> <dt><code>packetsReceived</code></dt> <dd>...</dd> </dl> <h3 id="RTCOutboundRTPStreamStats">RTCOutboundRTPStreamStats</h3> <p>Contains statistics about outbound RTP streaming. The <code>RTCOutboundRTPStreamStats</code> dictionary is based upon both <code>RTCStats</code> and <code>RTCRTPStreamStats</code> and includes all properties from those dictionaries, as well as the following:</p> <dl> <dt><code>packetsSent</code></dt> <dd>A long integer indicating the number of RTP packets sent...</dd> <dt><code>bytesSent</code></dt> <dd>A 64-bit integer indicating how many bytes of data have been sent on the stream...</dd> <dt><code>targetBitrate</code></dt> <dd>...</dd> </dl> <h4 id="Properties">Properties</h4> <dl> <dt><code>droppedFrames</code></dt> <dd>The number of frames which have been</dd> <dt><code>framesEncoded</code></dt> <dd>A long integer which indicates the total number of frames successfully encoded for this RTP stream. This field is only present on video connections.</dd> </dl> <h3 id="RTCMediaStreamTrackStats">RTCMediaStreamTrackStats</h3> <h3 id="RTCMediaStreamStats">RTCMediaStreamStats</h3> <h3 id="RTCRTPContributingSourceStats">RTCRTPContributingSourceStats</h3> <h3 id="RTCTransportStats">RTCTransportStats</h3> <h3 id="RTCIceComponentStats">RTCIceComponentStats</h3> <h3 id="RTCIceCandidatePairStats">RTCIceCandidatePairStats</h3> <h3 id="RTCIceCandidateStats">RTCIceCandidateStats</h3> <h3 id="RTCCodecStats">RTCCodecStats</h3> <h2 id="Specifications">Specifications</h2> <div class="_table"><table class="standard-table"> <thead> <tr> <th scope="col">Specification</th> <th scope="col">Status</th> <th scope="col">Comment</th> </tr> </thead> <tbody> <tr> <td><a href="https://w3c.github.io/webrtc-pc/#widl-RTCPeerConnection-currentRemoteDescription" hreflang="en" target="_blank">WebRTC 1.0: Real-time Communication Between Browsers<br><small>The definition of 'RTCPeerConnection.currentRemoteDescription' in that specification.</small></a></td> <td><span class="spec-WD">Working Draft</span></td> <td>Initial specification.</td> </tr> </tbody> </table></div> <h2 id="Browser_compatibility">Browser compatibility</h2>   <div class="_table"><table class="compat-table"> <tbody> <tr> <th>Feature</th> <th>Chrome</th> <th>Firefox (Gecko)</th> <th>Internet Explorer</th> <th>Opera</th> <th>Safari</th> </tr> <tr> <td>Basic support</td> <td><span style="color: #f00;">No support</span></td> <td><span style="color: #f00;">No support</span></td> <td><span style="color: #f00;">No support</span></td> <td><span style="color: #f00;">No support</span></td> <td><span style="color: #f00;">No support</span></td> </tr> </tbody> </table></div>   <div class="_table"><table class="compat-table"> <tbody> <tr> <th>Feature</th> <th>Android Webview</th> <th>Chrome for Android</th> <th>Firefox Mobile (Gecko)</th> <th>IE Mobile</th> <th>Opera Mobile</th> <th>Safari Mobile</th> </tr> <tr> <td>Basic support</td> <td><span style="color: #f00;">No support</span></td> <td><span style="color: #f00;">No support</span></td> <td><span style="color: #f00;">No support</span></td> <td><span style="color: #f00;">No support</span></td> <td><span style="color: #f00;">No support</span></td> <td><span style="color: #f00;">No support</span></td> </tr> </tbody> </table></div>  <div class="note"> <p>The addition of <code>currentRemoteDescription</code> and <a href="../rtcpeerconnection/pendinglocaldescription/"><code>pendingLocalDescription</code></a> to the WebRTC spec is relatively recent. In browsers which don't support them, just use <a href="../rtcpeerconnection/remotedescription/"><code>remoteDescription</code></a>.</p> </div> <h2 id="See_also">See also</h2> <ul> <li><a href="../webrtc_api/">WebRTC API</a></li> <li><a href="../rtcpeerconnection/"><code>RTCPeerConnection</code></a></li> <li>
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/RTCPeerConnection/getStats" target="_blank"><code>RTCPeerConnection.getStats()</code></a>, <a href="../rtcrtpreceiver/getstats/"><code>RTCRtpReceiver.getStats()</code></a>, and <a href="../rtcrtpsender/getstats/"><code>RTCRtpSender.getStats()</code></a>
+</li> </ul>
+<div class="_attribution">
+  <p class="_attribution-p">
+    <a href="https://developer.mozilla.org/en-US/docs/Web/API/RTCStatsReport%24edit" class="_attribution-link" target="_blank">Edit this page on MDN</a>
+  </p>
+</div>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2005–2018 Mozilla Developer Network and individual contributors.<br>Licensed under the Creative Commons Attribution-ShareAlike License v2.5 or later.<br>
+    <a href="https://developer.mozilla.org/en-US/docs/Web/API/RTCStatsReport" class="_attribution-link" target="_blank">https://developer.mozilla.org/en-US/docs/Web/API/RTCStatsReport</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

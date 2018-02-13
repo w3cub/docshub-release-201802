@@ -1,0 +1,161 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Page Visibility API - DOM - W3cubDocs</title>
+  
+  <meta name="description" content="The Page Visibility API lets you know when a webpage is visible or in focus. With tabbed browsing, there is a reasonable chance that any given &hellip;">
+  <meta name="keywords" content="page, visibility, api, -, dom">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/dom/page_visibility_api/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/dom.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/dom/" class="_nav-link" title="" style="margin-left:0;">DOM</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _mdn">
+				
+<h1>Page Visibility API</h1> <p>The <strong>Page Visibility API</strong> lets you know when a webpage is visible or in focus. With tabbed browsing, there is a reasonable chance that any given webpage is in the background and thus not visible to the user. When the user minimizes the webpage or moves to another tab, the API sends a <code><a href="https://developer.mozilla.org/en-US/docs/Web/Events/visibilitychange" target="_blank">visibilitychange</a></code> event regarding the visibility of the page. You can detect the event and perform some actions or behave differently. For example, if your web app is playing a video, it would pause the moment the user looks at another browser, and plays again when the user returns to the tab. The user does not lose their place in the video and can continue watching.</p> <p>Visibility states of an <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/iframe" target="_blank"><code>&lt;iframe&gt;</code></a> are the same as the parent document. Hiding the iframe with CSS properties does not trigger visibility events nor change the state of the content document.</p> <h3 id="Benefits">Benefits</h3> <p>The API is particularly useful for saving resources by giving developers the opportunity to not perform unnecessary tasks when the webpage is not visible.</p>  <h3 id="Use_cases">Use cases</h3> <p>A few examples:</p> <ul> <li>A site has an image carousel that shouldn't advance to the next slide unless the user is viewing the page.</li> <li>An application showing a dashboard of information doesn't want to poll the server for updates when the page isn't visible.</li> <li>A page wants to detect when it is being prerendered so it can keep accurate count of page views.</li> <li>A site wants to switch off sounds when a device is in standby mode (user pushes power button to turn screen off)</li> </ul> <p>Developers have historically used imperfect proxies to detect this. For example, registering an onblur/onfocus handler on the window helps you know when your page is not the active page, but it does not tell you that your page is hidden to the user. The Page Visibility API addresses this. (When compared with registering onblur/onfocus handlers on the window, a key difference is that a page does <em>not</em> become hidden when another window is made active and the browser window loses focus. A page only becomes hidden when the user switches to a different tab or minimizes the browser window.)</p> <h3 id="Policies_in_place_to_aid_background_page_performance">Policies in place to aid background page performance</h3> <p>Along with the Page Visibility API, there are a number of policies in place to mitigate negative performance effects associated with background tabs:</p> <ul> <li>
+<a href="../window/requestanimationframe/"><code>Window.requestAnimationFrame()</code></a> calls are paused in most browsers when running in background tabs or hidden <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/iframe" target="_blank"><code>&lt;iframe&gt;</code></a>s in order to improve performance and battery life.</li> <li>Timers such as <a href="../windoworworkerglobalscope/settimeout/"><code>WindowOrWorkerGlobalScope.setTimeout</code></a> are throttled in background/inactive tabs to help improve performance. See <a href="../windoworworkerglobalscope/settimeout/#Reasons_for_delays_longer_than_specified">Reasons for delays longer than specified</a> for more details.</li> <li>Budget-based background timeout throttling is now available in modern browsers (Firefox 58+, Chrome 57+), placing an additional limit on background timer CPU usage. This operates in a similar way across modern browsers, with the details being as follows: <ul> <li>In Firefox, windows in background tabs each have their own time budget in milliseconds — a max and a min value of +50 ms and -150 ms, respectively. Chrome is very similar except that the budget is specified in seconds.</li> <li>Windows are subjected to throttling after 30 seconds, with the same throttling delay rules as specified for window timers (again, see <a href="../windoworworkerglobalscope/settimeout/#Reasons_for_delays_longer_than_specified">Reasons for delays longer than specified</a>.) In Chrome, this value is 10 seconds.</li> <li>Timer tasks are only permitted when the budget is non-negative.</li> <li>When a timer has executed, the execution time is deducted from the budget of the window where the timeout gets called from.</li> <li>The budget regenerates at a rate of 10 ms per second, in both Firefox and Chrome.</li> </ul> </li> <li>Some processes are exempt from this throttling behaviour: <ul> <li>Applications playing audio are considered foreground and aren’t throttled.</li> <li>Applications with real-time connections (<a href="../websockets_api/">WebSockets</a> and <a href="../webrtc_api/">WebRTC</a>), to avoid closing these connections by timeout.</li> <li>
+<a href="../indexeddb_api/">IndexedDB</a> processes.</li> </ul> </li> </ul> <h2 id="Example">Example</h2> <p>View <a href="http://daniemon.com/tech/webapps/page-visibility/" target="_blank">live example</a> (video with sound).</p> <p>The example, which pauses the video when you switch to another tab and plays again when you return to its tab, was created with the following code:</p> <pre data-language="js">// Set the name of the hidden property and the change event for visibility
+var hidden, visibilityChange; 
+if (typeof document.hidden !== "undefined") { // Opera 12.10 and Firefox 18 and later support 
+  hidden = "hidden";
+  visibilityChange = "visibilitychange";
+} else if (typeof document.msHidden !== "undefined") {
+  hidden = "msHidden";
+  visibilityChange = "msvisibilitychange";
+} else if (typeof document.webkitHidden !== "undefined") {
+  hidden = "webkitHidden";
+  visibilityChange = "webkitvisibilitychange";
+}
+ 
+var videoElement = document.getElementById("videoElement");
+
+// If the page is hidden, pause the video;
+// if the page is shown, play the video
+function handleVisibilityChange() {
+  if (document[hidden]) {
+    videoElement.pause();
+  } else {
+    videoElement.play();
+  }
+}
+
+// Warn if the browser doesn't support addEventListener or the Page Visibility API
+if (typeof document.addEventListener === "undefined" || typeof document.hidden === "undefined") {
+  console.log("This demo requires a browser, such as Google Chrome or Firefox, that supports the Page Visibility API.");
+} else {
+  // Handle page visibility change   
+  document.addEventListener(visibilityChange, handleVisibilityChange, false);
+    
+  // When the video pauses, set the title.
+  // This shows the paused
+  videoElement.addEventListener("pause", function(){
+    document.title = 'Paused';
+  }, false);
+    
+  // When the video plays, set the title.
+  videoElement.addEventListener("play", function(){
+    document.title = 'Playing'; 
+  }, false);
+
+}
+</pre> <h2 id="Properties_overview">Properties overview</h2> <dl> <dt> <p id="document.hidden_Read_only"><a href="../document/hidden/"><code>document.hidden</code></a> <span class="inlineIndicator readOnly readOnlyInline">Read only </span></p> </dt> <dd> <p>Returns <code>true</code> if the page is in a state considered to be hidden to the user, and <code>false</code> otherwise.</p> </dd> <dt> <p id="document.visibilityState_Read_only"><a href="../document/visibilitystate/"><code>document.visibilityState</code></a> <span class="inlineIndicator readOnly readOnlyInline">Read only </span></p> </dt> <dd> <p>Is a <code>string</code> denoting the visibility state of the document. Possible values:</p> <ul> <li>
+<code>visible</code> : the page content may be at least partially visible. In practice this means that the page is the foreground tab of a non-minimized window.</li> <li>
+<code>hidden</code> : the page content is not visible to the user. In practice this means that the document is either a background tab or part of a minimized window, or the OS screen lock is active.</li> <li>
+<code>prerender</code> : the page content is being prerendered and is not visible to the user (considered hidden for purposes of <code>document.hidden</code>). The document may start in this state, but will never transition to it from another value. Note: browser support is optional.</li> <li>
+<code>unloaded</code> : the page is being unloaded from memory. Note: browser support is optional.</li> </ul> <pre data-language="js">//startSimulation and pauseSimulation defined elsewhere
+function handleVisibilityChange() {
+  if (document.hidden) {
+    pauseSimulation();
+  } else  {
+    startSimulation();
+  }
+}
+
+document.addEventListener("visibilitychange", handleVisibilityChange, false);
+</pre> </dd> <dt> <p><a href="../document/onvisibilitychange/"><code>document.onvisibilitychange</code></a></p> </dt> <dd> <p>Is an <a href="https://developer.mozilla.org/en-US/docs/Web/API/EventHandler" target="_blank"><code>EventHandler</code></a> representing the code to be called when the <code><a href="https://developer.mozilla.org/en-US/docs/Web/Events/visibilitychange" target="_blank">visibilitychange</a></code> event is raised.</p> </dd> </dl> <h2 id="Specifications">Specifications</h2> <div class="_table"><table class="standard-table"> <thead> <tr> <th scope="col">Specification</th> <th scope="col">Status</th> <th scope="col">Comment</th> </tr> </thead> <tbody> <tr> <td><a href="http://www.w3.org/TR/page-visibility/" hreflang="en" target="_blank">Page Visibility (Second Edition)</a></td> <td><span class="spec-REC">Recommendation</span></td> <td>Initial definition.</td> </tr> </tbody> </table></div> <h2 id="Browser_compatibility">Browser compatibility</h2>   <div class="_table"><table class="compat-table"> <tbody> <tr> <th>Feature</th> <th>Chrome</th> <th>Firefox (Gecko)</th> <th>Internet Explorer</th> <th>Opera</th> <th>Safari (WebKit)</th> </tr> <tr> <td>Basic support</td> <td>13 <span class="inlineIndicator prefixBox prefixBoxInline"><a href="https://developer.mozilla.org/en-US/docs/Web/Guide/Prefixes" target="_blank">webkit</a></span><br> 33</td> <td>
+<a href="https://developer.mozilla.org/en-US/Firefox/Releases/18" target="_blank">18</a> (18)<sup>[2]</sup>
+</td> <td>10</td> <td>12.10<sup>[1]</sup>
+</td> <td>7</td> </tr> <tr> <td><code>onvisibilitychange</code></td> <td><span style="color: #888;">(Yes)</span></td> <td>
+<a href="https://developer.mozilla.org/en-US/Firefox/Releases/56" target="_blank">56</a> (56)</td> <td><span style="color: #888;">(Yes)</span></td> <td><span style="color: #888;">(Yes)</span></td> <td><span style="color: #888;">(Yes)</span></td> </tr> <tr> <td>Budget-based background timeout throttling</td> <td>57</td> <td>
+<a href="https://developer.mozilla.org/en-US/Firefox/Releases/58" target="_blank">58</a> (58)</td> <td><span style="color: #f00;">No support</span></td> <td><span style="color: #888;">(Yes)</span></td> <td><span style="color: #888;">(Yes)</span></td> </tr> </tbody> </table></div>   <div class="_table"><table class="compat-table"> <tbody> <tr> <th>Feature</th> <th>Android</th> <th>Firefox Mobile (Gecko)</th> <th>IE Phone</th> <th>Opera Mobile</th> <th>Safari Mobile</th> </tr> <tr> <td>Basic support</td> <td>5.0<sup>[3]</sup>
+</td> <td>18.0 (18)<sup>[2]</sup>
+</td> <td>10</td> <td>12.10<sup>[1]</sup>
+</td> <td>7<sup>[4]</sup>
+</td> </tr> <tr> <td><code>onvisibilitychange</code></td> <td><span style="color: #888;">(Yes)</span></td> <td>56.0 (56)</td> <td><span style="color: #888;">(Yes)</span></td> <td><span style="color: #888;">(Yes)</span></td> <td><span style="color: #888;">(Yes)</span></td> </tr> <tr> <td>Budget-based background timeout throttling</td> <td><span style="color: #f00;">No support</span></td> <td>58.0 (58)</td> <td><span style="color: #f00;">No support</span></td> <td><span style="color: #888;">(Yes)</span></td> <td><span style="color: #888;">(Yes)</span></td> </tr> </tbody> </table></div>  <p>[1] Doesn't fire the <code><a href="https://developer.mozilla.org/en-US/docs/Web/Events/visibilitychange" target="_blank">visibilitychange</a></code> event when the browser window is minimized, nor set <code>hidden</code> to <code>true</code>.</p> <p>[2] From Firefox 10 to Firefox 51 included, this property could be used prefixed with <code>moz</code>.</p> <p>[3] Android 4.4 supports this feature if prefixed with <code>webkit</code>.</p> <p>[4] From iOS 11.0.2 onwards, the values are not correct in standalone mode (when you press "Add to Homescreen") and when the screen is locked (you pressed the power button). The value for <code>hidden</code> is <code>false</code> and <code>visibilityState</code> is <code>visible</code>.</p> <h2 id="See_also">See also</h2> <ul> <li>Description of the <a href="http://blogs.msdn.com/b/ie/archive/2011/07/08/using-pc-hardware-more-efficiently-in-html5-new-web-performance-apis-part-2.aspx" target="_blank">Page Visibility API</a> on the IEBlog.</li> <li>Description of the <a href="http://code.google.com/chrome/whitepapers/pagevisibility.html" target="_blank">Page Visibility API</a> by Google</li> </ul>
+<div class="_attribution">
+  <p class="_attribution-p">
+    <a href="https://developer.mozilla.org/en-US/docs/Web/API/Page_Visibility_API%24edit" class="_attribution-link" target="_blank">Edit this page on MDN</a>
+  </p>
+</div>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2005–2018 Mozilla Developer Network and individual contributors.<br>Licensed under the Creative Commons Attribution-ShareAlike License v2.5 or later.<br>
+    <a href="https://developer.mozilla.org/en-US/docs/Web/API/Page_Visibility_API" class="_attribution-link" target="_blank">https://developer.mozilla.org/en-US/docs/Web/API/Page_Visibility_API</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

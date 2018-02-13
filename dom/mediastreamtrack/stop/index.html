@@ -1,0 +1,105 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>MediaStreamTrack.stop - DOM - W3cubDocs</title>
+  
+  <meta name="description" content=" In short, the MediaStreamTrack method stop() method stops the track. ">
+  <meta name="keywords" content="mediastreamtrack, stop, -, dom">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/dom/mediastreamtrack/stop/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/dom.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/dom/" class="_nav-link" title="" style="margin-left:0;">DOM</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _mdn">
+				
+<h1>MediaStreamTrack.stop</h1> <p>In short, the <a href="../../mediastreamtrack/"><code>MediaStreamTrack</code></a> method <code>stop()</code> method stops the track.</p> <h2 id="Syntax">Syntax</h2> <pre class="syntaxbox"><em>MediaStreamTrack</em>.stop();
+</pre> <p>Calling <code>stop()</code> tells the user agent that the track's source—whatever that source may be, including files, network streams, or a local camera or microphone—is no longer needed by the <code>MediaStreamTrack</code>. Since multiple tracks may use the same source (for example, if two tabs are using the device's microphone), the source itself isn't necessarily immediately stopped. It is instead disassociated from the track and the track object is stopped. Once no media tracks are using the source, the source may actually be completely stopped.</p> <p>Immediately after calling <code>stop()</code>, the <a href="../readystate/"><code>track</code></a> state is set to <code>ended</code>.</p> <h2 id="Example">Example</h2> <p>In this example, we see a function which stops a streamed video by calling <code>stop()</code> on every track on a given <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/video" target="_blank"><code>&lt;video&gt;</code></a>.</p> <pre data-language="js">function stopStreamedVideo(videoElem) {
+  let stream = videoElem.srcObject;
+  let tracks = stream.getTracks();
+
+  tracks.forEach(function(track) {
+    track.stop();
+  });
+
+  videoElem.srcObject = null;
+}</pre> <p>This works by obtaining the video element's stream from its <a href="../../htmlmediaelement/srcobject/"><code>srcObject</code></a> property. Then the stream's track list is obtained by calling its <a href="https://developer.mozilla.org/en-US/docs/Web/API/MediaStream/getTracks" target="_blank"><code>getTracks()</code></a> method. From there, all that remains to do is to iterate over the track list using <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/forEach" target="_blank"><code>forEach()</code></a> and calling each track's <code>stop()</code> method.</p> <p>Finally, <code>srcObject</code> is set to <code>null</code> to sever the link to the <a href="../../mediastream/"><code>MediaStream</code></a> object so it can be released.</p> <h2 id="Specifications">Specifications</h2> <div class="_table"><table class="standard-table"> <thead> <tr> <th scope="col">Specification</th> <th scope="col">Status</th> <th scope="col">Comment</th> </tr> </thead> <tbody> <tr> <td><a href="http://w3c.github.io/mediacapture-main/#widl-MediaStreamTrack-stop" hreflang="en" target="_blank">Media Capture and Streams<br><small>The definition of 'MediaStreamTrack.stop()' in that specification.</small></a></td> <td><span class="spec-ED">Editor's Draft</span></td> <td>Initial specification.</td> </tr> </tbody> </table></div> <h2 id="Browser_compatibility">Browser compatibility</h2>   <div class="_table"><table class="compat-table"> <tbody> <tr> <th>Feature</th> <th>Chrome</th> <th>Edge</th> <th>Firefox (Gecko)</th> <th>Internet Explorer</th> <th>Opera</th> <th>Safari</th> </tr> <tr> <td>Basic support</td> <td><span style="color: #888;">(Yes)</span></td> <td><span style="color: #888;">(Yes)</span></td> <td>
+<a href="https://developer.mozilla.org/en-US/Firefox/Releases/34" target="_blank">34</a> (34)<sup>[1]</sup>
+</td> <td><span style="color: #f00;">No support</span></td> <td><span style="color: #888;">(Yes)</span></td> <td><span style="color: rgb(255, 153, 0);">?</span></td> </tr> </tbody> </table></div>   <div class="_table"><table class="compat-table"> <tbody> <tr> <th>Feature</th> <th>Android</th> <th>Android Webview</th> <th>Edge</th> <th>Firefox Mobile (Gecko)</th> <th>IE Mobile</th> <th>Opera Mobile</th> <th>Safari Mobile</th> <th>Chrome for Android</th> </tr> <tr> <td>Basic support</td> <td><span style="color: rgb(255, 153, 0);">?</span></td> <td><span style="color: #888;">(Yes)</span></td> <td><span style="color: #888;">(Yes)</span></td> <td>34.0 (34)</td> <td><span style="color: #f00;">No support</span></td> <td><span style="color: rgb(255, 153, 0);">?</span></td> <td><span style="color: rgb(255, 153, 0);">?</span></td> <td><span style="color: #888;">(Yes)</span></td> </tr> </tbody> </table></div>  <p>[1] Prior to Firefox 52, only local tracks (that is, tracks obtained through <a href="../../mediadevices/getusermedia/"><code>getUserMedia()</code></a>) could be stopped. Now all kinds of tracks can be stopped, including those on a <a href="../../mediastream/"><code>MediaStream</code></a> associated with a <a href="https://developer.mozilla.org/en-US/docs/Glossary/WebRTC" target="_blank">WebRTC</a> connection, <a href="../../web_audio_api/">Web Audio API</a> stream, or <a href="../../canvascapturemediastream/"><code>CanvasCaptureMediaStream</code></a>.</p> <h2 id="See_also">See also</h2> <ul> <li>
+<a href="../../mediastreamtrack/"><code>MediaStreamTrack</code></a>, the interface it belongs to.</li> <li><a href="../readystate/"><code>MediaStreamTrack.readyState</code></a></li> <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/Events/ended" target="_blank">ended</a></code></li> </ul>
+<div class="_attribution">
+  <p class="_attribution-p">
+    <a href="https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamTrack/stop%24edit" class="_attribution-link" target="_blank">Edit this page on MDN</a>
+  </p>
+</div>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2005–2018 Mozilla Developer Network and individual contributors.<br>Licensed under the Creative Commons Attribution-ShareAlike License v2.5 or later.<br>
+    <a href="https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamTrack/stop" class="_attribution-link" target="_blank">https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamTrack/stop</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

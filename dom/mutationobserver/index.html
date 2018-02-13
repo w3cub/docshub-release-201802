@@ -1,0 +1,129 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>MutationObserver - DOM - W3cubDocs</title>
+  
+  <meta name="description" content="MutationObserver provides developers with a way to react to changes in a DOM. It is designed as a replacement for Mutation Events defined in the &hellip;">
+  <meta name="keywords" content="mutationobserver, -, dom">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/dom/mutationobserver/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/dom.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/dom/" class="_nav-link" title="" style="margin-left:0;">DOM</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _mdn">
+				
+<h1>MutationObserver</h1> <p><code>MutationObserver</code> provides developers with a way to react to changes in a <a href="https://developer.mozilla.org/en-US/docs/DOM" target="_blank">DOM</a>. It is designed as a replacement for <a href="https://developer.mozilla.org/en-US/docs/DOM/Mutation_events" target="_blank">Mutation Events</a> defined in the DOM3 Events specification.</p> <h2 id="Constructor">Constructor</h2> <h3 id="MutationObserver()"><code>MutationObserver()</code></h3> <p>Constructor for instantiating new DOM mutation observers.</p> <pre class="syntaxbox">new MutationObserver(
+  function callback
+);
+</pre> <h6 id="Parameters">Parameters</h6> <dl> <dt><code>callback</code></dt> <dd>The function which will be called on each DOM mutation. The observer will call this function with two arguments. The first is an array of objects, each of type <a href="../mutationrecord/"><code>MutationRecord</code></a>. The second is this <code>MutationObserver</code> instance.</dd> </dl> <h2 id="Instance_methods">Instance methods</h2> <div class="_table"><table class="standard-table"> <tbody> <tr> <td><code>void <a href="#observe()">observe</a>( <a href="../node/"><code>Node</code></a> target, <a href="#MutationObserverInit">MutationObserverInit</a> options );</code></td> </tr> <tr> <td><code>void <a href="#disconnect()">disconnect</a>();</code></td> </tr> <tr> <td><code>Array <a href="#takeRecords()">takeRecords</a>();</code></td> </tr> </tbody> </table></div> <div class="note"> <p><strong>Note</strong>: <a href="../node/"><code>Node</code></a> target should not be confused with <a href="https://nodejs.org/en/" target="_blank">NodeJS</a>.</p> </div> <h3 id="observe()"><code>observe()</code></h3> <p>Registers the <code>MutationObserver</code> instance to receive notifications of DOM mutations on the specified node.</p> <pre class="syntaxbox">void observe(
+  <a href="../node/">Node</a> target,
+  <a href="#MutationObserverInit">MutationObserverInit</a> options
+);
+</pre> <h6 id="Parameters_2">Parameters</h6> <dl> <dt><code>target</code></dt> <dd>The <a href="../node/"><code>Node</code></a> on which to observe DOM mutations.</dd> <dt><code>options</code></dt> <dd>A <a href="#MutationObserverInit"><code>MutationObserverInit</code></a> object, specifies which DOM mutations should be reported.</dd> </dl> <div class="note">
+<strong>Note</strong>: Adding an observer to an element is just like addEventListener, if you observe the element multiple times it does not make a difference. Meaning if you observe an element twice, the observe callback does not fire twice, nor will you have to run disconnect() twice. In other words, once an element is observed, observing it again with the same observer instance will do nothing. However if the callback object is different it will of course add another observer to it.</div> <h3 id="disconnect()"><code>disconnect()</code></h3> <p>Stops the <code>MutationObserver</code> instance from receiving notifications of DOM mutations. Until the <a href="#observe()"><code>observe()</code></a> method is used again, the observer's callback will not be invoked.</p> <pre class="syntaxbox">void disconnect();
+</pre> <div class="note"> <p><strong>Note</strong>: According to <a href="https://dom.spec.whatwg.org/#garbage-collection" target="_blank">specification</a> a MutationObserver is deleted by the garbage collector if the target element is deleted.</p> </div> <h3 id="takeRecords()"><code>takeRecords()</code></h3> <p>Empties the <code>MutationObserver</code> instance's record queue and returns what was in there.</p> <pre class="syntaxbox">Array takeRecords();
+</pre> <h6 id="Return_value">Return value</h6> <p>Returns an Array of <a href="../mutationrecord/"><code>MutationRecord</code></a>s.</p> <h2 id="MutationObserverInit"><code>MutationObserverInit</code></h2> <p><code>MutationObserverInit</code> is an object which can specify the following properties:</p> <div class="note">
+<strong>Note</strong>: At the very least, <code>childList</code>, <code>attributes</code>, or <code>characterData</code> must be set to <code>true</code>. Otherwise, "An invalid or illegal string was specified" error is thrown.</div> <div class="_table"><table class="standard-table"> <tbody> <tr> <th class="header">Property</th> <th class="header">Description</th> </tr> <tr> <td><code>childList</code></td> <td>Set to <code>true</code> if additions and removals of the target node's child elements (including text nodes) are to be observed.</td> </tr> <tr> <td><code>attributes</code></td> <td>Set to <code>true</code> if mutations to target's attributes are to be observed.</td> </tr> <tr> <td><code>characterData</code></td> <td>Set to <code>true</code> if mutations to target's data are to be observed.</td> </tr> <tr> <td><code>subtree</code></td> <td>Set to <code>true</code> if mutations to target and target's descendants are to be observed.</td> </tr> <tr> <td><code>attributeOldValue</code></td> <td>Set to <code>true</code> if <code>attributes</code> is set to <code>true</code> and target's attribute value before the mutation needs to be recorded.</td> </tr> <tr> <td><code>characterDataOldValue</code></td> <td>Set to <code>true</code> if <code>characterData</code> is set to <code>true</code> and target's data before the mutation needs to be recorded.</td> </tr> <tr> <td><code>attributeFilter</code></td> <td>Set to an array of attribute local names (without namespace) if not all attribute mutations need to be observed.</td> </tr> </tbody> </table></div> <h2 id="Example_usage">Example usage</h2> <p>The following example was adapted from <a href="http://hacks.mozilla.org/2012/05/dom-mutationobserver-reacting-to-dom-changes-without-killing-browser-performance/" rel="freelink" target="_blank">this blog post</a>.</p> <pre data-language="js">// Select the node that will be observed for mutations
+var targetNode = document.getElementById('some-id');
+
+// Options for the observer (which mutations to observe)
+var config = { attributes: true, childList: true };
+
+// Callback function to execute when mutations are observed
+var callback = function(mutationsList) {
+    for(var mutation of mutationsList) {
+        if (mutation.type == 'childList') {
+            console.log('A child node has been added or removed.');
+        }
+        else if (mutation.type == 'attributes') {
+            console.log('The ' + mutation.attributeName + ' attribute was modified.');
+        }
+    }
+};
+
+// Create an observer instance linked to the callback function
+var observer = new MutationObserver(callback);
+
+// Start observing the target node for configured mutations
+observer.observe(targetNode, config);
+
+// Later, you can stop observing
+observer.disconnect();</pre> <h2 id="Additional_reading">Additional reading</h2> <ul> <li><a href="http://updates.html5rocks.com/2012/02/Detect-DOM-changes-with-Mutation-Observers" rel="freelink" target="_blank">A brief overview</a></li> <li><a href="http://hacks.mozilla.org/2012/05/dom-mutationobserver-reacting-to-dom-changes-without-killing-browser-performance/" rel="freelink" target="_blank">A more in-depth discussion</a></li> <li><a href="http://www.youtube.com/watch?v=eRZ4pO0gVWw" rel="freelink" target="_blank">A screencast by Chromium developer Rafael Weinstein</a></li> <li><a href="https://github.com/rafaelw/mutation-summary" rel="freelink" target="_blank">The mutation summary library</a></li> </ul> <h2 name="Specifications" id="Specifications">Specifications</h2> <div class="_table"><table class="standard-table"> <thead> <tr> <th scope="col">Specification</th> <th scope="col">Status</th> <th scope="col">Comment</th> </tr> </thead> <tbody> <tr> <td><a href="https://dom.spec.whatwg.org/#mutationobserver" hreflang="en" target="_blank">DOM<br><small>The definition of 'MutationObserver' in that specification.</small></a></td> <td><span class="spec-Living">Living Standard</span></td> <td> </td> </tr> </tbody> </table></div> <h2 id="Browser_compatibility">Browser compatibility</h2>   <div class="_table"><table class="compat-table"> <tbody> <tr> <th>Feature</th> <th>Chrome</th> <th>Edge</th> <th>Firefox (Gecko)</th> <th>Internet Explorer</th> <th>Opera</th> <th>Safari</th> </tr> <tr> <td>Basic support</td> <td>18 <span class="inlineIndicator prefixBox prefixBoxInline"><a href="https://developer.mozilla.org/en-US/docs/Web/Guide/Prefixes" target="_blank">-webkit</a></span><br> 26</td> <td><span style="color: #888;">(Yes)</span></td> <td>
+<a href="https://developer.mozilla.org/en-US/Firefox/Releases/14" target="_blank">14</a> (14)</td> <td>11</td> <td>15</td> <td>6.0 <span class="inlineIndicator prefixBox prefixBoxInline"><a href="https://developer.mozilla.org/en-US/docs/Web/Guide/Prefixes" target="_blank">-webkit</a></span><br> 7</td> </tr> </tbody> </table></div>   <div class="_table"><table class="compat-table"> <tbody> <tr> <th>Feature</th> <th>Android</th> <th>Chrome for Android</th> <th>Edge</th> <th>Firefox Mobile (Gecko)</th> <th>IE Phone</th> <th>Opera Mobile</th> <th>Safari Mobile</th> </tr> <tr> <td>Basic support</td> <td>4.4</td> <td>18 <span class="inlineIndicator prefixBox prefixBoxInline"><a href="https://developer.mozilla.org/en-US/docs/Web/Guide/Prefixes" target="_blank">-webkit</a></span><br> 26</td> <td><span style="color: #888;">(Yes)</span></td> <td>14.0 (14)</td> <td>11 (8.1)</td> <td>15</td> <td>6 <span class="inlineIndicator prefixBox prefixBoxInline"><a href="https://developer.mozilla.org/en-US/docs/Web/Guide/Prefixes" target="_blank">-webkit</a></span><br> 7</td> </tr> </tbody> </table></div>
+<div class="_attribution">
+  <p class="_attribution-p">
+    <a href="https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver%24edit" class="_attribution-link" target="_blank">Edit this page on MDN</a>
+  </p>
+</div>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2005–2018 Mozilla Developer Network and individual contributors.<br>Licensed under the Creative Commons Attribution-ShareAlike License v2.5 or later.<br>
+    <a href="https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver" class="_attribution-link" target="_blank">https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>
