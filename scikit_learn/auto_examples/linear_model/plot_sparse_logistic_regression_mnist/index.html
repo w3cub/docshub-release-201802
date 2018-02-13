@@ -1,0 +1,153 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Example&#58; MNIST Classfification Using Multinomial Logistic + L1 - Scikit-learn - W3cubDocs</title>
+  
+  <meta name="description" content="Here we fit a multinomial logistic regression with L1 penalty on a subset of the MNIST digits classification task. We use the SAGA algorithm for &hellip;">
+  <meta name="keywords" content="mnist, classfification, using, multinomial, logistic, +, l, example, -, scikit-learn, scikit_learn">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/scikit_learn/auto_examples/linear_model/plot_sparse_logistic_regression_mnist/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/scikit_learn.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/scikit_learn/" class="_nav-link" title="" style="margin-left:0;">scikit-learn</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _sphinx">
+				
+<h1 id="sphx-glr-auto-examples-linear-model-plot-sparse-logistic-regression-mnist-py">MNIST classfification using multinomial logistic + L1</h1> <p id="mnist-classfification-using-multinomial-logistic-l1">Here we fit a multinomial logistic regression with L1 penalty on a subset of the MNIST digits classification task. We use the SAGA algorithm for this purpose: this a solver that is fast when the number of samples is significantly larger than the number of features and is able to finely optimize non-smooth objective functions which is the case with the l1-penalty. Test accuracy reaches &gt; 0.8, while weight vectors remains <em>sparse</em> and therefore more easily <em>interpretable</em>.</p> <p>Note that this accuracy of this l1-penalized linear model is significantly below what can be reached by an l2-penalized linear model or a non-linear multi-layer perceptron model on this dataset.</p> <img alt="../../_images/sphx_glr_plot_sparse_logistic_regression_mnist_001.png" class="align-center" src="data:image/png;base64,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"> <p class="sphx-glr-script-out">Out:</p> <pre data-language="python">Sparsity with L1 penalty: 82.72%
+Test score with L1 penalty: 0.8320
+Example run in 2.811 s
+</pre>  <pre data-language="python">import time
+import matplotlib.pyplot as plt
+import numpy as np
+
+from sklearn.datasets import fetch_mldata
+from sklearn.linear_model import LogisticRegression
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+from sklearn.utils import check_random_state
+
+print(__doc__)
+
+# Author: Arthur Mensch &lt;arthur.mensch@m4x.org&gt;
+# License: BSD 3 clause
+
+# Turn down for faster convergence
+t0 = time.time()
+train_samples = 5000
+
+mnist = fetch_mldata('MNIST original')
+X = mnist.data.astype('float64')
+y = mnist.target
+random_state = check_random_state(0)
+permutation = random_state.permutation(X.shape[0])
+X = X[permutation]
+y = y[permutation]
+X = X.reshape((X.shape[0], -1))
+
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, train_size=train_samples, test_size=10000)
+
+scaler = StandardScaler()
+X_train = scaler.fit_transform(X_train)
+X_test = scaler.transform(X_test)
+
+# Turn up tolerance for faster convergence
+clf = LogisticRegression(C=50. / train_samples,
+                         multi_class='multinomial',
+                         penalty='l1', solver='saga', tol=0.1)
+clf.fit(X_train, y_train)
+sparsity = np.mean(clf.coef_ == 0) * 100
+score = clf.score(X_test, y_test)
+# print('Best C % .4f' % clf.C_)
+print("Sparsity with L1 penalty: %.2f%%" % sparsity)
+print("Test score with L1 penalty: %.4f" % score)
+
+coef = clf.coef_.copy()
+plt.figure(figsize=(10, 5))
+scale = np.abs(coef).max()
+for i in range(10):
+    l1_plot = plt.subplot(2, 5, i + 1)
+    l1_plot.imshow(coef[i].reshape(28, 28), interpolation='nearest',
+                   cmap=plt.cm.RdBu, vmin=-scale, vmax=scale)
+    l1_plot.set_xticks(())
+    l1_plot.set_yticks(())
+    l1_plot.set_xlabel('Class %i' % i)
+plt.suptitle('Classification vector for...')
+
+run_time = time.time() - t0
+print('Example run in %.3f s' % run_time)
+plt.show()
+</pre> <p><strong>Total running time of the script:</strong> ( 0 minutes 2.811 seconds)</p> <div class="sphx-glr-footer docutils container"> <div class="sphx-glr-download docutils container"> <a class="reference download internal" href="http://scikit-learn.org/stable/_downloads/plot_sparse_logistic_regression_mnist.py" download="" target="_blank"><code>Download Python source code: plot_sparse_logistic_regression_mnist.py</code></a>
+</div> <div class="sphx-glr-download docutils container"> <a class="reference download internal" href="http://scikit-learn.org/stable/_downloads/plot_sparse_logistic_regression_mnist.ipynb" download="" target="_blank"><code>Download Jupyter notebook: plot_sparse_logistic_regression_mnist.ipynb</code></a>
+</div> </div> <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.readthedocs.io" target="_blank">Generated by Sphinx-Gallery</a></p>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2007–2017 The scikit-learn developers<br>Licensed under the 3-clause BSD License.<br>
+    <a href="http://scikit-learn.org/stable/auto_examples/linear_model/plot_sparse_logistic_regression_mnist.html" class="_attribution-link" target="_blank">http://scikit-learn.org/stable/auto_examples/linear_model/plot_sparse_logistic_regression_mnist.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

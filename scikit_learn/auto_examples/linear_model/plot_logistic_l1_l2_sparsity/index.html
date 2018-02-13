@@ -1,0 +1,168 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Example&#58; L1 Penalty and Sparsity in Logistic Regression - Scikit-learn - W3cubDocs</title>
+  
+  <meta name="description" content="Comparison of the sparsity (percentage of zero coefficients) of solutions when L1 and L2 penalty are used for different values of C. We can see that &hellip;">
+  <meta name="keywords" content="l, penalty, and, sparsity, logistic, regression, example, -, scikit-learn, scikit_learn">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/scikit_learn/auto_examples/linear_model/plot_logistic_l1_l2_sparsity/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/scikit_learn.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/scikit_learn/" class="_nav-link" title="" style="margin-left:0;">scikit-learn</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _sphinx">
+				
+<h1 id="sphx-glr-auto-examples-linear-model-plot-logistic-l1-l2-sparsity-py">L1 Penalty and Sparsity in Logistic Regression</h1> <p id="l1-penalty-and-sparsity-in-logistic-regression">Comparison of the sparsity (percentage of zero coefficients) of solutions when L1 and L2 penalty are used for different values of C. We can see that large values of C give more freedom to the model. Conversely, smaller values of C constrain the model more. In the L1 penalty case, this leads to sparser solutions.</p> <p>We classify 8x8 images of digits into two classes: 0-4 against 5-9. The visualization shows coefficients of the models for varying C.</p> <img alt="../../_images/sphx_glr_plot_logistic_l1_l2_sparsity_001.png" class="align-center" src="data:image/png;base64,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"> <p class="sphx-glr-script-out">Out:</p> <pre data-language="python">C=100.00
+Sparsity with L1 penalty: 6.25%
+score with L1 penalty: 0.9104
+Sparsity with L2 penalty: 4.69%
+score with L2 penalty: 0.9098
+C=1.00
+Sparsity with L1 penalty: 10.94%
+score with L1 penalty: 0.9104
+Sparsity with L2 penalty: 4.69%
+score with L2 penalty: 0.9093
+C=0.01
+Sparsity with L1 penalty: 85.94%
+score with L1 penalty: 0.8614
+Sparsity with L2 penalty: 4.69%
+score with L2 penalty: 0.8915
+</pre>  <pre data-language="python">print(__doc__)
+
+# Authors: Alexandre Gramfort &lt;alexandre.gramfort@inria.fr&gt;
+#          Mathieu Blondel &lt;mathieu@mblondel.org&gt;
+#          Andreas Mueller &lt;amueller@ais.uni-bonn.de&gt;
+# License: BSD 3 clause
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+from sklearn.linear_model import LogisticRegression
+from sklearn import datasets
+from sklearn.preprocessing import StandardScaler
+
+digits = datasets.load_digits()
+
+X, y = digits.data, digits.target
+X = StandardScaler().fit_transform(X)
+
+# classify small against large digits
+y = (y &gt; 4).astype(np.int)
+
+
+# Set regularization parameter
+for i, C in enumerate((100, 1, 0.01)):
+    # turn down tolerance for short training time
+    clf_l1_LR = LogisticRegression(C=C, penalty='l1', tol=0.01)
+    clf_l2_LR = LogisticRegression(C=C, penalty='l2', tol=0.01)
+    clf_l1_LR.fit(X, y)
+    clf_l2_LR.fit(X, y)
+
+    coef_l1_LR = clf_l1_LR.coef_.ravel()
+    coef_l2_LR = clf_l2_LR.coef_.ravel()
+
+    # coef_l1_LR contains zeros due to the
+    # L1 sparsity inducing norm
+
+    sparsity_l1_LR = np.mean(coef_l1_LR == 0) * 100
+    sparsity_l2_LR = np.mean(coef_l2_LR == 0) * 100
+
+    print("C=%.2f" % C)
+    print("Sparsity with L1 penalty: %.2f%%" % sparsity_l1_LR)
+    print("score with L1 penalty: %.4f" % clf_l1_LR.score(X, y))
+    print("Sparsity with L2 penalty: %.2f%%" % sparsity_l2_LR)
+    print("score with L2 penalty: %.4f" % clf_l2_LR.score(X, y))
+
+    l1_plot = plt.subplot(3, 2, 2 * i + 1)
+    l2_plot = plt.subplot(3, 2, 2 * (i + 1))
+    if i == 0:
+        l1_plot.set_title("L1 penalty")
+        l2_plot.set_title("L2 penalty")
+
+    l1_plot.imshow(np.abs(coef_l1_LR.reshape(8, 8)), interpolation='nearest',
+                   cmap='binary', vmax=1, vmin=0)
+    l2_plot.imshow(np.abs(coef_l2_LR.reshape(8, 8)), interpolation='nearest',
+                   cmap='binary', vmax=1, vmin=0)
+    plt.text(-8, 3, "C = %.2f" % C)
+
+    l1_plot.set_xticks(())
+    l1_plot.set_yticks(())
+    l2_plot.set_xticks(())
+    l2_plot.set_yticks(())
+
+plt.show()
+</pre> <p><strong>Total running time of the script:</strong> ( 0 minutes 0.588 seconds)</p> <div class="sphx-glr-footer docutils container"> <div class="sphx-glr-download docutils container"> <a class="reference download internal" href="http://scikit-learn.org/stable/_downloads/plot_logistic_l1_l2_sparsity.py" download="" target="_blank"><code>Download Python source code: plot_logistic_l1_l2_sparsity.py</code></a>
+</div> <div class="sphx-glr-download docutils container"> <a class="reference download internal" href="http://scikit-learn.org/stable/_downloads/plot_logistic_l1_l2_sparsity.ipynb" download="" target="_blank"><code>Download Jupyter notebook: plot_logistic_l1_l2_sparsity.ipynb</code></a>
+</div> </div> <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.readthedocs.io" target="_blank">Generated by Sphinx-Gallery</a></p>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2007–2017 The scikit-learn developers<br>Licensed under the 3-clause BSD License.<br>
+    <a href="http://scikit-learn.org/stable/auto_examples/linear_model/plot_logistic_l1_l2_sparsity.html" class="_attribution-link" target="_blank">http://scikit-learn.org/stable/auto_examples/linear_model/plot_logistic_l1_l2_sparsity.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

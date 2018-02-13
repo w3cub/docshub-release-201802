@@ -1,0 +1,222 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>feature_selection.RFE() - Scikit-learn - W3cubDocs</title>
+  
+  <meta name="description" content=" Feature ranking with recursive feature elimination. ">
+  <meta name="keywords" content="sklearn, feature, selection, rfe, -, scikit-learn, scikit_learn">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/scikit_learn/modules/generated/sklearn.feature_selection.rfe/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/scikit_learn.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/scikit_learn/" class="_nav-link" title="" style="margin-left:0;">scikit-learn</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _sphinx">
+				
+<h1 id="sklearn-feature-selection-rfe">sklearn.feature_selection.RFE</h1> <dl class="class"> <dt id="sklearn.feature_selection.RFE">
+<code>class sklearn.feature_selection.RFE(estimator, n_features_to_select=None, step=1, verbose=0)</code> <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/f3320a6f/sklearn/feature_selection/rfe.py#L35" target="_blank"><span class="viewcode-link">[source]</span></a>
+</dt> <dd>
+<p>Feature ranking with recursive feature elimination.</p> <p>Given an external estimator that assigns weights to features (e.g., the coefficients of a linear model), the goal of recursive feature elimination (RFE) is to select features by recursively considering smaller and smaller sets of features. First, the estimator is trained on the initial set of features and the importance of each feature is obtained either through a <code>coef_</code> attribute or through a <code>feature_importances_</code> attribute. Then, the least important features are pruned from current set of features. That procedure is recursively repeated on the pruned set until the desired number of features to select is eventually reached.</p> <p>Read more in the <a class="reference internal" href="../../feature_selection/#rfe"><span class="std std-ref">User Guide</span></a>.</p> <table class="docutils field-list" frame="void" rules="none"> <col class="field-name"> <col class="field-body">  <tr>
+<th class="field-name">Parameters:</th>
+<td class="field-body">
+<p class="first"><strong>estimator</strong> : object</p>  <p>A supervised learning estimator with a <code>fit</code> method that provides information about feature importance either through a <code>coef_</code> attribute or through a <code>feature_importances_</code> attribute.</p>  <p><strong>n_features_to_select</strong> : int or None (default=None)</p>  <p>The number of features to select. If <code>None</code>, half of the features are selected.</p>  <p><strong>step</strong> : int or float, optional (default=1)</p>  <p>If greater than or equal to 1, then <code>step</code> corresponds to the (integer) number of features to remove at each iteration. If within (0.0, 1.0), then <code>step</code> corresponds to the percentage (rounded down) of features to remove at each iteration.</p>  <p><strong>verbose</strong> : int, default=0</p>  <p>Controls verbosity of output.</p>  </td> </tr> <tr>
+<th class="field-name">Attributes:</th>
+<td class="field-body">
+<p class="first"><strong>n_features_</strong> : int</p>  <p>The number of selected features.</p>  <p><strong>support_</strong> : array of shape [n_features]</p>  <p>The mask of selected features.</p>  <p><strong>ranking_</strong> : array of shape [n_features]</p>  <p>The feature ranking, such that <code>ranking_[i]</code> corresponds to the ranking position of the i-th feature. Selected (i.e., estimated best) features are assigned rank 1.</p>  <p><strong>estimator_</strong> : object</p>  <p>The external estimator fit on the reduced dataset.</p>  </td> </tr>  </table> <h4 class="rubric">References</h4> <table class="docutils citation" frame="void" id="r170" rules="none">   <tr>
+<td class="label"><a class="fn-backref" href="#id1">[R170]</a></td>
+<td>Guyon, I., Weston, J., Barnhill, S., &amp; Vapnik, V., “Gene selection for cancer classification using support vector machines”, Mach. Learn., 46(1-3), 389–422, 2002.</td>
+</tr>  </table> <h4 class="rubric">Examples</h4> <p>The following example shows how to retrieve the 5 right informative features in the Friedman #1 dataset.</p> <pre data-language="python">&gt;&gt;&gt; from sklearn.datasets import make_friedman1
+&gt;&gt;&gt; from sklearn.feature_selection import RFE
+&gt;&gt;&gt; from sklearn.svm import SVR
+&gt;&gt;&gt; X, y = make_friedman1(n_samples=50, n_features=10, random_state=0)
+&gt;&gt;&gt; estimator = SVR(kernel="linear")
+&gt;&gt;&gt; selector = RFE(estimator, 5, step=1)
+&gt;&gt;&gt; selector = selector.fit(X, y)
+&gt;&gt;&gt; selector.support_ 
+array([ True,  True,  True,  True,  True,
+        False, False, False, False, False], dtype=bool)
+&gt;&gt;&gt; selector.ranking_
+array([1, 1, 1, 1, 1, 6, 4, 3, 2, 5])
+</pre> <h4 class="rubric">Methods</h4> <table class="longtable docutils">   <tr>
+<td>
+<code>decision_function</code>(X)</td> <td></td> </tr> <tr>
+<td>
+<a class="reference internal" href="#sklearn.feature_selection.RFE.fit" title="sklearn.feature_selection.RFE.fit"><code>fit</code></a>(X, y)</td> <td>Fit the RFE model and then the underlying estimator on the selected features.</td> </tr> <tr>
+<td>
+<a class="reference internal" href="#sklearn.feature_selection.RFE.fit_transform" title="sklearn.feature_selection.RFE.fit_transform"><code>fit_transform</code></a>(X[, y])</td> <td>Fit to data, then transform it.</td> </tr> <tr>
+<td>
+<a class="reference internal" href="#sklearn.feature_selection.RFE.get_params" title="sklearn.feature_selection.RFE.get_params"><code>get_params</code></a>([deep])</td> <td>Get parameters for this estimator.</td> </tr> <tr>
+<td>
+<a class="reference internal" href="#sklearn.feature_selection.RFE.get_support" title="sklearn.feature_selection.RFE.get_support"><code>get_support</code></a>([indices])</td> <td>Get a mask, or integer index, of the features selected</td> </tr> <tr>
+<td>
+<a class="reference internal" href="#sklearn.feature_selection.RFE.inverse_transform" title="sklearn.feature_selection.RFE.inverse_transform"><code>inverse_transform</code></a>(X)</td> <td>Reverse the transformation operation</td> </tr> <tr>
+<td>
+<a class="reference internal" href="#sklearn.feature_selection.RFE.predict" title="sklearn.feature_selection.RFE.predict"><code>predict</code></a>(X)</td> <td>Reduce X to the selected features and then predict using the underlying estimator.</td> </tr> <tr>
+<td>
+<code>predict_log_proba</code>(X)</td> <td></td> </tr> <tr>
+<td>
+<code>predict_proba</code>(X)</td> <td></td> </tr> <tr>
+<td>
+<a class="reference internal" href="#sklearn.feature_selection.RFE.score" title="sklearn.feature_selection.RFE.score"><code>score</code></a>(X, y)</td> <td>Reduce X to the selected features and then return the score of the underlying estimator.</td> </tr> <tr>
+<td>
+<a class="reference internal" href="#sklearn.feature_selection.RFE.set_params" title="sklearn.feature_selection.RFE.set_params"><code>set_params</code></a>(**params)</td> <td>Set the parameters of this estimator.</td> </tr> <tr>
+<td>
+<a class="reference internal" href="#sklearn.feature_selection.RFE.transform" title="sklearn.feature_selection.RFE.transform"><code>transform</code></a>(X)</td> <td>Reduce X to the selected features.</td> </tr>  </table> <dl class="method"> <dt id="sklearn.feature_selection.RFE.__init__">
+<code>__init__(estimator, n_features_to_select=None, step=1, verbose=0)</code> <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/f3320a6f/sklearn/feature_selection/rfe.py#L111" target="_blank"><span class="viewcode-link">[source]</span></a>
+</dt> 
+</dl> <dl class="method"> <dt id="sklearn.feature_selection.RFE.fit">
+<code>fit(X, y)</code> <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/f3320a6f/sklearn/feature_selection/rfe.py#L122" target="_blank"><span class="viewcode-link">[source]</span></a>
+</dt> <dd>
+<dl class="docutils"> <dt>Fit the RFE model and then the underlying estimator on the selected</dt> <dd>features.</dd> </dl> <table class="docutils field-list" frame="void" rules="none"> <col class="field-name"> <col class="field-body">  <tr>
+<th class="field-name">Parameters:</th>
+<td class="field-body">
+<p class="first"><strong>X</strong> : {array-like, sparse matrix}, shape = [n_samples, n_features]</p>  <p>The training input samples.</p>  <p><strong>y</strong> : array-like, shape = [n_samples]</p>  <p>The target values.</p>  </td> </tr>  </table> </dd>
+</dl> <dl class="method"> <dt id="sklearn.feature_selection.RFE.fit_transform">
+<code>fit_transform(X, y=None, **fit_params)</code> <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/f3320a6f/sklearn/base.py#L493" target="_blank"><span class="viewcode-link">[source]</span></a>
+</dt> <dd>
+<p>Fit to data, then transform it.</p> <p>Fits transformer to X and y with optional parameters fit_params and returns a transformed version of X.</p> <table class="docutils field-list" frame="void" rules="none"> <col class="field-name"> <col class="field-body">  <tr>
+<th class="field-name">Parameters:</th>
+<td class="field-body">
+<p class="first"><strong>X</strong> : numpy array of shape [n_samples, n_features]</p>  <p>Training set.</p>  <p><strong>y</strong> : numpy array of shape [n_samples]</p>  <p>Target values.</p>  </td> </tr> <tr>
+<th class="field-name">Returns:</th>
+<td class="field-body">
+<p class="first"><strong>X_new</strong> : numpy array of shape [n_samples, n_features_new]</p>  <p>Transformed array.</p>  </td> </tr>  </table> </dd>
+</dl> <dl class="method"> <dt id="sklearn.feature_selection.RFE.get_params">
+<code>get_params(deep=True)</code> <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/f3320a6f/sklearn/base.py#L213" target="_blank"><span class="viewcode-link">[source]</span></a>
+</dt> <dd>
+<p>Get parameters for this estimator.</p> <table class="docutils field-list" frame="void" rules="none"> <col class="field-name"> <col class="field-body">  <tr>
+<th class="field-name">Parameters:</th>
+<td class="field-body">
+<p class="first"><strong>deep</strong> : boolean, optional</p>  <p>If True, will return the parameters for this estimator and contained subobjects that are estimators.</p>  </td> </tr> <tr>
+<th class="field-name">Returns:</th>
+<td class="field-body">
+<p class="first"><strong>params</strong> : mapping of string to any</p>  <p>Parameter names mapped to their values.</p>  </td> </tr>  </table> </dd>
+</dl> <dl class="method"> <dt id="sklearn.feature_selection.RFE.get_support">
+<code>get_support(indices=False)</code> <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/f3320a6f/sklearn/feature_selection/base.py#L27" target="_blank"><span class="viewcode-link">[source]</span></a>
+</dt> <dd>
+<p>Get a mask, or integer index, of the features selected</p> <table class="docutils field-list" frame="void" rules="none"> <col class="field-name"> <col class="field-body">  <tr>
+<th class="field-name">Parameters:</th>
+<td class="field-body">
+<p class="first"><strong>indices</strong> : boolean (default False)</p>  <p>If True, the return value will be an array of integers, rather than a boolean mask.</p>  </td> </tr> <tr>
+<th class="field-name">Returns:</th>
+<td class="field-body">
+<p class="first"><strong>support</strong> : array</p>  <p>An index that selects the retained features from a feature vector. If <code>indices</code> is False, this is a boolean array of shape [# input features], in which an element is True iff its corresponding feature is selected for retention. If <code>indices</code> is True, this is an integer array of shape [# output features] whose values are indices into the input feature vector.</p>  </td> </tr>  </table> </dd>
+</dl> <dl class="method"> <dt id="sklearn.feature_selection.RFE.inverse_transform">
+<code>inverse_transform(X)</code> <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/f3320a6f/sklearn/feature_selection/base.py#L86" target="_blank"><span class="viewcode-link">[source]</span></a>
+</dt> <dd>
+<p>Reverse the transformation operation</p> <table class="docutils field-list" frame="void" rules="none"> <col class="field-name"> <col class="field-body">  <tr>
+<th class="field-name">Parameters:</th>
+<td class="field-body">
+<p class="first"><strong>X</strong> : array of shape [n_samples, n_selected_features]</p>  <p>The input samples.</p>  </td> </tr> <tr>
+<th class="field-name">Returns:</th>
+<td class="field-body">
+<p class="first"><strong>X_r</strong> : array of shape [n_samples, n_original_features]</p>  <p><code>X</code> with columns of zeros inserted where features would have been removed by <code>transform</code>.</p>  </td> </tr>  </table> </dd>
+</dl> <dl class="method"> <dt id="sklearn.feature_selection.RFE.predict">
+<code>predict(X)</code> <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/f3320a6f/sklearn/utils/metaestimators.py#L219" target="_blank"><span class="viewcode-link">[source]</span></a>
+</dt> <dd>
+<dl class="docutils"> <dt>Reduce X to the selected features and then predict using the</dt> <dd>underlying estimator.</dd> </dl> <table class="docutils field-list" frame="void" rules="none"> <col class="field-name"> <col class="field-body">  <tr>
+<th class="field-name">Parameters:</th>
+<td class="field-body">
+<p class="first"><strong>X</strong> : array of shape [n_samples, n_features]</p>  <p>The input samples.</p>  </td> </tr> <tr>
+<th class="field-name">Returns:</th>
+<td class="field-body">
+<p class="first"><strong>y</strong> : array of shape [n_samples]</p>  <p>The predicted target values.</p>  </td> </tr>  </table> </dd>
+</dl> <dl class="method"> <dt id="sklearn.feature_selection.RFE.score">
+<code>score(X, y)</code> <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/f3320a6f/sklearn/utils/metaestimators.py#L237" target="_blank"><span class="viewcode-link">[source]</span></a>
+</dt> <dd>
+<dl class="docutils"> <dt>Reduce X to the selected features and then return the score of the</dt> <dd>underlying estimator.</dd> </dl> <table class="docutils field-list" frame="void" rules="none"> <col class="field-name"> <col class="field-body">  <tr>
+<th class="field-name">Parameters:</th>
+<td class="field-body">
+<p class="first"><strong>X</strong> : array of shape [n_samples, n_features]</p>  <p>The input samples.</p>  <p><strong>y</strong> : array of shape [n_samples]</p>  <p>The target values.</p>  </td> </tr>  </table> </dd>
+</dl> <dl class="method"> <dt id="sklearn.feature_selection.RFE.set_params">
+<code>set_params(**params)</code> <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/f3320a6f/sklearn/base.py#L250" target="_blank"><span class="viewcode-link">[source]</span></a>
+</dt> <dd>
+<p>Set the parameters of this estimator.</p> <p>The method works on simple estimators as well as on nested objects (such as pipelines). The latter have parameters of the form <code>&lt;component&gt;__&lt;parameter&gt;</code> so that it’s possible to update each component of a nested object.</p> <table class="docutils field-list" frame="void" rules="none"> <col class="field-name"> <col class="field-body">  <tr>
+<th class="field-name">Returns:</th>
+<td class="field-body">
+<strong>self</strong> :</td> </tr>  </table> </dd>
+</dl> <dl class="method"> <dt id="sklearn.feature_selection.RFE.transform">
+<code>transform(X)</code> <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/f3320a6f/sklearn/feature_selection/base.py#L62" target="_blank"><span class="viewcode-link">[source]</span></a>
+</dt> <dd>
+<p>Reduce X to the selected features.</p> <table class="docutils field-list" frame="void" rules="none"> <col class="field-name"> <col class="field-body">  <tr>
+<th class="field-name">Parameters:</th>
+<td class="field-body">
+<p class="first"><strong>X</strong> : array of shape [n_samples, n_features]</p>  <p>The input samples.</p>  </td> </tr> <tr>
+<th class="field-name">Returns:</th>
+<td class="field-body">
+<p class="first"><strong>X_r</strong> : array of shape [n_samples, n_selected_features]</p>  <p>The input samples with only the selected features.</p>  </td> </tr>  </table> </dd>
+</dl> </dd>
+</dl>  <h2 id="examples-using-sklearn-feature-selection-rfe">Examples using <code>sklearn.feature_selection.RFE</code>
+</h2> <div class="sphx-glr-thumbcontainer" tooltip="A recursive feature elimination example showing the relevance of pixels in a digit classificati...">
+<div class="figure" id="id2"> <img alt="../../_images/sphx_glr_plot_rfe_digits_thumb.png" src="data:image/png;base64,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"> <p class="caption"><span class="caption-text"><a class="reference internal" href="../../../auto_examples/feature_selection/plot_rfe_digits/#sphx-glr-auto-examples-feature-selection-plot-rfe-digits-py"><span class="std std-ref">Recursive feature elimination</span></a></span></p> </div> </div>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2007–2017 The scikit-learn developers<br>Licensed under the 3-clause BSD License.<br>
+    <a href="http://scikit-learn.org/stable/modules/generated/sklearn.feature_selection.RFE.html" class="_attribution-link" target="_blank">http://scikit-learn.org/stable/modules/generated/sklearn.feature_selection.RFE.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

@@ -1,0 +1,150 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Example&#58; Plot Class Probabilities Calculated by the VotingClassifier - Scikit-learn - W3cubDocs</title>
+  
+  <meta name="description" content=" Plot the class probabilities of the first sample in a toy dataset predicted by three different classifiers and averaged by the VotingClassifier. ">
+  <meta name="keywords" content="plot, class, probabilities, calculated, votingclassifier, example, -, scikit-learn, scikit_learn">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/scikit_learn/auto_examples/ensemble/plot_voting_probas/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/scikit_learn.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/scikit_learn/" class="_nav-link" title="" style="margin-left:0;">scikit-learn</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _sphinx">
+				
+<h1 id="sphx-glr-auto-examples-ensemble-plot-voting-probas-py">Plot class probabilities calculated by the VotingClassifier</h1> <p id="plot-class-probabilities-calculated-by-the-votingclassifier">Plot the class probabilities of the first sample in a toy dataset predicted by three different classifiers and averaged by the <code>VotingClassifier</code>.</p> <p>First, three examplary classifiers are initialized (<code>LogisticRegression</code>, <code>GaussianNB</code>, and <code>RandomForestClassifier</code>) and used to initialize a soft-voting <code>VotingClassifier</code> with weights <code>[1, 1, 5]</code>, which means that the predicted probabilities of the <code>RandomForestClassifier</code> count 5 times as much as the weights of the other classifiers when the averaged probability is calculated.</p> <p>To visualize the probability weighting, we fit each classifier on the training set and plot the predicted class probabilities for the first sample in this example dataset.</p> <img alt="../../_images/sphx_glr_plot_voting_probas_001.png" class="align-center" src="data:image/png;base64,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"> <pre data-language="python">print(__doc__)
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+from sklearn.linear_model import LogisticRegression
+from sklearn.naive_bayes import GaussianNB
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.ensemble import VotingClassifier
+
+clf1 = LogisticRegression(random_state=123)
+clf2 = RandomForestClassifier(random_state=123)
+clf3 = GaussianNB()
+X = np.array([[-1.0, -1.0], [-1.2, -1.4], [-3.4, -2.2], [1.1, 1.2]])
+y = np.array([1, 1, 2, 2])
+
+eclf = VotingClassifier(estimators=[('lr', clf1), ('rf', clf2), ('gnb', clf3)],
+                        voting='soft',
+                        weights=[1, 1, 5])
+
+# predict class probabilities for all classifiers
+probas = [c.fit(X, y).predict_proba(X) for c in (clf1, clf2, clf3, eclf)]
+
+# get class probabilities for the first sample in the dataset
+class1_1 = [pr[0, 0] for pr in probas]
+class2_1 = [pr[0, 1] for pr in probas]
+
+
+# plotting
+
+N = 4  # number of groups
+ind = np.arange(N)  # group positions
+width = 0.35  # bar width
+
+fig, ax = plt.subplots()
+
+# bars for classifier 1-3
+p1 = ax.bar(ind, np.hstack(([class1_1[:-1], [0]])), width,
+            color='green', edgecolor='k')
+p2 = ax.bar(ind + width, np.hstack(([class2_1[:-1], [0]])), width,
+            color='lightgreen', edgecolor='k')
+
+# bars for VotingClassifier
+p3 = ax.bar(ind, [0, 0, 0, class1_1[-1]], width,
+            color='blue', edgecolor='k')
+p4 = ax.bar(ind + width, [0, 0, 0, class2_1[-1]], width,
+            color='steelblue', edgecolor='k')
+
+# plot annotations
+plt.axvline(2.8, color='k', linestyle='dashed')
+ax.set_xticks(ind + width)
+ax.set_xticklabels(['LogisticRegression\nweight 1',
+                    'GaussianNB\nweight 1',
+                    'RandomForestClassifier\nweight 5',
+                    'VotingClassifier\n(average probabilities)'],
+                   rotation=40,
+                   ha='right')
+plt.ylim([0, 1])
+plt.title('Class probabilities for sample 1 by different classifiers')
+plt.legend([p1[0], p2[0]], ['class 1', 'class 2'], loc='upper left')
+plt.show()
+</pre> <p><strong>Total running time of the script:</strong> ( 0 minutes 0.087 seconds)</p> <div class="sphx-glr-footer docutils container"> <div class="sphx-glr-download docutils container"> <a class="reference download internal" href="http://scikit-learn.org/stable/_downloads/plot_voting_probas.py" download="" target="_blank"><code>Download Python source code: plot_voting_probas.py</code></a>
+</div> <div class="sphx-glr-download docutils container"> <a class="reference download internal" href="http://scikit-learn.org/stable/_downloads/plot_voting_probas.ipynb" download="" target="_blank"><code>Download Jupyter notebook: plot_voting_probas.ipynb</code></a>
+</div> </div> <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.readthedocs.io" target="_blank">Generated by Sphinx-Gallery</a></p>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2007–2017 The scikit-learn developers<br>Licensed under the 3-clause BSD License.<br>
+    <a href="http://scikit-learn.org/stable/auto_examples/ensemble/plot_voting_probas.html" class="_attribution-link" target="_blank">http://scikit-learn.org/stable/auto_examples/ensemble/plot_voting_probas.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

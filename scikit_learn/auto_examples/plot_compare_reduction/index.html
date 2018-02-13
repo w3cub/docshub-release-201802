@@ -1,0 +1,546 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Example&#58; Selecting Dimensionality Reduction With Pipeline and GridSearchCV - Scikit-learn - W3cubDocs</title>
+  
+  <meta name="description" content="This example constructs a pipeline that does dimensionality reduction followed by prediction with a support vector classifier. It demonstrates the &hellip;">
+  <meta name="keywords" content="selecting, dimensionality, reduction, with, pipeline, and, gridsearchcv, example, -, scikit-learn, scikit_learn">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/scikit_learn/auto_examples/plot_compare_reduction/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/scikit_learn.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/scikit_learn/" class="_nav-link" title="" style="margin-left:0;">scikit-learn</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _sphinx">
+				
+<h1 id="sphx-glr-auto-examples-plot-compare-reduction-py">Selecting dimensionality reduction with Pipeline and GridSearchCV</h1> <p id="selecting-dimensionality-reduction-with-pipeline-and-gridsearchcv">This example constructs a pipeline that does dimensionality reduction followed by prediction with a support vector classifier. It demonstrates the use of <code>GridSearchCV</code> and <code>Pipeline</code> to optimize over different classes of estimators in a single CV run – unsupervised <code>PCA</code> and <code>NMF</code> dimensionality reductions are compared to univariate feature selection during the grid search.</p> <p>Additionally, <code>Pipeline</code> can be instantiated with the <code>memory</code> argument to memoize the transformers within the pipeline, avoiding to fit again the same transformers over and over.</p> <p>Note that the use of <code>memory</code> to enable caching becomes interesting when the fitting of a transformer is costly.</p>  <h2 id="illustration-of-pipeline-and-gridsearchcv">Illustration of <code>Pipeline</code> and <code>GridSearchCV</code>
+</h2>  This section illustrates the use of a <code>Pipeline</code> with <code>GridSearchCV</code> <pre data-language="python"># Authors: Robert McGibbon, Joel Nothman, Guillaume Lemaitre
+
+from __future__ import print_function, division
+
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.datasets import load_digits
+from sklearn.model_selection import GridSearchCV
+from sklearn.pipeline import Pipeline
+from sklearn.svm import LinearSVC
+from sklearn.decomposition import PCA, NMF
+from sklearn.feature_selection import SelectKBest, chi2
+
+print(__doc__)
+
+pipe = Pipeline([
+    ('reduce_dim', PCA()),
+    ('classify', LinearSVC())
+])
+
+N_FEATURES_OPTIONS = [2, 4, 8]
+C_OPTIONS = [1, 10, 100, 1000]
+param_grid = [
+    {
+        'reduce_dim': [PCA(iterated_power=7), NMF()],
+        'reduce_dim__n_components': N_FEATURES_OPTIONS,
+        'classify__C': C_OPTIONS
+    },
+    {
+        'reduce_dim': [SelectKBest(chi2)],
+        'reduce_dim__k': N_FEATURES_OPTIONS,
+        'classify__C': C_OPTIONS
+    },
+]
+reducer_labels = ['PCA', 'NMF', 'KBest(chi2)']
+
+grid = GridSearchCV(pipe, cv=3, n_jobs=1, param_grid=param_grid)
+digits = load_digits()
+grid.fit(digits.data, digits.target)
+
+mean_scores = np.array(grid.cv_results_['mean_test_score'])
+# scores are in the order of param_grid iteration, which is alphabetical
+mean_scores = mean_scores.reshape(len(C_OPTIONS), -1, len(N_FEATURES_OPTIONS))
+# select score for best C
+mean_scores = mean_scores.max(axis=0)
+bar_offsets = (np.arange(len(N_FEATURES_OPTIONS)) *
+               (len(reducer_labels) + 1) + .5)
+
+plt.figure()
+COLORS = 'bgrcmyk'
+for i, (label, reducer_scores) in enumerate(zip(reducer_labels, mean_scores)):
+    plt.bar(bar_offsets + i, reducer_scores, label=label, color=COLORS[i])
+
+plt.title("Comparing feature reduction techniques")
+plt.xlabel('Reduced number of features')
+plt.xticks(bar_offsets + len(reducer_labels) / 2, N_FEATURES_OPTIONS)
+plt.ylabel('Digit classification accuracy')
+plt.ylim((0, 1))
+plt.legend(loc='upper left')
+</pre> <img alt="../_images/sphx_glr_plot_compare_reduction_001.png" class="align-center" src="data:image/png;base64,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">   <h2 id="caching-transformers-within-a-pipeline">Caching transformers within a <code>Pipeline</code>
+</h2>  <p>It is sometimes worthwhile storing the state of a specific transformer since it could be used again. Using a pipeline in <code>GridSearchCV</code> triggers such situations. Therefore, we use the argument <code>memory</code> to enable caching.</p> <div class="admonition warning"> <p class="first admonition-title">Warning</p> <p class="last">Note that this example is, however, only an illustration since for this specific case fitting PCA is not necessarily slower than loading the cache. Hence, use the <code>memory</code> constructor parameter when the fitting of a transformer is costly.</p> </div>  <pre data-language="python">from tempfile import mkdtemp
+from shutil import rmtree
+from sklearn.externals.joblib import Memory
+
+# Create a temporary folder to store the transformers of the pipeline
+cachedir = mkdtemp()
+memory = Memory(cachedir=cachedir, verbose=10)
+cached_pipe = Pipeline([('reduce_dim', PCA()),
+                        ('classify', LinearSVC())],
+                       memory=memory)
+
+# This time, a cached pipeline will be used within the grid search
+grid = GridSearchCV(cached_pipe, cv=3, n_jobs=1, param_grid=param_grid)
+digits = load_digits()
+grid.fit(digits.data, digits.target)
+
+# Delete the temporary cache before exiting
+rmtree(cachedir)
+</pre> <p class="sphx-glr-script-out">Out:</p> <pre data-language="python">________________________________________________________________________________
+[Memory] Calling sklearn.pipeline._fit_transform_one...
+_fit_transform_one(PCA(copy=True, iterated_power=7, n_components=2, random_state=None,
+  svd_solver='auto', tol=0.0, whiten=False),
+None, array([[ 0., ...,  0.],
+       ...,
+       [ 0., ...,  0.]]), array([0, ..., 8]))
+________________________________________________fit_transform_one - 0.0s, 0.0min
+________________________________________________________________________________
+[Memory] Calling sklearn.pipeline._fit_transform_one...
+_fit_transform_one(PCA(copy=True, iterated_power=7, n_components=2, random_state=None,
+  svd_solver='auto', tol=0.0, whiten=False),
+None, array([[ 0., ...,  0.],
+       ...,
+       [ 0., ...,  0.]]), array([0, ..., 8]))
+________________________________________________fit_transform_one - 0.0s, 0.0min
+________________________________________________________________________________
+[Memory] Calling sklearn.pipeline._fit_transform_one...
+_fit_transform_one(PCA(copy=True, iterated_power=7, n_components=2, random_state=None,
+  svd_solver='auto', tol=0.0, whiten=False),
+None, array([[ 0., ...,  0.],
+       ...,
+       [ 0., ...,  0.]]), array([0, ..., 4]))
+________________________________________________fit_transform_one - 0.0s, 0.0min
+________________________________________________________________________________
+[Memory] Calling sklearn.pipeline._fit_transform_one...
+_fit_transform_one(PCA(copy=True, iterated_power=7, n_components=4, random_state=None,
+  svd_solver='auto', tol=0.0, whiten=False),
+None, array([[ 0., ...,  0.],
+       ...,
+       [ 0., ...,  0.]]), array([0, ..., 8]))
+________________________________________________fit_transform_one - 0.0s, 0.0min
+________________________________________________________________________________
+[Memory] Calling sklearn.pipeline._fit_transform_one...
+_fit_transform_one(PCA(copy=True, iterated_power=7, n_components=4, random_state=None,
+  svd_solver='auto', tol=0.0, whiten=False),
+None, array([[ 0., ...,  0.],
+       ...,
+       [ 0., ...,  0.]]), array([0, ..., 8]))
+________________________________________________fit_transform_one - 0.0s, 0.0min
+________________________________________________________________________________
+[Memory] Calling sklearn.pipeline._fit_transform_one...
+_fit_transform_one(PCA(copy=True, iterated_power=7, n_components=4, random_state=None,
+  svd_solver='auto', tol=0.0, whiten=False),
+None, array([[ 0., ...,  0.],
+       ...,
+       [ 0., ...,  0.]]), array([0, ..., 4]))
+________________________________________________fit_transform_one - 0.0s, 0.0min
+________________________________________________________________________________
+[Memory] Calling sklearn.pipeline._fit_transform_one...
+_fit_transform_one(PCA(copy=True, iterated_power=7, n_components=8, random_state=None,
+  svd_solver='auto', tol=0.0, whiten=False),
+None, array([[ 0., ...,  0.],
+       ...,
+       [ 0., ...,  0.]]), array([0, ..., 8]))
+________________________________________________fit_transform_one - 0.0s, 0.0min
+________________________________________________________________________________
+[Memory] Calling sklearn.pipeline._fit_transform_one...
+_fit_transform_one(PCA(copy=True, iterated_power=7, n_components=8, random_state=None,
+  svd_solver='auto', tol=0.0, whiten=False),
+None, array([[ 0., ...,  0.],
+       ...,
+       [ 0., ...,  0.]]), array([0, ..., 8]))
+________________________________________________fit_transform_one - 0.0s, 0.0min
+________________________________________________________________________________
+[Memory] Calling sklearn.pipeline._fit_transform_one...
+_fit_transform_one(PCA(copy=True, iterated_power=7, n_components=8, random_state=None,
+  svd_solver='auto', tol=0.0, whiten=False),
+None, array([[ 0., ...,  0.],
+       ...,
+       [ 0., ...,  0.]]), array([0, ..., 4]))
+________________________________________________fit_transform_one - 0.0s, 0.0min
+________________________________________________________________________________
+[Memory] Calling sklearn.pipeline._fit_transform_one...
+_fit_transform_one(NMF(alpha=0.0, beta_loss='frobenius', init=None, l1_ratio=0.0, max_iter=200,
+  n_components=2, random_state=None, shuffle=False, solver='cd',
+  tol=0.0001, verbose=0),
+None, array([[ 0., ...,  0.],
+       ...,
+       [ 0., ...,  0.]]), array([0, ..., 8]))
+________________________________________________fit_transform_one - 0.1s, 0.0min
+________________________________________________________________________________
+[Memory] Calling sklearn.pipeline._fit_transform_one...
+_fit_transform_one(NMF(alpha=0.0, beta_loss='frobenius', init=None, l1_ratio=0.0, max_iter=200,
+  n_components=2, random_state=None, shuffle=False, solver='cd',
+  tol=0.0001, verbose=0),
+None, array([[ 0., ...,  0.],
+       ...,
+       [ 0., ...,  0.]]), array([0, ..., 8]))
+________________________________________________fit_transform_one - 0.0s, 0.0min
+________________________________________________________________________________
+[Memory] Calling sklearn.pipeline._fit_transform_one...
+_fit_transform_one(NMF(alpha=0.0, beta_loss='frobenius', init=None, l1_ratio=0.0, max_iter=200,
+  n_components=2, random_state=None, shuffle=False, solver='cd',
+  tol=0.0001, verbose=0),
+None, array([[ 0., ...,  0.],
+       ...,
+       [ 0., ...,  0.]]), array([0, ..., 4]))
+________________________________________________fit_transform_one - 0.1s, 0.0min
+________________________________________________________________________________
+[Memory] Calling sklearn.pipeline._fit_transform_one...
+_fit_transform_one(NMF(alpha=0.0, beta_loss='frobenius', init=None, l1_ratio=0.0, max_iter=200,
+  n_components=4, random_state=None, shuffle=False, solver='cd',
+  tol=0.0001, verbose=0),
+None, array([[ 0., ...,  0.],
+       ...,
+       [ 0., ...,  0.]]), array([0, ..., 8]))
+________________________________________________fit_transform_one - 0.1s, 0.0min
+________________________________________________________________________________
+[Memory] Calling sklearn.pipeline._fit_transform_one...
+_fit_transform_one(NMF(alpha=0.0, beta_loss='frobenius', init=None, l1_ratio=0.0, max_iter=200,
+  n_components=4, random_state=None, shuffle=False, solver='cd',
+  tol=0.0001, verbose=0),
+None, array([[ 0., ...,  0.],
+       ...,
+       [ 0., ...,  0.]]), array([0, ..., 8]))
+________________________________________________fit_transform_one - 0.1s, 0.0min
+________________________________________________________________________________
+[Memory] Calling sklearn.pipeline._fit_transform_one...
+_fit_transform_one(NMF(alpha=0.0, beta_loss='frobenius', init=None, l1_ratio=0.0, max_iter=200,
+  n_components=4, random_state=None, shuffle=False, solver='cd',
+  tol=0.0001, verbose=0),
+None, array([[ 0., ...,  0.],
+       ...,
+       [ 0., ...,  0.]]), array([0, ..., 4]))
+________________________________________________fit_transform_one - 0.1s, 0.0min
+________________________________________________________________________________
+[Memory] Calling sklearn.pipeline._fit_transform_one...
+_fit_transform_one(NMF(alpha=0.0, beta_loss='frobenius', init=None, l1_ratio=0.0, max_iter=200,
+  n_components=8, random_state=None, shuffle=False, solver='cd',
+  tol=0.0001, verbose=0),
+None, array([[ 0., ...,  0.],
+       ...,
+       [ 0., ...,  0.]]), array([0, ..., 8]))
+________________________________________________fit_transform_one - 0.1s, 0.0min
+________________________________________________________________________________
+[Memory] Calling sklearn.pipeline._fit_transform_one...
+_fit_transform_one(NMF(alpha=0.0, beta_loss='frobenius', init=None, l1_ratio=0.0, max_iter=200,
+  n_components=8, random_state=None, shuffle=False, solver='cd',
+  tol=0.0001, verbose=0),
+None, array([[ 0., ...,  0.],
+       ...,
+       [ 0., ...,  0.]]), array([0, ..., 8]))
+________________________________________________fit_transform_one - 0.1s, 0.0min
+________________________________________________________________________________
+[Memory] Calling sklearn.pipeline._fit_transform_one...
+_fit_transform_one(NMF(alpha=0.0, beta_loss='frobenius', init=None, l1_ratio=0.0, max_iter=200,
+  n_components=8, random_state=None, shuffle=False, solver='cd',
+  tol=0.0001, verbose=0),
+None, array([[ 0., ...,  0.],
+       ...,
+       [ 0., ...,  0.]]), array([0, ..., 4]))
+________________________________________________fit_transform_one - 0.1s, 0.0min
+[Memory]    0.0s, 0.0min: Loading _fit_transform_one from /tmp/tmpt93z6hvw/joblib/sklearn/pipeline/_fit_transform_one/418724be7e0f221c63842489d2d8dd8f
+___________________________________fit_transform_one cache loaded - 0.0s, 0.0min
+[Memory]    0.0s, 0.0min: Loading _fit_transform_one from /tmp/tmpt93z6hvw/joblib/sklearn/pipeline/_fit_transform_one/3e8d95d340d603afdf4d48f022bf17e5
+___________________________________fit_transform_one cache loaded - 0.0s, 0.0min
+[Memory]    0.0s, 0.0min: Loading _fit_transform_one from /tmp/tmpt93z6hvw/joblib/sklearn/pipeline/_fit_transform_one/883d0a1cdb71638bbb069032713ce9dc
+___________________________________fit_transform_one cache loaded - 0.0s, 0.0min
+[Memory]    0.0s, 0.0min: Loading _fit_transform_one from /tmp/tmpt93z6hvw/joblib/sklearn/pipeline/_fit_transform_one/958eff19e89776bd76df5aa2c245d3da
+___________________________________fit_transform_one cache loaded - 0.0s, 0.0min
+[Memory]    0.0s, 0.0min: Loading _fit_transform_one from /tmp/tmpt93z6hvw/joblib/sklearn/pipeline/_fit_transform_one/ba78eb5c2dcd4d6aa3f6153ebf783541
+___________________________________fit_transform_one cache loaded - 0.0s, 0.0min
+[Memory]    0.0s, 0.0min: Loading _fit_transform_one from /tmp/tmpt93z6hvw/joblib/sklearn/pipeline/_fit_transform_one/42022a50c9fdba89266fe57fa5f8b6cd
+___________________________________fit_transform_one cache loaded - 0.0s, 0.0min
+[Memory]    0.0s, 0.0min: Loading _fit_transform_one from /tmp/tmpt93z6hvw/joblib/sklearn/pipeline/_fit_transform_one/7920cd319ba93f250d5f3618e3d15da7
+___________________________________fit_transform_one cache loaded - 0.0s, 0.0min
+[Memory]    0.0s, 0.0min: Loading _fit_transform_one from /tmp/tmpt93z6hvw/joblib/sklearn/pipeline/_fit_transform_one/9e042898790629dd460a8b6f9fef2fd4
+___________________________________fit_transform_one cache loaded - 0.0s, 0.0min
+[Memory]    0.0s, 0.0min: Loading _fit_transform_one from /tmp/tmpt93z6hvw/joblib/sklearn/pipeline/_fit_transform_one/55ce05e1fc3d79d04d79b8e2aacec9cf
+___________________________________fit_transform_one cache loaded - 0.0s, 0.0min
+[Memory]    0.0s, 0.0min: Loading _fit_transform_one from /tmp/tmpt93z6hvw/joblib/sklearn/pipeline/_fit_transform_one/16c841ed85ffdb4fee198a8f99f5c1f4
+___________________________________fit_transform_one cache loaded - 0.0s, 0.0min
+[Memory]    0.0s, 0.0min: Loading _fit_transform_one from /tmp/tmpt93z6hvw/joblib/sklearn/pipeline/_fit_transform_one/35bff840b1d192804fd4ff24064e96f2
+___________________________________fit_transform_one cache loaded - 0.0s, 0.0min
+[Memory]    0.0s, 0.0min: Loading _fit_transform_one from /tmp/tmpt93z6hvw/joblib/sklearn/pipeline/_fit_transform_one/77797263aafc1cb48306ec67242c6ad5
+___________________________________fit_transform_one cache loaded - 0.0s, 0.0min
+[Memory]    0.0s, 0.0min: Loading _fit_transform_one from /tmp/tmpt93z6hvw/joblib/sklearn/pipeline/_fit_transform_one/f0515fdac3406fc25644d355469c0533
+___________________________________fit_transform_one cache loaded - 0.0s, 0.0min
+[Memory]    0.0s, 0.0min: Loading _fit_transform_one from /tmp/tmpt93z6hvw/joblib/sklearn/pipeline/_fit_transform_one/c5cbf3ce208ba301242b09931977b0ba
+___________________________________fit_transform_one cache loaded - 0.0s, 0.0min
+[Memory]    0.0s, 0.0min: Loading _fit_transform_one from /tmp/tmpt93z6hvw/joblib/sklearn/pipeline/_fit_transform_one/02ad81983f20f4c5cf0d47056cdacf9e
+___________________________________fit_transform_one cache loaded - 0.0s, 0.0min
+[Memory]    0.0s, 0.0min: Loading _fit_transform_one from /tmp/tmpt93z6hvw/joblib/sklearn/pipeline/_fit_transform_one/8ac7812389fd8128d90760e78d84e3af
+___________________________________fit_transform_one cache loaded - 0.0s, 0.0min
+[Memory]    0.0s, 0.0min: Loading _fit_transform_one from /tmp/tmpt93z6hvw/joblib/sklearn/pipeline/_fit_transform_one/c832e7ce545bf8ed19c9646b7df57b94
+___________________________________fit_transform_one cache loaded - 0.0s, 0.0min
+[Memory]    0.0s, 0.0min: Loading _fit_transform_one from /tmp/tmpt93z6hvw/joblib/sklearn/pipeline/_fit_transform_one/5a7c149c4c779fcfb3e3b5d4859f28e5
+___________________________________fit_transform_one cache loaded - 0.0s, 0.0min
+[Memory]    0.0s, 0.0min: Loading _fit_transform_one from /tmp/tmpt93z6hvw/joblib/sklearn/pipeline/_fit_transform_one/418724be7e0f221c63842489d2d8dd8f
+___________________________________fit_transform_one cache loaded - 0.0s, 0.0min
+[Memory]    0.0s, 0.0min: Loading _fit_transform_one from /tmp/tmpt93z6hvw/joblib/sklearn/pipeline/_fit_transform_one/3e8d95d340d603afdf4d48f022bf17e5
+___________________________________fit_transform_one cache loaded - 0.0s, 0.0min
+[Memory]    0.0s, 0.0min: Loading _fit_transform_one from /tmp/tmpt93z6hvw/joblib/sklearn/pipeline/_fit_transform_one/883d0a1cdb71638bbb069032713ce9dc
+___________________________________fit_transform_one cache loaded - 0.0s, 0.0min
+[Memory]    0.0s, 0.0min: Loading _fit_transform_one from /tmp/tmpt93z6hvw/joblib/sklearn/pipeline/_fit_transform_one/958eff19e89776bd76df5aa2c245d3da
+___________________________________fit_transform_one cache loaded - 0.0s, 0.0min
+[Memory]    0.0s, 0.0min: Loading _fit_transform_one from /tmp/tmpt93z6hvw/joblib/sklearn/pipeline/_fit_transform_one/ba78eb5c2dcd4d6aa3f6153ebf783541
+___________________________________fit_transform_one cache loaded - 0.0s, 0.0min
+[Memory]    0.0s, 0.0min: Loading _fit_transform_one from /tmp/tmpt93z6hvw/joblib/sklearn/pipeline/_fit_transform_one/42022a50c9fdba89266fe57fa5f8b6cd
+___________________________________fit_transform_one cache loaded - 0.0s, 0.0min
+[Memory]    0.0s, 0.0min: Loading _fit_transform_one from /tmp/tmpt93z6hvw/joblib/sklearn/pipeline/_fit_transform_one/7920cd319ba93f250d5f3618e3d15da7
+___________________________________fit_transform_one cache loaded - 0.0s, 0.0min
+[Memory]    0.0s, 0.0min: Loading _fit_transform_one from /tmp/tmpt93z6hvw/joblib/sklearn/pipeline/_fit_transform_one/9e042898790629dd460a8b6f9fef2fd4
+___________________________________fit_transform_one cache loaded - 0.0s, 0.0min
+[Memory]    0.0s, 0.0min: Loading _fit_transform_one from /tmp/tmpt93z6hvw/joblib/sklearn/pipeline/_fit_transform_one/55ce05e1fc3d79d04d79b8e2aacec9cf
+___________________________________fit_transform_one cache loaded - 0.0s, 0.0min
+[Memory]    0.0s, 0.0min: Loading _fit_transform_one from /tmp/tmpt93z6hvw/joblib/sklearn/pipeline/_fit_transform_one/16c841ed85ffdb4fee198a8f99f5c1f4
+___________________________________fit_transform_one cache loaded - 0.0s, 0.0min
+[Memory]    0.0s, 0.0min: Loading _fit_transform_one from /tmp/tmpt93z6hvw/joblib/sklearn/pipeline/_fit_transform_one/35bff840b1d192804fd4ff24064e96f2
+___________________________________fit_transform_one cache loaded - 0.0s, 0.0min
+[Memory]    0.0s, 0.0min: Loading _fit_transform_one from /tmp/tmpt93z6hvw/joblib/sklearn/pipeline/_fit_transform_one/77797263aafc1cb48306ec67242c6ad5
+___________________________________fit_transform_one cache loaded - 0.0s, 0.0min
+[Memory]    0.0s, 0.0min: Loading _fit_transform_one from /tmp/tmpt93z6hvw/joblib/sklearn/pipeline/_fit_transform_one/f0515fdac3406fc25644d355469c0533
+___________________________________fit_transform_one cache loaded - 0.0s, 0.0min
+[Memory]    0.0s, 0.0min: Loading _fit_transform_one from /tmp/tmpt93z6hvw/joblib/sklearn/pipeline/_fit_transform_one/c5cbf3ce208ba301242b09931977b0ba
+___________________________________fit_transform_one cache loaded - 0.0s, 0.0min
+[Memory]    0.0s, 0.0min: Loading _fit_transform_one from /tmp/tmpt93z6hvw/joblib/sklearn/pipeline/_fit_transform_one/02ad81983f20f4c5cf0d47056cdacf9e
+___________________________________fit_transform_one cache loaded - 0.0s, 0.0min
+[Memory]    0.0s, 0.0min: Loading _fit_transform_one from /tmp/tmpt93z6hvw/joblib/sklearn/pipeline/_fit_transform_one/8ac7812389fd8128d90760e78d84e3af
+___________________________________fit_transform_one cache loaded - 0.0s, 0.0min
+[Memory]    0.0s, 0.0min: Loading _fit_transform_one from /tmp/tmpt93z6hvw/joblib/sklearn/pipeline/_fit_transform_one/c832e7ce545bf8ed19c9646b7df57b94
+___________________________________fit_transform_one cache loaded - 0.0s, 0.0min
+[Memory]    0.0s, 0.0min: Loading _fit_transform_one from /tmp/tmpt93z6hvw/joblib/sklearn/pipeline/_fit_transform_one/5a7c149c4c779fcfb3e3b5d4859f28e5
+___________________________________fit_transform_one cache loaded - 0.0s, 0.0min
+[Memory]    0.0s, 0.0min: Loading _fit_transform_one from /tmp/tmpt93z6hvw/joblib/sklearn/pipeline/_fit_transform_one/418724be7e0f221c63842489d2d8dd8f
+___________________________________fit_transform_one cache loaded - 0.0s, 0.0min
+[Memory]    0.0s, 0.0min: Loading _fit_transform_one from /tmp/tmpt93z6hvw/joblib/sklearn/pipeline/_fit_transform_one/3e8d95d340d603afdf4d48f022bf17e5
+___________________________________fit_transform_one cache loaded - 0.0s, 0.0min
+[Memory]    0.0s, 0.0min: Loading _fit_transform_one from /tmp/tmpt93z6hvw/joblib/sklearn/pipeline/_fit_transform_one/883d0a1cdb71638bbb069032713ce9dc
+___________________________________fit_transform_one cache loaded - 0.0s, 0.0min
+[Memory]    0.0s, 0.0min: Loading _fit_transform_one from /tmp/tmpt93z6hvw/joblib/sklearn/pipeline/_fit_transform_one/958eff19e89776bd76df5aa2c245d3da
+___________________________________fit_transform_one cache loaded - 0.0s, 0.0min
+[Memory]    0.0s, 0.0min: Loading _fit_transform_one from /tmp/tmpt93z6hvw/joblib/sklearn/pipeline/_fit_transform_one/ba78eb5c2dcd4d6aa3f6153ebf783541
+___________________________________fit_transform_one cache loaded - 0.0s, 0.0min
+[Memory]    0.0s, 0.0min: Loading _fit_transform_one from /tmp/tmpt93z6hvw/joblib/sklearn/pipeline/_fit_transform_one/42022a50c9fdba89266fe57fa5f8b6cd
+___________________________________fit_transform_one cache loaded - 0.0s, 0.0min
+[Memory]    0.0s, 0.0min: Loading _fit_transform_one from /tmp/tmpt93z6hvw/joblib/sklearn/pipeline/_fit_transform_one/7920cd319ba93f250d5f3618e3d15da7
+___________________________________fit_transform_one cache loaded - 0.0s, 0.0min
+[Memory]    0.0s, 0.0min: Loading _fit_transform_one from /tmp/tmpt93z6hvw/joblib/sklearn/pipeline/_fit_transform_one/9e042898790629dd460a8b6f9fef2fd4
+___________________________________fit_transform_one cache loaded - 0.0s, 0.0min
+[Memory]    0.0s, 0.0min: Loading _fit_transform_one from /tmp/tmpt93z6hvw/joblib/sklearn/pipeline/_fit_transform_one/55ce05e1fc3d79d04d79b8e2aacec9cf
+___________________________________fit_transform_one cache loaded - 0.0s, 0.0min
+[Memory]    0.0s, 0.0min: Loading _fit_transform_one from /tmp/tmpt93z6hvw/joblib/sklearn/pipeline/_fit_transform_one/16c841ed85ffdb4fee198a8f99f5c1f4
+___________________________________fit_transform_one cache loaded - 0.0s, 0.0min
+[Memory]    0.0s, 0.0min: Loading _fit_transform_one from /tmp/tmpt93z6hvw/joblib/sklearn/pipeline/_fit_transform_one/35bff840b1d192804fd4ff24064e96f2
+___________________________________fit_transform_one cache loaded - 0.0s, 0.0min
+[Memory]    0.0s, 0.0min: Loading _fit_transform_one from /tmp/tmpt93z6hvw/joblib/sklearn/pipeline/_fit_transform_one/77797263aafc1cb48306ec67242c6ad5
+___________________________________fit_transform_one cache loaded - 0.0s, 0.0min
+[Memory]    0.0s, 0.0min: Loading _fit_transform_one from /tmp/tmpt93z6hvw/joblib/sklearn/pipeline/_fit_transform_one/f0515fdac3406fc25644d355469c0533
+___________________________________fit_transform_one cache loaded - 0.0s, 0.0min
+[Memory]    0.0s, 0.0min: Loading _fit_transform_one from /tmp/tmpt93z6hvw/joblib/sklearn/pipeline/_fit_transform_one/c5cbf3ce208ba301242b09931977b0ba
+___________________________________fit_transform_one cache loaded - 0.0s, 0.0min
+[Memory]    0.0s, 0.0min: Loading _fit_transform_one from /tmp/tmpt93z6hvw/joblib/sklearn/pipeline/_fit_transform_one/02ad81983f20f4c5cf0d47056cdacf9e
+___________________________________fit_transform_one cache loaded - 0.0s, 0.0min
+[Memory]    0.0s, 0.0min: Loading _fit_transform_one from /tmp/tmpt93z6hvw/joblib/sklearn/pipeline/_fit_transform_one/8ac7812389fd8128d90760e78d84e3af
+___________________________________fit_transform_one cache loaded - 0.0s, 0.0min
+[Memory]    0.0s, 0.0min: Loading _fit_transform_one from /tmp/tmpt93z6hvw/joblib/sklearn/pipeline/_fit_transform_one/c832e7ce545bf8ed19c9646b7df57b94
+___________________________________fit_transform_one cache loaded - 0.0s, 0.0min
+[Memory]    0.0s, 0.0min: Loading _fit_transform_one from /tmp/tmpt93z6hvw/joblib/sklearn/pipeline/_fit_transform_one/5a7c149c4c779fcfb3e3b5d4859f28e5
+___________________________________fit_transform_one cache loaded - 0.0s, 0.0min
+________________________________________________________________________________
+[Memory] Calling sklearn.pipeline._fit_transform_one...
+_fit_transform_one(SelectKBest(k=2, score_func=&lt;function chi2 at 0x2b3aa35f6950&gt;), None, array([[ 0., ...,  0.],
+       ...,
+       [ 0., ...,  0.]]), array([0, ..., 8]))
+________________________________________________fit_transform_one - 0.0s, 0.0min
+________________________________________________________________________________
+[Memory] Calling sklearn.pipeline._fit_transform_one...
+_fit_transform_one(SelectKBest(k=2, score_func=&lt;function chi2 at 0x2b3aa35f6950&gt;), None, array([[ 0., ...,  0.],
+       ...,
+       [ 0., ...,  0.]]), array([0, ..., 8]))
+________________________________________________fit_transform_one - 0.0s, 0.0min
+________________________________________________________________________________
+[Memory] Calling sklearn.pipeline._fit_transform_one...
+_fit_transform_one(SelectKBest(k=2, score_func=&lt;function chi2 at 0x2b3aa35f6950&gt;), None, array([[ 0., ...,  0.],
+       ...,
+       [ 0., ...,  0.]]), array([0, ..., 4]))
+________________________________________________fit_transform_one - 0.0s, 0.0min
+________________________________________________________________________________
+[Memory] Calling sklearn.pipeline._fit_transform_one...
+_fit_transform_one(SelectKBest(k=4, score_func=&lt;function chi2 at 0x2b3aa35f6950&gt;), None, array([[ 0., ...,  0.],
+       ...,
+       [ 0., ...,  0.]]), array([0, ..., 8]))
+________________________________________________fit_transform_one - 0.0s, 0.0min
+________________________________________________________________________________
+[Memory] Calling sklearn.pipeline._fit_transform_one...
+_fit_transform_one(SelectKBest(k=4, score_func=&lt;function chi2 at 0x2b3aa35f6950&gt;), None, array([[ 0., ...,  0.],
+       ...,
+       [ 0., ...,  0.]]), array([0, ..., 8]))
+________________________________________________fit_transform_one - 0.0s, 0.0min
+________________________________________________________________________________
+[Memory] Calling sklearn.pipeline._fit_transform_one...
+_fit_transform_one(SelectKBest(k=4, score_func=&lt;function chi2 at 0x2b3aa35f6950&gt;), None, array([[ 0., ...,  0.],
+       ...,
+       [ 0., ...,  0.]]), array([0, ..., 4]))
+________________________________________________fit_transform_one - 0.0s, 0.0min
+________________________________________________________________________________
+[Memory] Calling sklearn.pipeline._fit_transform_one...
+_fit_transform_one(SelectKBest(k=8, score_func=&lt;function chi2 at 0x2b3aa35f6950&gt;), None, array([[ 0., ...,  0.],
+       ...,
+       [ 0., ...,  0.]]), array([0, ..., 8]))
+________________________________________________fit_transform_one - 0.0s, 0.0min
+________________________________________________________________________________
+[Memory] Calling sklearn.pipeline._fit_transform_one...
+_fit_transform_one(SelectKBest(k=8, score_func=&lt;function chi2 at 0x2b3aa35f6950&gt;), None, array([[ 0., ...,  0.],
+       ...,
+       [ 0., ...,  0.]]), array([0, ..., 8]))
+________________________________________________fit_transform_one - 0.0s, 0.0min
+________________________________________________________________________________
+[Memory] Calling sklearn.pipeline._fit_transform_one...
+_fit_transform_one(SelectKBest(k=8, score_func=&lt;function chi2 at 0x2b3aa35f6950&gt;), None, array([[ 0., ...,  0.],
+       ...,
+       [ 0., ...,  0.]]), array([0, ..., 4]))
+________________________________________________fit_transform_one - 0.0s, 0.0min
+[Memory]    0.0s, 0.0min: Loading _fit_transform_one from /tmp/tmpt93z6hvw/joblib/sklearn/pipeline/_fit_transform_one/5fe54eb7ee530b63acb3dfa6861e7e31
+___________________________________fit_transform_one cache loaded - 0.0s, 0.0min
+[Memory]    0.0s, 0.0min: Loading _fit_transform_one from /tmp/tmpt93z6hvw/joblib/sklearn/pipeline/_fit_transform_one/4a03a48a7aad7233e42fab570e812d55
+___________________________________fit_transform_one cache loaded - 0.0s, 0.0min
+[Memory]    0.0s, 0.0min: Loading _fit_transform_one from /tmp/tmpt93z6hvw/joblib/sklearn/pipeline/_fit_transform_one/ece18c14ce6fdfec2f6f7eac72d33d65
+___________________________________fit_transform_one cache loaded - 0.0s, 0.0min
+[Memory]    0.0s, 0.0min: Loading _fit_transform_one from /tmp/tmpt93z6hvw/joblib/sklearn/pipeline/_fit_transform_one/df50d8982a4424bfd6b6eb0cc9345085
+___________________________________fit_transform_one cache loaded - 0.0s, 0.0min
+[Memory]    0.0s, 0.0min: Loading _fit_transform_one from /tmp/tmpt93z6hvw/joblib/sklearn/pipeline/_fit_transform_one/4a3e478397b79f5dd3eac4d1ed5f18ff
+___________________________________fit_transform_one cache loaded - 0.0s, 0.0min
+[Memory]    0.0s, 0.0min: Loading _fit_transform_one from /tmp/tmpt93z6hvw/joblib/sklearn/pipeline/_fit_transform_one/86fd5ede2d28c646cee97060abe98fa2
+___________________________________fit_transform_one cache loaded - 0.0s, 0.0min
+[Memory]    0.0s, 0.0min: Loading _fit_transform_one from /tmp/tmpt93z6hvw/joblib/sklearn/pipeline/_fit_transform_one/e2dec44788d6d43bbacc041a12a5b694
+___________________________________fit_transform_one cache loaded - 0.0s, 0.0min
+[Memory]    0.0s, 0.0min: Loading _fit_transform_one from /tmp/tmpt93z6hvw/joblib/sklearn/pipeline/_fit_transform_one/598e66f4fb276b36069528d316e749ad
+___________________________________fit_transform_one cache loaded - 0.0s, 0.0min
+[Memory]    0.0s, 0.0min: Loading _fit_transform_one from /tmp/tmpt93z6hvw/joblib/sklearn/pipeline/_fit_transform_one/03b4bcf60a35f2c1b7169e05514a8b9f
+___________________________________fit_transform_one cache loaded - 0.0s, 0.0min
+[Memory]    0.0s, 0.0min: Loading _fit_transform_one from /tmp/tmpt93z6hvw/joblib/sklearn/pipeline/_fit_transform_one/5fe54eb7ee530b63acb3dfa6861e7e31
+___________________________________fit_transform_one cache loaded - 0.0s, 0.0min
+[Memory]    0.0s, 0.0min: Loading _fit_transform_one from /tmp/tmpt93z6hvw/joblib/sklearn/pipeline/_fit_transform_one/4a03a48a7aad7233e42fab570e812d55
+___________________________________fit_transform_one cache loaded - 0.0s, 0.0min
+[Memory]    0.0s, 0.0min: Loading _fit_transform_one from /tmp/tmpt93z6hvw/joblib/sklearn/pipeline/_fit_transform_one/ece18c14ce6fdfec2f6f7eac72d33d65
+___________________________________fit_transform_one cache loaded - 0.0s, 0.0min
+[Memory]    0.0s, 0.0min: Loading _fit_transform_one from /tmp/tmpt93z6hvw/joblib/sklearn/pipeline/_fit_transform_one/df50d8982a4424bfd6b6eb0cc9345085
+___________________________________fit_transform_one cache loaded - 0.0s, 0.0min
+[Memory]    0.0s, 0.0min: Loading _fit_transform_one from /tmp/tmpt93z6hvw/joblib/sklearn/pipeline/_fit_transform_one/4a3e478397b79f5dd3eac4d1ed5f18ff
+___________________________________fit_transform_one cache loaded - 0.0s, 0.0min
+[Memory]    0.0s, 0.0min: Loading _fit_transform_one from /tmp/tmpt93z6hvw/joblib/sklearn/pipeline/_fit_transform_one/86fd5ede2d28c646cee97060abe98fa2
+___________________________________fit_transform_one cache loaded - 0.0s, 0.0min
+[Memory]    0.0s, 0.0min: Loading _fit_transform_one from /tmp/tmpt93z6hvw/joblib/sklearn/pipeline/_fit_transform_one/e2dec44788d6d43bbacc041a12a5b694
+___________________________________fit_transform_one cache loaded - 0.0s, 0.0min
+[Memory]    0.0s, 0.0min: Loading _fit_transform_one from /tmp/tmpt93z6hvw/joblib/sklearn/pipeline/_fit_transform_one/598e66f4fb276b36069528d316e749ad
+___________________________________fit_transform_one cache loaded - 0.0s, 0.0min
+[Memory]    0.0s, 0.0min: Loading _fit_transform_one from /tmp/tmpt93z6hvw/joblib/sklearn/pipeline/_fit_transform_one/03b4bcf60a35f2c1b7169e05514a8b9f
+___________________________________fit_transform_one cache loaded - 0.0s, 0.0min
+[Memory]    0.0s, 0.0min: Loading _fit_transform_one from /tmp/tmpt93z6hvw/joblib/sklearn/pipeline/_fit_transform_one/5fe54eb7ee530b63acb3dfa6861e7e31
+___________________________________fit_transform_one cache loaded - 0.0s, 0.0min
+[Memory]    0.0s, 0.0min: Loading _fit_transform_one from /tmp/tmpt93z6hvw/joblib/sklearn/pipeline/_fit_transform_one/4a03a48a7aad7233e42fab570e812d55
+___________________________________fit_transform_one cache loaded - 0.0s, 0.0min
+[Memory]    0.0s, 0.0min: Loading _fit_transform_one from /tmp/tmpt93z6hvw/joblib/sklearn/pipeline/_fit_transform_one/ece18c14ce6fdfec2f6f7eac72d33d65
+___________________________________fit_transform_one cache loaded - 0.0s, 0.0min
+[Memory]    0.0s, 0.0min: Loading _fit_transform_one from /tmp/tmpt93z6hvw/joblib/sklearn/pipeline/_fit_transform_one/df50d8982a4424bfd6b6eb0cc9345085
+___________________________________fit_transform_one cache loaded - 0.0s, 0.0min
+[Memory]    0.0s, 0.0min: Loading _fit_transform_one from /tmp/tmpt93z6hvw/joblib/sklearn/pipeline/_fit_transform_one/4a3e478397b79f5dd3eac4d1ed5f18ff
+___________________________________fit_transform_one cache loaded - 0.0s, 0.0min
+[Memory]    0.0s, 0.0min: Loading _fit_transform_one from /tmp/tmpt93z6hvw/joblib/sklearn/pipeline/_fit_transform_one/86fd5ede2d28c646cee97060abe98fa2
+___________________________________fit_transform_one cache loaded - 0.0s, 0.0min
+[Memory]    0.0s, 0.0min: Loading _fit_transform_one from /tmp/tmpt93z6hvw/joblib/sklearn/pipeline/_fit_transform_one/e2dec44788d6d43bbacc041a12a5b694
+___________________________________fit_transform_one cache loaded - 0.0s, 0.0min
+[Memory]    0.0s, 0.0min: Loading _fit_transform_one from /tmp/tmpt93z6hvw/joblib/sklearn/pipeline/_fit_transform_one/598e66f4fb276b36069528d316e749ad
+___________________________________fit_transform_one cache loaded - 0.0s, 0.0min
+[Memory]    0.0s, 0.0min: Loading _fit_transform_one from /tmp/tmpt93z6hvw/joblib/sklearn/pipeline/_fit_transform_one/03b4bcf60a35f2c1b7169e05514a8b9f
+___________________________________fit_transform_one cache loaded - 0.0s, 0.0min
+________________________________________________________________________________
+[Memory] Calling sklearn.pipeline._fit_transform_one...
+_fit_transform_one(PCA(copy=True, iterated_power=7, n_components=8, random_state=None,
+  svd_solver='auto', tol=0.0, whiten=False),
+None, array([[ 0., ...,  0.],
+       ...,
+       [ 0., ...,  0.]]), array([0, ..., 8]))
+________________________________________________fit_transform_one - 0.0s, 0.0min
+</pre> <p>The <code>PCA</code> fitting is only computed at the evaluation of the first configuration of the <code>C</code> parameter of the <code>LinearSVC</code> classifier. The other configurations of <code>C</code> will trigger the loading of the cached <code>PCA</code> estimator data, leading to save processing time. Therefore, the use of caching the pipeline using <code>memory</code> is highly beneficial when fitting a transformer is costly.</p> <pre data-language="python">plt.show()
+</pre> <p><strong>Total running time of the script:</strong> ( 1 minutes 23.229 seconds)</p> <div class="sphx-glr-footer docutils container"> <div class="sphx-glr-download docutils container"> <a class="reference download internal" href="http://scikit-learn.org/stable/_downloads/plot_compare_reduction.py" download="" target="_blank"><code>Download Python source code: plot_compare_reduction.py</code></a>
+</div> <div class="sphx-glr-download docutils container"> <a class="reference download internal" href="http://scikit-learn.org/stable/_downloads/plot_compare_reduction.ipynb" download="" target="_blank"><code>Download Jupyter notebook: plot_compare_reduction.ipynb</code></a>
+</div> </div> <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.readthedocs.io" target="_blank">Generated by Sphinx-Gallery</a></p>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2007–2017 The scikit-learn developers<br>Licensed under the 3-clause BSD License.<br>
+    <a href="http://scikit-learn.org/stable/auto_examples/plot_compare_reduction.html" class="_attribution-link" target="_blank">http://scikit-learn.org/stable/auto_examples/plot_compare_reduction.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

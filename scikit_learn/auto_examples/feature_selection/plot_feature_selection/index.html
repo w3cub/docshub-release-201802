@@ -1,0 +1,154 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Example&#58; Univariate Feature Selection - Scikit-learn - W3cubDocs</title>
+  
+  <meta name="description" content=" An example showing univariate feature selection. ">
+  <meta name="keywords" content="univariate, feature, selection, example, -, scikit-learn, scikit_learn">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/scikit_learn/auto_examples/feature_selection/plot_feature_selection/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/scikit_learn.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/scikit_learn/" class="_nav-link" title="" style="margin-left:0;">scikit-learn</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _sphinx">
+				
+<h1 id="sphx-glr-auto-examples-feature-selection-plot-feature-selection-py">Univariate Feature Selection</h1> <p id="univariate-feature-selection">An example showing univariate feature selection.</p> <p>Noisy (non informative) features are added to the iris data and univariate feature selection is applied. For each feature, we plot the p-values for the univariate feature selection and the corresponding weights of an SVM. We can see that univariate feature selection selects the informative features and that these have larger SVM weights.</p> <p>In the total set of features, only the 4 first ones are significant. We can see that they have the highest score with univariate feature selection. The SVM assigns a large weight to one of these features, but also Selects many of the non-informative features. Applying univariate feature selection before the SVM increases the SVM weight attributed to the significant features, and will thus improve classification.</p> <img alt="../../_images/sphx_glr_plot_feature_selection_001.png" class="align-center" src="data:image/png;base64,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"> <pre data-language="python">print(__doc__)
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+from sklearn import datasets, svm
+from sklearn.feature_selection import SelectPercentile, f_classif
+
+# #############################################################################
+# Import some data to play with
+
+# The iris dataset
+iris = datasets.load_iris()
+
+# Some noisy data not correlated
+E = np.random.uniform(0, 0.1, size=(len(iris.data), 20))
+
+# Add the noisy data to the informative features
+X = np.hstack((iris.data, E))
+y = iris.target
+
+plt.figure(1)
+plt.clf()
+
+X_indices = np.arange(X.shape[-1])
+
+# #############################################################################
+# Univariate feature selection with F-test for feature scoring
+# We use the default selection function: the 10% most significant features
+selector = SelectPercentile(f_classif, percentile=10)
+selector.fit(X, y)
+scores = -np.log10(selector.pvalues_)
+scores /= scores.max()
+plt.bar(X_indices - .45, scores, width=.2,
+        label=r'Univariate score ($-Log(p_{value})$)', color='darkorange',
+        edgecolor='black')
+
+# #############################################################################
+# Compare to the weights of an SVM
+clf = svm.SVC(kernel='linear')
+clf.fit(X, y)
+
+svm_weights = (clf.coef_ ** 2).sum(axis=0)
+svm_weights /= svm_weights.max()
+
+plt.bar(X_indices - .25, svm_weights, width=.2, label='SVM weight',
+        color='navy', edgecolor='black')
+
+clf_selected = svm.SVC(kernel='linear')
+clf_selected.fit(selector.transform(X), y)
+
+svm_weights_selected = (clf_selected.coef_ ** 2).sum(axis=0)
+svm_weights_selected /= svm_weights_selected.max()
+
+plt.bar(X_indices[selector.get_support()] - .05, svm_weights_selected,
+        width=.2, label='SVM weights after selection', color='c',
+        edgecolor='black')
+
+
+plt.title("Comparing feature selection")
+plt.xlabel('Feature number')
+plt.yticks(())
+plt.axis('tight')
+plt.legend(loc='upper right')
+plt.show()
+</pre> <p><strong>Total running time of the script:</strong> ( 0 minutes 0.084 seconds)</p> <div class="sphx-glr-footer docutils container"> <div class="sphx-glr-download docutils container"> <a class="reference download internal" href="http://scikit-learn.org/stable/_downloads/plot_feature_selection.py" download="" target="_blank"><code>Download Python source code: plot_feature_selection.py</code></a>
+</div> <div class="sphx-glr-download docutils container"> <a class="reference download internal" href="http://scikit-learn.org/stable/_downloads/plot_feature_selection.ipynb" download="" target="_blank"><code>Download Jupyter notebook: plot_feature_selection.ipynb</code></a>
+</div> </div> <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.readthedocs.io" target="_blank">Generated by Sphinx-Gallery</a></p>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2007–2017 The scikit-learn developers<br>Licensed under the 3-clause BSD License.<br>
+    <a href="http://scikit-learn.org/stable/auto_examples/feature_selection/plot_feature_selection.html" class="_attribution-link" target="_blank">http://scikit-learn.org/stable/auto_examples/feature_selection/plot_feature_selection.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

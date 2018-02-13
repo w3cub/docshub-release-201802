@@ -1,0 +1,138 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Example&#58; IsolationForest Example - Scikit-learn - W3cubDocs</title>
+  
+  <meta name="description" content=" An example using IsolationForest for anomaly detection. ">
+  <meta name="keywords" content="isolationforest, example, -, scikit-learn, scikit_learn">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/scikit_learn/auto_examples/ensemble/plot_isolation_forest/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/scikit_learn.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/scikit_learn/" class="_nav-link" title="" style="margin-left:0;">scikit-learn</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _sphinx">
+				
+<h1 id="sphx-glr-auto-examples-ensemble-plot-isolation-forest-py">IsolationForest example</h1> <p id="isolationforest-example">An example using IsolationForest for anomaly detection.</p> <p>The IsolationForest ‘isolates’ observations by randomly selecting a feature and then randomly selecting a split value between the maximum and minimum values of the selected feature.</p> <p>Since recursive partitioning can be represented by a tree structure, the number of splittings required to isolate a sample is equivalent to the path length from the root node to the terminating node.</p> <p>This path length, averaged over a forest of such random trees, is a measure of normality and our decision function.</p> <p>Random partitioning produces noticeable shorter paths for anomalies. Hence, when a forest of random trees collectively produce shorter path lengths for particular samples, they are highly likely to be anomalies.</p> <table class="docutils footnote" frame="void" id="id1" rules="none">   <tr>
+<td class="label">[1]</td>
+<td>Liu, Fei Tony, Ting, Kai Ming and Zhou, Zhi-Hua. “Isolation forest.” Data Mining, 2008. ICDM‘08. Eighth IEEE International Conference on.</td>
+</tr>  </table> <img alt="../../_images/sphx_glr_plot_isolation_forest_001.png" class="align-center" src="data:image/png;base64,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"> <pre data-language="python">print(__doc__)
+
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.ensemble import IsolationForest
+
+rng = np.random.RandomState(42)
+
+# Generate train data
+X = 0.3 * rng.randn(100, 2)
+X_train = np.r_[X + 2, X - 2]
+# Generate some regular novel observations
+X = 0.3 * rng.randn(20, 2)
+X_test = np.r_[X + 2, X - 2]
+# Generate some abnormal novel observations
+X_outliers = rng.uniform(low=-4, high=4, size=(20, 2))
+
+# fit the model
+clf = IsolationForest(max_samples=100, random_state=rng)
+clf.fit(X_train)
+y_pred_train = clf.predict(X_train)
+y_pred_test = clf.predict(X_test)
+y_pred_outliers = clf.predict(X_outliers)
+
+# plot the line, the samples, and the nearest vectors to the plane
+xx, yy = np.meshgrid(np.linspace(-5, 5, 50), np.linspace(-5, 5, 50))
+Z = clf.decision_function(np.c_[xx.ravel(), yy.ravel()])
+Z = Z.reshape(xx.shape)
+
+plt.title("IsolationForest")
+plt.contourf(xx, yy, Z, cmap=plt.cm.Blues_r)
+
+b1 = plt.scatter(X_train[:, 0], X_train[:, 1], c='white',
+                 s=20, edgecolor='k')
+b2 = plt.scatter(X_test[:, 0], X_test[:, 1], c='green',
+                 s=20, edgecolor='k')
+c = plt.scatter(X_outliers[:, 0], X_outliers[:, 1], c='red',
+                s=20, edgecolor='k')
+plt.axis('tight')
+plt.xlim((-5, 5))
+plt.ylim((-5, 5))
+plt.legend([b1, b2, c],
+           ["training observations",
+            "new regular observations", "new abnormal observations"],
+           loc="upper left")
+plt.show()
+</pre> <p><strong>Total running time of the script:</strong> ( 0 minutes 0.389 seconds)</p> <div class="sphx-glr-footer docutils container"> <div class="sphx-glr-download docutils container"> <a class="reference download internal" href="http://scikit-learn.org/stable/_downloads/plot_isolation_forest.py" download="" target="_blank"><code>Download Python source code: plot_isolation_forest.py</code></a>
+</div> <div class="sphx-glr-download docutils container"> <a class="reference download internal" href="http://scikit-learn.org/stable/_downloads/plot_isolation_forest.ipynb" download="" target="_blank"><code>Download Jupyter notebook: plot_isolation_forest.ipynb</code></a>
+</div> </div> <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.readthedocs.io" target="_blank">Generated by Sphinx-Gallery</a></p>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2007–2017 The scikit-learn developers<br>Licensed under the 3-clause BSD License.<br>
+    <a href="http://scikit-learn.org/stable/auto_examples/ensemble/plot_isolation_forest.html" class="_attribution-link" target="_blank">http://scikit-learn.org/stable/auto_examples/ensemble/plot_isolation_forest.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

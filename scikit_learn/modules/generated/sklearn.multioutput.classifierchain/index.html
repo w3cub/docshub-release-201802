@@ -1,0 +1,185 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>multioutput.ClassifierChain() - Scikit-learn - W3cubDocs</title>
+  
+  <meta name="description" content=" A multi-label model that arranges binary classifiers into a chain. ">
+  <meta name="keywords" content="sklearn, multioutput, classifierchain, -, scikit-learn, scikit_learn">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/scikit_learn/modules/generated/sklearn.multioutput.classifierchain/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/scikit_learn.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/scikit_learn/" class="_nav-link" title="" style="margin-left:0;">scikit-learn</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _sphinx">
+				
+<h1 id="sklearn-multioutput-classifierchain">sklearn.multioutput.ClassifierChain</h1> <dl class="class"> <dt id="sklearn.multioutput.ClassifierChain">
+<code>class sklearn.multioutput.ClassifierChain(base_estimator, order=None, cv=None, random_state=None)</code> <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/f3320a6f/sklearn/multioutput.py#L371" target="_blank"><span class="viewcode-link">[source]</span></a>
+</dt> <dd>
+<p>A multi-label model that arranges binary classifiers into a chain.</p> <p>Each model makes a prediction in the order specified by the chain using all of the available features provided to the model plus the predictions of models that are earlier in the chain.</p> <table class="docutils field-list" frame="void" rules="none"> <col class="field-name"> <col class="field-body">  <tr>
+<th class="field-name">Parameters:</th>
+<td class="field-body">
+<p class="first"><strong>base_estimator</strong> : estimator</p>  <p>The base estimator from which the classifier chain is built.</p>  <p><strong>order</strong> : array-like, shape=[n_outputs] or ‘random’, optional</p>  <p>By default the order will be determined by the order of columns in the label matrix Y.:</p> <pre data-language="python">order = [0, 1, 2, ..., Y.shape[1] - 1]
+</pre> <p>The order of the chain can be explicitly set by providing a list of integers. For example, for a chain of length 5.:</p> <pre data-language="python">order = [1, 3, 2, 4, 0]
+</pre> <p>means that the first model in the chain will make predictions for column 1 in the Y matrix, the second model will make predictions for column 3, etc.</p> <p>If order is ‘random’ a random ordering will be used.</p>  <p><strong>cv</strong> : int, cross-validation generator or an iterable, optional (</p> <p><strong>default=None)</strong> :</p>  <p>Determines whether to use cross validated predictions or true labels for the results of previous estimators in the chain. If cv is None the true labels are used when fitting. Otherwise possible inputs for cv are:</p>  <ul class="simple"> <li>integer, to specify the number of folds in a (Stratified)KFold,</li> <li>An object to be used as a cross-validation generator.</li> <li>An iterable yielding train, test splits.</li> </ul>   <p><strong>random_state</strong> : int, RandomState instance or None, optional (default=None)</p>  <p>If int, random_state is the seed used by the random number generator; If RandomState instance, random_state is the random number generator; If None, the random number generator is the RandomState instance used by <code>np.random</code>.</p> <p>The random number generator is used to generate random chain orders.</p>  </td> </tr> <tr>
+<th class="field-name">Attributes:</th>
+<td class="field-body">
+<p class="first"><strong>classes_</strong> : list</p>  <p>A list of arrays of length <code>len(estimators_)</code> containing the class labels for each estimator in the chain.</p>  <p><strong>estimators_</strong> : list</p>  <p>A list of clones of base_estimator.</p>  <p><strong>order_</strong> : list</p>  <p>The order of labels in the classifier chain.</p>  </td> </tr>  </table> <h4 class="rubric">References</h4> <p>Jesse Read, Bernhard Pfahringer, Geoff Holmes, Eibe Frank, “Classifier Chains for Multi-label Classification”, 2009.</p> <h4 class="rubric">Methods</h4> <table class="longtable docutils">   <tr>
+<td>
+<a class="reference internal" href="#sklearn.multioutput.ClassifierChain.decision_function" title="sklearn.multioutput.ClassifierChain.decision_function"><code>decision_function</code></a>(X)</td> <td>Evaluate the decision_function of the models in the chain.</td> </tr> <tr>
+<td>
+<a class="reference internal" href="#sklearn.multioutput.ClassifierChain.fit" title="sklearn.multioutput.ClassifierChain.fit"><code>fit</code></a>(X, Y)</td> <td>Fit the model to data matrix X and targets Y.</td> </tr> <tr>
+<td>
+<a class="reference internal" href="#sklearn.multioutput.ClassifierChain.get_params" title="sklearn.multioutput.ClassifierChain.get_params"><code>get_params</code></a>([deep])</td> <td>Get parameters for this estimator.</td> </tr> <tr>
+<td>
+<a class="reference internal" href="#sklearn.multioutput.ClassifierChain.predict" title="sklearn.multioutput.ClassifierChain.predict"><code>predict</code></a>(X)</td> <td>Predict on the data matrix X using the ClassifierChain model.</td> </tr> <tr>
+<td>
+<a class="reference internal" href="#sklearn.multioutput.ClassifierChain.predict_proba" title="sklearn.multioutput.ClassifierChain.predict_proba"><code>predict_proba</code></a>(X)</td> <td>Predict probability estimates.</td> </tr> <tr>
+<td>
+<a class="reference internal" href="#sklearn.multioutput.ClassifierChain.score" title="sklearn.multioutput.ClassifierChain.score"><code>score</code></a>(X, y[, sample_weight])</td> <td>Returns the mean accuracy on the given test data and labels.</td> </tr> <tr>
+<td>
+<a class="reference internal" href="#sklearn.multioutput.ClassifierChain.set_params" title="sklearn.multioutput.ClassifierChain.set_params"><code>set_params</code></a>(**params)</td> <td>Set the parameters of this estimator.</td> </tr>  </table> <dl class="method"> <dt id="sklearn.multioutput.ClassifierChain.__init__">
+<code>__init__(base_estimator, order=None, cv=None, random_state=None)</code> <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/f3320a6f/sklearn/multioutput.py#L436" target="_blank"><span class="viewcode-link">[source]</span></a>
+</dt> 
+</dl> <dl class="method"> <dt id="sklearn.multioutput.ClassifierChain.decision_function">
+<code>decision_function(X)</code> <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/f3320a6f/sklearn/utils/metaestimators.py#L571" target="_blank"><span class="viewcode-link">[source]</span></a>
+</dt> <dd>
+<p>Evaluate the decision_function of the models in the chain.</p> <table class="docutils field-list" frame="void" rules="none"> <col class="field-name"> <col class="field-body">  <tr>
+<th class="field-name">Parameters:</th>
+<td class="field-body">
+<p class="first"><strong>X</strong> : array-like, shape (n_samples, n_features)</p> </td> </tr> <tr>
+<th class="field-name">Returns:</th>
+<td class="field-body">
+<p class="first"><strong>Y_decision</strong> : array-like, shape (n_samples, n_classes )</p>  <p>Returns the decision function of the sample for each model in the chain.</p>  </td> </tr>  </table> </dd>
+</dl> <dl class="method"> <dt id="sklearn.multioutput.ClassifierChain.fit">
+<code>fit(X, Y)</code> <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/f3320a6f/sklearn/multioutput.py#L442" target="_blank"><span class="viewcode-link">[source]</span></a>
+</dt> <dd>
+<p>Fit the model to data matrix X and targets Y.</p> <table class="docutils field-list" frame="void" rules="none"> <col class="field-name"> <col class="field-body">  <tr>
+<th class="field-name">Parameters:</th>
+<td class="field-body">
+<p class="first"><strong>X</strong> : {array-like, sparse matrix}, shape (n_samples, n_features)</p>  <p>The input data.</p>  <p><strong>Y</strong> : array-like, shape (n_samples, n_classes)</p>  <p>The target values.</p>  </td> </tr> <tr>
+<th class="field-name">Returns:</th>
+<td class="field-body">
+<p class="first"><strong>self</strong> : object</p>  <p>Returns self.</p>  </td> </tr>  </table> </dd>
+</dl> <dl class="method"> <dt id="sklearn.multioutput.ClassifierChain.get_params">
+<code>get_params(deep=True)</code> <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/f3320a6f/sklearn/base.py#L213" target="_blank"><span class="viewcode-link">[source]</span></a>
+</dt> <dd>
+<p>Get parameters for this estimator.</p> <table class="docutils field-list" frame="void" rules="none"> <col class="field-name"> <col class="field-body">  <tr>
+<th class="field-name">Parameters:</th>
+<td class="field-body">
+<p class="first"><strong>deep</strong> : boolean, optional</p>  <p>If True, will return the parameters for this estimator and contained subobjects that are estimators.</p>  </td> </tr> <tr>
+<th class="field-name">Returns:</th>
+<td class="field-body">
+<p class="first"><strong>params</strong> : mapping of string to any</p>  <p>Parameter names mapped to their values.</p>  </td> </tr>  </table> </dd>
+</dl> <dl class="method"> <dt id="sklearn.multioutput.ClassifierChain.predict">
+<code>predict(X)</code> <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/f3320a6f/sklearn/multioutput.py#L509" target="_blank"><span class="viewcode-link">[source]</span></a>
+</dt> <dd>
+<p>Predict on the data matrix X using the ClassifierChain model.</p> <table class="docutils field-list" frame="void" rules="none"> <col class="field-name"> <col class="field-body">  <tr>
+<th class="field-name">Parameters:</th>
+<td class="field-body">
+<p class="first"><strong>X</strong> : {array-like, sparse matrix}, shape (n_samples, n_features)</p>  <p>The input data.</p>  </td> </tr> <tr>
+<th class="field-name">Returns:</th>
+<td class="field-body">
+<p class="first"><strong>Y_pred</strong> : array-like, shape (n_samples, n_classes)</p>  <p>The predicted values.</p>  </td> </tr>  </table> </dd>
+</dl> <dl class="method"> <dt id="sklearn.multioutput.ClassifierChain.predict_proba">
+<code>predict_proba(X)</code> <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/f3320a6f/sklearn/utils/metaestimators.py#L542" target="_blank"><span class="viewcode-link">[source]</span></a>
+</dt> <dd>
+<p>Predict probability estimates.</p> <table class="docutils field-list" frame="void" rules="none"> <col class="field-name"> <col class="field-body">  <tr>
+<th class="field-name">Parameters:</th>
+<td class="field-body">
+<strong>X</strong> : {array-like, sparse matrix}, shape (n_samples, n_features)</td> </tr> <tr>
+<th class="field-name">Returns:</th>
+<td class="field-body">
+<strong>Y_prob</strong> : array-like, shape (n_samples, n_classes)</td> </tr>  </table> </dd>
+</dl> <dl class="method"> <dt id="sklearn.multioutput.ClassifierChain.score">
+<code>score(X, y, sample_weight=None)</code> <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/f3320a6f/sklearn/base.py#L324" target="_blank"><span class="viewcode-link">[source]</span></a>
+</dt> <dd>
+<p>Returns the mean accuracy on the given test data and labels.</p> <p>In multi-label classification, this is the subset accuracy which is a harsh metric since you require for each sample that each label set be correctly predicted.</p> <table class="docutils field-list" frame="void" rules="none"> <col class="field-name"> <col class="field-body">  <tr>
+<th class="field-name">Parameters:</th>
+<td class="field-body">
+<p class="first"><strong>X</strong> : array-like, shape = (n_samples, n_features)</p>  <p>Test samples.</p>  <p><strong>y</strong> : array-like, shape = (n_samples) or (n_samples, n_outputs)</p>  <p>True labels for X.</p>  <p><strong>sample_weight</strong> : array-like, shape = [n_samples], optional</p>  <p>Sample weights.</p>  </td> </tr> <tr>
+<th class="field-name">Returns:</th>
+<td class="field-body">
+<p class="first"><strong>score</strong> : float</p>  <p>Mean accuracy of self.predict(X) wrt. y.</p>  </td> </tr>  </table> </dd>
+</dl> <dl class="method"> <dt id="sklearn.multioutput.ClassifierChain.set_params">
+<code>set_params(**params)</code> <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/f3320a6f/sklearn/base.py#L250" target="_blank"><span class="viewcode-link">[source]</span></a>
+</dt> <dd>
+<p>Set the parameters of this estimator.</p> <p>The method works on simple estimators as well as on nested objects (such as pipelines). The latter have parameters of the form <code>&lt;component&gt;__&lt;parameter&gt;</code> so that it’s possible to update each component of a nested object.</p> <table class="docutils field-list" frame="void" rules="none"> <col class="field-name"> <col class="field-body">  <tr>
+<th class="field-name">Returns:</th>
+<td class="field-body">
+<strong>self</strong> :</td> </tr>  </table> </dd>
+</dl> </dd>
+</dl>  <h2 id="examples-using-sklearn-multioutput-classifierchain">Examples using <code>sklearn.multioutput.ClassifierChain</code>
+</h2> <div class="sphx-glr-thumbcontainer" tooltip="For this example we will use the `yeast &lt;http://mldata.org/repository/data/viewslug/yeast&gt;`_ da...">
+<div class="figure" id="id1"> <img alt="../../_images/sphx_glr_plot_classifier_chain_yeast_thumb.png" src="data:image/png;base64,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"> <p class="caption"><span class="caption-text"><a class="reference internal" href="../../../auto_examples/multioutput/plot_classifier_chain_yeast/#sphx-glr-auto-examples-multioutput-plot-classifier-chain-yeast-py"><span class="std std-ref">Classifier Chain</span></a></span></p> </div> </div>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2007–2017 The scikit-learn developers<br>Licensed under the 3-clause BSD License.<br>
+    <a href="http://scikit-learn.org/stable/modules/generated/sklearn.multioutput.ClassifierChain.html" class="_attribution-link" target="_blank">http://scikit-learn.org/stable/modules/generated/sklearn.multioutput.ClassifierChain.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

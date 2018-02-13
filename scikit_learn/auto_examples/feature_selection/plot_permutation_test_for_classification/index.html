@@ -1,0 +1,146 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Example&#58; Test With Permutations the Significance of a Classification Score - Scikit-learn - W3cubDocs</title>
+  
+  <meta name="description" content="In order to test if a classification score is significative a technique in repeating the classification procedure after randomizing, permuting, the &hellip;">
+  <meta name="keywords" content="test, with, permutations, significance, classification, score, example, -, scikit-learn, scikit_learn">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/scikit_learn/auto_examples/feature_selection/plot_permutation_test_for_classification/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/scikit_learn.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/scikit_learn/" class="_nav-link" title="" style="margin-left:0;">scikit-learn</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _sphinx">
+				
+<h1 id="sphx-glr-auto-examples-feature-selection-plot-permutation-test-for-classification-py">Test with permutations the significance of a classification score</h1> <p id="test-with-permutations-the-significance-of-a-classification-score">In order to test if a classification score is significative a technique in repeating the classification procedure after randomizing, permuting, the labels. The p-value is then given by the percentage of runs for which the score obtained is greater than the classification score obtained in the first place.</p> <img alt="../../_images/sphx_glr_plot_permutation_test_for_classification_001.png" class="align-center" src="data:image/png;base64,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"> <p class="sphx-glr-script-out">Out:</p> <pre data-language="python">Classification score 0.513333333333 (pvalue : 0.00990099009901)
+</pre>  <pre data-language="python"># Author:  Alexandre Gramfort &lt;alexandre.gramfort@inria.fr&gt;
+# License: BSD 3 clause
+
+print(__doc__)
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+from sklearn.svm import SVC
+from sklearn.model_selection import StratifiedKFold
+from sklearn.model_selection import permutation_test_score
+from sklearn import datasets
+
+
+# #############################################################################
+# Loading a dataset
+iris = datasets.load_iris()
+X = iris.data
+y = iris.target
+n_classes = np.unique(y).size
+
+# Some noisy data not correlated
+random = np.random.RandomState(seed=0)
+E = random.normal(size=(len(X), 2200))
+
+# Add noisy data to the informative features for make the task harder
+X = np.c_[X, E]
+
+svm = SVC(kernel='linear')
+cv = StratifiedKFold(2)
+
+score, permutation_scores, pvalue = permutation_test_score(
+    svm, X, y, scoring="accuracy", cv=cv, n_permutations=100, n_jobs=1)
+
+print("Classification score %s (pvalue : %s)" % (score, pvalue))
+
+# #############################################################################
+# View histogram of permutation scores
+plt.hist(permutation_scores, 20, label='Permutation scores',
+         edgecolor='black')
+ylim = plt.ylim()
+# BUG: vlines(..., linestyle='--') fails on older versions of matplotlib
+# plt.vlines(score, ylim[0], ylim[1], linestyle='--',
+#          color='g', linewidth=3, label='Classification Score'
+#          ' (pvalue %s)' % pvalue)
+# plt.vlines(1.0 / n_classes, ylim[0], ylim[1], linestyle='--',
+#          color='k', linewidth=3, label='Luck')
+plt.plot(2 * [score], ylim, '--g', linewidth=3,
+         label='Classification Score'
+         ' (pvalue %s)' % pvalue)
+plt.plot(2 * [1. / n_classes], ylim, '--k', linewidth=3, label='Luck')
+
+plt.ylim(ylim)
+plt.legend()
+plt.xlabel('Score')
+plt.show()
+</pre> <p><strong>Total running time of the script:</strong> ( 0 minutes 6.509 seconds)</p> <div class="sphx-glr-footer docutils container"> <div class="sphx-glr-download docutils container"> <a class="reference download internal" href="http://scikit-learn.org/stable/_downloads/plot_permutation_test_for_classification.py" download="" target="_blank"><code>Download Python source code: plot_permutation_test_for_classification.py</code></a>
+</div> <div class="sphx-glr-download docutils container"> <a class="reference download internal" href="http://scikit-learn.org/stable/_downloads/plot_permutation_test_for_classification.ipynb" download="" target="_blank"><code>Download Jupyter notebook: plot_permutation_test_for_classification.ipynb</code></a>
+</div> </div> <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.readthedocs.io" target="_blank">Generated by Sphinx-Gallery</a></p>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2007–2017 The scikit-learn developers<br>Licensed under the 3-clause BSD License.<br>
+    <a href="http://scikit-learn.org/stable/auto_examples/feature_selection/plot_permutation_test_for_classification.html" class="_attribution-link" target="_blank">http://scikit-learn.org/stable/auto_examples/feature_selection/plot_permutation_test_for_classification.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

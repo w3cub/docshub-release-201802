@@ -1,0 +1,169 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>neighbors.NearestCentroid() - Scikit-learn - W3cubDocs</title>
+  
+  <meta name="description" content=" Nearest centroid classifier. ">
+  <meta name="keywords" content="sklearn, neighbors, nearestcentroid, -, scikit-learn, scikit_learn">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/scikit_learn/modules/generated/sklearn.neighbors.nearestcentroid/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/scikit_learn.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/scikit_learn/" class="_nav-link" title="" style="margin-left:0;">scikit-learn</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _sphinx">
+				
+<h1 id="sklearn-neighbors-nearestcentroid">sklearn.neighbors.NearestCentroid</h1> <dl class="class"> <dt id="sklearn.neighbors.NearestCentroid">
+<code>class sklearn.neighbors.NearestCentroid(metric=’euclidean’, shrink_threshold=None)</code> <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/f3320a6f/sklearn/neighbors/nearest_centroid.py#L22" target="_blank"><span class="viewcode-link">[source]</span></a>
+</dt> <dd>
+<p>Nearest centroid classifier.</p> <p>Each class is represented by its centroid, with test samples classified to the class with the nearest centroid.</p> <p>Read more in the <a class="reference internal" href="../../neighbors/#nearest-centroid-classifier"><span class="std std-ref">User Guide</span></a>.</p> <table class="docutils field-list" frame="void" rules="none"> <col class="field-name"> <col class="field-body">  <tr>
+<th class="field-name">Parameters:</th>
+<td class="field-body">
+<p class="first"><strong>metric</strong> : string, or callable</p>  <p>The metric to use when calculating distance between instances in a feature array. If metric is a string or callable, it must be one of the options allowed by metrics.pairwise.pairwise_distances for its metric parameter. The centroids for the samples corresponding to each class is the point from which the sum of the distances (according to the metric) of all samples that belong to that particular class are minimized. If the “manhattan” metric is provided, this centroid is the median and for all other metrics, the centroid is now set to be the mean.</p>  <p><strong>shrink_threshold</strong> : float, optional (default = None)</p>  <p>Threshold for shrinking centroids to remove features.</p>  </td> </tr> <tr>
+<th class="field-name">Attributes:</th>
+<td class="field-body">
+<p class="first"><strong>centroids_</strong> : array-like, shape = [n_classes, n_features]</p>  <p>Centroid of each class</p>  </td> </tr>  </table> <div class="admonition seealso"> <p class="first admonition-title">See also</p> <dl class="last docutils"> <dt>
+ <a class="reference internal" href="../sklearn.neighbors.kneighborsclassifier/#sklearn.neighbors.KNeighborsClassifier" title="sklearn.neighbors.KNeighborsClassifier"><code>sklearn.neighbors.KNeighborsClassifier</code></a>
+</dt> <dd>nearest neighbors classifier</dd> </dl> </div> <h4 class="rubric">Notes</h4> <p>When used for text classification with tf-idf vectors, this classifier is also known as the Rocchio classifier.</p> <h4 class="rubric">References</h4> <p>Tibshirani, R., Hastie, T., Narasimhan, B., &amp; Chu, G. (2002). Diagnosis of multiple cancer types by shrunken centroids of gene expression. Proceedings of the National Academy of Sciences of the United States of America, 99(10), 6567-6572. The National Academy of Sciences.</p> <h4 class="rubric">Examples</h4> <pre data-language="python">&gt;&gt;&gt; from sklearn.neighbors.nearest_centroid import NearestCentroid
+&gt;&gt;&gt; import numpy as np
+&gt;&gt;&gt; X = np.array([[-1, -1], [-2, -1], [-3, -2], [1, 1], [2, 1], [3, 2]])
+&gt;&gt;&gt; y = np.array([1, 1, 1, 2, 2, 2])
+&gt;&gt;&gt; clf = NearestCentroid()
+&gt;&gt;&gt; clf.fit(X, y)
+NearestCentroid(metric='euclidean', shrink_threshold=None)
+&gt;&gt;&gt; print(clf.predict([[-0.8, -1]]))
+[1]
+</pre> <h4 class="rubric">Methods</h4> <table class="longtable docutils">   <tr>
+<td>
+<a class="reference internal" href="#sklearn.neighbors.NearestCentroid.fit" title="sklearn.neighbors.NearestCentroid.fit"><code>fit</code></a>(X, y)</td> <td>Fit the NearestCentroid model according to the given training data.</td> </tr> <tr>
+<td>
+<a class="reference internal" href="#sklearn.neighbors.NearestCentroid.get_params" title="sklearn.neighbors.NearestCentroid.get_params"><code>get_params</code></a>([deep])</td> <td>Get parameters for this estimator.</td> </tr> <tr>
+<td>
+<a class="reference internal" href="#sklearn.neighbors.NearestCentroid.predict" title="sklearn.neighbors.NearestCentroid.predict"><code>predict</code></a>(X)</td> <td>Perform classification on an array of test vectors X.</td> </tr> <tr>
+<td>
+<a class="reference internal" href="#sklearn.neighbors.NearestCentroid.score" title="sklearn.neighbors.NearestCentroid.score"><code>score</code></a>(X, y[, sample_weight])</td> <td>Returns the mean accuracy on the given test data and labels.</td> </tr> <tr>
+<td>
+<a class="reference internal" href="#sklearn.neighbors.NearestCentroid.set_params" title="sklearn.neighbors.NearestCentroid.set_params"><code>set_params</code></a>(**params)</td> <td>Set the parameters of this estimator.</td> </tr>  </table> <dl class="method"> <dt id="sklearn.neighbors.NearestCentroid.__init__">
+<code>__init__(metric=’euclidean’, shrink_threshold=None)</code> <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/f3320a6f/sklearn/neighbors/nearest_centroid.py#L81" target="_blank"><span class="viewcode-link">[source]</span></a>
+</dt> 
+</dl> <dl class="method"> <dt id="sklearn.neighbors.NearestCentroid.fit">
+<code>fit(X, y)</code> <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/f3320a6f/sklearn/neighbors/nearest_centroid.py#L85" target="_blank"><span class="viewcode-link">[source]</span></a>
+</dt> <dd>
+<p>Fit the NearestCentroid model according to the given training data.</p> <table class="docutils field-list" frame="void" rules="none"> <col class="field-name"> <col class="field-body">  <tr>
+<th class="field-name">Parameters:</th>
+<td class="field-body">
+<p class="first"><strong>X</strong> : {array-like, sparse matrix}, shape = [n_samples, n_features]</p>  <p>Training vector, where n_samples in the number of samples and n_features is the number of features. Note that centroid shrinking cannot be used with sparse matrices.</p>  <p><strong>y</strong> : array, shape = [n_samples]</p>  <p>Target values (integers)</p>  </td> </tr>  </table> </dd>
+</dl> <dl class="method"> <dt id="sklearn.neighbors.NearestCentroid.get_params">
+<code>get_params(deep=True)</code> <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/f3320a6f/sklearn/base.py#L213" target="_blank"><span class="viewcode-link">[source]</span></a>
+</dt> <dd>
+<p>Get parameters for this estimator.</p> <table class="docutils field-list" frame="void" rules="none"> <col class="field-name"> <col class="field-body">  <tr>
+<th class="field-name">Parameters:</th>
+<td class="field-body">
+<p class="first"><strong>deep</strong> : boolean, optional</p>  <p>If True, will return the parameters for this estimator and contained subobjects that are estimators.</p>  </td> </tr> <tr>
+<th class="field-name">Returns:</th>
+<td class="field-body">
+<p class="first"><strong>params</strong> : mapping of string to any</p>  <p>Parameter names mapped to their values.</p>  </td> </tr>  </table> </dd>
+</dl> <dl class="method"> <dt id="sklearn.neighbors.NearestCentroid.predict">
+<code>predict(X)</code> <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/f3320a6f/sklearn/neighbors/nearest_centroid.py#L170" target="_blank"><span class="viewcode-link">[source]</span></a>
+</dt> <dd>
+<p>Perform classification on an array of test vectors X.</p> <p>The predicted class C for each sample in X is returned.</p> <table class="docutils field-list" frame="void" rules="none"> <col class="field-name"> <col class="field-body">  <tr>
+<th class="field-name">Parameters:</th>
+<td class="field-body">
+<strong>X</strong> : array-like, shape = [n_samples, n_features]</td> </tr> <tr>
+<th class="field-name">Returns:</th>
+<td class="field-body">
+<strong>C</strong> : array, shape = [n_samples]</td> </tr>  </table> <h4 class="rubric">Notes</h4> <p>If the metric constructor parameter is “precomputed”, X is assumed to be the distance matrix between the data to be predicted and <code>self.centroids_</code>.</p> </dd>
+</dl> <dl class="method"> <dt id="sklearn.neighbors.NearestCentroid.score">
+<code>score(X, y, sample_weight=None)</code> <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/f3320a6f/sklearn/base.py#L324" target="_blank"><span class="viewcode-link">[source]</span></a>
+</dt> <dd>
+<p>Returns the mean accuracy on the given test data and labels.</p> <p>In multi-label classification, this is the subset accuracy which is a harsh metric since you require for each sample that each label set be correctly predicted.</p> <table class="docutils field-list" frame="void" rules="none"> <col class="field-name"> <col class="field-body">  <tr>
+<th class="field-name">Parameters:</th>
+<td class="field-body">
+<p class="first"><strong>X</strong> : array-like, shape = (n_samples, n_features)</p>  <p>Test samples.</p>  <p><strong>y</strong> : array-like, shape = (n_samples) or (n_samples, n_outputs)</p>  <p>True labels for X.</p>  <p><strong>sample_weight</strong> : array-like, shape = [n_samples], optional</p>  <p>Sample weights.</p>  </td> </tr> <tr>
+<th class="field-name">Returns:</th>
+<td class="field-body">
+<p class="first"><strong>score</strong> : float</p>  <p>Mean accuracy of self.predict(X) wrt. y.</p>  </td> </tr>  </table> </dd>
+</dl> <dl class="method"> <dt id="sklearn.neighbors.NearestCentroid.set_params">
+<code>set_params(**params)</code> <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/f3320a6f/sklearn/base.py#L250" target="_blank"><span class="viewcode-link">[source]</span></a>
+</dt> <dd>
+<p>Set the parameters of this estimator.</p> <p>The method works on simple estimators as well as on nested objects (such as pipelines). The latter have parameters of the form <code>&lt;component&gt;__&lt;parameter&gt;</code> so that it’s possible to update each component of a nested object.</p> <table class="docutils field-list" frame="void" rules="none"> <col class="field-name"> <col class="field-body">  <tr>
+<th class="field-name">Returns:</th>
+<td class="field-body">
+<strong>self</strong> :</td> </tr>  </table> </dd>
+</dl> </dd>
+</dl>  <h2 id="examples-using-sklearn-neighbors-nearestcentroid">Examples using <code>sklearn.neighbors.NearestCentroid</code>
+</h2> <div class="sphx-glr-thumbcontainer" tooltip="Sample usage of Nearest Centroid classification. It will plot the decision boundaries for each ...">
+<div class="figure" id="id1"> <img alt="../../_images/sphx_glr_plot_nearest_centroid_thumb.png" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAZAAAAEYCAMAAABFglBLAAADAFBMVEWq/6r8qKioqPy4uP/8/Pypqf/+//+qqv//qqr////7+/ukpJ4AAP//qar9/f39qauo/athYZuq/qurq/6NkZH/t7f+q6usrP+ubW2epKScYmL/uLiwsf+s/6xTYlOh+KH//P+w/6b/r6diYpys/qqt/6j/rKhTU2Khofj///y0/6T/sqSzs/8GBv7/qqr39/evr//y8vJfX1+qpf//tqP/saZYWFju7u5zc3Oq/6eq/6J5eXnd3d2n/6qqqqpRUVHp6elsbGz/o6rZ2dmUlZU3NzgQEv4rKv+2trawsLD/qqO7u7uampplZWX0p7HMzMyu+6qi/6r6qKxMTEx/f3+Ukv8/QED5rqobHf1KSP/V1dViU1M+Pf/toLHIyMimqv+l9a3MjMD/AwD4oaGCgoKMjIzZlbp6eP+Dgf+fn56bmv+IiYlCJOCzfMlGR0ampqbkm7bh4eFZOuCmpv/R0dGFhYW2tv9xbv+qtvNlZP9KbN2KiP+hqv+goP93U9xqR9y/hMU+FNSmdM6/v7/xt6oB/wCqwOlUeNuqoP8wMDCEvsTl5eVDYOJNMeFSUv8xT+Cc6LO38qoFSbcmJiar9rHowaqqzN6ioqKS1rpjSOQbLO47V+JjjdV7sMpcWf8GQcEATKuq2NElQeG/6ar/BwCUAF5bhNaq5MWNjf9ECMDdqs1qnssWONoKN89fAJVyAIGBAG8zAsamAExIAbCq7rvK4KpTAaSh7bJyotDT1Ku3ADzLqt6OZdeOzr/LACrgABmsbGy2qvPqqr+W3reZadFsltUzNvsaSsyHXdfczKoODg4xCNMA2R70AQjS08oAYpGGx74B9wUF/wC4dnbGxsYA6w8Ah2omDuMCWZ4An1X/tbW/qunCwsJUJ9GEYt05JeoAboQH/wAB0CYAsUEAeXcAlV0AuTtQX1HBwcHExMR3gfZJOe8AqUkAxC6XcdoFb5JYP0B+kJwK/wAFfIcrKfQAao5hYp72oKBsbKdCdHoJ/wBXV5KQYm5mYpiBhYXHx/+qK0lXAAAgAElEQVR42uycu4/byBnA7Tt69j4ePIvDKYsk1znANi4IEjBJgARFgiJALskVYBIsBGSNO1ABCAViFJBXpbiLKkFIpUK4PyCNixRXpIgb26XaU2XvH+DtUgVX5DVD7cP2rs+4S1aa3Z0Pa4IczoPkb77XiOYt4MKU3OKPgAPhwoFwIFw4EA6ECwfCgXDhQDgQLhwIFw6EA+HCgXAgXDgQDoQLB8KBXI4Ioohf38XCO6si4cIiQXyrDX5n1WYU4Vx/r7WnbcWLBhfRa9fc7Av47KQIF184xldSQ9Dp5soKuh4agkC00rqit0P+yrR+hY5CMvXoxMJ022yayYwFZJcIkWO0KiVFIphzQJZRFTJtdHxC7ErILkTahCrcqgeEbIueFiAMsUhbi6hnEXXBggiHPhyrKe7KSCtkOtuF1fCrPQTFCBMlWXVqmVQtgy4cN4KoBOgGdDCiPKstrUkGqwBfLSBSNO9MyJ0hJKmqVcTaIH5n7a537ua0CkLPH1XS2QxFkmeDXL1VFYPRX+3FxkmZ3TveMZRTc5O54E6kCwafVWf7mU+HUzogiY3AZGGiTvuCVr6K8dUyWfTOMgskCXW8pqCvQxDHkQiBqnYgVNQ+mc5IylXFdIfg6rFhQy9WdWnqqI7WqzVvltuGBoWq+tCJ4wCKRXswSkVhoCo9iIy8PSYdgD204UBRU5SqNSnxHX1w1Id+bahdqB0oDAkRnxIsEsPN+moqSE5fqUylXWMcqWoAwzR2NBjFaipBOwQrSZP56V2owxgiBTRddWzIB7rqgpSSKwZoH1yCity6TB5yncTNjFRqJGIJBjq44zCz5NmBVkmzQKtEEEBv946mvSHSxktHgWEud8U4lis5zNAgse2JZHkHVQXdI8tztdlSqzzoZ73OBKezqvRoD0EC2CvkLsonpATmi7FdJqB4biuDXC8Tk0BDoE18e7TouFkAC90dZb6mRObMnLowcUzFgCx12zokS3P26mAxh5ZDpQtDf1iVKiiKq7chydy0Dboul4kMeg7C1dIQqVsOl/ZgYMb5CZAocTIDx2rfJiAGI6pFHjUY1RC67VjxIBqmB1AOjTGESTMzPWo/gMzKtj7zYTKF3hDaFmlm1gbI2RREiFQEeZL3QCclHiaPj+ggbTbKoLNITtxy1gPT06DOYTICf9ZpqUM5USIJvC4Eikys2UEG7e5cITMogu6Yig3ZMlBLBbwe2BNRLaFKpInR6i9cGDggXrkoyzHkotCKY5NliLMp6A6AWXsyjDozmyi9N14BSTqw9MhEDmZj0MJJ0KVAkJZBnFOLTbrwfDTRKBA1AjSx8xTbQwpkrpJupuXMzg1sZ0KpYESBRMjNoNVWjs2P4JlgZjbKawIThbMg8MlU6DkJeeaojKWZBj4BUlmEYFLAIKZCNQTaiQ7ekjggrFqom0he7geHMlG+KwUEkade9idLui+rahnFWu3grI4Wupz6rczOgzlx0QJEXtFyiR0y1HI4g04RTJbzju8FSw9aCdgzuTtpRWHPi/qLALy8W3k4mBRxGxydTNoR6aEaYqG2rIlNWNszISJPlJisdh96EzAc22tJTTA21I96RMOIGs2IH1DycdE109Bow+wVzBOI23MvgizUJnm0iEBrhKhPAEcLFeqsTIhZK8ikIT4tCEoJlPJK+RDiQop80ANEA0uw8sEYLUMw08I/RPO8P4Uyr93GmIRp39ZKkDqDQwvGdX4IyzolVUsabkpzGaqahM9HaRD0oErnWinCq7QjQTgGqZTpSMQTB3leNSUFqgIANwASumpzWPpg9zWEEQY37Wikt8NDKDRiA6O0ZcqdtCPDnNjBAMQi9YGGvWY6D6rTuyiJ+45Ij0FK4l+rRzQRkSuuQzQdapeQojCQGKL3tTnfBXor7A3rH53Xvbv05Ayicq70rO08ugSfvvalEySSfI0eobOzmBzRNQ2RrpPgpqIoCnT1g6ZuIpyU0ZZkS1dFcNMBPl31kFd1hKY+bUX+kdOoORBEEiUr6hJLIh2G5pc0W20uQmw2qGkjiEKzdLIa6fV1FfH0LIbj4THI6DJS+P8FCBJYERL7/tBZwR5NpyOZ7Pw/Bd5fBTFosrisCwgC9xeMy/zjDcvox3v9nw5EhMHfn/6Safnnv/7xq83JJ9+TIFlYJ5DWd5+9+Ixl+XCj8uV/vv94zUCevrjNsux/sFn58pN1A/n5z25/xKxs7+5vbVLufPAhB/ImkecbBbLFgbwhO3vPH33KgTAF5A8cCFNAHnMNYUuecSAcCAfybtnjQNgKep9sFgcH8pY8fHTnmgNB9K2x5uck4QoA2Xm4aQVZl4agq+JDrjkQBKauGxJgeOVEzAPZ+Wj/yTUHgiEcuiMBgzscK82v+6LAMJDdTafpawBykDgtLEKUwqGyGqfzlFkge/t3rr0PkeypahEKA7FLgWi643334jarCvJya+sGOPV6AGDFYNF3WrEt/5tVk7Wz93jzFuuSgQgQ6mkyzX1R1dsHq1irwzCQR9cdCAItDGVwbZB9k/Uoa/NL7+vKQ9CJh2caSONCrj8QRF/Ew81/sGNcQ7b3njCgIHwt6zUgLLgQDuQsTX/47A4HwpIL2X+0tcWBsLSQ9SkHwlTQ+3CLA2HKYr3kGsKzQg6E3VcWOZC3eDzb4j6EqayQDYvFgTCVpnMgXEPYBLKz+/jZ1o0BgptPGhx/CI5NIIys9K4HCLoCGnKTgCAwbbKxx37zIUUmgZA0nZGg9/KBYHBnHZBAj4uA/mYoCUwCYSQrvHwgCDRD7yCRAPHxynpF7L2XtbO3f1OAYDHtlVRDlqWhSBikslQZfC9r//GdmwEEw9RzMm/UvODQJk5Ens83CGSbCLMvZK3JhwjTkW5oczSurERDeKMma/vB/fv3tll9IWt9eUh4qNVQOEbzZT5J3JhT3773+Tff/OYCIswsva8n7H3zo3ubC3vv7v7u62///Ntf7969wIXcKA0hKbrQfGRvs4nh9v0//uWLL/761f1tdrPCG7WWtU005G/ffn1eQ7ZZ8uk3aXFx+95Xf/r95+d9yO7zJ484kM1EWQ8enOexs/eSIQW5WcvvF+YhO3ssKciNAHL3PesmHMjtNXvzuz+EZGf/JQeyTh67D/bv/Ze9q/tpI7ujVso1GPlyLVsav7gPjMI8MEZMyExpSFALqbDUVSx2utSwsruxlTWI2JVjWhOC4q+iZNXUSaMmqaxWNLvBClZbfzZogxBWVmzkFYuiSqtFVRfSTaWqVao89Q/oHY+xx2BSFbADGAtNPDNBSHP8u+d3zj33moKvcXqf7Cc8Dj0gkOK9jrCLQtuPWEeAVBMQxC7EMgkfh7bPWD8BR4BUU5+H52cyDn47Zt9fqvBwAoJyPwVAnMlIOkujhiNA3hQgHG/kpPrc6Vs6CIGswwoI4oKBwJKEMyDH0tv3WA3GfaVCDh8giHQFFjNRqWWFeHQQ8j9VDsopmpqqYr8j2pq22WJBensQIKptQOTFXQOqAAhs4EPxRNlpqIJwl1QP9clf36sxQOTCxhoYlHe/UlQlKAdJ48K6hUTbc4zFzlFFVbjPCqQKQbl3f/U9hfA9tudOy3PfZVrpLgtSNE2h13F+1FsAhNpvBVKloFydkAHCP01Nne0XK932QoTg66YNMytpZ55iiO/XGiBNjaeFoFxj3XduNPa8pZBXeQMzuGX+nLRHbTOxIMuL5588qS1ACkE5DIii45/4D8mraZ0gasvghUjfXAxzfv5U8159fY1xyHdzQTnF6Qtv/UD4ztHGpuoBgjhX0EjCTQzTEFwqcv4TUGuAiEG5i4oTF3qqvRwB0c7VudWtyTiWLZZNDQLy5oJyyORI2SIvyS2xHx4WfKz9xiDVC8rJ6xqrsKQNSl0SaHIszqRKACnNOFRMpgMAim9r2ctCFMsWJz4QvbQcX7VKfUaahlVweoFWz4g4gHq9DtQuIIi0BJ2waJpAzrpglxQIRfj9VEmBHKtIfTBXh0dFHLSakUlGU6uAQMr1PJ10mwjp+gMppVO+dNpbxAtVJiEHmNlBZd+IWCNmpfImA2oUEJ5dn5uxLVslRq80GIebrrTNJjHmKxTIAvohZZvSgEsE6EeUSmXbwP81ah0qQLJp28oGIDn/RGqiINpfAgjRe/vaBxUCRFkCCANqdciy4CErbBIfOE1TEJHSIQviISvq3bgAiQeyO/dOaiowZA0MKgcncyhohtrapnWgZkmdtpjDYiiOIP2vLBRpfeWSkjrpt5KFsymZuuvDkxUhkasjIqkDDTM5y9Rul0VZQvG5XAkgLpuOO4zOZHy5tO3dOCHgVPfxCgGCcdBr81UBdDXc9iJWWCIVFbwSyhhYscUX1rAwDEsnc4sc3/uo+7hMdudyRdR2rQlDyPNl4OB53EatZAIuEZDFlVjQl7IlvGVn1+GjfrUMvy7vwssCY5Uwwg4gIIIe37oujWRpRHijYgIIcc5A1E1ZHemQq9zsOmHqFwoEA7IbqviGHhwBIuBhWVoybprnQKQ966Qo0u7KZ+Q4i51sII12giyDBzT15+CQqdXXdsoiQDcwMcwcAYKpmw/FY25+Ex7WQDyd5RC5ARSiMBL40FBmyVTv1G2Z+FJ37RQQoJvtUyon9r5GDhwgWHDPbVndjFhvZGYlYJQszRHflZtcJ3rvvn08D8ipezu0s8Y8N7EeHxzTgIMGiFwuJOTwQb43gEDSGs1kkvaSMQvRC7GVlMOEBGkON60k3LywkIC3u48XSmSH2hB4JgQ9zgBwxCHkUml4N78sZ23NSpFCAmhTDEjY4aQ0SndbLZPtFpB6zZi5zzCrO2BDllxxpqfjYnuT4sy3es517tFeJ4izWDb3sojzG7wUbX0ZttCWda+r6JhA0h8OSkx3SNw9LpMCskM/C2h1o2Dv8ah4hXTeUAjfY/jFD8+eyF/Z/W5AiNqSJeGcy5G5sH01En9uKYmSiutDFgoAEqhAIHlAju20zQJM/cFre+WKsxc7LjUpznacO9eJaeTE+xd/vPtc1pYgHM++jNhWAt74jC26PicNW+dXUBFFQldJ8BBofef2CTiAwlCuuPTrc1/kog6n38d/p/2rf/XsGhAsymFhDh3lu6y5TMQRTC7Or/oD84vJvMnOI57NxjIJd55yiN7P+osEIlOpVOquD4UxC4xh2Z07HPaQQ7tC8c6Fzvb2OsU7PxX/zq6HLCzKWfF5Q4qlWfFJ8761kJXLrjmCrHNtLSjep1iOJYy+gHtDrhO9jyQDlrq1tVXd9RBXCNB5PFrAeDwMONyA1Cl+1tHTcePbP/qJ8I/Q+bY37b7Lsvt8ubQVJC3e8JJot3NBt9dC28NeC4cv5kgdUkave4GiOL6wTh1OSeCQtfz+ysctslOXTwLd5NDNUf3AzaGBN45IpSuk8dKZJkVnY92lM3vU9kLK4ogkHEZKoHJ3LJUMskjYCyuZirldy5FEyOJIRAJCSSDaN5dKLtD8RsQXS/T+IiCq1k/v//v+p80YEGYAq+6nYwalcvCq9vDnsjb2tpbvlVKPzeSUOiJdq7aZVFgAhH2Zwkp9HZN6+lWe1CHkHZmZxf9QEgvrs25JhTTfevH1i1vNWKx7xpVtbX3CQTmsB4ccEHFRSCHAuAcVYl9enMclIEQTQ4lMeoHlBaWeziQc1uRiymHHpL4sDGmIDsUzc0X7neAfSzteVfP1Z58/u96q6rrHzLZh1T2Ky6RtVLsJEFCZZuowKXXOGQr5cyY7aQ+tenkCCvIi+9xtp51ut5X1h0JO8bbLveor+MJE7+O3+6UNr+z89Y+un5epuq59oBs3mGc9k+anI1uknl7LVJVXDuJ8CE1QYhuLSMpCU/nV6M+9Rs7q9rkojmoQqwKSJL5d0Cy9D7pLJIispVnV3CIokctAX88w2lmDYWTTwwfMxKC5qkx/EGcMi1s1oAbx84+JJTof99mX5yMOI5aNG7chVdCQhOlut6z0pVbJVGpZLutwrB5oR9u2ZHaAbliJmV5zVCH/g0eK1jrM2+9hTOpr63EheCX1HWEZz31jxCoccn4W0I0IpD7hkVIG8JjxxbZqtl4HBxAENz7tuIFCuU+/lFfECknhCik7Z9s79Ug6YAnFUXRPHl4DGsDkSH1Ai98KKQUght6ECjGI5/lDwcACANT0FC5N5PkAcSTJYSIxspIHTjpDWSPtd4ft5eZsCTj1qKRAWpq/2SpxGB8KJcKMGAzDOoYZ0wOtXqvXiGPWhME8oNUxOh3Q6RjhTr2+QPd6LahdQIjsmi/n4YpdFut3OLLSHQCWBD4naZosO0loelDi8bb88he3ftuiLpZIzmBk9HpGN2kYnNZdHTJMbzx2vV6rGzY8HfFMPjWM60fNT6fFAUw7bTCPMrU6hYvYpblMXNiHDJKYuucD9tXUYtJZ9HSD6cWEm9zu6w82NViq/t98+eL+x60qaYUIY9AYAIN4jBq+qSzMl+OL2gFM94Oj+E7brPnLz++P64Xc7jj+P2ZdrQLCs+75mRUHT0FRqcfGo7aZxDrN503fHKkHjFT53+413S4hkJbzf/jz13+5UgDk1J+uFXK5mMOVQwZ8MOc1OxjDRILPx/sEzv8I/+KQB9SPeYbwxcExbY1O4eISiM7nVHfOy4o4LM8TqVUriTCz4963gfQn52O+bTbUIEyPSzssVfOVZ3//3c+bVQUSuZOfFAFaA/7gz07jw3gOEAC0Gs1VXBwGwerqGx362z/+OFJItg/VbuoEksHwAqJyGtAVDrtoe/ilnyQpI9dAQguWgM5w1lh+xxnTf9m73pg2zjOOlB2EyI5Pvojbh+uH1+L84ThLpw2Ukv6JmiFHVbaE0rHYkyuZaMOeS1aGUxxjGWiE5ckyf2K1m4sxdq1AibADRGsgEaQfKCZTiPijkhJpadIEIk1qF2ltvu95785wYMgKLBJLsIQj8vq+vD/e5/f8nuf3Pl4j0cUj0hWMIkWX6m/LgHjNWK67zZLniqAFr1MQKtvaHLy3zdLHO7szK4LN7HZSLy6pq4tkr4Jad/ru3dPA37oSXXXdB4362ntf3avWlxQVbzAB6MhHayU6vDiEFFaHnA/PSpMwCaEvbXJTFM9IuRSVZzEYbQLQPS24TMY2mgKSl0MZfIYiXmQdIjcHddVD16/frAUNXnGyrufzK+fqBj4faC2u2GjCSUHL+bey8NCSJJmTs475hBJJnXFmdAgOXkYnEIlQqcJxrN5J/H/rkMx16P3SP1sERC1XTOTyu2SUU+uP19y6cLnph+unrtcUr5tewYMFRyQbLy6S5Gi1CmWYUeqwkjGfQMQyqoC6eamXSzjr0/ArKHVgdlHId+9xyjXgzFtWo33DlR3VD8ndTj8Etl4NL70ECcAwONBaIWLTeKXnZtWNoZ6hxqIKfbZrVLNXpznSgrvoWhKxIM7ZUvlckDmI1Gq1LPyQCCABsS4eEYIxw4mopEH9wd+/AESBlTpNgPTAzG7wMDLTY8VOZ288kUfjg0Nv/ew8a1/WwdfLzoj+rLIT0gnJ3TQgal1BtU6v19VKxmm1rrbxa8nmoykZTVcV6UbTo7q9JbUVazWhWre3VtciSUI01sGR3PCwxBxaZA0jlmU74AeFrUgrtdax3CPcbX0047XnCbRQSdG8zWR2wu9OhnGYLXaJP2jaIdAU48hbK0MIgXIwNC046C0rxmdulPvle29/mZ/7p7cPHP6nNOevbJMmB42+uvVi3TvH6y62SnNL1JnrCJqi5hpYeafpblOtpulizZovawEJ2TpZhwldy5KRVHKE65pM9uNcl0SBTmO7dbjd1D5sbTd2QgIsmU8wifD1NG83qY46nJbJdCVlNpls9W6TySVQ9Xuk80E70sa0Iy/buQgy5qjR4vTCSuVWBcqzD1kH3ziWm1/2Sv57L0O82nfmty//dHM2IE1JXc+pgRujA6d66mSzicTf6oLj9y6funSjcfDWYOO5S7cut55c++CSb9EP8o/kuuKzj5KB2PxUahxiFWvthEjU25t567QWln74F3niOAEUbgLmMHcv+pbM2MFr9ODLtA5BdglhTahSdbulYLaqWi9YsMTHKxZ+ZwKyf/+XPzt8cF/u+2X7jv0KADn461d+s0lfllpXc/3Ctaamy3hiuDKzxT31Wxd6mj6+duFa3dc9WUpdo6+Z+vfDIMKABG/Pzca6pn2++BgGpAPr8YYgbHuwAdfXO1jyEEgRQiIIXPc1qNKWR988SJuXu+19mS121h/FeGXc74TibiEhrmTuqe9UUn/33fz8A7/Lf/0NAGQLvixNybmLgzerqm72XPxitaUXSH1o8Kvm5qHBodPVNwfx/ZDVy1/EbqewHidRuPN2PFKeuP8kQkJqRSI//MnPBCCBCswYVCo/ItGhT/+ch5u1BM04eVzLsnlSSzEX7lpZYJ9VluXciWBs8KC9Urwf4lQ2eAnejetdHnjGtTMB2Z9/4g9vHj5WdubVP/718DHx26K3YLbWN49W6YqqPj6ddV2w4FxjlU5XNQqavXr0tL5gTc29ONA1hiQSD5t7WWT1+7W4xgucEu0dY7mZhhmExoL9wO/hDvZTweEQ8hhHJU1TLrON5j1mGy/0dbucjNflUlatBI/bA/LdbadputLBKLZTsLv7BKHPbRd2apb16oHf/yP/zV/kn3j/2JZ1iLqkSFdQW3flblXWt04UFZVoNCX4TVe0dqC4+sjVQ5xYr9IWWhtCk1GuNzQpF921oNTZcHuofdwaDE0GUEMs1c+5jYbuelcyZnHSPMMAdYcSHlGkEzS/SpQTDM9AZOMBCjMENEZ5RvAKwzPE86xDQKRXFDcOZLF2Rr6vvK0+IR+dl/U4yY0szH43GQjNz8fCYuKLlToKLs0u+Sfuzz5qj8ZnpyYhgqlU9sSD2WkXCEMnb749+20aa3YiS5SLvxJiHRg430tlrRA7V6nvA4n+k1z8TZ/bK7839YAe1+g30dGSJboISNeib35yYsHnCwGpkxmj3KO5hw29t31T7RNA95NRnEu5krO+xW5cIOEtD+ce/JAZfLW+KuddWMg7snTgDgbkf1V+11V9cGnoaRPds40Qny2XeEm2I/E41IvaHy8Ey0kWiRUUECOpJ6lAR/L7UL818Tju5yIGQ5rvDj3udNAUTwme5JOUS+5SrT+QgaC9QPdtjHO1dYugGJp43ouLkOP+q0qn/vF4nLz6mrIBYm0Y4QpfMrchFo2PsSKRANNPhFkunJ7gYHkCHfqku1ug67vTXkZw2HDR3S1VSvIoYYM5ZITgdNkFiunrUyzDf9q9DPGcA4LHBeh+/Pko0LQoSrxkIehxUz8XCYWCXJfRELHKBRQO0qvEQmqiPGI0dXF+o9Fc3200HHXak/FOSLbq5W2lzaHY+nPICAr4W2gzGMy0Qq6bDPI0oOe6/K7WaDbx4SOfkUqjez/W4xMhny8WxSI9KnVvtaSVa1j0PUiIy1iRqGxGrMLT380tmfnlGrwtDg9ucMETsq0+XJj3ZJZX5mW9OEa5/5qU7T15tVwZsQAQAwAC+xoCQAwZQEgAJLg4N5XEy6aA2PCQAcGdc2dmh0VAPBts8XqAGHYBUb6Ki1rK31rVjiocbjcY+1EiHoogMWQVirTOQsga64SQxUZUhl7ObzBYeAg/Jq89Od2pMJXSlniobWOpR4OwN1PLQh4PMDPadwFZ1vX65uaW0tU9QhIN+4HUyUCARGRX77h0QNB4dByhjiiQPDkTZlm2vzdPYNxtDp6utHsVJICHi9Ibt89p2uOhVvIqaYDZC+Xtffr9kcZ4PKK82imlvdOhLpTDIW15BKRcWCxwBZLTyQDLclgqIkQWNhhUFsYN4cZLCatMiUQezz91FxlG2atamdu7Cwj+DqqQb24hyilb5iAM78/Np4ZLgTOiuHLbD8uvocjDuYcRJKp5UO4ojKnAZpJbuMRmlF7Wp597YbiJ2nB1bNYXWvFciZvNgRSfSoqAzIAcFwEhUfCO704QZcor7LhYOjEtW7K2/toFZJWCvBGL+RUhSwsxqdAaCaVGIGRxWhYCU6JDbLCHE6FEGIcsmWd6jcaGPS6jweLc3vUDXHbcDVkKn3t4DCkyLBTummFz2JlxlGOdGCFZFEwPy6RuDVhZtqN/RrZdo/Hxl84yjj5hu3iAxBd2AVm+CPIWUsQrEs2k7sdG8OU10to+vRApb1j4Hk6IWDspRTmF4xCj+pEctVhSe5Zmtme3IhiPUWWw7aa9mYtS5eVKDxzJBb/9ZipRCCKQiy74fPGRmM83PZJR6iTnx5LRKp0ReLD07M+36XQjeMsOF4a5zxqQlVaIpuLv51fbRmHHF+fviLkUmonNT8UCkw/m48tJGORfQOIJrVT/hRcAQm2PoAmxAfyf9s42po3kjOObdpkwFl6vFuRI7aXXTe3cnXPIwQlgY/yK00ABYYcUIqog2p4/cDS4RG57ctUkTVCggSsvZxIKQcnhFj4EpKtEBFRNVSmX0lwjXRIlUSJFvbyrJ91J1fXDSdcv3V2TYBtz9my9u7Zvni8mWY/A+/PMM//Z/zyTrSYHCMsqo1QqB8okAiI8MXy+AFmVYOPl9+aMDnHSz2Ag9GdXVq4YlubO9ele5HxLx2DpxPXokMW9R08kACnY+fPXEYFsefNvpXu/vzNLn6mfMJmsRkDCrgprA/9MXYRRLlVsO/bnY9tWl+j/fqVDz8SLdMP1wSmWHZ9ZotmOvhkuqS8Os7Gb2/TDHeyqeuQ0PDsbB4RP0L8o2IKY1IvfLMhao5zTCSvquX7hstas/p/nrxkFoik/VFpUepzfW7X9p9NPPhxMEOnsqfmnoxeG5+7cDXknioqGaFofh4xh9MTqc3fu8oGOhdgKcwVCFRTEE0A40b6zOIunvZWOaqCCdVbTfkCJMcqltG0d5nLoR7v3Fe7b/f5/vrh57hIbL9IHH39xbWjmzsObK0u8SB9naSbBCc+sTscEDR+Oreg5lGIAAAm7SURBVDDHu9853Mi6JHvN1gCW8RX+hGiu4TIJulEuZQ85wuXQozv2Fbq/d2z09qdzvOiLBTLz4Y07oanzNx5Pj3NS/Lvxl2PXuy7zSyfX2YW4BC0UDsifWieAclYEuMQehD3Gtu4BwdzbkNkhS7394NGPjvJHd/Ze9J5dmZ6K6yD8ZqnQyuBltm9l+pThwsREwuW4we3sgQMzrCUcN+8t/u2Bvb/Mn9IaKhj4jdlU0+OCfpOpTqxRLmUSOXyoXK11j/gIw2KYZRLv89LeGZ3OMMywtKGjI/FyTFgMw8MG2hJ+KzarF7/+q80v5VfxGaNRML0bJTpYUrPj+Oi90fd3azQRm47WEwkdgDZcmL93PmTo4K/wxndi4+CV+rojE5LtAsmT0hoSHSy57e1Hnz36SXm0lgmT2AEE99XtiUV9wg6q5ESi+r14V4YS9Fdg6USzbiehZseRB9ceHOldDtPJ7jan1O9eezLkpYnUQUdX4pmTSp7HmltANDvKd2xXr0vqc0cPRiwsJ7PXB6NbDM1NXtYzqXkwbHRrrvgjE75yQDTbDv3uyMEEe5Z6e7mm3B2ZGuzrSHrb2aXJs+nxGA8NXuKIMOvWszCQjeZTP/zHn9473KpJNGwV9o5MnXv2IJRkSksblkY/vdtnSDlkMfrF6af3OBXDMJbTGEiajut/vvf7H/163Qnpre7lqtC9hzfmw5YkQAaffXZ7miZS9RGaPXX+5k1+YZ6xhDGQNHvIsT/+5Q9vJ/aQQjcHZGr00ZPBJCKDr877KGnfie5JWG1BM7Ruce6Tx/OX+R6ygIGkm0OO8xXKEo9GGIvQjP7CUGg4eao4O7RBdtGzLKtfzR/cT+z1yUneHMEB6cdA0i14sq08kYcg0QnCoE86y+KvbN1g/tURmggJHkaGnRqaHOf5CLMsS/gkBpJ+4cXElL5aDCtaYTRpdkh+hWZDRUVFIcEyd2n+2dPpDm4Ai45sFgIDEW0yaV32xpQZTT6B2iCLT5SWlk4Iu6avPHgYu27PZfUCDESs68dHiAthbzS/I5rfNT3/yZ2h8Bo55nQxBiLWZcKIBMLo6JmJGTqaQ05NhuIelFQppg1zHIh7U2R9Max0Q8cl8ecqPXHhpRgDETPp0l4dYcT2kHgdEl/QjODrwecnEGFbtEBCBTIPpNVmIyQJ8ecb5kIPATGvGQXi7vWufdstBJ1BIpaT/fkIBMDqLut9/jQXlcdazRPJIBCte3nNFadnF7fqMwlkVqE1eKmNcrfO1DcHOQxvmAOOMo5IBp+pcxL9ORBuxhSaHxpn6QyOWe/mIxAhTCe4LuIYgKaPhV+UKaOc2t07slY748rd2/eGvEwmk0h/XgLhhigXSUHSMaBy1UNQaTXvyYgvi5PoFwnb2ppu6OnN23NJlt9FA7Es5GVSp/jKfnw42qCjCVJkz8D+jAxZWnerL1Z1X5q/c36GzWhaV2biK7Uvy/6BxzNQ7YKBCrOLFI5qy8yQxUkQXdzz10t9SxYdk8GJL52PQChYXWsPOI3tEN6qM2ZulqV1j434Eh0KhgxLkc278lWHxGqRDAHRrFsxWVPdGQp6drUefH4BoUiSL18GIf+SKSBatZZgCIlDITdQLq5lcQl9REdIDkQZN1AOAtGqxyI2QvpgFpToIrkIxD2WcEBLPi0w5h4Qrbp3mdbJA6QfA0lHont9cvDglEhYgS6Se0DcrTZZeCi0wJhrQHibCSMTD+bFGRYYyJeVzvARskVYfm2YW0C07sTSGdKGAlIk14Bc9MnIAwNJzYOWkwdBe2XXhrkEhEsgNCMnDyXWs3IKyKarsg5YGAiCywQDEQsERA8OoVTRV/FA+ARCyB2M7GI9h3pIa0TmASsq1vvzCgiAQXMAAgp+bLV28o8NjaRIIFr1iE1HKAAkv3oIAE1WBwQktJpreqKPccVVA+IkoQI8+MdUMhOR/BEurDbxQDwO1wnuH8a6OpMoX5bGfdWnCJCq2f78AkK2V/D2n0pnU3cPAGUNHocYINrWqyOMMj1k9mv51kMaV3+saBddwEzrjvhshCIh9651yZ2LwcZ3GtpcZGeXudEIxJqt1RFGkf6Rf0AArK6rra1sgjX2epVoo5y216tQ/5Df5CuLDgH/lw7RqnsVwyG/10F6pc475SjeMCfWKCf3mruyXoccUOrq3ohNSSCWd9/CSydxM16vkjzkVutZD0St9jIEoTCQfgwkZh+Il1AYiGX2JB6yYmyjOkJpIlUySpFsB6KJ2JQHYpnFQJ6XBhhhCCILgPRjIEICKRzz2rIByMJJnEOEZ4RjWYBDIBLGQKIn4OmyBMjCLgyEt1XbsgSIjCbfLAayaTlLOoisYj17gXASPVt4yLnAKP1qLwViX9MFolVrl71E1gDhxLpMY5ZcPYRC7CHq1qs+InuCqZJLG0p/0mfQKbwONCEB4Xh4swqIXAuMkj/CrW0xCUY5R6OZd5+QHJBvFmpThXvZ592KFgSxFTnSb6NbOL0lGpu3oAdCm+Kvf0da14kqaOJL/JnqoaMdUsAIur6h/fzHXx6fb9oUeRk1LJaX0dsgvHfx1WgUvIoeKG1e+m+ntDagpgpAkbCihrQGIKg0NzY3/yBl/LvlW8jR0i2iTTPCm1+Jxp5X0AOpTXfti4wrCZA2k2DKqoGuOo48SVIgVZAwUAJV30YKFfTbIYnaxnwLpv/21/ggYWMPfA01TEaEN4tREwje3jJ7S4/TDvfvb+ruSZM8CQIlQIWob4DfDkjUNuZbAPHLSILGHgAQbxcwGaG0gWCU+5epwtr2hsq4n6+FmW6jmiBqr6VgsBoC1DbtTtQ2AN4vQ79fJ1TZAmQje1Yaih55CQD13kZ7MGoDFSQp9DYwe4AAUkVyYwkgUT4HBXHItJaV7pgVQB2y7H5/DSpIY6cfbZzj/jB/iacJqQ2AA56GMjHdN2uAcGqlYo8R5SMAWNZivz+A9qmB0eqpbUO9ufb6PWdQdAKARscZv4nKaSCwK+AqQwNidJgbVEg3l4RNLX4/+lfX6ED9rpiaas25DISTIVanw4n2qVXBNrMVacgiYf0H7V0uxGGOpEqsaEKagv7m5k6J0yIhbQcpMZne8SOvH/Q4ELnfb4ZOB+ofBxxBxFGuuhnC7kppk4jESR3CgW7EIcvpt1d4kL6GgMtUJS4/2leXgrUOxEwFKh2enzWqcjmH8PeqHnHubgyU1CPLokqPHblNMIj4XednWZ2VOT3LgiL/eiDLb/kq6hBhhEdV6ioSnaCINhQl4teoQM4DwYGBYCA4MBAMBAcGgoHgwEBwYCAYCA4MBAPBgYFgIDgwEAwEBwaCIyb+B8shl54wD7DnAAAAAElFTkSuQmCC"> <p class="caption"><span class="caption-text"><a class="reference internal" href="../../../auto_examples/neighbors/plot_nearest_centroid/#sphx-glr-auto-examples-neighbors-plot-nearest-centroid-py"><span class="std std-ref">Nearest Centroid Classification</span></a></span></p> </div> </div>
+<div class="sphx-glr-thumbcontainer" tooltip="This is an example showing how scikit-learn can be used to classify documents by topics using a...">
+<div class="figure" id="id2"> <img alt="../../_images/sphx_glr_document_classification_20newsgroups_thumb.png" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMgAAACMBAMAAADLv/vXAAAAG1BMVEX+5r665vT///+55vT+5rz+/v3+9ufv+fzV8Pdywf0dAAADeUlEQVRo3u3azW6cMBAHcCviBRAv0AaQeoVRlB6t1aQPQBL1XqUv0L6/VLzLbrCZ8cesWUWpLSWH3cNPHgzM/BN1f4OlClKQghSkIMlIC/Nq4A/zdY+oEfHuKuQZlvWdJN5moJp/8OkKpIWhPq4GgPh63oY6rgoPYuRi1DUQyrwDpaIVDnk3DDM633YXwiwUIi2sjLlio2PoNVIdZIi1EaPYxVL2QhHybG3EKA+rb1+0g4S2QiPt4CKrgjnFEiPuRqyCbYxgvUik3yI1PJAna0GmdGRTLbOVkbsi4XrFI+d6EYYIIap1uSOpaoUuSjyy1KvTeyI1kDfiLojeGRnZS5IPOV6UbuedHJ9fLzsjx4tCV+s2SJUV0epTlGvkTrAA6RlkPsNdvnL9TUZ+5HnULwhzuO4ECCTuBA8fFOEfXp3kXoxvJE7IF8nhiu27/OXK1NztgbBveckbnkP65yEBqZ5ECF0vFhGODu7scHpATvM0ShjSIYjcCvM+CW6ERb5B9PsEf4mnX6JeHPIqRojz9Th//CaolicsAKD6rs1zBQOziR95dQtGd5ARRiBbIQYUe5jTEXmEPyWylOYyn+h1rWIMfxRlcqLhHH3Ae6qCy00YaYTyrhlZsqL1iG2SFZMR6Vyh2imRmtyoKy6DikX63vxyPpzuk9b/FHT2b/h78+HP4XHKhphLXGlzWK0jt6wpC1Kdo8bVLWFunnM4Gcko7zaq6vKsPUeNLVjp5HQtgkj0JPZjc4ArEcc4vTjcNhngKmTzUD8hA53rCBFUUUgNVyAdHQIOfNomQJDsRnvggh0JQrWKSDfJ4a1wCGp61IHaF7SmIeS8Pt+O5KAXPGAqvlrmeLWe4DAZQQb5Snb7IEJekBmo6BEsVC8VXy0eaSRIj4kISHZCZ0EsUsN0C0Swky4ZGQWITkQaCaISkVqAYDIC2RB1C2QeqnrIhmg+1dodwawIfnKEaYnyIsdmuG32vfAY/HvXx0PQk2bSF2W4BQKZHvXoCVqbMTcyZELQkzSS6eSY5R3/Hpn2THCYjmhPCLjth2Ut0aaDtLJfGLJ0kNv/TDn4/oYj64Xd82UnW72TgUq7evuqIPqSVvEQZG2FCOPXSnjI5gdTrZ3Aw0knvf/+FT3H4zm6ofr++yXGiTH8sYdZGtkM9LRKPFiQghSkIAUpSEEK8n8h/wBTQzVtmPrLuAAAAABJRU5ErkJggg=="> <p class="caption"><span class="caption-text"><a class="reference internal" href="../../../auto_examples/text/document_classification_20newsgroups/#sphx-glr-auto-examples-text-document-classification-20newsgroups-py"><span class="std std-ref">Classification of text documents using sparse features</span></a></span></p> </div> </div>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2007–2017 The scikit-learn developers<br>Licensed under the 3-clause BSD License.<br>
+    <a href="http://scikit-learn.org/stable/modules/generated/sklearn.neighbors.NearestCentroid.html" class="_attribution-link" target="_blank">http://scikit-learn.org/stable/modules/generated/sklearn.neighbors.NearestCentroid.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

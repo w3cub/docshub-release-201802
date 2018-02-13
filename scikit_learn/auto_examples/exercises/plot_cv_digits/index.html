@@ -1,0 +1,124 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Example&#58; Cross-validation on Digits Dataset Exercise - Scikit-learn - W3cubDocs</title>
+  
+  <meta name="description" content=" A tutorial exercise using Cross-validation with an SVM on the Digits dataset. ">
+  <meta name="keywords" content="cross-validation, on, digits, dataset, exercise, example, -, scikit-learn, scikit_learn">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/scikit_learn/auto_examples/exercises/plot_cv_digits/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/scikit_learn.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/scikit_learn/" class="_nav-link" title="" style="margin-left:0;">scikit-learn</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _sphinx">
+				
+<h1 id="sphx-glr-auto-examples-exercises-plot-cv-digits-py">Cross-validation on Digits Dataset Exercise</h1> <p id="cross-validation-on-digits-dataset-exercise">A tutorial exercise using Cross-validation with an SVM on the Digits dataset.</p> <p>This exercise is used in the <a class="reference internal" href="../../../tutorial/statistical_inference/model_selection/#cv-generators-tut"><span class="std std-ref">Cross-validation generators</span></a> part of the <a class="reference internal" href="../../../tutorial/statistical_inference/model_selection/#model-selection-tut"><span class="std std-ref">Model selection: choosing estimators and their parameters</span></a> section of the <a class="reference internal" href="../../../tutorial/statistical_inference/#stat-learn-tut-index"><span class="std std-ref">A tutorial on statistical-learning for scientific data processing</span></a>.</p> <img alt="../../_images/sphx_glr_plot_cv_digits_001.png" class="align-center" src="data:image/png;base64,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"> <pre data-language="python">print(__doc__)
+
+
+import numpy as np
+from sklearn.model_selection import cross_val_score
+from sklearn import datasets, svm
+
+digits = datasets.load_digits()
+X = digits.data
+y = digits.target
+
+svc = svm.SVC(kernel='linear')
+C_s = np.logspace(-10, 0, 10)
+
+scores = list()
+scores_std = list()
+for C in C_s:
+    svc.C = C
+    this_scores = cross_val_score(svc, X, y, n_jobs=1)
+    scores.append(np.mean(this_scores))
+    scores_std.append(np.std(this_scores))
+
+# Do the plotting
+import matplotlib.pyplot as plt
+plt.figure(1, figsize=(4, 3))
+plt.clf()
+plt.semilogx(C_s, scores)
+plt.semilogx(C_s, np.array(scores) + np.array(scores_std), 'b--')
+plt.semilogx(C_s, np.array(scores) - np.array(scores_std), 'b--')
+locs, labels = plt.yticks()
+plt.yticks(locs, list(map(lambda x: "%g" % x, locs)))
+plt.ylabel('CV score')
+plt.xlabel('Parameter C')
+plt.ylim(0, 1.1)
+plt.show()
+</pre> <p><strong>Total running time of the script:</strong> ( 0 minutes 5.412 seconds)</p> <div class="sphx-glr-footer docutils container"> <div class="sphx-glr-download docutils container"> <a class="reference download internal" href="http://scikit-learn.org/stable/_downloads/plot_cv_digits.py" download="" target="_blank"><code>Download Python source code: plot_cv_digits.py</code></a>
+</div> <div class="sphx-glr-download docutils container"> <a class="reference download internal" href="http://scikit-learn.org/stable/_downloads/plot_cv_digits.ipynb" download="" target="_blank"><code>Download Jupyter notebook: plot_cv_digits.ipynb</code></a>
+</div> </div> <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.readthedocs.io" target="_blank">Generated by Sphinx-Gallery</a></p>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2007–2017 The scikit-learn developers<br>Licensed under the 3-clause BSD License.<br>
+    <a href="http://scikit-learn.org/stable/auto_examples/exercises/plot_cv_digits.html" class="_attribution-link" target="_blank">http://scikit-learn.org/stable/auto_examples/exercises/plot_cv_digits.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

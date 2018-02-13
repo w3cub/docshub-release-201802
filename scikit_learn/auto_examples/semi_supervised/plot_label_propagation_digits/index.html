@@ -1,0 +1,191 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Example&#58; Label Propagation Digits - Scikit-learn - W3cubDocs</title>
+  
+  <meta name="description" content="This example demonstrates the power of semisupervised learning by training a Label Spreading model to classify handwritten digits with sets of very &hellip;">
+  <meta name="keywords" content="label, propagation, digits, demonstrating, performance, example, -, scikit-learn, scikit_learn">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/scikit_learn/auto_examples/semi_supervised/plot_label_propagation_digits/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/scikit_learn.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/scikit_learn/" class="_nav-link" title="" style="margin-left:0;">scikit-learn</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _sphinx">
+				
+<h1 id="sphx-glr-auto-examples-semi-supervised-plot-label-propagation-digits-py">Label Propagation digits: Demonstrating performance</h1> <p id="label-propagation-digits-demonstrating-performance">This example demonstrates the power of semisupervised learning by training a Label Spreading model to classify handwritten digits with sets of very few labels.</p> <p>The handwritten digit dataset has 1797 total points. The model will be trained using all points, but only 30 will be labeled. Results in the form of a confusion matrix and a series of metrics over each class will be very good.</p> <p>At the end, the top 10 most uncertain predictions will be shown.</p> <img alt="../../_images/sphx_glr_plot_label_propagation_digits_001.png" class="align-center" src="data:image/png;base64,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"> <p class="sphx-glr-script-out">Out:</p> <pre data-language="python">Label Spreading model: 30 labeled &amp; 300 unlabeled points (330 total)
+             precision    recall  f1-score   support
+
+          0       1.00      1.00      1.00        23
+          1       0.58      0.50      0.54        28
+          2       0.93      0.93      0.93        29
+          3       0.00      0.00      0.00        28
+          4       0.92      0.88      0.90        25
+          5       0.96      0.76      0.85        33
+          6       0.97      0.97      0.97        36
+          7       0.89      1.00      0.94        34
+          8       0.51      0.79      0.62        29
+          9       0.51      0.80      0.62        35
+
+avg / total       0.73      0.77      0.74       300
+
+Confusion matrix
+[[23  0  0  0  0  0  0  0  0]
+ [ 0 14  2  0  0  1  0 11  0]
+ [ 0  0 27  0  0  0  2  0  0]
+ [ 0  3  0 22  0  0  0  0  0]
+ [ 0  0  0  0 25  0  0  0  8]
+ [ 0  1  0  0  0 35  0  0  0]
+ [ 0  0  0  0  0  0 34  0  0]
+ [ 0  6  0  0  0  0  0 23  0]
+ [ 0  0  0  2  1  0  2  2 28]]
+</pre>  <pre data-language="python">print(__doc__)
+
+# Authors: Clay Woolam &lt;clay@woolam.org&gt;
+# License: BSD
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+from scipy import stats
+
+from sklearn import datasets
+from sklearn.semi_supervised import label_propagation
+
+from sklearn.metrics import confusion_matrix, classification_report
+
+digits = datasets.load_digits()
+rng = np.random.RandomState(0)
+indices = np.arange(len(digits.data))
+rng.shuffle(indices)
+
+X = digits.data[indices[:330]]
+y = digits.target[indices[:330]]
+images = digits.images[indices[:330]]
+
+n_total_samples = len(y)
+n_labeled_points = 30
+
+indices = np.arange(n_total_samples)
+
+unlabeled_set = indices[n_labeled_points:]
+
+# #############################################################################
+# Shuffle everything around
+y_train = np.copy(y)
+y_train[unlabeled_set] = -1
+
+# #############################################################################
+# Learn with LabelSpreading
+lp_model = label_propagation.LabelSpreading(gamma=0.25, max_iter=5)
+lp_model.fit(X, y_train)
+predicted_labels = lp_model.transduction_[unlabeled_set]
+true_labels = y[unlabeled_set]
+
+cm = confusion_matrix(true_labels, predicted_labels, labels=lp_model.classes_)
+
+print("Label Spreading model: %d labeled &amp; %d unlabeled points (%d total)" %
+      (n_labeled_points, n_total_samples - n_labeled_points, n_total_samples))
+
+print(classification_report(true_labels, predicted_labels))
+
+print("Confusion matrix")
+print(cm)
+
+# #############################################################################
+# Calculate uncertainty values for each transduced distribution
+pred_entropies = stats.distributions.entropy(lp_model.label_distributions_.T)
+
+# #############################################################################
+# Pick the top 10 most uncertain labels
+uncertainty_index = np.argsort(pred_entropies)[-10:]
+
+# #############################################################################
+# Plot
+f = plt.figure(figsize=(7, 5))
+for index, image_index in enumerate(uncertainty_index):
+    image = images[image_index]
+
+    sub = f.add_subplot(2, 5, index + 1)
+    sub.imshow(image, cmap=plt.cm.gray_r)
+    plt.xticks([])
+    plt.yticks([])
+    sub.set_title('predict: %i\ntrue: %i' % (
+        lp_model.transduction_[image_index], y[image_index]))
+
+f.suptitle('Learning with small amount of labeled data')
+plt.show()
+</pre> <p><strong>Total running time of the script:</strong> ( 0 minutes 0.636 seconds)</p> <div class="sphx-glr-footer docutils container"> <div class="sphx-glr-download docutils container"> <a class="reference download internal" href="http://scikit-learn.org/stable/_downloads/plot_label_propagation_digits.py" download="" target="_blank"><code>Download Python source code: plot_label_propagation_digits.py</code></a>
+</div> <div class="sphx-glr-download docutils container"> <a class="reference download internal" href="http://scikit-learn.org/stable/_downloads/plot_label_propagation_digits.ipynb" download="" target="_blank"><code>Download Jupyter notebook: plot_label_propagation_digits.ipynb</code></a>
+</div> </div> <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.readthedocs.io" target="_blank">Generated by Sphinx-Gallery</a></p>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2007–2017 The scikit-learn developers<br>Licensed under the 3-clause BSD License.<br>
+    <a href="http://scikit-learn.org/stable/auto_examples/semi_supervised/plot_label_propagation_digits.html" class="_attribution-link" target="_blank">http://scikit-learn.org/stable/auto_examples/semi_supervised/plot_label_propagation_digits.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

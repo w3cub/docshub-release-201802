@@ -1,0 +1,125 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Example&#58; SVM&#58; Maximum Margin Separating Hyperplane - Scikit-learn - W3cubDocs</title>
+  
+  <meta name="description" content=" Plot the maximum margin separating hyperplane within a two-class separable dataset using a Support Vector Machine classifier with linear kernel. ">
+  <meta name="keywords" content="svm, maximum, margin, separating, hyperplane, example, -, scikit-learn, scikit_learn">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/scikit_learn/auto_examples/svm/plot_separating_hyperplane/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/scikit_learn.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/scikit_learn/" class="_nav-link" title="" style="margin-left:0;">scikit-learn</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _sphinx">
+				
+<h1 id="sphx-glr-auto-examples-svm-plot-separating-hyperplane-py">SVM: Maximum margin separating hyperplane</h1> <p id="svm-maximum-margin-separating-hyperplane">Plot the maximum margin separating hyperplane within a two-class separable dataset using a Support Vector Machine classifier with linear kernel.</p> <img alt="../../_images/sphx_glr_plot_separating_hyperplane_001.png" class="align-center" src="data:image/png;base64,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"> <pre data-language="python">print(__doc__)
+
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn import svm
+from sklearn.datasets import make_blobs
+
+
+# we create 40 separable points
+X, y = make_blobs(n_samples=40, centers=2, random_state=6)
+
+# fit the model, don't regularize for illustration purposes
+clf = svm.SVC(kernel='linear', C=1000)
+clf.fit(X, y)
+
+plt.scatter(X[:, 0], X[:, 1], c=y, s=30, cmap=plt.cm.Paired)
+
+# plot the decision function
+ax = plt.gca()
+xlim = ax.get_xlim()
+ylim = ax.get_ylim()
+
+# create grid to evaluate model
+xx = np.linspace(xlim[0], xlim[1], 30)
+yy = np.linspace(ylim[0], ylim[1], 30)
+YY, XX = np.meshgrid(yy, xx)
+xy = np.vstack([XX.ravel(), YY.ravel()]).T
+Z = clf.decision_function(xy).reshape(XX.shape)
+
+# plot decision boundary and margins
+ax.contour(XX, YY, Z, colors='k', levels=[-1, 0, 1], alpha=0.5,
+           linestyles=['--', '-', '--'])
+# plot support vectors
+ax.scatter(clf.support_vectors_[:, 0], clf.support_vectors_[:, 1], s=100,
+           linewidth=1, facecolors='none')
+plt.show()
+</pre> <p><strong>Total running time of the script:</strong> ( 0 minutes 0.043 seconds)</p> <div class="sphx-glr-footer docutils container"> <div class="sphx-glr-download docutils container"> <a class="reference download internal" href="http://scikit-learn.org/stable/_downloads/plot_separating_hyperplane.py" download="" target="_blank"><code>Download Python source code: plot_separating_hyperplane.py</code></a>
+</div> <div class="sphx-glr-download docutils container"> <a class="reference download internal" href="http://scikit-learn.org/stable/_downloads/plot_separating_hyperplane.ipynb" download="" target="_blank"><code>Download Jupyter notebook: plot_separating_hyperplane.ipynb</code></a>
+</div> </div> <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.readthedocs.io" target="_blank">Generated by Sphinx-Gallery</a></p>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2007–2017 The scikit-learn developers<br>Licensed under the 3-clause BSD License.<br>
+    <a href="http://scikit-learn.org/stable/auto_examples/svm/plot_separating_hyperplane.html" class="_attribution-link" target="_blank">http://scikit-learn.org/stable/auto_examples/svm/plot_separating_hyperplane.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

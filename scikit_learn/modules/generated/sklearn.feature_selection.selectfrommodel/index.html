@@ -1,0 +1,197 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>feature_selection.SelectFromModel() - Scikit-learn - W3cubDocs</title>
+  
+  <meta name="description" content=" Meta-transformer for selecting features based on importance weights. ">
+  <meta name="keywords" content="sklearn, feature, selection, selectfrommodel, -, scikit-learn, scikit_learn">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/scikit_learn/modules/generated/sklearn.feature_selection.selectfrommodel/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/scikit_learn.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/scikit_learn/" class="_nav-link" title="" style="margin-left:0;">scikit-learn</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _sphinx">
+				
+<h1 id="sklearn-feature-selection-selectfrommodel">sklearn.feature_selection.SelectFromModel</h1> <dl class="class"> <dt id="sklearn.feature_selection.SelectFromModel">
+<code>class sklearn.feature_selection.SelectFromModel(estimator, threshold=None, prefit=False, norm_order=1)</code> <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/f3320a6f/sklearn/feature_selection/from_model.py#L80" target="_blank"><span class="viewcode-link">[source]</span></a>
+</dt> <dd>
+<p>Meta-transformer for selecting features based on importance weights.</p> <div class="versionadded"> <p><span class="versionmodified">New in version 0.17.</span></p> </div> <table class="docutils field-list" frame="void" rules="none"> <col class="field-name"> <col class="field-body">  <tr>
+<th class="field-name">Parameters:</th>
+<td class="field-body">
+<p class="first"><strong>estimator</strong> : object</p>  <p>The base estimator from which the transformer is built. This can be both a fitted (if <code>prefit</code> is set to True) or a non-fitted estimator. The estimator must have either a <code>feature_importances_</code> or <code>coef_</code> attribute after fitting.</p>  <p><strong>threshold</strong> : string, float, optional default None</p>  <p>The threshold value to use for feature selection. Features whose importance is greater or equal are kept while the others are discarded. If “median” (resp. “mean”), then the <code>threshold</code> value is the median (resp. the mean) of the feature importances. A scaling factor (e.g., “1.25*mean”) may also be used. If None and if the estimator has a parameter penalty set to l1, either explicitly or implicitly (e.g, Lasso), the threshold used is 1e-5. Otherwise, “mean” is used by default.</p>  <p><strong>prefit</strong> : bool, default False</p>  <p>Whether a prefit model is expected to be passed into the constructor directly or not. If True, <code>transform</code> must be called directly and SelectFromModel cannot be used with <code>cross_val_score</code>, <code>GridSearchCV</code> and similar utilities that clone the estimator. Otherwise train the model using <code>fit</code> and then <code>transform</code> to do feature selection.</p>  <p><strong>norm_order</strong> : non-zero int, inf, -inf, default 1</p>  <p>Order of the norm used to filter the vectors of coefficients below <code>threshold</code> in the case where the <code>coef_</code> attribute of the estimator is of dimension 2.</p>  </td> </tr> <tr>
+<th class="field-name">Attributes:</th>
+<td class="field-body">
+<p class="first"><strong>estimator_</strong> : an estimator</p>  <p>The base estimator from which the transformer is built. This is stored only when a non-fitted estimator is passed to the <code>SelectFromModel</code>, i.e when prefit is False.</p>  <p><strong>threshold_</strong> : float</p>  <p>The threshold value used for feature selection.</p>  </td> </tr>  </table> <h4 class="rubric">Methods</h4> <table class="longtable docutils">   <tr>
+<td>
+<a class="reference internal" href="#sklearn.feature_selection.SelectFromModel.fit" title="sklearn.feature_selection.SelectFromModel.fit"><code>fit</code></a>(X[, y])</td> <td>Fit the SelectFromModel meta-transformer.</td> </tr> <tr>
+<td>
+<a class="reference internal" href="#sklearn.feature_selection.SelectFromModel.fit_transform" title="sklearn.feature_selection.SelectFromModel.fit_transform"><code>fit_transform</code></a>(X[, y])</td> <td>Fit to data, then transform it.</td> </tr> <tr>
+<td>
+<a class="reference internal" href="#sklearn.feature_selection.SelectFromModel.get_params" title="sklearn.feature_selection.SelectFromModel.get_params"><code>get_params</code></a>([deep])</td> <td>Get parameters for this estimator.</td> </tr> <tr>
+<td>
+<a class="reference internal" href="#sklearn.feature_selection.SelectFromModel.get_support" title="sklearn.feature_selection.SelectFromModel.get_support"><code>get_support</code></a>([indices])</td> <td>Get a mask, or integer index, of the features selected</td> </tr> <tr>
+<td>
+<a class="reference internal" href="#sklearn.feature_selection.SelectFromModel.inverse_transform" title="sklearn.feature_selection.SelectFromModel.inverse_transform"><code>inverse_transform</code></a>(X)</td> <td>Reverse the transformation operation</td> </tr> <tr>
+<td>
+<a class="reference internal" href="#sklearn.feature_selection.SelectFromModel.partial_fit" title="sklearn.feature_selection.SelectFromModel.partial_fit"><code>partial_fit</code></a>(X[, y])</td> <td>Fit the SelectFromModel meta-transformer only once.</td> </tr> <tr>
+<td>
+<a class="reference internal" href="#sklearn.feature_selection.SelectFromModel.set_params" title="sklearn.feature_selection.SelectFromModel.set_params"><code>set_params</code></a>(**params)</td> <td>Set the parameters of this estimator.</td> </tr> <tr>
+<td>
+<a class="reference internal" href="#sklearn.feature_selection.SelectFromModel.transform" title="sklearn.feature_selection.SelectFromModel.transform"><code>transform</code></a>(X)</td> <td>Reduce X to the selected features.</td> </tr>  </table> <dl class="method"> <dt id="sklearn.feature_selection.SelectFromModel.__init__">
+<code>__init__(estimator, threshold=None, prefit=False, norm_order=1)</code> <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/f3320a6f/sklearn/feature_selection/from_model.py#L126" target="_blank"><span class="viewcode-link">[source]</span></a>
+</dt> 
+</dl> <dl class="method"> <dt id="sklearn.feature_selection.SelectFromModel.fit">
+<code>fit(X, y=None, **fit_params)</code> <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/f3320a6f/sklearn/feature_selection/from_model.py#L146" target="_blank"><span class="viewcode-link">[source]</span></a>
+</dt> <dd>
+<p>Fit the SelectFromModel meta-transformer.</p> <table class="docutils field-list" frame="void" rules="none"> <col class="field-name"> <col class="field-body">  <tr>
+<th class="field-name">Parameters:</th>
+<td class="field-body">
+<p class="first"><strong>X</strong> : array-like of shape (n_samples, n_features)</p>  <p>The training input samples.</p>  <p><strong>y</strong> : array-like, shape (n_samples,)</p>  <p>The target values (integers that correspond to classes in classification, real numbers in regression).</p>  <p><strong>**fit_params</strong> : Other estimator specific parameters</p> </td> </tr> <tr>
+<th class="field-name">Returns:</th>
+<td class="field-body">
+<p class="first"><strong>self</strong> : object</p>  <p>Returns self.</p>  </td> </tr>  </table> </dd>
+</dl> <dl class="method"> <dt id="sklearn.feature_selection.SelectFromModel.fit_transform">
+<code>fit_transform(X, y=None, **fit_params)</code> <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/f3320a6f/sklearn/base.py#L493" target="_blank"><span class="viewcode-link">[source]</span></a>
+</dt> <dd>
+<p>Fit to data, then transform it.</p> <p>Fits transformer to X and y with optional parameters fit_params and returns a transformed version of X.</p> <table class="docutils field-list" frame="void" rules="none"> <col class="field-name"> <col class="field-body">  <tr>
+<th class="field-name">Parameters:</th>
+<td class="field-body">
+<p class="first"><strong>X</strong> : numpy array of shape [n_samples, n_features]</p>  <p>Training set.</p>  <p><strong>y</strong> : numpy array of shape [n_samples]</p>  <p>Target values.</p>  </td> </tr> <tr>
+<th class="field-name">Returns:</th>
+<td class="field-body">
+<p class="first"><strong>X_new</strong> : numpy array of shape [n_samples, n_features_new]</p>  <p>Transformed array.</p>  </td> </tr>  </table> </dd>
+</dl> <dl class="method"> <dt id="sklearn.feature_selection.SelectFromModel.get_params">
+<code>get_params(deep=True)</code> <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/f3320a6f/sklearn/base.py#L213" target="_blank"><span class="viewcode-link">[source]</span></a>
+</dt> <dd>
+<p>Get parameters for this estimator.</p> <table class="docutils field-list" frame="void" rules="none"> <col class="field-name"> <col class="field-body">  <tr>
+<th class="field-name">Parameters:</th>
+<td class="field-body">
+<p class="first"><strong>deep</strong> : boolean, optional</p>  <p>If True, will return the parameters for this estimator and contained subobjects that are estimators.</p>  </td> </tr> <tr>
+<th class="field-name">Returns:</th>
+<td class="field-body">
+<p class="first"><strong>params</strong> : mapping of string to any</p>  <p>Parameter names mapped to their values.</p>  </td> </tr>  </table> </dd>
+</dl> <dl class="method"> <dt id="sklearn.feature_selection.SelectFromModel.get_support">
+<code>get_support(indices=False)</code> <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/f3320a6f/sklearn/feature_selection/base.py#L27" target="_blank"><span class="viewcode-link">[source]</span></a>
+</dt> <dd>
+<p>Get a mask, or integer index, of the features selected</p> <table class="docutils field-list" frame="void" rules="none"> <col class="field-name"> <col class="field-body">  <tr>
+<th class="field-name">Parameters:</th>
+<td class="field-body">
+<p class="first"><strong>indices</strong> : boolean (default False)</p>  <p>If True, the return value will be an array of integers, rather than a boolean mask.</p>  </td> </tr> <tr>
+<th class="field-name">Returns:</th>
+<td class="field-body">
+<p class="first"><strong>support</strong> : array</p>  <p>An index that selects the retained features from a feature vector. If <code>indices</code> is False, this is a boolean array of shape [# input features], in which an element is True iff its corresponding feature is selected for retention. If <code>indices</code> is True, this is an integer array of shape [# output features] whose values are indices into the input feature vector.</p>  </td> </tr>  </table> </dd>
+</dl> <dl class="method"> <dt id="sklearn.feature_selection.SelectFromModel.inverse_transform">
+<code>inverse_transform(X)</code> <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/f3320a6f/sklearn/feature_selection/base.py#L86" target="_blank"><span class="viewcode-link">[source]</span></a>
+</dt> <dd>
+<p>Reverse the transformation operation</p> <table class="docutils field-list" frame="void" rules="none"> <col class="field-name"> <col class="field-body">  <tr>
+<th class="field-name">Parameters:</th>
+<td class="field-body">
+<p class="first"><strong>X</strong> : array of shape [n_samples, n_selected_features]</p>  <p>The input samples.</p>  </td> </tr> <tr>
+<th class="field-name">Returns:</th>
+<td class="field-body">
+<p class="first"><strong>X_r</strong> : array of shape [n_samples, n_original_features]</p>  <p><code>X</code> with columns of zeros inserted where features would have been removed by <code>transform</code>.</p>  </td> </tr>  </table> </dd>
+</dl> <dl class="method"> <dt id="sklearn.feature_selection.SelectFromModel.partial_fit">
+<code>partial_fit(X, y=None, **fit_params)</code> <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/f3320a6f/sklearn/utils/metaestimators.py#L177" target="_blank"><span class="viewcode-link">[source]</span></a>
+</dt> <dd>
+<p>Fit the SelectFromModel meta-transformer only once.</p> <table class="docutils field-list" frame="void" rules="none"> <col class="field-name"> <col class="field-body">  <tr>
+<th class="field-name">Parameters:</th>
+<td class="field-body">
+<p class="first"><strong>X</strong> : array-like of shape (n_samples, n_features)</p>  <p>The training input samples.</p>  <p><strong>y</strong> : array-like, shape (n_samples,)</p>  <p>The target values (integers that correspond to classes in classification, real numbers in regression).</p>  <p><strong>**fit_params</strong> : Other estimator specific parameters</p> </td> </tr> <tr>
+<th class="field-name">Returns:</th>
+<td class="field-body">
+<p class="first"><strong>self</strong> : object</p>  <p>Returns self.</p>  </td> </tr>  </table> </dd>
+</dl> <dl class="method"> <dt id="sklearn.feature_selection.SelectFromModel.set_params">
+<code>set_params(**params)</code> <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/f3320a6f/sklearn/base.py#L250" target="_blank"><span class="viewcode-link">[source]</span></a>
+</dt> <dd>
+<p>Set the parameters of this estimator.</p> <p>The method works on simple estimators as well as on nested objects (such as pipelines). The latter have parameters of the form <code>&lt;component&gt;__&lt;parameter&gt;</code> so that it’s possible to update each component of a nested object.</p> <table class="docutils field-list" frame="void" rules="none"> <col class="field-name"> <col class="field-body">  <tr>
+<th class="field-name">Returns:</th>
+<td class="field-body">
+<strong>self</strong> :</td> </tr>  </table> </dd>
+</dl> <dl class="method"> <dt id="sklearn.feature_selection.SelectFromModel.transform">
+<code>transform(X)</code> <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/f3320a6f/sklearn/feature_selection/base.py#L62" target="_blank"><span class="viewcode-link">[source]</span></a>
+</dt> <dd>
+<p>Reduce X to the selected features.</p> <table class="docutils field-list" frame="void" rules="none"> <col class="field-name"> <col class="field-body">  <tr>
+<th class="field-name">Parameters:</th>
+<td class="field-body">
+<p class="first"><strong>X</strong> : array of shape [n_samples, n_features]</p>  <p>The input samples.</p>  </td> </tr> <tr>
+<th class="field-name">Returns:</th>
+<td class="field-body">
+<p class="first"><strong>X_r</strong> : array of shape [n_samples, n_selected_features]</p>  <p>The input samples with only the selected features.</p>  </td> </tr>  </table> </dd>
+</dl> </dd>
+</dl>  <h2 id="examples-using-sklearn-feature-selection-selectfrommodel">Examples using <code>sklearn.feature_selection.SelectFromModel</code>
+</h2> <div class="sphx-glr-thumbcontainer" tooltip="Use SelectFromModel meta-transformer along with Lasso to select the best couple of features fro...">
+<div class="figure" id="id1"> <img alt="../../_images/sphx_glr_plot_select_from_model_boston_thumb.png" src="data:image/png;base64,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"> <p class="caption"><span class="caption-text"><a class="reference internal" href="../../../auto_examples/feature_selection/plot_select_from_model_boston/#sphx-glr-auto-examples-feature-selection-plot-select-from-model-boston-py"><span class="std std-ref">Feature selection using SelectFromModel and LassoCV</span></a></span></p> </div> </div>
+<div class="sphx-glr-thumbcontainer" tooltip="This is an example showing how scikit-learn can be used to classify documents by topics using a...">
+<div class="figure" id="id2"> <img alt="../../_images/sphx_glr_document_classification_20newsgroups_thumb.png" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMgAAACMBAMAAADLv/vXAAAAG1BMVEX+5r665vT///+55vT+5rz+/v3+9ufv+fzV8Pdywf0dAAADeUlEQVRo3u3azW6cMBAHcCviBRAv0AaQeoVRlB6t1aQPQBL1XqUv0L6/VLzLbrCZ8cesWUWpLSWH3cNPHgzM/BN1f4OlClKQghSkIMlIC/Nq4A/zdY+oEfHuKuQZlvWdJN5moJp/8OkKpIWhPq4GgPh63oY6rgoPYuRi1DUQyrwDpaIVDnk3DDM633YXwiwUIi2sjLlio2PoNVIdZIi1EaPYxVL2QhHybG3EKA+rb1+0g4S2QiPt4CKrgjnFEiPuRqyCbYxgvUik3yI1PJAna0GmdGRTLbOVkbsi4XrFI+d6EYYIIap1uSOpaoUuSjyy1KvTeyI1kDfiLojeGRnZS5IPOV6UbuedHJ9fLzsjx4tCV+s2SJUV0epTlGvkTrAA6RlkPsNdvnL9TUZ+5HnULwhzuO4ECCTuBA8fFOEfXp3kXoxvJE7IF8nhiu27/OXK1NztgbBveckbnkP65yEBqZ5ECF0vFhGODu7scHpATvM0ShjSIYjcCvM+CW6ERb5B9PsEf4mnX6JeHPIqRojz9Th//CaolicsAKD6rs1zBQOziR95dQtGd5ARRiBbIQYUe5jTEXmEPyWylOYyn+h1rWIMfxRlcqLhHH3Ae6qCy00YaYTyrhlZsqL1iG2SFZMR6Vyh2imRmtyoKy6DikX63vxyPpzuk9b/FHT2b/h78+HP4XHKhphLXGlzWK0jt6wpC1Kdo8bVLWFunnM4Gcko7zaq6vKsPUeNLVjp5HQtgkj0JPZjc4ArEcc4vTjcNhngKmTzUD8hA53rCBFUUUgNVyAdHQIOfNomQJDsRnvggh0JQrWKSDfJ4a1wCGp61IHaF7SmIeS8Pt+O5KAXPGAqvlrmeLWe4DAZQQb5Snb7IEJekBmo6BEsVC8VXy0eaSRIj4kISHZCZ0EsUsN0C0Swky4ZGQWITkQaCaISkVqAYDIC2RB1C2QeqnrIhmg+1dodwawIfnKEaYnyIsdmuG32vfAY/HvXx0PQk2bSF2W4BQKZHvXoCVqbMTcyZELQkzSS6eSY5R3/Hpn2THCYjmhPCLjth2Ut0aaDtLJfGLJ0kNv/TDn4/oYj64Xd82UnW72TgUq7evuqIPqSVvEQZG2FCOPXSnjI5gdTrZ3Aw0knvf/+FT3H4zm6ofr++yXGiTH8sYdZGtkM9LRKPFiQghSkIAUpSEEK8n8h/wBTQzVtmPrLuAAAAABJRU5ErkJggg=="> <p class="caption"><span class="caption-text"><a class="reference internal" href="../../../auto_examples/text/document_classification_20newsgroups/#sphx-glr-auto-examples-text-document-classification-20newsgroups-py"><span class="std std-ref">Classification of text documents using sparse features</span></a></span></p> </div> </div>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2007–2017 The scikit-learn developers<br>Licensed under the 3-clause BSD License.<br>
+    <a href="http://scikit-learn.org/stable/modules/generated/sklearn.feature_selection.SelectFromModel.html" class="_attribution-link" target="_blank">http://scikit-learn.org/stable/modules/generated/sklearn.feature_selection.SelectFromModel.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

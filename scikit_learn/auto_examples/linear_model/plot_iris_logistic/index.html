@@ -1,0 +1,135 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Example&#58; Logistic Regression 3-class Classifier - Scikit-learn - W3cubDocs</title>
+  
+  <meta name="description" content=" Show below is a logistic-regression classifiers decision boundaries on the iris dataset. The datapoints are colored according to their labels. ">
+  <meta name="keywords" content="logistic, regression, -class, classifier, example, -, scikit-learn, scikit_learn">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/scikit_learn/auto_examples/linear_model/plot_iris_logistic/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/scikit_learn.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/scikit_learn/" class="_nav-link" title="" style="margin-left:0;">scikit-learn</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _sphinx">
+				
+<h1 id="sphx-glr-auto-examples-linear-model-plot-iris-logistic-py">Logistic Regression 3-class Classifier</h1> <p id="logistic-regression-3-class-classifier">Show below is a logistic-regression classifiers decision boundaries on the <a class="reference external" href="https://en.wikipedia.org/wiki/Iris_flower_data_set" target="_blank">iris</a> dataset. The datapoints are colored according to their labels.</p> <img alt="../../_images/sphx_glr_plot_iris_logistic_001.png" class="align-center" src="data:image/png;base64,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"> <pre data-language="python">print(__doc__)
+
+
+# Code source: Gaël Varoquaux
+# Modified for documentation by Jaques Grobler
+# License: BSD 3 clause
+
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn import linear_model, datasets
+
+# import some data to play with
+iris = datasets.load_iris()
+X = iris.data[:, :2]  # we only take the first two features.
+Y = iris.target
+
+h = .02  # step size in the mesh
+
+logreg = linear_model.LogisticRegression(C=1e5)
+
+# we create an instance of Neighbours Classifier and fit the data.
+logreg.fit(X, Y)
+
+# Plot the decision boundary. For that, we will assign a color to each
+# point in the mesh [x_min, x_max]x[y_min, y_max].
+x_min, x_max = X[:, 0].min() - .5, X[:, 0].max() + .5
+y_min, y_max = X[:, 1].min() - .5, X[:, 1].max() + .5
+xx, yy = np.meshgrid(np.arange(x_min, x_max, h), np.arange(y_min, y_max, h))
+Z = logreg.predict(np.c_[xx.ravel(), yy.ravel()])
+
+# Put the result into a color plot
+Z = Z.reshape(xx.shape)
+plt.figure(1, figsize=(4, 3))
+plt.pcolormesh(xx, yy, Z, cmap=plt.cm.Paired)
+
+# Plot also the training points
+plt.scatter(X[:, 0], X[:, 1], c=Y, edgecolors='k', cmap=plt.cm.Paired)
+plt.xlabel('Sepal length')
+plt.ylabel('Sepal width')
+
+plt.xlim(xx.min(), xx.max())
+plt.ylim(yy.min(), yy.max())
+plt.xticks(())
+plt.yticks(())
+
+plt.show()
+</pre> <p><strong>Total running time of the script:</strong> ( 0 minutes 0.064 seconds)</p> <div class="sphx-glr-footer docutils container"> <div class="sphx-glr-download docutils container"> <a class="reference download internal" href="http://scikit-learn.org/stable/_downloads/plot_iris_logistic.py" download="" target="_blank"><code>Download Python source code: plot_iris_logistic.py</code></a>
+</div> <div class="sphx-glr-download docutils container"> <a class="reference download internal" href="http://scikit-learn.org/stable/_downloads/plot_iris_logistic.ipynb" download="" target="_blank"><code>Download Jupyter notebook: plot_iris_logistic.ipynb</code></a>
+</div> </div> <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.readthedocs.io" target="_blank">Generated by Sphinx-Gallery</a></p>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2007–2017 The scikit-learn developers<br>Licensed under the 3-clause BSD License.<br>
+    <a href="http://scikit-learn.org/stable/auto_examples/linear_model/plot_iris_logistic.html" class="_attribution-link" target="_blank">http://scikit-learn.org/stable/auto_examples/linear_model/plot_iris_logistic.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

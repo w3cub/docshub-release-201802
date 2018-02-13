@@ -1,0 +1,208 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Example&#58; Multiclass Sparse Logisitic Regression on Newgroups20 - Scikit-learn - W3cubDocs</title>
+  
+  <meta name="description" content="Comparison of multinomial logistic L1 vs one-versus-rest L1 logistic regression to classify documents from the newgroups20 dataset. Multinomial &hellip;">
+  <meta name="keywords" content="multiclass, sparse, logisitic, regression, on, newgroups, example, -, scikit-learn, scikit_learn">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/scikit_learn/auto_examples/linear_model/plot_sparse_logistic_regression_20newsgroups/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/scikit_learn.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/scikit_learn/" class="_nav-link" title="" style="margin-left:0;">scikit-learn</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _sphinx">
+				
+<h1 id="sphx-glr-auto-examples-linear-model-plot-sparse-logistic-regression-20newsgroups-py">Multiclass sparse logisitic regression on newgroups20</h1> <p id="multiclass-sparse-logisitic-regression-on-newgroups20">Comparison of multinomial logistic L1 vs one-versus-rest L1 logistic regression to classify documents from the newgroups20 dataset. Multinomial logistic regression yields more accurate results and is faster to train on the larger scale dataset.</p> <p>Here we use the l1 sparsity that trims the weights of not informative features to zero. This is good if the goal is to extract the strongly discriminative vocabulary of each class. If the goal is to get the best predictive accuracy, it is better to use the non sparsity-inducing l2 penalty instead.</p> <p>A more traditional (and possibly better) way to predict on a sparse subset of input features would be to use univariate feature selection followed by a traditional (l2-penalised) logistic regression model.</p> <img alt="../../_images/sphx_glr_plot_sparse_logistic_regression_20newsgroups_001.png" class="align-center" src="data:image/png;base64,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"> <p class="sphx-glr-script-out">Out:</p> <pre data-language="python">Dataset 20newsgroup, train_samples=9000, n_features=130107, n_classes=20
+[model=One versus Rest, solver=saga] Number of epochs: 1
+[model=One versus Rest, solver=saga] Number of epochs: 3
+Test accuracy for model ovr: 0.7410
+% non-zero coefficients for model ovr, per class:
+ [ 0.27054655  0.66330021  0.80395367  0.73247404  0.67713497  0.73477984
+  0.40889422  0.48959702  1.01301237  0.56261385  0.60104376  0.332803
+  0.7094161   0.85083816  0.56876263  0.65715142  0.64408525  0.81163965
+  0.44271254  0.41120001]
+Run time (3 epochs) for model ovr:3.29
+[model=Multinomial, solver=saga] Number of epochs: 1
+[model=Multinomial, solver=saga] Number of epochs: 3
+[model=Multinomial, solver=saga] Number of epochs: 7
+Test accuracy for model multinomial: 0.7450
+% non-zero coefficients for model multinomial, per class:
+ [ 0.13296748  0.11759552  0.13296748  0.13988486  0.1268187   0.16140561
+  0.15218243  0.09069458  0.07762841  0.12143851  0.14910804  0.10837234
+  0.18830655  0.1245129   0.168323    0.21828188  0.11605832  0.07839701
+  0.06917383  0.15602543]
+Run time (7 epochs) for model multinomial:3.00
+Example run in 10.842 s
+</pre>  <pre data-language="python">import time
+
+import matplotlib.pyplot as plt
+import numpy as np
+
+from sklearn.datasets import fetch_20newsgroups_vectorized
+from sklearn.linear_model import LogisticRegression
+from sklearn.model_selection import train_test_split
+
+print(__doc__)
+# Author: Arthur Mensch
+
+t0 = time.clock()
+
+# We use SAGA solver
+solver = 'saga'
+
+# Turn down for faster run time
+n_samples = 10000
+
+# Memorized fetch_rcv1 for faster access
+dataset = fetch_20newsgroups_vectorized('all')
+X = dataset.data
+y = dataset.target
+X = X[:n_samples]
+y = y[:n_samples]
+
+X_train, X_test, y_train, y_test = train_test_split(X, y,
+                                                    random_state=42,
+                                                    stratify=y,
+                                                    test_size=0.1)
+train_samples, n_features = X_train.shape
+n_classes = np.unique(y).shape[0]
+
+print('Dataset 20newsgroup, train_samples=%i, n_features=%i, n_classes=%i'
+      % (train_samples, n_features, n_classes))
+
+models = {'ovr': {'name': 'One versus Rest', 'iters': [1, 3]},
+          'multinomial': {'name': 'Multinomial', 'iters': [1, 3, 7]}}
+
+for model in models:
+    # Add initial chance-level values for plotting purpose
+    accuracies = [1 / n_classes]
+    times = [0]
+    densities = [1]
+
+    model_params = models[model]
+
+    # Small number of epochs for fast runtime
+    for this_max_iter in model_params['iters']:
+        print('[model=%s, solver=%s] Number of epochs: %s' %
+              (model_params['name'], solver, this_max_iter))
+        lr = LogisticRegression(solver=solver,
+                                multi_class=model,
+                                C=1,
+                                penalty='l1',
+                                fit_intercept=True,
+                                max_iter=this_max_iter,
+                                random_state=42,
+                                )
+        t1 = time.clock()
+        lr.fit(X_train, y_train)
+        train_time = time.clock() - t1
+
+        y_pred = lr.predict(X_test)
+        accuracy = np.sum(y_pred == y_test) / y_test.shape[0]
+        density = np.mean(lr.coef_ != 0, axis=1) * 100
+        accuracies.append(accuracy)
+        densities.append(density)
+        times.append(train_time)
+    models[model]['times'] = times
+    models[model]['densities'] = densities
+    models[model]['accuracies'] = accuracies
+    print('Test accuracy for model %s: %.4f' % (model, accuracies[-1]))
+    print('%% non-zero coefficients for model %s, '
+          'per class:\n %s' % (model, densities[-1]))
+    print('Run time (%i epochs) for model %s:'
+          '%.2f' % (model_params['iters'][-1], model, times[-1]))
+
+fig = plt.figure()
+ax = fig.add_subplot(111)
+
+for model in models:
+    name = models[model]['name']
+    times = models[model]['times']
+    accuracies = models[model]['accuracies']
+    ax.plot(times, accuracies, marker='o',
+            label='Model: %s' % name)
+    ax.set_xlabel('Train time (s)')
+    ax.set_ylabel('Test accuracy')
+ax.legend()
+fig.suptitle('Multinomial vs One-vs-Rest Logistic L1\n'
+             'Dataset %s' % '20newsgroups')
+fig.tight_layout()
+fig.subplots_adjust(top=0.85)
+run_time = time.clock() - t0
+print('Example run in %.3f s' % run_time)
+plt.show()
+</pre> <p><strong>Total running time of the script:</strong> ( 0 minutes 10.769 seconds)</p> <div class="sphx-glr-footer docutils container"> <div class="sphx-glr-download docutils container"> <a class="reference download internal" href="http://scikit-learn.org/stable/_downloads/plot_sparse_logistic_regression_20newsgroups.py" download="" target="_blank"><code>Download Python source code: plot_sparse_logistic_regression_20newsgroups.py</code></a>
+</div> <div class="sphx-glr-download docutils container"> <a class="reference download internal" href="http://scikit-learn.org/stable/_downloads/plot_sparse_logistic_regression_20newsgroups.ipynb" download="" target="_blank"><code>Download Jupyter notebook: plot_sparse_logistic_regression_20newsgroups.ipynb</code></a>
+</div> </div> <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.readthedocs.io" target="_blank">Generated by Sphinx-Gallery</a></p>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2007–2017 The scikit-learn developers<br>Licensed under the 3-clause BSD License.<br>
+    <a href="http://scikit-learn.org/stable/auto_examples/linear_model/plot_sparse_logistic_regression_20newsgroups.html" class="_attribution-link" target="_blank">http://scikit-learn.org/stable/auto_examples/linear_model/plot_sparse_logistic_regression_20newsgroups.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

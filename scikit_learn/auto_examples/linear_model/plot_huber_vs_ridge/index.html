@@ -1,0 +1,140 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Example&#58; HuberRegressor vs Ridge on Dataset With Strong Outliers - Scikit-learn - W3cubDocs</title>
+  
+  <meta name="description" content=" Fit Ridge and HuberRegressor on a dataset with outliers. ">
+  <meta name="keywords" content="huberregressor, ridge, on, dataset, with, strong, outliers, example, -, scikit-learn, scikit_learn">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/scikit_learn/auto_examples/linear_model/plot_huber_vs_ridge/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/scikit_learn.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/scikit_learn/" class="_nav-link" title="" style="margin-left:0;">scikit-learn</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _sphinx">
+				
+<h1 id="sphx-glr-auto-examples-linear-model-plot-huber-vs-ridge-py">HuberRegressor vs Ridge on dataset with strong outliers</h1> <p id="huberregressor-vs-ridge-on-dataset-with-strong-outliers">Fit Ridge and HuberRegressor on a dataset with outliers.</p> <p>The example shows that the predictions in ridge are strongly influenced by the outliers present in the dataset. The Huber regressor is less influenced by the outliers since the model uses the linear loss for these. As the parameter epsilon is increased for the Huber regressor, the decision function approaches that of the ridge.</p> <img alt="../../_images/sphx_glr_plot_huber_vs_ridge_001.png" class="align-center" src="data:image/png;base64,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"> <pre data-language="python"># Authors: Manoj Kumar mks542@nyu.edu
+# License: BSD 3 clause
+
+print(__doc__)
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+from sklearn.datasets import make_regression
+from sklearn.linear_model import HuberRegressor, Ridge
+
+# Generate toy data.
+rng = np.random.RandomState(0)
+X, y = make_regression(n_samples=20, n_features=1, random_state=0, noise=4.0,
+                       bias=100.0)
+
+# Add four strong outliers to the dataset.
+X_outliers = rng.normal(0, 0.5, size=(4, 1))
+y_outliers = rng.normal(0, 2.0, size=4)
+X_outliers[:2, :] += X.max() + X.mean() / 4.
+X_outliers[2:, :] += X.min() - X.mean() / 4.
+y_outliers[:2] += y.min() - y.mean() / 4.
+y_outliers[2:] += y.max() + y.mean() / 4.
+X = np.vstack((X, X_outliers))
+y = np.concatenate((y, y_outliers))
+plt.plot(X, y, 'b.')
+
+# Fit the huber regressor over a series of epsilon values.
+colors = ['r-', 'b-', 'y-', 'm-']
+
+x = np.linspace(X.min(), X.max(), 7)
+epsilon_values = [1.35, 1.5, 1.75, 1.9]
+for k, epsilon in enumerate(epsilon_values):
+    huber = HuberRegressor(fit_intercept=True, alpha=0.0, max_iter=100,
+                           epsilon=epsilon)
+    huber.fit(X, y)
+    coef_ = huber.coef_ * x + huber.intercept_
+    plt.plot(x, coef_, colors[k], label="huber loss, %s" % epsilon)
+
+# Fit a ridge regressor to compare it to huber regressor.
+ridge = Ridge(fit_intercept=True, alpha=0.0, random_state=0, normalize=True)
+ridge.fit(X, y)
+coef_ridge = ridge.coef_
+coef_ = ridge.coef_ * x + ridge.intercept_
+plt.plot(x, coef_, 'g-', label="ridge regression")
+
+plt.title("Comparison of HuberRegressor vs Ridge")
+plt.xlabel("X")
+plt.ylabel("y")
+plt.legend(loc=0)
+plt.show()
+</pre> <p><strong>Total running time of the script:</strong> ( 0 minutes 0.073 seconds)</p> <div class="sphx-glr-footer docutils container"> <div class="sphx-glr-download docutils container"> <a class="reference download internal" href="http://scikit-learn.org/stable/_downloads/plot_huber_vs_ridge.py" download="" target="_blank"><code>Download Python source code: plot_huber_vs_ridge.py</code></a>
+</div> <div class="sphx-glr-download docutils container"> <a class="reference download internal" href="http://scikit-learn.org/stable/_downloads/plot_huber_vs_ridge.ipynb" download="" target="_blank"><code>Download Jupyter notebook: plot_huber_vs_ridge.ipynb</code></a>
+</div> </div> <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.readthedocs.io" target="_blank">Generated by Sphinx-Gallery</a></p>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2007–2017 The scikit-learn developers<br>Licensed under the 3-clause BSD License.<br>
+    <a href="http://scikit-learn.org/stable/auto_examples/linear_model/plot_huber_vs_ridge.html" class="_attribution-link" target="_blank">http://scikit-learn.org/stable/auto_examples/linear_model/plot_huber_vs_ridge.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

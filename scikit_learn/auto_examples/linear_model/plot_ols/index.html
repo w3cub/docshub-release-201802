@@ -1,0 +1,145 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Example&#58; Linear Regression Example - Scikit-learn - W3cubDocs</title>
+  
+  <meta name="description" content="This example uses the only the first feature of the diabetes dataset, in order to illustrate a two-dimensional plot of this regression technique. &hellip;">
+  <meta name="keywords" content="linear, regression, example, -, scikit-learn, scikit_learn">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/scikit_learn/auto_examples/linear_model/plot_ols/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/scikit_learn.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/scikit_learn/" class="_nav-link" title="" style="margin-left:0;">scikit-learn</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _sphinx">
+				
+<h1 id="sphx-glr-auto-examples-linear-model-plot-ols-py">Linear Regression Example</h1> <p id="linear-regression-example">This example uses the only the first feature of the <code>diabetes</code> dataset, in order to illustrate a two-dimensional plot of this regression technique. The straight line can be seen in the plot, showing how linear regression attempts to draw a straight line that will best minimize the residual sum of squares between the observed responses in the dataset, and the responses predicted by the linear approximation.</p> <p>The coefficients, the residual sum of squares and the variance score are also calculated.</p> <img alt="../../_images/sphx_glr_plot_ols_001.png" class="align-center" src="data:image/png;base64,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"> <p class="sphx-glr-script-out">Out:</p> <pre data-language="python">Coefficients:
+ [ 938.23786125]
+Mean squared error: 2548.07
+Variance score: 0.47
+</pre>  <pre data-language="python">print(__doc__)
+
+
+# Code source: Jaques Grobler
+# License: BSD 3 clause
+
+
+import matplotlib.pyplot as plt
+import numpy as np
+from sklearn import datasets, linear_model
+from sklearn.metrics import mean_squared_error, r2_score
+
+# Load the diabetes dataset
+diabetes = datasets.load_diabetes()
+
+
+# Use only one feature
+diabetes_X = diabetes.data[:, np.newaxis, 2]
+
+# Split the data into training/testing sets
+diabetes_X_train = diabetes_X[:-20]
+diabetes_X_test = diabetes_X[-20:]
+
+# Split the targets into training/testing sets
+diabetes_y_train = diabetes.target[:-20]
+diabetes_y_test = diabetes.target[-20:]
+
+# Create linear regression object
+regr = linear_model.LinearRegression()
+
+# Train the model using the training sets
+regr.fit(diabetes_X_train, diabetes_y_train)
+
+# Make predictions using the testing set
+diabetes_y_pred = regr.predict(diabetes_X_test)
+
+# The coefficients
+print('Coefficients: \n', regr.coef_)
+# The mean squared error
+print("Mean squared error: %.2f"
+      % mean_squared_error(diabetes_y_test, diabetes_y_pred))
+# Explained variance score: 1 is perfect prediction
+print('Variance score: %.2f' % r2_score(diabetes_y_test, diabetes_y_pred))
+
+# Plot outputs
+plt.scatter(diabetes_X_test, diabetes_y_test,  color='black')
+plt.plot(diabetes_X_test, diabetes_y_pred, color='blue', linewidth=3)
+
+plt.xticks(())
+plt.yticks(())
+
+plt.show()
+</pre> <p><strong>Total running time of the script:</strong> ( 0 minutes 0.072 seconds)</p> <div class="sphx-glr-footer docutils container"> <div class="sphx-glr-download docutils container"> <a class="reference download internal" href="http://scikit-learn.org/stable/_downloads/plot_ols.py" download="" target="_blank"><code>Download Python source code: plot_ols.py</code></a>
+</div> <div class="sphx-glr-download docutils container"> <a class="reference download internal" href="http://scikit-learn.org/stable/_downloads/plot_ols.ipynb" download="" target="_blank"><code>Download Jupyter notebook: plot_ols.ipynb</code></a>
+</div> </div> <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.readthedocs.io" target="_blank">Generated by Sphinx-Gallery</a></p>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2007–2017 The scikit-learn developers<br>Licensed under the 3-clause BSD License.<br>
+    <a href="http://scikit-learn.org/stable/auto_examples/linear_model/plot_ols.html" class="_attribution-link" target="_blank">http://scikit-learn.org/stable/auto_examples/linear_model/plot_ols.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

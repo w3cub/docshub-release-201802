@@ -1,0 +1,184 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>preprocessing.QuantileTransformer() - Scikit-learn - W3cubDocs</title>
+  
+  <meta name="description" content=" Transform features using quantiles information. ">
+  <meta name="keywords" content="sklearn, preprocessing, quantiletransformer, -, scikit-learn, scikit_learn">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/scikit_learn/modules/generated/sklearn.preprocessing.quantiletransformer/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/scikit_learn.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/scikit_learn/" class="_nav-link" title="" style="margin-left:0;">scikit-learn</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _sphinx">
+				
+<h1 id="sklearn-preprocessing-quantiletransformer">sklearn.preprocessing.QuantileTransformer</h1> <dl class="class"> <dt id="sklearn.preprocessing.QuantileTransformer">
+<code>class sklearn.preprocessing.QuantileTransformer(n_quantiles=1000, output_distribution=’uniform’, ignore_implicit_zeros=False, subsample=100000, random_state=None, copy=True)</code> <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/f3320a6f/sklearn/preprocessing/data.py#L2078" target="_blank"><span class="viewcode-link">[source]</span></a>
+</dt> <dd>
+<p>Transform features using quantiles information.</p> <p>This method transforms the features to follow a uniform or a normal distribution. Therefore, for a given feature, this transformation tends to spread out the most frequent values. It also reduces the impact of (marginal) outliers: this is therefore a robust preprocessing scheme.</p> <p>The transformation is applied on each feature independently. The cumulative density function of a feature is used to project the original values. Features values of new/unseen data that fall below or above the fitted range will be mapped to the bounds of the output distribution. Note that this transform is non-linear. It may distort linear correlations between variables measured at the same scale but renders variables measured at different scales more directly comparable.</p> <p>Read more in the <a class="reference internal" href="../../preprocessing/#preprocessing-transformer"><span class="std std-ref">User Guide</span></a>.</p> <table class="docutils field-list" frame="void" rules="none"> <col class="field-name"> <col class="field-body">  <tr>
+<th class="field-name">Parameters:</th>
+<td class="field-body">
+<p class="first"><strong>n_quantiles</strong> : int, optional (default=1000)</p>  <p>Number of quantiles to be computed. It corresponds to the number of landmarks used to discretize the cumulative density function.</p>  <p><strong>output_distribution</strong> : str, optional (default=’uniform’)</p>  <p>Marginal distribution for the transformed data. The choices are ‘uniform’ (default) or ‘normal’.</p>  <p><strong>ignore_implicit_zeros</strong> : bool, optional (default=False)</p>  <p>Only applies to sparse matrices. If True, the sparse entries of the matrix are discarded to compute the quantile statistics. If False, these entries are treated as zeros.</p>  <p><strong>subsample</strong> : int, optional (default=1e5)</p>  <p>Maximum number of samples used to estimate the quantiles for computational efficiency. Note that the subsampling procedure may differ for value-identical sparse and dense matrices.</p>  <p><strong>random_state</strong> : int, RandomState instance or None, optional (default=None)</p>  <p>If int, random_state is the seed used by the random number generator; If RandomState instance, random_state is the random number generator; If None, the random number generator is the RandomState instance used by np.random. Note that this is used by subsampling and smoothing noise.</p>  <p><strong>copy</strong> : boolean, optional, (default=True)</p>  <p>Set to False to perform inplace transformation and avoid a copy (if the input is already a numpy array).</p>  </td> </tr> <tr>
+<th class="field-name">Attributes:</th>
+<td class="field-body">
+<p class="first"><strong>quantiles_</strong> : ndarray, shape (n_quantiles, n_features)</p>  <p>The values corresponding the quantiles of reference.</p>  <p><strong>references_</strong> : ndarray, shape(n_quantiles, )</p>  <p>Quantiles of references.</p>  </td> </tr>  </table> <div class="admonition seealso"> <p class="first admonition-title">See also</p> <dl class="last docutils"> <dt>
+ <a class="reference internal" href="../sklearn.preprocessing.quantile_transform/#sklearn.preprocessing.quantile_transform" title="sklearn.preprocessing.quantile_transform"><code>quantile_transform</code></a>
+</dt> <dd>Equivalent function without the estimator API.</dd> <dt>
+ <a class="reference internal" href="../sklearn.preprocessing.standardscaler/#sklearn.preprocessing.StandardScaler" title="sklearn.preprocessing.StandardScaler"><code>StandardScaler</code></a>
+</dt> <dd>perform standardization that is faster, but less robust to outliers.</dd> <dt>
+ <a class="reference internal" href="../sklearn.preprocessing.robustscaler/#sklearn.preprocessing.RobustScaler" title="sklearn.preprocessing.RobustScaler"><code>RobustScaler</code></a>
+</dt> <dd>perform robust standardization that removes the influence of outliers but does not put outliers and inliers on the same scale.</dd> </dl> </div> <h4 class="rubric">Notes</h4> <p>For a comparison of the different scalers, transformers, and normalizers, see <a class="reference internal" href="../../../auto_examples/preprocessing/plot_all_scaling/#sphx-glr-auto-examples-preprocessing-plot-all-scaling-py"><span class="std std-ref">examples/preprocessing/plot_all_scaling.py</span></a>.</p> <h4 class="rubric">Examples</h4> <pre data-language="python">&gt;&gt;&gt; import numpy as np
+&gt;&gt;&gt; from sklearn.preprocessing import QuantileTransformer
+&gt;&gt;&gt; rng = np.random.RandomState(0)
+&gt;&gt;&gt; X = np.sort(rng.normal(loc=0.5, scale=0.25, size=(25, 1)), axis=0)
+&gt;&gt;&gt; qt = QuantileTransformer(n_quantiles=10, random_state=0)
+&gt;&gt;&gt; qt.fit_transform(X) 
+array([...])
+</pre> <h4 class="rubric">Methods</h4> <table class="longtable docutils">   <tr>
+<td>
+<a class="reference internal" href="#sklearn.preprocessing.QuantileTransformer.fit" title="sklearn.preprocessing.QuantileTransformer.fit"><code>fit</code></a>(X[, y])</td> <td>Compute the quantiles used for transforming.</td> </tr> <tr>
+<td>
+<a class="reference internal" href="#sklearn.preprocessing.QuantileTransformer.fit_transform" title="sklearn.preprocessing.QuantileTransformer.fit_transform"><code>fit_transform</code></a>(X[, y])</td> <td>Fit to data, then transform it.</td> </tr> <tr>
+<td>
+<a class="reference internal" href="#sklearn.preprocessing.QuantileTransformer.get_params" title="sklearn.preprocessing.QuantileTransformer.get_params"><code>get_params</code></a>([deep])</td> <td>Get parameters for this estimator.</td> </tr> <tr>
+<td>
+<a class="reference internal" href="#sklearn.preprocessing.QuantileTransformer.inverse_transform" title="sklearn.preprocessing.QuantileTransformer.inverse_transform"><code>inverse_transform</code></a>(X)</td> <td>Back-projection to the original space.</td> </tr> <tr>
+<td>
+<a class="reference internal" href="#sklearn.preprocessing.QuantileTransformer.set_params" title="sklearn.preprocessing.QuantileTransformer.set_params"><code>set_params</code></a>(**params)</td> <td>Set the parameters of this estimator.</td> </tr> <tr>
+<td>
+<a class="reference internal" href="#sklearn.preprocessing.QuantileTransformer.transform" title="sklearn.preprocessing.QuantileTransformer.transform"><code>transform</code></a>(X)</td> <td>Feature-wise transformation of the data.</td> </tr>  </table> <dl class="method"> <dt id="sklearn.preprocessing.QuantileTransformer.__init__">
+<code>__init__(n_quantiles=1000, output_distribution=’uniform’, ignore_implicit_zeros=False, subsample=100000, random_state=None, copy=True)</code> <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/f3320a6f/sklearn/preprocessing/data.py#L2160" target="_blank"><span class="viewcode-link">[source]</span></a>
+</dt> 
+</dl> <dl class="method"> <dt id="sklearn.preprocessing.QuantileTransformer.fit">
+<code>fit(X, y=None)</code> <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/f3320a6f/sklearn/preprocessing/data.py#L2241" target="_blank"><span class="viewcode-link">[source]</span></a>
+</dt> <dd>
+<p>Compute the quantiles used for transforming.</p> <table class="docutils field-list" frame="void" rules="none"> <col class="field-name"> <col class="field-body">  <tr>
+<th class="field-name">Parameters:</th>
+<td class="field-body">
+<p class="first"><strong>X</strong> : ndarray or sparse matrix, shape (n_samples, n_features)</p>  <p>The data used to scale along the features axis. If a sparse matrix is provided, it will be converted into a sparse <code>csc_matrix</code>. Additionally, the sparse matrix needs to be nonnegative if <code>ignore_implicit_zeros</code> is False.</p>  </td> </tr> <tr>
+<th class="field-name">Returns:</th>
+<td class="field-body">
+<p class="first"><strong>self</strong> : object</p>  <p>Returns self</p>  </td> </tr>  </table> </dd>
+</dl> <dl class="method"> <dt id="sklearn.preprocessing.QuantileTransformer.fit_transform">
+<code>fit_transform(X, y=None, **fit_params)</code> <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/f3320a6f/sklearn/base.py#L493" target="_blank"><span class="viewcode-link">[source]</span></a>
+</dt> <dd>
+<p>Fit to data, then transform it.</p> <p>Fits transformer to X and y with optional parameters fit_params and returns a transformed version of X.</p> <table class="docutils field-list" frame="void" rules="none"> <col class="field-name"> <col class="field-body">  <tr>
+<th class="field-name">Parameters:</th>
+<td class="field-body">
+<p class="first"><strong>X</strong> : numpy array of shape [n_samples, n_features]</p>  <p>Training set.</p>  <p><strong>y</strong> : numpy array of shape [n_samples]</p>  <p>Target values.</p>  </td> </tr> <tr>
+<th class="field-name">Returns:</th>
+<td class="field-body">
+<p class="first"><strong>X_new</strong> : numpy array of shape [n_samples, n_features_new]</p>  <p>Transformed array.</p>  </td> </tr>  </table> </dd>
+</dl> <dl class="method"> <dt id="sklearn.preprocessing.QuantileTransformer.get_params">
+<code>get_params(deep=True)</code> <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/f3320a6f/sklearn/base.py#L213" target="_blank"><span class="viewcode-link">[source]</span></a>
+</dt> <dd>
+<p>Get parameters for this estimator.</p> <table class="docutils field-list" frame="void" rules="none"> <col class="field-name"> <col class="field-body">  <tr>
+<th class="field-name">Parameters:</th>
+<td class="field-body">
+<p class="first"><strong>deep</strong> : boolean, optional</p>  <p>If True, will return the parameters for this estimator and contained subobjects that are estimators.</p>  </td> </tr> <tr>
+<th class="field-name">Returns:</th>
+<td class="field-body">
+<p class="first"><strong>params</strong> : mapping of string to any</p>  <p>Parameter names mapped to their values.</p>  </td> </tr>  </table> </dd>
+</dl> <dl class="method"> <dt id="sklearn.preprocessing.QuantileTransformer.inverse_transform">
+<code>inverse_transform(X)</code> <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/f3320a6f/sklearn/preprocessing/data.py#L2428" target="_blank"><span class="viewcode-link">[source]</span></a>
+</dt> <dd>
+<p>Back-projection to the original space.</p> <table class="docutils field-list" frame="void" rules="none"> <col class="field-name"> <col class="field-body">  <tr>
+<th class="field-name">Parameters:</th>
+<td class="field-body">
+<p class="first"><strong>X</strong> : ndarray or sparse matrix, shape (n_samples, n_features)</p>  <p>The data used to scale along the features axis. If a sparse matrix is provided, it will be converted into a sparse <code>csc_matrix</code>. Additionally, the sparse matrix needs to be nonnegative if <code>ignore_implicit_zeros</code> is False.</p>  </td> </tr> <tr>
+<th class="field-name">Returns:</th>
+<td class="field-body">
+<p class="first"><strong>Xt</strong> : ndarray or sparse matrix, shape (n_samples, n_features)</p>  <p>The projected data.</p>  </td> </tr>  </table> </dd>
+</dl> <dl class="method"> <dt id="sklearn.preprocessing.QuantileTransformer.set_params">
+<code>set_params(**params)</code> <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/f3320a6f/sklearn/base.py#L250" target="_blank"><span class="viewcode-link">[source]</span></a>
+</dt> <dd>
+<p>Set the parameters of this estimator.</p> <p>The method works on simple estimators as well as on nested objects (such as pipelines). The latter have parameters of the form <code>&lt;component&gt;__&lt;parameter&gt;</code> so that it’s possible to update each component of a nested object.</p> <table class="docutils field-list" frame="void" rules="none"> <col class="field-name"> <col class="field-body">  <tr>
+<th class="field-name">Returns:</th>
+<td class="field-body">
+<strong>self</strong> :</td> </tr>  </table> </dd>
+</dl> <dl class="method"> <dt id="sklearn.preprocessing.QuantileTransformer.transform">
+<code>transform(X)</code> <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/f3320a6f/sklearn/preprocessing/data.py#L2407" target="_blank"><span class="viewcode-link">[source]</span></a>
+</dt> <dd>
+<p>Feature-wise transformation of the data.</p> <table class="docutils field-list" frame="void" rules="none"> <col class="field-name"> <col class="field-body">  <tr>
+<th class="field-name">Parameters:</th>
+<td class="field-body">
+<p class="first"><strong>X</strong> : ndarray or sparse matrix, shape (n_samples, n_features)</p>  <p>The data used to scale along the features axis. If a sparse matrix is provided, it will be converted into a sparse <code>csc_matrix</code>. Additionally, the sparse matrix needs to be nonnegative if <code>ignore_implicit_zeros</code> is False.</p>  </td> </tr> <tr>
+<th class="field-name">Returns:</th>
+<td class="field-body">
+<p class="first"><strong>Xt</strong> : ndarray or sparse matrix, shape (n_samples, n_features)</p>  <p>The projected data.</p>  </td> </tr>  </table> </dd>
+</dl> </dd>
+</dl>  <h2 id="examples-using-sklearn-preprocessing-quantiletransformer">Examples using <code>sklearn.preprocessing.QuantileTransformer</code>
+</h2> <div class="sphx-glr-thumbcontainer" tooltip="Feature 0 (median income in a block) and feature 5 (number of households) of the `California ho...">
+<div class="figure" id="id1"> <img alt="../../_images/sphx_glr_plot_all_scaling_thumb.png" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAZAAAAEYCAMAAABFglBLAAADAFBMVEX////+/f2CgoLy8vL29ve7u7v////+//+AgID+/v7k5OT5+frAwMB2dnb8/P34+Pj///719fXd3dzv7+9+fn6hoaGzs7OIiIi6urr7+/vh4eH//f/s7Ozx8PmsrKzZ2dn69fvKysr//frxlUXGxcbn5uewsLC5ubn++fiop6j+8ej47/l6enrc2u6enp7ti0nQ0NDrgVH65+ibm5vh5ens6vbX1uuOjo752s3//Oz//PT6szXi3fCkpKTUX2b+89z+9e3+9vOTk5P61762trbGUXL3xKjp5vT4qDvDv+G+vr7meVPNzc3BusTV1dX96tf4v1764tuFhYWLi4vSz+j0pmH849D97uK/fb/16vf3tkn77e/baGHwmlju3fL1qU7EwcOWlZb+7cDUVXHBTYX60LJ/f3/NxuT86OD/+eLdw+byzM394qHk6ubyr4z706TAr9zk5PLyo0P05fPyvbX84LPhcFq4t9zp7OXszt/wpXbp0u7umHCKgcPmnKLPX3r2wpv84sL6yoL3s1/ys6BxcXHKwb/4nT36x1H23uj3vnCYcsLT09P2y771sXf+7s7cfoXsnYfv2OzJx72kndHneGLq6ur4v4/qiWLiz+q4j9DcdnO0RZPkrsb6zpW5ntX92oXes93Sbo7Kc6f3vYLsilW0SXz+9dKscsTmi3PJoNH7ynDembnEYpSZmZmGNaL5wD86CoSsOYbYgaDaaW/z2duwqda4XqWXj8p8crzYotBxC4rQq9zglo2dNZXJj8nRu+Guhcn7zl/+7a/83pJXCItCB6HPgbn9wy+IGoGpPWWdRaKZWLmla7HprLesVpcbDHbov9nZlKZhAquaLXTaeFbkZGfswMvixMSXl5epVKvJQYG+aHa3a7aUDqh9A627MZDKX4edg8OpH53ClrMiBZXQtNDAtiX7jUrUsbj/1SbInC2zWFb61nLcxte+R1XFgTvNYESOV6G+a0j+5yaCWrjY0xfXdzTdthb89ynbtaXgnx7diyfNjo+vi7NmN6bJpo2RAAAgAElEQVR42uyaz08iaRrHnwKM9VICxU8F6bIlID+aEKLJgiaGgiIeCCsLTqhMOpkVEwykzXLYIendSTbiLIc1OmYveDNz6MRDJyRzmL+gp+fcyRy2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"> <p class="caption"><span class="caption-text"><a class="reference internal" href="../../../auto_examples/preprocessing/plot_all_scaling/#sphx-glr-auto-examples-preprocessing-plot-all-scaling-py"><span class="std std-ref">Compare the effect of different scalers on data with outliers</span></a></span></p> </div> </div>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2007–2017 The scikit-learn developers<br>Licensed under the 3-clause BSD License.<br>
+    <a href="http://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.QuantileTransformer.html" class="_attribution-link" target="_blank">http://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.QuantileTransformer.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

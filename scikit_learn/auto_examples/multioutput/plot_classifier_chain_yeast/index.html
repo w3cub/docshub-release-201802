@@ -1,0 +1,166 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Example&#58; Classifier Chain - Scikit-learn - W3cubDocs</title>
+  
+  <meta name="description" content=" Example of using classifier chain on a multilabel dataset. ">
+  <meta name="keywords" content="classifier, chain, example, -, scikit-learn, scikit_learn">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/scikit_learn/auto_examples/multioutput/plot_classifier_chain_yeast/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/scikit_learn.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/scikit_learn/" class="_nav-link" title="" style="margin-left:0;">scikit-learn</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _sphinx">
+				
+<h1 id="sphx-glr-auto-examples-multioutput-plot-classifier-chain-yeast-py">Classifier Chain</h1> <p id="classifier-chain">Example of using classifier chain on a multilabel dataset.</p> <p>For this example we will use the <a class="reference external" href="http://mldata.org/repository/data/viewslug/yeast" target="_blank">yeast</a> dataset which contains 2417 datapoints each with 103 features and 14 possible labels. Each data point has at least one label. As a baseline we first train a logistic regression classifier for each of the 14 labels. To evaluate the performance of these classifiers we predict on a held-out test set and calculate the <a class="reference internal" href="../../../modules/model_evaluation/#jaccard-similarity-score"><span class="std std-ref">jaccard similarity score</span></a>.</p> <p>Next we create 10 classifier chains. Each classifier chain contains a logistic regression model for each of the 14 labels. The models in each chain are ordered randomly. In addition to the 103 features in the dataset, each model gets the predictions of the preceding models in the chain as features (note that by default at training time each model gets the true labels as features). These additional features allow each chain to exploit correlations among the classes. The Jaccard similarity score for each chain tends to be greater than that of the set independent logistic models.</p> <p>Because the models in each chain are arranged randomly there is significant variation in performance among the chains. Presumably there is an optimal ordering of the classes in a chain that will yield the best performance. However we do not know that ordering a priori. Instead we can construct an voting ensemble of classifier chains by averaging the binary predictions of the chains and apply a threshold of 0.5. The Jaccard similarity score of the ensemble is greater than that of the independent models and tends to exceed the score of each chain in the ensemble (although this is not guaranteed with randomly ordered chains).</p> <img alt="../../_images/sphx_glr_plot_classifier_chain_yeast_001.png" class="align-center" src="data:image/png;base64,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"> <pre data-language="python">print(__doc__)
+
+# Author: Adam Kleczewski
+# License: BSD 3 clause
+
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.multioutput import ClassifierChain
+from sklearn.model_selection import train_test_split
+from sklearn.multiclass import OneVsRestClassifier
+from sklearn.metrics import jaccard_similarity_score
+from sklearn.linear_model import LogisticRegression
+from sklearn.datasets import fetch_mldata
+
+# Load a multi-label dataset
+yeast = fetch_mldata('yeast')
+X = yeast['data']
+Y = yeast['target'].transpose().toarray()
+X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=.2,
+                                                    random_state=0)
+
+# Fit an independent logistic regression model for each class using the
+# OneVsRestClassifier wrapper.
+ovr = OneVsRestClassifier(LogisticRegression())
+ovr.fit(X_train, Y_train)
+Y_pred_ovr = ovr.predict(X_test)
+ovr_jaccard_score = jaccard_similarity_score(Y_test, Y_pred_ovr)
+
+# Fit an ensemble of logistic regression classifier chains and take the
+# take the average prediction of all the chains.
+chains = [ClassifierChain(LogisticRegression(), order='random', random_state=i)
+          for i in range(10)]
+for chain in chains:
+    chain.fit(X_train, Y_train)
+
+Y_pred_chains = np.array([chain.predict(X_test) for chain in
+                          chains])
+chain_jaccard_scores = [jaccard_similarity_score(Y_test, Y_pred_chain &gt;= .5)
+                        for Y_pred_chain in Y_pred_chains]
+
+Y_pred_ensemble = Y_pred_chains.mean(axis=0)
+ensemble_jaccard_score = jaccard_similarity_score(Y_test,
+                                                  Y_pred_ensemble &gt;= .5)
+
+model_scores = [ovr_jaccard_score] + chain_jaccard_scores
+model_scores.append(ensemble_jaccard_score)
+
+model_names = ('Independent',
+               'Chain 1',
+               'Chain 2',
+               'Chain 3',
+               'Chain 4',
+               'Chain 5',
+               'Chain 6',
+               'Chain 7',
+               'Chain 8',
+               'Chain 9',
+               'Chain 10',
+               'Ensemble')
+
+x_pos = np.arange(len(model_names))
+
+# Plot the Jaccard similarity scores for the independent model, each of the
+# chains, and the ensemble (note that the vertical axis on this plot does
+# not begin at 0).
+
+fig, ax = plt.subplots(figsize=(7, 4))
+ax.grid(True)
+ax.set_title('Classifier Chain Ensemble Performance Comparison')
+ax.set_xticks(x_pos)
+ax.set_xticklabels(model_names, rotation='vertical')
+ax.set_ylabel('Jaccard Similarity Score')
+ax.set_ylim([min(model_scores) * .9, max(model_scores) * 1.1])
+colors = ['r'] + ['b'] * len(chain_jaccard_scores) + ['g']
+ax.bar(x_pos, model_scores, alpha=0.5, color=colors)
+plt.tight_layout()
+plt.show()
+</pre> <p><strong>Total running time of the script:</strong> ( 0 minutes 4.588 seconds)</p> <div class="sphx-glr-footer docutils container"> <div class="sphx-glr-download docutils container"> <a class="reference download internal" href="http://scikit-learn.org/stable/_downloads/plot_classifier_chain_yeast.py" download="" target="_blank"><code>Download Python source code: plot_classifier_chain_yeast.py</code></a>
+</div> <div class="sphx-glr-download docutils container"> <a class="reference download internal" href="http://scikit-learn.org/stable/_downloads/plot_classifier_chain_yeast.ipynb" download="" target="_blank"><code>Download Jupyter notebook: plot_classifier_chain_yeast.ipynb</code></a>
+</div> </div> <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.readthedocs.io" target="_blank">Generated by Sphinx-Gallery</a></p>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2007–2017 The scikit-learn developers<br>Licensed under the 3-clause BSD License.<br>
+    <a href="http://scikit-learn.org/stable/auto_examples/multioutput/plot_classifier_chain_yeast.html" class="_attribution-link" target="_blank">http://scikit-learn.org/stable/auto_examples/multioutput/plot_classifier_chain_yeast.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

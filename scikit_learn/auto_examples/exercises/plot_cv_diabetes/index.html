@@ -1,0 +1,169 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Example&#58; Cross-validation on Diabetes Dataset Exercise - Scikit-learn - W3cubDocs</title>
+  
+  <meta name="description" content=" A tutorial exercise which uses cross-validation with linear models. ">
+  <meta name="keywords" content="cross-validation, on, diabetes, dataset, exercise, example, -, scikit-learn, scikit_learn">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/scikit_learn/auto_examples/exercises/plot_cv_diabetes/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/scikit_learn.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/scikit_learn/" class="_nav-link" title="" style="margin-left:0;">scikit-learn</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _sphinx">
+				
+<h1 id="sphx-glr-auto-examples-exercises-plot-cv-diabetes-py">Cross-validation on diabetes Dataset Exercise</h1> <p id="cross-validation-on-diabetes-dataset-exercise">A tutorial exercise which uses cross-validation with linear models.</p> <p>This exercise is used in the <a class="reference internal" href="../../../tutorial/statistical_inference/model_selection/#cv-estimators-tut"><span class="std std-ref">Cross-validated estimators</span></a> part of the <a class="reference internal" href="../../../tutorial/statistical_inference/model_selection/#model-selection-tut"><span class="std std-ref">Model selection: choosing estimators and their parameters</span></a> section of the <a class="reference internal" href="../../../tutorial/statistical_inference/#stat-learn-tut-index"><span class="std std-ref">A tutorial on statistical-learning for scientific data processing</span></a>.</p> <img alt="../../_images/sphx_glr_plot_cv_diabetes_001.png" class="align-center" src="data:image/png;base64,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"> <p class="sphx-glr-script-out">Out:</p> <pre data-language="python">Answer to the bonus question: how much can you trust the selection of alpha?
+
+Alpha parameters maximising the generalization score on different
+subsets of the data:
+[fold 0] alpha: 0.10405, score: 0.53573
+[fold 1] alpha: 0.05968, score: 0.16278
+[fold 2] alpha: 0.10405, score: 0.44437
+
+Answer: Not very much since we obtained different alphas for different
+subsets of the data and moreover, the scores for these alphas differ
+quite substantially.
+</pre>  <pre data-language="python">from __future__ import print_function
+print(__doc__)
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+from sklearn import datasets
+from sklearn.linear_model import LassoCV
+from sklearn.linear_model import Lasso
+from sklearn.model_selection import KFold
+from sklearn.model_selection import GridSearchCV
+
+diabetes = datasets.load_diabetes()
+X = diabetes.data[:150]
+y = diabetes.target[:150]
+
+lasso = Lasso(random_state=0)
+alphas = np.logspace(-4, -0.5, 30)
+
+tuned_parameters = [{'alpha': alphas}]
+n_folds = 3
+
+clf = GridSearchCV(lasso, tuned_parameters, cv=n_folds, refit=False)
+clf.fit(X, y)
+scores = clf.cv_results_['mean_test_score']
+scores_std = clf.cv_results_['std_test_score']
+plt.figure().set_size_inches(8, 6)
+plt.semilogx(alphas, scores)
+
+# plot error lines showing +/- std. errors of the scores
+std_error = scores_std / np.sqrt(n_folds)
+
+plt.semilogx(alphas, scores + std_error, 'b--')
+plt.semilogx(alphas, scores - std_error, 'b--')
+
+# alpha=0.2 controls the translucency of the fill color
+plt.fill_between(alphas, scores + std_error, scores - std_error, alpha=0.2)
+
+plt.ylabel('CV score +/- std error')
+plt.xlabel('alpha')
+plt.axhline(np.max(scores), linestyle='--', color='.5')
+plt.xlim([alphas[0], alphas[-1]])
+
+# #############################################################################
+# Bonus: how much can you trust the selection of alpha?
+
+# To answer this question we use the LassoCV object that sets its alpha
+# parameter automatically from the data by internal cross-validation (i.e. it
+# performs cross-validation on the training data it receives).
+# We use external cross-validation to see how much the automatically obtained
+# alphas differ across different cross-validation folds.
+lasso_cv = LassoCV(alphas=alphas, random_state=0)
+k_fold = KFold(3)
+
+print("Answer to the bonus question:",
+      "how much can you trust the selection of alpha?")
+print()
+print("Alpha parameters maximising the generalization score on different")
+print("subsets of the data:")
+for k, (train, test) in enumerate(k_fold.split(X, y)):
+    lasso_cv.fit(X[train], y[train])
+    print("[fold {0}] alpha: {1:.5f}, score: {2:.5f}".
+          format(k, lasso_cv.alpha_, lasso_cv.score(X[test], y[test])))
+print()
+print("Answer: Not very much since we obtained different alphas for different")
+print("subsets of the data and moreover, the scores for these alphas differ")
+print("quite substantially.")
+
+plt.show()
+</pre> <p><strong>Total running time of the script:</strong> ( 0 minutes 0.343 seconds)</p> <div class="sphx-glr-footer docutils container"> <div class="sphx-glr-download docutils container"> <a class="reference download internal" href="http://scikit-learn.org/stable/_downloads/plot_cv_diabetes.py" download="" target="_blank"><code>Download Python source code: plot_cv_diabetes.py</code></a>
+</div> <div class="sphx-glr-download docutils container"> <a class="reference download internal" href="http://scikit-learn.org/stable/_downloads/plot_cv_diabetes.ipynb" download="" target="_blank"><code>Download Jupyter notebook: plot_cv_diabetes.ipynb</code></a>
+</div> </div> <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.readthedocs.io" target="_blank">Generated by Sphinx-Gallery</a></p>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2007–2017 The scikit-learn developers<br>Licensed under the 3-clause BSD License.<br>
+    <a href="http://scikit-learn.org/stable/auto_examples/exercises/plot_cv_diabetes.html" class="_attribution-link" target="_blank">http://scikit-learn.org/stable/auto_examples/exercises/plot_cv_diabetes.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

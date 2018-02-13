@@ -1,0 +1,153 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Example&#58; Using FunctionTransformer to Select Columns - Scikit-learn - W3cubDocs</title>
+  
+  <meta name="description" content="Shows how to use a function transformer in a pipeline. If you know your dataset’s first principle component is irrelevant for a classification task &hellip;">
+  <meta name="keywords" content="using, functiontransformer, select, columns, example, -, scikit-learn, scikit_learn">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/scikit_learn/auto_examples/preprocessing/plot_function_transformer/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/scikit_learn.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/scikit_learn/" class="_nav-link" title="" style="margin-left:0;">scikit-learn</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _sphinx">
+				
+<h1 id="sphx-glr-auto-examples-preprocessing-plot-function-transformer-py">Using FunctionTransformer to select columns</h1> <p id="using-functiontransformer-to-select-columns">Shows how to use a function transformer in a pipeline. If you know your dataset’s first principle component is irrelevant for a classification task, you can use the FunctionTransformer to select all but the first column of the PCA transformed data.</p> <ul class="sphx-glr-horizontal"> <li>
+<a class="first reference internal image-reference" href="http://scikit-learn.org/stable/_images/sphx_glr_plot_function_transformer_001.png" target="_blank"><img alt="../../_images/sphx_glr_plot_function_transformer_001.png" src="data:image/png;base64,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" style="width: 300.79999999999995px; height: 225.6px;"></a> </li> <li>
+<a class="first reference internal image-reference" href="http://scikit-learn.org/stable/_images/sphx_glr_plot_function_transformer_002.png" target="_blank"><img alt="../../_images/sphx_glr_plot_function_transformer_002.png" src="data:image/png;base64,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" style="width: 300.79999999999995px; height: 225.6px;"></a> </li> </ul> <pre data-language="python">import matplotlib.pyplot as plt
+import numpy as np
+
+from sklearn.model_selection import train_test_split
+from sklearn.decomposition import PCA
+from sklearn.pipeline import make_pipeline
+from sklearn.preprocessing import FunctionTransformer
+
+
+def _generate_vector(shift=0.5, noise=15):
+    return np.arange(1000) + (np.random.rand(1000) - shift) * noise
+
+
+def generate_dataset():
+    """
+    This dataset is two lines with a slope ~ 1, where one has
+    a y offset of ~100
+    """
+    return np.vstack((
+        np.vstack((
+            _generate_vector(),
+            _generate_vector() + 100,
+        )).T,
+        np.vstack((
+            _generate_vector(),
+            _generate_vector(),
+        )).T,
+    )), np.hstack((np.zeros(1000), np.ones(1000)))
+
+
+def all_but_first_column(X):
+    return X[:, 1:]
+
+
+def drop_first_component(X, y):
+    """
+    Create a pipeline with PCA and the column selector and use it to
+    transform the dataset.
+    """
+    pipeline = make_pipeline(
+        PCA(), FunctionTransformer(all_but_first_column),
+    )
+    X_train, X_test, y_train, y_test = train_test_split(X, y)
+    pipeline.fit(X_train, y_train)
+    return pipeline.transform(X_test), y_test
+
+
+if __name__ == '__main__':
+    X, y = generate_dataset()
+    lw = 0
+    plt.figure()
+    plt.scatter(X[:, 0], X[:, 1], c=y, lw=lw)
+    plt.figure()
+    X_transformed, y_transformed = drop_first_component(*generate_dataset())
+    plt.scatter(
+        X_transformed[:, 0],
+        np.zeros(len(X_transformed)),
+        c=y_transformed,
+        lw=lw,
+        s=60
+    )
+    plt.show()
+</pre> <p><strong>Total running time of the script:</strong> ( 0 minutes 0.093 seconds)</p> <div class="sphx-glr-footer docutils container"> <div class="sphx-glr-download docutils container"> <a class="reference download internal" href="http://scikit-learn.org/stable/_downloads/plot_function_transformer.py" download="" target="_blank"><code>Download Python source code: plot_function_transformer.py</code></a>
+</div> <div class="sphx-glr-download docutils container"> <a class="reference download internal" href="http://scikit-learn.org/stable/_downloads/plot_function_transformer.ipynb" download="" target="_blank"><code>Download Jupyter notebook: plot_function_transformer.ipynb</code></a>
+</div> </div> <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.readthedocs.io" target="_blank">Generated by Sphinx-Gallery</a></p>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2007–2017 The scikit-learn developers<br>Licensed under the 3-clause BSD License.<br>
+    <a href="http://scikit-learn.org/stable/auto_examples/preprocessing/plot_function_transformer.html" class="_attribution-link" target="_blank">http://scikit-learn.org/stable/auto_examples/preprocessing/plot_function_transformer.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

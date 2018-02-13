@@ -1,0 +1,198 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>isotonic.IsotonicRegression() - Scikit-learn - W3cubDocs</title>
+  
+  <meta name="description" content=" Isotonic regression model. ">
+  <meta name="keywords" content="sklearn, isotonic, isotonicregression, -, scikit-learn, scikit_learn">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/scikit_learn/modules/generated/sklearn.isotonic.isotonicregression/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/scikit_learn.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/scikit_learn/" class="_nav-link" title="" style="margin-left:0;">scikit-learn</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _sphinx">
+				
+<h1 id="sklearn-isotonic-isotonicregression">sklearn.isotonic.IsotonicRegression</h1> <dl class="class"> <dt id="sklearn.isotonic.IsotonicRegression">
+<code>class sklearn.isotonic.IsotonicRegression(y_min=None, y_max=None, increasing=True, out_of_bounds=’nan’)</code> <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/f3320a6f/sklearn/isotonic.py#L140" target="_blank"><span class="viewcode-link">[source]</span></a>
+</dt> <dd>
+<p>Isotonic regression model.</p> <p>The isotonic regression optimization problem is defined by:</p> <pre data-language="python">min sum w_i (y[i] - y_[i]) ** 2
+
+subject to y_[i] &lt;= y_[j] whenever X[i] &lt;= X[j]
+and min(y_) = y_min, max(y_) = y_max
+</pre> <dl class="docutils"> <dt>where:</dt> <dd>
+<ul class="first last simple"> <li>
+<code>y[i]</code> are inputs (real numbers)</li> <li>
+<code>y_[i]</code> are fitted</li> <li>
+<code>X</code> specifies the order. If <code>X</code> is non-decreasing then <code>y_</code> is non-decreasing.</li> <li>
+<code>w[i]</code> are optional strictly positive weights (default to 1.0)</li> </ul> </dd> </dl> <p>Read more in the <a class="reference internal" href="../../isotonic/#isotonic"><span class="std std-ref">User Guide</span></a>.</p> <table class="docutils field-list" frame="void" rules="none"> <col class="field-name"> <col class="field-body">  <tr>
+<th class="field-name">Parameters:</th>
+<td class="field-body">
+<p class="first"><strong>y_min</strong> : optional, default: None</p>  <p>If not None, set the lowest value of the fit to y_min.</p>  <p><strong>y_max</strong> : optional, default: None</p>  <p>If not None, set the highest value of the fit to y_max.</p>  <p><strong>increasing</strong> : boolean or string, optional, default: True</p>  <p>If boolean, whether or not to fit the isotonic regression with y increasing or decreasing.</p> <p>The string value “auto” determines whether y should increase or decrease based on the Spearman correlation estimate’s sign.</p>  <p><strong>out_of_bounds</strong> : string, optional, default: “nan”</p>  <p>The <code>out_of_bounds</code> parameter handles how x-values outside of the training domain are handled. When set to “nan”, predicted y-values will be NaN. When set to “clip”, predicted y-values will be set to the value corresponding to the nearest train interval endpoint. When set to “raise”, allow <code>interp1d</code> to throw ValueError.</p>  </td> </tr> <tr>
+<th class="field-name">Attributes:</th>
+<td class="field-body">
+<p class="first"><strong>X_min_</strong> : float</p>  <p>Minimum value of input array <code>X_</code> for left bound.</p>  <p><strong>X_max_</strong> : float</p>  <p>Maximum value of input array <code>X_</code> for right bound.</p>  <p><strong>f_</strong> : function</p>  <p>The stepwise interpolating function that covers the domain <code>X_</code>.</p>  </td> </tr>  </table> <h4 class="rubric">Notes</h4> <p>Ties are broken using the secondary method from Leeuw, 1977.</p> <h4 class="rubric">References</h4> <p>Isotonic Median Regression: A Linear Programming Approach Nilotpal Chakravarti Mathematics of Operations Research Vol. 14, No. 2 (May, 1989), pp. 303-308</p> <p>Isotone Optimization in R : Pool-Adjacent-Violators Algorithm (PAVA) and Active Set Methods Leeuw, Hornik, Mair Journal of Statistical Software 2009</p> <p>Correctness of Kruskal’s algorithms for monotone regression with ties Leeuw, Psychometrica, 1977</p> <h4 class="rubric">Methods</h4> <table class="longtable docutils">   <tr>
+<td>
+<a class="reference internal" href="#sklearn.isotonic.IsotonicRegression.fit" title="sklearn.isotonic.IsotonicRegression.fit"><code>fit</code></a>(X, y[, sample_weight])</td> <td>Fit the model using X, y as training data.</td> </tr> <tr>
+<td>
+<a class="reference internal" href="#sklearn.isotonic.IsotonicRegression.fit_transform" title="sklearn.isotonic.IsotonicRegression.fit_transform"><code>fit_transform</code></a>(X[, y])</td> <td>Fit to data, then transform it.</td> </tr> <tr>
+<td>
+<a class="reference internal" href="#sklearn.isotonic.IsotonicRegression.get_params" title="sklearn.isotonic.IsotonicRegression.get_params"><code>get_params</code></a>([deep])</td> <td>Get parameters for this estimator.</td> </tr> <tr>
+<td>
+<a class="reference internal" href="#sklearn.isotonic.IsotonicRegression.predict" title="sklearn.isotonic.IsotonicRegression.predict"><code>predict</code></a>(T)</td> <td>Predict new data by linear interpolation.</td> </tr> <tr>
+<td>
+<a class="reference internal" href="#sklearn.isotonic.IsotonicRegression.score" title="sklearn.isotonic.IsotonicRegression.score"><code>score</code></a>(X, y[, sample_weight])</td> <td>Returns the coefficient of determination R^2 of the prediction.</td> </tr> <tr>
+<td>
+<a class="reference internal" href="#sklearn.isotonic.IsotonicRegression.set_params" title="sklearn.isotonic.IsotonicRegression.set_params"><code>set_params</code></a>(**params)</td> <td>Set the parameters of this estimator.</td> </tr> <tr>
+<td>
+<a class="reference internal" href="#sklearn.isotonic.IsotonicRegression.transform" title="sklearn.isotonic.IsotonicRegression.transform"><code>transform</code></a>(T)</td> <td>Transform new data by linear interpolation</td> </tr>  </table> <dl class="method"> <dt id="sklearn.isotonic.IsotonicRegression.__init__">
+<code>__init__(y_min=None, y_max=None, increasing=True, out_of_bounds=’nan’)</code> <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/f3320a6f/sklearn/isotonic.py#L213" target="_blank"><span class="viewcode-link">[source]</span></a>
+</dt> 
+</dl> <dl class="attribute"> <dt id="sklearn.isotonic.IsotonicRegression.X_">
+<code>X_</code> </dt> <dd>
+<p>DEPRECATED: Attribute <code>X_</code> is deprecated in version 0.18 and will be removed in version 0.20.</p> </dd>
+</dl> <dl class="method"> <dt id="sklearn.isotonic.IsotonicRegression.fit">
+<code>fit(X, y, sample_weight=None)</code> <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/f3320a6f/sklearn/isotonic.py#L325" target="_blank"><span class="viewcode-link">[source]</span></a>
+</dt> <dd>
+<p>Fit the model using X, y as training data.</p> <table class="docutils field-list" frame="void" rules="none"> <col class="field-name"> <col class="field-body">  <tr>
+<th class="field-name">Parameters:</th>
+<td class="field-body">
+<p class="first"><strong>X</strong> : array-like, shape=(n_samples,)</p>  <p>Training data.</p>  <p><strong>y</strong> : array-like, shape=(n_samples,)</p>  <p>Training target.</p>  <p><strong>sample_weight</strong> : array-like, shape=(n_samples,), optional, default: None</p>  <p>Weights. If set to None, all weights will be set to 1 (equal weights).</p>  </td> </tr> <tr>
+<th class="field-name">Returns:</th>
+<td class="field-body">
+<p class="first"><strong>self</strong> : object</p>  <p>Returns an instance of self.</p>  </td> </tr>  </table> <h4 class="rubric">Notes</h4> <p>X is stored for future use, as <code>transform</code> needs X to interpolate new input data.</p> </dd>
+</dl> <dl class="method"> <dt id="sklearn.isotonic.IsotonicRegression.fit_transform">
+<code>fit_transform(X, y=None, **fit_params)</code> <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/f3320a6f/sklearn/base.py#L493" target="_blank"><span class="viewcode-link">[source]</span></a>
+</dt> <dd>
+<p>Fit to data, then transform it.</p> <p>Fits transformer to X and y with optional parameters fit_params and returns a transformed version of X.</p> <table class="docutils field-list" frame="void" rules="none"> <col class="field-name"> <col class="field-body">  <tr>
+<th class="field-name">Parameters:</th>
+<td class="field-body">
+<p class="first"><strong>X</strong> : numpy array of shape [n_samples, n_features]</p>  <p>Training set.</p>  <p><strong>y</strong> : numpy array of shape [n_samples]</p>  <p>Target values.</p>  </td> </tr> <tr>
+<th class="field-name">Returns:</th>
+<td class="field-body">
+<p class="first"><strong>X_new</strong> : numpy array of shape [n_samples, n_features_new]</p>  <p>Transformed array.</p>  </td> </tr>  </table> </dd>
+</dl> <dl class="method"> <dt id="sklearn.isotonic.IsotonicRegression.get_params">
+<code>get_params(deep=True)</code> <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/f3320a6f/sklearn/base.py#L213" target="_blank"><span class="viewcode-link">[source]</span></a>
+</dt> <dd>
+<p>Get parameters for this estimator.</p> <table class="docutils field-list" frame="void" rules="none"> <col class="field-name"> <col class="field-body">  <tr>
+<th class="field-name">Parameters:</th>
+<td class="field-body">
+<p class="first"><strong>deep</strong> : boolean, optional</p>  <p>If True, will return the parameters for this estimator and contained subobjects that are estimators.</p>  </td> </tr> <tr>
+<th class="field-name">Returns:</th>
+<td class="field-body">
+<p class="first"><strong>params</strong> : mapping of string to any</p>  <p>Parameter names mapped to their values.</p>  </td> </tr>  </table> </dd>
+</dl> <dl class="method"> <dt id="sklearn.isotonic.IsotonicRegression.predict">
+<code>predict(T)</code> <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/f3320a6f/sklearn/isotonic.py#L391" target="_blank"><span class="viewcode-link">[source]</span></a>
+</dt> <dd>
+<p>Predict new data by linear interpolation.</p> <table class="docutils field-list" frame="void" rules="none"> <col class="field-name"> <col class="field-body">  <tr>
+<th class="field-name">Parameters:</th>
+<td class="field-body">
+<p class="first"><strong>T</strong> : array-like, shape=(n_samples,)</p>  <p>Data to transform.</p>  </td> </tr> <tr>
+<th class="field-name">Returns:</th>
+<td class="field-body">
+<p class="first"><strong>T_</strong> : array, shape=(n_samples,)</p>  <p>Transformed data.</p>  </td> </tr>  </table> </dd>
+</dl> <dl class="method"> <dt id="sklearn.isotonic.IsotonicRegression.score">
+<code>score(X, y, sample_weight=None)</code> <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/f3320a6f/sklearn/base.py#L357" target="_blank"><span class="viewcode-link">[source]</span></a>
+</dt> <dd>
+<p>Returns the coefficient of determination R^2 of the prediction.</p> <p>The coefficient R^2 is defined as (1 - u/v), where u is the residual sum of squares ((y_true - y_pred) ** 2).sum() and v is the total sum of squares ((y_true - y_true.mean()) ** 2).sum(). The best possible score is 1.0 and it can be negative (because the model can be arbitrarily worse). A constant model that always predicts the expected value of y, disregarding the input features, would get a R^2 score of 0.0.</p> <table class="docutils field-list" frame="void" rules="none"> <col class="field-name"> <col class="field-body">  <tr>
+<th class="field-name">Parameters:</th>
+<td class="field-body">
+<p class="first"><strong>X</strong> : array-like, shape = (n_samples, n_features)</p>  <p>Test samples.</p>  <p><strong>y</strong> : array-like, shape = (n_samples) or (n_samples, n_outputs)</p>  <p>True values for X.</p>  <p><strong>sample_weight</strong> : array-like, shape = [n_samples], optional</p>  <p>Sample weights.</p>  </td> </tr> <tr>
+<th class="field-name">Returns:</th>
+<td class="field-body">
+<p class="first"><strong>score</strong> : float</p>  <p>R^2 of self.predict(X) wrt. y.</p>  </td> </tr>  </table> </dd>
+</dl> <dl class="method"> <dt id="sklearn.isotonic.IsotonicRegression.set_params">
+<code>set_params(**params)</code> <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/f3320a6f/sklearn/base.py#L250" target="_blank"><span class="viewcode-link">[source]</span></a>
+</dt> <dd>
+<p>Set the parameters of this estimator.</p> <p>The method works on simple estimators as well as on nested objects (such as pipelines). The latter have parameters of the form <code>&lt;component&gt;__&lt;parameter&gt;</code> so that it’s possible to update each component of a nested object.</p> <table class="docutils field-list" frame="void" rules="none"> <col class="field-name"> <col class="field-body">  <tr>
+<th class="field-name">Returns:</th>
+<td class="field-body">
+<strong>self</strong> :</td> </tr>  </table> </dd>
+</dl> <dl class="method"> <dt id="sklearn.isotonic.IsotonicRegression.transform">
+<code>transform(T)</code> <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/f3320a6f/sklearn/isotonic.py#L364" target="_blank"><span class="viewcode-link">[source]</span></a>
+</dt> <dd>
+<p>Transform new data by linear interpolation</p> <table class="docutils field-list" frame="void" rules="none"> <col class="field-name"> <col class="field-body">  <tr>
+<th class="field-name">Parameters:</th>
+<td class="field-body">
+<p class="first"><strong>T</strong> : array-like, shape=(n_samples,)</p>  <p>Data to transform.</p>  </td> </tr> <tr>
+<th class="field-name">Returns:</th>
+<td class="field-body">
+<p class="first"><strong>T_</strong> : array, shape=(n_samples,)</p>  <p>The transformed data</p>  </td> </tr>  </table> </dd>
+</dl> <dl class="attribute"> <dt id="sklearn.isotonic.IsotonicRegression.y_">
+<code>y_</code> </dt> <dd>
+<p>DEPRECATED: Attribute <code>y_</code> is deprecated in version 0.18 and will be removed in version 0.20.</p> </dd>
+</dl> </dd>
+</dl>  <h2 id="examples-using-sklearn-isotonic-isotonicregression">Examples using <code>sklearn.isotonic.IsotonicRegression</code>
+</h2> <div class="sphx-glr-thumbcontainer" tooltip="An illustration of the isotonic regression on generated data. The isotonic regression finds a n...">
+<div class="figure" id="id1"> <img alt="../../_images/sphx_glr_plot_isotonic_regression_thumb.png" src="data:image/png;base64,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"> <p class="caption"><span class="caption-text"><a class="reference internal" href="../../../auto_examples/plot_isotonic_regression/#sphx-glr-auto-examples-plot-isotonic-regression-py"><span class="std std-ref">Isotonic Regression</span></a></span></p> </div> </div>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2007–2017 The scikit-learn developers<br>Licensed under the 3-clause BSD License.<br>
+    <a href="http://scikit-learn.org/stable/modules/generated/sklearn.isotonic.IsotonicRegression.html" class="_attribution-link" target="_blank">http://scikit-learn.org/stable/modules/generated/sklearn.isotonic.IsotonicRegression.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

@@ -1,0 +1,119 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Example&#58; Recursive Feature Elimination With Cross-validation - Scikit-learn - W3cubDocs</title>
+  
+  <meta name="description" content=" A recursive feature elimination example with automatic tuning of the number of features selected with cross-validation. ">
+  <meta name="keywords" content="recursive, feature, elimination, with, cross-validation, example, -, scikit-learn, scikit_learn">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/scikit_learn/auto_examples/feature_selection/plot_rfe_with_cross_validation/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/scikit_learn.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/scikit_learn/" class="_nav-link" title="" style="margin-left:0;">scikit-learn</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _sphinx">
+				
+<h1 id="sphx-glr-auto-examples-feature-selection-plot-rfe-with-cross-validation-py">Recursive feature elimination with cross-validation</h1> <p id="recursive-feature-elimination-with-cross-validation">A recursive feature elimination example with automatic tuning of the number of features selected with cross-validation.</p> <img alt="../../_images/sphx_glr_plot_rfe_with_cross_validation_001.png" class="align-center" src="data:image/png;base64,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"> <p class="sphx-glr-script-out">Out:</p> <pre data-language="python">Optimal number of features : 3
+</pre>  <pre data-language="python">print(__doc__)
+
+import matplotlib.pyplot as plt
+from sklearn.svm import SVC
+from sklearn.model_selection import StratifiedKFold
+from sklearn.feature_selection import RFECV
+from sklearn.datasets import make_classification
+
+# Build a classification task using 3 informative features
+X, y = make_classification(n_samples=1000, n_features=25, n_informative=3,
+                           n_redundant=2, n_repeated=0, n_classes=8,
+                           n_clusters_per_class=1, random_state=0)
+
+# Create the RFE object and compute a cross-validated score.
+svc = SVC(kernel="linear")
+# The "accuracy" scoring is proportional to the number of correct
+# classifications
+rfecv = RFECV(estimator=svc, step=1, cv=StratifiedKFold(2),
+              scoring='accuracy')
+rfecv.fit(X, y)
+
+print("Optimal number of features : %d" % rfecv.n_features_)
+
+# Plot number of features VS. cross-validation scores
+plt.figure()
+plt.xlabel("Number of features selected")
+plt.ylabel("Cross validation score (nb of correct classifications)")
+plt.plot(range(1, len(rfecv.grid_scores_) + 1), rfecv.grid_scores_)
+plt.show()
+</pre> <p><strong>Total running time of the script:</strong> ( 0 minutes 2.199 seconds)</p> <div class="sphx-glr-footer docutils container"> <div class="sphx-glr-download docutils container"> <a class="reference download internal" href="http://scikit-learn.org/stable/_downloads/plot_rfe_with_cross_validation.py" download="" target="_blank"><code>Download Python source code: plot_rfe_with_cross_validation.py</code></a>
+</div> <div class="sphx-glr-download docutils container"> <a class="reference download internal" href="http://scikit-learn.org/stable/_downloads/plot_rfe_with_cross_validation.ipynb" download="" target="_blank"><code>Download Jupyter notebook: plot_rfe_with_cross_validation.ipynb</code></a>
+</div> </div> <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.readthedocs.io" target="_blank">Generated by Sphinx-Gallery</a></p>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2007–2017 The scikit-learn developers<br>Licensed under the 3-clause BSD License.<br>
+    <a href="http://scikit-learn.org/stable/auto_examples/feature_selection/plot_rfe_with_cross_validation.html" class="_attribution-link" target="_blank">http://scikit-learn.org/stable/auto_examples/feature_selection/plot_rfe_with_cross_validation.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

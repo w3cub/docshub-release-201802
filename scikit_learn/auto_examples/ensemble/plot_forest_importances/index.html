@@ -1,0 +1,142 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Example&#58; Feature Importances With Forests of Trees - Scikit-learn - W3cubDocs</title>
+  
+  <meta name="description" content="This examples shows the use of forests of trees to evaluate the importance of features on an artificial classification task. The red bars are the &hellip;">
+  <meta name="keywords" content="feature, importances, with, forests, trees, example, -, scikit-learn, scikit_learn">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/scikit_learn/auto_examples/ensemble/plot_forest_importances/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/scikit_learn.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/scikit_learn/" class="_nav-link" title="" style="margin-left:0;">scikit-learn</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _sphinx">
+				
+<h1 id="sphx-glr-auto-examples-ensemble-plot-forest-importances-py">Feature importances with forests of trees</h1> <p id="feature-importances-with-forests-of-trees">This examples shows the use of forests of trees to evaluate the importance of features on an artificial classification task. The red bars are the feature importances of the forest, along with their inter-trees variability.</p> <p>As expected, the plot suggests that 3 features are informative, while the remaining are not.</p> <img alt="../../_images/sphx_glr_plot_forest_importances_001.png" class="align-center" src="data:image/png;base64,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"> <p class="sphx-glr-script-out">Out:</p> <pre data-language="python">Feature ranking:
+1. feature 1 (0.295902)
+2. feature 2 (0.208351)
+3. feature 0 (0.177632)
+4. feature 3 (0.047121)
+5. feature 6 (0.046303)
+6. feature 8 (0.046013)
+7. feature 7 (0.045575)
+8. feature 4 (0.044614)
+9. feature 9 (0.044577)
+10. feature 5 (0.043912)
+</pre>  <pre data-language="python">print(__doc__)
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+from sklearn.datasets import make_classification
+from sklearn.ensemble import ExtraTreesClassifier
+
+# Build a classification task using 3 informative features
+X, y = make_classification(n_samples=1000,
+                           n_features=10,
+                           n_informative=3,
+                           n_redundant=0,
+                           n_repeated=0,
+                           n_classes=2,
+                           random_state=0,
+                           shuffle=False)
+
+# Build a forest and compute the feature importances
+forest = ExtraTreesClassifier(n_estimators=250,
+                              random_state=0)
+
+forest.fit(X, y)
+importances = forest.feature_importances_
+std = np.std([tree.feature_importances_ for tree in forest.estimators_],
+             axis=0)
+indices = np.argsort(importances)[::-1]
+
+# Print the feature ranking
+print("Feature ranking:")
+
+for f in range(X.shape[1]):
+    print("%d. feature %d (%f)" % (f + 1, indices[f], importances[indices[f]]))
+
+# Plot the feature importances of the forest
+plt.figure()
+plt.title("Feature importances")
+plt.bar(range(X.shape[1]), importances[indices],
+       color="r", yerr=std[indices], align="center")
+plt.xticks(range(X.shape[1]), indices)
+plt.xlim([-1, X.shape[1]])
+plt.show()
+</pre> <p><strong>Total running time of the script:</strong> ( 0 minutes 0.516 seconds)</p> <div class="sphx-glr-footer docutils container"> <div class="sphx-glr-download docutils container"> <a class="reference download internal" href="http://scikit-learn.org/stable/_downloads/plot_forest_importances.py" download="" target="_blank"><code>Download Python source code: plot_forest_importances.py</code></a>
+</div> <div class="sphx-glr-download docutils container"> <a class="reference download internal" href="http://scikit-learn.org/stable/_downloads/plot_forest_importances.ipynb" download="" target="_blank"><code>Download Jupyter notebook: plot_forest_importances.ipynb</code></a>
+</div> </div> <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.readthedocs.io" target="_blank">Generated by Sphinx-Gallery</a></p>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2007–2017 The scikit-learn developers<br>Licensed under the 3-clause BSD License.<br>
+    <a href="http://scikit-learn.org/stable/auto_examples/ensemble/plot_forest_importances.html" class="_attribution-link" target="_blank">http://scikit-learn.org/stable/auto_examples/ensemble/plot_forest_importances.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

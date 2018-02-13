@@ -1,0 +1,107 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>sklearn.metrics.make_scorer() - Scikit-learn - W3cubDocs</title>
+  
+  <meta name="description" content=" Make a scorer from a performance metric or loss function. ">
+  <meta name="keywords" content="sklearn, metrics, make, scorer, -, scikit-learn, scikit_learn">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/scikit_learn/modules/generated/sklearn.metrics.make_scorer/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/scikit_learn.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/scikit_learn/" class="_nav-link" title="" style="margin-left:0;">scikit-learn</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _sphinx">
+				
+<h1 id="sklearn-metrics-make-scorer">sklearn.metrics.make_scorer</h1> <dl class="function"> <dt id="sklearn.metrics.make_scorer">
+<code>sklearn.metrics.make_scorer(score_func, greater_is_better=True, needs_proba=False, needs_threshold=False, **kwargs)</code> <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/f3320a6f/sklearn/metrics/scorer.py#L400" target="_blank"><span class="viewcode-link">[source]</span></a>
+</dt> <dd>
+<p>Make a scorer from a performance metric or loss function.</p> <p>This factory function wraps scoring functions for use in GridSearchCV and cross_val_score. It takes a score function, such as <code>accuracy_score</code>, <code>mean_squared_error</code>, <code>adjusted_rand_index</code> or <code>average_precision</code> and returns a callable that scores an estimator’s output.</p> <p>Read more in the <a class="reference internal" href="../../model_evaluation/#scoring"><span class="std std-ref">User Guide</span></a>.</p> <table class="docutils field-list" frame="void" rules="none"> <col class="field-name"> <col class="field-body">  <tr>
+<th class="field-name">Parameters:</th>
+<td class="field-body">
+<p class="first"><strong>score_func</strong> : callable,</p>  <p>Score function (or loss function) with signature <code>score_func(y, y_pred, **kwargs)</code>.</p>  <p><strong>greater_is_better</strong> : boolean, default=True</p>  <p>Whether score_func is a score function (default), meaning high is good, or a loss function, meaning low is good. In the latter case, the scorer object will sign-flip the outcome of the score_func.</p>  <p><strong>needs_proba</strong> : boolean, default=False</p>  <p>Whether score_func requires predict_proba to get probability estimates out of a classifier.</p>  <p><strong>needs_threshold</strong> : boolean, default=False</p>  <p>Whether score_func takes a continuous decision certainty. This only works for binary classification using estimators that have either a decision_function or predict_proba method.</p> <p>For example <code>average_precision</code> or the area under the roc curve can not be computed using discrete predictions alone.</p>  <p><strong>**kwargs</strong> : additional arguments</p>  <p>Additional parameters to be passed to score_func.</p>  </td> </tr> <tr>
+<th class="field-name">Returns:</th>
+<td class="field-body">
+<p class="first"><strong>scorer</strong> : callable</p>  <p>Callable object that returns a scalar score; greater is better.</p>  </td> </tr>  </table> <h4 class="rubric">Examples</h4> <pre data-language="python">&gt;&gt;&gt; from sklearn.metrics import fbeta_score, make_scorer
+&gt;&gt;&gt; ftwo_scorer = make_scorer(fbeta_score, beta=2)
+&gt;&gt;&gt; ftwo_scorer
+make_scorer(fbeta_score, beta=2)
+&gt;&gt;&gt; from sklearn.model_selection import GridSearchCV
+&gt;&gt;&gt; from sklearn.svm import LinearSVC
+&gt;&gt;&gt; grid = GridSearchCV(LinearSVC(), param_grid={'C': [1, 10]},
+...                     scoring=ftwo_scorer)
+</pre> </dd>
+</dl>  <h2 id="examples-using-sklearn-metrics-make-scorer">Examples using <code>sklearn.metrics.make_scorer</code>
+</h2> <div class="sphx-glr-thumbcontainer" tooltip="Multiple metric parameter search can be done by setting the ``scoring`` parameter to a list of ...">
+<div class="figure" id="id1"> <img alt="../../_images/sphx_glr_plot_multi_metric_evaluation_thumb.png" src="data:image/png;base64,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"> <p class="caption"><span class="caption-text"><a class="reference internal" href="../../../auto_examples/model_selection/plot_multi_metric_evaluation/#sphx-glr-auto-examples-model-selection-plot-multi-metric-evaluation-py"><span class="std std-ref">Demonstration of multi-metric evaluation on cross_val_score and GridSearchCV</span></a></span></p> </div> </div>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2007–2017 The scikit-learn developers<br>Licensed under the 3-clause BSD License.<br>
+    <a href="http://scikit-learn.org/stable/modules/generated/sklearn.metrics.make_scorer.html" class="_attribution-link" target="_blank">http://scikit-learn.org/stable/modules/generated/sklearn.metrics.make_scorer.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

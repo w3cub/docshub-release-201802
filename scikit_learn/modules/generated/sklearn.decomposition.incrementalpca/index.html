@@ -1,0 +1,210 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>decomposition.IncrementalPCA() - Scikit-learn - W3cubDocs</title>
+  
+  <meta name="description" content=" Incremental principal components analysis (IPCA). ">
+  <meta name="keywords" content="sklearn, decomposition, incrementalpca, -, scikit-learn, scikit_learn">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/scikit_learn/modules/generated/sklearn.decomposition.incrementalpca/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/scikit_learn.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/scikit_learn/" class="_nav-link" title="" style="margin-left:0;">scikit-learn</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _sphinx">
+				
+<h1 id="sklearn-decomposition-incrementalpca">sklearn.decomposition.IncrementalPCA</h1> <dl class="class"> <dt id="sklearn.decomposition.IncrementalPCA">
+<code>class sklearn.decomposition.IncrementalPCA(n_components=None, whiten=False, copy=True, batch_size=None)</code> <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/f3320a6f/sklearn/decomposition/incremental_pca.py#L15" target="_blank"><span class="viewcode-link">[source]</span></a>
+</dt> <dd>
+<p>Incremental principal components analysis (IPCA).</p> <p>Linear dimensionality reduction using Singular Value Decomposition of centered data, keeping only the most significant singular vectors to project the data to a lower dimensional space.</p> <p>Depending on the size of the input data, this algorithm can be much more memory efficient than a PCA.</p> <p>This algorithm has constant memory complexity, on the order of <code>batch_size</code>, enabling use of np.memmap files without loading the entire file into memory.</p> <p>The computational overhead of each SVD is <code>O(batch_size * n_features ** 2)</code>, but only 2 * batch_size samples remain in memory at a time. There will be <code>n_samples / batch_size</code> SVD computations to get the principal components, versus 1 large SVD of complexity <code>O(n_samples * n_features ** 2)</code> for PCA.</p> <p>Read more in the <a class="reference internal" href="../../decomposition/#incrementalpca"><span class="std std-ref">User Guide</span></a>.</p> <table class="docutils field-list" frame="void" rules="none"> <col class="field-name"> <col class="field-body">  <tr>
+<th class="field-name">Parameters:</th>
+<td class="field-body">
+<p class="first"><strong>n_components</strong> : int or None, (default=None)</p>  <p>Number of components to keep. If <code>n_components `` is ``None</code>, then <code>n_components</code> is set to <code>min(n_samples, n_features)</code>.</p>  <p><strong>whiten</strong> : bool, optional</p>  <p>When True (False by default) the <code>components_</code> vectors are divided by <code>n_samples</code> times <code>components_</code> to ensure uncorrelated outputs with unit component-wise variances.</p> <p>Whitening will remove some information from the transformed signal (the relative variance scales of the components) but can sometimes improve the predictive accuracy of the downstream estimators by making data respect some hard-wired assumptions.</p>  <p><strong>copy</strong> : bool, (default=True)</p>  <p>If False, X will be overwritten. <code>copy=False</code> can be used to save memory but is unsafe for general use.</p>  <p><strong>batch_size</strong> : int or None, (default=None)</p>  <p>The number of samples to use for each batch. Only used when calling <code>fit</code>. If <code>batch_size</code> is <code>None</code>, then <code>batch_size</code> is inferred from the data and set to <code>5 * n_features</code>, to provide a balance between approximation accuracy and memory consumption.</p>  </td> </tr> <tr>
+<th class="field-name">Attributes:</th>
+<td class="field-body">
+<p class="first"><strong>components_</strong> : array, shape (n_components, n_features)</p>  <p>Components with maximum variance.</p>  <p><strong>explained_variance_</strong> : array, shape (n_components,)</p>  <p>Variance explained by each of the selected components.</p>  <p><strong>explained_variance_ratio_</strong> : array, shape (n_components,)</p>  <p>Percentage of variance explained by each of the selected components. If all components are stored, the sum of explained variances is equal to 1.0.</p>  <p><strong>singular_values_</strong> : array, shape (n_components,)</p>  <p>The singular values corresponding to each of the selected components. The singular values are equal to the 2-norms of the <code>n_components</code> variables in the lower-dimensional space.</p>  <p><strong>mean_</strong> : array, shape (n_features,)</p>  <p>Per-feature empirical mean, aggregate over calls to <code>partial_fit</code>.</p>  <p><strong>var_</strong> : array, shape (n_features,)</p>  <p>Per-feature empirical variance, aggregate over calls to <code>partial_fit</code>.</p>  <p><strong>noise_variance_</strong> : float</p>  <p>The estimated noise covariance following the Probabilistic PCA model from Tipping and Bishop 1999. See “Pattern Recognition and Machine Learning” by C. Bishop, 12.2.1 p. 574 or <a class="reference external" href="http://www.miketipping.com/papers/met-mppca.pdf" target="_blank">http://www.miketipping.com/papers/met-mppca.pdf</a>.</p>  <p><strong>n_components_</strong> : int</p>  <p>The estimated number of components. Relevant when <code>n_components=None</code>.</p>  <p><strong>n_samples_seen_</strong> : int</p>  <p>The number of samples processed by the estimator. Will be reset on new calls to fit, but increments across <code>partial_fit</code> calls.</p>  </td> </tr>  </table> <div class="admonition seealso"> <p class="first admonition-title">See also</p> <p class="last"><a class="reference internal" href="../sklearn.decomposition.pca/#sklearn.decomposition.PCA" title="sklearn.decomposition.PCA"><code>PCA</code></a>, <a class="reference internal" href="../sklearn.decomposition.randomizedpca/#sklearn.decomposition.RandomizedPCA" title="sklearn.decomposition.RandomizedPCA"><code>RandomizedPCA</code></a>, <a class="reference internal" href="../sklearn.decomposition.kernelpca/#sklearn.decomposition.KernelPCA" title="sklearn.decomposition.KernelPCA"><code>KernelPCA</code></a>, <a class="reference internal" href="../sklearn.decomposition.sparsepca/#sklearn.decomposition.SparsePCA" title="sklearn.decomposition.SparsePCA"><code>SparsePCA</code></a>, <a class="reference internal" href="../sklearn.decomposition.truncatedsvd/#sklearn.decomposition.TruncatedSVD" title="sklearn.decomposition.TruncatedSVD"><code>TruncatedSVD</code></a></p> </div> <h4 class="rubric">Notes</h4> <p>Implements the incremental PCA model from: <code>D. Ross, J. Lim, R. Lin, M. Yang, Incremental Learning for Robust Visual Tracking, International Journal of Computer Vision, Volume 77, Issue 1-3, pp. 125-141, May 2008.</code> See <a class="reference external" href="http://www.cs.toronto.edu/~dross/ivt/RossLimLinYang_ijcv.pdf" target="_blank">http://www.cs.toronto.edu/~dross/ivt/RossLimLinYang_ijcv.pdf</a></p> <p>This model is an extension of the Sequential Karhunen-Loeve Transform from: <code>A. Levy and M. Lindenbaum, Sequential Karhunen-Loeve Basis Extraction and its Application to Images, IEEE Transactions on Image Processing, Volume 9, Number 8, pp. 1371-1374, August 2000.</code> See <a class="reference external" href="http://www.cs.technion.ac.il/~mic/doc/skl-ip.pdf" target="_blank">http://www.cs.technion.ac.il/~mic/doc/skl-ip.pdf</a></p> <p>We have specifically abstained from an optimization used by authors of both papers, a QR decomposition used in specific situations to reduce the algorithmic complexity of the SVD. The source for this technique is <code>Matrix Computations, Third Edition, G. Holub and C. Van Loan, Chapter 5, section 5.4.4, pp 252-253.</code>. This technique has been omitted because it is advantageous only when decomposing a matrix with <code>n_samples</code> (rows) &gt;= 5/3 * <code>n_features</code> (columns), and hurts the readability of the implemented algorithm. This would be a good opportunity for future optimization, if it is deemed necessary.</p> <h4 class="rubric">References</h4> <ol class="upperalpha simple" start="4"> <li>
+<dl class="first docutils"> <dt>Ross, J. Lim, R. Lin, M. Yang. Incremental Learning for Robust Visual</dt> <dd>Tracking, International Journal of Computer Vision, Volume 77, Issue 1-3, pp. 125-141, May 2008.</dd> </dl> </li> </ol> <ol class="upperalpha simple" start="7"> <li>
+<dl class="first docutils"> <dt>Golub and C. Van Loan. Matrix Computations, Third Edition, Chapter 5,</dt> <dd>Section 5.4.4, pp. 252-253.</dd> </dl> </li> </ol> <h4 class="rubric">Methods</h4> <table class="longtable docutils">   <tr>
+<td>
+<a class="reference internal" href="#sklearn.decomposition.IncrementalPCA.fit" title="sklearn.decomposition.IncrementalPCA.fit"><code>fit</code></a>(X[, y])</td> <td>Fit the model with X, using minibatches of size batch_size.</td> </tr> <tr>
+<td>
+<a class="reference internal" href="#sklearn.decomposition.IncrementalPCA.fit_transform" title="sklearn.decomposition.IncrementalPCA.fit_transform"><code>fit_transform</code></a>(X[, y])</td> <td>Fit to data, then transform it.</td> </tr> <tr>
+<td>
+<a class="reference internal" href="#sklearn.decomposition.IncrementalPCA.get_covariance" title="sklearn.decomposition.IncrementalPCA.get_covariance"><code>get_covariance</code></a>()</td> <td>Compute data covariance with the generative model.</td> </tr> <tr>
+<td>
+<a class="reference internal" href="#sklearn.decomposition.IncrementalPCA.get_params" title="sklearn.decomposition.IncrementalPCA.get_params"><code>get_params</code></a>([deep])</td> <td>Get parameters for this estimator.</td> </tr> <tr>
+<td>
+<a class="reference internal" href="#sklearn.decomposition.IncrementalPCA.get_precision" title="sklearn.decomposition.IncrementalPCA.get_precision"><code>get_precision</code></a>()</td> <td>Compute data precision matrix with the generative model.</td> </tr> <tr>
+<td>
+<a class="reference internal" href="#sklearn.decomposition.IncrementalPCA.inverse_transform" title="sklearn.decomposition.IncrementalPCA.inverse_transform"><code>inverse_transform</code></a>(X)</td> <td>Transform data back to its original space.</td> </tr> <tr>
+<td>
+<a class="reference internal" href="#sklearn.decomposition.IncrementalPCA.partial_fit" title="sklearn.decomposition.IncrementalPCA.partial_fit"><code>partial_fit</code></a>(X[, y, check_input])</td> <td>Incremental fit with X.</td> </tr> <tr>
+<td>
+<a class="reference internal" href="#sklearn.decomposition.IncrementalPCA.set_params" title="sklearn.decomposition.IncrementalPCA.set_params"><code>set_params</code></a>(**params)</td> <td>Set the parameters of this estimator.</td> </tr> <tr>
+<td>
+<a class="reference internal" href="#sklearn.decomposition.IncrementalPCA.transform" title="sklearn.decomposition.IncrementalPCA.transform"><code>transform</code></a>(X)</td> <td>Apply dimensionality reduction to X.</td> </tr>  </table> <dl class="method"> <dt id="sklearn.decomposition.IncrementalPCA.__init__">
+<code>__init__(n_components=None, whiten=False, copy=True, batch_size=None)</code> <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/f3320a6f/sklearn/decomposition/incremental_pca.py#L144" target="_blank"><span class="viewcode-link">[source]</span></a>
+</dt> 
+</dl> <dl class="method"> <dt id="sklearn.decomposition.IncrementalPCA.fit">
+<code>fit(X, y=None)</code> <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/f3320a6f/sklearn/decomposition/incremental_pca.py#L151" target="_blank"><span class="viewcode-link">[source]</span></a>
+</dt> <dd>
+<p>Fit the model with X, using minibatches of size batch_size.</p> <table class="docutils field-list" frame="void" rules="none"> <col class="field-name"> <col class="field-body">  <tr>
+<th class="field-name">Parameters:</th>
+<td class="field-body">
+<p class="first"><strong>X</strong> : array-like, shape (n_samples, n_features)</p>  <p>Training data, where n_samples is the number of samples and n_features is the number of features.</p>  <p><strong>y</strong> : Ignored.</p> </td> </tr> <tr>
+<th class="field-name">Returns:</th>
+<td class="field-body">
+<p class="first"><strong>self</strong> : object</p>  <p>Returns the instance itself.</p>  </td> </tr>  </table> </dd>
+</dl> <dl class="method"> <dt id="sklearn.decomposition.IncrementalPCA.fit_transform">
+<code>fit_transform(X, y=None, **fit_params)</code> <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/f3320a6f/sklearn/base.py#L493" target="_blank"><span class="viewcode-link">[source]</span></a>
+</dt> <dd>
+<p>Fit to data, then transform it.</p> <p>Fits transformer to X and y with optional parameters fit_params and returns a transformed version of X.</p> <table class="docutils field-list" frame="void" rules="none"> <col class="field-name"> <col class="field-body">  <tr>
+<th class="field-name">Parameters:</th>
+<td class="field-body">
+<p class="first"><strong>X</strong> : numpy array of shape [n_samples, n_features]</p>  <p>Training set.</p>  <p><strong>y</strong> : numpy array of shape [n_samples]</p>  <p>Target values.</p>  </td> </tr> <tr>
+<th class="field-name">Returns:</th>
+<td class="field-body">
+<p class="first"><strong>X_new</strong> : numpy array of shape [n_samples, n_features_new]</p>  <p>Transformed array.</p>  </td> </tr>  </table> </dd>
+</dl> <dl class="method"> <dt id="sklearn.decomposition.IncrementalPCA.get_covariance">
+<code>get_covariance()</code> <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/f3320a6f/sklearn/decomposition/base.py#L27" target="_blank"><span class="viewcode-link">[source]</span></a>
+</dt> <dd>
+<p>Compute data covariance with the generative model.</p> <p><code>cov = components_.T * S**2 * components_ + sigma2 * eye(n_features)</code> where S**2 contains the explained variances, and sigma2 contains the noise variances.</p> <table class="docutils field-list" frame="void" rules="none"> <col class="field-name"> <col class="field-body">  <tr>
+<th class="field-name">Returns:</th>
+<td class="field-body">
+<p class="first"><strong>cov</strong> : array, shape=(n_features, n_features)</p>  <p>Estimated covariance of data.</p>  </td> </tr>  </table> </dd>
+</dl> <dl class="method"> <dt id="sklearn.decomposition.IncrementalPCA.get_params">
+<code>get_params(deep=True)</code> <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/f3320a6f/sklearn/base.py#L213" target="_blank"><span class="viewcode-link">[source]</span></a>
+</dt> <dd>
+<p>Get parameters for this estimator.</p> <table class="docutils field-list" frame="void" rules="none"> <col class="field-name"> <col class="field-body">  <tr>
+<th class="field-name">Parameters:</th>
+<td class="field-body">
+<p class="first"><strong>deep</strong> : boolean, optional</p>  <p>If True, will return the parameters for this estimator and contained subobjects that are estimators.</p>  </td> </tr> <tr>
+<th class="field-name">Returns:</th>
+<td class="field-body">
+<p class="first"><strong>params</strong> : mapping of string to any</p>  <p>Parameter names mapped to their values.</p>  </td> </tr>  </table> </dd>
+</dl> <dl class="method"> <dt id="sklearn.decomposition.IncrementalPCA.get_precision">
+<code>get_precision()</code> <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/f3320a6f/sklearn/decomposition/base.py#L48" target="_blank"><span class="viewcode-link">[source]</span></a>
+</dt> <dd>
+<p>Compute data precision matrix with the generative model.</p> <p>Equals the inverse of the covariance but computed with the matrix inversion lemma for efficiency.</p> <table class="docutils field-list" frame="void" rules="none"> <col class="field-name"> <col class="field-body">  <tr>
+<th class="field-name">Returns:</th>
+<td class="field-body">
+<p class="first"><strong>precision</strong> : array, shape=(n_features, n_features)</p>  <p>Estimated precision of data.</p>  </td> </tr>  </table> </dd>
+</dl> <dl class="method"> <dt id="sklearn.decomposition.IncrementalPCA.inverse_transform">
+<code>inverse_transform(X)</code> <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/f3320a6f/sklearn/decomposition/base.py#L136" target="_blank"><span class="viewcode-link">[source]</span></a>
+</dt> <dd>
+<p>Transform data back to its original space.</p> <p>In other words, return an input X_original whose transform would be X.</p> <table class="docutils field-list" frame="void" rules="none"> <col class="field-name"> <col class="field-body">  <tr>
+<th class="field-name">Parameters:</th>
+<td class="field-body">
+<p class="first"><strong>X</strong> : array-like, shape (n_samples, n_components)</p>  <p>New data, where n_samples is the number of samples and n_components is the number of components.</p>  </td> </tr> <tr>
+<th class="field-name">Returns:</th>
+<td class="field-body">
+<p class="first last"><strong>X_original array-like, shape (n_samples, n_features)</strong> :</p> </td> </tr>  </table> <h4 class="rubric">Notes</h4> <p>If whitening is enabled, inverse_transform will compute the exact inverse operation, which includes reversing whitening.</p> </dd>
+</dl> <dl class="method"> <dt id="sklearn.decomposition.IncrementalPCA.partial_fit">
+<code>partial_fit(X, y=None, check_input=True)</code> <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/f3320a6f/sklearn/decomposition/incremental_pca.py#L190" target="_blank"><span class="viewcode-link">[source]</span></a>
+</dt> <dd>
+<p>Incremental fit with X. All of X is processed as a single batch.</p> <table class="docutils field-list" frame="void" rules="none"> <col class="field-name"> <col class="field-body">  <tr>
+<th class="field-name">Parameters:</th>
+<td class="field-body">
+<p class="first"><strong>X</strong> : array-like, shape (n_samples, n_features)</p>  <p>Training data, where n_samples is the number of samples and n_features is the number of features.</p>  <p><strong>check_input</strong> : bool</p>  <p>Run check_array on X.</p>  <p><strong>y</strong> : Ignored.</p> </td> </tr> <tr>
+<th class="field-name">Returns:</th>
+<td class="field-body">
+<p class="first"><strong>self</strong> : object</p>  <p>Returns the instance itself.</p>  </td> </tr>  </table> </dd>
+</dl> <dl class="method"> <dt id="sklearn.decomposition.IncrementalPCA.set_params">
+<code>set_params(**params)</code> <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/f3320a6f/sklearn/base.py#L250" target="_blank"><span class="viewcode-link">[source]</span></a>
+</dt> <dd>
+<p>Set the parameters of this estimator.</p> <p>The method works on simple estimators as well as on nested objects (such as pipelines). The latter have parameters of the form <code>&lt;component&gt;__&lt;parameter&gt;</code> so that it’s possible to update each component of a nested object.</p> <table class="docutils field-list" frame="void" rules="none"> <col class="field-name"> <col class="field-body">  <tr>
+<th class="field-name">Returns:</th>
+<td class="field-body">
+<strong>self</strong> :</td> </tr>  </table> </dd>
+</dl> <dl class="method"> <dt id="sklearn.decomposition.IncrementalPCA.transform">
+<code>transform(X)</code> <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/f3320a6f/sklearn/decomposition/base.py#L99" target="_blank"><span class="viewcode-link">[source]</span></a>
+</dt> <dd>
+<p>Apply dimensionality reduction to X.</p> <p>X is projected on the first principal components previously extracted from a training set.</p> <table class="docutils field-list" frame="void" rules="none"> <col class="field-name"> <col class="field-body">  <tr>
+<th class="field-name">Parameters:</th>
+<td class="field-body">
+<p class="first"><strong>X</strong> : array-like, shape (n_samples, n_features)</p>  <p>New data, where n_samples is the number of samples and n_features is the number of features.</p>  </td> </tr> <tr>
+<th class="field-name">Returns:</th>
+<td class="field-body">
+<p class="first last"><strong>X_new</strong> : array-like, shape (n_samples, n_components)</p> </td> </tr>  </table> <h4 class="rubric">Examples</h4> <pre data-language="python">&gt;&gt;&gt; import numpy as np
+&gt;&gt;&gt; from sklearn.decomposition import IncrementalPCA
+&gt;&gt;&gt; X = np.array([[-1, -1], [-2, -1], [-3, -2], [1, 1], [2, 1], [3, 2]])
+&gt;&gt;&gt; ipca = IncrementalPCA(n_components=2, batch_size=3)
+&gt;&gt;&gt; ipca.fit(X)
+IncrementalPCA(batch_size=3, copy=True, n_components=2, whiten=False)
+&gt;&gt;&gt; ipca.transform(X) 
+</pre> </dd>
+</dl> </dd>
+</dl>  <h2 id="examples-using-sklearn-decomposition-incrementalpca">Examples using <code>sklearn.decomposition.IncrementalPCA</code>
+</h2> <div class="sphx-glr-thumbcontainer" tooltip="Incremental principal component analysis (IPCA) is typically used as a replacement for principa...">
+<div class="figure" id="id1"> <img alt="../../_images/sphx_glr_plot_incremental_pca_thumb.png" src="data:image/png;base64,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"> <p class="caption"><span class="caption-text"><a class="reference internal" href="../../../auto_examples/decomposition/plot_incremental_pca/#sphx-glr-auto-examples-decomposition-plot-incremental-pca-py"><span class="std std-ref">Incremental PCA</span></a></span></p> </div> </div>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2007–2017 The scikit-learn developers<br>Licensed under the 3-clause BSD License.<br>
+    <a href="http://scikit-learn.org/stable/modules/generated/sklearn.decomposition.IncrementalPCA.html" class="_attribution-link" target="_blank">http://scikit-learn.org/stable/modules/generated/sklearn.decomposition.IncrementalPCA.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

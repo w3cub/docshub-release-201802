@@ -1,0 +1,183 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>preprocessing.OneHotEncoder() - Scikit-learn - W3cubDocs</title>
+  
+  <meta name="description" content=" Encode categorical integer features using a one-hot aka one-of-K scheme. ">
+  <meta name="keywords" content="sklearn, preprocessing, onehotencoder, -, scikit-learn, scikit_learn">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/scikit_learn/modules/generated/sklearn.preprocessing.onehotencoder/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/scikit_learn.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/scikit_learn/" class="_nav-link" title="" style="margin-left:0;">scikit-learn</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _sphinx">
+				
+<h1 id="sklearn-preprocessing-onehotencoder">sklearn.preprocessing.OneHotEncoder</h1> <dl class="class"> <dt id="sklearn.preprocessing.OneHotEncoder">
+<code>class sklearn.preprocessing.OneHotEncoder(n_values=’auto’, categorical_features=’all’, dtype=&lt;class ‘numpy.float64’&gt;, sparse=True, handle_unknown=’error’)</code> <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/f3320a6f/sklearn/preprocessing/data.py#L1840" target="_blank"><span class="viewcode-link">[source]</span></a>
+</dt> <dd>
+<p>Encode categorical integer features using a one-hot aka one-of-K scheme.</p> <p>The input to this transformer should be a matrix of integers, denoting the values taken on by categorical (discrete) features. The output will be a sparse matrix where each column corresponds to one possible value of one feature. It is assumed that input features take on values in the range [0, n_values).</p> <p>This encoding is needed for feeding categorical data to many scikit-learn estimators, notably linear models and SVMs with the standard kernels.</p> <p>Note: a one-hot encoding of y labels should use a LabelBinarizer instead.</p> <p>Read more in the <a class="reference internal" href="../../preprocessing/#preprocessing-categorical-features"><span class="std std-ref">User Guide</span></a>.</p> <table class="docutils field-list" frame="void" rules="none"> <col class="field-name"> <col class="field-body">  <tr>
+<th class="field-name">Parameters:</th>
+<td class="field-body">
+<p class="first"><strong>n_values</strong> : ‘auto’, int or array of ints</p>  <p>Number of values per feature.</p> <ul> <li>‘auto’ : determine value range from training data. </li> <li>
+<dl class="first docutils"> <dt>
+<code>int : number of categorical values per feature.</code> </dt> <dd>
+<p class="first last">Each feature value should be in <code>range(n_values)</code></p> </dd> </dl> </li> <li>
+<dl class="first docutils"> <dt>
+<code>array : n_values[i] is the number of categorical values in</code> </dt> <dd>
+<p class="first last"><code>X[:, i]</code>. Each feature value should be in <code>range(n_values[i])</code></p> </dd> </dl> </li> </ul>  <p><strong>categorical_features</strong> : “all” or array of indices or mask</p>  <p>Specify what features are treated as categorical.</p> <ul class="simple"> <li>‘all’ (default): All features are treated as categorical.</li> <li>array of indices: Array of categorical feature indices.</li> <li>mask: Array of length n_features and with dtype=bool.</li> </ul> <p>Non-categorical features are always stacked to the right of the matrix.</p>  <p><strong>dtype</strong> : number type, default=np.float</p>  <p>Desired dtype of output.</p>  <p><strong>sparse</strong> : boolean, default=True</p>  <p>Will return sparse matrix if set True else will return an array.</p>  <p><strong>handle_unknown</strong> : str, ‘error’ or ‘ignore’</p>  <p>Whether to raise an error or ignore if a unknown categorical feature is present during transform.</p>  </td> </tr> <tr>
+<th class="field-name">Attributes:</th>
+<td class="field-body">
+<p class="first"><strong>active_features_</strong> : array</p>  <p>Indices for active features, meaning values that actually occur in the training set. Only available when n_values is <code>'auto'</code>.</p>  <p><strong>feature_indices_</strong> : array of shape (n_features,)</p>  <p>Indices to feature ranges. Feature <code>i</code> in the original data is mapped to features from <code>feature_indices_[i]</code> to <code>feature_indices_[i+1]</code> (and then potentially masked by <code>active_features_</code> afterwards)</p>  <p><strong>n_values_</strong> : array of shape (n_features,)</p>  <p>Maximum number of values per feature.</p>  </td> </tr>  </table> <div class="admonition seealso"> <p class="first admonition-title">See also</p> <dl class="last docutils"> <dt>
+ <a class="reference internal" href="../sklearn.feature_extraction.dictvectorizer/#sklearn.feature_extraction.DictVectorizer" title="sklearn.feature_extraction.DictVectorizer"><code>sklearn.feature_extraction.DictVectorizer</code></a>
+</dt> <dd>performs a one-hot encoding of dictionary items (also handles string-valued features).</dd> <dt>
+ <a class="reference internal" href="../sklearn.feature_extraction.featurehasher/#sklearn.feature_extraction.FeatureHasher" title="sklearn.feature_extraction.FeatureHasher"><code>sklearn.feature_extraction.FeatureHasher</code></a>
+</dt> <dd>performs an approximate one-hot encoding of dictionary items or strings.</dd> <dt>
+ <a class="reference internal" href="../sklearn.preprocessing.labelbinarizer/#sklearn.preprocessing.LabelBinarizer" title="sklearn.preprocessing.LabelBinarizer"><code>sklearn.preprocessing.LabelBinarizer</code></a>
+</dt> <dd>binarizes labels in a one-vs-all fashion.</dd> <dt>
+ <a class="reference internal" href="../sklearn.preprocessing.multilabelbinarizer/#sklearn.preprocessing.MultiLabelBinarizer" title="sklearn.preprocessing.MultiLabelBinarizer"><code>sklearn.preprocessing.MultiLabelBinarizer</code></a>
+</dt> <dd>transforms between iterable of iterables and a multilabel format, e.g. a (samples x classes) binary matrix indicating the presence of a class label.</dd> <dt>
+ <a class="reference internal" href="../sklearn.preprocessing.labelencoder/#sklearn.preprocessing.LabelEncoder" title="sklearn.preprocessing.LabelEncoder"><code>sklearn.preprocessing.LabelEncoder</code></a>
+</dt> <dd>encodes labels with values between 0 and n_classes-1.</dd> </dl> </div> <h4 class="rubric">Examples</h4> <p>Given a dataset with three features and four samples, we let the encoder find the maximum value per feature and transform the data to a binary one-hot encoding.</p> <pre data-language="python">&gt;&gt;&gt; from sklearn.preprocessing import OneHotEncoder
+&gt;&gt;&gt; enc = OneHotEncoder()
+&gt;&gt;&gt; enc.fit([[0, 0, 3], [1, 1, 0], [0, 2, 1], [1, 0, 2]])  
+OneHotEncoder(categorical_features='all', dtype=&lt;... 'numpy.float64'&gt;,
+       handle_unknown='error', n_values='auto', sparse=True)
+&gt;&gt;&gt; enc.n_values_
+array([2, 3, 4])
+&gt;&gt;&gt; enc.feature_indices_
+array([0, 2, 5, 9])
+&gt;&gt;&gt; enc.transform([[0, 1, 1]]).toarray()
+array([[ 1.,  0.,  0.,  1.,  0.,  0.,  1.,  0.,  0.]])
+</pre> <h4 class="rubric">Methods</h4> <table class="longtable docutils">   <tr>
+<td>
+<a class="reference internal" href="#sklearn.preprocessing.OneHotEncoder.fit" title="sklearn.preprocessing.OneHotEncoder.fit"><code>fit</code></a>(X[, y])</td> <td>Fit OneHotEncoder to X.</td> </tr> <tr>
+<td>
+<a class="reference internal" href="#sklearn.preprocessing.OneHotEncoder.fit_transform" title="sklearn.preprocessing.OneHotEncoder.fit_transform"><code>fit_transform</code></a>(X[, y])</td> <td>Fit OneHotEncoder to X, then transform X.</td> </tr> <tr>
+<td>
+<a class="reference internal" href="#sklearn.preprocessing.OneHotEncoder.get_params" title="sklearn.preprocessing.OneHotEncoder.get_params"><code>get_params</code></a>([deep])</td> <td>Get parameters for this estimator.</td> </tr> <tr>
+<td>
+<a class="reference internal" href="#sklearn.preprocessing.OneHotEncoder.set_params" title="sklearn.preprocessing.OneHotEncoder.set_params"><code>set_params</code></a>(**params)</td> <td>Set the parameters of this estimator.</td> </tr> <tr>
+<td>
+<a class="reference internal" href="#sklearn.preprocessing.OneHotEncoder.transform" title="sklearn.preprocessing.OneHotEncoder.transform"><code>transform</code></a>(X)</td> <td>Transform X using one-hot encoding.</td> </tr>  </table> <dl class="method"> <dt id="sklearn.preprocessing.OneHotEncoder.__init__">
+<code>__init__(n_values=’auto’, categorical_features=’all’, dtype=&lt;class ‘numpy.float64’&gt;, sparse=True, handle_unknown=’error’)</code> <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/f3320a6f/sklearn/preprocessing/data.py#L1936" target="_blank"><span class="viewcode-link">[source]</span></a>
+</dt> 
+</dl> <dl class="method"> <dt id="sklearn.preprocessing.OneHotEncoder.fit">
+<code>fit(X, y=None)</code> <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/f3320a6f/sklearn/preprocessing/data.py#L1944" target="_blank"><span class="viewcode-link">[source]</span></a>
+</dt> <dd>
+<p>Fit OneHotEncoder to X.</p> <table class="docutils field-list" frame="void" rules="none"> <col class="field-name"> <col class="field-body">  <tr>
+<th class="field-name">Parameters:</th>
+<td class="field-body">
+<p class="first"><strong>X</strong> : array-like, shape [n_samples, n_feature]</p>  <p>Input array of type int.</p>  </td> </tr> <tr>
+<th class="field-name">Returns:</th>
+<td class="field-body">
+<p class="first last"><strong>self</strong> :</p> </td> </tr>  </table> </dd>
+</dl> <dl class="method"> <dt id="sklearn.preprocessing.OneHotEncoder.fit_transform">
+<code>fit_transform(X, y=None)</code> <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/f3320a6f/sklearn/preprocessing/data.py#L2007" target="_blank"><span class="viewcode-link">[source]</span></a>
+</dt> <dd>
+<p>Fit OneHotEncoder to X, then transform X.</p> <p>Equivalent to self.fit(X).transform(X), but more convenient and more efficient. See fit for the parameters, transform for the return value.</p> <table class="docutils field-list" frame="void" rules="none"> <col class="field-name"> <col class="field-body">  <tr>
+<th class="field-name">Parameters:</th>
+<td class="field-body">
+<p class="first"><strong>X</strong> : array-like, shape [n_samples, n_feature]</p>  <p>Input array of type int.</p>  </td> </tr>  </table> </dd>
+</dl> <dl class="method"> <dt id="sklearn.preprocessing.OneHotEncoder.get_params">
+<code>get_params(deep=True)</code> <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/f3320a6f/sklearn/base.py#L213" target="_blank"><span class="viewcode-link">[source]</span></a>
+</dt> <dd>
+<p>Get parameters for this estimator.</p> <table class="docutils field-list" frame="void" rules="none"> <col class="field-name"> <col class="field-body">  <tr>
+<th class="field-name">Parameters:</th>
+<td class="field-body">
+<p class="first"><strong>deep</strong> : boolean, optional</p>  <p>If True, will return the parameters for this estimator and contained subobjects that are estimators.</p>  </td> </tr> <tr>
+<th class="field-name">Returns:</th>
+<td class="field-body">
+<p class="first"><strong>params</strong> : mapping of string to any</p>  <p>Parameter names mapped to their values.</p>  </td> </tr>  </table> </dd>
+</dl> <dl class="method"> <dt id="sklearn.preprocessing.OneHotEncoder.set_params">
+<code>set_params(**params)</code> <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/f3320a6f/sklearn/base.py#L250" target="_blank"><span class="viewcode-link">[source]</span></a>
+</dt> <dd>
+<p>Set the parameters of this estimator.</p> <p>The method works on simple estimators as well as on nested objects (such as pipelines). The latter have parameters of the form <code>&lt;component&gt;__&lt;parameter&gt;</code> so that it’s possible to update each component of a nested object.</p> <table class="docutils field-list" frame="void" rules="none"> <col class="field-name"> <col class="field-body">  <tr>
+<th class="field-name">Returns:</th>
+<td class="field-body">
+<strong>self</strong> :</td> </tr>  </table> </dd>
+</dl> <dl class="method"> <dt id="sklearn.preprocessing.OneHotEncoder.transform">
+<code>transform(X)</code> <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/f3320a6f/sklearn/preprocessing/data.py#L2061" target="_blank"><span class="viewcode-link">[source]</span></a>
+</dt> <dd>
+<p>Transform X using one-hot encoding.</p> <table class="docutils field-list" frame="void" rules="none"> <col class="field-name"> <col class="field-body">  <tr>
+<th class="field-name">Parameters:</th>
+<td class="field-body">
+<p class="first"><strong>X</strong> : array-like, shape [n_samples, n_features]</p>  <p>Input array of type int.</p>  </td> </tr> <tr>
+<th class="field-name">Returns:</th>
+<td class="field-body">
+<p class="first"><strong>X_out</strong> : sparse matrix if sparse=True else a 2-d array, dtype=int</p>  <p>Transformed input.</p>  </td> </tr>  </table> </dd>
+</dl> </dd>
+</dl>  <h2 id="examples-using-sklearn-preprocessing-onehotencoder">Examples using <code>sklearn.preprocessing.OneHotEncoder</code>
+</h2> <div class="sphx-glr-thumbcontainer" tooltip="Transform your features into a higher dimensional, sparse space. Then train a linear model on t...">
+<div class="figure" id="id1"> <img alt="../../_images/sphx_glr_plot_feature_transformation_thumb.png" src="data:image/png;base64,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"> <p class="caption"><span class="caption-text"><a class="reference internal" href="../../../auto_examples/ensemble/plot_feature_transformation/#sphx-glr-auto-examples-ensemble-plot-feature-transformation-py"><span class="std std-ref">Feature transformations with ensembles of trees</span></a></span></p> </div> </div>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2007–2017 The scikit-learn developers<br>Licensed under the 3-clause BSD License.<br>
+    <a href="http://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.OneHotEncoder.html" class="_attribution-link" target="_blank">http://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.OneHotEncoder.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

@@ -1,0 +1,112 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Example&#58; Recursive Feature Elimination - Scikit-learn - W3cubDocs</title>
+  
+  <meta name="description" content=" A recursive feature elimination example showing the relevance of pixels in a digit classification task. ">
+  <meta name="keywords" content="recursive, feature, elimination, example, -, scikit-learn, scikit_learn">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/scikit_learn/auto_examples/feature_selection/plot_rfe_digits/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/scikit_learn.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/scikit_learn/" class="_nav-link" title="" style="margin-left:0;">scikit-learn</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _sphinx">
+				
+<h1 id="sphx-glr-auto-examples-feature-selection-plot-rfe-digits-py">Recursive feature elimination</h1> <p id="recursive-feature-elimination">A recursive feature elimination example showing the relevance of pixels in a digit classification task.</p> <div class="admonition note"> <p class="first admonition-title">Note</p> <p class="last">See also <a class="reference internal" href="../plot_rfe_with_cross_validation/#sphx-glr-auto-examples-feature-selection-plot-rfe-with-cross-validation-py"><span class="std std-ref">Recursive feature elimination with cross-validation</span></a></p> </div> <img alt="../../_images/sphx_glr_plot_rfe_digits_001.png" class="align-center" src="data:image/png;base64,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"> <pre data-language="python">print(__doc__)
+
+from sklearn.svm import SVC
+from sklearn.datasets import load_digits
+from sklearn.feature_selection import RFE
+import matplotlib.pyplot as plt
+
+# Load the digits dataset
+digits = load_digits()
+X = digits.images.reshape((len(digits.images), -1))
+y = digits.target
+
+# Create the RFE object and rank each pixel
+svc = SVC(kernel="linear", C=1)
+rfe = RFE(estimator=svc, n_features_to_select=1, step=1)
+rfe.fit(X, y)
+ranking = rfe.ranking_.reshape(digits.images[0].shape)
+
+# Plot pixel ranking
+plt.matshow(ranking, cmap=plt.cm.Blues)
+plt.colorbar()
+plt.title("Ranking of pixels with RFE")
+plt.show()
+</pre> <p><strong>Total running time of the script:</strong> ( 0 minutes 5.033 seconds)</p> <div class="sphx-glr-footer docutils container"> <div class="sphx-glr-download docutils container"> <a class="reference download internal" href="http://scikit-learn.org/stable/_downloads/plot_rfe_digits.py" download="" target="_blank"><code>Download Python source code: plot_rfe_digits.py</code></a>
+</div> <div class="sphx-glr-download docutils container"> <a class="reference download internal" href="http://scikit-learn.org/stable/_downloads/plot_rfe_digits.ipynb" download="" target="_blank"><code>Download Jupyter notebook: plot_rfe_digits.ipynb</code></a>
+</div> </div> <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.readthedocs.io" target="_blank">Generated by Sphinx-Gallery</a></p>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2007–2017 The scikit-learn developers<br>Licensed under the 3-clause BSD License.<br>
+    <a href="http://scikit-learn.org/stable/auto_examples/feature_selection/plot_rfe_digits.html" class="_attribution-link" target="_blank">http://scikit-learn.org/stable/auto_examples/feature_selection/plot_rfe_digits.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

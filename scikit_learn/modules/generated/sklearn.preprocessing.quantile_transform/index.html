@@ -1,0 +1,109 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>sklearn.preprocessing.quantile_transform() - Scikit-learn - W3cubDocs</title>
+  
+  <meta name="description" content=" Transform features using quantiles information. ">
+  <meta name="keywords" content="sklearn, preprocessing, quantile, transform, -, scikit-learn, scikit_learn">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/scikit_learn/modules/generated/sklearn.preprocessing.quantile_transform/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/scikit_learn.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/scikit_learn/" class="_nav-link" title="" style="margin-left:0;">scikit-learn</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _sphinx">
+				
+<h1 id="sklearn-preprocessing-quantile-transform">sklearn.preprocessing.quantile_transform</h1> <dl class="function"> <dt id="sklearn.preprocessing.quantile_transform">
+<code>sklearn.preprocessing.quantile_transform(X, axis=0, n_quantiles=1000, output_distribution=’uniform’, ignore_implicit_zeros=False, subsample=100000, random_state=None, copy=False)</code> <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/f3320a6f/sklearn/preprocessing/data.py#L2450" target="_blank"><span class="viewcode-link">[source]</span></a>
+</dt> <dd>
+<p>Transform features using quantiles information.</p> <p>This method transforms the features to follow a uniform or a normal distribution. Therefore, for a given feature, this transformation tends to spread out the most frequent values. It also reduces the impact of (marginal) outliers: this is therefore a robust preprocessing scheme.</p> <p>The transformation is applied on each feature independently. The cumulative density function of a feature is used to project the original values. Features values of new/unseen data that fall below or above the fitted range will be mapped to the bounds of the output distribution. Note that this transform is non-linear. It may distort linear correlations between variables measured at the same scale but renders variables measured at different scales more directly comparable.</p> <p>Read more in the <a class="reference internal" href="../../preprocessing/#preprocessing-transformer"><span class="std std-ref">User Guide</span></a>.</p> <table class="docutils field-list" frame="void" rules="none"> <col class="field-name"> <col class="field-body">  <tr>
+<th class="field-name">Parameters:</th>
+<td class="field-body">
+<p class="first"><strong>X</strong> : array-like, sparse matrix</p>  <p>The data to transform.</p>  <p><strong>axis</strong> : int, (default=0)</p>  <p>Axis used to compute the means and standard deviations along. If 0, transform each feature, otherwise (if 1) transform each sample.</p>  <p><strong>n_quantiles</strong> : int, optional (default=1000)</p>  <p>Number of quantiles to be computed. It corresponds to the number of landmarks used to discretize the cumulative density function.</p>  <p><strong>output_distribution</strong> : str, optional (default=’uniform’)</p>  <p>Marginal distribution for the transformed data. The choices are ‘uniform’ (default) or ‘normal’.</p>  <p><strong>ignore_implicit_zeros</strong> : bool, optional (default=False)</p>  <p>Only applies to sparse matrices. If True, the sparse entries of the matrix are discarded to compute the quantile statistics. If False, these entries are treated as zeros.</p>  <p><strong>subsample</strong> : int, optional (default=1e5)</p>  <p>Maximum number of samples used to estimate the quantiles for computational efficiency. Note that the subsampling procedure may differ for value-identical sparse and dense matrices.</p>  <p><strong>random_state</strong> : int, RandomState instance or None, optional (default=None)</p>  <p>If int, random_state is the seed used by the random number generator; If RandomState instance, random_state is the random number generator; If None, the random number generator is the RandomState instance used by np.random. Note that this is used by subsampling and smoothing noise.</p>  <p><strong>copy</strong> : boolean, optional, (default=True)</p>  <p>Set to False to perform inplace transformation and avoid a copy (if the input is already a numpy array).</p>  </td> </tr> <tr>
+<th class="field-name">Attributes:</th>
+<td class="field-body">
+<p class="first"><strong>quantiles_</strong> : ndarray, shape (n_quantiles, n_features)</p>  <p>The values corresponding the quantiles of reference.</p>  <p><strong>references_</strong> : ndarray, shape(n_quantiles, )</p>  <p>Quantiles of references.</p>  </td> </tr>  </table> <div class="admonition seealso"> <p class="first admonition-title">See also</p> <dl class="last docutils"> <dt>
+ <a class="reference internal" href="../sklearn.preprocessing.quantiletransformer/#sklearn.preprocessing.QuantileTransformer" title="sklearn.preprocessing.QuantileTransformer"><code>QuantileTransformer</code></a>
+</dt> <dd>Performs quantile-based scaling using the <code>Transformer</code> API (e.g. as part of a preprocessing <a class="reference internal" href="../sklearn.pipeline.pipeline/#sklearn.pipeline.Pipeline" title="sklearn.pipeline.Pipeline"><code>sklearn.pipeline.Pipeline</code></a>).</dd> <dt>
+ <a class="reference internal" href="../sklearn.preprocessing.scale/#sklearn.preprocessing.scale" title="sklearn.preprocessing.scale"><code>scale</code></a>
+</dt> <dd>perform standardization that is faster, but less robust to outliers.</dd> <dt>
+ <a class="reference internal" href="../sklearn.preprocessing.robust_scale/#sklearn.preprocessing.robust_scale" title="sklearn.preprocessing.robust_scale"><code>robust_scale</code></a>
+</dt> <dd>perform robust standardization that removes the influence of outliers but does not put outliers and inliers on the same scale.</dd> </dl> </div> <h4 class="rubric">Notes</h4> <p>For a comparison of the different scalers, transformers, and normalizers, see <a class="reference internal" href="../../../auto_examples/preprocessing/plot_all_scaling/#sphx-glr-auto-examples-preprocessing-plot-all-scaling-py"><span class="std std-ref">examples/preprocessing/plot_all_scaling.py</span></a>.</p> <h4 class="rubric">Examples</h4> <pre data-language="python">&gt;&gt;&gt; import numpy as np
+&gt;&gt;&gt; from sklearn.preprocessing import quantile_transform
+&gt;&gt;&gt; rng = np.random.RandomState(0)
+&gt;&gt;&gt; X = np.sort(rng.normal(loc=0.5, scale=0.25, size=(25, 1)), axis=0)
+&gt;&gt;&gt; quantile_transform(X, n_quantiles=10, random_state=0)
+... 
+array([...])
+</pre> </dd>
+</dl> <div class="_attribution">
+  <p class="_attribution-p">
+    © 2007–2017 The scikit-learn developers<br>Licensed under the 3-clause BSD License.<br>
+    <a href="http://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.quantile_transform.html" class="_attribution-link" target="_blank">http://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.quantile_transform.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

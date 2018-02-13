@@ -1,0 +1,196 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>linear_model.SGDRegressor() - Scikit-learn - W3cubDocs</title>
+  
+  <meta name="description" content=" Linear model fitted by minimizing a regularized empirical loss with SGD ">
+  <meta name="keywords" content="sklearn, linear, model, sgdregressor, -, scikit-learn, scikit_learn">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/scikit_learn/modules/generated/sklearn.linear_model.sgdregressor/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/scikit_learn.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/scikit_learn/" class="_nav-link" title="" style="margin-left:0;">scikit-learn</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _sphinx">
+				
+<h1 id="sklearn-linear-model-sgdregressor">sklearn.linear_model.SGDRegressor</h1> <dl class="class"> <dt id="sklearn.linear_model.SGDRegressor">
+<code>class sklearn.linear_model.SGDRegressor(loss=’squared_loss’, penalty=’l2’, alpha=0.0001, l1_ratio=0.15, fit_intercept=True, max_iter=None, tol=None, shuffle=True, verbose=0, epsilon=0.1, random_state=None, learning_rate=’invscaling’, eta0=0.01, power_t=0.25, warm_start=False, average=False, n_iter=None)</code> <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/f3320a6f/sklearn/linear_model/stochastic_gradient.py#L1165" target="_blank"><span class="viewcode-link">[source]</span></a>
+</dt> <dd>
+<p>Linear model fitted by minimizing a regularized empirical loss with SGD</p> <p>SGD stands for Stochastic Gradient Descent: the gradient of the loss is estimated each sample at a time and the model is updated along the way with a decreasing strength schedule (aka learning rate).</p> <p>The regularizer is a penalty added to the loss function that shrinks model parameters towards the zero vector using either the squared euclidean norm L2 or the absolute norm L1 or a combination of both (Elastic Net). If the parameter update crosses the 0.0 value because of the regularizer, the update is truncated to 0.0 to allow for learning sparse models and achieve online feature selection.</p> <p>This implementation works with data represented as dense numpy arrays of floating point values for the features.</p> <p>Read more in the <a class="reference internal" href="../../sgd/#sgd"><span class="std std-ref">User Guide</span></a>.</p> <table class="docutils field-list" frame="void" rules="none"> <col class="field-name"> <col class="field-body">  <tr>
+<th class="field-name">Parameters:</th>
+<td class="field-body">
+<p class="first"><strong>loss</strong> : str, default: ‘squared_loss’</p>  <p>The loss function to be used. The possible values are ‘squared_loss’, ‘huber’, ‘epsilon_insensitive’, or ‘squared_epsilon_insensitive’</p> <p>The ‘squared_loss’ refers to the ordinary least squares fit. ‘huber’ modifies ‘squared_loss’ to focus less on getting outliers correct by switching from squared to linear loss past a distance of epsilon. ‘epsilon_insensitive’ ignores errors less than epsilon and is linear past that; this is the loss function used in SVR. ‘squared_epsilon_insensitive’ is the same but becomes squared loss past a tolerance of epsilon.</p>  <p><strong>penalty</strong> : str, ‘none’, ‘l2’, ‘l1’, or ‘elasticnet’</p>  <p>The penalty (aka regularization term) to be used. Defaults to ‘l2’ which is the standard regularizer for linear SVM models. ‘l1’ and ‘elasticnet’ might bring sparsity to the model (feature selection) not achievable with ‘l2’.</p>  <p><strong>alpha</strong> : float</p>  <p>Constant that multiplies the regularization term. Defaults to 0.0001 Also used to compute learning_rate when set to ‘optimal’.</p>  <p><strong>l1_ratio</strong> : float</p>  <p>The Elastic Net mixing parameter, with 0 &lt;= l1_ratio &lt;= 1. l1_ratio=0 corresponds to L2 penalty, l1_ratio=1 to L1. Defaults to 0.15.</p>  <p><strong>fit_intercept</strong> : bool</p>  <p>Whether the intercept should be estimated or not. If False, the data is assumed to be already centered. Defaults to True.</p>  <p><strong>max_iter</strong> : int, optional</p>  <p>The maximum number of passes over the training data (aka epochs). It only impacts the behavior in the <code>fit</code> method, and not the <code>partial_fit</code>. Defaults to 5. Defaults to 1000 from 0.21, or if tol is not None.</p> <div class="versionadded"> <p><span class="versionmodified">New in version 0.19.</span></p> </div>  <p><strong>tol</strong> : float or None, optional</p>  <p>The stopping criterion. If it is not None, the iterations will stop when (loss &gt; previous_loss - tol). Defaults to None. Defaults to 1e-3 from 0.21.</p> <div class="versionadded"> <p><span class="versionmodified">New in version 0.19.</span></p> </div>  <p><strong>shuffle</strong> : bool, optional</p>  <p>Whether or not the training data should be shuffled after each epoch. Defaults to True.</p>  <p><strong>verbose</strong> : integer, optional</p>  <p>The verbosity level.</p>  <p><strong>epsilon</strong> : float</p>  <p>Epsilon in the epsilon-insensitive loss functions; only if <code>loss</code> is ‘huber’, ‘epsilon_insensitive’, or ‘squared_epsilon_insensitive’. For ‘huber’, determines the threshold at which it becomes less important to get the prediction exactly right. For epsilon-insensitive, any differences between the current prediction and the correct label are ignored if they are less than this threshold.</p>  <p><strong>random_state</strong> : int, RandomState instance or None, optional (default=None)</p>  <p>The seed of the pseudo random number generator to use when shuffling the data. If int, random_state is the seed used by the random number generator; If RandomState instance, random_state is the random number generator; If None, the random number generator is the RandomState instance used by <code>np.random</code>.</p>  <p><strong>learning_rate</strong> : string, optional</p>  <p>The learning rate schedule:</p> <ul class="simple"> <li>‘constant’: eta = eta0</li> <li>‘optimal’: eta = 1.0 / (alpha * (t + t0)) [default]</li> <li>‘invscaling’: eta = eta0 / pow(t, power_t)</li> </ul> <p>where t0 is chosen by a heuristic proposed by Leon Bottou.</p>  <p><strong>eta0</strong> : double, optional</p>  <p>The initial learning rate [default 0.01].</p>  <p><strong>power_t</strong> : double, optional</p>  <p>The exponent for inverse scaling learning rate [default 0.25].</p>  <p><strong>warm_start</strong> : bool, optional</p>  <p>When set to True, reuse the solution of the previous call to fit as initialization, otherwise, just erase the previous solution.</p>  <p><strong>average</strong> : bool or int, optional</p>  <p>When set to True, computes the averaged SGD weights and stores the result in the <code>coef_</code> attribute. If set to an int greater than 1, averaging will begin once the total number of samples seen reaches average. So <code>average=10</code> will begin averaging after seeing 10 samples.</p>  <p><strong>n_iter</strong> : int, optional</p>  <p>The number of passes over the training data (aka epochs). Defaults to None. Deprecated, will be removed in 0.21.</p> <div class="versionchanged"> <p><span class="versionmodified">Changed in version 0.19: </span>Deprecated</p> </div>  </td> </tr> <tr>
+<th class="field-name">Attributes:</th>
+<td class="field-body">
+<p class="first"><strong>coef_</strong> : array, shape (n_features,)</p>  <p>Weights assigned to the features.</p>  <p><strong>intercept_</strong> : array, shape (1,)</p>  <p>The intercept term.</p>  <p><strong>average_coef_</strong> : array, shape (n_features,)</p>  <p>Averaged weights assigned to the features.</p>  <p><strong>average_intercept_</strong> : array, shape (1,)</p>  <p>The averaged intercept term.</p>  <p><strong>n_iter_</strong> : int</p>  <p>The actual number of iterations to reach the stopping criterion.</p>  </td> </tr>  </table> <div class="admonition seealso"> <p class="first admonition-title">See also</p> <p class="last"><a class="reference internal" href="../sklearn.linear_model.ridge/#sklearn.linear_model.Ridge" title="sklearn.linear_model.Ridge"><code>Ridge</code></a>, <a class="reference internal" href="../sklearn.linear_model.elasticnet/#sklearn.linear_model.ElasticNet" title="sklearn.linear_model.ElasticNet"><code>ElasticNet</code></a>, <a class="reference internal" href="../sklearn.linear_model.lasso/#sklearn.linear_model.Lasso" title="sklearn.linear_model.Lasso"><code>Lasso</code></a>, <code>SVR</code></p> </div> <h4 class="rubric">Examples</h4> <pre data-language="python">&gt;&gt;&gt; import numpy as np
+&gt;&gt;&gt; from sklearn import linear_model
+&gt;&gt;&gt; n_samples, n_features = 10, 5
+&gt;&gt;&gt; np.random.seed(0)
+&gt;&gt;&gt; y = np.random.randn(n_samples)
+&gt;&gt;&gt; X = np.random.randn(n_samples, n_features)
+&gt;&gt;&gt; clf = linear_model.SGDRegressor()
+&gt;&gt;&gt; clf.fit(X, y)
+... 
+SGDRegressor(alpha=0.0001, average=False, epsilon=0.1, eta0=0.01,
+       fit_intercept=True, l1_ratio=0.15, learning_rate='invscaling',
+       loss='squared_loss', max_iter=None, n_iter=None, penalty='l2',
+       power_t=0.25, random_state=None, shuffle=True, tol=None,
+       verbose=0, warm_start=False)
+</pre> <h4 class="rubric">Methods</h4> <table class="longtable docutils">   <tr>
+<td>
+<a class="reference internal" href="#sklearn.linear_model.SGDRegressor.densify" title="sklearn.linear_model.SGDRegressor.densify"><code>densify</code></a>()</td> <td>Convert coefficient matrix to dense array format.</td> </tr> <tr>
+<td>
+<a class="reference internal" href="#sklearn.linear_model.SGDRegressor.fit" title="sklearn.linear_model.SGDRegressor.fit"><code>fit</code></a>(X, y[, coef_init, intercept_init, …])</td> <td>Fit linear model with Stochastic Gradient Descent.</td> </tr> <tr>
+<td>
+<a class="reference internal" href="#sklearn.linear_model.SGDRegressor.get_params" title="sklearn.linear_model.SGDRegressor.get_params"><code>get_params</code></a>([deep])</td> <td>Get parameters for this estimator.</td> </tr> <tr>
+<td>
+<a class="reference internal" href="#sklearn.linear_model.SGDRegressor.partial_fit" title="sklearn.linear_model.SGDRegressor.partial_fit"><code>partial_fit</code></a>(X, y[, sample_weight])</td> <td>Fit linear model with Stochastic Gradient Descent.</td> </tr> <tr>
+<td>
+<a class="reference internal" href="#sklearn.linear_model.SGDRegressor.predict" title="sklearn.linear_model.SGDRegressor.predict"><code>predict</code></a>(X)</td> <td>Predict using the linear model</td> </tr> <tr>
+<td>
+<a class="reference internal" href="#sklearn.linear_model.SGDRegressor.score" title="sklearn.linear_model.SGDRegressor.score"><code>score</code></a>(X, y[, sample_weight])</td> <td>Returns the coefficient of determination R^2 of the prediction.</td> </tr> <tr>
+<td>
+<code>set_params</code>(*args, **kwargs)</td> <td></td> </tr> <tr>
+<td>
+<a class="reference internal" href="#sklearn.linear_model.SGDRegressor.sparsify" title="sklearn.linear_model.SGDRegressor.sparsify"><code>sparsify</code></a>()</td> <td>Convert coefficient matrix to sparse format.</td> </tr>  </table> <dl class="method"> <dt id="sklearn.linear_model.SGDRegressor.__init__">
+<code>__init__(loss=’squared_loss’, penalty=’l2’, alpha=0.0001, l1_ratio=0.15, fit_intercept=True, max_iter=None, tol=None, shuffle=True, verbose=0, epsilon=0.1, random_state=None, learning_rate=’invscaling’, eta0=0.01, power_t=0.25, warm_start=False, average=False, n_iter=None)</code> <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/f3320a6f/sklearn/linear_model/stochastic_gradient.py#L1327" target="_blank"><span class="viewcode-link">[source]</span></a>
+</dt> 
+</dl> <dl class="method"> <dt id="sklearn.linear_model.SGDRegressor.densify">
+<code>densify()</code> <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/f3320a6f/sklearn/linear_model/base.py#L357" target="_blank"><span class="viewcode-link">[source]</span></a>
+</dt> <dd>
+<p>Convert coefficient matrix to dense array format.</p> <p>Converts the <code>coef_</code> member (back) to a numpy.ndarray. This is the default format of <code>coef_</code> and is required for fitting, so calling this method is only required on models that have previously been sparsified; otherwise, it is a no-op.</p> <table class="docutils field-list" frame="void" rules="none"> <col class="field-name"> <col class="field-body">  <tr>
+<th class="field-name">Returns:</th>
+<td class="field-body">
+<strong>self</strong> : estimator</td> </tr>  </table> </dd>
+</dl> <dl class="method"> <dt id="sklearn.linear_model.SGDRegressor.fit">
+<code>fit(X, y, coef_init=None, intercept_init=None, sample_weight=None)</code> <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/f3320a6f/sklearn/linear_model/stochastic_gradient.py#L1026" target="_blank"><span class="viewcode-link">[source]</span></a>
+</dt> <dd>
+<p>Fit linear model with Stochastic Gradient Descent.</p> <table class="docutils field-list" frame="void" rules="none"> <col class="field-name"> <col class="field-body">  <tr>
+<th class="field-name">Parameters:</th>
+<td class="field-body">
+<p class="first"><strong>X</strong> : {array-like, sparse matrix}, shape (n_samples, n_features)</p>  <p>Training data</p>  <p><strong>y</strong> : numpy array, shape (n_samples,)</p>  <p>Target values</p>  <p><strong>coef_init</strong> : array, shape (n_features,)</p>  <p>The initial coefficients to warm-start the optimization.</p>  <p><strong>intercept_init</strong> : array, shape (1,)</p>  <p>The initial intercept to warm-start the optimization.</p>  <p><strong>sample_weight</strong> : array-like, shape (n_samples,), optional</p>  <p>Weights applied to individual samples (1. for unweighted).</p>  </td> </tr> <tr>
+<th class="field-name">Returns:</th>
+<td class="field-body">
+<p class="first last"><strong>self</strong> : returns an instance of self.</p> </td> </tr>  </table> </dd>
+</dl> <dl class="method"> <dt id="sklearn.linear_model.SGDRegressor.get_params">
+<code>get_params(deep=True)</code> <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/f3320a6f/sklearn/base.py#L213" target="_blank"><span class="viewcode-link">[source]</span></a>
+</dt> <dd>
+<p>Get parameters for this estimator.</p> <table class="docutils field-list" frame="void" rules="none"> <col class="field-name"> <col class="field-body">  <tr>
+<th class="field-name">Parameters:</th>
+<td class="field-body">
+<p class="first"><strong>deep</strong> : boolean, optional</p>  <p>If True, will return the parameters for this estimator and contained subobjects that are estimators.</p>  </td> </tr> <tr>
+<th class="field-name">Returns:</th>
+<td class="field-body">
+<p class="first"><strong>params</strong> : mapping of string to any</p>  <p>Parameter names mapped to their values.</p>  </td> </tr>  </table> </dd>
+</dl> <dl class="method"> <dt id="sklearn.linear_model.SGDRegressor.partial_fit">
+<code>partial_fit(X, y, sample_weight=None)</code> <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/f3320a6f/sklearn/linear_model/stochastic_gradient.py#L966" target="_blank"><span class="viewcode-link">[source]</span></a>
+</dt> <dd>
+<p>Fit linear model with Stochastic Gradient Descent.</p> <table class="docutils field-list" frame="void" rules="none"> <col class="field-name"> <col class="field-body">  <tr>
+<th class="field-name">Parameters:</th>
+<td class="field-body">
+<p class="first"><strong>X</strong> : {array-like, sparse matrix}, shape (n_samples, n_features)</p>  <p>Subset of training data</p>  <p><strong>y</strong> : numpy array of shape (n_samples,)</p>  <p>Subset of target values</p>  <p><strong>sample_weight</strong> : array-like, shape (n_samples,), optional</p>  <p>Weights applied to individual samples. If not provided, uniform weights are assumed.</p>  </td> </tr> <tr>
+<th class="field-name">Returns:</th>
+<td class="field-body">
+<p class="first last"><strong>self</strong> : returns an instance of self.</p> </td> </tr>  </table> </dd>
+</dl> <dl class="method"> <dt id="sklearn.linear_model.SGDRegressor.predict">
+<code>predict(X)</code> <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/f3320a6f/sklearn/linear_model/stochastic_gradient.py#L1077" target="_blank"><span class="viewcode-link">[source]</span></a>
+</dt> <dd>
+<p>Predict using the linear model</p> <table class="docutils field-list" frame="void" rules="none"> <col class="field-name"> <col class="field-body">  <tr>
+<th class="field-name">Parameters:</th>
+<td class="field-body">
+<p class="first"><strong>X</strong> : {array-like, sparse matrix}, shape (n_samples, n_features)</p> </td> </tr> <tr>
+<th class="field-name">Returns:</th>
+<td class="field-body">
+<p class="first"><strong>array, shape (n_samples,)</strong> :</p>  <p>Predicted target values per element in X.</p>  </td> </tr>  </table> </dd>
+</dl> <dl class="method"> <dt id="sklearn.linear_model.SGDRegressor.score">
+<code>score(X, y, sample_weight=None)</code> <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/f3320a6f/sklearn/base.py#L357" target="_blank"><span class="viewcode-link">[source]</span></a>
+</dt> <dd>
+<p>Returns the coefficient of determination R^2 of the prediction.</p> <p>The coefficient R^2 is defined as (1 - u/v), where u is the residual sum of squares ((y_true - y_pred) ** 2).sum() and v is the total sum of squares ((y_true - y_true.mean()) ** 2).sum(). The best possible score is 1.0 and it can be negative (because the model can be arbitrarily worse). A constant model that always predicts the expected value of y, disregarding the input features, would get a R^2 score of 0.0.</p> <table class="docutils field-list" frame="void" rules="none"> <col class="field-name"> <col class="field-body">  <tr>
+<th class="field-name">Parameters:</th>
+<td class="field-body">
+<p class="first"><strong>X</strong> : array-like, shape = (n_samples, n_features)</p>  <p>Test samples.</p>  <p><strong>y</strong> : array-like, shape = (n_samples) or (n_samples, n_outputs)</p>  <p>True values for X.</p>  <p><strong>sample_weight</strong> : array-like, shape = [n_samples], optional</p>  <p>Sample weights.</p>  </td> </tr> <tr>
+<th class="field-name">Returns:</th>
+<td class="field-body">
+<p class="first"><strong>score</strong> : float</p>  <p>R^2 of self.predict(X) wrt. y.</p>  </td> </tr>  </table> </dd>
+</dl> <dl class="method"> <dt id="sklearn.linear_model.SGDRegressor.sparsify">
+<code>sparsify()</code> <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/f3320a6f/sklearn/linear_model/base.py#L375" target="_blank"><span class="viewcode-link">[source]</span></a>
+</dt> <dd>
+<p>Convert coefficient matrix to sparse format.</p> <p>Converts the <code>coef_</code> member to a scipy.sparse matrix, which for L1-regularized models can be much more memory- and storage-efficient than the usual numpy.ndarray representation.</p> <p>The <code>intercept_</code> member is not converted.</p> <table class="docutils field-list" frame="void" rules="none"> <col class="field-name"> <col class="field-body">  <tr>
+<th class="field-name">Returns:</th>
+<td class="field-body">
+<strong>self</strong> : estimator</td> </tr>  </table> <h4 class="rubric">Notes</h4> <p>For non-sparse models, i.e. when there are not many zeros in <code>coef_</code>, this may actually <em>increase</em> memory usage, so use this method with care. A rule of thumb is that the number of zero elements, which can be computed with <code>(coef_ == 0).sum()</code>, must be more than 50% for this to provide significant benefits.</p> <p>After calling this method, further fitting with the partial_fit method (if any) will not work until you call densify.</p> </dd>
+</dl> </dd>
+</dl>  <h2 id="examples-using-sklearn-linear-model-sgdregressor">Examples using <code>sklearn.linear_model.SGDRegressor</code>
+</h2> <div class="sphx-glr-thumbcontainer" tooltip="This is an example showing the prediction latency of various scikit-learn estimators.">
+<div class="figure" id="id1"> <img alt="../../_images/sphx_glr_plot_prediction_latency_thumb.png" src="data:image/png;base64,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"> <p class="caption"><span class="caption-text"><a class="reference internal" href="../../../auto_examples/applications/plot_prediction_latency/#sphx-glr-auto-examples-applications-plot-prediction-latency-py"><span class="std std-ref">Prediction Latency</span></a></span></p> </div> </div>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2007–2017 The scikit-learn developers<br>Licensed under the 3-clause BSD License.<br>
+    <a href="http://scikit-learn.org/stable/modules/generated/sklearn.linear_model.SGDRegressor.html" class="_attribution-link" target="_blank">http://scikit-learn.org/stable/modules/generated/sklearn.linear_model.SGDRegressor.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>
