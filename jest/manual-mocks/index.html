@@ -1,0 +1,168 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Manual Mocks - Jest - W3cubDocs</title>
+  
+  <meta name="description" content="Manual mocks are used to stub out functionality with mock data. For example, instead of accessing a remote resource like a website or a database, &hellip;">
+  <meta name="keywords" content="manual, mocks, -, jest">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/jest/manual-mocks/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/jest.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/jest/" class="_nav-link" title="" style="margin-left:0;">Jest</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _jest">
+				
+<h1>Manual Mocks</h1>
+<span><p>Manual mocks are used to stub out functionality with mock data. For example, instead of accessing a remote resource like a website or a database, you might want to create a manual mock that allows you to use fake data. This ensures your tests will be fast and not flaky.</p> <p>Manual mocks are defined by writing a module in a <code>__mocks__/</code> subdirectory immediately adjacent to the module. For example, to mock a module called <code>user</code> in the <code>models</code> directory, create a file called <code>user.js</code> and put it in the <code>models/__mocks__</code> directory. Note that the <code>__mocks__</code> folder is case-sensitive, so naming the directory <code>__MOCKS__</code> will break on some systems. If the module you are mocking is a node module (eg: <code>fs</code>), the mock should be placed in the <code>__mocks__</code> directory adjacent to <code>node_modules</code> (unless you configured <a href="../configuration/#roots-array-string"><code>roots</code></a> to point to a folder other than the project root). Eg:</p> <pre>.
+├── config
+├── __mocks__
+│   └── fs.js
+├── models
+│   ├── __mocks__
+│   │   └── user.js
+│   └── user.js
+├── node_modules
+└── views
+</pre> <p>When a manual mock exists for a given module, Jest's module system will use that module when explicitly calling <code>jest.mock('moduleName')</code>. However, manual mocks will take precedence over node modules even if <code>jest.mock('moduleName')</code> is not called. To opt out of this behavior you will need to explicitly call <code>jest.unmock('moduleName')</code> in tests that should use the actual module implementation.</p> <p>Here's a contrived example where we have a module that provides a summary of all the files in a given directory.</p> <pre>// FileSummarizer.js
+'use strict';
+
+const fs = require('fs');
+
+function summarizeFilesInDirectorySync(directory) {
+  return fs.readdirSync(directory).map(fileName =&gt; ({
+    directory,
+    fileName,
+  }));
+}
+
+exports.summarizeFilesInDirectorySync = summarizeFilesInDirectorySync;
+</pre> <p>Since we'd like our tests to avoid actually hitting the disk (that's pretty slow and fragile), we create a manual mock for the <code>fs</code> module by extending an automatic mock. Our manual mock will implement custom versions of the <code>fs</code> APIs that we can build on for our tests:</p> <pre>// __mocks__/fs.js
+'use strict';
+
+const path = require('path');
+
+const fs = jest.genMockFromModule('fs');
+
+// This is a custom function that our tests can use during setup to specify
+// what the files on the "mock" filesystem should look like when any of the
+// `fs` APIs are used.
+let mockFiles = Object.create(null);
+function __setMockFiles(newMockFiles) {
+  mockFiles = Object.create(null);
+  for (const file in newMockFiles) {
+    const dir = path.dirname(file);
+
+    if (!mockFiles[dir]) {
+      mockFiles[dir] = [];
+    }
+    mockFiles[dir].push(path.basename(file));
+  }
+}
+
+// A custom version of `readdirSync` that reads from the special mocked out
+// file list set via __setMockFiles
+function readdirSync(directoryPath) {
+  return mockFiles[directoryPath] || [];
+}
+
+fs.__setMockFiles = __setMockFiles;
+fs.readdirSync = readdirSync;
+
+module.exports = fs;
+</pre> <p>Now we write our test:</p> <pre>// __tests__/FileSummarizer-test.js
+'use strict';
+
+jest.mock('fs');
+
+describe('listFilesInDirectorySync', () =&gt; {
+  const MOCK_FILE_INFO = {
+    '/path/to/file1.js': 'console.log("file1 contents");',
+    '/path/to/file2.txt': 'file2 contents',
+  };
+
+  beforeEach(() =&gt; {
+    // Set up some mocked out file info before each test
+    require('fs').__setMockFiles(MOCK_FILE_INFO);
+  });
+
+  test('includes all files in the directory in the summary', () =&gt; {
+    const FileSummarizer = require('../FileSummarizer');
+    const fileSummary = FileSummarizer.summarizeFilesInDirectorySync(
+      '/path/to',
+    );
+
+    expect(fileSummary.length).toBe(2);
+  });
+});
+</pre> <p>The example mock shown here uses <a href="../jest-object/#jestgenmockfrommodulemodulename"><code>jest.genMockFromModule</code></a> to generate an automatic mock, and overrides its default behavior. This is the recommended approach, but is completely optional. If you do not want to use the automatic mock at all, you can simply export your own functions from the mock file. One downside to fully manual mocks is that they're manual – meaning you have to manually update them any time the module they are mocking changes. Because of this, it's best to use or extend the automatic mock when it works for your needs.</p> <p>To ensure that a manual mock and its real implementation stay in sync, it might be useful to require the real module using <code>require.requireActual(moduleName)</code> in your manual mock and amending it with mock functions before exporting it.</p> <p>The code for this example is available at <a href="https://github.com/facebook/jest/tree/master/examples/manual_mocks" target="_blank">examples/manual_mocks</a>.</p> <h3 id="using-with-es-module-imports">Using with ES module imports</h3> <p>If you're using <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import" target="_blank">ES module imports</a> then you'll normally be inclined to put your <code>import</code> statements at the top of the test file. But often you need to instruct Jest to use a mock before modules use it. For this reason, Jest will automatically hoist <code>jest.mock</code> calls to the top of the module (before any imports). To learn more about this and see it in action, see <a href="https://github.com/kentcdodds/how-jest-mocking-works" target="_blank">this repo</a>.</p> </span><div class="_attribution">
+  <p class="_attribution-p">
+    © 2014–present Facebook Inc.<br>Licensed under the BSD License.<br>
+    <a href="https://facebook.github.io/jest/docs/en/manual-mocks.html" class="_attribution-link" target="_blank">https://facebook.github.io/jest/docs/en/manual-mocks.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>
