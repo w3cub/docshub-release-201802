@@ -1,0 +1,245 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Gen_fsm - Erlang 20 - W3cubDocs</title>
+  
+  <meta name="description" content=" gen_fsm ">
+  <meta name="keywords" content="gen, fsm, -, erlang, erlang~20">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/erlang~20/lib/stdlib-3.4.2/doc/html/gen_fsm/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/erlang~20.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/erlang~20/" class="_nav-link" title="" style="margin-left:0;">Erlang 20</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _erlang">
+				
+<h1>gen_fsm</h1> <h2 id="module">Module</h2> <p class="REFBODY module-body">gen_fsm</p> <h2 id="module-summary">Module Summary</h2> <p class="REFBODY module-summary-body">Deprecated and replaced by gen_statem </p> <h2 id="description">Description</h2> 
+<p> Deprecated and replaced by <code><a href="../gen_statem/"><span class="code">gen_statem</span></a></code> </p>  <h2 id="id216116"> Migration to gen_statem </h2>  <p>Here follows a simple example of turning a gen_fsm into a <code><a href="../gen_statem/"><span class="code">gen_statem</span></a></code>. The example comes from the previous Users Guide for <code class="code">gen_fsm</code> </p> <pre data-language="erlang">
+-module(code_lock).
+-define(NAME, code_lock).
+%-define(BEFORE_REWRITE, true).
+
+-ifdef(BEFORE_REWRITE).
+-behaviour(gen_fsm).
+-else.
+-behaviour(gen_statem).
+-endif.
+
+-export([start_link/1, button/1, stop/0]).
+
+-ifdef(BEFORE_REWRITE).
+-export([init/1, locked/2, open/2, handle_sync_event/4, handle_event/3,
+	 handle_info/3, terminate/3, code_change/4]).
+-else.
+-export([init/1, callback_mode/0, locked/3, open/3, terminate/3, code_change/4]).
+%% Add callback__mode/0
+%% Change arity of the state functions
+%% Remove handle_info/3
+-endif.
+
+-ifdef(BEFORE_REWRITE).
+start_link(Code) -&gt;
+    gen_fsm:start_link({local, ?NAME}, ?MODULE, Code, []).
+-else.
+start_link(Code) -&gt;
+    gen_statem:start_link({local,?NAME}, ?MODULE, Code, []).
+-endif.
+
+-ifdef(BEFORE_REWRITE).
+button(Digit) -&gt;
+    gen_fsm:send_event(?NAME, {button, Digit}).
+-else.
+button(Digit) -&gt;
+    gen_statem:cast(?NAME, {button,Digit}).
+    %% send_event is asynchronous and becomes a cast
+-endif.
+
+-ifdef(BEFORE_REWRITE).
+stop() -&gt;
+    gen_fsm:sync_send_all_state_event(?NAME, stop).
+-else.
+stop() -&gt;
+    gen_statem:call(?NAME, stop).
+    %% sync_send is synchronous and becomes call
+    %% all_state is handled by callback code in gen_statem
+-endif.
+
+init(Code) -&gt;
+    do_lock(),
+    Data = #{code =&gt; Code, remaining =&gt; Code},
+    {ok, locked, Data}.
+
+-ifdef(BEFORE_REWRITE).
+-else.
+callback_mode() -&gt;
+    state_functions.
+%% state_functions mode is the mode most similar to
+%% gen_fsm. There is also handle_event mode which is
+%% a fairly different concept. 
+-endif.
+
+-ifdef(BEFORE_REWRITE).
+locked({button, Digit}, Data0) -&gt;
+    case analyze_lock(Digit, Data0) of
+	{open = StateName, Data} -&gt;
+	    {next_state, StateName, Data, 10000};
+	{StateName, Data} -&gt;
+	    {next_state, StateName, Data}
+    end.
+-else.
+locked(cast, {button,Digit}, Data0) -&gt;
+    case analyze_lock(Digit, Data0) of
+	{open = StateName, Data} -&gt;
+	    {next_state, StateName, Data, 10000};
+	{StateName, Data} -&gt;
+	    {next_state, StateName, Data}
+    end;
+locked({call, From}, Msg, Data) -&gt;    
+    handle_call(From, Msg, Data);
+locked({info, Msg}, StateName, Data) -&gt;    
+    handle_info(Msg, StateName, Data).
+%% Arity differs
+%% All state events are dispatched to handle_call and handle_info help
+%% functions. If you want to handle a call or cast event specifically
+%% for this state you would add a special clause for it above. 
+-endif.										
+
+-ifdef(BEFORE_REWRITE).
+open(timeout, State) -&gt;
+     do_lock(),
+    {next_state, locked, State};
+open({button,_}, Data) -&gt;
+    {next_state, locked, Data}.
+-else.
+open(timeout, _, Data) -&gt;
+    do_lock(),
+    {next_state, locked, Data};
+open(cast, {button,_}, Data) -&gt;
+    {next_state, locked, Data};
+open({call, From}, Msg, Data) -&gt;    
+    handle_call(From, Msg, Data);
+open(info, Msg, Data) -&gt;    
+    handle_info(Msg, open, Data).
+%% Arity differs
+%% All state events are dispatched to handle_call and handle_info help
+%% functions. If you want to handle a call or cast event specifically
+%% for this state you would add a special clause for it above.   
+-endif.	  
+
+-ifdef(BEFORE_REWRITE).
+handle_sync_event(stop, _From, _StateName, Data) -&gt;
+    {stop, normal, ok, Data}.
+
+handle_event(Event, StateName, Data) -&gt;
+    {stop, {shutdown, {unexpected, Event, StateName}}, Data}.
+
+handle_info(Info, StateName, Data) -&gt;
+    {stop, {shutdown, {unexpected, Info, StateName}}, StateName, Data}. 
+-else.   
+-endif.	
+  
+terminate(_Reason, State, _Data) -&gt;
+    State =/= locked andalso do_lock(),
+    ok.
+code_change(_Vsn, State, Data, _Extra) -&gt;
+    {ok, State, Data}.
+
+%% Internal functions
+-ifdef(BEFORE_REWRITE).
+-else.   
+handle_call(From, stop, Data) -&gt;
+     {stop_and_reply, normal,  {reply, From, ok}, Data}.
+
+handle_info(Info, StateName, Data) -&gt;
+    {stop, {shutdown, {unexpected, Info, StateName}}, StateName, Data}.
+%% These are internal functions for handling all state events
+%% and not behaviour callbacks as in gen_fsm
+-endif.	
+
+analyze_lock(Digit, #{code := Code, remaining := Remaining} = Data) -&gt;
+     case Remaining of
+         [Digit] -&gt;
+	     do_unlock(),
+	     {open,  Data#{remaining := Code}};
+         [Digit|Rest] -&gt; % Incomplete   
+             {locked, Data#{remaining := Rest}};
+         _Wrong -&gt;
+             {locked, Data#{remaining := Code}}
+     end.
+
+do_lock() -&gt;
+    io:format("Lock~n", []).
+do_unlock() -&gt;
+    io:format("Unlock~n", []).
+    </pre>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2010–2017 Ericsson AB<br>Licensed under the Apache License, Version 2.0.<br>
+    
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

@@ -1,0 +1,101 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Eprof - Erlang 20 - W3cubDocs</title>
+  
+  <meta name="description" content=" eprof ">
+  <meta name="keywords" content="eprof, -, erlang, erlang~20">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/erlang~20/lib/tools-2.11/doc/html/eprof/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/erlang~20.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/erlang~20/" class="_nav-link" title="" style="margin-left:0;">Erlang 20</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _erlang">
+				
+<h1>eprof</h1> <h2 id="module">Module</h2> <p class="REFBODY module-body">eprof</p> <h2 id="module-summary">Module Summary</h2> <p class="REFBODY module-summary-body">A Time Profiling Tool for Erlang</p> <h2 id="description">Description</h2> 
+<p>The module <code class="code">eprof</code> provides a set of functions for time profiling of Erlang programs to find out how the execution time is used. The profiling is done using the Erlang trace BIFs. Tracing of local function calls for a specified set of processes is enabled when profiling is begun, and disabled when profiling is stopped.</p> <p>When using Eprof, expect a slowdown in program execution.</p>  <h2 id="exports">Exports</h2> <div class="exports-body"> <h3><code id="start-0">start() -&gt; {ok,Pid} | {error,Reason}</code></h3>  <h2 class="func-types-title">Types</h2>    
+<p>Starts the Eprof server which holds the internal state of the collected data.</p>  <h3>
+<code id="start_profiling-1">start_profiling(Rootset) -&gt; profiling | {error, Reason}</code><code id="start_profiling-2">start_profiling(Rootset,Pattern) -&gt; profiling | {error, Reason}</code><code id="start_profiling-3">start_profiling(Rootset,Pattern,Options) -&gt; profiling | {error, Reason}</code>
+</h3>  <h2 class="func-types-title">Types</h2>        
+<p>Starts profiling for the processes in <code class="code">Rootset</code> (and any new processes spawned from them). Information about activity in any profiled process is stored in the Eprof database.</p> <p><code class="code">Rootset</code> is a list of pids and registered names.</p> <p>The function returns <code class="code">profiling</code> if tracing could be enabled for all processes in <code class="code">Rootset</code>, or <code class="code">error</code> otherwise.</p> <p>A pattern can be selected to narrow the profiling. For instance a specific module can be selected, and only the code executed in that module will be profiled.</p> <p>The <code class="code">set_on_spawn</code> option will active call time tracing for all processes spawned by processes in the rootset. This is the default behaviour.</p>  <h3><code id="stop_profiling-0">stop_profiling() -&gt; profiling_stopped | profiling_already_stopped</code></h3> 
+<p>Stops profiling started with <code class="code">start_profiling/1</code> or <code class="code">profile/1</code>.</p>  <h3>
+<code id="profile-1">profile(Fun) -&gt; profiling | {error, Reason}</code><code id="profile-2">profile(Fun, Options) -&gt; profiling | {error, Reason}</code><code id="profile-1">profile(Rootset) -&gt; profiling | {error, Reason}</code><code id="profile-2">profile(Rootset,Fun) -&gt; {ok, Value} | {error,Reason}</code><code id="profile-3">profile(Rootset,Fun,Pattern) -&gt; {ok, Value} | {error, Reason}</code><code id="profile-4">profile(Rootset,Module,Function,Args) -&gt; {ok, Value} | {error, Reason}</code><code id="profile-5">profile(Rootset,Module,Function,Args,Pattern) -&gt; {ok, Value} | {error, Reason}</code><code id="profile-6">profile(Rootset,Module,Function,Args,Pattern,Options) -&gt; {ok, Value} | {error, Reason}</code>
+</h3>  <h2 class="func-types-title">Types</h2>          
+<p>This function first spawns a process <code class="code">P</code> which evaluates <code class="code">Fun()</code> or <code class="code">apply(Module,Function,Args)</code>. Then, it starts profiling for <code class="code">P</code> and the processes in <code class="code">Rootset</code> (and any new processes spawned from them). Information about activity in any profiled process is stored in the Eprof database.</p> <p><code class="code">Rootset</code> is a list of pids and registered names.</p> <p>If tracing could be enabled for <code class="code">P</code> and all processes in <code class="code">Rootset</code>, the function returns <code class="code">{ok,Value}</code> when <code class="code">Fun()</code>/<code class="code">apply</code> returns with the value <code class="code">Value</code>, or <code class="code">{error,Reason}</code> if <code class="code">Fun()</code>/<code class="code">apply</code> fails with exit reason <code class="code">Reason</code>. Otherwise it returns <code class="code">{error, Reason}</code> immediately.</p> <p>The <code class="code">set_on_spawn</code> option will active call time tracing for all processes spawned by processes in the rootset. This is the default behaviour.</p> <p>The programmer must ensure that the function given as argument is truly synchronous and that no work continues after the function has returned a value.</p>  <h3>
+<code id="analyze-0">analyze() -&gt; ok</code><code id="analyze-1">analyze(Type) -&gt; ok</code><code id="analyze-2">analyze(Type,Options) -&gt; ok</code>
+</h3>  <h2 class="func-types-title">Types</h2>      
+<p>Call this function when profiling has been stopped to display the results per process, that is:</p> <ul> <li>how much time has been used by each process, and</li> <li>in which function calls this time has been spent.</li> </ul> <p>Call <code class="code">analyze</code> with <code class="code">total</code> option when profiling has been stopped to display the results per function call, that is in which function calls the time has been spent.</p> <p>Time is shown as percentage of total time and as absolute time.</p>  <h3><code id="log-1">log(File) -&gt; ok</code></h3>  <h2 class="func-types-title">Types</h2>   
+<p>This function ensures that the results displayed by <code class="code">analyze/0,1,2</code> are printed both to the file <code class="code">File</code> and the screen.</p>  <h3><code id="stop-0">stop() -&gt; stopped</code></h3> 
+<p>Stops the Eprof server.</p>  </div>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2010–2017 Ericsson AB<br>Licensed under the Apache License, Version 2.0.<br>
+    
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

@@ -1,0 +1,146 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Os - Erlang 20 - W3cubDocs</title>
+  
+  <meta name="description" content=" os ">
+  <meta name="keywords" content="os, -, erlang, erlang~20">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/erlang~20/lib/kernel-5.4/doc/html/os/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/erlang~20.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/erlang~20/" class="_nav-link" title="" style="margin-left:0;">Erlang 20</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _erlang">
+				
+<h1>os</h1> <h2 id="module">Module</h2> <p class="REFBODY module-body">os</p> <h2 id="module-summary">Module Summary</h2> <p class="REFBODY module-summary-body">Operating system-specific functions.</p> <h2 id="description">Description</h2> 
+<p>The functions in this module are operating system-specific. Careless use of these functions results in programs that will only run on a specific platform. On the other hand, with careful use, these functions can be of help in enabling a program to run on most platforms.</p>  <h2 id="exports">Exports</h2> <div class="exports-body"> 
+<div>cmd(Command) -&gt; string()</div> <h2 class="func-types-title">Types</h2>   
+<p>Executes <code class="code">Command</code> in a command shell of the target OS, captures the standard output of the command, and returns this result as a string. This function is a replacement of the previous function <code class="code">unix:cmd/1</code>; they are equivalent on a Unix platform.</p> <p><strong>Examples:</strong></p> <pre data-language="erlang">
+LsOut = os:cmd("ls"), % on unix platform
+DirOut = os:cmd("dir"), % on Win32 platform</pre> <p>Notice that in some cases, standard output of a command when called from another program (for example, <code class="code">os:cmd/1</code>) can differ, compared with the standard output of the command when called directly from an OS command shell.</p>  
+<div>find_executable(Name) -&gt; Filename | false</div>
+<div id="find_executable-2">find_executable(Name, Path) -&gt; Filename | false</div> <h2 class="func-types-title">Types</h2>     
+<p>These two functions look up an executable program, with the specified name and a search path, in the same way as the underlying OS. <code class="code">find_executable/1</code> uses the current execution path (that is, the environment variable <code class="code">PATH</code> on Unix and Windows).</p> <p><code class="code">Path</code>, if specified, is to conform to the syntax of execution paths on the OS. Returns the absolute filename of the executable program <code class="code">Name</code>, or <code class="code">false</code> if the program is not found.</p>  
+<div>getenv() -&gt; [string()]</div> 
+<p>Returns a list of all environment variables. Each environment variable is expressed as a single string on the format <code class="code">"VarName=Value"</code>, where <code class="code">VarName</code> is the name of the variable and <code class="code">Value</code> its value.</p> <p>If Unicode filename encoding is in effect (see the <code><span class="code">erl</span>manual page</code>), the strings can contain characters with codepoints &gt; 255.</p>  
+<div>getenv(VarName) -&gt; Value | false</div> <h2 class="func-types-title">Types</h2>    
+<p>Returns the <code class="code">Value</code> of the environment variable <code class="code">VarName</code>, or <code class="code">false</code> if the environment variable is undefined.</p> <p>If Unicode filename encoding is in effect (see the <code><span class="code">erl</span>manual page</code>), the strings <code class="code">VarName</code> and <code class="code">Value</code> can contain characters with codepoints &gt; 255.</p>  
+<div>getenv(VarName, DefaultValue) -&gt; Value</div> <h2 class="func-types-title">Types</h2>     
+<p>Returns the <code class="code">Value</code> of the environment variable <code class="code">VarName</code>, or <code class="code">DefaultValue</code> if the environment variable is undefined.</p> <p>If Unicode filename encoding is in effect (see the <code><span class="code">erl</span>manual page</code>), the strings <code class="code">VarName</code> and <code class="code">Value</code> can contain characters with codepoints &gt; 255.</p>  
+<div>getpid() -&gt; Value</div> <h2 class="func-types-title">Types</h2>   
+<p>Returns the process identifier of the current Erlang emulator in the format most commonly used by the OS environment. Returns <code class="code">Value</code> as a string containing the (usually) numerical identifier for a process. On Unix, this is typically the return value of the <code class="code">getpid()</code> system call. On Windows, the process id as returned by the <code class="code">GetCurrentProcessId()</code> system call is used.</p>  
+<div>putenv(VarName, Value) -&gt; true</div> <h2 class="func-types-title">Types</h2>    
+<p>Sets a new <code class="code">Value</code> for environment variable <code class="code">VarName</code>.</p> <p>If Unicode filename encoding is in effect (see the <code><span class="code">erl</span>manual page</code>), the strings <code class="code">VarName</code> and <code class="code">Value</code> can contain characters with codepoints &gt; 255.</p> <p>On Unix platforms, the environment is set using UTF-8 encoding if Unicode filename translation is in effect. On Windows, the environment is set using wide character interfaces.</p>  
+<div>set_signal(Signal, Option) -&gt; ok</div> <h2 class="func-types-title">Types</h2>    
+<p>Enables or disables OS signals.</p> <p>Each signal my be set to one of the following options:</p> <dl> <dt><strong><code class="code">ignore</code></strong></dt> <dd> This signal will be ignored. </dd> <dt><strong><code class="code">default</code></strong></dt> <dd> This signal will use the default signal handler for the operating system. </dd> <dt><strong><code class="code">handle</code></strong></dt> <dd> This signal will notify <code><span><span class="code">erl_signal_server</span></span></code> when it is received by the Erlang runtime system. </dd> </dl>  
+<div>system_time() -&gt; integer()</div> 
+<p>Returns the current <code>OS system time</code> in <code class="code">native</code> <code>time unit</code>.</p> <div class="note"> <div class="label">Note</div> <div class="content">
+
+<p>This time is <strong>not</strong> a monotonically increasing time.</p> </div> </div>  
+<div>system_time(Unit) -&gt; integer()</div> <h2 class="func-types-title">Types</h2>   
+<p>Returns the current <code>OS system time</code> converted into the <code class="code">Unit</code> passed as argument.</p> <p>Calling <code class="code">os:system_time(Unit)</code> is equivalent to <code><span class="code">erlang:convert_time_unit</span></code>(<code><a href="#system_time-0"><span class="code">os:system_time()</span></a></code><code class="code">, native, Unit)</code>.</p> <div class="note"> <div class="label">Note</div> <div class="content">
+
+<p>This time is <strong>not</strong> a monotonically increasing time.</p> </div> </div>  
+<div>timestamp() -&gt; Timestamp</div> <h2 class="func-types-title">Types</h2>  <p class="REFBODY rb-1">Timestamp = {MegaSecs, Secs, MicroSecs}</p>  
+<p>Returns the current <code>OS system time</code> in the same format as <code><span class="code">erlang:timestamp/0</span></code>. The tuple can be used together with function <code><span class="code">calendar:now_to_universal_time/1</span></code> or <code><span class="code">calendar:now_to_local_time/1</span></code> to get calendar time. Using the calendar time, together with the <code class="code">MicroSecs</code> part of the return tuple from this function, allows you to log time stamps in high resolution and consistent with the time in the rest of the OS.</p> <p>Example of code formatting a string in format "DD Mon YYYY HH:MM:SS.mmmmmm", where DD is the day of month, Mon is the textual month name, YYYY is the year, HH:MM:SS is the time, and mmmmmm is the microseconds in six positions:</p> <pre data-language="erlang">
+-module(print_time).
+-export([format_utc_timestamp/0]).
+format_utc_timestamp() -&gt;
+    TS = {_,_,Micro} = os:timestamp(),
+    {{Year,Month,Day},{Hour,Minute,Second}} =
+calendar:now_to_universal_time(TS),
+    Mstr = element(Month,{"Jan","Feb","Mar","Apr","May","Jun","Jul",
+    "Aug","Sep","Oct","Nov","Dec"}),
+    io_lib:format("~2w ~s ~4w ~2w:~2..0w:~2..0w.~6..0w",
+    [Day,Mstr,Year,Hour,Minute,Second,Micro]).</pre> <p>This module can be used as follows:</p> <pre data-language="erlang">
+1&gt; io:format("~s~n",[print_time:format_utc_timestamp()]).
+29 Apr 2009  9:55:30.051711</pre> <p>OS system time can also be retreived by <code><a href="#system_time-0"><span class="code">system_time/0</span></a></code> and <code><a href="#system_time-1"><span class="code">system_time/1</span></a></code>.</p>  
+<div>perf_counter() -&gt; Counter</div> <h2 class="func-types-title">Types</h2>   
+<p>Returns the current performance counter value in <code class="code">perf_counter</code> <code>time unit</code>. This is a highly optimized call that might not be traceable. </p>  
+<div>perf_counter(Unit) -&gt; integer()</div> <h2 class="func-types-title">Types</h2>   
+<p>Returns a performance counter that can be used as a very fast and high resolution timestamp. This counter is read directly from the hardware or operating system with the same guarantees. This means that two consecutive calls to the function are not guaranteed to be monotonic, though it most likely will be. The performance counter will be converted to the resolution passed as an argument.</p> <pre data-language="erlang">1&gt; T1 = os:perf_counter(1000),receive after 10000 -&gt; ok end,T2 = os:perf_counter(1000).
+176525861
+2&gt; T2 - T1.
+10004</pre>  
+<div>type() -&gt; {Osfamily, Osname}</div> <h2 class="func-types-title">Types</h2>    
+<p>Returns the <code class="code">Osfamily</code> and, in some cases, the <code class="code">Osname</code> of the current OS.</p> <p>On Unix, <code class="code">Osname</code> has the same value as <code class="code">uname -s</code> returns, but in lower case. For example, on Solaris 1 and 2, it is <code class="code">sunos</code>.</p> <p>On Windows, <code class="code">Osname</code> is <code class="code">nt</code>.</p> <div class="note"> <div class="label">Note</div> <div class="content">
+
+<p>Think twice before using this function. Use module <code><span class="code">filename</span></code> if you want to inspect or build filenames in a portable way. Avoid matching on atom <code class="code">Osname</code>.</p> </div> </div>  
+<div>unsetenv(VarName) -&gt; true</div> <h2 class="func-types-title">Types</h2>   
+<p>Deletes the environment variable <code class="code">VarName</code>.</p> <p>If Unicode filename encoding is in effect (see the <code><span class="code">erl</span>manual page</code>), the string <code class="code">VarName</code> can contain characters with codepoints &gt; 255.</p>  
+<div>version() -&gt; VersionString | {Major, Minor, Release}</div> <h2 class="func-types-title">Types</h2>      
+<p>Returns the OS version. On most systems, this function returns a tuple, but a string is returned instead if the system has versions that cannot be expressed as three numbers.</p> <div class="note"> <div class="label">Note</div> <div class="content">
+
+<p>Think twice before using this function. If you still need to use it, always <code class="code">call os:type()</code> first.</p> </div> </div>  </div>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2010–2017 Ericsson AB<br>Licensed under the Apache License, Version 2.0.<br>
+    
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

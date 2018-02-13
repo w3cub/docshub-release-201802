@@ -1,0 +1,92 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Megaco_transport - Erlang 20 - W3cubDocs</title>
+  
+  <meta name="description" content=" megaco_transport ">
+  <meta name="keywords" content="megaco, transport, -, erlang, erlang~20">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/erlang~20/lib/megaco-3.18.2/doc/html/megaco_transport/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/erlang~20.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/erlang~20/" class="_nav-link" title="" style="margin-left:0;">Erlang 20</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _erlang">
+				
+<h1>megaco_transport</h1> <h2 id="module">Module</h2> <p class="REFBODY module-body">megaco_transport</p> <h2 id="module-summary">Module Summary</h2> <p class="REFBODY module-summary-body">Megaco transport behaviour.</p> <h2 id="description">Description</h2> 
+<p>The following functions should be exported from a <code class="code">megaco_transport</code> callback module:</p> <ul> <li> <p><code><a href="#send_message">send_message/2</a></code> [<code class="code">mandatory</code>]</p> </li> <li> <p><code><a href="#send_message">send_message/3</a></code> [<code class="code">optional</code>]</p> </li> <li> <p><code><a href="#resend_message">resend_message/2</a></code> [<code class="code">optional</code>]</p> </li>  </ul>   <h2 id="exports">Exports</h2> <div class="exports-body"> <h3>
+<code id="Module:send_message-2">Module:send_message(Handle, Msg) -&gt; ok | {cancel, Reason} | Error</code><code id="Module:send_message-3">Module:send_message(Handle, Msg, Resend) -&gt; ok | {cancel, Reason} | Error</code>
+</h3>  <h2 class="func-types-title">Types</h2>       
+<p>Send a megaco message. </p> <p>If the function returns <code class="code">{cancel, Reason}</code>, this means the transport module decided not to send the message. This is <strong>not</strong> an error. No error messages will be issued and no error counters incremented. What actions this will result in depends on what kind of message was sent. </p> <p>In the case of requests, megaco will cancel the message in much the same way as if <code class="code">megaco:cancel</code> had been called (after a successfull send). The information will be propagated back to the user differently depending on how the request(s) where issued: For requests issued using <code><a href="../megaco/#call">megaco:call</a></code>, the info will be delivered in the return value. For requests issued using <code class="code">megaco:cast</code> the info will be delivered via a call to the callback function <code><a href="../megaco_user/#trans_reply">handle_trans_reply</a></code>. </p> <p>In the case of reply, megaco will cancel the reply and information of this will be returned to the user via a call to the callback function <code><a href="../megaco_user/#trans_ack">handle_trans_ack</a></code>. </p> <p>The function <code class="code">send_message/3</code> will only be called if the <code><a href="../megaco/#ui_resend_indication">resend_indication</a></code> config option has been set to the value <code class="code">flag</code>. The third argument, <code class="code">Resend</code> then indicates if the message send is a resend or not. </p>   <h3><code id="Module:resend_message-2">Module:resend_message(Handle, Msg) -&gt; ok | {cancel, Reason} | Error</code></h3>  <h2 class="func-types-title">Types</h2>      
+<p>Re-send a megaco message. </p> <p>Note that this function will only be called if the user has set the <code><a href="../megaco/#ui_resend_indication">resend_indication</a></code> config option to <code class="code">true</code><strong>and</strong> it is in fact a message resend. If not <strong>both</strong> of these condition's are meet, <code class="code">send_message</code> will be called. </p> <p>If the function returns <code class="code">{cancel, Reason}</code>, this means the transport module decided not to send the message. This is <strong>not</strong> an error. No error messages will be issued and no error counters incremented. What actions this will result in depends on what kind of message was sent. </p> <p>In the case of requests, megaco will cancel the message in much the same way as if <code class="code">megaco:cancel</code> had been called (after a successfull send). The information will be propagated back to the user differently depending on how the request(s) where issued: For requests issued using <code><a href="../megaco/#call">megaco:call</a></code>, the info will be delivered in the return value. For requests issued using <code class="code">megaco:cast</code> the info will be delivered via a call to the callback function <code><a href="../megaco_user/#trans_reply">handle_trans_reply</a></code>. </p> <p>In the case of reply, megaco will cancel the reply and information of this will be returned to the user via a call to the callback function <code><a href="../megaco_user/#trans_ack">handle_trans_ack</a></code>. </p>  </div>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2010–2017 Ericsson AB<br>Licensed under the Apache License, Version 2.0.<br>
+    
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

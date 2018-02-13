@@ -1,0 +1,114 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Random - Erlang 20 - W3cubDocs</title>
+  
+  <meta name="description" content=" random ">
+  <meta name="keywords" content="random, -, erlang, erlang~20">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/erlang~20/lib/stdlib-3.4.2/doc/html/random/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/erlang~20.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/erlang~20/" class="_nav-link" title="" style="margin-left:0;">Erlang 20</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _erlang">
+				
+<h1>random</h1> <h2 id="module">Module</h2> <p class="REFBODY module-body">random</p> <h2 id="module-summary">Module Summary</h2> <p class="REFBODY module-summary-body">Pseudo-random number generation.</p> <h2 id="description">Description</h2> 
+<p>This module provides a random number generator. The method is attributed to B.A. Wichmann and I.D. Hill in 'An efficient and portable pseudo-random number generator', Journal of Applied Statistics. AS183. 1982. Also Byte March 1987.</p> <p>The algorithm is a modification of the version attributed to Richard A. O'Keefe in the standard Prolog library.</p> <p>Every time a random number is requested, a state is used to calculate it, and a new state is produced. The state can either be implicit (kept in the process dictionary) or be an explicit argument and return value. In this implementation, the state (the type <code class="code">ran()</code>) consists of a tuple of three integers.</p> <div class="note"> <div class="label">Note</div> <div class="content">
+
+<p>This random number generator is not cryptographically strong. If a strong cryptographic random number generator is needed, use one of functions in the <code><span class="code">crypto</span></code> module, for example, <code><span class="code">crypto:strong_rand_bytes/1</span></code>.</p> </div> </div> <div class="note"> <div class="label">Note</div> <div class="content">
+
+<p>The improved <code><a href="../rand/"><span class="code">rand</span></a></code> module is to be used instead of this module.</p> </div> </div>  <h2 id="data-types">Data Types</h2> <div class="data-types-body"> <div class="data-type-name"> <code id="type-ran">ran() = {integer(), integer(), integer()}</code><br> </div> <div class="data-type-desc">
+
+<p>The state.</p>
+</div> </div> <h2 id="exports">Exports</h2> <div class="exports-body"> 
+<div>seed() -&gt; <code><a href="#type-ran">ran()</a></code> </div> 
+<p>Seeds random number generation with default (fixed) values in the process dictionary and returns the old state.</p>  
+<div>seed(SValue) -&gt; undefined | <code><a href="#type-ran">ran()</a></code> </div> <h2 class="func-types-title">Types</h2>      
+<p><code class="code">seed({A1, A2, A3})</code> is equivalent to <code class="code">seed(A1, A2, A3)</code>.</p>  
+<div>seed(A1, A2, A3) -&gt; undefined | <code><a href="#type-ran">ran()</a></code> </div> <h2 class="func-types-title">Types</h2>     
+<p>Seeds random number generation with integer values in the process dictionary and returns the old state.</p> <p>The following is an easy way of obtaining a unique value to seed with:</p> <pre data-language="erlang">
+random:seed(erlang:phash2([node()]),
+            erlang:monotonic_time(),
+            erlang:unique_integer())</pre> <p>For details, see <code><span class="code">erlang:phash2/1</span></code>, <code><span class="code">erlang:node/0</span></code>, <code><span class="code">erlang:monotonic_time/0</span></code>, and <code><span class="code">erlang:unique_integer/0</span></code>.</p>  
+<div>seed0() -&gt; <code><a href="#type-ran">ran()</a></code> </div> 
+<p>Returns the default state.</p>  
+<div>uniform() -&gt; float()</div> 
+<p>Returns a random float uniformly distributed between <code class="code">0.0</code> and <code class="code">1.0</code>, updating the state in the process dictionary.</p>  
+<div>uniform(N) -&gt; integer() &gt;= 1</div> <h2 class="func-types-title">Types</h2>   
+<p>Returns, for a specified integer <code class="code">N &gt;= 1</code>, a random integer uniformly distributed between <code class="code">1</code> and <code class="code">N</code>, updating the state in the process dictionary.</p>  
+<div>uniform_s(State0) -&gt; {float(), State1}</div> <h2 class="func-types-title">Types</h2>    
+<p>Returns, for a specified state, a random float uniformly distributed between <code class="code">0.0</code> and <code class="code">1.0</code>, and a new state.</p>  
+<div>uniform_s(N, State0) -&gt; {integer(), State1}</div> <h2 class="func-types-title">Types</h2>     
+<p>Returns, for a specified integer <code class="code">N &gt;= 1</code> and a state, a random integer uniformly distributed between <code class="code">1</code> and <code class="code">N</code>, and a new state.</p>  </div> <h2 id="id250189">Note</h2>  <p>Some of the functions use the process dictionary variable <code class="code">random_seed</code> to remember the current seed.</p> <p>If a process calls <code><a href="#uniform-0"><span class="code">uniform/0</span></a></code> or <code><a href="#uniform-1"><span class="code">uniform/1</span></a></code> without setting a seed first, <code><a href="#seed-0"><span class="code">seed/0</span></a></code> is called automatically.</p> <p>The implementation changed in Erlang/OTP R15. Upgrading to R15 breaks applications that expect a specific output for a specified seed. The output is still deterministic number series, but different compared to releases older than R15. Seed <code class="code">{0,0,0}</code> does, for example, no longer produce a flawed series of only zeros.</p>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2010–2017 Ericsson AB<br>Licensed under the Apache License, Version 2.0.<br>
+    
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

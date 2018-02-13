@@ -1,0 +1,96 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Erl_malloc - Erlang 20 - W3cubDocs</title>
+  
+  <meta name="description" content=" erl_malloc ">
+  <meta name="keywords" content="erl, malloc, -, erlang, erlang~20">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/erlang~20/lib/erl_interface-3.10/doc/html/erl_malloc/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/erlang~20.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/erlang~20/" class="_nav-link" title="" style="margin-left:0;">Erlang 20</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _erlang">
+				
+<h1>erl_malloc</h1> <h2 id="c-library">C Library</h2> <p class="REFBODY c-library-body">erl_malloc</p> <h2 id="library-summary">Library Summary</h2> <p class="REFBODY library-summary-body">Memory allocation functions.</p> <h2 id="description">Description</h2> 
+<p>This module provides functions for allocating and deallocating memory.</p>  <h2 id="exports">Exports</h2> <div class="exports-body"> <h3><code>ETERM *erl_alloc_eterm(etype)</code></h3>  <h2 class="func-types-title">Types</h2>   
+<p>Allocates an <code class="code">(ETERM)</code> structure.</p> <p>Specify <code class="code">etype</code> as one of the following constants:</p> <ul> <li> <code class="code">ERL_INTEGER</code> </li> <li> <code class="code">ERL_U_INTEGER</code> (unsigned integer) </li> <li> <code class="code">ERL_ATOM</code> </li> <li> <code class="code">ERL_PID</code> (Erlang process identifier) </li> <li> <code class="code">ERL_PORT</code> </li> <li> <code class="code">ERL_REF</code> (Erlang reference) </li> <li> <code class="code">ERL_LIST</code> </li> <li> <code class="code">ERL_EMPTY_LIST</code> </li> <li> <code class="code">ERL_TUPLE</code> </li> <li> <code class="code">ERL_BINARY</code> </li> <li> <code class="code">ERL_FLOAT</code> </li> <li> <code class="code">ERL_VARIABLE</code> </li> <li> <code class="code">ERL_SMALL_BIG</code> (bignum) </li> <li> <code class="code">ERL_U_SMALL_BIG</code> (bignum) </li> </ul> <p><code class="code">ERL_SMALL_BIG</code> and <code class="code">ERL_U_SMALL_BIG</code> are for creating Erlang <code class="code">bignums</code>, which can contain integers of any size. The size of an integer in Erlang is machine-dependent, but any integer &gt; 2^28 requires a bignum.</p>  <h3><code>void erl_eterm_release(void)</code></h3> 
+<p>Clears the freelist, where blocks are placed when they are released by <code class="code">erl_free_term()</code> and <code class="code">erl_free_compound()</code>.</p>  <h3><code>void erl_eterm_statistics(allocated, freed)</code></h3>  <h2 class="func-types-title">Types</h2>    
+<p>Reports term allocation statistics.</p> <p><code class="code">allocated</code> and <code class="code">freed</code> are initialized to contain information about the fix-allocator used to allocate <code class="code">ETERM</code> components.</p> <ul> <li> <p><code class="code">allocated</code> is the number of blocks currently allocated to <code class="code">ETERM</code> objects.</p> </li> <li> <p><code class="code">freed</code> is the length of the freelist, where blocks are placed when they are released by <code class="code">erl_free_term()</code> and <code class="code">erl_free_compound()</code>.</p> </li> </ul>  <h3><code>void erl_free(ptr)</code></h3>  <h2 class="func-types-title">Types</h2>   
+<p>Calls the standard <code class="code">free()</code> function.</p>  <h3><code>void erl_free_array(array, size)</code></h3>  <h2 class="func-types-title">Types</h2>    
+<p>Frees an array of Erlang terms.</p> <ul> <li> <code class="code">array</code> is an array of ETERM* objects.</li> <li> <code class="code">size</code> is the number of terms in the array. </li> </ul>  <h3><code>void erl_free_compound(t)</code></h3>  <h2 class="func-types-title">Types</h2>   
+<p>Normally it is the programmer's responsibility to free each Erlang term that has been returned from any of the <code class="code">Erl_Interface</code> functions. However, as many of the functions that build new Erlang terms in fact share objects with other existing terms, it can be difficult for the programmer to maintain pointers to all such terms to free them individually.</p> <p><code class="code">erl_free_compound()</code> recursively frees all of the subterms associated with a specified Erlang term, regardless of whether we are still holding pointers to the subterms.</p> <p>For an example, see section <code><a href="../ei_users_guide/#building_terms_and_patterns">Building Terms and Patterns</a></code> in the User's Guide.</p>  <h3><code>void erl_free_term(t)</code></h3>  <h2 class="func-types-title">Types</h2>   
+<p>Frees an Erlang term.</p>  <h3><code>void erl_malloc(size)</code></h3>  <h2 class="func-types-title">Types</h2>   
+<p>Calls the standard <code class="code">malloc()</code> function.</p>  </div>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2010–2017 Ericsson AB<br>Licensed under the Apache License, Version 2.0.<br>
+    
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

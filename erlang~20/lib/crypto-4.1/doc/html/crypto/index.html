@@ -1,0 +1,178 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Crypto - Erlang 20 - W3cubDocs</title>
+  
+  <meta name="description" content=" crypto ">
+  <meta name="keywords" content="crypto, -, erlang, erlang~20">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/erlang~20/lib/crypto-4.1/doc/html/crypto/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/erlang~20.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/erlang~20/" class="_nav-link" title="" style="margin-left:0;">Erlang 20</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _erlang">
+				
+<h1>crypto</h1> <h2 id="module">Module</h2> <p class="REFBODY module-body">crypto</p> <h2 id="module-summary">Module Summary</h2> <p class="REFBODY module-summary-body">Crypto Functions</p> <h2 id="description">Description</h2> 
+<p>This module provides a set of cryptographic functions. </p> <ul> <li> <p>Hash functions - <code><a href="http://csrc.nist.gov/publications/fips/fips180-4/fips-180-4.pdf" target="_blank"> Secure Hash Standard</a></code>, <code><a href="http://www.ietf.org/rfc/rfc1321.txt" target="_blank"> The MD5 Message Digest Algorithm (RFC 1321)</a></code> and <code><a href="http://www.ietf.org/rfc/rfc1320.txt" target="_blank">The MD4 Message Digest Algorithm (RFC 1320)</a></code> </p> </li> <li> <p>Hmac functions - <code><a href="http://www.ietf.org/rfc/rfc2104.txt" target="_blank"> Keyed-Hashing for Message Authentication (RFC 2104) </a></code></p> </li> <li> <p>Cmac functions - <code><a href="http://www.ietf.org/rfc/rfc4493.txt" target="_blank">The AES-CMAC Algorithm (RFC 4493)</a></code></p> </li> <li> <p>Block ciphers -  DES and AES in Block Cipher Modes - <code><a href="http://csrc.nist.gov/groups/ST/toolkit/BCM/index.html" target="_blank"> ECB, CBC, CFB, OFB, CTR and GCM </a></code></p> </li> <li> <p><code><a href="http://www.ietf.org/rfc/rfc1321.txt" target="_blank"> RSA encryption RFC 1321 </a></code> </p> </li> <li> <p>Digital signatures <code><a href="http://csrc.nist.gov/publications/drafts/fips186-3/fips_186-3.pdf" target="_blank">Digital Signature Standard (DSS)</a></code> and<code><a href="http://csrc.nist.gov/groups/STM/cavp/documents/dss2/ecdsa2vs.pdf" target="_blank"> Elliptic Curve Digital Signature Algorithm (ECDSA) </a></code> </p> </li> <li> <p><code><a href="http://www.ietf.org/rfc/rfc2945.txt" target="_blank"> Secure Remote Password Protocol (SRP - RFC 2945) </a></code></p> </li> <li> <p>gcm: Dworkin, M., "Recommendation for Block Cipher Modes of Operation: Galois/Counter Mode (GCM) and GMAC", National Institute of Standards and Technology SP 800- 38D, November 2007.</p> </li> </ul>  <h2 id="id57878">Data types </h2>  <pre data-language="erlang">key_value()  = integer() | binary() </pre> <p>Always <code class="code">binary()</code> when used as return value</p> <pre data-language="erlang">rsa_public()  = [key_value()] = [E, N]  </pre> <p> Where E is the public exponent and N is public modulus. </p> <pre data-language="erlang">rsa_private() = [key_value()] = [E, N, D] | [E, N, D, P1, P2, E1, E2, C] </pre> <p>Where E is the public exponent, N is public modulus and D is the private exponent. The longer key format contains redundant information that will make the calculation faster. P1,P2 are first and second prime factors. E1,E2 are first and second exponents. C is the CRT coefficient. Terminology is taken from <code><a href="http://www.ietf.org/rfc/rfc3477.txt" target="_blank"> RFC 3447</a></code>.</p> <pre data-language="erlang">dss_public() = [key_value()] = [P, Q, G, Y] </pre> <p>Where P, Q and G are the dss parameters and Y is the public key.</p> <pre data-language="erlang">dss_private() =  [key_value()] = [P, Q, G, X] </pre> <p>Where P, Q and G are the dss parameters and X is the private key.</p> <pre data-language="erlang">srp_public() = key_value() </pre> <p>Where is <code class="code">A</code> or <code class="code">B</code> from <code><a href="http://srp.stanford.edu/design.html" target="_blank">SRP design</a></code></p> <pre data-language="erlang">srp_private() = key_value() </pre> <p>Where is <code class="code">a</code> or <code class="code">b</code> from <code><a href="http://srp.stanford.edu/design.html" target="_blank">SRP design</a></code></p> <p>Where Verifier is <code class="code">v</code>, Generator is <code class="code">g</code> and Prime is<code class="code">N</code>, DerivedKey is <code class="code">X</code>, and Scrambler is <code class="code">u</code> (optional will be generated if not provided) from <code><a href="http://srp.stanford.edu/design.html" target="_blank">SRP design</a></code> Version = '3' | '6' | '6a' </p> <pre data-language="erlang">dh_public() = key_value() </pre> <pre data-language="erlang">dh_private() = key_value() </pre> <pre data-language="erlang">dh_params() = [key_value()] = [P, G] | [P, G, PrivateKeyBitLength]</pre> <pre data-language="erlang">ecdh_public() = key_value() </pre> <pre data-language="erlang">ecdh_private() = key_value() </pre> <pre data-language="erlang">ecdh_params() =  ec_named_curve() | ec_explicit_curve()</pre> <pre data-language="erlang">ec_explicit_curve() =
+    {ec_field(), Prime :: key_value(), Point :: key_value(), Order :: integer(), CoFactor :: none | integer()} </pre> <pre data-language="erlang">ec_field() = {prime_field, Prime :: integer()} |
+    {characteristic_two_field, M :: integer(), Basis :: ec_basis()}</pre> <pre data-language="erlang">ec_basis() =  {tpbasis, K :: non_neg_integer()} |
+    {ppbasis, K1 :: non_neg_integer(), K2 :: non_neg_integer(), K3 :: non_neg_integer()} |
+    onbasis</pre> <pre data-language="erlang">ec_named_curve() -&gt;
+      sect571r1| sect571k1| sect409r1| sect409k1| secp521r1| secp384r1| secp224r1| secp224k1|
+      secp192k1| secp160r2| secp128r2| secp128r1| sect233r1| sect233k1| sect193r2| sect193r1|
+      sect131r2| sect131r1| sect283r1| sect283k1| sect163r2| secp256k1| secp160k1| secp160r1|
+      secp112r2| secp112r1| sect113r2| sect113r1| sect239k1| sect163r1| sect163k1| secp256r1|
+      secp192r1|
+      brainpoolP160r1| brainpoolP160t1| brainpoolP192r1| brainpoolP192t1| brainpoolP224r1|
+      brainpoolP224t1| brainpoolP256r1| brainpoolP256t1| brainpoolP320r1| brainpoolP320t1|
+      brainpoolP384r1| brainpoolP384t1| brainpoolP512r1| brainpoolP512t1
+    </pre> <p>Note that the <strong>sect</strong> curves are GF2m (characteristic two) curves and are only supported if the underlying OpenSSL has support for them. See also <code><a href="#supports-0">crypto:supports/0</a></code> </p> <pre data-language="erlang">stream_cipher() = rc4 | aes_ctr </pre> <pre data-language="erlang">block_cipher() =  aes_cbc | aes_cfb8 | aes_cfb128 | aes_ige256 | blowfish_cbc |
+     blowfish_cfb64 | des_cbc | des_cfb | des3_cbc | des3_cfb | des_ede3 | rc2_cbc </pre> <pre data-language="erlang">aead_cipher() =  aes_gcm | chacha20_poly1305 </pre> <pre data-language="erlang">stream_key() =  aes_key() | rc4_key() </pre> <pre data-language="erlang">block_key() =  aes_key() |  blowfish_key() | des_key()| des3_key() </pre> <pre data-language="erlang">aes_key() = iodata() </pre> <p>Key length is 128, 192 or 256 bits</p> <pre data-language="erlang">rc4_key() = iodata() </pre> <p>Variable key length from 8 bits up to 2048 bits (usually between 40 and 256)</p> <pre data-language="erlang">blowfish_key() = iodata() </pre> <p>Variable key length from 32 bits up to 448 bits</p> <pre data-language="erlang">des_key() = iodata() </pre> <p>Key length is 64 bits (in CBC mode only 8 bits are used)</p> <pre data-language="erlang">des3_key() = [binary(), binary(), binary()] </pre> <p>Each key part is 64 bits (in CBC mode only 8 bits are used)</p> <pre data-language="erlang">digest_type() =  md5 | sha | sha224 | sha256 | sha384 | sha512</pre> <pre data-language="erlang">rsa_digest_type() = md5 | ripemd160 | sha | sha224 | sha256 | sha384 | sha512</pre> <pre data-language="erlang">dss_digest_type() = sha | sha224 | sha256 | sha384 | sha512</pre> <p>Note that the actual supported dss_digest_type depends on the underlying crypto library. In OpenSSL version &gt;= 1.0.1 the listed digest are supported, while in 1.0.0 only sha, sha224 and sha256 are supported. In version 0.9.8 only sha is supported.</p> <pre data-language="erlang">ecdsa_digest_type() = sha | sha224 | sha256 | sha384 | sha512</pre> <pre data-language="erlang">sign_options() = [{rsa_pad, rsa_sign_padding()} | {rsa_pss_saltlen, integer()}]</pre> <pre data-language="erlang">rsa_sign_padding() = rsa_pkcs1_padding | rsa_pkcs1_pss_padding</pre> <pre data-language="erlang">hash_algorithms() =  md5 | ripemd160 | sha | sha224 | sha256 | sha384 | sha512 </pre> <p>md4 is also supported for hash_init/1 and hash/2. Note that both md4 and md5 are recommended only for compatibility with existing applications. </p> <pre data-language="erlang">cipher_algorithms() = aes_cbc | aes_cfb8 | aes_cfb128 | aes_ctr | aes_gcm |
+    aes_ige256 | blowfish_cbc | blowfish_cfb64 | chacha20_poly1305 | des_cbc | des_cfb |
+    des3_cbc | des3_cfb | des_ede3 | rc2_cbc | rc4 </pre> <pre data-language="erlang">mac_algorithms() =   hmac | cmac</pre> <pre data-language="erlang">public_key_algorithms() =   rsa |dss | ecdsa | dh | ecdh | ec_gf2m</pre> <p>Note that ec_gf2m is not strictly a public key algorithm, but a restriction on what curves are supported with ecdsa and ecdh. </p>  <h2 id="exports">Exports</h2> <div class="exports-body"> <h3><code id="block_encrypt-3">block_encrypt(Type, Key, PlainText) -&gt; CipherText</code></h3>  <h2 class="func-types-title">Types</h2>     
+<p>Encrypt <code class="code">PlainText</code> according to <code class="code">Type</code> block cipher.</p> <p>May throw exception <code class="code">notsup</code> in case the chosen <code class="code">Type</code> is not supported by the underlying OpenSSL implementation.</p>  <h3><code id="block_decrypt-3">block_decrypt(Type, Key, CipherText) -&gt; PlainText</code></h3>  <h2 class="func-types-title">Types</h2>     
+<p>Decrypt <code class="code">CipherText</code> according to <code class="code">Type</code> block cipher.</p> <p>May throw exception <code class="code">notsup</code> in case the chosen <code class="code">Type</code> is not supported by the underlying OpenSSL implementation.</p>  <h3>
+<code id="block_encrypt-4">block_encrypt(Type, Key, Ivec, PlainText) -&gt; CipherText</code><code id="block_encrypt-4">block_encrypt(AeadType, Key, Ivec, {AAD, PlainText}) -&gt; {CipherText, CipherTag}</code><code id="block_encrypt-4">block_encrypt(aes_gcm, Key, Ivec, {AAD, PlainText, TagLength}) -&gt; {CipherText, CipherTag}</code>
+</h3>  <h2 class="func-types-title">Types</h2>        
+<p>Encrypt <code class="code">PlainText</code> according to <code class="code">Type</code> block cipher. <code class="code">IVec</code> is an arbitrary initializing vector.</p> <p>In AEAD (Authenticated Encryption with Associated Data) mode, encrypt <code class="code">PlainText</code>according to <code class="code">Type</code> block cipher and calculate <code class="code">CipherTag</code> that also authenticates the <code class="code">AAD</code> (Associated Authenticated Data).</p> <p>May throw exception <code class="code">notsup</code> in case the chosen <code class="code">Type</code> is not supported by the underlying OpenSSL implementation.</p>  <h3>
+<code id="block_decrypt-4">block_decrypt(Type, Key, Ivec, CipherText) -&gt; PlainText</code><code id="block_decrypt-4">block_decrypt(AeadType, Key, Ivec, {AAD, CipherText, CipherTag}) -&gt; PlainText | error</code>
+</h3>  <h2 class="func-types-title">Types</h2>       
+<p>Decrypt <code class="code">CipherText</code> according to <code class="code">Type</code> block cipher. <code class="code">IVec</code> is an arbitrary initializing vector.</p> <p>In AEAD (Authenticated Encryption with Associated Data) mode, decrypt <code class="code">CipherText</code>according to <code class="code">Type</code> block cipher and check the authenticity the <code class="code">PlainText</code> and <code class="code">AAD</code> (Associated Authenticated Data) using the <code class="code">CipherTag</code>. May return <code class="code">error</code> if the decryption or validation fail's</p> <p>May throw exception <code class="code">notsup</code> in case the chosen <code class="code">Type</code> is not supported by the underlying OpenSSL implementation.</p>  <h3><code id="bytes_to_integer-1">bytes_to_integer(Bin) -&gt; Integer</code></h3>  <h2 class="func-types-title">Types</h2>    
+<p>Convert binary representation, of an integer, to an Erlang integer. </p>  <h3><code id="compute_key-4">compute_key(Type, OthersPublicKey, MyKey, Params) -&gt; SharedSecret</code></h3>  <h2 class="func-types-title">Types</h2>         
+<p>Computes the shared secret from the private key and the other party's public key. See also <code>public_key:compute_key/2</code> </p>  <h3><code id="exor-2">exor(Data1, Data2) -&gt; Result</code></h3>  <h2 class="func-types-title">Types</h2>    
+<p>Performs bit-wise XOR (exclusive or) on the data supplied.</p>  <h3>
+<code id="generate_key-2">generate_key(Type, Params) -&gt; {PublicKey, PrivKeyOut}</code><code id="generate_key-3">generate_key(Type, Params, PrivKeyIn) -&gt; {PublicKey, PrivKeyOut}</code>
+</h3>  <h2 class="func-types-title">Types</h2>          
+<p>Generates a public key of type <code class="code">Type</code>. See also <code>public_key:generate_key/1</code>. May throw exception an exception of class <code class="code">error</code>: </p> <ul> <li> <code class="code">badarg</code>: an argument is of wrong type or has an illegal value,</li> <li> <code class="code">low_entropy</code>: the random generator failed due to lack of secure "randomness",</li> <li> <code class="code">computation_failed</code>: the computation fails of another reason than <code class="code">low_entropy</code>.</li> </ul> <div class="note"> <div class="label">Note</div> <div class="content">
+
+<p>RSA key generation is only available if the runtime was built with dirty scheduler support. Otherwise, attempting to generate an RSA key will throw exception <code class="code">error:notsup</code>.</p> </div> </div>  <h3><code id="hash-2">hash(Type, Data) -&gt; Digest</code></h3>  <h2 class="func-types-title">Types</h2>     
+<p>Computes a message digest of type <code class="code">Type</code> from <code class="code">Data</code>.</p> <p>May throw exception <code class="code">notsup</code> in case the chosen <code class="code">Type</code> is not supported by the underlying OpenSSL implementation.</p>  <h3><code id="hash_init-1">hash_init(Type) -&gt; Context</code></h3>  <h2 class="func-types-title">Types</h2>   
+<p>Initializes the context for streaming hash operations. <code class="code">Type</code> determines which digest to use. The returned context should be used as argument to <code><a href="#hash_update-2">hash_update</a></code>.</p> <p>May throw exception <code class="code">notsup</code> in case the chosen <code class="code">Type</code> is not supported by the underlying OpenSSL implementation.</p>  <h3><code id="hash_update-2">hash_update(Context, Data) -&gt; NewContext</code></h3>  <h2 class="func-types-title">Types</h2>   
+<p>Updates the digest represented by <code class="code">Context</code> using the given <code class="code">Data</code>. <code class="code">Context</code> must have been generated using <code><a href="#hash_init-1">hash_init</a></code> or a previous call to this function. <code class="code">Data</code> can be any length. <code class="code">NewContext</code> must be passed into the next call to <code class="code">hash_update</code> or <code><a href="#hash_final-1">hash_final</a></code>.</p>  <h3><code id="hash_final-1">hash_final(Context) -&gt; Digest</code></h3>  <h2 class="func-types-title">Types</h2>   
+<p>Finalizes the hash operation referenced by <code class="code">Context</code> returned from a previous call to <code><a href="#hash_update-2">hash_update</a></code>. The size of <code class="code">Digest</code> is determined by the type of hash function used to generate it.</p>  <h3>
+<code id="hmac-3">hmac(Type, Key, Data) -&gt; Mac</code><code id="hmac-4">hmac(Type, Key, Data, MacLength) -&gt; Mac</code>
+</h3>  <h2 class="func-types-title">Types</h2>       
+<p>Computes a HMAC of type <code class="code">Type</code> from <code class="code">Data</code> using <code class="code">Key</code> as the authentication key.</p> <p><code class="code">MacLength</code> will limit the size of the resultant <code class="code">Mac</code>.</p>  <h3><code id="hmac_init-2">hmac_init(Type, Key) -&gt; Context</code></h3>  <h2 class="func-types-title">Types</h2>     
+<p>Initializes the context for streaming HMAC operations. <code class="code">Type</code> determines which hash function to use in the HMAC operation. <code class="code">Key</code> is the authentication key. The key can be any length.</p>  <h3><code id="hmac_update-2">hmac_update(Context, Data) -&gt; NewContext</code></h3>  <h2 class="func-types-title">Types</h2>    
+<p>Updates the HMAC represented by <code class="code">Context</code> using the given <code class="code">Data</code>. <code class="code">Context</code> must have been generated using an HMAC init function (such as <code><a href="#hmac_init-2">hmac_init</a></code>). <code class="code">Data</code> can be any length. <code class="code">NewContext</code> must be passed into the next call to <code class="code">hmac_update</code> or to one of the functions <code><a href="#hmac_final-1">hmac_final</a></code> and <code><a href="#hmac_final_n-2">hmac_final_n</a></code> </p> <div class="warning"> <div class="label">Warning</div> <div class="content">
+
+<p>Do not use a <code class="code">Context</code> as argument in more than one call to hmac_update or hmac_final. The semantics of reusing old contexts in any way is undefined and could even crash the VM in earlier releases. The reason for this limitation is a lack of support in the underlying OpenSSL API.</p>
+</div> </div>  <h3><code id="hmac_final-1">hmac_final(Context) -&gt; Mac</code></h3>  <h2 class="func-types-title">Types</h2>   
+<p>Finalizes the HMAC operation referenced by <code class="code">Context</code>. The size of the resultant MAC is determined by the type of hash function used to generate it.</p>  <h3><code id="hmac_final_n-2">hmac_final_n(Context, HashLen) -&gt; Mac</code></h3>  <h2 class="func-types-title">Types</h2>    
+<p>Finalizes the HMAC operation referenced by <code class="code">Context</code>. <code class="code">HashLen</code> must be greater than zero. <code class="code">Mac</code> will be a binary with at most <code class="code">HashLen</code> bytes. Note that if HashLen is greater than the actual number of bytes returned from the underlying hash, the returned hash will have fewer than <code class="code">HashLen</code> bytes.</p>  <h3>
+<code id="cmac-3">cmac(Type, Key, Data) -&gt; Mac</code><code id="cmac-4">cmac(Type, Key, Data, MacLength) -&gt; Mac</code>
+</h3>  <h2 class="func-types-title">Types</h2>       
+<p>Computes a CMAC of type <code class="code">Type</code> from <code class="code">Data</code> using <code class="code">Key</code> as the authentication key.</p> <p><code class="code">MacLength</code> will limit the size of the resultant <code class="code">Mac</code>.</p>  <h3><code id="info_fips-0">info_fips() -&gt; Status</code></h3>  <h2 class="func-types-title">Types</h2>   
+<p>Provides information about the FIPS operating status of crypto and the underlying OpenSSL library. If crypto was built with FIPS support this can be either <code class="code">enabled</code> (when running in FIPS mode) or <code class="code">not_enabled</code>. For other builds this value is always <code class="code">not_supported</code>.</p> <div class="warning"> <div class="label">Warning</div> <div class="content">
+
+<p>In FIPS mode all non-FIPS compliant algorithms are disabled and throw exception <code class="code">not_supported</code>. Check <code><a href="#supports-0">supports</a></code> that in FIPS mode returns the restricted list of available algorithms.</p> </div> </div>  <h3><code id="info_lib-0">info_lib() -&gt; [{Name,VerNum,VerStr}]</code></h3>  <h2 class="func-types-title">Types</h2>     
+<p>Provides the name and version of the libraries used by crypto.</p> <p><code class="code">Name</code> is the name of the library. <code class="code">VerNum</code> is the numeric version according to the library's own versioning scheme. <code class="code">VerStr</code> contains a text variant of the version.</p> <pre data-language="erlang">
+&gt; info_lib().
+[{&lt;&lt;"OpenSSL"&gt;&gt;,269484095,&lt;&lt;"OpenSSL 1.1.0c  10 Nov 2016""&gt;&gt;}]
+        </pre> <div class="note"> <div class="label">Note</div> <div class="content">
+
+<p> From OTP R16 the <strong>numeric version</strong> represents the version of the OpenSSL <strong>header files</strong> (<code class="code">openssl/opensslv.h</code>) used when crypto was compiled. The text variant represents the OpenSSL library used at runtime. In earlier OTP versions both numeric and text was taken from the library. </p>
+</div> </div>  <h3><code id="mod_pow-3">mod_pow(N, P, M) -&gt; Result</code></h3>  <h2 class="func-types-title">Types</h2>    
+<p>Computes the function <code class="code">N^P mod M</code>.</p>  <h3>
+<code id="next_iv-2">next_iv(Type, Data) -&gt; NextIVec</code><code id="next_iv-3">next_iv(Type, Data, IVec) -&gt; NextIVec</code>
+</h3>  <h2 class="func-types-title">Types</h2>     
+<p>Returns the initialization vector to be used in the next iteration of encrypt/decrypt of type <code class="code">Type</code>. <code class="code">Data</code> is the encrypted data from the previous iteration step. The <code class="code">IVec</code> argument is only needed for <code class="code">des_cfb</code> as the vector used in the previous iteration step.</p>  <h3><code id="private_decrypt-4">private_decrypt(Type, CipherText, PrivateKey, Padding) -&gt; PlainText</code></h3>  <h2 class="func-types-title">Types</h2>       
+<p>Decrypts the <code class="code">CipherText</code>, encrypted with <code><a href="#public_encrypt-4">public_encrypt/4</a></code> (or equivalent function) using the <code class="code">PrivateKey</code>, and returns the plaintext (message digest). This is a low level signature verification operation used for instance by older versions of the SSL protocol. See also <code>public_key:decrypt_private/[2,3]</code> </p>  <h3><code id="private_encrypt-4">private_encrypt(Type, PlainText, PrivateKey, Padding) -&gt; CipherText</code></h3>  <h2 class="func-types-title">Types</h2>    The size of the <code class="code">PlainText</code> must be less than <code class="code">byte_size(N)-11</code> if <code class="code">rsa_pkcs1_padding</code> is used, and <code class="code">byte_size(N)</code> if <code class="code">rsa_no_padding</code> is used, where N is public modulus of the RSA key.     
+<p>Encrypts the <code class="code">PlainText</code> using the <code class="code">PrivateKey</code> and returns the ciphertext. This is a low level signature operation used for instance by older versions of the SSL protocol. See also <code>public_key:encrypt_private/[2,3]</code> </p>  <h3><code id="public_decrypt-4">public_decrypt(Type, CipherText, PublicKey, Padding) -&gt; PlainText</code></h3>  <h2 class="func-types-title">Types</h2>       
+<p>Decrypts the <code class="code">CipherText</code>, encrypted with <code><a href="#private_encrypt-4">private_encrypt/4</a></code>(or equivalent function) using the <code class="code">PrivateKey</code>, and returns the plaintext (message digest). This is a low level signature verification operation used for instance by older versions of the SSL protocol. See also <code>public_key:decrypt_public/[2,3]</code> </p>  <h3><code id="public_encrypt-4">public_encrypt(Type, PlainText, PublicKey, Padding) -&gt; CipherText</code></h3>  <h2 class="func-types-title">Types</h2>    The size of the <code class="code">PlainText</code> must be less than <code class="code">byte_size(N)-11</code> if <code class="code">rsa_pkcs1_padding</code> is used, and <code class="code">byte_size(N)</code> if <code class="code">rsa_no_padding</code> is used, where N is public modulus of the RSA key.     
+<p>Encrypts the <code class="code">PlainText</code> (message digest) using the <code class="code">PublicKey</code> and returns the <code class="code">CipherText</code>. This is a low level signature operation used for instance by older versions of the SSL protocol. See also <code>public_key:encrypt_public/[2,3]</code> </p>  <h3><code id="rand_seed-1">rand_seed(Seed) -&gt; ok</code></h3>  <h2 class="func-types-title">Types</h2>   
+<p>Set the seed for PRNG to the given binary. This calls the RAND_seed function from openssl. Only use this if the system you are running on does not have enough "randomness" built in. Normally this is when <code><a href="#strong_rand_bytes-1">strong_rand_bytes/1</a></code> throws <code class="code">low_entropy</code></p>  <h3><code id="rand_uniform-2">rand_uniform(Lo, Hi) -&gt; N</code></h3>  <h2 class="func-types-title">Types</h2>   
+<p>Generate a random number <code class="code">N, Lo =&lt; N &lt; Hi.</code> Uses the <code class="code">crypto</code> library pseudo-random number generator. <code class="code">Hi</code> must be larger than <code class="code">Lo</code>.</p>  <h3>
+<code id="sign-4">sign(Algorithm, DigestType, Msg, Key) -&gt; binary()</code><code id="sign-5">sign(Algorithm, DigestType, Msg, Key, Options) -&gt; binary()</code>
+</h3>  <h2 class="func-types-title">Types</h2>   <p class="REFBODY rb-6">The msg is either the binary "cleartext" data to be signed or it is the hashed value of "cleartext" i.e. the digest (plaintext).</p>     
+<p>Creates a digital signature.</p> <p>Algorithm <code class="code">dss</code> can only be used together with digest type <code class="code">sha</code>.</p> <p>See also <code>public_key:sign/3</code>.</p>  <h3><code id="start-0">start() -&gt; ok</code></h3> 
+<p> Equivalent to application:start(crypto).</p>  <h3><code id="stop-0">stop() -&gt; ok</code></h3> 
+<p> Equivalent to application:stop(crypto).</p>  <h3><code id="strong_rand_bytes-1">strong_rand_bytes(N) -&gt; binary()</code></h3>  <h2 class="func-types-title">Types</h2>   
+<p>Generates N bytes randomly uniform 0..255, and returns the result in a binary. Uses a cryptographically secure prng seeded and periodically mixed with operating system provided entropy. By default this is the <code class="code">RAND_bytes</code> method from OpenSSL.</p> <p>May throw exception <code class="code">low_entropy</code> in case the random generator failed due to lack of secure "randomness".</p>  <h3><code id="rand_seed-0">rand_seed() -&gt; rand:state()</code></h3> 
+<p> Creates state object for <code>random number generation</code>, in order to generate cryptographically strong random numbers (based on OpenSSL's <code class="code">BN_rand_range</code>), and saves it on process dictionary before returning it as well. See also <code>rand:seed/1</code>. </p> <p><strong>Example</strong></p> <pre data-language="erlang">
+_ = crypto:rand_seed(),
+_IntegerValue = rand:uniform(42), % [1; 42]
+_FloatValue = rand:uniform().     % [0.0; 1.0[</pre>  <h3><code id="rand_seed_s-0">rand_seed_s() -&gt; rand:state()</code></h3> 
+<p> Creates state object for <code>random number generation</code>, in order to generate cryptographically strongly random numbers (based on OpenSSL's <code class="code">BN_rand_range</code>). See also <code>rand:seed_s/1</code>. </p>  <h3><code id="stream_init-2">stream_init(Type, Key) -&gt; State</code></h3>  <h2 class="func-types-title">Types</h2>     
+<p>Initializes the state for use in RC4 stream encryption <code><a href="#stream_encrypt-2">stream_encrypt</a></code> and <code><a href="#stream_decrypt-2">stream_decrypt</a></code></p>  <h3><code id="stream_init-3">stream_init(Type, Key, IVec) -&gt; State</code></h3>  <h2 class="func-types-title">Types</h2>      
+<p>Initializes the state for use in streaming AES encryption using Counter mode (CTR). <code class="code">Key</code> is the AES key and must be either 128, 192, or 256 bits long. <code class="code">IVec</code> is an arbitrary initializing vector of 128 bits (16 bytes). This state is for use with <code><a href="#stream_encrypt-2">stream_encrypt</a></code> and <code><a href="#stream_decrypt-2">stream_decrypt</a></code>.</p>  <h3><code id="stream_encrypt-2">stream_encrypt(State, PlainText) -&gt; { NewState, CipherText}</code></h3>  <h2 class="func-types-title">Types</h2>    
+<p>Encrypts <code class="code">PlainText</code> according to the stream cipher <code class="code">Type</code> specified in stream_init/3. <code class="code">Text</code> can be any number of bytes. The initial <code class="code">State</code> is created using <code><a href="#stream_init-2">stream_init</a></code>. <code class="code">NewState</code> must be passed into the next call to <code class="code">stream_encrypt</code>.</p>  <h3><code id="stream_decrypt-2">stream_decrypt(State, CipherText) -&gt; { NewState, PlainText }</code></h3>  <h2 class="func-types-title">Types</h2>    
+<p>Decrypts <code class="code">CipherText</code> according to the stream cipher <code class="code">Type</code> specified in stream_init/3. <code class="code">PlainText</code> can be any number of bytes. The initial <code class="code">State</code> is created using <code><a href="#stream_init-2">stream_init</a></code>. <code class="code">NewState</code> must be passed into the next call to <code class="code">stream_decrypt</code>.</p>  <h3><code id="supports-0">supports() -&gt; AlgorithmList</code></h3>  <h2 class="func-types-title">Types</h2>   
+<p> Can be used to determine which crypto algorithms that are supported by the underlying OpenSSL library</p>  <h3><code id="ec_curves-0">ec_curves() -&gt; EllipticCurveList</code></h3>  <h2 class="func-types-title">Types</h2>   
+<p>Can be used to determine which named elliptic curves are supported.</p>  <h3><code id="ec_curve-1">ec_curve(NamedCurve) -&gt; EllipticCurve</code></h3>  <h2 class="func-types-title">Types</h2>    
+<p>Return the defining parameters of a elliptic curve.</p>  <h3>
+<code id="verify-5">verify(Algorithm, DigestType, Msg, Signature, Key) -&gt; boolean()</code><code id="verify-6">verify(Algorithm, DigestType, Msg, Signature, Key, Options) -&gt; boolean()</code>
+</h3>  <h2 class="func-types-title">Types</h2>   <p class="REFBODY rb-6">The msg is either the binary "cleartext" data or it is the hashed value of "cleartext" i.e. the digest (plaintext).</p>      
+<p>Verifies a digital signature</p> <p>Algorithm <code class="code">dss</code> can only be used together with digest type <code class="code">sha</code>.</p> <p>See also <code>public_key:verify/4</code>.</p>  </div>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2010–2017 Ericsson AB<br>Licensed under the Apache License, Version 2.0.<br>
+    
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

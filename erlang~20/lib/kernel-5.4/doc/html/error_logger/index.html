@@ -1,0 +1,196 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Error_logger - Erlang 20 - W3cubDocs</title>
+  
+  <meta name="description" content=" error_logger ">
+  <meta name="keywords" content="error, logger, -, erlang, erlang~20">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/erlang~20/lib/kernel-5.4/doc/html/error_logger/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/erlang~20.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/erlang~20/" class="_nav-link" title="" style="margin-left:0;">Erlang 20</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _erlang">
+				
+<h1>error_logger</h1> <h2 id="module">Module</h2> <p class="REFBODY module-body">error_logger</p> <h2 id="module-summary">Module Summary</h2> <p class="REFBODY module-summary-body">Erlang error logger.</p> <h2 id="description">Description</h2> 
+<p>The Erlang <strong>error logger</strong> is an event manager (see <code>OTP Design Principles</code> and <code><span class="code">gen_event(3)</span></code>), registered as <code class="code">error_logger</code>. Errors, warnings, and info events are sent to the error logger from the Erlang runtime system and the different Erlang/OTP applications. The events are, by default, logged to the terminal. Notice that an event from a process <code class="code">P</code> is logged at the node of the group leader of <code class="code">P</code>. This means that log output is directed to the node from which a process was created, which not necessarily is the same node as where it is executing.</p> <p>Initially, <code class="code">error_logger</code> has only a primitive event handler, which buffers and prints the raw event messages. During system startup, the Kernel application replaces this with a <strong>standard event handler</strong>, by default one that writes nicely formatted output to the terminal. Kernel can also be configured so that events are logged to a file instead, or not logged at all, see <code><span><span class="code">kernel(6)</span></span></code>.</p> <p>Also the SASL application, if started, adds its own event handler, which by default writes supervisor, crash, and progress reports to the terminal. See <code><span class="code">sasl(6)</span></code>.</p> <p>It is recommended that user-defined applications report errors through the error logger to get uniform reports. User-defined event handlers can be added to handle application-specific events, see <code><a href="#add_report_handler-1"><span class="code">add_report_handler/1,2</span></a></code>. Also, a useful event handler is provided in STDLIB for multi-file logging of events, see <code><span class="code">log_mf_h(3)</span></code>.</p> <p>Warning events were introduced in Erlang/OTP R9C and are enabled by default as from Erlang/OTP 18.0. To retain backwards compatibility with existing user-defined event handlers, the warning events can be tagged as <code class="code">errors</code> or <code class="code">info</code> using command-line flag <code class="code">+W &lt;e | i | w&gt;</code>, thus showing up as <code class="code">ERROR REPORT</code> or <code class="code">INFO REPORT</code> in the logs.</p>  <h2 id="data-types">Data Types</h2> <div class="data-types-body"> <div class="data-type-name"> <code>report() = <br id="type-report">    [{Tag :: term(), Data :: term()} | term()] | string() | term()</code><br> </div>  </div> <h2 id="exports">Exports</h2> <div class="exports-body"> 
+<div>add_report_handler(Handler) -&gt; any()</div>
+<div id="add_report_handler-2">add_report_handler(Handler, Args) -&gt; Result</div> <h2 class="func-types-title">Types</h2>     
+<p>Adds a new event handler to the error logger. The event handler must be implemented as a <code class="code">gen_event</code> callback module, see <code><span class="code">gen_event(3)</span></code>.</p> <p><code class="code">Handler</code> is typically the name of the callback module and <code class="code">Args</code> is an optional term (defaults to []) passed to the initialization callback function <code class="code">Handler:init/1</code>. The function returns <code class="code">ok</code> if successful.</p> <p>The event handler must be able to handle the events in this module, see section <code><a href="#events">Events</a></code>.</p>  
+<div>delete_report_handler(Handler) -&gt; Result</div> <h2 class="func-types-title">Types</h2>    
+<p>Deletes an event handler from the error logger by calling <code class="code">gen_event:delete_handler(error_logger, Handler, [])</code>, see <code><span class="code">gen_event(3)</span></code>.</p>  
+<div>error_msg(Format) -&gt; ok</div>
+<div id="error_msg-2">error_msg(Format, Data) -&gt; ok</div>
+<div id="format-2">format(Format, Data) -&gt; ok</div> <h2 class="func-types-title">Types</h2>    
+<p>Sends a standard error event to the error logger. The <code class="code">Format</code> and <code class="code">Data</code> arguments are the same as the arguments of <code><span class="code">io:format/2</span></code> in STDLIB. The event is handled by the standard event handler.</p> <p><strong>Example:</strong></p> <pre data-language="erlang">
+1&gt; error_logger:error_msg("An error occurred in ~p~n", [a_module]).
+
+=ERROR REPORT==== 11-Aug-2005::14:03:19 ===
+An error occurred in a_module
+ok</pre> <div class="warning"> <div class="label">Warning</div> <div class="content">
+
+<p>If called with bad arguments, this function can crash the standard event handler, meaning no further events are logged. When in doubt, use <code><a href="#error_report-1"><span class="code">error_report/1</span></a></code> instead.</p> </div> </div> <div class="warning"> <div class="label">Warning</div> <div class="content">
+
+<p>If the Unicode translation modifier (<code class="code">t</code>) is used in the format string, all error handlers must ensure that the formatted output is correctly encoded for the I/O device.</p> </div> </div>  
+<div>error_report(Report) -&gt; ok</div> <h2 class="func-types-title">Types</h2>   
+<p>Sends a standard error report event to the error logger. The event is handled by the standard event handler.</p> <p><strong>Example:</strong></p> <pre data-language="erlang">
+2&gt; error_logger:error_report([{tag1,data1},a_term,{tag2,data}]).
+
+=ERROR REPORT==== 11-Aug-2005::13:45:41 ===
+    tag1: data1
+    a_term
+    tag2: data
+ok
+3&gt; error_logger:error_report("Serious error in my module").
+
+=ERROR REPORT==== 11-Aug-2005::13:45:49 ===
+Serious error in my module
+ok</pre>  
+<div>error_report(Type, Report) -&gt; ok</div> <h2 class="func-types-title">Types</h2>    
+<p>Sends a user-defined error report event to the error logger. An event handler to handle the event is supposed to have been added. The event is ignored by the standard event handler.</p> <p>It is recommended that <code class="code">Report</code> follows the same structure as for <code><a href="#error_report-1"><span class="code">error_report/1</span></a></code>.</p>  
+<div>get_format_depth() -&gt; unlimited | integer() &gt;= 1</div> 
+<p>Returns <code class="code">max(10, Depth)</code>, where <code class="code">Depth</code> is the value of <code>error_logger_format_depth</code> in the Kernel application, if Depth is an integer. Otherwise, <code class="code">unlimited</code> is returned.</p>  
+<div>info_msg(Format) -&gt; ok</div>
+<div id="info_msg-2">info_msg(Format, Data) -&gt; ok</div> <h2 class="func-types-title">Types</h2>    
+<p>Sends a standard information event to the error logger. The <code class="code">Format</code> and <code class="code">Data</code> arguments are the same as the arguments of <code><span class="code">io:format/2</span></code> in STDLIB. The event is handled by the standard event handler.</p> <p><strong>Example:</strong></p> <pre data-language="erlang">
+1&gt; error_logger:info_msg("Something happened in ~p~n", [a_module]).
+
+=INFO REPORT==== 11-Aug-2005::14:06:15 ===
+Something happened in a_module
+ok</pre> <div class="warning"> <div class="label">Warning</div> <div class="content">
+
+<p>If called with bad arguments, this function can crash the standard event handler, meaning no further events are logged. When in doubt, use <code class="code">info_report/1</code> instead.</p> </div> </div> <div class="warning"> <div class="label">Warning</div> <div class="content">
+
+<p>If the Unicode translation modifier (<code class="code">t</code>) is used in the format string, all error handlers must ensure that the formatted output is correctly encoded for the I/O device.</p> </div> </div>  
+<div>info_report(Report) -&gt; ok</div> <h2 class="func-types-title">Types</h2>   
+<p>Sends a standard information report event to the error logger. The event is handled by the standard event handler.</p> <p><strong>Example:</strong></p> <pre data-language="erlang">
+2&gt; error_logger:info_report([{tag1,data1},a_term,{tag2,data}]).
+
+=INFO REPORT==== 11-Aug-2005::13:55:09 ===
+    tag1: data1
+    a_term
+    tag2: data
+ok
+3&gt; error_logger:info_report("Something strange happened").
+
+=INFO REPORT==== 11-Aug-2005::13:55:36 ===
+Something strange happened
+ok</pre>  
+<div>info_report(Type, Report) -&gt; ok</div> <h2 class="func-types-title">Types</h2>    
+<p>Sends a user-defined information report event to the error logger. An event handler to handle the event is supposed to have been added. The event is ignored by the standard event handler.</p> <p>It is recommended that <code class="code">Report</code> follows the same structure as for <code><a href="#info_report-1"><span class="code">info_report/1</span></a></code>.</p>  
+<div>logfile(Request :: {open, Filename}) -&gt; ok | {error, OpenReason}</div>
+<div>logfile(Request :: close) -&gt; ok | {error, CloseReason}</div>
+<div>logfile(Request :: filename) -&gt; Filename | {error, FilenameReason}</div> <h2 class="func-types-title">Types</h2>       
+<p>Enables or disables printout of standard events to a file.</p> <p>This is done by adding or deleting the standard event handler for output to file. Thus, calling this function overrides the value of the Kernel <code class="code">error_logger</code> configuration parameter.</p> <p>Enabling file logging can be used together with calling <code class="code">tty(false)</code>, to have a silent system where all standard events are logged to a file only. Only one log file can be active at a time.</p> <p><code class="code">Request</code> is one of the following:</p> <dl> <dt><strong><code class="code">{open, Filename}</code></strong></dt> <dd> <p>Opens log file <code class="code">Filename</code>. Returns <code class="code">ok</code> if successful, or <code class="code">{error, allready_have_logfile}</code> if logging to file is already enabled, or an error tuple if another error occurred (for example, if <code class="code">Filename</code> cannot be opened). The file is opened with encoding UTF-8.</p> </dd> <dt><strong><code class="code">close</code></strong></dt> <dd> <p>Closes the current log file. Returns <code class="code">ok</code>, or <code class="code">{error, module_not_found}</code>.</p> </dd> <dt><strong><code class="code">filename</code></strong></dt> <dd> <p>Returns the name of the log file <code class="code">Filename</code>, or <code class="code">{error, no_log_file}</code> if logging to file is not enabled.</p> </dd> </dl>  
+<div>tty(Flag) -&gt; ok</div> <h2 class="func-types-title">Types</h2>   
+<p>Enables (<code class="code">Flag == true</code>) or disables (<code class="code">Flag == false</code>) printout of standard events to the terminal.</p> <p>This is done by adding or deleting the standard event handler for output to the terminal. Thus, calling this function overrides the value of the Kernel <code class="code">error_logger</code> configuration parameter.</p>  
+<div>warning_map() -&gt; Tag</div> <h2 class="func-types-title">Types</h2>   
+<p>Returns the current mapping for warning events. Events sent using <code class="code">warning_msg/1,2</code> or <code class="code">warning_report/1,2</code> are tagged as errors, warnings (default), or info, depending on the value of command-line flag <code class="code">+W</code>.</p> <p><strong>Example:</strong></p> <pre data-language="erlang">
+os$ erl
+Erlang (BEAM) emulator version 5.4.8 [hipe] [threads:0] [kernel-poll]
+
+Eshell V5.4.8  (abort with ^G)
+1&gt; error_logger:warning_map().
+warning
+2&gt; error_logger:warning_msg("Warnings tagged as: ~p~n", [warning]).
+
+=WARNING REPORT==== 11-Aug-2005::15:31:55 ===
+Warnings tagged as: warning
+ok
+3&gt;
+User switch command
+ --&gt; q
+os$ erl +W e
+Erlang (BEAM) emulator version 5.4.8 [hipe] [threads:0] [kernel-poll]
+
+Eshell V5.4.8  (abort with ^G)
+1&gt; error_logger:warning_map().
+error
+2&gt; error_logger:warning_msg("Warnings tagged as: ~p~n", [error]).
+
+=ERROR REPORT==== 11-Aug-2005::15:31:23 ===
+Warnings tagged as: error
+ok</pre>  
+<div>warning_msg(Format) -&gt; ok</div>
+<div id="warning_msg-2">warning_msg(Format, Data) -&gt; ok</div> <h2 class="func-types-title">Types</h2>    
+<p>Sends a standard warning event to the error logger. The <code class="code">Format</code> and <code class="code">Data</code> arguments are the same as the arguments of <code><span class="code">io:format/2</span></code> in STDLIB. The event is handled by the standard event handler. It is tagged as an error, warning, or info, see <code><a href="#warning_map-0"><span class="code">warning_map/0</span></a></code>.</p> <div class="warning"> <div class="label">Warning</div> <div class="content">
+
+<p>If called with bad arguments, this function can crash the standard event handler, meaning no further events are logged. When in doubt, use <code class="code">warning_report/1</code> instead.</p> </div> </div> <div class="warning"> <div class="label">Warning</div> <div class="content">
+
+<p>If the Unicode translation modifier (<code class="code">t</code>) is used in the format string, all error handlers must ensure that the formatted output is correctly encoded for the I/O device.</p> </div> </div>  
+<div>warning_report(Report) -&gt; ok</div> <h2 class="func-types-title">Types</h2>   
+<p>Sends a standard warning report event to the error logger. The event is handled by the standard event handler. It is tagged as an error, warning, or info, see <code><a href="#warning_map-0"><span class="code">warning_map/0</span></a></code>.</p>  
+<div>warning_report(Type, Report) -&gt; ok</div> <h2 class="func-types-title">Types</h2>    
+<p>Sends a user-defined warning report event to the error logger. An event handler to handle the event is supposed to have been added. The event is ignored by the standard event handler. It is tagged as an error, warning, or info, depending on the value of <code><a href="#warning_map-0"><span class="code">warning_map/0</span></a></code>.</p>  </div> <h2 id="id121598"> Events </h2>  <p>All event handlers added to the error logger must handle the following events. <code class="code">Gleader</code> is the group leader pid of the process that sent the event, and <code class="code">Pid</code> is the process that sent the event.</p> <dl> <dt><strong><code class="code">{error, Gleader, {Pid, Format, Data}}</code></strong></dt> <dd> <p>Generated when <code class="code">error_msg/1,2</code> or <code class="code">format</code> is called.</p> </dd> <dt><strong><code class="code">{error_report, Gleader, {Pid, std_error, Report}}</code></strong></dt> <dd> <p>Generated when <code class="code">error_report/1</code> is called.</p> </dd> <dt><strong><code class="code">{error_report, Gleader, {Pid, Type, Report}}</code></strong></dt> <dd> <p>Generated when <code class="code">error_report/2</code> is called.</p> </dd> <dt><strong><code class="code">{warning_msg, Gleader, {Pid, Format, Data}}</code></strong></dt> <dd> <p>Generated when <code class="code">warning_msg/1,2</code> is called if warnings are set to be tagged as warnings.</p> </dd> <dt><strong><code class="code">{warning_report, Gleader, {Pid, std_warning, Report}}</code></strong></dt> <dd> <p>Generated when <code class="code">warning_report/1</code> is called if warnings are set to be tagged as warnings.</p> </dd> <dt><strong><code class="code">{warning_report, Gleader, {Pid, Type, Report}}</code></strong></dt> <dd> <p>Generated when <code class="code">warning_report/2</code> is called if warnings are set to be tagged as warnings.</p> </dd> <dt><strong><code class="code">{info_msg, Gleader, {Pid, Format, Data}}</code></strong></dt> <dd> <p>Generated when <code class="code">info_msg/1,2</code> is called.</p> </dd> <dt><strong><code class="code">{info_report, Gleader, {Pid, std_info, Report}}</code></strong></dt> <dd> <p>Generated when <code class="code">info_report/1</code> is called.</p> </dd> <dt><strong><code class="code">{info_report, Gleader, {Pid, Type, Report}}</code></strong></dt> <dd> <p>Generated when <code class="code">info_report/2</code> is called.</p> </dd> </dl> <p>Notice that some system-internal events can also be received. Therefore a catch-all clause last in the definition of the event handler callback function <code class="code">Module:handle_event/2</code> is necessary. This also applies for <code class="code">Module:handle_info/2</code>, as the event handler must also take care of some system-internal messages.</p>  <h2 id="id121786">See Also</h2>  <p><code><span class="code">gen_event(3)</span></code>, <code><span class="code">log_mf_h(3)</span></code> <code><span><span class="code">kernel(6)</span></span></code> <code><span class="code">sasl(6)</span></code></p>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2010–2017 Ericsson AB<br>Licensed under the Apache License, Version 2.0.<br>
+    
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

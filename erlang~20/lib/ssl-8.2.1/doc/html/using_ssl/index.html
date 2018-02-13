@@ -1,0 +1,115 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>3. Using SSL API - Erlang 20 - W3cubDocs</title>
+  
+  <meta name="description" content=" To see relevant version information for ssl, call ssl&#58;versions&#47;0 . ">
+  <meta name="keywords" content="using, ssl, api, -, erlang, erlang~20">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/erlang~20/lib/ssl-8.2.1/doc/html/using_ssl/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/erlang~20.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/erlang~20/" class="_nav-link" title="" style="margin-left:0;">Erlang 20</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _erlang">
+				
+<h1>3 Using SSL API</h1> <p>To see relevant version information for ssl, call <code><span class="code">ssl:versions/0</span></code> .</p> <p>To see all supported cipher suites, call <code><span class="code">ssl:cipher_suites(all)</span></code>. The available cipher suites for a connection depend on your certificate. Specific cipher suites that you want your connection to use can also be specified. Default is to use the strongest available.</p> <h2 id="id57453">3.1 Setting up Connections</h2> <p>This section shows a small example of how to set up client/server connections using the Erlang shell. The returned value of the <code class="code">sslsocket</code> is abbreviated with <code class="code">[...]</code> as it can be fairly large and is opaque.</p> <h4>Minimal Example</h4> <div class="note"> <div class="label">Note</div> <div class="content">
+
+<p> The minimal setup is not the most secure setup of SSL.</p> </div> </div> <p>To set up client/server connections:</p> <p><strong>Step 1:</strong> Start the server side:</p> <pre data-language="erlang">1 server&gt; ssl:start().
+ok</pre> <p><strong>Step 2:</strong> Create an SSL listen socket:</p> <pre data-language="erlang">2 server&gt; {ok, ListenSocket} =
+ssl:listen(9999, [{certfile, "cert.pem"}, {keyfile, "key.pem"},{reuseaddr, true}]).
+{ok,{sslsocket, [...]}}</pre> <p><strong>Step 3:</strong> Do a transport accept on the SSL listen socket:</p> <pre data-language="erlang">3 server&gt; {ok, Socket} = ssl:transport_accept(ListenSocket).
+{ok,{sslsocket, [...]}}</pre> <p><strong>Step 4:</strong> Start the client side:</p> <pre data-language="erlang">1 client&gt; ssl:start().
+ok</pre> <pre data-language="erlang">2 client&gt; {ok, Socket} = ssl:connect("localhost", 9999,  [], infinity).
+{ok,{sslsocket, [...]}}</pre> <p><strong>Step 5:</strong> Do the SSL handshake:</p> <pre data-language="erlang">4 server&gt; ok = ssl:ssl_accept(Socket).
+ok</pre> <p><strong>Step 6:</strong> Send a message over SSL:</p> <pre data-language="erlang">5 server&gt; ssl:send(Socket, "foo").
+ok</pre> <p><strong>Step 7:</strong> Flush the shell message queue to see that the message was sent on the server side:</p> <pre data-language="erlang">3 client&gt; flush().
+Shell got {ssl,{sslsocket,[...]},"foo"}
+ok</pre> <h4>Upgrade Example</h4> <div class="note"> <div class="label">Note</div> <div class="content">
+
+<p>To upgrade a TCP/IP connection to an SSL connection, the client and server must agree to do so. The agreement can be accomplished by using a protocol, for example, the one used by HTTP specified in RFC 2817.</p>
+</div> </div> <p>To upgrade to an SSL connection:</p> <p><strong>Step 1:</strong> Start the server side:</p> <pre data-language="erlang">1 server&gt; ssl:start().
+ok</pre> <p><strong>Step 2:</strong> Create a normal TCP listen socket:</p> <pre data-language="erlang">2 server&gt; {ok, ListenSocket} = gen_tcp:listen(9999, [{reuseaddr, true}]).
+{ok, #Port&lt;0.475&gt;}</pre> <p><strong>Step 3:</strong> Accept client connection:</p> <pre data-language="erlang">3 server&gt; {ok, Socket} = gen_tcp:accept(ListenSocket).
+{ok, #Port&lt;0.476&gt;}</pre> <p><strong>Step 4:</strong> Start the client side:</p> <pre data-language="erlang">1 client&gt; ssl:start().
+ok</pre> <pre data-language="erlang">2 client&gt; {ok, Socket} = gen_tcp:connect("localhost", 9999,  [], infinity).</pre> <p><strong>Step 5:</strong> Ensure <code class="code">active</code> is set to <code class="code">false</code> before trying to upgrade a connection to an SSL connection, otherwise SSL handshake messages can be delivered to the wrong process:</p> <pre data-language="erlang">4 server&gt; inet:setopts(Socket, [{active, false}]).
+ok</pre> <p><strong>Step 6:</strong> Do the SSL handshake:</p> <pre data-language="erlang">5 server&gt; {ok, SSLSocket} = ssl:ssl_accept(Socket, [{cacertfile, "cacerts.pem"},
+{certfile, "cert.pem"}, {keyfile, "key.pem"}]).
+{ok,{sslsocket,[...]}}</pre> <p><strong>Step 7:</strong> Upgrade to an SSL connection. The client and server must agree upon the upgrade. The server must call <code class="code">ssl:accept/2</code> before the client calls <code class="code">ssl:connect/3.</code></p> <pre data-language="erlang">3 client&gt;{ok, SSLSocket} = ssl:connect(Socket, [{cacertfile, "cacerts.pem"},
+{certfile, "cert.pem"}, {keyfile, "key.pem"}], infinity).
+{ok,{sslsocket,[...]}}</pre> <p><strong>Step 8:</strong> Send a message over SSL:</p> <pre data-language="erlang">4 client&gt; ssl:send(SSLSocket, "foo").
+ok</pre> <p><strong>Step 9:</strong> Set <code class="code">active true</code> on the SSL socket:</p> <pre data-language="erlang">4 server&gt; ssl:setopts(SSLSocket, [{active, true}]).
+ok</pre> <p><strong>Step 10:</strong> Flush the shell message queue to see that the message was sent on the client side:</p> <pre data-language="erlang">5 server&gt; flush().
+Shell got {ssl,{sslsocket,[...]},"foo"}
+ok</pre>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2010–2017 Ericsson AB<br>Licensed under the Apache License, Version 2.0.<br>
+    
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

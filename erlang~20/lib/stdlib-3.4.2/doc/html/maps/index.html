@@ -1,0 +1,223 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Maps - Erlang 20 - W3cubDocs</title>
+  
+  <meta name="description" content=" maps ">
+  <meta name="keywords" content="maps, -, erlang, erlang~20">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/erlang~20/lib/stdlib-3.4.2/doc/html/maps/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/erlang~20.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/erlang~20/" class="_nav-link" title="" style="margin-left:0;">Erlang 20</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _erlang">
+				
+<h1>maps</h1> <h2 id="module">Module</h2> <p class="REFBODY module-body">maps</p> <h2 id="module-summary">Module Summary</h2> <p class="REFBODY module-summary-body">Maps processing functions.</p> <h2 id="description">Description</h2> 
+<p>This module contains functions for maps processing.</p>  <h2 id="exports">Exports</h2> <div class="exports-body"> 
+<div>filter(Pred, Map1) -&gt; Map2</div> <h2 class="func-types-title">Types</h2>       
+<p>Returns a map <code class="code">Map2</code> for which predicate <code class="code">Pred</code> holds true in <code class="code">Map1</code>.</p> <p>The call fails with a <code class="code">{badmap,Map}</code> exception if <code class="code">Map1</code> is not a map, or with <code class="code">badarg</code> if <code class="code">Pred</code> is not a function of arity 2.</p> <p><strong>Example:</strong></p> <pre data-language="erlang">
+&gt; M = #{a =&gt; 2, b =&gt; 3, c=&gt; 4, "a" =&gt; 1, "b" =&gt; 2, "c" =&gt; 4},
+  Pred = fun(K,V) -&gt; is_atom(K) andalso (V rem 2) =:= 0 end,
+  maps:filter(Pred,M).
+#{a =&gt; 2,c =&gt; 4}</pre>  
+<div>find(Key, Map) -&gt; {ok, Value} | error</div> <h2 class="func-types-title">Types</h2>     
+<p>Returns a tuple <code class="code">{ok, Value}</code>, where <code class="code">Value</code> is the value associated with <code class="code">Key</code>, or <code class="code">error</code> if no value is associated with <code class="code">Key</code> in <code class="code">Map</code>.</p> <p>The call fails with a <code class="code">{badmap,Map}</code> exception if <code class="code">Map</code> is not a map.</p> <p><strong>Example:</strong></p> <pre data-language="erlang">
+&gt; Map = #{"hi" =&gt; 42},
+  Key = "hi",
+  maps:find(Key,Map).
+{ok,42}</pre>  
+<div>fold(Fun, Init, Map) -&gt; Acc</div> <h2 class="func-types-title">Types</h2>          
+<p>Calls <code class="code">F(K, V, AccIn)</code> for every <code class="code">K</code> to value <code class="code">V</code> association in <code class="code">Map</code> in any order. Function <code class="code">fun F/3</code> must return a new accumulator, which is passed to the next successive call. This function returns the final value of the accumulator. The initial accumulator value <code class="code">Init</code> is returned if the map is empty.</p> <p><strong>Example:</strong></p> <pre data-language="erlang">
+&gt; Fun = fun(K,V,AccIn) when is_list(K) -&gt; AccIn + V end,
+  Map = #{"k1" =&gt; 1, "k2" =&gt; 2, "k3" =&gt; 3},
+  maps:fold(Fun,0,Map).
+6</pre>  
+<div>from_list(List) -&gt; Map</div> <h2 class="func-types-title">Types</h2>      
+<p>Takes a list of key-value tuples elements and builds a map. The associations can be in any order, and both keys and values in the association can be of any term. If the same key appears more than once, the latter (right-most) value is used and the previous values are ignored.</p> <p><strong>Example:</strong></p> <pre data-language="erlang">
+&gt; List = [{"a",ignored},{1337,"value two"},{42,value_three},{"a",1}],
+  maps:from_list(List).
+#{42 =&gt; value_three,1337 =&gt; "value two","a" =&gt; 1}</pre>  
+<div>get(Key, Map) -&gt; Value</div> <h2 class="func-types-title">Types</h2>     
+<p>Returns value <code class="code">Value</code> associated with <code class="code">Key</code> if <code class="code">Map</code> contains <code class="code">Key</code>.</p> <p>The call fails with a <code class="code">{badmap,Map}</code> exception if <code class="code">Map</code> is not a map, or with a <code class="code">{badkey,Key}</code> exception if no value is associated with <code class="code">Key</code>.</p> <p><strong>Example:</strong></p> <pre data-language="erlang">
+&gt; Key = 1337,
+  Map = #{42 =&gt; value_two,1337 =&gt; "value one","a" =&gt; 1},
+  maps:get(Key,Map).
+"value one"</pre>  
+<div>get(Key, Map, Default) -&gt; Value | Default</div> <h2 class="func-types-title">Types</h2>      
+<p>Returns value <code class="code">Value</code> associated with <code class="code">Key</code> if <code class="code">Map</code> contains <code class="code">Key</code>. If no value is associated with <code class="code">Key</code>, <code class="code">Default</code> is returned.</p> <p>The call fails with a <code class="code">{badmap,Map}</code> exception if <code class="code">Map</code> is not a map.</p> <p><strong>Example:</strong></p> <pre data-language="erlang">
+&gt; Map = #{ key1 =&gt; val1, key2 =&gt; val2 }.
+#{key1 =&gt; val1,key2 =&gt; val2}
+&gt; maps:get(key1, Map, "Default value").
+val1
+&gt; maps:get(key3, Map, "Default value").
+"Default value"</pre>  
+<div>is_key(Key, Map) -&gt; boolean()</div> <h2 class="func-types-title">Types</h2>    
+<p>Returns <code class="code">true</code> if map <code class="code">Map</code> contains <code class="code">Key</code> and returns <code class="code">false</code> if it does not contain the <code class="code">Key</code>.</p> <p>The call fails with a <code class="code">{badmap,Map}</code> exception if <code class="code">Map</code> is not a map.</p> <p><strong>Example:</strong></p> <pre data-language="erlang">
+&gt; Map = #{"42" =&gt; value}.
+#{"42" =&gt; value}
+&gt; maps:is_key("42",Map).
+true
+&gt; maps:is_key(value,Map).
+false</pre>  
+<div>keys(Map) -&gt; Keys</div> <h2 class="func-types-title">Types</h2>     
+<p>Returns a complete list of keys, in any order, which resides within <code class="code">Map</code>.</p> <p>The call fails with a <code class="code">{badmap,Map}</code> exception if <code class="code">Map</code> is not a map.</p> <p><strong>Example:</strong></p> <pre data-language="erlang">
+&gt; Map = #{42 =&gt; value_three,1337 =&gt; "value two","a" =&gt; 1},
+  maps:keys(Map).
+[42,1337,"a"]</pre>  
+<div>map(Fun, Map1) -&gt; Map2</div> <h2 class="func-types-title">Types</h2>        
+<p>Produces a new map <code class="code">Map2</code> by calling function <code class="code">fun F(K, V1)</code> for every <code class="code">K</code> to value <code class="code">V1</code> association in <code class="code">Map1</code> in any order. Function <code class="code">fun F/2</code> must return value <code class="code">V2</code> to be associated with key <code class="code">K</code> for the new map <code class="code">Map2</code>.</p> <p><strong>Example:</strong></p> <pre data-language="erlang">
+&gt; Fun = fun(K,V1) when is_list(K) -&gt; V1*2 end,
+  Map = #{"k1" =&gt; 1, "k2" =&gt; 2, "k3" =&gt; 3},
+  maps:map(Fun,Map).
+#{"k1" =&gt; 2,"k2" =&gt; 4,"k3" =&gt; 6}</pre>  
+<div>merge(Map1, Map2) -&gt; Map3</div> <h2 class="func-types-title">Types</h2>     
+<p>Merges two maps into a single map <code class="code">Map3</code>. If two keys exist in both maps, the value in <code class="code">Map1</code> is superseded by the value in <code class="code">Map2</code>.</p> <p>The call fails with a <code class="code">{badmap,Map}</code> exception if <code class="code">Map1</code> or <code class="code">Map2</code> is not a map.</p> <p><strong>Example:</strong></p> <pre data-language="erlang">
+&gt; Map1 = #{a =&gt; "value_one", b =&gt; "value_two"},
+  Map2 = #{a =&gt; 1, c =&gt; 2},
+  maps:merge(Map1,Map2).
+#{a =&gt; 1,b =&gt; "value_two",c =&gt; 2}</pre>  
+<div>new() -&gt; Map</div> <h2 class="func-types-title">Types</h2>   
+<p>Returns a new empty map.</p> <p><strong>Example:</strong></p> <pre data-language="erlang">
+&gt; maps:new().
+#{}</pre>  
+<div>put(Key, Value, Map1) -&gt; Map2</div> <h2 class="func-types-title">Types</h2>      
+<p>Associates <code class="code">Key</code> with value <code class="code">Value</code> and inserts the association into map <code class="code">Map2</code>. If key <code class="code">Key</code> already exists in map <code class="code">Map1</code>, the old associated value is replaced by value <code class="code">Value</code>. The function returns a new map <code class="code">Map2</code> containing the new association and the old associations in <code class="code">Map1</code>.</p> <p>The call fails with a <code class="code">{badmap,Map}</code> exception if <code class="code">Map1</code> is not a map.</p> <p><strong>Example:</strong></p> <pre data-language="erlang">
+&gt; Map = #{"a" =&gt; 1}.
+#{"a" =&gt; 1}
+&gt; maps:put("a", 42, Map).
+#{"a" =&gt; 42}
+&gt; maps:put("b", 1337, Map).
+#{"a" =&gt; 1,"b" =&gt; 1337}</pre>  
+<div>remove(Key, Map1) -&gt; Map2</div> <h2 class="func-types-title">Types</h2>     
+<p>Removes the <code class="code">Key</code>, if it exists, and its associated value from <code class="code">Map1</code> and returns a new map <code class="code">Map2</code> without key <code class="code">Key</code>.</p> <p>The call fails with a <code class="code">{badmap,Map}</code> exception if <code class="code">Map1</code> is not a map.</p> <p><strong>Example:</strong></p> <pre data-language="erlang">
+&gt; Map = #{"a" =&gt; 1}.
+#{"a" =&gt; 1}
+&gt; maps:remove("a",Map).
+#{}
+&gt; maps:remove("b",Map).
+#{"a" =&gt; 1}</pre>  
+<div>size(Map) -&gt; integer() &gt;= 0</div> <h2 class="func-types-title">Types</h2>   
+<p>Returns the number of key-value associations in <code class="code">Map</code>. This operation occurs in constant time.</p> <p><strong>Example:</strong></p> <pre data-language="erlang">
+&gt; Map = #{42 =&gt; value_two,1337 =&gt; "value one","a" =&gt; 1},
+  maps:size(Map).
+3</pre>  
+<div>take(Key, Map1) -&gt; {Value, Map2} | error</div> <h2 class="func-types-title">Types</h2>      
+<p>The function removes the <code class="code">Key</code>, if it exists, and its associated value from <code class="code">Map1</code> and returns a tuple with the removed <code class="code">Value</code> and the new map <code class="code">Map2</code> without key <code class="code">Key</code>. If the key does not exist <code class="code">error</code> is returned. </p> <p>The call will fail with a <code class="code">{badmap,Map}</code> exception if <code class="code">Map1</code> is not a map. </p> <p>Example:</p> <pre data-language="erlang">
+&gt; Map = #{"a" =&gt; "hello", "b" =&gt; "world"}.
+#{"a" =&gt; "hello", "b" =&gt; "world"}
+&gt; maps:take("a",Map).
+{"hello",#{"b" =&gt; "world"}}
+&gt; maps:take("does not exist",Map).
+error</pre>  
+<div>to_list(Map) -&gt; [{Key, Value}]</div> <h2 class="func-types-title">Types</h2>     
+<p>Returns a list of pairs representing the key-value associations of <code class="code">Map</code>, where the pairs <code class="code">[{K1,V1}, ..., {Kn,Vn}]</code> are returned in arbitrary order.</p> <p>The call fails with a <code class="code">{badmap,Map}</code> exception if <code class="code">Map</code> is not a map.</p> <p><strong>Example:</strong></p> <pre data-language="erlang">
+&gt; Map = #{42 =&gt; value_three,1337 =&gt; "value two","a" =&gt; 1},
+  maps:to_list(Map).
+[{42,value_three},{1337,"value two"},{"a",1}]</pre>  
+<div>update(Key, Value, Map1) -&gt; Map2</div> <h2 class="func-types-title">Types</h2>      
+<p>If <code class="code">Key</code> exists in <code class="code">Map1</code>, the old associated value is replaced by value <code class="code">Value</code>. The function returns a new map <code class="code">Map2</code> containing the new associated value.</p> <p>The call fails with a <code class="code">{badmap,Map}</code> exception if <code class="code">Map1</code> is not a map, or with a <code class="code">{badkey,Key}</code> exception if no value is associated with <code class="code">Key</code>.</p> <p><strong>Example:</strong></p> <pre data-language="erlang">
+&gt; Map = #{"a" =&gt; 1}.
+#{"a" =&gt; 1}
+&gt; maps:update("a", 42, Map).
+#{"a" =&gt; 42}</pre>  
+<div>update_with(Key, Fun, Map1) -&gt; Map2</div> <h2 class="func-types-title">Types</h2>      
+<p>Update a value in a <code class="code">Map1</code> associated with <code class="code">Key</code> by calling <code class="code">Fun</code> on the old value to get a new value. An exception <code class="code">{badkey,Key}</code> is generated if <code class="code">Key</code> is not present in the map.</p> <p>Example:</p> <pre data-language="erlang">
+&gt; Map = #{"counter" =&gt; 1},
+  Fun = fun(V) -&gt; V + 1 end,
+  maps:update_with("counter",Fun,Map).
+#{"counter" =&gt; 2}</pre>  
+<div>update_with(Key, Fun, Init, Map1) -&gt; Map2</div> <h2 class="func-types-title">Types</h2>       
+<p>Update a value in a <code class="code">Map1</code> associated with <code class="code">Key</code> by calling <code class="code">Fun</code> on the old value to get a new value. If <code class="code">Key</code> is not present in <code class="code">Map1</code> then <code class="code">Init</code> will be associated with <code class="code">Key</code>. </p> <p>Example:</p> <pre data-language="erlang">
+&gt; Map = #{"counter" =&gt; 1},
+  Fun = fun(V) -&gt; V + 1 end,
+  maps:update_with("new counter",Fun,42,Map).
+#{"counter" =&gt; 1,"new counter" =&gt; 42}</pre>  
+<div>values(Map) -&gt; Values</div> <h2 class="func-types-title">Types</h2>     
+<p>Returns a complete list of values, in arbitrary order, contained in map <code class="code">Map</code>.</p> <p>The call fails with a <code class="code">{badmap,Map}</code> exception if <code class="code">Map</code> is not a map.</p> <p><strong>Example:</strong></p> <pre data-language="erlang">
+&gt; Map = #{42 =&gt; value_three,1337 =&gt; "value two","a" =&gt; 1},
+  maps:values(Map).
+[value_three,"value two",1]</pre>  
+<div>with(Ks, Map1) -&gt; Map2</div> <h2 class="func-types-title">Types</h2>      
+<p>Returns a new map <code class="code">Map2</code> with the keys <code class="code">K1</code> through <code class="code">Kn</code> and their associated values from map <code class="code">Map1</code>. Any key in <code class="code">Ks</code> that does not exist in <code class="code">Map1</code> is ignored.</p> <p><strong>Example:</strong></p> <pre data-language="erlang">
+&gt; Map = #{42 =&gt; value_three,1337 =&gt; "value two","a" =&gt; 1},
+  Ks = ["a",42,"other key"],
+  maps:with(Ks,Map).
+#{42 =&gt; value_three,"a" =&gt; 1}</pre>  
+<div>without(Ks, Map1) -&gt; Map2</div> <h2 class="func-types-title">Types</h2>      
+<p>Returns a new map <code class="code">Map2</code> without keys <code class="code">K1</code> through <code class="code">Kn</code> and their associated values from map <code class="code">Map1</code>. Any key in <code class="code">Ks</code> that does not exist in <code class="code">Map1</code> is ignored</p> <p><strong>Example:</strong></p> <pre data-language="erlang">
+&gt; Map = #{42 =&gt; value_three,1337 =&gt; "value two","a" =&gt; 1},
+  Ks = ["a",42,"other key"],
+  maps:without(Ks,Map).
+#{1337 =&gt; "value two"}</pre>  </div>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2010–2017 Ericsson AB<br>Licensed under the Apache License, Version 2.0.<br>
+    
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

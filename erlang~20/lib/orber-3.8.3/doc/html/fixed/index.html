@@ -1,0 +1,97 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Fixed - Erlang 20 - W3cubDocs</title>
+  
+  <meta name="description" content=" fixed ">
+  <meta name="keywords" content="fixed, -, erlang, erlang~20">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/erlang~20/lib/orber-3.8.3/doc/html/fixed/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/erlang~20.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/erlang~20/" class="_nav-link" title="" style="margin-left:0;">Erlang 20</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _erlang">
+				
+<h1>fixed</h1> <h2 id="module">Module</h2> <p class="REFBODY module-body">fixed</p> <h2 id="module-summary">Module Summary</h2> <p class="REFBODY module-summary-body">the corba fixed type</p> <h2 id="description">Description</h2> 
+<p>This module contains functions that gives an interface to the CORBA fixed type.</p> <p>The type <code class="code">Fixed</code> used below is defined as:</p> <pre data-language="erlang">
+-record(fixed, {digits, scale, value}).
+    </pre> <p>where <code class="code">digits</code> is the total amount of digits it consists of and <code class="code">scale</code> is the number of fractional digits. The <code class="code">value</code> field contains the actual Fixed value represented as an integer. The limitations of each field are:</p> <ul> <li>Digits - integer(), -1 &gt; Digits &lt; 32</li> <li>Scale - integer(), -1 &gt; Scale =&lt; Digits</li> <li>Value - integer(), range (31 digits): ±9999999999999999999999999999999</li> </ul> <p>Since the Value part is represented by an integer, it is vital that the Digits and Scale values are correct. This also means that trailing zeros cannot be left out in some cases:</p> <ul> <li>fixed&lt;5,3&gt; eq. 03.140d eq. 3140</li> <li>fixed&lt;3,2&gt; eq. 3.14d eq. 314</li> </ul> <p>Leading zeros can be left out.</p> <p>For your convenience, this module exports functions which handle unary (<code class="code">-</code>) and binary (<code class="code">+-*/</code>) operations legal for the Fixed type. Since a unary <code class="code">+</code> have no effect, this module do not export such a function. Any of the binary operations may cause an overflow (i.e. more than 31 significant digits; leading and trailing zeros are not considered significant). If this is the case, the Digit and Scale values are adjusted and the Value truncated (no rounding performed). This behavior is compliant with the OMG CORBA specification. Each binary operation have the following upper bounds:</p> <ul> <li> <strong>Fixed1 + Fixed2</strong> - <code class="code">fixed&lt;max(d1-s1,d2-s2) + max(s1,s2) + 1, max(s1,s2)&gt;</code> </li> <li> <strong>Fixed1 - Fixed2</strong> - <code class="code">fixed&lt;max(d1-s1,d2-s2) + max(s1,s2) + 1, max(s1,s2)&gt;</code> </li> <li> <strong>Fixed1 * Fixed2</strong> - <code class="code">fixed&lt;d1+d2, s1+s2&gt;</code> </li> <li> <strong>Fixed1 / Fixed2</strong> - <code class="code">fixed&lt;(d1-s1+s2) + Sinf ,Sinf &gt;</code> </li> </ul> <p>A quotient may have an arbitrary number of decimal places, which is denoted by a scale of Sinf.</p>  <h2 id="exports">Exports</h2> <div class="exports-body"> <h3><code id="create-3">create(Digits, Scale, Value) -&gt; Result</code></h3>  <h2 class="func-types-title">Types</h2>   
+<p>This function creates a new instance of a <code class="code">Fixed Type</code>. If the limitations is not fulfilled (e.g. overflow) an exception is raised.</p>  <h3><code id="get_typecode-1">get_typecode(Fixed) -&gt; Result</code></h3>  <h2 class="func-types-title">Types</h2>   
+<p>Returns the TypeCode which represents the supplied Fixed type. If the parameter is not of the correct type, an exception is raised.</p>  <h3><code id="add-2">add(Fixed1, Fixed2) -&gt; Result</code></h3>  <h2 class="func-types-title">Types</h2>   
+<p>Performs a Fixed type addition. If the parameters are not of the correct type, an exception is raised.</p>  <h3><code id="subtract-2">subtract(Fixed1, Fixed2) -&gt; Result</code></h3>  <h2 class="func-types-title">Types</h2>   
+<p>Performs a Fixed type subtraction. If the parameters are not of the correct type, an exception is raised.</p>  <h3><code id="multiply-2">multiply(Fixed1, Fixed2) -&gt; Result</code></h3>  <h2 class="func-types-title">Types</h2>   
+<p>Performs a Fixed type multiplication. If the parameters are not of the correct type, an exception is raised.</p>  <h3><code id="divide-2">divide(Fixed1, Fixed2) -&gt; Result</code></h3>  <h2 class="func-types-title">Types</h2>   
+<p>Performs a Fixed type division. If the parameters are not of the correct type, an exception is raised.</p>  <h3><code id="unary_minus-1">unary_minus(Fixed) -&gt; Result</code></h3>  <h2 class="func-types-title">Types</h2>   
+<p>Negates the supplied Fixed type. If the parameter is not of the correct type, an exception is raised.</p>  </div>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2010–2017 Ericsson AB<br>Licensed under the Apache License, Version 2.0.<br>
+    
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

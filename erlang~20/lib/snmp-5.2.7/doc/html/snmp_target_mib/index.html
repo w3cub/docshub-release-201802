@@ -1,0 +1,95 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Snmp_target_mib - Erlang 20 - W3cubDocs</title>
+  
+  <meta name="description" content=" snmp_target_mib ">
+  <meta name="keywords" content="snmp, target, mib, -, erlang, erlang~20">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/erlang~20/lib/snmp-5.2.7/doc/html/snmp_target_mib/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/erlang~20.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/erlang~20/" class="_nav-link" title="" style="margin-left:0;">Erlang 20</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _erlang">
+				
+<h1>snmp_target_mib</h1> <h2 id="module">Module</h2> <p class="REFBODY module-body">snmp_target_mib</p> <h2 id="module-summary">Module Summary</h2> <p class="REFBODY module-summary-body">Instrumentation Functions for SNMP-TARGET-MIB</p> <h2 id="description">Description</h2> 
+<p>The module <code class="code">snmp_target_mib</code> implements the instrumentation functions for the SNMP-TARGET-MIB, and functions for configuring the database. </p> <p>The configuration files are described in the SNMP User's Manual.</p> <p>Legacy API functions <code class="code">add_addr/10</code> that does not specify transport domain, and <code class="code">add_addr/11</code> that has got separate <code class="code">IpAddr</code> and <code class="code">PortNumber</code> arguments still work as before for backwards compatibility reasons.</p>   <h2 id="id125818">Data types</h2>  <p>See the <code><a href="../snmpa_conf/#types">data types in<span class="code">snmpa_conf</span></a></code>.</p>   <h2 id="exports">Exports</h2> <div class="exports-body"> <h3><code id="configure-1">configure(ConfDir) -&gt; void()</code></h3>  <h2 class="func-types-title">Types</h2>   
+<p>This function is called from the supervisor at system start-up. </p> <p>Inserts all data in the configuration files into the database and destroys all old rows with StorageType <code class="code">volatile</code>. The rows created from the configuration file will have StorageType <code class="code">nonVolatile</code>. </p> <p>All <code class="code">snmp</code> counters are set to zero. </p> <p>If an error is found in the configuration file, it is reported using the function <code class="code">config_err/2</code> of the error report module, and the function fails with the reason <code class="code">configuration_error</code>. </p> <p><code class="code">ConfDir</code> is a string which points to the directory where the configuration files are found. </p> <p>The configuration files read are: <code class="code">target_addr.conf</code> and <code class="code">target_params.conf</code>. </p>   <h3><code id="reconfigure-1">reconfigure(ConfDir) -&gt; void()</code></h3>  <h2 class="func-types-title">Types</h2>   
+<p>Inserts all data in the configuration files into the database and destroys all old data, including the rows with StorageType <code class="code">nonVolatile</code>. The rows created from the configuration file will have StorageType <code class="code">nonVolatile</code>. </p> <p>Thus, the data in the SNMP-TARGET-MIB, after this function has been called, is the data from the configuration files. </p> <p>All <code class="code">snmp</code> counters are set to zero.</p> <p>If an error is found in the configuration file, it is reported using the function <code class="code">config_err/2</code> of the , and the function fails with the reason <code class="code">configuration_error</code>.</p> <p><code class="code">ConfDir</code> is a string which points to the directory where the configuration files are found. </p> <p>The configuration files read are: <code class="code">target_addr.conf</code> and <code class="code">target_params.conf</code>. </p>   <h3><code id="set_target_engine_id-2">set_target_engine_id(TargetAddrName, EngineId) -&gt; boolean()</code></h3>  <h2 class="func-types-title">Types</h2>    
+<p>Changes the engine id for a target in the <code class="code">snmpTargetAddrTable</code>. If notifications are sent as Inform requests to a target, its engine id must be set. </p>   <h3><code id="add_addr-10">add_addr(Name, Domain, Addr, Timeout, Retry, TagList, Params, EngineId, TMask, MMS) -&gt; Ret</code></h3>  <h2 class="func-types-title">Types</h2>               
+<p>Adds a target address definition to the agent config. Equivalent to one line in the <code class="code">target_addr.conf</code> file.</p>   <h3><code id="delete_addr-1">delete_addr(Key) -&gt; Ret</code></h3>  <h2 class="func-types-title">Types</h2>     
+<p>Delete a target address definition from the agent config.</p>   <h3><code id="add_params-5">add_params(Name, MPModel, SecModel, SecName, SecLevel) -&gt; Ret</code></h3>  <h2 class="func-types-title">Types</h2>          
+<p>Adds a target parameter definition to the agent config. Equivalent to one line in the <code class="code">target_params.conf</code> file.</p>   <h3><code id="delete_params-1">delete_params(Key) -&gt; Ret</code></h3>  <h2 class="func-types-title">Types</h2>     
+<p>Delete a target parameter definition from the agent config.</p>  </div>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2010–2017 Ericsson AB<br>Licensed under the Apache License, Version 2.0.<br>
+    
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

@@ -1,0 +1,129 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Erl_eval - Erlang 20 - W3cubDocs</title>
+  
+  <meta name="description" content=" erl_eval ">
+  <meta name="keywords" content="erl, eval, -, erlang, erlang~20">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/erlang~20/lib/stdlib-3.4.2/doc/html/erl_eval/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/erlang~20.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/erlang~20/" class="_nav-link" title="" style="margin-left:0;">Erlang 20</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _erlang">
+				
+<h1>erl_eval</h1> <h2 id="module">Module</h2> <p class="REFBODY module-body">erl_eval</p> <h2 id="module-summary">Module Summary</h2> <p class="REFBODY module-summary-body">The Erlang meta interpreter.</p> <h2 id="description">Description</h2> 
+<p>This module provides an interpreter for Erlang expressions. The expressions are in the abstract syntax as returned by <code><a href="../erl_parse/"><span class="code">erl_parse</span></a></code>, the Erlang parser, or <code><a href="../io/"><span class="code">io</span></a></code>.</p>  <h2 id="data-types">Data Types</h2> <div class="data-types-body"> <div class="data-type-name"> <code>bindings() = [{<span id="type-bindings"><a href="#type-name">name()</a></span>, <span><a href="#type-value">value()</a></span>}]</code><br> </div>  <div class="data-type-name"> <code>binding_struct() = <span id="type-binding_struct"><a href="../orddict/#type-orddict">orddict:orddict()</a></span></code><br> </div> <div class="data-type-desc">
+
+<p>A binding structure.</p>
+</div> <div class="data-type-name"> <code>expression() = <span id="type-expression"><a href="../erl_parse/#type-abstract_expr">erl_parse:abstract_expr()</a></span></code><br> </div>  <div class="data-type-name"> <code>expressions() = [<span id="type-expressions"><a href="../erl_parse/#type-abstract_expr">erl_parse:abstract_expr()</a></span>]</code><br> </div> <div class="data-type-desc">
+
+<p>As returned by <code><a href="../erl_parse/#parse_exprs-1"><span class="code">erl_parse:parse_exprs/1</span></a></code> or <code><a href="../io/#parse_erl_exprs-2"><span class="code">io:parse_erl_exprs/2</span></a></code>.</p>
+</div> <div class="data-type-name"> <code>expression_list() = [<span id="type-expression_list"><a href="#type-expression">expression()</a></span>]</code><br> </div>  <div class="data-type-name"> <code>func_spec() = <br id="type-func_spec">    {Module :: module(), Function :: atom()} | function()</code><br> </div>  <div class="data-type-name"> <code>lfun_eval_handler() = <br id="type-lfun_eval_handler">    fun((Name :: atom(),<br>         Arguments :: <span><a href="#type-expression_list">expression_list()</a></span>,<br>         Bindings :: <span><a href="#type-binding_struct">binding_struct()</a></span>) -&gt;<br>            {value,<br>             Value :: <span><a href="#type-value">value()</a></span>,<br>             NewBindings :: <span><a href="#type-binding_struct">binding_struct()</a></span>})</code><br> </div>  <div class="data-type-name"> <code>lfun_value_handler() = <br id="type-lfun_value_handler">    fun((Name :: atom(), Arguments :: [term()]) -&gt;<br>            Value :: <span><a href="#type-value">value()</a></span>)</code><br> </div>  <div class="data-type-name"> <code>local_function_handler() = <br id="type-local_function_handler">    {value, <span><a href="#type-lfun_value_handler">lfun_value_handler()</a></span>} |<br>    {eval, <span><a href="#type-lfun_eval_handler">lfun_eval_handler()</a></span>} |<br>    none</code><br> </div> <div class="data-type-desc">
+
+<p>Further described in section <code><a href="#local_function_handler">Local Function Handler</a></code> in this module</p>
+</div> <div class="data-type-name"> <code id="type-name">name() = term()</code><br> </div>  <div class="data-type-name"> <code>nlfun_handler() = <br id="type-nlfun_handler">    fun((FuncSpec :: <span><a href="#type-func_spec">func_spec()</a></span>, Arguments :: [term()]) -&gt; term())</code><br> </div>  <div class="data-type-name"> <code>non_local_function_handler() = {value, <span id="type-non_local_function_handler"><a href="#type-nlfun_handler">nlfun_handler()</a></span>} | none</code><br> </div> <div class="data-type-desc">
+
+<p>Further described in section <code><a href="#non_local_function_handler">Non-Local Function Handler</a></code> in this module.</p>
+</div> <div class="data-type-name"> <code id="type-value">value() = term()</code><br> </div>  </div> <h2 id="exports">Exports</h2> <div class="exports-body"> 
+<div>add_binding(Name, Value, BindingStruct) -&gt; <code><a href="#type-binding_struct">binding_struct()</a></code> </div> <h2 class="func-types-title">Types</h2>     
+<p>Adds binding <code class="code">Name=Value</code> to <code class="code">BindingStruct</code>. Returns an updated binding structure.</p>  
+<div>binding(Name, BindingStruct) -&gt; {value, <code><a href="#type-value">value()</a></code>} | unbound</div> <h2 class="func-types-title">Types</h2>    
+<p>Returns the binding of <code class="code">Name</code> in <code class="code">BindingStruct</code>.</p>  
+<div>bindings(BindingStruct :: <code><a href="#type-binding_struct">binding_struct()</a></code>) -&gt; <code><a href="#type-bindings">bindings()</a></code> </div> 
+<p>Returns the list of bindings contained in the binding structure.</p>  
+<div>del_binding(Name, BindingStruct) -&gt; <code><a href="#type-binding_struct">binding_struct()</a></code> </div> <h2 class="func-types-title">Types</h2>    
+<p>Removes the binding of <code class="code">Name</code> in <code class="code">BindingStruct</code>. Returns an updated binding structure.</p>  
+<div>expr(Expression, Bindings) -&gt; {value, Value, NewBindings}</div>
+<div id="expr-3">expr(Expression, Bindings, LocalFunctionHandler) -&gt;<br> {value, Value, NewBindings}</div>
+<div id="expr-4">expr(Expression,<br> Bindings,<br> LocalFunctionHandler,<br> NonLocalFunctionHandler) -&gt;<br> {value, Value, NewBindings}</div>
+<div id="expr-5">expr(Expression,<br> Bindings,<br> LocalFunctionHandler,<br> NonLocalFunctionHandler,<br> ReturnFormat) -&gt;<br> {value, Value, NewBindings} | Value</div> <h2 class="func-types-title">Types</h2>         
+<p>Evaluates <code class="code">Expression</code> with the set of bindings <code class="code">Bindings</code>. <code class="code">Expression</code> is an expression in abstract syntax. For an explanation of when and how to use arguments <code class="code">LocalFunctionHandler</code> and <code class="code">NonLocalFunctionHandler</code>, see sections <code><a href="#local_function_handler">Local Function Handler</a></code> and <code><a href="#non_local_function_handler">Non-Local Function Handler</a></code> in this module.</p> <p>Returns <code class="code">{value, Value, NewBindings}</code> by default. If <code class="code">ReturnFormat</code> is <code class="code">value</code>, only <code class="code">Value</code> is returned.</p>  
+<div>expr_list(ExpressionList, Bindings) -&gt; {ValueList, NewBindings}</div>
+<div id="expr_list-3">expr_list(ExpressionList, Bindings, LocalFunctionHandler) -&gt;<br> {ValueList, NewBindings}</div>
+<div id="expr_list-4">expr_list(ExpressionList,<br> Bindings,<br> LocalFunctionHandler,<br> NonLocalFunctionHandler) -&gt;<br> {ValueList, NewBindings}</div> <h2 class="func-types-title">Types</h2>        
+<p>Evaluates a list of expressions in parallel, using the same initial bindings for each expression. Attempts are made to merge the bindings returned from each evaluation. This function is useful in <code class="code">LocalFunctionHandler</code>, see section <code><a href="#local_function_handler">Local Function Handler</a></code> in this module.</p> <p>Returns <code class="code">{ValueList, NewBindings}</code>. </p>  
+<div>exprs(Expressions, Bindings) -&gt; {value, Value, NewBindings}</div>
+<div id="exprs-3">exprs(Expressions, Bindings, LocalFunctionHandler) -&gt;<br> {value, Value, NewBindings}</div>
+<div id="exprs-4">exprs(Expressions,<br> Bindings,<br> LocalFunctionHandler,<br> NonLocalFunctionHandler) -&gt;<br> {value, Value, NewBindings}</div> <h2 class="func-types-title">Types</h2>        
+<p>Evaluates <code class="code">Expressions</code> with the set of bindings <code class="code">Bindings</code>, where <code class="code">Expressions</code> is a sequence of expressions (in abstract syntax) of a type that can be returned by <code><a href="../io/#parse_erl_exprs-2"><span class="code">io:parse_erl_exprs/2</span></a></code>. For an explanation of when and how to use arguments <code class="code">LocalFunctionHandler</code> and <code class="code">NonLocalFunctionHandler</code>, see sections <code><a href="#local_function_handler">Local Function Handler</a></code> and <code><a href="#non_local_function_handler">Non-Local Function Handler</a></code> in this module.</p> <p>Returns <code class="code">{value, Value, NewBindings}</code> </p>  
+<div>new_bindings() -&gt; <code><a href="#type-binding_struct">binding_struct()</a></code> </div> 
+<p>Returns an empty binding structure.</p>  </div> <h2 id="id194067"> Local Function Handler </h2>  <p>During evaluation of a function, no calls can be made to local functions. An undefined function error would be generated. However, the optional argument <code class="code">LocalFunctionHandler</code> can be used to define a function that is called when there is a call to a local function. The argument can have the following formats:</p> <dl> <dt><strong><code class="code">{value,Func}</code></strong></dt> <dd> <p>This defines a local function handler that is called with:</p> <pre data-language="erlang">
+Func(Name, Arguments)</pre> <p><code class="code">Name</code> is the name of the local function (an atom) and <code class="code">Arguments</code> is a list of the <strong>evaluated</strong> arguments. The function handler returns the value of the local function. In this case, the current bindings cannot be accessed. To signal an error, the function handler calls <code class="code">exit/1</code> with a suitable exit value.</p> </dd> <dt><strong><code class="code">{eval,Func}</code></strong></dt> <dd> <p>This defines a local function handler that is called with:</p> <pre data-language="erlang">
+Func(Name, Arguments, Bindings)</pre> <p><code class="code">Name</code> is the name of the local function (an atom), <code class="code">Arguments</code> is a list of the <strong>unevaluated</strong> arguments, and <code class="code">Bindings</code> are the current variable bindings. The function handler returns:</p> <pre data-language="erlang">
+{value,Value,NewBindings}</pre> <p><code class="code">Value</code> is the value of the local function and <code class="code">NewBindings</code> are the updated variable bindings. In this case, the function handler must itself evaluate all the function arguments and manage the bindings. To signal an error, the function handler calls <code class="code">exit/1</code> with a suitable exit value.</p> </dd> <dt><strong><code class="code">none</code></strong></dt> <dd> <p>There is no local function handler.</p> </dd> </dl>  <h2 id="id194202"> Non-Local Function Handler </h2>  <p>The optional argument <code class="code">NonLocalFunctionHandler</code> can be used to define a function that is called in the following cases:</p> <ul> <li><p>A functional object (fun) is called.</p></li> <li><p>A built-in function is called.</p></li> <li><p>A function is called using the <code class="code">M:F</code> syntax, where <code class="code">M</code> and <code class="code">F</code> are atoms or expressions.</p></li> <li><p>An operator <code class="code">Op/A</code> is called (this is handled as a call to function <code class="code">erlang:Op/A</code>).</p></li> </ul> <p>Exceptions are calls to <code class="code">erlang:apply/2,3</code>; neither of the function handlers are called for such calls. The argument can have the following formats:</p> <dl> <dt><strong><code class="code">{value,Func}</code></strong></dt> <dd> <p>This defines a non-local function handler that is called with:</p> <pre data-language="erlang">
+Func(FuncSpec, Arguments)</pre> <p><code class="code">FuncSpec</code> is the name of the function on the form <code class="code">{Module,Function}</code> or a fun, and <code class="code">Arguments</code> is a list of the <strong>evaluated</strong> arguments. The function handler returns the value of the function. To signal an error, the function handler calls <code class="code">exit/1</code> with a suitable exit value.</p> </dd> <dt><strong><code class="code">none</code></strong></dt> <dd> <p>There is no non-local function handler.</p> </dd> </dl> <div class="note"> <div class="label">Note</div> <div class="content">
+
+<p>For calls such as <code class="code">erlang:apply(Fun, Args)</code> or <code class="code">erlang:apply(Module, Function, Args)</code>, the call of the non-local function handler corresponding to the call to <code class="code">erlang:apply/2,3</code> itself (<code class="code">Func({erlang, apply}, [Fun, Args])</code> or <code class="code">Func({erlang, apply}, [Module, Function, Args])</code>) never takes place.</p> <p>The non-local function handler <strong>is</strong> however called with the evaluated arguments of the call to <code class="code">erlang:apply/2,3</code>: <code class="code">Func(Fun, Args)</code> or <code class="code">Func({Module, Function}, Args)</code> (assuming that <code class="code">{Module, Function}</code> is not <code class="code">{erlang, apply}</code>).</p> <p>Calls to functions defined by evaluating fun expressions <code class="code">"fun ... end"</code> are also hidden from non-local function handlers.</p> </div> </div> <p>The non-local function handler argument is probably not used as frequently as the local function handler argument. A possible use is to call <code class="code">exit/1</code> on calls to functions that for some reason are not allowed to be called.</p>  <h2 id="id194401">Known Limitation</h2>  <p>Undocumented functions in this module are not to be used.</p>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2010–2017 Ericsson AB<br>Licensed under the Apache License, Version 2.0.<br>
+    
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

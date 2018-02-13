@@ -1,0 +1,160 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Orber_ifr - Erlang 20 - W3cubDocs</title>
+  
+  <meta name="description" content=" orber_ifr ">
+  <meta name="keywords" content="orber, ifr, -, erlang, erlang~20">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/erlang~20/lib/orber-3.8.3/doc/html/orber_ifr/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/erlang~20.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/erlang~20/" class="_nav-link" title="" style="margin-left:0;">Erlang 20</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _erlang">
+				
+<h1>orber_ifr</h1> <h2 id="module">Module</h2> <p class="REFBODY module-body">orber_ifr</p> <h2 id="module-summary">Module Summary</h2> <p class="REFBODY module-summary-body">The Interface Repository stores representations of IDL information</p> <h2 id="description">Description</h2> 
+<p>This module contains functions for managing the Interface Repository (IFR). This documentation should be used in conjunction with the documentation in chapter 6 of CORBA2.3. Whenever the term IFR object is used in this manual page, it refers to a pseudo object used only for interaction with the IFR rather than a CORBA object.</p>  <h2 id="id90079">Initialization of the IFR</h2>  <p>The following functions are used to initialize the Interface Repository and to obtain the initial reference to the repository.</p>  <h2 id="exports">Exports</h2> <div class="exports-body"> <h3><code id="init-2">init(Nodes,Timeout) -&gt; ok</code></h3>  <h2 class="func-types-title">Types</h2>    
+<p>This function should be called to initialize the IFR. It creates the necessary mnesia-tables. A mnesia schema should exist, and mnesia must be running.</p>  <h3><code id="find_repository-0">find_repository() -&gt; #IFR_Repository_objref</code></h3> 
+<p>Find the IFR object reference for the Repository. This reference should be used when adding objects to the IFR, and when extracting information from the IFR. The first time this function is called, it will create the repository and all the primitive definitions.</p>  </div> <h2 id="id90148">General methods</h2>  <p>The following functions are the methods of the IFR. The first argument is always an #IFR_objref, i.e. the IFR (pseudo)object on which to apply this method. These functions are useful when the type of IFR object is not know, but they are somewhat slower than the specific functions listed below which only accept a particular type of IFR object as the first argument.</p>  <h2 id="exports">Exports</h2> <div class="exports-body"> <h3><code id="get_def_kind-1">get_def_kind(Objref) -&gt; Return</code></h3>  <h2 class="func-types-title">Types</h2>    
+<p>Objref is an IFR object of any kind. Returns the definition kind of the IFR object.</p>  <h3><code id="destroy-1">destroy(Objref) -&gt; Return</code></h3>  <h2 class="func-types-title">Types</h2>    
+<p>Objref is an IFR object of any kind except IRObject, Contained and Container. Destroys that object and its contents (if any). Returns whatever mnesia:transaction returns.</p>  <h3><code id="get_id-1">get_id(Objref) -&gt; Return</code></h3>  <h2 class="func-types-title">Types</h2>    
+<p>Objref is an IFR object of any kind that inherits from Contained. Returns the repository id of that object.</p>  <h3><code id="set_id-2">set_id(Objref,Id) -&gt; ok</code></h3>  <h2 class="func-types-title">Types</h2>    
+<p>Objref is an IFR object of any kind that inherits from Contained. Sets the repository id of that object.</p>  <h3><code id="get_name-1">get_name(Objref) -&gt; Return</code></h3>  <h2 class="func-types-title">Types</h2>    
+<p>Objref is an IFR object of any kind that inherits from Contained. Returns the name of that object.</p>  <h3><code id="set_name-2">set_name(Objref,Name) -&gt; ok</code></h3>  <h2 class="func-types-title">Types</h2>    
+<p>Objref is an IFR object of any kind that inherits from Contained. Sets the name of that object.</p>  <h3><code id="get_version-1">get_version(Objref) -&gt; Return</code></h3>  <h2 class="func-types-title">Types</h2>    
+<p>Objref is an IFR object of any kind that inherits from Contained. Returns the version of that object.</p>  <h3><code id="set_version-2">set_version(Objref,Version) -&gt; ok</code></h3>  <h2 class="func-types-title">Types</h2>    
+<p>Objref is an IFR object of any kind that inherits from Contained. Sets the version of that object.</p>  <h3><code id="get_defined_in-1">get_defined_in(Objref) -&gt; Return</code></h3>  <h2 class="func-types-title">Types</h2>    
+<p>Objref is an IFR object of any kind that inherits from Contained. Returns the Container object that the object is defined in.</p>  <h3><code id="get_absolute_name-1">get_absolute_name(Objref) -&gt; Return</code></h3>  <h2 class="func-types-title">Types</h2>    
+<p>Objref is an IFR object of any kind that inherits from Contained. Returns the absolute (scoped) name of that object.</p>  <h3><code id="get_containing_repository-1">get_containing_repository(Objref) -&gt; Return</code></h3>  <h2 class="func-types-title">Types</h2>    
+<p>Objref is an IFR object of any kind that inherits from Contained. Returns the Repository that is eventually reached by recursively following the object's defined_in attribute.</p>  <h3><code id="describe-1">describe(Objref) -&gt; Return</code></h3>  <h2 class="func-types-title">Types</h2>    
+<p>Objref is an IFR object of any kind that inherits from Contained. Returns a tuple describing the object.</p>  <h3><code id="move-4">move(Objref,New_container,New_name,New_version) -&gt; Return</code></h3>  <h2 class="func-types-title">Types</h2>       
+<p>Objref is an IFR object of any kind that inherits from Contained. New_container is an IFR object of any kind that inherits from Container. Removes Objref from its current Container, and adds it to New_container. The name attribute is changed to New_name and the version attribute is changed to New_version.</p>  <h3><code id="lookup-2">lookup(Objref,Search_name) -&gt; Return</code></h3>  <h2 class="func-types-title">Types</h2>     
+<p>Objref is an IFR object of any kind that inherits from Container. Returns an IFR object identified by search_name (a scoped name).</p>  <h3><code id="contents-3">contents(Objref,Limit_type,Exclude_inherited) -&gt; Return</code></h3>  <h2 class="func-types-title">Types</h2>      
+<p>Objref is an IFR object of any kind that inherits from Container. Returns the contents of that IFR object.</p>  <h3><code id="lookup_name-5">lookup_name(Objref,Search_name,Levels_to_search, Limit_type, Exclude_inherited) -&gt; Return</code></h3>  <h2 class="func-types-title">Types</h2>        
+<p>Objref is an IFR object of any kind that inherits from Container. Returns a list of #IFR_objects with an id matching Search_name.</p>  <h3><code id="describe_contents-4">describe_contents(Objref, Limit_type, Exclude_inherited, Max_returned_objs) -&gt; Return</code></h3>  <h2 class="func-types-title">Types</h2>      
+<p>Objref is an IFR object of any kind that inherits from Container. Returns a list of descriptions of the IFR objects in this Container's contents.</p>  <h3><code id="create_module-4">create_module(Objref,Id,Name,Version) -&gt; Return</code></h3>  <h2 class="func-types-title">Types</h2>       
+<p>Objref is an IFR object of any kind that inherits from Container. Creates an IFR object of the type ModuleDef.</p>  <h3><code id="create_constant-6">create_constant(Objref,Id,Name,Version,Type,Value) -&gt; Return</code></h3>  <h2 class="func-types-title">Types</h2>         
+<p>Objref is an IFR object of any kind that inherits from Container. Creates an IFR object of the type ConstantDef.</p>  <h3><code id="create_struct-5">create_struct(Objref,Id,Name,Version,Members) -&gt; Return</code></h3>  <h2 class="func-types-title">Types</h2>        
+<p>Objref is an IFR object of any kind that inherits from Container. Creates an IFR object of the type StructDef.</p>  <h3><code id="create_union-6">create_union(Objref,Id,Name,Version,Discriminator_type,Members) -&gt; Return</code></h3>  <h2 class="func-types-title">Types</h2>         
+<p>Objref is an IFR object of any kind that inherits from Container. Creates an IFR object of the type UnionDef.</p>  <h3><code id="create_enum-5">create_enum(Objref,Id,Name,Version,Members) -&gt; Return</code></h3>  <h2 class="func-types-title">Types</h2>        
+<p>Objref is an IFR object of any kind that inherits from Container. Creates an IFR object of the type EnumDef.</p>  <h3><code id="create_alias-5">create_alias(Objref,Id,Name,Version,Original_type) -&gt; Return</code></h3>  <h2 class="func-types-title">Types</h2>        
+<p>Objref is an IFR object of any kind that inherits from Container. Creates an IFR object of the type AliasDef.</p>  <h3><code id="create_interface-5">create_interface(Objref,Id,Name,Version,Base_interfaces) -&gt; Return</code></h3>  <h2 class="func-types-title">Types</h2>        
+<p>Objref is an IFR object of any kind that inherits from Container. Creates an IFR object of the type InterfaceDef.</p>  <h3><code id="create_exception-5">create_exception(Objref,Id,Name,Version,Members) -&gt; Return</code></h3>  <h2 class="func-types-title">Types</h2>        
+<p>Objref is an IFR object of any kind that inherits from Container. Creates an IFR object of the type ExceptionDef.</p>  <h3><code id="get_type-1">get_type(Objref) -&gt; Return</code></h3>  <h2 class="func-types-title">Types</h2>    
+<p>Objref is an IFR object of any kind that inherits from IDLType or an IFR object of the kind ConstantDef, ExceptionDef or AttributeDef. Returns the typecode of the IFR object.</p>  <h3><code id="lookup_id-2">lookup_id(Objref,Search_id) -&gt; Return</code></h3>  <h2 class="func-types-title">Types</h2>     
+<p>Returns an IFR object matching the Search_id.</p>  <h3><code id="get_primitive-2">get_primitive(Objref,Kind) -&gt; Return</code></h3>  <h2 class="func-types-title">Types</h2>     
+<p>Returns a PrimitiveDef of the specified kind.</p>  <h3><code id="create_string-2">create_string(Objref,Bound) -&gt; Return</code></h3>  <h2 class="func-types-title">Types</h2>     
+<p>Creates an IFR objref of the type StringDef.</p>  <h3><code id="create_wstring-2">create_wstring(Objref,Bound) -&gt; Return</code></h3>  <h2 class="func-types-title">Types</h2>     
+<p>Creates an IFR objref of the type WstringDef.</p>  <h3><code id="create_fixed-3">create_fixed(Objref,Digits,Scale) -&gt; Return</code></h3>  <h2 class="func-types-title">Types</h2>     
+<p>Creates an IFR objref of the type FixedDef.</p>  <h3><code id="create_sequence-3">create_sequence(Objref,Bound,Element_type) -&gt; Return</code></h3>  <h2 class="func-types-title">Types</h2>      
+<p>Creates an IFR objref of the type SequenceDef.</p>  <h3><code id="create_array-3">create_array(Objref,Length,Element_type) -&gt; Return</code></h3>  <h2 class="func-types-title">Types</h2>      
+<p>Creates an IFR objref of the type ArrayDef.</p>  <h3><code id="create_idltype-2">create_idltype(Objref,Typecode) -&gt; Return</code></h3>  <h2 class="func-types-title">Types</h2>     
+<p>Creates an IFR objref of the type IDLType.</p>  <h3><code id="get_type_def-1">get_type_def(Objref) -&gt; Return</code></h3>  <h2 class="func-types-title">Types</h2>    
+<p>Objref is an IFR object of the kind ConstantDef or AttributeDef. Returns an IFR object of the type IDLType describing the type of the IFR object.</p>  <h3><code id="set_type_def-2">set_type_def(Objref,TypeDef) -&gt; Return</code></h3>  <h2 class="func-types-title">Types</h2>     
+<p>Objref is an IFR object of the kind ConstantDef or AttributeDef. Sets the type_def of the IFR Object.</p>  <h3><code id="get_value-1">get_value(Objref) -&gt; Return</code></h3>  <h2 class="func-types-title">Types</h2>    
+<p>Returns the value attribute of an IFR Object of the type ConstantDef.</p>  <h3><code id="set_value-2">set_value(Objref,Value) -&gt; Return</code></h3>  <h2 class="func-types-title">Types</h2>     
+<p>Sets the value attribute of an IFR Object of the type ConstantDef.</p>  <h3><code id="get_members-1">get_members(Objref) -&gt; Return</code></h3>  <h2 class="func-types-title">Types</h2>    
+<p>Objref is an IFR object the kind StructDef, UnionDef, EnumDef or ExceptionDef. For StructDef, UnionDef and ExceptionDef: Returns a list of structmember records that are the constituent parts of the object. For EnumDef: Returns a list of strings describing the enumerations.</p>  <h3><code id="set_members-2">set_members(Objref,Members) -&gt; Return</code></h3>  <h2 class="func-types-title">Types</h2>     
+<p>Objref is an IFR object the kind StructDef, UnionDef, EnumDef or ExceptionDef. For StructDef, UnionDef and ExceptionDef: Members is a list of structmember records. For EnumDef: Members is a list of strings describing the enumerations. Sets the members attribute, which are the constituent parts of the exception.</p>  <h3><code id="get_discriminator_type-1">get_discriminator_type(Objref) -&gt; Return</code></h3>  <h2 class="func-types-title">Types</h2>    
+<p>Returns the discriminator typecode of an IFR object of the type UnionDef.</p>  <h3><code id="get_discriminator_type_def-1">get_discriminator_type_def(Objref) -&gt; Return</code></h3>  <h2 class="func-types-title">Types</h2>    
+<p>Returns an IFR object of the type IDLType describing the discriminator type of an IFR object of the type UnionDef.</p>  <h3><code id="set_discriminator_type_def-2">set_discriminator_type_def(Objref,TypeDef) -&gt; Return</code></h3>  <h2 class="func-types-title">Types</h2>    
+<p>Sets the attribute discriminator_type_def, an IFR object of the type IDLType describing the discriminator type of an IFR object of the type UnionDef.</p>  <h3><code id="get_original_type_def-1">get_original_type_def(Objref) -&gt; Return</code></h3>  <h2 class="func-types-title">Types</h2>    
+<p>Returns an IFR object of the type IDLType describing the original type.</p>  <h3><code id="set_original_type_def-2">set_original_type_def(Objref,TypeDef) -&gt; Return</code></h3>  <h2 class="func-types-title">Types</h2>     
+<p>Sets the original_type_def attribute which describes the original type.</p>  <h3><code id="get_kind-1">get_kind(Objref) -&gt; Return</code></h3>  <h2 class="func-types-title">Types</h2>    
+<p>Returns an atom describing the primitive type (See CORBA 2.0 p 6-21).</p>  <h3><code id="get_bound-1">get_bound(Objref) -&gt; Return</code></h3>  <h2 class="func-types-title">Types</h2>    
+<p>Objref is an IFR object the kind StringDef or SequenceDef. For StringDef: returns the maximum number of characters in the string. For SequenceDef: Returns the maximum number of elements in the sequence. Zero indicates an unbounded sequence.</p>  <h3><code id="set_bound-2">set_bound(Objref,Bound) -&gt; Return</code></h3>  <h2 class="func-types-title">Types</h2>     
+<p>Objref is an IFR object the kind StringDef or SequenceDef. For StringDef: Sets the maximum number of characters in the string. Bound must not be zero. For SequenceDef: Sets the maximum number of elements in the sequence. Zero indicates an unbounded sequence.</p>  <h3><code id="get_element_type-1">get_element_type(Objref) -&gt; Return</code></h3>  <h2 class="func-types-title">Types</h2>    
+<p>Objref is an IFR object the kind SequenceDef or ArrayDef. Returns the typecode of the elements in the IFR object.</p>  <h3><code id="get_element_type_def-1">get_element_type_def(Objref) -&gt; Return</code></h3>  <h2 class="func-types-title">Types</h2>    
+<p>Objref is an IFR object the kind SequenceDef or ArrayDef. Returns an IFR object of the type IDLType describing the type of the elements in Objref.</p>  <h3><code id="set_element_type_def-2">set_element_type_def(Objref,TypeDef) -&gt; Return</code></h3>  <h2 class="func-types-title">Types</h2>     
+<p>Objref is an IFR object the kind SequenceDef or ArrayDef. Sets the element_type_def attribute, an IFR object of the type IDLType describing the type of the elements in Objref.</p>  <h3><code id="get_length-1">get_length(Objref) -&gt; Return</code></h3>  <h2 class="func-types-title">Types</h2>    
+<p>Returns the number of elements in the array.</p>  <h3><code id="set_length-2">set_length(Objref,Length) -&gt; Return</code></h3>  <h2 class="func-types-title">Types</h2>    
+<p>Sets the number of elements in the array.</p>  <h3><code id="get_mode-1">get_mode(Objref) -&gt; Return</code></h3>  <h2 class="func-types-title">Types</h2>    
+<p>Objref is an IFR object the kind AttributeDef or OperationDef. For AttributeDef: Return is an atom ('ATTR_NORMAL' or 'ATTR_READONLY') specifying the read/write access for this attribute. For OperationDef: Return is an atom ('OP_NORMAL' or 'OP_ONEWAY') specifying the mode of the operation.</p>  <h3><code id="set_mode-2">set_mode(Objref,Mode) -&gt; Return</code></h3>  <h2 class="func-types-title">Types</h2>     
+<p>Objref is an IFR object the kind AttributeDef or OperationDef. For AttributeDef: Sets the read/write access for this attribute. Mode is an atom ('ATTR_NORMAL' or 'ATTR_READONLY'). For OperationDef: Sets the mode of the operation. Mode is an atom ('OP_NORMAL' or 'OP_ONEWAY').</p>  <h3><code id="get_result-1">get_result(Objref) -&gt; Return</code></h3>  <h2 class="func-types-title">Types</h2>    
+<p>Returns a typecode describing the type of the value returned by the operation.</p>  <h3><code id="get_result_def-1">get_result_def(Objref) -&gt; Return</code></h3>  <h2 class="func-types-title">Types</h2>    
+<p>Returns an IFR object of the type IDLType describing the type of the result.</p>  <h3><code id="set_result_def-2">set_result_def(Objref,ResultDef) -&gt; Return</code></h3>  <h2 class="func-types-title">Types</h2>     
+<p>Sets the type_def attribute, an IFR Object of the type IDLType describing the result.</p>  <h3><code id="get_params-1">get_params(Objref) -&gt; Return</code></h3>  <h2 class="func-types-title">Types</h2>    
+<p>Returns a list of parameter description records, which describes the parameters of the OperationDef.</p>  <h3><code id="set_params-2">set_params(Objref,Params) -&gt; Return</code></h3>  <h2 class="func-types-title">Types</h2>     
+<p>Sets the params attribute, a list of parameter description records.</p>  <h3><code id="get_contexts-1">get_contexts(Objref) -&gt; Return</code></h3>  <h2 class="func-types-title">Types</h2>    
+<p>Returns a list of context identifiers for the operation.</p>  <h3><code id="set_contexts-2">set_contexts(Objref,Contexts) -&gt; Return</code></h3>  <h2 class="func-types-title">Types</h2>     
+<p>Sets the context attribute for the operation.</p>  <h3><code id="get_exceptions-1">get_exceptions(Objref) -&gt; Return</code></h3>  <h2 class="func-types-title">Types</h2>    
+<p>Returns a list of exception types that can be raised by this operation.</p>  <h3><code id="set_exceptions-2">set_exceptions(Objref,Exceptions) -&gt; Return</code></h3>  <h2 class="func-types-title">Types</h2>     
+<p>Sets the exceptions attribute for this operation.</p>  <h3><code id="get_base_interfaces-1">get_base_interfaces(Objref) -&gt; Return</code></h3>  <h2 class="func-types-title">Types</h2>    
+<p>Returns a list of InterfaceDefs from which this InterfaceDef inherits.</p>  <h3><code id="set_base_interfaces-2">set_base_interfaces(Objref,BaseInterfaces) -&gt; Return</code></h3>  <h2 class="func-types-title">Types</h2>     
+<p>Sets the BaseInterfaces attribute.</p>  <h3><code id="is_a-2">is_a(Objref,Interface_id) -&gt; Return</code></h3>  <h2 class="func-types-title">Types</h2>     
+<p>Returns true if the InterfaceDef either is identical to or inherits from Interface_id.</p>  <h3><code id="describe_interface-1">describe_interface(Objref) -&gt; Return</code></h3>  <h2 class="func-types-title">Types</h2>    
+<p>Returns a full inter face description record describing the InterfaceDef.</p>  <h3><code id="create_attribute-6">create_attribute(Objref,Id,Name,Version,Type,Mode) -&gt; Return</code></h3>  <h2 class="func-types-title">Types</h2>         
+<p>Creates an IFR object of the type AttributeDef contained in this InterfaceDef.</p>  <h3><code id="create_operation-9">create_operation(Objref,Id,Name,Version,Result,Mode,Params, Exceptions,Contexts) -&gt; Return</code></h3>  <h2 class="func-types-title">Types</h2>            
+<p>Creates an IFR object of the type OperationDef contained in this InterfaceDef.</p>  </div>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2010–2017 Ericsson AB<br>Licensed under the Apache License, Version 2.0.<br>
+    
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>
