@@ -1,0 +1,105 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>FAQ - Falcon 1.3 - W3cubDocs</title>
+  
+  <meta name="description" content="Falcon is designed for applications that require a high level of customization or performance tuning. The framework’s minimalist design frees the &hellip;">
+  <meta name="keywords" content="faq, -, falcon, falcon~1.3">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/falcon~1.3/user/faq/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/falcon~1.3.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/falcon~1.3/" class="_nav-link" title="" style="margin-left:0;">Falcon 1.3</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _sphinx">
+				
+<h1 id="id1">FAQ</h1>  <h2 id="faq">Why doesn’t Falcon come with batteries included?</h2> <p>Falcon is designed for applications that require a high level of customization or performance tuning. The framework’s minimalist design frees the developer to select the best strategies and 3rd-party packages for the task at hand.</p> <p>The Python ecosystem offers a number of great packages that you can use from within your responders, hooks, and middleware components. As a starting point, the community maintains a list of <a class="reference external" href="https://github.com/falconry/falcon/wiki" target="_blank">Falcon add-ons and complimentary packages</a>.</p>   <h2 id="how-do-i-use-wsgi-middleware-with-falcon">How do I use WSGI middleware with Falcon?</h2> <p>Instances of <code>falcon.API</code> are first-class WSGI apps, so you can use the standard pattern outlined in PEP-3333. In your main “app” file, you would simply wrap your api instance with a middleware app. For example:</p> <pre data-language="python">import my_restful_service
+import some_middleware
+
+app = some_middleware.DoSomethingFancy(my_restful_service.api)
+</pre> <p>See also the <a class="reference external" href="http://legacy.python.org/dev/peps/pep-3333/#middleware-components-that-play-both-sides" target="_blank">WSGI middleware example</a> given in PEP-3333.</p>   <h2 id="how-do-i-authenticate-requests">How do I authenticate requests?</h2> <p>Hooks and middleware components can be used together to authenticate and authorize requests. For example, a middleware component could be used to parse incoming credentials and place the results in <code>req.context</code>. Downstream components or hooks could then use this information to authorize the request, taking into account the user’s role and the requested resource.</p>   <h2 id="why-doesn-t-falcon-create-a-new-resource-instance-for-every-request">Why doesn’t Falcon create a new Resource instance for every request?</h2> <p>Falcon generally tries to minimize the number of objects that it instantiates. It does this for two reasons: first, to avoid the expense of creating the object, and second to reduce memory usage. Therefore, when adding a route, Falcon requires an <em>instance</em> of your resource class, rather than the class type. That same instance will be used to serve all requests coming in on that route.</p>   <h2 id="is-falcon-thread-safe">Is Falcon thread-safe?</h2> <p>New Request and Response objects are created for each incoming HTTP request. However, a single instance of each resource class attached to a route is shared among all requests. Therefore, as long as you are careful about the way responders access class member variables to avoid conflicts, your WSGI app should be thread-safe.</p> <p>That being said, Falcon-based services are usually deployed using green threads (via the gevent library or similar) which aren’t truly running concurrently, so there may be some edge cases where Falcon is not thread-safe that haven’t been discovered yet.</p> <p><em>Caveat emptor!</em></p>   <h2 id="how-do-i-implement-both-posting-and-geting-items-for-the-same-resource">How do I implement both POSTing and GETing items for the same resource?</h2> <p>Suppose you wanted to implement the following endpoints:</p> <pre data-language="python"># Resource Collection
+POST /resources
+GET /resources{?marker, limit}
+
+# Resource Item
+GET /resources/{id}
+PATCH /resources/{id}
+DELETE /resources/{id}
+</pre> <p>You can implement this sort of API by simply using two Python classes, one to represent a single resource, and another to represent the collection of said resources. It is common to place both classes in the same module.</p> <p>The Falcon community did some experimenting with routing both singleton and collection-based operations to the same Python class, but it turned out to make routing definitions more complicated and less intuitive. That being said, we are always open to new ideas, so please let us know if you discover another way.</p> <p>See also <a class="reference internal" href="../tutorial/#tutorial-serving-images"><span class="std std-ref">this section of the tutorial</span></a>.</p>   <h2 id="how-can-i-pass-data-from-a-hook-to-a-responder-and-between-hooks">How can I pass data from a hook to a responder, and between hooks?</h2> <p>You can inject extra responder kwargs from a hook by adding them to the <em>params</em> dict passed into the hook. You can also add custom data to the <code>req.context</code> dict, as a way of passing contextual information around.</p>   <h2 id="does-falcon-set-content-length-or-do-i-need-to-do-that-explicitly">Does Falcon set Content-Length or do I need to do that explicitly?</h2> <p>Falcon will try to do this for you, based on the value of <code>resp.body</code>, <code>resp.data</code>, or <code>resp.stream_len</code> (whichever is set in the response, checked in that order.)</p> <p>For dynamically-generated content, you can choose to leave off <code>stream_len</code>, in which case Falcon will then leave off the Content-Length header, and hopefully your WSGI server will do the Right Thing™ (assuming you’ve told it to enable keep-alive).</p> <div class="admonition note"> <p class="first admonition-title">Note</p> <p class="last">PEP-333 prohibits apps from setting hop-by-hop headers itself, such as Transfer-Encoding.</p> </div>   <h2 id="i-m-setting-a-response-body-but-it-isn-t-getting-returned-what-s-going-on">I’m setting a response body, but it isn’t getting returned. What’s going on?</h2> <p>Falcon skips processing the response body when, according to the HTTP spec, no body should be returned. If the client sends a HEAD request, the framework will always return an empty body. Falcon will also return an empty body whenever the response status is any of the following:</p> <pre data-language="python">falcon.HTTP_100
+falcon.HTTP_204
+falcon.HTTP_416
+falcon.HTTP_304
+</pre> <p>If you have another case where you body isn’t being returned to the client, it’s probably a bug! Let us know in IRC or on the mailing list so we can help.</p>   <h2 id="my-app-is-setting-a-cookie-but-it-isn-t-being-passed-back-in-subsequent-requests">My app is setting a cookie, but it isn’t being passed back in subsequent requests.</h2> <p>By default, Falcon enables the <code>secure</code> cookie attribute. Therefore, if you are testing your app over HTTP (instead of HTTPS), the client will not send the cookie in subsequent requests. See also <a class="reference internal" href="../../api/cookies/#cookie-secure-attribute"><span class="std std-ref">the cookie documentation</span></a></p>   <h2 id="why-does-raising-an-error-inside-a-resource-crash-my-app">Why does raising an error inside a resource crash my app?</h2> <p>Generally speaking, Falcon assumes that resource responders (such as <em>on_get</em>, <em>on_post</em>, etc.) will, for the most part, do the right thing. In other words, Falcon doesn’t try very hard to protect responder code from itself.</p> <p>This approach reduces the number of (often) extraneous checks that Falcon would otherwise have to perform, making the framework more efficient. With that in mind, writing a high-quality API based on Falcon requires that:</p> <ol class="arabic simple"> <li>Resource responders set response variables to sane values.</li> <li>Your code is well-tested, with high code coverage.</li> <li>Errors are anticipated, detected, and handled appropriately within each responder and with the aid of custom error handlers.</li> </ol> <div class="admonition tip"> <p class="first admonition-title">Tip</p> <p class="last">Falcon will re-raise errors that do not inherit from <code>falcon.HTTPError</code> unless you have registered a custom error handler for that type (see also: <a class="reference internal" href="../../api/api/#api"><span class="std std-ref">falcon.API</span></a>).</p> </div>   <h2 id="why-are-trailing-slashes-trimmed-from-req-path">Why are trailing slashes trimmed from req.path?</h2> <p>Falcon normalizes incoming URI paths to simplify later processing and improve the predictability of application logic. In addition to stripping a trailing slashes, if any, Falcon will convert empty paths to “/”.</p> <p>Note also that routing is also normalized, so adding a route for “/foo/bar” also implicitly adds a route for “/foo/bar/”. Requests coming in for either path will be sent to the same resource.</p>   <h2 id="why-are-field-names-in-uri-templates-restricted-to-certain-characters">Why are field names in URI templates restricted to certain characters?</h2> <p>Field names are restricted to the ASCII characters in the set <code>[a-zA-Z_]</code>. Using a restricted set of characters allows the framework to make simplifying assumptions that reduce the overhead of parsing incoming requests.</p>   <h2 id="why-is-my-query-parameter-missing-from-the-req-object">Why is my query parameter missing from the req object?</h2> <p>If a query param does not have a value, Falcon will by default ignore that parameter. For example, passing ‘foo’ or ‘foo=’ will result in the parameter being ignored.</p> <p>If you would like to recognize such parameters, you must set the <code>keep_blank_qs_values</code> request option to <code>True</code>. Request options are set globally for each instance of <code>falcon.API</code> through the <code>req_options</code> attribute. For example:</p> <pre data-language="python">api.req_options.keep_blank_qs_values = True
+</pre>   <h2 id="how-can-i-access-posted-form-params">How can I access POSTed form params?</h2> <p>By default, Falcon does not consume request bodies. However, setting the <a class="reference internal" href="../../api/api/#RequestOptions.auto_parse_form_urlencoded" title="RequestOptions.auto_parse_form_urlencoded"><code>auto_parse_form_urlencoded</code></a> to <code>True</code> will cause the framework to consume the request body when the content type is <code>application/x-www-form-urlencoded</code>, making the form parameters accessible via <a class="reference internal" href="../../api/request_and_response/#Request.params" title="Request.params"><code>params</code></a>, <a class="reference internal" href="../../api/request_and_response/#falcon.Request.get_param" title="falcon.Request.get_param"><code>get_param()</code></a>, etc.</p> <pre data-language="python">api.req_options.auto_parse_form_urlencoded = True
+</pre> <p>Alternatively, POSTed form parameters may be read directly from <a class="reference internal" href="../../api/request_and_response/#Request.stream" title="Request.stream"><code>stream</code></a> and parsed via <a class="reference internal" href="../../api/util/#falcon.uri.parse_query_string" title="falcon.uri.parse_query_string"><code>falcon.uri.parse_query_string()</code></a> or <a class="reference external" href="https://docs.python.org/3.6/library/urllib.parse.html#urllib.parse.parse_qs" target="_blank">urllib.parse.parse_qs()</a>.</p>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2012–2016 by Rackspace Hosting, Inc. and other contributors<br>Licensed under the Apache License, Version 2.0.<br>
+    <a href="https://falcon.readthedocs.io/en/1.3.0/user/faq.html" class="_attribution-link" target="_blank">https://falcon.readthedocs.io/en/1.3.0/user/faq.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>
