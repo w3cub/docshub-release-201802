@@ -1,0 +1,123 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Contributing Your Module to Ansible - Ansible - W3cubDocs</title>
+  
+  <meta name="description" content="High-quality modules with minimal dependencies can be included in Ansible, but modules (just due to the programming preferences of the developers) &hellip;">
+  <meta name="keywords" content="contributing, your, module, ansible, -">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/ansible/dev_guide/developing_modules_checklist/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/ansible.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/ansible/" class="_nav-link" title="" style="margin-left:0;">Ansible</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _sphinx">
+				
+<h1 id="module-contribution">Contributing Your Module to Ansible</h1> <p id="contributing-your-module-to-ansible">High-quality modules with minimal dependencies can be included in Ansible, but modules (just due to the programming preferences of the developers) will need to be implemented in Python and use the AnsibleModule common code, and should generally use consistent arguments with the rest of the program. Stop by the mailing list to inquire about requirements if you like, and submit a github pull request to the <a class="reference external" href="https://github.com/ansible/ansible" target="_blank">ansible</a> project. Included modules will ship with ansible, and also have a chance to be promoted to ‘core’ status, which gives them slightly higher development priority (though they’ll work in exactly the same way).</p>  <h2 id="contributing-modules-checklist">Contributing Modules Checklist</h2> <p>The following checklist items are important guidelines for people who want to contribute to the development of modules to Ansible on GitHub. Please read the guidelines before you submit your PR/proposal.</p> <ul class="simple"> <li>The shebang must always be <code>#!/usr/bin/python</code>. This allows <code>ansible_python_interpreter</code> to work</li> <li>Modules must be written to support Python 2.6. If this is not possible, required minimum Python version and rationale should be explained in the requirements section in <code>DOCUMENTATION</code>. In Ansible-2.3 the minimum requirement for modules was Python-2.4.</li> <li>Modules must be written to use proper Python-3 syntax. At some point in the future we’ll come up with rules for running on Python-3 but we’re not there yet. See <a class="reference internal" href="../developing_python3/"><span class="doc">Ansible and Python 3</span></a> for help on how to do this.</li> <li>Modules must have a metadata section. For the vast majority of new modules, the metadata should look exactly like this:</li> </ul> <pre data-language="python">ANSIBLE_METADATA = {'status': ['preview'],
+                    'supported_by': 'community',
+                    'metadata_version': '1.1'}
+</pre> <p>The complete module metadata specification is here: <a class="reference external" href="https://docs.ansible.com/ansible/dev_guide/developing_modules_documenting.html#ansible-metadata-block" target="_blank">Ansible metadata block</a></p> <ul> <li>
+<dl class="first docutils"> <dt>Documentation: Make sure it exists</dt> <dd>
+<ul class="first last simple"> <li>Module documentation should briefly and accurately define what each module and option does, and how it works with others in the underlying system. Documentation should be written for broad audience–readable both by experts and non-experts. This documentation is not meant to teach a total novice, but it also should not be reserved for the Illuminati (hard balance).</li> <li>Descriptions should always start with a capital letter and end with a full stop. Consistency always helps.</li> <li>The <code>required</code> setting is only required when true, otherwise it is assumed to be false.</li> <li>If <code>required</code> is false/missing, <code>default</code> may be specified (assumed ‘null’ if missing). Ensure that the default parameter in docs matches default parameter in code.</li> <li>Documenting <code>default</code> is not needed for <code>required: true</code>.</li> <li>Remove unnecessary doc like <code>aliases: []</code> or <code>choices: []</code>.</li> <li>Do not use Boolean values in a choice list . For example, in the list <code>choices: [‘no’, ‘verify’, ‘always]</code>, ‘no’ will be interpreted as a Boolean value (you can check basic.py for BOOLEANS_* constants to see the full list of Boolean keywords). If your option actually is a boolean, just use <code>type=bool</code>; there is no need to populate ‘choices’.</li> <li>For new modules or options in a module add version_added. The version should match the value of the current development version and is a string (not a float), so be sure to enclose it in quotes.</li> <li>Verify that arguments in doc and module spec dict are identical.</li> <li>For password / secret arguments no_log=True should be set.</li> <li>Requirements should be documented, using the <code>requirements=[]</code> field.</li> <li>Author should be set, with their name and their github id, at the least.</li> <li>Ensure that you make use of <code>U()</code> for URLs, <code>I()</code> for option names, <code>C()</code> for files and option values, <code>M()</code> for module names.</li> <li>If an optional parameter is sometimes required this need to be reflected in the documentation, e.g. “Required when C(state=present).”</li> <li>Verify that a GPL 3 License header is included.</li> <li>Does module use check_mode? Could it be modified to use it? Document it. Documentation is everyone’s friend.</li> <li>Examples–include them whenever possible and make sure they are reproducible.</li> <li>Document the return structure of the module. Refer to <a class="reference internal" href="../../common_return_values/#common-return-values"><span class="std std-ref">Common</span></a> and <a class="reference internal" href="../developing_modules_documenting/#module-documenting"><span class="std std-ref">Documenting Your Module</span></a> for additional information.</li> </ul> </dd> </dl> </li> <li>
+<dl class="first docutils"> <dt>Predictable user interface: This is a particularly important section as it is also an area where we need significant improvements.</dt> <dd>
+<ul class="first last simple"> <li>Name consistency across modules (we’ve gotten better at this, but we still have many deviations).</li> <li>Declarative operation (not CRUD)–this makes it easy for a user not to care what the existing state is, just about the final state. <code>started/stopped</code>, <code>present/absent</code>–don’t overload options too much. It is preferable to add a new, simple option than to add choices/states that don’t fit with existing ones.</li> <li>Keep options small, having them take large data structures might save us a few tasks, but adds a complex requirement that we cannot easily validate before passing on to the module.</li> <li>Allow an “expert mode”. This may sound like the absolute opposite of the previous one, but it is always best to let expert users deal with complex data. This requires different modules in some cases, so that you end up having one (1) expert module and several ‘piecemeal’ ones (ec2_vpc_net?). The reason for this is not, as many users express, because it allows a single task and keeps plays small (which just moves the data complexity into vars files, leaving you with a slightly different structure in another YAML file). It does, however, allow for a more ‘atomic’ operation against the underlying APIs and services.</li> </ul> </dd> </dl> </li> <li>
+<dl class="first docutils"> <dt>Informative responses: Please note, that for &gt;= 2.0, it is required that return data to be documented.</dt> <dd>
+<ul class="first last simple"> <li>Always return useful data, even when there is no change.</li> <li>Be consistent about returns (some modules are too random), unless it is detrimental to the state/action.</li> <li>Make returns reusable–most of the time you don’t want to read it, but you do want to process it and re-purpose it.</li> <li>Return diff if in diff mode. This is not required for all modules, as it won’t make sense for certain ones, but please attempt to include this when applicable).</li> </ul> </dd> </dl> </li> <li>
+<dl class="first docutils"> <dt>Code: This applies to all code in general, but often seems to be missing from modules, so please keep the following in mind as you work.</dt> <dd>
+<ul class="first last simple"> <li>Validate upfront–fail fast and return useful and clear error messages.</li> <li>Defensive programming–modules should be designed simply enough that this should be easy. Modules should always handle errors gracefully and avoid direct stacktraces. Ansible deals with this better in 2.0 and returns them in the results.</li> <li>Fail predictably–if we must fail, do it in a way that is the most expected. Either mimic the underlying tool or the general way the system works.</li> <li>Modules should not do the job of other modules, that is what roles are for. Less magic is more.</li> <li>Don’t reinvent the wheel. Part of the problem is that code sharing is not that easy nor documented, we also need to expand our base functions to provide common patterns (retry, throttling, etc).</li> <li>Support check mode. This is not required for all modules, as it won’t make sense for certain ones, but please attempt to include this when applicable). For more information, refer to <a class="reference internal" href="../../test_strategies/#check-mode-drift"><span class="std std-ref">Check Mode As A Drift Test</span></a> and <a class="reference internal" href="../../playbooks_checkmode/#check-mode-dry"><span class="std std-ref">Check Mode (“Dry Run”)</span></a>.</li> </ul> </dd> </dl> </li> <li>
+<dl class="first docutils"> <dt>Exceptions: The module must handle them. (exceptions are bugs)</dt> <dd>
+<ul class="first last simple"> <li>Give out useful messages on what you were doing and you can add the exception message to that.</li> <li>Avoid catchall exceptions, they are not very useful unless the underlying API gives very good error messages pertaining the attempted action.</li> </ul> </dd> </dl> </li> <li>
+<dl class="first docutils"> <dt>Module-dependent guidelines: Additional module guidelines may exist for certain families of modules.</dt> <dd>
+<ul class="first last"> <li>
+<dl class="first docutils"> <dt>Be sure to check out the modules themselves for additional information.</dt> <dd>
+<ul class="first last simple"> <li><a class="reference external" href="https://github.com/ansible/ansible/blob/devel/lib/ansible/modules/cloud/amazon/GUIDELINES.md" target="_blank">Amazon</a></li> </ul> </dd> </dl> </li> <li>
+<p class="first">Modules should make use of the “extends_documentation_fragment” to ensure documentation available. For example, the AWS module should include:</p> <pre data-language="YAML">extends_documentation_fragment:
+    - aws
+    - ec2
+</pre> </li> </ul> </dd> </dl> </li> <li>The module must not use sys.exit() –&gt; use fail_json() from the module object. </li> <li>Import custom packages in try/except and handled with fail_json() in main() e.g. </li> </ul> <pre data-language="python">try:
+    import foo
+    HAS_LIB=True
+except:
+    HAS_LIB=False
+</pre> <ul class="simple"> <li>The return structure should be consistent, even if NA/None are used for keys normally returned under other options.</li> <li>Are module actions idempotent? If not document in the descriptions or the notes.</li> <li>Import <code>ansible.module_utils</code> code in the same place as you import other libraries. In older code, this was done at the bottom of the file but that’s no longer needed.</li> <li>Do not use wildcards for importing other python modules (ex: <code>from ansible.module_utils.basic import *</code>). This used to be required for code imported from <code>ansible.module_utils</code> but, from Ansible-2.1 onwards, it’s just an outdated and bad practice.</li> <li>The module must have a <code>main</code> function that wraps the normal execution.</li> <li>Call your <code>main()</code> from a conditional so that it would be possible to import them into unittests in the future example</li> </ul> <pre data-language="python">if __name__ == '__main__':
+    main()
+</pre> <ul class="simple"> <li>Try to normalize parameters with other modules, you can have aliases for when user is more familiar with underlying API name for the option</li> <li>Being <a class="reference external" href="https://www.python.org/dev/peps/pep-0008/" target="_blank">PEP 8</a> compliant is a requirement. See <a class="reference internal" href="../testing_pep8/"><span class="doc">PEP 8</span></a> for more information.</li> <li>Avoid ‘<code>action</code>/<code>command</code>‘, they are imperative and not declarative, there are other ways to express the same thing</li> <li>Do not add <code>list</code> or <code>info</code> state options to an existing module - create a new <code>_facts</code> module.</li> <li>If you are asking ‘how can I have a module execute other modules’ ... you want to write a role</li> <li>Return values must be able to be serialized as json via the python stdlib json library. basic python types (strings, int, dicts, lists, etc) are serializable. A common pitfall is to try returning an object via exit_json(). Instead, convert the fields you need from the object into the fields of a dictionary and return the dictionary.</li> <li>When fetching URLs, please use either fetch_url or open_url from ansible.module_utils.urls rather than urllib2; urllib2 does not natively verify TLS certificates and so is insecure for https.</li> <li>facts modules must return facts in the ansible_facts field of the result dictionary. <span class="xref std std-ref">module_provided_facts</span>
+</li> <li>modules that are purely about fact gathering need to implement check_mode. they should not cause any changes anyway so it should be as simple as adding check_mode=True when instantiating AnsibleModule. (The reason is that playbooks which conditionalize based on fact information will only conditionalize correctly in check_mode if the facts are returned in check_mode).</li> <li>Basic auth: module_utils.api has some helpers for doing basic auth with module_utils.urls.fetch_url(). If you use those you may find you also want to fallback on environment variables for default values. If you do that, be sure to use non-generic environment variables (like <code id="index-0">API_&lt;MODULENAME&gt;_USERNAME</code>). Using generic environment variables like <code id="index-1">API_USERNAME</code> would conflict between modules.</li> </ul>  <h3 id="windows-modules-checklist">Windows modules checklist</h3> <p>For a checklist and details on how to write Windows modules please see <a class="reference internal" href="../developing_modules_general_windows/"><span class="doc">Windows Ansible Module Development Walkthrough</span></a></p>   <h3 id="deprecating-and-making-module-aliases">Deprecating and making module aliases</h3> <p>Starting in 1.8, you can deprecate modules by renaming them with a preceding <code>_</code>, i.e. <code>old_cloud.py</code> to <code>_old_cloud.py</code>. This keeps the module available, but hides it from the primary docs and listing.</p> <p>When deprecating a module:</p> <ol class="arabic"> <li>Set the <code>ANSIBLE_METADATA</code> <code>status</code> to <code>deprecated</code>. </li> <li>
+<p class="first">In the <code>DOCUMENTATION</code> section, add a <code>deprecated</code> field along the lines of:</p> <pre data-language="YAML">deprecated: Deprecated in 2.3. Use M(whatmoduletouseinstead) instead.
+</pre> </li> <li>Add the deprecation to CHANGELOG.md under the <code>###Deprecations:</code> section. </li> </ol>  <h4 id="alias-module-names">Alias module names</h4> <p>You can also rename modules and keep an alias to the old name by using a symlink that starts with _. This example allows the stat module to be called with fileinfo, making the following examples equivalent:</p> <pre data-language="YAML">EXAMPLES = '''
+ln -s stat.py _fileinfo.py
+ansible -m stat -a "path=/tmp" localhost
+ansible -m fileinfo -a "path=/tmp" localhost
+'''
+</pre>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2012–2017 Michael DeHaan<br>© 2017 Red Hat, Inc.<br>Licensed under the GNU General Public License version 3.<br>
+    <a href="https://docs.ansible.com/ansible/latest/dev_guide/developing_modules_checklist.html" class="_attribution-link" target="_blank">https://docs.ansible.com/ansible/latest/dev_guide/developing_modules_checklist.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

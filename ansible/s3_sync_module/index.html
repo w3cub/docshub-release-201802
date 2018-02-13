@@ -1,0 +1,145 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>S3_sync - Ansible - W3cubDocs</title>
+  
+  <meta name="description" content=" New in version 2.3. ">
+  <meta name="keywords" content="s, sync, -, efficiently, upload, multiple, files, ansible">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/ansible/s3_sync_module/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/ansible.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/ansible/" class="_nav-link" title="" style="margin-left:0;">Ansible</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _sphinx">
+				
+<h1 id="s3-sync">s3_sync - Efficiently upload multiple files to S3</h1> <div class="versionadded" id="s3-sync-efficiently-upload-multiple-files-to-s3"> <p><span class="versionmodified">New in version 2.3.</span></p> </div>  <ul class="simple"> <li><a class="reference internal" href="#synopsis" id="id1">Synopsis</a></li> <li><a class="reference internal" href="#requirements-on-host-that-executes-module" id="id2">Requirements (on host that executes module)</a></li> <li><a class="reference internal" href="#options" id="id3">Options</a></li> <li><a class="reference internal" href="#examples" id="id4">Examples</a></li> <li><a class="reference internal" href="#return-values" id="id5">Return Values</a></li> <li>
+<a class="reference internal" href="#notes" id="id6">Notes</a><ul> <li><a class="reference internal" href="#status" id="id7">Status</a></li> </ul> </li> </ul>   <h2 id="synopsis">Synopsis</h2> <ul class="simple"> <li>The S3 module is great, but it is very slow for a large volume of files- even a dozen will be noticeable. In addition to speed, it handles globbing, inclusions/exclusions, mime types, expiration mapping, recursion, cache control and smart directory mapping.</li> </ul>   <h2 id="requirements-on-host-that-executes-module">Requirements (on host that executes module)</h2>  <ul class="simple"> <li>boto</li> <li>boto3 &gt;= 1.4.4</li> <li>botocore</li> <li>python &gt;= 2.6</li> </ul>    <h2 id="options">Options</h2> <table> <tr> <th class="head">parameter</th> <th class="head">required</th> <th class="head">default</th> <th class="head">choices</th> <th class="head">comments</th> </tr> <tr> <td>aws_access_key<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>AWS access key. If not set then the value of the AWS_ACCESS_KEY_ID, AWS_ACCESS_KEY or EC2_ACCESS_KEY environment variable is used.</div> <div style="font-size: small;">aliases: ec2_access_key, access_key</div> </td> </tr> <tr> <td>aws_secret_key<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>AWS secret key. If not set then the value of the AWS_SECRET_ACCESS_KEY, AWS_SECRET_KEY, or EC2_SECRET_KEY environment variable is used.</div> <div style="font-size: small;">aliases: ec2_secret_key, secret_key</div> </td> </tr> <tr> <td>bucket<br>
+</td> <td>yes</td> <td></td> <td></td> <td> <div>Bucket name.</div> </td> </tr> <tr> <td>cache_control<br><div style="font-size: small;">(added in 2.4)</div>
+</td> <td>no</td> <td></td> <td></td> <td> <div>This is a string.</div> <div>Cache-Control header set on uploaded objects.</div> <div>Directives are separated by commmas.</div> </td> </tr> <tr> <td>delete<br><div style="font-size: small;">(added in 2.4)</div>
+</td> <td>no</td> <td></td> <td></td> <td> <div>Remove remote files that exist in bucket but are not present in the file root.</div> </td> </tr> <tr> <td>ec2_url<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>Url to use to connect to EC2 or your Eucalyptus cloud (by default the module will use EC2 endpoints). Ignored for modules where region is required. Must be specified for all other modules if region is not used. If not set then the value of the EC2_URL environment variable, if any, is used.</div> </td> </tr> <tr> <td>exclude<br>
+</td> <td>no</td> <td>.*</td> <td></td> <td> <div>Shell pattern-style file matching.</div> <div>Used after include to remove files (for instance, skip "*.txt")</div> <div>For multiple patterns, comma-separate them.</div> </td> </tr> <tr> <td>file_change_strategy<br>
+</td> <td>no</td> <td>date_size</td> <td><ul>
+<li>force</li>
+<li>checksum</li>
+<li>date_size</li>
+</ul></td> <td> <div>Difference determination method to allow changes-only syncing. Unlike rsync, files are not patched- they are fully skipped or fully uploaded.</div> <div>date_size will upload if file sizes don't match or if local file modified date is newer than s3's version</div> <div>checksum will compare etag values based on s3's implementation of chunked md5s.</div> <div>force will always upload all files.</div> </td> </tr> <tr> <td>file_root<br>
+</td> <td>yes</td> <td></td> <td></td> <td> <div>File/directory path for synchronization. This is a local path.</div> <div>This root path is scrubbed from the key name, so subdirectories will remain as keys.</div> </td> </tr> <tr> <td>include<br>
+</td> <td>no</td> <td>*</td> <td></td> <td> <div>Shell pattern-style file matching.</div> <div>Used before exclude to determine eligible files (for instance, only "*.gif")</div> <div>For multiple patterns, comma-separate them.</div> </td> </tr> <tr> <td>key_prefix<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>In addition to file path, prepend s3 path with this prefix. Module will add slash at end of prefix if necessary.</div> </td> </tr> <tr> <td>mime_map<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>Dict entry from extension to MIME type. This will override any default/sniffed MIME type. For example <code>{".txt": "application/text", ".yml": "appication/text"}</code> </div> </td> </tr> <tr> <td>mode<br>
+</td> <td>yes</td> <td>push</td> <td><ul><li>push</li></ul></td> <td> <div>sync direction.</div> </td> </tr> <tr> <td>permission<br>
+</td> <td>no</td> <td></td> <td><ul>
+<li>
+</li>
+<li>private</li>
+<li>public-read</li>
+<li>public-read-write</li>
+<li>authenticated-read</li>
+<li>aws-exec-read</li>
+<li>bucket-owner-read</li>
+<li>bucket-owner-full-control</li>
+</ul></td> <td> <div>Canned ACL to apply to synced files.</div> <div>Changing this ACL only changes newly synced files, it does not trigger a full reupload.</div> </td> </tr> <tr> <td>profile<br><div style="font-size: small;">(added in 1.6)</div>
+</td> <td>no</td> <td></td> <td></td> <td> <div>Uses a boto profile. Only works with boto &gt;= 2.24.0.</div> </td> </tr> <tr> <td>region<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>The AWS region to use. If not specified then the value of the AWS_REGION or EC2_REGION environment variable, if any, is used. See <a href="http://docs.aws.amazon.com/general/latest/gr/rande.html#ec2_region" target="_blank">http://docs.aws.amazon.com/general/latest/gr/rande.html#ec2_region</a>
+</div> <div style="font-size: small;">aliases: aws_region, ec2_region</div> </td> </tr> <tr> <td>security_token<br><div style="font-size: small;">(added in 1.6)</div>
+</td> <td>no</td> <td></td> <td></td> <td> <div>AWS STS security token. If not set then the value of the AWS_SECURITY_TOKEN or EC2_SECURITY_TOKEN environment variable is used.</div> <div style="font-size: small;">aliases: access_token</div> </td> </tr> <tr> <td>validate_certs<br><div style="font-size: small;">(added in 1.5)</div>
+</td> <td>no</td> <td>yes</td> <td><ul>
+<li>yes</li>
+<li>no</li>
+</ul></td> <td> <div>When set to "no", SSL certificates will not be validated for boto versions &gt;= 2.6.0.</div> </td> </tr> </table>   <h2 id="examples">Examples</h2>  <pre data-language="YAML">- name: basic upload
+  s3_sync:
+    bucket: tedder
+    file_root: roles/s3/files/
+
+- name: all the options
+  s3_sync:
+    bucket: tedder
+    file_root: roles/s3/files
+    mime_map:
+      .yml: application/text
+      .json: application/text
+    key_prefix: config_files/web
+    file_change_strategy: force
+    permission: public-read
+    cache_control: "public, max-age=31536000"
+    include: "*"
+    exclude: "*.txt,.*"
+</pre>    <h2 id="return-values">Return Values</h2> <p>Common return values are documented here <a class="reference internal" href="../common_return_values/"><span class="doc">Return Values</span></a>, the following are the fields unique to this module:</p> <table> <tr> <th class="head">name</th> <th class="head">description</th> <th class="head">returned</th> <th class="head">type</th> <th class="head">sample</th> </tr> <tr> <td>uploaded</td> <td> <div>file listing (dicts) of files that were actually uploaded</div> </td> <td align="center">always</td> <td align="center">list</td> <td align="center">[{'s3_path': 's3sync/policy.json', 'whysize': '151 / 151', 'fullpath': 'roles/cf/files/policy.json', 'chopped_path': 'policy.json', 'bytes': 151, 'whytime': '1477931637 / 1477931489'}]</td> </tr> <tr> <td>filelist_s3</td> <td> <div>file listing (dicts) including information about previously-uploaded versions</div> </td> <td align="center">always</td> <td align="center">list</td> <td align="center">[{'s3_path': 's3sync/policy.json', 'modified_epoch': 1477416706, 'fullpath': 'roles/cf/files/policy.json', 'chopped_path': 'policy.json', 'bytes': 151, 'mime_type': 'application/json'}]</td> </tr> <tr> <td>filelist_local_etag</td> <td> <div>file listing (dicts) including calculated local etag</div> </td> <td align="center">always</td> <td align="center">list</td> <td align="center">[{'s3_path': 's3sync/policy.json', 'modified_epoch': 1477416706, 'fullpath': 'roles/cf/files/policy.json', 'chopped_path': 'policy.json', 'bytes': 151, 'mime_type': 'application/json'}]</td> </tr> <tr> <td>filelist_initial</td> <td> <div>file listing (dicts) from inital globbing</div> </td> <td align="center">always</td> <td align="center">list</td> <td align="center">[{'modified_epoch': 1477416706, 'fullpath': 'roles/cf/files/policy.json', 'chopped_path': 'policy.json', 'bytes': 151}]</td> </tr> <tr> <td>filelist_actionable</td> <td> <div>file listing (dicts) of files that will be uploaded after the strategy decision</div> </td> <td align="center">always</td> <td align="center">list</td> <td align="center">[{'s3_path': 's3sync/policy.json', 'whysize': '151 / 151', 'modified_epoch': 1477931256, 'bytes': 151, 'whytime': '1477931256 / 1477929260', 'fullpath': 'roles/cf/files/policy.json', 'chopped_path': 'policy.json', 'mime_type': 'application/json'}]</td> </tr> <tr> <td>filelist_typed</td> <td> <div>file listing (dicts) with calculated or overridden mime types</div> </td> <td align="center">always</td> <td align="center">list</td> <td align="center">[{'modified_epoch': 1477416706, 'fullpath': 'roles/cf/files/policy.json', 'chopped_path': 'policy.json', 'bytes': 151, 'mime_type': 'application/json'}]</td> </tr> </table>   <h2 id="notes">Notes</h2> <div class="admonition note"> <p class="first admonition-title">Note</p> <ul class="last simple"> <li>If parameters are not set within the module, the following environment variables can be used in decreasing order of precedence <code>AWS_URL</code> or <code>EC2_URL</code>, <code>AWS_ACCESS_KEY_ID</code> or <code>AWS_ACCESS_KEY</code> or <code>EC2_ACCESS_KEY</code>, <code>AWS_SECRET_ACCESS_KEY</code> or <code>AWS_SECRET_KEY</code> or <code>EC2_SECRET_KEY</code>, <code>AWS_SECURITY_TOKEN</code> or <code>EC2_SECURITY_TOKEN</code>, <code>AWS_REGION</code> or <code>EC2_REGION</code>
+</li> <li>Ansible uses the boto configuration file (typically ~/.boto) if no credentials are provided. See <a class="reference external" href="http://boto.readthedocs.org/en/latest/boto_config_tut.html" target="_blank">http://boto.readthedocs.org/en/latest/boto_config_tut.html</a>
+</li> <li>
+<code>AWS_REGION</code> or <code>EC2_REGION</code> can be typically be used to specify the AWS region, when required, but this can also be configured in the boto config file</li> </ul> </div>  <h3 id="status">Status</h3> <p>This module is flagged as <strong>preview</strong> which means that it is not guaranteed to have a backwards compatible interface.</p> <p>For help in developing on modules, should you be so inclined, please read <a class="reference internal" href="https://docs.ansible.com/ansible/latest/community.html" target="_blank"><span class="doc">Community Information &amp; Contributing</span></a>, <a class="reference internal" href="../dev_guide/testing/"><span class="doc">Testing Ansible</span></a> and <a class="reference internal" href="../dev_guide/developing_modules/"><span class="doc">Developing Modules</span></a>.</p>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2012–2017 Michael DeHaan<br>© 2017 Red Hat, Inc.<br>Licensed under the GNU General Public License version 3.<br>
+    <a href="https://docs.ansible.com/ansible/latest/s3_sync_module.html" class="_attribution-link" target="_blank">https://docs.ansible.com/ansible/latest/s3_sync_module.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

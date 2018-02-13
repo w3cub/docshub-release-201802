@@ -1,0 +1,110 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Integration Tests - Ansible - W3cubDocs</title>
+  
+  <meta name="description" content=" The Ansible integration Test system. ">
+  <meta name="keywords" content="integration, tests, -, ansible">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/ansible/dev_guide/testing_integration/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/ansible.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/ansible/" class="_nav-link" title="" style="margin-left:0;">Ansible</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _sphinx">
+				
+<h1 id="integration-tests">Integration tests</h1>   <ul> <li><a class="reference internal" href="#quick-start" id="id2">Quick Start</a></li> <li><a class="reference internal" href="#configuration" id="id3">Configuration</a></li> <li><a class="reference internal" href="#prerequisites" id="id4">Prerequisites</a></li> <li><a class="reference internal" href="#non-destructive-tests" id="id5">Non-destructive Tests</a></li> <li><a class="reference internal" href="#destructive-tests" id="id6">Destructive Tests</a></li> <li><a class="reference internal" href="#windows-tests" id="id7">Windows Tests</a></li> <li>
+<a class="reference internal" href="#tests-in-docker-containers" id="id8">Tests in Docker containers</a><ul> <li><a class="reference internal" href="#running-integration-tests" id="id9">Running Integration Tests</a></li> <li>
+<a class="reference internal" href="#container-images" id="id10">Container Images</a><ul> <li><a class="reference internal" href="#python-2" id="id11">Python 2</a></li> <li><a class="reference internal" href="#python-3" id="id12">Python 3</a></li> </ul> </li> </ul> </li> <li><a class="reference internal" href="#legacy-cloud-tests" id="id13">Legacy Cloud Tests</a></li> <li><a class="reference internal" href="#other-configuration-for-cloud-tests" id="id14">Other configuration for Cloud Tests</a></li> <li>
+<a class="reference internal" href="#iam-policies-for-aws" id="id15">IAM policies for AWS</a><ul> <li><a class="reference internal" href="#testing-iam-policy-json-j2" id="id16">testing-iam-policy.json.j2</a></li> <li><a class="reference internal" href="#other-definitions-required" id="id17">Other Definitions required</a></li> </ul> </li> <li>
+<a class="reference internal" href="#network-tests" id="id18">Network Tests</a><ul> <li>
+<a class="reference internal" href="#writing-network-integration-tests" id="id19">Writing network integration tests</a><ul> <li><a class="reference internal" href="#conventions" id="id20">Conventions</a></li> <li><a class="reference internal" href="#adding-a-new-network-platform" id="id21">Adding a new Network Platform</a></li> </ul> </li> </ul> </li> <li><a class="reference internal" href="#where-to-find-out-more" id="id22">Where to find out more</a></li> </ul>
+  <p>The Ansible integration Test system.</p> <p>Tests for playbooks, by playbooks.</p> <p>Some tests may require credentials. Credentials may be specified with <code>credentials.yml</code>.</p> <p>Some tests may require root.</p>  <h2 id="quick-start">Quick Start</h2> <p>It is highly recommended that you install and activate the <code>argcomplete</code> python package. It provides tab completion in <code>bash</code> for the <code>ansible-test</code> test runner.</p>   <h2 id="configuration">Configuration</h2> <p>Making your own version of <code>integration_config.yml</code> can allow for setting some tunable parameters to help run the tests better in your environment. Some tests (e.g. cloud) will only run when access credentials are provided. For more information about supported credentials, refer to <code>credentials.template</code>.</p>   <h2 id="prerequisites">Prerequisites</h2> <p>The tests will assume things like hg, svn, and git are installed and in path. Some tests (such as those for Amazon Web Services) need separate definitions, which will be covered later in this document.</p> <p>(Complete list pending)</p>   <h2 id="non-destructive-tests">Non-destructive Tests</h2> <p>These tests will modify files in subdirectories, but will not do things that install or remove packages or things outside of those test subdirectories. They will also not reconfigure or bounce system services.</p> <div class="admonition note"> <p class="first admonition-title">Note</p> <p>Running integration tests within Docker</p> <p class="last">To protect your system from any potential changes caused by integration tests, and to ensure the a sensible set of dependencies are available we recommend that you always run integration tests with the <code>--docker</code> option. See the <a class="reference external" href="https://github.com/ansible/ansible/blob/devel/test/runner/completion/docker.txt" target="_blank">list of supported docker images</a> for options.</p> </div> <div class="admonition note"> <p class="first admonition-title">Note</p> <p>Avoiding pulling new Docker images</p> <p class="last">Use the <code>--docker-no-pull</code> option to avoid pulling the latest container image. This is required when using custom local images that are not available for download.</p> </div> <p>Run as follows for all POSIX platform tests executed by our CI system:</p> <pre data-language="YAML">test/runner/ansible-test integration --docker fedora25 -v posix/ci/
+</pre> <p>You can select specific tests as well, such as for individual modules:</p> <pre data-language="YAML">test/runner/ansible-test integration -v ping
+</pre> <p>By installing <code>argcomplete</code> you can obtain a full list by doing:</p> <pre data-language="YAML">test/runner/ansible-test integration &lt;tab&gt;&lt;tab&gt;
+</pre>   <h2 id="destructive-tests">Destructive Tests</h2> <p>These tests are allowed to install and remove some trivial packages. You will likely want to devote these to a virtual environment, such as Docker. They won’t reformat your filesystem:</p> <pre data-language="YAML">test/runner/ansible-test integration --docker fedora25 -v destructive/
+</pre>   <h2 id="windows-tests">Windows Tests</h2> <p>These tests exercise the <code>winrm</code> connection plugin and Windows modules. You’ll need to define an inventory with a remote Windows 2008 or 2012 Server to use for testing, and enable PowerShell Remoting to continue.</p> <p>Running these tests may result in changes to your Windows host, so don’t run them against a production/critical Windows environment.</p> <p>Enable PowerShell Remoting (run on the Windows host via Remote Desktop):</p> <pre data-language="YAML">Enable-PSRemoting -Force
+</pre> <p>Define Windows inventory:</p> <pre data-language="YAML">cp inventory.winrm.template inventory.winrm
+${EDITOR:-vi} inventory.winrm
+</pre> <p>Run the Windows tests executed by our CI system:</p> <pre data-language="YAML">test/runner/ansible-test windows-integration -v windows/ci/
+</pre>   <h2 id="tests-in-docker-containers">Tests in Docker containers</h2> <p>If you have a Linux system with Docker installed, running integration tests using the same Docker containers used by the Ansible continuous integration (CI) system is recommended.</p> <div class="admonition note"> <p class="first admonition-title">Note</p> <p>Docker on non-Linux</p> <p class="last">Using Docker Engine to run Docker on a non-Linux host (such as macOS) is not recommended. Some tests may fail, depending on the image used for testing. Using the <code>--docker-privileged</code> option may resolve the issue.</p> </div>  <h3 id="running-integration-tests">Running Integration Tests</h3> <p>To run all CI integration test targets for POSIX platforms in a Ubuntu 16.04 container:</p> <pre data-language="YAML">test/runner/ansible-test integration -v posix/ci/ --docker
+</pre> <p>You can also run specific tests or select a different Linux distribution. For example, to run tests for the <code>ping</code> module on a Ubuntu 14.04 container:</p> <pre data-language="YAML">test/runner/ansible-test integration -v ping --docker ubuntu1404
+</pre>   <h3 id="container-images">Container Images</h3>  <h4 id="python-2">Python 2</h4> <p>Most container images are for testing with Python 2:</p>  <ul class="simple"> <li>centos6</li> <li>centos7</li> <li>fedora24</li> <li>fedora25</li> <li>opensuse42.1</li> <li>opensuse42.2</li> <li>ubuntu1204</li> <li>ubuntu1404</li> <li>ubuntu1604</li> </ul>    <h4 id="python-3">Python 3</h4> <p>To test with Python 3 use the following images:</p>  <ul class="simple"> <li>ubuntu1604py3</li> </ul>      <h2 id="legacy-cloud-tests">Legacy Cloud Tests</h2> <p>Some of the cloud tests run as normal integration tests, and others run as legacy tests; see the <a class="reference internal" href="../testing_integration_legacy/"><span class="doc">Testing using the Legacy Integration system</span></a> page for more information.</p>   <h2 id="other-configuration-for-cloud-tests">Other configuration for Cloud Tests</h2> <p>In order to run some tests, you must provide access credentials in a file named <code>cloud-config-aws.yml</code> or <code>cloud-config-cs.ini</code> in the test/integration directory. Corresponding .template files are available for for syntax help. The newer AWS tests now use the file test/integration/cloud-config-aws.yml</p>   <h2 id="iam-policies-for-aws">IAM policies for AWS</h2> <p>Ansible needs fairly wide ranging powers to run the tests in an AWS account. This rights can be provided to a dedicated user. These need to be configured before running the test.</p>  <h3 id="testing-iam-policy-json-j2">testing-iam-policy.json.j2</h3> <p>The testing-iam-policy.json.j2 file contains a policy which can be given to the user running the tests to minimize the rights of that user. Please note that while this policy does limit the user to one region, this does not fully restrict the user (primarily due to the limitations of the Amazon ARN notation). The user will still have wide privileges for viewing account definitions, and will also able to manage some resources that are not related to testing (for example, AWS lambdas with different names). Tests should not be run in a primary production account in any case.</p>   <h3 id="other-definitions-required">Other Definitions required</h3> <p>Apart from installing the policy and giving it to the user identity running the tests, a lambda role <code>ansible_integration_tests</code> has to be created which has lambda basic execution privileges.</p>    <h2 id="network-tests">Network Tests</h2> <p>This page details the specifics around testing Ansible Networking modules.</p> <div class="admonition important"> <p class="first admonition-title">Important</p> <p>Network testing requirements for Ansible 2.4</p> <p class="last">Starting with Ansible 2.4, all network modules MUST include corresponding unit tests to defend functionality. The unit tests must be added in the same PR that includes the new network module, or extends functionality. Integration tests, although not required, are a welcome addition. How to do this is explained in the rest of this document.</p> </div> <p>Network integration tests can be ran by doing:</p> <pre data-language="YAML">cd test/integration
+ANSIBLE_ROLES_PATH=targets ansible-playbook network-all.yaml
+</pre> <div class="admonition note"> <p class="first admonition-title">Note</p> <ul class="last simple"> <li>To run the network tests you will need a number of test machines and suitably configured inventory file. A sample is included in <code>test/integration/inventory.network</code>
+</li> <li>As with the rest of the integration tests, they can be found grouped by module in <code>test/integration/targets/MODULENAME/</code>
+</li> </ul> </div> <p>To filter a set of test cases set <code>limit_to</code> to the name of the group, generally this is the name of the module:</p> <pre data-language="YAML">ANSIBLE_ROLES_PATH=targets ansible-playbook -i inventory.network network-all.yaml -e "limit_to=eos_command"
+</pre> <p>To filter a singular test case set the tags options to eapi or cli, set limit_to to the test group, and test_cases to the name of the test:</p> <pre data-language="YAML">ANSIBLE_ROLES_PATH=targets ansible-playbook -i inventory.network network-all.yaml --tags="cli" -e "limit_to=eos_command test_case=notequal"
+</pre>  <h3 id="writing-network-integration-tests">Writing network integration tests</h3> <p>Test cases are added to roles based on the module being testing. Test cases should include both cli and API test cases. Cli test cases should be added to <code>test/integration/targets/modulename/tests/cli</code> and API tests should be added to <code>test/integration/targets/modulename/tests/eapi</code>, or <code>nxapi</code>.</p> <p>In addition to positive testing, negative tests are required to ensure user friendly warnings &amp; errors are generated, rather than backtraces, for example:</p>  <h4 id="conventions">Conventions</h4> <ul> <li>
+<p class="first">Each test case should generally follow the pattern:</p> <p>setup —&gt; test —&gt; assert —&gt; test again (idempotent) —&gt; assert —&gt; teardown (if needed) -&gt; done</p> <p>This keeps test playbooks from becoming monolithic and difficult to troubleshoot.</p> </li> <li>Include a name for each task that is not an assertion. (It’s OK to add names to assertions too. But to make it easy to identify the broken task within a failed test, at least provide a helpful name for each task.) </li> <li>Files containing test cases must end in <code>.yaml</code> </li> </ul>   <h4 id="adding-a-new-network-platform">Adding a new Network Platform</h4> <p>A top level playbook is required such as <code>ansible/test/integration/eos.yaml</code> which needs to be references by <code>ansible/test/integration/network-all.yaml</code></p>     <h2 id="where-to-find-out-more">Where to find out more</h2> <p>If you’d like to know more about the plans for improving testing Ansible then why not join the <a class="reference external" href="https://github.com/ansible/community/blob/master/meetings/README.md" target="_blank">Testing Working Group</a>.</p>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2012–2017 Michael DeHaan<br>© 2017 Red Hat, Inc.<br>Licensed under the GNU General Public License version 3.<br>
+    <a href="https://docs.ansible.com/ansible/latest/dev_guide/testing_integration.html" class="_attribution-link" target="_blank">https://docs.ansible.com/ansible/latest/dev_guide/testing_integration.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

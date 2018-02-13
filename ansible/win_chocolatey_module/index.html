@@ -1,0 +1,182 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Win_chocolatey - Ansible - W3cubDocs</title>
+  
+  <meta name="description" content=" New in version 1.9. ">
+  <meta name="keywords" content="win, chocolatey, -, manage, packages, using, ansible">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/ansible/win_chocolatey_module/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/ansible.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/ansible/" class="_nav-link" title="" style="margin-left:0;">Ansible</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _sphinx">
+				
+<h1 id="win-chocolatey">win_chocolatey - Manage packages using chocolatey</h1> <div class="versionadded" id="win-chocolatey-manage-packages-using-chocolatey"> <p><span class="versionmodified">New in version 1.9.</span></p> </div>  <ul class="simple"> <li><a class="reference internal" href="#synopsis" id="id1">Synopsis</a></li> <li><a class="reference internal" href="#requirements-on-host-that-executes-module" id="id2">Requirements (on host that executes module)</a></li> <li><a class="reference internal" href="#options" id="id3">Options</a></li> <li><a class="reference internal" href="#examples" id="id4">Examples</a></li> <li><a class="reference internal" href="#return-values" id="id5">Return Values</a></li> <li>
+<a class="reference internal" href="#notes" id="id6">Notes</a><ul> <li><a class="reference internal" href="#status" id="id7">Status</a></li> </ul> </li> </ul>   <h2 id="synopsis">Synopsis</h2> <ul class="simple"> <li>Manage packages using Chocolatey (<a class="reference external" href="http://chocolatey.org/" target="_blank">http://chocolatey.org/</a>).</li> <li>If Chocolatey is missing from the system, the module will install it.</li> <li>List of packages can be found at <a class="reference external" href="http://chocolatey.org/packages" target="_blank">http://chocolatey.org/packages</a>.</li> </ul>   <h2 id="requirements-on-host-that-executes-module">Requirements (on host that executes module)</h2>  <ul class="simple"> <li>chocolatey &gt;= 0.10.5 (will be upgraded if older)</li> </ul>    <h2 id="options">Options</h2> <table> <tr> <th class="head">parameter</th> <th class="head">required</th> <th class="head">default</th> <th class="head">choices</th> <th class="head">comments</th> </tr> <tr> <td>allow_empty_checksums<br><div style="font-size: small;">(added in 2.2)</div>
+</td> <td>no</td> <td>no</td> <td><ul>
+<li>yes</li>
+<li>no</li>
+</ul></td> <td> <div>Allow empty checksums to be used.</div> </td> </tr> <tr> <td>force<br>
+</td> <td>no</td> <td>no</td> <td><ul>
+<li>yes</li>
+<li>no</li>
+</ul></td> <td> <div>Forces install of the package (even if it already exists).</div> <div>Using <code>force</code> will cause ansible to always report that a change was made.</div> </td> </tr> <tr> <td>ignore_checksums<br><div style="font-size: small;">(added in 2.2)</div>
+</td> <td>no</td> <td>no</td> <td><ul>
+<li>yes</li>
+<li>no</li>
+</ul></td> <td> <div>Ignore checksums altogether.</div> </td> </tr> <tr> <td>ignore_dependencies<br><div style="font-size: small;">(added in 2.1)</div>
+</td> <td>no</td> <td>no</td> <td><ul>
+<li>yes</li>
+<li>no</li>
+</ul></td> <td> <div>Ignore dependencies, only install/upgrade the package itself.</div> </td> </tr> <tr> <td>install_args<br><div style="font-size: small;">(added in 2.1)</div>
+</td> <td>no</td> <td></td> <td></td> <td> <div>Arguments to pass to the native installer.</div> </td> </tr> <tr> <td>name<br>
+</td> <td>yes</td> <td></td> <td></td> <td> <div>Name of the package to be installed.</div> <div>This must be a single package name.</div> </td> </tr> <tr> <td>params<br><div style="font-size: small;">(added in 2.1)</div>
+</td> <td>no</td> <td></td> <td></td> <td> <div>Parameters to pass to the package</div> </td> </tr> <tr> <td>proxy_password<br><div style="font-size: small;">(added in 2.4)</div>
+</td> <td>no</td> <td></td> <td></td> <td> <div>Proxy password used to install chocolatey and the package.</div> <div>See notes in <code>proxy_username</code> when dealing with double quotes in a password.</div> </td> </tr> <tr> <td>proxy_url<br><div style="font-size: small;">(added in 2.4)</div>
+</td> <td>no</td> <td></td> <td></td> <td> <div>Proxy url used to install chocolatey and the package.</div> </td> </tr> <tr> <td>proxy_username<br><div style="font-size: small;">(added in 2.4)</div>
+</td> <td>no</td> <td></td> <td></td> <td> <div>Proxy username used to install chocolatey and the package.</div> <div>When dealing with a username with double quote characters <code>"</code>, they need to be escaped with <code>\</code> beforehand. See examples for more details.</div> </td> </tr> <tr> <td>skip_scripts<br><div style="font-size: small;">(added in 2.4)</div>
+</td> <td>no</td> <td>no</td> <td><ul>
+<li>yes</li>
+<li>no</li>
+</ul></td> <td> <div>Do not run <em>chocolateyInstall.ps1</em> or <em>chocolateyUninstall.ps1</em> scripts.</div> </td> </tr> <tr> <td>source<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>Specify source rather than using default chocolatey repository.</div> </td> </tr> <tr> <td>state<br>
+</td> <td>no</td> <td>present</td> <td><ul>
+<li>absent</li>
+<li>downgrade</li>
+<li>latest</li>
+<li>present</li>
+<li>reinstalled</li>
+</ul></td> <td> <div>State of the package on the system.</div> </td> </tr> <tr> <td>timeout<br><div style="font-size: small;">(added in 2.3)</div>
+</td> <td>no</td> <td>2700</td> <td></td> <td> <div>The time to allow chocolatey to finish before timing out.</div> <div style="font-size: small;">aliases: execution_timeout</div> </td> </tr> <tr> <td>upgrade<br>
+</td> <td>no</td> <td>no</td> <td><ul>
+<li>yes</li>
+<li>no</li>
+</ul></td> <td> <div>If package is already installed it, try to upgrade to the latest version or to the specified version.</div> <div>As of Ansible v2.3 this is deprecated, set parameter <code>state</code> to <code>latest</code> for the same result.</div> </td> </tr> <tr> <td>version<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>Specific version of the package to be installed.</div> <div>Ignored when <code>state</code> is set to <code>absent</code>.</div> </td> </tr> </table>   <h2 id="examples">Examples</h2>  <pre data-language="YAML">- name: Install git
+  win_chocolatey:
+    name: git
+    state: present
+
+- name: Upgrade installed packages
+  win_chocolatey:
+    name: all
+    state: latest
+
+- name: Install notepadplusplus version 6.6
+  win_chocolatey:
+    name: notepadplusplus.install
+    version: '6.6'
+
+- name: Install git from specified repository
+  win_chocolatey:
+    name: git
+    source: https://someserver/api/v2/
+
+- name: Uninstall git
+  win_chocolatey:
+    name: git
+    state: absent
+
+- name: install multiple packages
+  win_chocolatey:
+    name: '{{ item }}'
+    state: absent
+  with_items:
+  - pscx
+  - windirstat
+
+- name: uninstall multiple packages
+  win_chocolatey:
+    name: '{{ item }}'
+    state: absent
+  with_items:
+  - pscx
+  - windirstat
+
+- name: Install curl using proxy
+  win_chocolatey:
+    name: curl
+    proxy_url: http://proxy-server:8080/
+    proxy_username: joe
+    proxy_password: p@ssw0rd
+
+- name: Install curl with proxy credentials that contain quotes
+  win_chocolatey:
+    name: curl
+    proxy_url: http://proxy-server:8080/
+    proxy_username: user with \"escaped\" double quotes
+    proxy_password: pass with \"escaped\" double quotes
+</pre>    <h2 id="return-values">Return Values</h2> <p>Common return values are documented here <a class="reference internal" href="../common_return_values/"><span class="doc">Return Values</span></a>, the following are the fields unique to this module:</p> <table> <tr> <th class="head">name</th> <th class="head">description</th> <th class="head">returned</th> <th class="head">type</th> <th class="head">sample</th> </tr> <tr> <td>command</td> <td> <div>The full command used in the chocolatey task.</div> </td> <td align="center">changed</td> <td align="center">str</td> <td align="center">choco.exe install -r --no-progress -y sysinternals --timeout 2700 --failonunfound</td> </tr> <tr> <td>choco_error_log</td> <td> <div>DEPRECATED, will be removed in 2.6, use stdout instead.</div> </td> <td align="center">changed, choco task returned a failure</td> <td align="center">str</td> <td align="center">sysinternals not installed. The package was not found with the source(s) listed</td> </tr> <tr> <td>stdout</td> <td> <div>The stdout from the chocolatey task. The verbosity level of the messages are affected by Ansible verbosity setting, see notes for more details.</div> </td> <td align="center">changed</td> <td align="center">str</td> <td align="center">Chocolatey upgraded 1/1 packages.</td> </tr> <tr> <td>choco_bootstrap_output</td> <td> <div>DEPRECATED, will be removed in 2.6, use stdout instead.</div> </td> <td align="center">changed, choco task returned a failure</td> <td align="center">str</td> <td align="center">Chocolatey upgraded 1/1 packages.</td> </tr> <tr> <td>choco_error_cmd</td> <td> <div>DEPRECATED, will be removed in 2.6, use command instead.</div> </td> <td align="center">changed, choco task returned a failure</td> <td align="center">str</td> <td align="center">choco.exe install -r --no-progress -y sysinternals --timeout 2700 --failonunfound</td> </tr> <tr> <td>rc</td> <td> <div>The return code from the chocolatey task.</div> </td> <td align="center">changed</td> <td align="center">int</td> <td align="center">0</td> </tr> </table>   <h2 id="notes">Notes</h2> <div class="admonition note"> <p class="first admonition-title">Note</p> <ul class="last simple"> <li>Provide the <code>version</code> parameter value as a string (e.g. <code>'6.1'</code>), otherwise it is considered to be a floating-point number and depending on the locale could become <code>6,1</code>, which will cause a failure.</li> <li>When using verbosity 2 or less (<code>-vv</code>) the <code>stdout</code> output will be restricted.</li> <li>When using verbosity 4 (<code>-vvvv</code>) the <code>stdout</code> output will be more verbose.</li> <li>When using verbosity 5 (<code>-vvvvv</code>) the <code>stdout</code> output will include debug output.</li> <li>This module will install or upgrade Chocolatey when needed.</li> </ul> </div>  <h3 id="status">Status</h3> <p>This module is flagged as <strong>preview</strong> which means that it is not guaranteed to have a backwards compatible interface.</p> <p>For help in developing on modules, should you be so inclined, please read <a class="reference internal" href="https://docs.ansible.com/ansible/latest/community.html" target="_blank"><span class="doc">Community Information &amp; Contributing</span></a>, <a class="reference internal" href="../dev_guide/testing/"><span class="doc">Testing Ansible</span></a> and <a class="reference internal" href="../dev_guide/developing_modules/"><span class="doc">Developing Modules</span></a>.</p>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2012–2017 Michael DeHaan<br>© 2017 Red Hat, Inc.<br>Licensed under the GNU General Public License version 3.<br>
+    <a href="https://docs.ansible.com/ansible/latest/win_chocolatey_module.html" class="_attribution-link" target="_blank">https://docs.ansible.com/ansible/latest/win_chocolatey_module.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

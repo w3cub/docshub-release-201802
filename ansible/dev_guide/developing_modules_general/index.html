@@ -1,0 +1,245 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Ansible Module Development Walkthrough - Ansible - W3cubDocs</title>
+  
+  <meta name="description" content=" In this section, we will walk through developing, testing, and debugging an Ansible module. ">
+  <meta name="keywords" content="ansible, module, development, walkthroughenvironment, setupnew, developmentlocal, direct, testingplaybook, testingdebugging, local, debugging, remote, unit, testinggoing, furthercommunication, and, supportcredit, walkthrough, -">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/ansible/dev_guide/developing_modules_general/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/ansible.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/ansible/" class="_nav-link" title="" style="margin-left:0;">Ansible</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _sphinx">
+				
+<h1 id="module-dev-tutorial-sample">Ansible Module Development Walkthrough</h1> <p id="ansible-module-development-walkthrough">In this section, we will walk through developing, testing, and debugging an Ansible module.</p> <p>What’s covered in this section:</p> <ul class="simple"> <li><a class="reference external" href="#environment-setup">Environment setup</a></li> <li><a class="reference external" href="#new-module-development">New module development</a></li> <li><a class="reference external" href="#localdirect-module-testing">Local/direct module testing</a></li> <li><a class="reference external" href="#playbook-module-testing">Playbook module testing</a></li> <li><a class="reference external" href="#debugging-local">Debugging (local)</a></li> <li><a class="reference external" href="#debugging-remote">Debugging (remote)</a></li> <li><a class="reference external" href="#unit-testing">Unit testing</a></li> <li>Integration testing (coming soon)</li> <li><a class="reference external" href="#communication-and-development-support">Communication and development support</a></li> <li><a class="reference external" href="#credit">Credit</a></li> </ul>   <h1 id="environment-setup">Environment setup</h1> <ol class="arabic simple"> <li>Clone the Ansible repository: <code>$ git clone https://github.com/ansible/ansible.git</code>
+</li> <li>Change directory into the repository root dir: <code>$ cd ansible</code>
+</li> <li>Create a virtual environment: <code>$ python3 -m venv venv</code> (or for Python 2 <code>$ virtualenv venv</code>. Note, this requires you to install the virtualenv package: <code>$ pip install virtualenv</code>)</li> <li>Activate the virtual environment: <code>$ . venv/bin/activate</code>
+</li> <li>Install development requirements: <code>$ pip install -r requirements.txt</code>
+</li> <li>Run the environment setup script for each new dev shell process: <code>$ . hacking/env-setup</code>
+</li> </ol> <div class="admonition note"> <p class="first admonition-title">Note</p> <p class="last">After the initial setup above, every time you are ready to start developing Ansible you should be able to just run the following from the root of the Ansible repo: <code>$ . venv/bin/activate &amp;&amp; . hacking/env-setup</code></p> </div>   <h1 id="new-module-development">New module development</h1> <p>If you are creating a new module that doesn’t exist, you would start working on a whole new file. Here is an example:</p> <ul class="simple"> <li>Navigate to the directory that you want to develop your new module in. E.g. <code>$ cd lib/ansible/modules/cloud/azure/</code>
+</li> <li>Create your new module file: <code>$ touch my_new_test_module.py</code>
+</li> <li>Paste this example code into the new module file: (explanation in comments)</li> </ul> <pre data-language="python">#!/usr/bin/python
+
+ANSIBLE_METADATA = {
+    'metadata_version': '1.1',
+    'status': ['preview'],
+    'supported_by': 'community'
+}
+
+DOCUMENTATION = '''
+---
+module: my_sample_module
+
+short_description: This is my sample module
+
+version_added: "2.4"
+
+description:
+    - "This is my longer description explaining my sample module"
+
+options:
+    name:
+        description:
+            - This is the message to send to the sample module
+        required: true
+    new:
+        description:
+            - Control to demo if the result of this module is changed or not
+        required: false
+
+extends_documentation_fragment:
+    - azure
+
+author:
+    - Your Name (@yourhandle)
+'''
+
+EXAMPLES = '''
+# Pass in a message
+- name: Test with a message
+  my_new_test_module:
+    name: hello world
+
+# pass in a message and have changed true
+- name: Test with a message and changed output
+  my_new_test_module:
+    name: hello world
+    new: true
+
+# fail the module
+- name: Test failure of the module
+  my_new_test_module:
+    name: fail me
+'''
+
+RETURN = '''
+original_message:
+    description: The original name param that was passed in
+    type: str
+message:
+    description: The output message that the sample module generates
+'''
+
+from ansible.module_utils.basic import AnsibleModule
+
+def run_module():
+    # define the available arguments/parameters that a user can pass to
+    # the module
+    module_args = dict(
+        name=dict(type='str', required=True),
+        new=dict(type='bool', required=False, default=False)
+    )
+
+    # seed the result dict in the object
+    # we primarily care about changed and state
+    # change is if this module effectively modified the target
+    # state will include any data that you want your module to pass back
+    # for consumption, for example, in a subsequent task
+    result = dict(
+        changed=False,
+        original_message='',
+        message=''
+    )
+
+    # the AnsibleModule object will be our abstraction working with Ansible
+    # this includes instantiation, a couple of common attr would be the
+    # args/params passed to the execution, as well as if the module
+    # supports check mode
+    module = AnsibleModule(
+        argument_spec=module_args,
+        supports_check_mode=True
+    )
+
+    # if the user is working with this module in only check mode we do not
+    # want to make any changes to the environment, just return the current
+    # state with no modifications
+    if module.check_mode:
+        return result
+
+    # manipulate or modify the state as needed (this is going to be the
+    # part where your module will do what it needs to do)
+    result['original_message'] = module.params['name']
+    result['message'] = 'goodbye'
+
+    # use whatever logic you need to determine whether or not this module
+    # made any modifications to your target
+    if module.params['new']:
+        result['changed'] = True
+
+    # during the execution of the module, if there is an exception or a
+    # conditional state that effectively causes a failure, run
+    # AnsibleModule.fail_json() to pass in the message and the result
+    if module.params['name'] == 'fail me':
+        module.fail_json(msg='You requested this to fail', **result)
+
+    # in the event of a successful module execution, you will want to
+    # simple AnsibleModule.exit_json(), passing the key/value results
+    module.exit_json(**result)
+
+def main():
+    run_module()
+
+if __name__ == '__main__':
+    main()
+</pre>   <h1 id="local-direct-module-testing">Local/direct module testing</h1> <p>You may want to test the module on the local machine without targeting a remote host. This is a great way to quickly and easily debug a module that can run locally.</p> <ul class="simple"> <li>Create an arguments file in <code>/tmp/args.json</code> with the following content: (explanation below)</li> </ul> <pre data-language="json">{
+    "ANSIBLE_MODULE_ARGS": {
+        "name": "hello",
+        "new": true
+    }
+}
+</pre> <ul class="simple"> <li>If you are using a virtual environment (highly recommended for development) activate it: <code>$ . venv/bin/activate</code>
+</li> <li>Setup the environment for development: <code>$ . hacking/env-setup</code>
+</li> <li>Run your test module locally and directly: <code>$ python ./my_new_test_module.py /tmp/args.json</code>
+</li> </ul> <p>This should be working output that resembles something like the following:</p> <pre data-language="json">{"changed": true, "state": {"original_message": "hello", "new_message": "goodbye"}, "invocation": {"module_args": {"name": "hello", "new": true}}}
+</pre> <p>The arguments file is just a basic json config file that you can use to pass the module your parameters to run the module it</p>   <h1 id="playbook-module-testing">Playbook module testing</h1> <p>If you want to test your new module, you can now consume it with an Ansible playbook.</p> <ul> <li>Create a playbook in any directory: <code>$ touch testmod.yml</code> </li> <li>
+<p class="first">Add the following to the new playbook file:</p> <pre data-language="YAML">- name: test my new module
+  connection: local
+  hosts: localhost
+  tasks:
+  - name: run the new module
+    my_new_test_module:
+      name: 'hello'
+      new: true
+    register: testout
+  - name: dump test output
+    debug:
+      msg: '{{ testout }}'
+</pre> </li> <li>Run the playbook and analyze the output: <code>$ ansible-playbook ./testmod.yml</code> </li> </ul>   <h1 id="debugging-local">Debugging (local)</h1> <p>If you want to break into a module and step through with the debugger, locally running the module you can do:</p> <ul class="simple"> <li>Set a breakpoint in the module: <code>import pdb; pdb.set_trace()</code>
+</li> <li>Run the module on the local machine: <code>$ python -m pdb ./my_new_test_module.py ./args.json</code>
+</li> </ul>   <h1 id="debugging-remote">Debugging (remote)</h1> <p>In the event you want to debug a module that is running on a remote target (i.e. not localhost), one way to do this is the following:</p> <ul class="simple"> <li>On your controller machine (running Ansible) set <code>ANSIBLE_KEEP_REMOTE_FILES=1</code> (this tells Ansible to retain the modules it sends to the remote machine instead of removing them)</li> <li>Run your playbook targetting the remote machine and specify <code>-vvvv</code> (the verbose output will show you many things, including the remote location that Ansible uses for the modules)</li> <li>Take note of the remote path Ansible used on the remote host</li> <li>SSH into the remote target after the completion of the playbook</li> <li>Navigate to the directory (most likely it is going to be your ansible remote user defined or implied from the playbook: <code>~/.ansible/tmp/ansible-tmp-...</code>)</li> <li>Here you should see the module that you executed from your Ansible controller, but this is the zipped file that Ansible sent to the remote host. You can run this by specifying <code>python my_test_module.py</code> (not necessary)</li> <li>To debug, though, we will want to extract this zip out to the original module format: <code>python my_test_module.py explode</code> (Ansible will expand the module into <code>./debug-dir</code>)</li> <li>Navigate to <code>./debug-dir</code> (notice that unzipping has caused the generation of <code>ansible_module_my_test_module.py</code>)</li> <li>Modify or set a breakpoint in the unzipped module</li> <li>Ensure that the unzipped module is executable: <code>$ chmod 755 ansible_module_my_test_module.py</code>
+</li> <li>Run the unzipped module directly passing the args file: <code>$ ./ansible_module_my_test_module.py args</code> (args is the file that contains the params that were originally passed. Good for repro and debugging)</li> </ul>   <h1 id="unit-testing">Unit testing</h1> <p>Unit tests for modules will be appropriately located in <code>./test/units/modules</code>. You must first setup your testing environment. In this example, we’re using Python 3.5.</p> <ul class="simple"> <li>Install the requirements (outside of your virtual environment): <code>$ pip3 install -r ./test/runner/requirements/units.txt</code>
+</li> <li>To run all tests do the following: <code>$ ansible-test units --python 3.5</code> (you must run <code>. hacking/env-setup</code> prior to this)</li> </ul> <div class="admonition note"> <p class="first admonition-title">Note</p> <p class="last">Ansible uses pytest for unit testing.</p> </div> <p>To run pytest against a single test module, you can do the following (provide the path to the test module appropriately):</p> <p><code>$ pytest -r a --cov=. --cov-report=html --fulltrace --color yes
+test/units/modules/.../test/my_new_test_module.py</code></p>   <h1 id="going-further">Going Further</h1> <p>If you are starting new development or fixing a bug, create a new branch:</p> <p><code>$ git checkout -b my-new-branch</code>.</p> <p>If you are planning on contributing back to the main Ansible repository, fork the Ansible repository into your own GitHub account and develop against the new non-devel branch in your fork. When you believe you have a good working code change, submit a pull request to the Ansible repository.</p> <p>If you want to submit a new module to the upstream Ansible repo, be sure to run through sanity checks first. For example:</p> <p><code>$ ansible-test sanity -v --docker --python 2.7 MODULE_NAME</code></p> <p>Note that this example requires docker to be installed and running. If you’d rather not use a container for this, you can choose to use <code>--tox</code> instead of <code>--docker</code>.</p>   <h1 id="communication-and-development-support">Communication and development support</h1> <p>Join the IRC channel <code>#ansible-devel</code> on freenode for discussions surrounding Ansible development.</p> <p>For questions and discussions pertaining to using the Ansible product, use the <code>#ansible</code> channel.</p>   <h1 id="credit">Credit</h1> <p>Thank you to Thomas Stringer (<a class="reference external" href="https://github.com/tstringer" target="_blank">@tstring</a>) for contributing source material for this topic.</p>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2012–2017 Michael DeHaan<br>© 2017 Red Hat, Inc.<br>Licensed under the GNU General Public License version 3.<br>
+    <a href="https://docs.ansible.com/ansible/latest/dev_guide/developing_modules_general.html" class="_attribution-link" target="_blank">https://docs.ansible.com/ansible/latest/dev_guide/developing_modules_general.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

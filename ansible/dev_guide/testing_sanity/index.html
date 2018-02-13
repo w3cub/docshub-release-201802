@@ -1,0 +1,90 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Sanity Tests - Ansible - W3cubDocs</title>
+  
+  <meta name="description" content="Sanity tests are made up of scripts and tools used to perform static code analysis. The primary purpose of these tests is to enforce Ansible coding &hellip;">
+  <meta name="keywords" content="sanity, tests, -, ansible">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/ansible/dev_guide/testing_sanity/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/ansible.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/ansible/" class="_nav-link" title="" style="margin-left:0;">Ansible</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _sphinx">
+				
+<h1 id="sanity-tests">Sanity Tests</h1>   <ul> <li>
+<a class="reference internal" href="#available-tests" id="id3">Available Tests</a><ul> <li><a class="reference internal" href="#code-smell-tests" id="id4">Code Smell Tests</a></li> <li>
+<a class="reference internal" href="#built-in-tests" id="id5">Built-in Tests</a><ul> <li><a class="reference internal" href="#ansible-doc" id="id6">ansible-doc</a></li> <li><a class="reference internal" href="#pep8" id="id7">pep8</a></li> <li><a class="reference internal" href="#pylint" id="id8">pylint</a></li> <li><a class="reference internal" href="#rstcheck" id="id9">rstcheck</a></li> <li><a class="reference internal" href="#shellcheck" id="id10">shellcheck</a></li> <li><a class="reference internal" href="#validate-modules" id="id11">validate-modules</a></li> <li><a class="reference internal" href="#yamllint" id="id12">yamllint</a></li> </ul> </li> </ul> </li> </ul>
+  <p>Sanity tests are made up of scripts and tools used to perform static code analysis. The primary purpose of these tests is to enforce Ansible coding standards and requirements.</p> <p>Tests are run with <code>ansible-test sanity</code>. All available tests are run unless the <code>--test</code> option is used.</p>  <h2 id="available-tests">Available Tests</h2> <p>Tests can be listed with <code>ansible-test sanity --list-tests</code>.</p> <p>This list is a combination of two different categories of tests, “Code Smell” and “Built-in”.</p>  <h3 id="code-smell-tests">Code Smell Tests</h3> <p>Miscellaneous <a class="reference external" href="https://github.com/ansible/ansible/tree/devel/test/sanity/code-smell/" target="_blank">scripts</a> used for enforcing coding standards and requirements, identifying trip hazards, etc.</p> <p>These tests are listed and accessed by script name. There is no actual test named <code>code-smell</code>.</p> <p>All executable scripts added to the <code>code-smell</code> directory are automatically detected and executed by <code>ansible-test</code>.</p> <p>Scripts in the directory which fail can be skipped by adding them to <a class="reference external" href="https://github.com/ansible/ansible/blob/devel/test/sanity/code-smell/skip.txt" target="_blank">skip.txt</a>. This is useful for scripts which identify issues that have not yet been resolved in the code base.</p> <p>Files tested are specific to the individual test scripts and are not affected by command line arguments.</p>   <h3 id="built-in-tests">Built-in Tests</h3> <p>These tests are integrated directly into <code>ansible-test</code>. All files relevant to each test are tested unless specific files are specified.</p> <p>A full list of tests can be obtained by doing <code>ansible-test sanity --list-tests</code>.</p>  <h4 id="ansible-doc">ansible-doc</h4> <p>Verifies that <code>ansible-doc</code> can parse module documentation on all supported python versions.</p>   <h4 id="pep8">pep8</h4> <p>Python static analysis for PEP 8 style guideline compliance. See <a class="reference internal" href="../testing_pep8/"><span class="doc">PEP 8</span></a> for more information.</p>   <h4 id="pylint">pylint</h4> <p>Python static analysis for common programming errors.</p>   <h4 id="rstcheck">rstcheck</h4> <p>Check reStructuredText files for syntax and formatting issues.</p>   <h4 id="shellcheck">shellcheck</h4> <p>Static code analysis for shell scripts using the excellent <a class="reference external" href="https://www.shellcheck.net/" target="_blank">shellcheck</a> tool.</p>   <h4 id="validate-modules">validate-modules</h4> <p>Analyze modules for common issues in code and documentation. See <a class="reference internal" href="../testing_validate-modules/"><span class="doc">validate-modules</span></a> for more information.</p>   <h4 id="yamllint">yamllint</h4> <p>Check YAML files for syntax and formatting issues.</p>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2012–2017 Michael DeHaan<br>© 2017 Red Hat, Inc.<br>Licensed under the GNU General Public License version 3.<br>
+    <a href="https://docs.ansible.com/ansible/latest/dev_guide/testing_sanity.html" class="_attribution-link" target="_blank">https://docs.ansible.com/ansible/latest/dev_guide/testing_sanity.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

@@ -1,0 +1,117 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Conventions, Best Practices, and Pitfalls - Ansible - W3cubDocs</title>
+  
+  <meta name="description" content=" As a reminder from the example code above, here are some basic conventions and guidelines&#58; ">
+  <meta name="keywords" content="conventions, best, practices, and, pitfallsdebugging, ansiblemodule-based, modulesmodule, pathscommon, pitfalls, -, ansible">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/ansible/dev_guide/developing_modules_best_practices/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/ansible.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/ansible/" class="_nav-link" title="" style="margin-left:0;">Ansible</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _sphinx">
+				
+<h1 id="module-dev-conventions">Conventions, Best Practices, and Pitfalls</h1> <p id="conventions-best-practices-and-pitfalls">As a reminder from the example code above, here are some basic conventions and guidelines:</p> <ul class="simple"> <li>If the module is addressing an object, the parameter for that object should be called ‘name’ whenever possible, or accept ‘name’ as an alias.</li> <li>If you have a company module that returns facts specific to your installations, a good name for this module is <code>site_facts</code>.</li> <li>Modules accepting boolean status should generally accept ‘yes’, ‘no’, ‘true’, ‘false’, or anything else a user may likely throw at them. The AnsibleModule common code supports this with “type=’bool’”.</li> <li>Include a minimum of dependencies if possible. If there are dependencies, document them at the top of the module file, and have the module raise JSON error messages when the import fails.</li> <li>Modules must be self-contained in one file to be auto-transferred by ansible.</li> <li>If packaging modules in an RPM, they only need to be installed on the control machine and should be dropped into /usr/share/ansible. This is entirely optional and up to you.</li> <li>Modules must output valid JSON only. The top level return type must be a hash (dictionary) although they can be nested. Lists or simple scalar values are not supported, though they can be trivially contained inside a dictionary.</li> <li>In the event of failure, a key of ‘failed’ should be included, along with a string explanation in ‘msg’. Modules that raise tracebacks (stacktraces) are generally considered ‘poor’ modules, though Ansible can deal with these returns and will automatically convert anything unparseable into a failed result. If you are using the AnsibleModule common Python code, the ‘failed’ element will be included for you automatically when you call ‘fail_json’.</li> <li>Return codes from modules are actually not significant, but continue on with 0=success and non-zero=failure for reasons of future proofing.</li> <li>As results from many hosts will be aggregated at once, modules should return only relevant output. Returning the entire contents of a log file is generally bad form.</li> </ul>   <h1 id="id1">Debugging AnsibleModule-based modules</h1> <div class="admonition tip" id="debugging-ansiblemodule-based-modules"> <p class="first admonition-title">Tip</p> <p class="last">If you’re using the <code>hacking/test-module</code> script then most of this is taken care of for you. If you need to do some debugging of the module on the remote machine that the module will actually run on or when the module is used in a playbook then you may need to use this information instead of relying on test-module.</p> </div> <p>Starting with Ansible-2.1.0, AnsibleModule-based modules are put together as a zip file consisting of the module file and the various python module boilerplate inside of a wrapper script instead of as a single file with all of the code concatenated together. Without some help, this can be harder to debug as the file needs to be extracted from the wrapper in order to see what’s actually going on in the module. Luckily the wrapper script provides some helper methods to do just that.</p> <p>If you are using Ansible with the <a class="reference internal" href="../../config/#envvar-ANSIBLE_KEEP_REMOTE_FILES" id="index-0"><code>ANSIBLE_KEEP_REMOTE_FILES</code></a> environment variables to keep the remote module file, here’s a sample of how your debugging session will start:</p> <pre data-language="shell">$ ANSIBLE_KEEP_REMOTE_FILES=1 ansible localhost -m ping -a 'data=debugging_session' -vvv
+&lt;127.0.0.1&gt; ESTABLISH LOCAL CONNECTION FOR USER: badger
+&lt;127.0.0.1&gt; EXEC /bin/sh -c '( umask 77 &amp;&amp; mkdir -p "` echo $HOME/.ansible/tmp/ansible-tmp-1461434734.35-235318071810595 `" &amp;&amp; echo "` echo $HOME/.ansible/tmp/ansible-tmp-1461434734.35-235318071810595 `" )'
+&lt;127.0.0.1&gt; PUT /var/tmp/tmpjdbJ1w TO /home/badger/.ansible/tmp/ansible-tmp-1461434734.35-235318071810595/ping
+&lt;127.0.0.1&gt; EXEC /bin/sh -c 'LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8 LC_MESSAGES=en_US.UTF-8 /usr/bin/python /home/badger/.ansible/tmp/ansible-tmp-1461434734.35-235318071810595/ping'
+localhost | SUCCESS =&gt; {
+    "changed": false,
+    "invocation": {
+        "module_args": {
+            "data": "debugging_session"
+        },
+        "module_name": "ping"
+    },
+    "ping": "debugging_session"
+}
+</pre> <p>Setting <a class="reference internal" href="../../config/#envvar-ANSIBLE_KEEP_REMOTE_FILES" id="index-1"><code>ANSIBLE_KEEP_REMOTE_FILES</code></a> to <code>1</code> tells Ansible to keep the remote module files instead of deleting them after the module finishes executing. Giving Ansible the <code>-vvv</code> option makes Ansible more verbose. That way it prints the file name of the temporary module file for you to see.</p> <p>If you want to examine the wrapper file you can. It will show a small python script with a large, base64 encoded string. The string contains the module that is going to be executed. Run the wrapper’s explode command to turn the string into some python files that you can work with:</p> <pre data-language="shell">$ python /home/badger/.ansible/tmp/ansible-tmp-1461434734.35-235318071810595/ping explode
+Module expanded into:
+/home/badger/.ansible/tmp/ansible-tmp-1461434734.35-235318071810595/debug_dir
+</pre> <p>When you look into the debug_dir you’ll see a directory structure like this:</p> <pre data-language="YAML">├── ansible_module_ping.py
+├── args
+└── ansible
+    ├── __init__.py
+    └── module_utils
+        ├── basic.py
+        └── __init__.py
+</pre> <ul class="simple"> <li>
+<code>ansible_module_ping.py</code> is the code for the module itself. The name is based on the name of the module with a prefix so that we don’t clash with any other python module names. You can modify this code to see what effect it would have on your module.</li> <li>The <code>args</code> file contains a JSON string. The string is a dictionary containing the module arguments and other variables that Ansible passes into the module to change its behaviour. If you want to modify the parameters that are passed to the module, this is the file to do it in.</li> <li>The <code>ansible</code> directory contains code from <code>ansible.module_utils</code> that is used by the module. Ansible includes files for any :<code>module:`ansible.module_utils</code> imports in the module but not any files from any other module. So if your module uses <code>ansible.module_utils.url</code> Ansible will include it for you, but if your module includes <code>requests</code> then you’ll have to make sure that the python requests library is installed on the system before running the module. You can modify files in this directory if you suspect that the module is having a problem in some of this boilerplate code rather than in the module code you have written.</li> </ul> <p>Once you edit the code or arguments in the exploded tree you need some way to run it. There’s a separate wrapper subcommand for this:</p> <pre data-language="shell">$ python /home/badger/.ansible/tmp/ansible-tmp-1461434734.35-235318071810595/ping execute
+{"invocation": {"module_args": {"data": "debugging_session"}}, "changed": false, "ping": "debugging_session"}
+</pre> <p>This subcommand takes care of setting the PYTHONPATH to use the exploded <code>debug_dir/ansible/module_utils</code> directory and invoking the script using the arguments in the <code>args</code> file. You can continue to run it like this until you understand the problem. Then you can copy it back into your real module file and test that the real module works via <strong class="command">ansible</strong> or <strong class="command">ansible-playbook</strong>.</p> <div class="admonition note"> <p class="first admonition-title">Note</p> <p class="last">The wrapper provides one more subcommand, <code>excommunicate</code>. This subcommand is very similar to <code>execute</code> in that it invokes the exploded module on the arguments in the <code>args</code>. The way it does this is different, however. <code>excommunicate</code> imports the <code>main()</code> function from the module and then calls that. This makes excommunicate execute the module in the wrapper’s process. This may be useful for running the module under some graphical debuggers but it is very different from the way the module is executed by Ansible itself. Some modules may not work with <code>excommunicate</code> or may behave differently than when used with Ansible normally. Those are not bugs in the module; they’re limitations of <code>excommunicate</code>. Use at your own risk.</p> </div>   <h1 id="module-paths">Module Paths</h1> <p>If you are having trouble getting your module “found” by ansible, be sure it is in the <a class="reference internal" href="../../config/#envvar-ANSIBLE_LIBRARY" id="index-2"><code>ANSIBLE_LIBRARY</code></a> environment variable.</p> <p>If you have a fork of one of the ansible module projects, do something like this:</p> <pre data-language="YAML">ANSIBLE_LIBRARY=~/ansible-modules-core
+</pre> <p>And this will make the items in your fork be loaded ahead of what ships with Ansible. Just be sure to make sure you’re not reporting bugs on versions from your fork!</p> <p>To be safe, if you’re working on a variant on something in Ansible’s normal distribution, it’s not a bad idea to give it a new name while you are working on it, to be sure you know you’re pulling your version.</p>   <h1 id="common-pitfalls">Common Pitfalls</h1> <p>You should never do this in a module:</p> <pre data-language="python">print("some status message")
+</pre> <p>Because the output is supposed to be valid JSON.</p> <p>Modules must not output anything on standard error, because the system will merge standard out with standard error and prevent the JSON from parsing. Capturing standard error and returning it as a variable in the JSON on standard out is fine, and is, in fact, how the command module is implemented.</p> <p>If a module returns stderr or otherwise fails to produce valid JSON, the actual output will still be shown in Ansible, but the command will not succeed.</p> <p>Don’t write to files directly; use a temporary file and then use the <code>atomic_move</code> function from <code>ansible.module_utils.basic</code> to move the updated temporary file into place. This prevents data corruption and ensures that the correct context for the file is kept.</p> <p>Avoid creating a module that does the work of other modules; this leads to code duplication and divergence, and makes things less uniform, unpredictable and harder to maintain. Modules should be the building blocks. Instead of creating a module that does the work of other modules, use Plays and Roles instead.</p> <p>Avoid creating ‘caches’. Ansible is designed without a central server or authority, so you cannot guarantee it will not run with different permissions, options or locations. If you need a central authority, have it on top of Ansible (for example, using bastion/cm/ci server or tower); do not try to build it into modules.</p> <p>Always use the hacking/test-module script when developing modules and it will warn you about these kind of things.</p>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2012–2017 Michael DeHaan<br>© 2017 Red Hat, Inc.<br>Licensed under the GNU General Public License version 3.<br>
+    <a href="https://docs.ansible.com/ansible/latest/dev_guide/developing_modules_best_practices.html" class="_attribution-link" target="_blank">https://docs.ansible.com/ansible/latest/dev_guide/developing_modules_best_practices.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

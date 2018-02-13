@@ -1,0 +1,108 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Rebasing a Pull Request - Ansible - W3cubDocs</title>
+  
+  <meta name="description" content=" You may find that your pull request (PR) is out-of-date and needs to be rebased. This can happen for several reasons&#58; ">
+  <meta name="keywords" content="rebasing, pull, request, -, ansible">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/ansible/dev_guide/developing_rebasing/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/ansible.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/ansible/" class="_nav-link" title="" style="margin-left:0;">Ansible</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _sphinx">
+				
+<h1 id="rebasing-a-pull-request">Rebasing a Pull Request</h1> <p>You may find that your pull request (PR) is out-of-date and needs to be rebased. This can happen for several reasons:</p> <ul class="simple"> <li>Files modified in your PR are in conflict with changes which have already been merged.</li> <li>Your PR is old enough that significant changes to automated test infrastructure have occurred.</li> </ul> <p>Rebasing the branch used to create your PR will resolve both of these issues.</p>  <h2 id="configuring-your-remotes">Configuring Your Remotes</h2> <p>Before you can rebase your PR, you need to make sure you have the proper remotes configured. Assuming you cloned your fork in the usual fashion, the <code>origin</code> remote will point to your fork:</p> <pre data-language="YAML">$ git remote -v
+origin  git@github.com:YOUR_GITHUB_USERNAME/ansible.git (fetch)
+origin  git@github.com:YOUR_GITHUB_USERNAME/ansible.git (push)
+</pre> <p>However, you also need to add a remote which points to the upstream repository:</p> <pre data-language="YAML">$ git remote add upstream https://github.com/ansible/ansible.git
+</pre> <p>Which should leave you with the following remotes:</p> <pre data-language="YAML">$ git remote -v
+origin  git@github.com:YOUR_GITHUB_USERNAME/ansible.git (fetch)
+origin  git@github.com:YOUR_GITHUB_USERNAME/ansible.git (push)
+upstream        https://github.com/ansible/ansible.git (fetch)
+upstream        https://github.com/ansible/ansible.git (push)
+</pre> <p>Checking the status of your branch should show you’re up-to-date with your fork at the <code>origin</code> remote:</p> <pre data-language="YAML">$ git status
+On branch YOUR_BRANCH
+Your branch is up-to-date with 'origin/YOUR_BRANCH'.
+nothing to commit, working tree clean
+</pre>   <h2 id="rebasing-your-branch">Rebasing Your Branch</h2> <p>Once you have an <code>upstream</code> remote configured, you can rebase the branch for your PR:</p> <pre data-language="YAML">$ git pull --rebase upstream devel
+</pre> <p>This will replay the changes in your branch on top of the changes made in the upstream <code>devel</code> branch. If there are merge conflicts, you will be prompted to resolve those before you can continue.</p> <p>Once you’ve rebased, the status of your branch will have changed:</p> <pre data-language="YAML">$ git status
+On branch YOUR_BRANCH
+Your branch and 'origin/YOUR_BRANCH' have diverged,
+and have 4 and 1 different commits each, respectively.
+  (use "git pull" to merge the remote branch into yours)
+nothing to commit, working tree clean
+</pre> <p>Don’t worry, this is normal after a rebase. You should ignore the <code>git status</code> instructions to use <code>git pull</code>. We’ll cover what to do next in the following section.</p>   <h2 id="updating-your-pull-request">Updating Your Pull Request</h2> <p>Now that you’ve rebased your branch, you need to push your changes to GitHub to update your PR.</p> <p>Since rebasing re-writes git history, you will need to use a force push:</p> <pre data-language="YAML">$ git push --force
+</pre> <p>Your PR on GitHub has now been updated. This will automatically trigger testing of your changes. You should check in on the status of your PR after tests have completed to see if further changes are required.</p>   <h2 id="getting-help-rebasing">Getting Help Rebasing</h2> <p>For help with rebasing your PR, or other development related questions, join us on our #ansible-devel IRC chat channel on <a class="reference external" href="https://freenode.net" target="_blank">freenode.net</a>.</p>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2012–2017 Michael DeHaan<br>© 2017 Red Hat, Inc.<br>Licensed under the GNU General Public License version 3.<br>
+    <a href="https://docs.ansible.com/ansible/latest/dev_guide/developing_rebasing.html" class="_attribution-link" target="_blank">https://docs.ansible.com/ansible/latest/dev_guide/developing_rebasing.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

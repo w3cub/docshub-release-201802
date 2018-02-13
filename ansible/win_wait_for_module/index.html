@@ -1,0 +1,142 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Win_wait_for - Ansible - W3cubDocs</title>
+  
+  <meta name="description" content=" New in version 2.4. ">
+  <meta name="keywords" content="win, wait, for, -, waits, condition, before, continuing, ansible">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/ansible/win_wait_for_module/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/ansible.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/ansible/" class="_nav-link" title="" style="margin-left:0;">Ansible</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _sphinx">
+				
+<h1 id="win-wait-for">win_wait_for - Waits for a condition before continuing</h1> <div class="versionadded" id="win-wait-for-waits-for-a-condition-before-continuing"> <p><span class="versionmodified">New in version 2.4.</span></p> </div>  <ul class="simple"> <li><a class="reference internal" href="#synopsis" id="id1">Synopsis</a></li> <li><a class="reference internal" href="#options" id="id2">Options</a></li> <li><a class="reference internal" href="#examples" id="id3">Examples</a></li> <li>
+<a class="reference internal" href="#return-values" id="id4">Return Values</a><ul> <li><a class="reference internal" href="#status" id="id5">Status</a></li> </ul> </li> </ul>   <h2 id="synopsis">Synopsis</h2> <ul class="simple"> <li>You can wait for a set amount of time <code>timeout</code>, this is the default if nothing is specified.</li> <li>Waiting for a port to become available is useful for when services are not immediately available after their init scripts return which is true of certain Java application servers.</li> <li>You can wait for a file to exist or not exist on the filesystem.</li> <li>This module can also be used to wait for a regex match string to be present in a file.</li> <li>You can wait for active connections to be closed before continuing on a local port.</li> </ul>   <h2 id="options">Options</h2> <table> <tr> <th class="head">parameter</th> <th class="head">required</th> <th class="head">default</th> <th class="head">choices</th> <th class="head">comments</th> </tr> <tr> <td>connect_timeout<br>
+</td> <td>no</td> <td>5</td> <td></td> <td> <div>The maximum number of seconds to wait for a connection to happen before closing and retrying.</div> </td> </tr> <tr> <td>delay<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>The number of seconds to wait before starting to poll.</div> </td> </tr> <tr> <td>exclude_hosts<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>The list of hosts or IPs to ignore when looking for active TCP connections when <code>state=drained</code>.</div> </td> </tr> <tr> <td>host<br>
+</td> <td>no</td> <td>127.0.0.1</td> <td></td> <td> <div>A resolvable hostname or IP address to wait for.</div> <div>If <code>state=drained</code> then it will only check for connections on the IP specified, you can use '0.0.0.0' to use all host IPs.</div> </td> </tr> <tr> <td>path<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>The path to a file on the filesystem to check.</div> <div>If <code>state</code> is present or started then it will wait until the file exists.</div> <div>If <code>state</code> is absent then it will wait until the file does not exist.</div> </td> </tr> <tr> <td>port<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>The port number to poll on <code>host</code>.</div> </td> </tr> <tr> <td>search_regex<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>Can be used to match a string in a file.</div> <div>If <code>state</code> is present or started then it will wait until the regex matches.</div> <div>If <code>state</code> is absent then it will wait until the regex does not match.</div> <div>Defaults to a multiline regex.</div> </td> </tr> <tr> <td>sleep<br>
+</td> <td>no</td> <td>1</td> <td></td> <td> <div>Number of seconds to sleep between checks.</div> </td> </tr> <tr> <td>state<br>
+</td> <td>no</td> <td>started</td> <td><ul>
+<li>present</li>
+<li>started</li>
+<li>stopped</li>
+<li>absent</li>
+<li>drained</li>
+</ul></td> <td> <div>When checking a port, <code>started</code> will ensure the port is open, <code>stopped</code> will check that is it closed and <code>drained</code> will check for active connections.</div> <div>When checking for a file or a search string <code>present</code> or <code>started</code> will ensure that the file or string is present, <code>absent</code> will check that the file or search string is absent or removed.</div> </td> </tr> <tr> <td>timeout<br>
+</td> <td>no</td> <td>300</td> <td></td> <td> <div>The maximum number of seconds to wait for.</div> </td> </tr> </table>   <h2 id="examples">Examples</h2>  <pre data-language="YAML">- name: wait 300 seconds for port 8000 to become open on the host, don't start checking for 10 seconds
+  win_wait_for:
+    port: 8000
+    delay: 10
+
+- name: wait 150 seconds for port 8000 of any IP to close active connections
+  win_wait_for:
+    host: 0.0.0.0
+    port: 8000
+    state: drained
+    timeout: 150
+
+- name: wait for port 8000 of any IP to close active connection, ignoring certain hosts
+  win_wait_for:
+    host: 0.0.0.0
+    port: 8000
+    state: drained
+    exclude_hosts: ['10.2.1.2', '10.2.1.3']
+
+- name: wait for file C:\temp\log.txt to exist before continuing
+  win_wait_for:
+    path: C:\temp\log.txt
+
+- name: wait until process complete is in the file before continuing
+  win_wait_for:
+    path: C:\temp\log.txt
+    search_regex: process complete
+
+- name: wait until file if removed
+  win_wait_for:
+    path: C:\temp\log.txt
+    state: absent
+
+- name: wait until port 1234 is offline but try every 10 seconds
+  win_wait_for:
+    port: 1234
+    state: absent
+    sleep: 10
+</pre>    <h2 id="return-values">Return Values</h2> <p>Common return values are documented here <a class="reference internal" href="../common_return_values/"><span class="doc">Return Values</span></a>, the following are the fields unique to this module:</p> <table> <tr> <th class="head">name</th> <th class="head">description</th> <th class="head">returned</th> <th class="head">type</th> <th class="head">sample</th> </tr> <tr> <td>attempts</td> <td> <div>The number of attempts to poll the file or port before module finishes.</div> </td> <td align="center">always</td> <td align="center">int</td> <td align="center">1</td> </tr> <tr> <td>elapsed</td> <td> <div>The elapsed seconds between the start of poll and the end of the module. This includes the delay if the option is set.</div> </td> <td align="center">always</td> <td align="center">float</td> <td align="center">2.1406487</td> </tr> </table>  <h3 id="status">Status</h3> <p>This module is flagged as <strong>preview</strong> which means that it is not guaranteed to have a backwards compatible interface.</p> <p>For help in developing on modules, should you be so inclined, please read <a class="reference internal" href="https://docs.ansible.com/ansible/latest/community.html" target="_blank"><span class="doc">Community Information &amp; Contributing</span></a>, <a class="reference internal" href="../dev_guide/testing/"><span class="doc">Testing Ansible</span></a> and <a class="reference internal" href="../dev_guide/developing_modules/"><span class="doc">Developing Modules</span></a>.</p>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2012–2017 Michael DeHaan<br>© 2017 Red Hat, Inc.<br>Licensed under the GNU General Public License version 3.<br>
+    <a href="https://docs.ansible.com/ansible/latest/win_wait_for_module.html" class="_attribution-link" target="_blank">https://docs.ansible.com/ansible/latest/win_wait_for_module.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

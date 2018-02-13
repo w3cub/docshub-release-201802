@@ -1,0 +1,190 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Win_regedit - Ansible - W3cubDocs</title>
+  
+  <meta name="description" content=" New in version 2.0. ">
+  <meta name="keywords" content="win, regedit, -, add, change, or, remove, registry, keys, and, values, ansible">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/ansible/win_regedit_module/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/ansible.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/ansible/" class="_nav-link" title="" style="margin-left:0;">Ansible</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _sphinx">
+				
+<h1 id="win-regedit">win_regedit - Add, change, or remove registry keys and values</h1> <div class="versionadded" id="win-regedit-add-change-or-remove-registry-keys-and-values"> <p><span class="versionmodified">New in version 2.0.</span></p> </div>  <ul class="simple"> <li><a class="reference internal" href="#synopsis" id="id1">Synopsis</a></li> <li><a class="reference internal" href="#options" id="id2">Options</a></li> <li><a class="reference internal" href="#examples" id="id3">Examples</a></li> <li><a class="reference internal" href="#return-values" id="id4">Return Values</a></li> <li>
+<a class="reference internal" href="#notes" id="id5">Notes</a><ul> <li><a class="reference internal" href="#status" id="id6">Status</a></li> <li><a class="reference internal" href="#maintenance-info" id="id7">Maintenance Info</a></li> </ul> </li> </ul>   <h2 id="synopsis">Synopsis</h2> <ul class="simple"> <li>Add, modify or remove registry keys and values.</li> <li>More information about the windows registry from Wikipedia <a class="reference external" href="https://en.wikipedia.org/wiki/Windows_Registry" target="_blank">https://en.wikipedia.org/wiki/Windows_Registry</a>.</li> </ul>   <h2 id="options">Options</h2> <table> <tr> <th class="head">parameter</th> <th class="head">required</th> <th class="head">default</th> <th class="head">choices</th> <th class="head">comments</th> </tr> <tr> <td>data<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>Value of the registry entry <code>name</code> in <code>path</code>.</div> <div>If not specified then the value for the property will be null for the corresponding <code>type</code>.</div> <div>Binary and None data should be expressed in a yaml byte array or as comma separated hex values.</div> <div>An easy way to generate this is to run <code>regedit.exe</code> and use the <em>export</em> option to save the registry values to a file.</div> <div>In the exported file, binary value will look like <code>hex:be,ef,be,ef</code>, the <code>hex:</code> prefix is optional.</div> <div>DWORD and QWORD values should either be represented as a decimal number or a hex value.</div> <div>Multistring values should be passed in as a list.</div> <div>See the examples for more details on how to format this data.</div> </td> </tr> <tr> <td>delete_key<br><div style="font-size: small;">(added in 2.4)</div>
+</td> <td>no</td> <td>yes</td> <td><ul>
+<li>yes</li>
+<li>no</li>
+</ul></td> <td> <div>When <code>state</code> is 'absent' then this will delete the entire key.</div> <div>If this is False then it will only clear out the '(Default)' property for that key.</div> </td> </tr> <tr> <td>name<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>Name of the registry entry in the above <code>path</code> parameters.</div> <div>If not provided, or empty then the '(Default)' property for the key will be used.</div> <div style="font-size: small;">aliases: entry</div> </td> </tr> <tr> <td>path<br>
+</td> <td>yes</td> <td></td> <td></td> <td> <div>Name of the registry path.</div> <div>Should be in one of the following registry hives: HKCC, HKCR, HKCU, HKLM, HKU.</div> <div style="font-size: small;">aliases: key</div> </td> </tr> <tr> <td>state<br>
+</td> <td>no</td> <td>present</td> <td><ul>
+<li>present</li>
+<li>absent</li>
+</ul></td> <td> <div>The state of the registry entry.</div> </td> </tr> <tr> <td>type<br>
+</td> <td>no</td> <td>string</td> <td><ul>
+<li>binary</li>
+<li>dword</li>
+<li>expandstring</li>
+<li>multistring</li>
+<li>string</li>
+<li>qword</li>
+</ul></td> <td> <div>The registry value data type.</div> <div style="font-size: small;">aliases: datatype</div> </td> </tr> </table>   <h2 id="examples">Examples</h2>  <pre data-language="YAML">- name: Create registry path MyCompany
+  win_regedit:
+    path: HKCU:\Software\MyCompany
+
+- name: Add or update registry path MyCompany, with entry 'hello', and containing 'world'
+  win_regedit:
+    path: HKCU:\Software\MyCompany
+    name: hello
+    data: world
+
+- name: Add or update registry path MyCompany, with dword entry 'hello', and containing 1337 as the decimal value
+  win_regedit:
+    path: HKCU:\Software\MyCompany
+    name: hello
+    data: 1337
+    type: dword
+
+- name: Add or update registry path MyCompany, with dword entry 'hello', and containing 0xff2500ae as the hex value
+  win_regedit:
+    path: HKCU:\Software\MyCompany
+    name: hello
+    data: 0xff2500ae
+    type: dword
+
+- name: Add or update registry path MyCompany, with binary entry 'hello', and containing binary data in hex-string format
+  win_regedit:
+    path: HKCU:\Software\MyCompany
+    name: hello
+    data: hex:be,ef,be,ef,be,ef,be,ef,be,ef
+    type: binary
+
+- name: Add or update registry path MyCompany, with binary entry 'hello', and containing binary data in yaml format
+  win_regedit:
+    path: HKCU:\Software\MyCompany
+    name: hello
+    data: [0xbe,0xef,0xbe,0xef,0xbe,0xef,0xbe,0xef,0xbe,0xef]
+    type: binary
+
+- name: Add or update registry path MyCompany, with expand string entry 'hello'
+  win_regedit:
+    path: HKCU:\Software\MyCompany
+    name: hello
+    data: '%appdata%\local'
+    type: expandstring
+
+- name: Add or update registry path MyCompany, with multi string entry 'hello'
+  win_regedit:
+    path: HKCU:\Software\MyCompany
+    name: hello
+    data: ['hello', 'world']
+    type: multistring
+
+- name: Disable keyboard layout hotkey for all users (changes existing)
+  win_regedit:
+    path: HKU:\.DEFAULT\Keyboard Layout\Toggle
+    name: Layout Hotkey
+    data: 3
+    type: dword
+
+- name: Disable language hotkey for current users (adds new)
+  win_regedit:
+    path: HKCU:\Keyboard Layout\Toggle
+    name: Language Hotkey
+    data: 3
+    type: dword
+
+- name: Remove registry path MyCompany (including all entries it contains)
+  win_regedit:
+    path: HKCU:\Software\MyCompany
+    state: absent
+    delete_key: yes
+
+- name: Clear the existing (Default) entry at path MyCompany
+  win_regedit:
+    path: HKCU:\Software\MyCompany
+    state: absent
+    delete_key: no
+
+- name: Remove entry 'hello' from registry path MyCompany
+  win_regedit:
+    path: HKCU:\Software\MyCompany
+    name: hello
+    state: absent
+</pre>    <h2 id="return-values">Return Values</h2> <p>Common return values are documented here <a class="reference internal" href="../common_return_values/"><span class="doc">Return Values</span></a>, the following are the fields unique to this module:</p> <table> <tr> <th class="head">name</th> <th class="head">description</th> <th class="head">returned</th> <th class="head">type</th> <th class="head">sample</th> </tr> <tr> <td>data_changed</td> <td> <div>whether this invocation changed the data in the registry value</div> </td> <td align="center">success</td> <td align="center">boolean</td> <td align="center">False</td> </tr> <tr> <td>data_type_changed</td> <td> <div>whether this invocation changed the datatype of the registry value</div> </td> <td align="center">success</td> <td align="center">boolean</td> <td align="center">True</td> </tr> </table>   <h2 id="notes">Notes</h2> <div class="admonition note"> <p class="first admonition-title">Note</p> <ul class="last simple"> <li>Check-mode <code>-C/--check</code> and diff output <code>-D/--diff</code> are supported, so that you can test every change against the active configuration before applying changes.</li> <li>Beware that some registry hives (<code>HKEY_USERS</code> in particular) do not allow to create new registry paths.</li> <li>Since ansible 2.4, when checking if a string registry value has changed, a case-sensitive test is used. Previously the test was case-insensitive.</li> </ul> </div>  <h3 id="status">Status</h3> <p>This module is flagged as <strong>preview</strong> which means that it is not guaranteed to have a backwards compatible interface.</p>   <h3 id="maintenance-info">Maintenance Info</h3> <p>For more information about Red Hat’s this support of this module, please refer to this <code>knowledge base article&lt;https://access.redhat.com/articles/rhel-top-support-policies&gt;</code></p> <p>For help in developing on modules, should you be so inclined, please read <a class="reference internal" href="https://docs.ansible.com/ansible/latest/community.html" target="_blank"><span class="doc">Community Information &amp; Contributing</span></a>, <a class="reference internal" href="../dev_guide/testing/"><span class="doc">Testing Ansible</span></a> and <a class="reference internal" href="../dev_guide/developing_modules/"><span class="doc">Developing Modules</span></a>.</p>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2012–2017 Michael DeHaan<br>© 2017 Red Hat, Inc.<br>Licensed under the GNU General Public License version 3.<br>
+    <a href="https://docs.ansible.com/ansible/latest/win_regedit_module.html" class="_attribution-link" target="_blank">https://docs.ansible.com/ansible/latest/win_regedit_module.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

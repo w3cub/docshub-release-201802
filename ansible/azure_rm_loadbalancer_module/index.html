@@ -1,0 +1,149 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Azure_rm_loadbalancer - Ansible - W3cubDocs</title>
+  
+  <meta name="description" content=" New in version 2.4. ">
+  <meta name="keywords" content="azure, rm, loadbalancer, -, manage, load, balancers, ansible">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/ansible/azure_rm_loadbalancer_module/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/ansible.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/ansible/" class="_nav-link" title="" style="margin-left:0;">Ansible</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _sphinx">
+				
+<h1 id="azure-rm-loadbalancer">azure_rm_loadbalancer - Manage Azure load balancers.</h1> <div class="versionadded" id="azure-rm-loadbalancer-manage-azure-load-balancers"> <p><span class="versionmodified">New in version 2.4.</span></p> </div>  <ul class="simple"> <li><a class="reference internal" href="#synopsis" id="id1">Synopsis</a></li> <li><a class="reference internal" href="#requirements-on-host-that-executes-module" id="id2">Requirements (on host that executes module)</a></li> <li><a class="reference internal" href="#options" id="id3">Options</a></li> <li><a class="reference internal" href="#examples" id="id4">Examples</a></li> <li><a class="reference internal" href="#return-values" id="id5">Return Values</a></li> <li>
+<a class="reference internal" href="#notes" id="id6">Notes</a><ul> <li><a class="reference internal" href="#status" id="id7">Status</a></li> </ul> </li> </ul>   <h2 id="synopsis">Synopsis</h2> <ul class="simple"> <li>Create, update and delete Azure load balancers</li> </ul>   <h2 id="requirements-on-host-that-executes-module">Requirements (on host that executes module)</h2>  <ul class="simple"> <li>python &gt;= 2.7</li> <li>azure &gt;= 2.0.0</li> </ul>    <h2 id="options">Options</h2> <table> <tr> <th class="head">parameter</th> <th class="head">required</th> <th class="head">default</th> <th class="head">choices</th> <th class="head">comments</th> </tr> <tr> <td>ad_user<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>Active Directory username. Use when authenticating with an Active Directory user rather than service principal.</div> </td> </tr> <tr> <td>append_tags<br>
+</td> <td>no</td> <td>True</td> <td></td> <td> <div>Use to control if tags field is canonical or just appends to existing tags. When canonical, any tags not found in the tags parameter will be removed from the object's metadata.</div> </td> </tr> <tr> <td>backend_port<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>Backend port that will be exposed for the load balancer.</div> </td> </tr> <tr> <td>client_id<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>Azure client ID. Use when authenticating with a Service Principal.</div> </td> </tr> <tr> <td>cloud_environment<br>
+</td> <td>no</td> <td>AzureCloud</td> <td></td> <td> <div>For cloud environments other than the US public cloud, the environment name (as defined by Azure Python SDK, eg, <code>AzureChinaCloud</code>, <code>AzureUSGovernment</code>), or a metadata discovery endpoint URL (required for Azure Stack). Can also be set via credential file profile or the <code>AZURE_CLOUD_ENVIRONMENT</code> environment variable.</div> </td> </tr> <tr> <td>frontend_port<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>Frontend port that will be exposed for the load balancer.</div> </td> </tr> <tr> <td>idle_timeout<br>
+</td> <td>no</td> <td>4</td> <td></td> <td> <div>Timeout for TCP idle connection in minutes.</div> </td> </tr> <tr> <td>load_distribution<br>
+</td> <td>no</td> <td></td> <td><ul>
+<li>Default</li>
+<li>SourceIP</li>
+<li>SourceIPProtocol</li>
+</ul></td> <td> <div>The type of load distribution that the load balancer will employ.</div> </td> </tr> <tr> <td>location<br>
+</td> <td>no</td> <td>resource_group location</td> <td></td> <td> <div>Valid azure location. Defaults to location of the resource group.</div> </td> </tr> <tr> <td>name<br>
+</td> <td>yes</td> <td></td> <td></td> <td> <div>Name of the load balancer.</div> </td> </tr> <tr> <td>natpool_backend_port<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>Backend port used by the NAT pool.</div> </td> </tr> <tr> <td>natpool_frontend_port_end<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>End of the port range for a NAT pool.</div> </td> </tr> <tr> <td>natpool_frontend_port_start<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>Start of the port range for a NAT pool.</div> </td> </tr> <tr> <td>natpool_protocol<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>The protocol for the NAT pool.</div> </td> </tr> <tr> <td>password<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>Active Directory user password. Use when authenticating with an Active Directory user rather than service principal.</div> </td> </tr> <tr> <td>probe_fail_count<br>
+</td> <td>no</td> <td>3</td> <td></td> <td> <div>The amount of probe failures for the load balancer to make a health determination.</div> </td> </tr> <tr> <td>probe_interval<br>
+</td> <td>no</td> <td>15</td> <td></td> <td> <div>How much time (in seconds) to probe the endpoint for health.</div> </td> </tr> <tr> <td>probe_port<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>The port that the health probe will use.</div> </td> </tr> <tr> <td>probe_protocol<br>
+</td> <td>no</td> <td></td> <td><ul>
+<li>Tcp</li>
+<li>Http</li>
+</ul></td> <td> <div>The protocol to use for the health probe.</div> </td> </tr> <tr> <td>probe_request_path<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>The URL that an HTTP probe will use (only relevant if probe_protocol is set to Http).</div> </td> </tr> <tr> <td>profile<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>Security profile found in ~/.azure/credentials file.</div> </td> </tr> <tr> <td>protocol<br>
+</td> <td>no</td> <td></td> <td><ul>
+<li>Tcp</li>
+<li>Udp</li>
+</ul></td> <td> <div>The protocol (TCP or UDP) that the load balancer will use.</div> </td> </tr> <tr> <td>public_ip_address_name<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>Name of an existing public IP address object to associate with the security group.</div> <div style="font-size: small;">aliases: public_ip_address, public_ip_name, public_ip</div> </td> </tr> <tr> <td>resource_group<br>
+</td> <td>yes</td> <td></td> <td></td> <td> <div>Name of a resource group where the load balancer exists or will be created.</div> </td> </tr> <tr> <td>secret<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>Azure client secret. Use when authenticating with a Service Principal.</div> </td> </tr> <tr> <td>state<br>
+</td> <td>no</td> <td>present</td> <td><ul>
+<li>absent</li>
+<li>present</li>
+</ul></td> <td> <div>Assert the state of the load balancer. Use 'present' to create or update a load balancer and 'absent' to delete a load balancer.</div> </td> </tr> <tr> <td>subscription_id<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>Your Azure subscription Id.</div> </td> </tr> <tr> <td>tags<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>Dictionary of string:string pairs to assign as metadata to the object. Metadata tags on the object will be updated with any provided values. To remove tags set append_tags option to false. </div> </td> </tr> <tr> <td>tenant<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>Azure tenant ID. Use when authenticating with a Service Principal.</div> </td> </tr> </table>   <h2 id="examples">Examples</h2>  <pre data-language="YAML">- name: Create a load balancer
+  azure_rm_loadbalancer:
+    name: myloadbalancer
+    location: eastus
+    resource_group: my-rg
+    public_ip: mypublicip
+    probe_protocol: Tcp
+    probe_port: 80
+    probe_interval: 10
+    probe_fail_count: 3
+    protocol: Tcp
+    load_distribution: Default
+    frontend_port: 80
+    backend_port: 8080
+    idle_timeout: 4
+    natpool_frontend_port_start: 1030
+    natpool_frontend_port_end: 1040
+    natpool_backend_port: 80
+    natpool_protocol: Tcp
+</pre>    <h2 id="return-values">Return Values</h2> <p>Common return values are documented here <a class="reference internal" href="../common_return_values/"><span class="doc">Return Values</span></a>, the following are the fields unique to this module:</p> <table> <tr> <th class="head">name</th> <th class="head">description</th> <th class="head">returned</th> <th class="head">type</th> <th class="head">sample</th> </tr> <tr> <td>state</td> <td> <div>Current state of the load balancer</div> </td> <td align="center">always</td> <td align="center">dict</td> <td align="center"></td> </tr> <tr> <td>changed</td> <td> <div>Whether or not the resource has changed</div> </td> <td align="center">always</td> <td align="center">bool</td> <td align="center"></td> </tr> </table>   <h2 id="notes">Notes</h2> <div class="admonition note"> <p class="first admonition-title">Note</p> <ul class="last simple"> <li>For authentication with Azure you can pass parameters, set environment variables or use a profile stored in ~/.azure/credentials. Authentication is possible using a service principal or Active Directory user. To authenticate via service principal, pass subscription_id, client_id, secret and tenant or set environment variables AZURE_SUBSCRIPTION_ID, AZURE_CLIENT_ID, AZURE_SECRET and AZURE_TENANT.</li> <li>To authenticate via Active Directory user, pass ad_user and password, or set AZURE_AD_USER and AZURE_PASSWORD in the environment.</li> <li>Alternatively, credentials can be stored in ~/.azure/credentials. This is an ini file containing a [default] section and the following keys: subscription_id, client_id, secret and tenant or subscription_id, ad_user and password. It is also possible to add additional profiles. Specify the profile by passing profile or setting AZURE_PROFILE in the environment.</li> </ul> </div>  <h3 id="status">Status</h3> <p>This module is flagged as <strong>preview</strong> which means that it is not guaranteed to have a backwards compatible interface.</p> <p>For help in developing on modules, should you be so inclined, please read <a class="reference internal" href="https://docs.ansible.com/ansible/latest/community.html" target="_blank"><span class="doc">Community Information &amp; Contributing</span></a>, <a class="reference internal" href="../dev_guide/testing/"><span class="doc">Testing Ansible</span></a> and <a class="reference internal" href="../dev_guide/developing_modules/"><span class="doc">Developing Modules</span></a>.</p>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2012–2017 Michael DeHaan<br>© 2017 Red Hat, Inc.<br>Licensed under the GNU General Public License version 3.<br>
+    <a href="https://docs.ansible.com/ansible/latest/azure_rm_loadbalancer_module.html" class="_attribution-link" target="_blank">https://docs.ansible.com/ansible/latest/azure_rm_loadbalancer_module.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

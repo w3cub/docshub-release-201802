@@ -1,0 +1,170 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Gcpubsub - Ansible - W3cubDocs</title>
+  
+  <meta name="description" content=" New in version 2.3. ">
+  <meta name="keywords" content="gcpubsub, -, create, and, delete, topics, subscriptions, publish, pull, messages, on, pubsub, ansible">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/ansible/gcpubsub_module/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/ansible.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/ansible/" class="_nav-link" title="" style="margin-left:0;">Ansible</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _sphinx">
+				
+<h1 id="gcpubsub">gcpubsub - Create and Delete Topics/Subscriptions, Publish and pull messages on PubSub.</h1> <div class="versionadded" id="gcpubsub-create-and-delete-topics-subscriptions-publish-and-pull-messages-on-pubsub"> <p><span class="versionmodified">New in version 2.3.</span></p> </div>  <ul class="simple"> <li><a class="reference internal" href="#synopsis" id="id1">Synopsis</a></li> <li><a class="reference internal" href="#requirements-on-host-that-executes-module" id="id2">Requirements (on host that executes module)</a></li> <li><a class="reference internal" href="#options" id="id3">Options</a></li> <li><a class="reference internal" href="#examples" id="id4">Examples</a></li> <li><a class="reference internal" href="#return-values" id="id5">Return Values</a></li> <li>
+<a class="reference internal" href="#notes" id="id6">Notes</a><ul> <li><a class="reference internal" href="#status" id="id7">Status</a></li> </ul> </li> </ul>   <h2 id="synopsis">Synopsis</h2> <ul class="simple"> <li>Create and Delete Topics/Subscriptions, Publish and pull messages on PubSub. See <a class="reference external" href="https://cloud.google.com/pubsub/docs" target="_blank">https://cloud.google.com/pubsub/docs</a> for an overview.</li> </ul>   <h2 id="requirements-on-host-that-executes-module">Requirements (on host that executes module)</h2>  <ul class="simple"> <li>python &gt;= 2.6</li> <li>google-auth &gt;= 0.5.0</li> <li>google-cloud-pubsub &gt;= 0.22.0</li> </ul>    <h2 id="options">Options</h2> <table> <tr> <th class="head">parameter</th> <th class="head">required</th> <th class="head">default</th> <th class="head">choices</th> <th class="head">comments</th> </tr> <tr> <td>ack_deadline<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>Subfield of subscription. Not required. Default deadline for subscriptions to ACK the message before it is resent. See examples.</div> </td> </tr> <tr> <td>name<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>Subfield of subscription. Required if subscription is specified. See examples.</div> </td> </tr> <tr> <td>publish<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>List of dictionaries describing messages and attributes to be published. Dictionary is in message(str):attributes(dict) format. Only message is required.</div> </td> </tr> <tr> <td>pull<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>Subfield of subscription. Not required. If specified, messages will be retrieved from topic via the provided subscription name. max_messages (int; default None; max number of messages to pull), message_ack (bool; default False; acknowledge the message) and return_immediately (bool; default True, don't wait for messages to appear). If the messages are acknowledged, changed is set to True, otherwise, changed is False.</div> </td> </tr> <tr> <td>push_endpoint<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>Subfield of subscription. Not required. If specified, message will be sent to an endpoint. See <a href="https://cloud.google.com/pubsub/docs/advanced#push_endpoints" target="_blank">https://cloud.google.com/pubsub/docs/advanced#push_endpoints</a> for more information.</div> </td> </tr> <tr> <td>state<br>
+</td> <td>no</td> <td>present</td> <td></td> <td> <div>State of the topic or queue (absent, present). Applies to the most granular resource. Remove the most granular resource. If subcription is specified we remove it. If only topic is specified, that is what is removed. Note that a topic can be removed without first removing the subscription.</div> </td> </tr> <tr> <td>subscription<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>Dictionary containing a subscripton name associated with a topic (required), along with optional ack_deadline, push_endpoint and pull. For pulling from a subscription, message_ack (bool), max_messages (int) and return_immediate are available as subfields. See subfields name, push_endpoint and ack_deadline for more information.</div> </td> </tr> <tr> <td>topic<br>
+</td> <td>yes</td> <td></td> <td></td> <td> <div>GCP pubsub topic name. Only the name, not the full path, is required.</div> </td> </tr> </table>   <h2 id="examples">Examples</h2>  <pre data-language="YAML"># Create a topic and publish a message to it
+# (Message will be pushed; there is no check to see if the message was pushed before
+# Topics:
+## Create Topic
+gcpubsub:
+  topic: ansible-topic-example
+  state: present
+
+## Delete Topic
+### Subscriptions associated with topic are not deleted.
+gcpubsub:
+  topic: ansible-topic-example
+  state: absent
+
+## Messages: publish multiple messages, with attributes (key:value available with the message)
+### setting absent will keep the messages from being sent
+gcpubsub:
+  topic: "{{ topic_name }}"
+  state: present
+  publish:
+    - message: "this is message 1"
+      attributes:
+        mykey1: myvalue
+        mykey2: myvalu2
+        mykey3: myvalue3
+    - message: "this is message 2"
+      attributes:
+        server: prod
+        sla: "99.9999"
+        owner: fred
+
+# Subscriptions
+## Create Subscription (pull)
+gcpubsub:
+  topic: ansible-topic-example
+  subscription:
+  - name: mysub
+  state: present
+
+## Create Subscription with ack_deadline and push endpoint
+### pull is default, ack_deadline is not required
+gcpubsub:
+  topic: ansible-topic-example
+  subscription:
+  - name: mysub
+    ack_deadline: "60"
+    push_endpoint: http://pushendpoint.example.com
+  state: present
+
+## Subscription change from push to pull
+### setting push_endpoint to "None" converts subscription to pull.
+gcpubsub:
+  topic: ansible-topic-example
+  subscription:
+    name: mysub
+    push_endpoint: "None"
+
+## Delete subscription
+### Topic will not be deleted
+gcpubsub:
+  topic: ansible-topic-example
+  subscription:
+  - name: mysub
+  state: absent
+
+## Pull messages from subscription
+### only pull keyword is required.
+gcpubsub:
+  topic: ansible-topic-example
+  subscription:
+    name: ansible-topic-example-sub
+    pull:
+      message_ack: yes
+      max_messages: "100"
+</pre>    <h2 id="return-values">Return Values</h2> <p>Common return values are documented here <a class="reference internal" href="../common_return_values/"><span class="doc">Return Values</span></a>, the following are the fields unique to this module:</p> <table> <tr> <th class="head">name</th> <th class="head">description</th> <th class="head">returned</th> <th class="head">type</th> <th class="head">sample</th> </tr> <tr> <td>topic</td> <td> <div>Name of topic.</div> </td> <td align="center">Always</td> <td align="center">str</td> <td align="center">mytopic</td> </tr> <tr> <td>state</td> <td> <div>The state of the topic or subscription. Value will be either 'absent' or 'present'.</div> </td> <td align="center">Always</td> <td align="center">str</td> <td align="center">present</td> </tr> <tr> <td>publish</td> <td> <div>List of dictionaries describing messages and attributes to be published. Dictionary is in message(str):attributes(dict) format. Only message is required.</div> </td> <td align="center">Only when specified</td> <td align="center">list</td> <td align="center">publish: ['message': 'my message', attributes: {'key1': 'value1'}]</td> </tr> <tr> <td>pulled_messages</td> <td> <div>list of dictionaries containing message info. Fields are ack_id, attributes, data, message_id.</div> </td> <td align="center">Only when subscription.pull is specified</td> <td align="center">list</td> <td align="center">[{'attributes': {'...': None, 'key1': 'val1'}, 'ack_id': 'XkASTCcYREl...', 'data': 'this is message 1', 'message_id': '49107464153705'}, '..']</td> </tr> <tr> <td>subscription</td> <td> <div>Name of subscription.</div> </td> <td align="center">When subscription fields are specified</td> <td align="center">str</td> <td align="center">mysubscription</td> </tr> </table>   <h2 id="notes">Notes</h2> <div class="admonition note"> <p class="first admonition-title">Note</p> <ul class="last simple"> <li>Subscription pull happens before publish. You cannot publish and pull in the same task.</li> </ul> </div>  <h3 id="status">Status</h3> <p>This module is flagged as <strong>preview</strong> which means that it is not guaranteed to have a backwards compatible interface.</p> <p>For help in developing on modules, should you be so inclined, please read <a class="reference internal" href="https://docs.ansible.com/ansible/latest/community.html" target="_blank"><span class="doc">Community Information &amp; Contributing</span></a>, <a class="reference internal" href="../dev_guide/testing/"><span class="doc">Testing Ansible</span></a> and <a class="reference internal" href="../dev_guide/developing_modules/"><span class="doc">Developing Modules</span></a>.</p>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2012–2017 Michael DeHaan<br>© 2017 Red Hat, Inc.<br>Licensed under the GNU General Public License version 3.<br>
+    <a href="https://docs.ansible.com/ansible/latest/gcpubsub_module.html" class="_attribution-link" target="_blank">https://docs.ansible.com/ansible/latest/gcpubsub_module.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

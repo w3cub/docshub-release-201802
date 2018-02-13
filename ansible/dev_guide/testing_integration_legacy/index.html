@@ -1,0 +1,99 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Testing Using the Legacy Integration System - Ansible - W3cubDocs</title>
+  
+  <meta name="description" content=" This page details how to run the integration tests that haven’t been ported to the new ansible-test framework. ">
+  <meta name="keywords" content="testing, using, legacy, integration, system, -, ansible">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/ansible/dev_guide/testing_integration_legacy/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/ansible.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/ansible/" class="_nav-link" title="" style="margin-left:0;">Ansible</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _sphinx">
+				
+<h1 id="testing-using-the-legacy-integration-system">Testing using the Legacy Integration system</h1>   <ul> <li><a class="reference internal" href="#running-cloud-tests" id="id2">Running Cloud Tests</a></li> <li><a class="reference internal" href="#other-configuration" id="id3">Other configuration</a></li> <li>
+<a class="reference internal" href="#iam-policies-for-aws" id="id4">IAM policies for AWS</a><ul> <li><a class="reference internal" href="#testing-iam-policy-json-j2" id="id5">testing-iam-policy.json.j2</a></li> <li><a class="reference internal" href="#other-definitions-required" id="id6">Other Definitions required</a></li> </ul> </li> <li><a class="reference internal" href="#running-tests" id="id7">Running Tests</a></li> </ul>
+  <p>This page details how to run the integration tests that haven’t been ported to the new <code>ansible-test</code> framework.</p> <p>The following areas are still tested using the legacy <code>make tests</code> command:</p> <ul class="simple"> <li>amazon (some)</li> <li>azure</li> <li>cloudflare</li> <li>cloudscale</li> <li>cloudstack</li> <li>consul</li> <li>exoscale</li> <li>gce</li> <li>jenkins</li> <li>rackspace</li> </ul> <p>Over time the above list will be reduced as tests are ported to the <code>ansible-test</code> framework.</p>  <h2 id="running-cloud-tests">Running Cloud Tests</h2> <p>Cloud tests exercise capabilities of cloud modules (e.g. ec2_key). These are not ‘tests run in the cloud’ so much as tests that leverage the cloud modules and are organized by cloud provider.</p> <p>Some AWS tests may use environment variables. It is recommended to either unset any AWS environment variables( such as <code>AWS_DEFAULT_PROFILE</code>, <code>AWS_SECRET_ACCESS_KEY</code>, etc) or be sure that the environment variables match the credentials provided in <code>credentials.yml</code> to ensure the tests run with consistency to their full capability on the expected account. See <a class="reference external" href="http://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-started.html" target="_blank">AWS CLI docs</a> for information on creating a profile.</p> <p>Subsets of tests may be run by <code>#commenting</code> out unnecessary roles in the appropriate playbook, such as <code>test/integration/amazon.yml</code>.</p> <p>In order to run cloud tests, you must provide access credentials in a file named <code>credentials.yml</code>. A sample credentials file named <code>credentials.template</code> is available for syntax help.</p> <p>Provide cloud credentials:</p> <pre data-language="YAML">cp credentials.template credentials.yml
+${EDITOR:-vi} credentials.yml
+</pre>   <h2 id="other-configuration">Other configuration</h2> <p>In order to run some tests, you must provide access credentials in a file named <code>credentials.yml</code>. A sample credentials file named <code>credentials.template</code> is available for syntax help.</p>   <h2 id="iam-policies-for-aws">IAM policies for AWS</h2> <p>In order to run the tests in an AWS account ansible needs fairly wide ranging powers which can be provided to a dedicated user or temporary credentials using a specific policy configured in the AWS account.</p>  <h3 id="testing-iam-policy-json-j2">testing-iam-policy.json.j2</h3> <p>The testing-iam-policy.json.j2 file contains a policy which can be given to the user running the tests to give close to minimum rights required to run the tests. Please note that this does not fully restrict the user; The user has wide privileges for viewing account definitions and is also able to manage some resources that are not related to testing (e.g. AWS lambdas with different names) primarily due to the limitations of the Amazon ARN notation. At the very least the policy limits the user to one region, however tests should not be run in a primary production account in any case.</p>   <h3 id="other-definitions-required">Other Definitions required</h3> <p>Apart from installing the policy and giving it to the user identity running the tests, a lambda role <code>ansible_integration_tests</code> has to be created which has lambda basic execution privileges.</p>    <h2 id="running-tests">Running Tests</h2> <p>The tests are invoked via a <code>Makefile</code>.</p> <p>If you haven’t already got Ansible available use the local checkout by doing:</p> <pre data-language="YAML">source hacking/env-setup
+</pre> <p>Run the tests by doing:</p> <pre data-language="YAML">cd test/integration/
+# TARGET is the name of the test from the list at the top of this page
+#make TARGET
+# e.g.
+make amazon
+# To run all cloud tests you can do:
+make cloud
+</pre> <div class="admonition warning"> <p class="first admonition-title">Warning</p> <p>Possible cost of running cloud tests</p> <p class="last">Running cloud integration tests will create and destroy cloud resources. Running these tests may result in additional fees associated with your cloud account. Care is taken to ensure that created resources are removed. However, it is advisable to inspect your AWS console to ensure no unexpected resources are running.</p> </div>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2012–2017 Michael DeHaan<br>© 2017 Red Hat, Inc.<br>Licensed under the GNU General Public License version 3.<br>
+    <a href="https://docs.ansible.com/ansible/latest/dev_guide/testing_integration_legacy.html" class="_attribution-link" target="_blank">https://docs.ansible.com/ansible/latest/dev_guide/testing_integration_legacy.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

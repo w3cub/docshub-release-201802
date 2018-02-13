@@ -1,0 +1,155 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Cs_network - Ansible - W3cubDocs</title>
+  
+  <meta name="description" content=" New in version 2.0. ">
+  <meta name="keywords" content="cs, network, -, manages, networks, on, apache, cloudstack, based, clouds, ansible">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/ansible/cs_network_module/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/ansible.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/ansible/" class="_nav-link" title="" style="margin-left:0;">Ansible</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _sphinx">
+				
+<h1 id="cs-network">cs_network - Manages networks on Apache CloudStack based clouds.</h1> <div class="versionadded" id="cs-network-manages-networks-on-apache-cloudstack-based-clouds"> <p><span class="versionmodified">New in version 2.0.</span></p> </div>  <ul class="simple"> <li><a class="reference internal" href="#synopsis" id="id1">Synopsis</a></li> <li><a class="reference internal" href="#requirements-on-host-that-executes-module" id="id2">Requirements (on host that executes module)</a></li> <li><a class="reference internal" href="#options" id="id3">Options</a></li> <li><a class="reference internal" href="#examples" id="id4">Examples</a></li> <li><a class="reference internal" href="#return-values" id="id5">Return Values</a></li> <li>
+<a class="reference internal" href="#notes" id="id6">Notes</a><ul> <li><a class="reference internal" href="#status" id="id7">Status</a></li> </ul> </li> </ul>   <h2 id="synopsis">Synopsis</h2> <ul class="simple"> <li>Create, update, restart and delete networks.</li> </ul>   <h2 id="requirements-on-host-that-executes-module">Requirements (on host that executes module)</h2>  <ul class="simple"> <li>python &gt;= 2.6</li> <li>cs &gt;= 0.6.10</li> </ul>    <h2 id="options">Options</h2> <table> <tr> <th class="head">parameter</th> <th class="head">required</th> <th class="head">default</th> <th class="head">choices</th> <th class="head">comments</th> </tr> <tr> <td>account<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>Account the network is related to.</div> </td> </tr> <tr> <td>acl_type<br>
+</td> <td>no</td> <td>account</td> <td><ul>
+<li>account</li>
+<li>domain</li>
+</ul></td> <td> <div>Access control type.</div> <div>Only considered on create.</div> </td> </tr> <tr> <td>api_http_method<br>
+</td> <td>no</td> <td>get</td> <td><ul>
+<li>get</li>
+<li>post</li>
+</ul></td> <td> <div>HTTP method used.</div> </td> </tr> <tr> <td>api_key<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>API key of the CloudStack API.</div> </td> </tr> <tr> <td>api_region<br>
+</td> <td>no</td> <td>cloudstack</td> <td></td> <td> <div>Name of the ini section in the <code>cloustack.ini</code> file.</div> </td> </tr> <tr> <td>api_secret<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>Secret key of the CloudStack API.</div> </td> </tr> <tr> <td>api_timeout<br>
+</td> <td>no</td> <td>10</td> <td></td> <td> <div>HTTP timeout.</div> </td> </tr> <tr> <td>api_url<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>URL of the CloudStack API e.g. https://cloud.example.com/client/api.</div> </td> </tr> <tr> <td>cidr_ipv6<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>CIDR of IPv6 network, must be at least /64.</div> <div>Only considered on create.</div> </td> </tr> <tr> <td>clean_up<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>Cleanup old network elements.</div> <div>Only considered on <code>state=restarted</code>.</div> </td> </tr> <tr> <td>display_text<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>Display text of the network.</div> <div>If not specified, <code>name</code> will be used as <code>display_text</code>.</div> </td> </tr> <tr> <td>domain<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>Domain the network is related to.</div> </td> </tr> <tr> <td>end_ip<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>The ending IPv4 address of the network belongs to.</div> <div>If not specified, value of <code>start_ip</code> is used.</div> <div>Only considered on create.</div> </td> </tr> <tr> <td>end_ipv6<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>The ending IPv6 address of the network belongs to.</div> <div>If not specified, value of <code>start_ipv6</code> is used.</div> <div>Only considered on create.</div> </td> </tr> <tr> <td>gateway<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>The gateway of the network.</div> <div>Required for shared networks and isolated networks when it belongs to a VPC.</div> <div>Only considered on create.</div> </td> </tr> <tr> <td>gateway_ipv6<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>The gateway of the IPv6 network.</div> <div>Required for shared networks.</div> <div>Only considered on create.</div> </td> </tr> <tr> <td>isolated_pvlan<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>The isolated private VLAN for this network.</div> </td> </tr> <tr> <td>name<br>
+</td> <td>yes</td> <td></td> <td></td> <td> <div>Name (case sensitive) of the network.</div> </td> </tr> <tr> <td>netmask<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>The netmask of the network.</div> <div>Required for shared networks and isolated networks when it belongs to a VPC.</div> <div>Only considered on create.</div> </td> </tr> <tr> <td>network_domain<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>The network domain.</div> </td> </tr> <tr> <td>network_offering<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>Name of the offering for the network.</div> <div>Required if <code>state=present</code>.</div> </td> </tr> <tr> <td>poll_async<br>
+</td> <td>no</td> <td>True</td> <td></td> <td> <div>Poll async jobs until job has finished.</div> </td> </tr> <tr> <td>project<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>Name of the project the network to be deployed in.</div> </td> </tr> <tr> <td>start_ip<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>The beginning IPv4 address of the network belongs to.</div> <div>Only considered on create.</div> </td> </tr> <tr> <td>start_ipv6<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>The beginning IPv6 address of the network belongs to.</div> <div>Only considered on create.</div> </td> </tr> <tr> <td>state<br>
+</td> <td>no</td> <td>present</td> <td><ul>
+<li>present</li>
+<li>absent</li>
+<li>restarted</li>
+</ul></td> <td> <div>State of the network.</div> </td> </tr> <tr> <td>vlan<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>The ID or VID of the network.</div> </td> </tr> <tr> <td>vpc<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>Name of the VPC of the network.</div> </td> </tr> <tr> <td>zone<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>Name of the zone in which the network should be deployed.</div> <div>If not set, default zone is used.</div> </td> </tr> </table>   <h2 id="examples">Examples</h2>  <pre data-language="YAML"># create a network
+- local_action:
+    module: cs_network
+    name: my network
+    zone: gva-01
+    network_offering: DefaultIsolatedNetworkOfferingWithSourceNatService
+    network_domain: example.com
+
+# update a network
+- local_action:
+    module: cs_network
+    name: my network
+    display_text: network of domain example.local
+    network_domain: example.local
+
+# restart a network with clean up
+- local_action:
+    module: cs_network
+    name: my network
+    clean_up: yes
+    state: restared
+
+# remove a network
+- local_action:
+    module: cs_network
+    name: my network
+    state: absent
+</pre>    <h2 id="return-values">Return Values</h2> <p>Common return values are documented here <a class="reference internal" href="../common_return_values/"><span class="doc">Return Values</span></a>, the following are the fields unique to this module:</p> <table> <tr> <th class="head">name</th> <th class="head">description</th> <th class="head">returned</th> <th class="head">type</th> <th class="head">sample</th> </tr> <tr> <td>domain</td> <td> <div>Domain the network is related to.</div> </td> <td align="center">success</td> <td align="center">string</td> <td align="center">ROOT</td> </tr> <tr> <td>tags</td> <td> <div>List of resource tags associated with the network.</div> </td> <td align="center">success</td> <td align="center">dict</td> <td align="center">[ { "key": "foo", "value": "bar" } ]</td> </tr> <tr> <td>is_persistent</td> <td> <div>Whether the network is persistent or not.</div> </td> <td align="center">success</td> <td align="center">boolean</td> <td align="center">False</td> </tr> <tr> <td>netmask</td> <td> <div>IPv4 netmask.</div> </td> <td align="center">success</td> <td align="center">string</td> <td align="center">255.255.255.0</td> </tr> <tr> <td>network_offering</td> <td> <div>The network offering name.</div> </td> <td align="center">success</td> <td align="center">string</td> <td align="center">DefaultIsolatedNetworkOfferingWithSourceNatService</td> </tr> <tr> <td>broadcast_domain_type</td> <td> <div>Broadcast domain type of the network.</div> </td> <td align="center">success</td> <td align="center">string</td> <td align="center">Vlan</td> </tr> <tr> <td>id</td> <td> <div>UUID of the network.</div> </td> <td align="center">success</td> <td align="center">string</td> <td align="center">04589590-ac63-4ffc-93f5-b698b8ac38b6</td> </tr> <tr> <td>gateway_ipv6</td> <td> <div>IPv6 gateway.</div> </td> <td align="center">success</td> <td align="center">string</td> <td align="center">2001:db8::1</td> </tr> <tr> <td>display_text</td> <td> <div>Display text of the network.</div> </td> <td align="center">success</td> <td align="center">string</td> <td align="center">web project</td> </tr> <tr> <td>account</td> <td> <div>Account the network is related to.</div> </td> <td align="center">success</td> <td align="center">string</td> <td align="center">example account</td> </tr> <tr> <td>network_domain</td> <td> <div>The network domain</div> </td> <td align="center">success</td> <td align="center">string</td> <td align="center">example.local</td> </tr> <tr> <td>name</td> <td> <div>Name of the network.</div> </td> <td align="center">success</td> <td align="center">string</td> <td align="center">web project</td> </tr> <tr> <td>zone</td> <td> <div>Name of zone.</div> </td> <td align="center">success</td> <td align="center">string</td> <td align="center">ch-gva-2</td> </tr> <tr> <td>dns2</td> <td> <div>IP address of the 2nd nameserver.</div> </td> <td align="center">success</td> <td align="center">string</td> <td align="center">1.2.3.4</td> </tr> <tr> <td>dns1</td> <td> <div>IP address of the 1st nameserver.</div> </td> <td align="center">success</td> <td align="center">string</td> <td align="center">1.2.3.4</td> </tr> <tr> <td>cidr_ipv6</td> <td> <div>IPv6 network CIDR.</div> </td> <td align="center">success</td> <td align="center">string</td> <td align="center">2001:db8::/64</td> </tr> <tr> <td>project</td> <td> <div>Name of project.</div> </td> <td align="center">success</td> <td align="center">string</td> <td align="center">Production</td> </tr> <tr> <td>state</td> <td> <div>State of the network (Allocated, Implemented, Setup).</div> </td> <td align="center">success</td> <td align="center">string</td> <td align="center">Allocated</td> </tr> <tr> <td>gateway</td> <td> <div>IPv4 gateway.</div> </td> <td align="center">success</td> <td align="center">string</td> <td align="center">10.101.64.1</td> </tr> <tr> <td>cidr</td> <td> <div>IPv4 network CIDR.</div> </td> <td align="center">success</td> <td align="center">string</td> <td align="center">10.101.64.0/24</td> </tr> <tr> <td>traffic_type</td> <td> <div>Traffic type of the network.</div> </td> <td align="center">success</td> <td align="center">string</td> <td align="center">Guest</td> </tr> <tr> <td>acl_type</td> <td> <div>Access type of the network (Domain, Account).</div> </td> <td align="center">success</td> <td align="center">string</td> <td align="center">Account</td> </tr> <tr> <td>type</td> <td> <div>Type of the network.</div> </td> <td align="center">success</td> <td align="center">string</td> <td align="center">Isolated</td> </tr> </table>   <h2 id="notes">Notes</h2> <div class="admonition note"> <p class="first admonition-title">Note</p> <ul class="last simple"> <li>Ansible uses the <code>cs</code> library’s configuration method if credentials are not provided by the arguments <code>api_url</code>, <code>api_key</code>, <code>api_secret</code>. Configuration is read from several locations, in the following order. - The <code>CLOUDSTACK_ENDPOINT</code>, <code>CLOUDSTACK_KEY</code>, <code>CLOUDSTACK_SECRET</code> and <code>CLOUDSTACK_METHOD</code>. <code>CLOUDSTACK_TIMEOUT</code> environment variables. - A <code>CLOUDSTACK_CONFIG</code> environment variable pointing to an <code>.ini</code> file, - A <code>cloudstack.ini</code> file in the current working directory. - A <code>.cloudstack.ini</code> file in the users home directory. Optionally multiple credentials and endpoints can be specified using ini sections in <code>cloudstack.ini</code>. Use the argument <code>api_region</code> to select the section name, default section is <code>cloudstack</code>. See <a class="reference external" href="https://github.com/exoscale/cs" target="_blank">https://github.com/exoscale/cs</a> for more information.</li> <li>A detailed guide about cloudstack modules can be found on <a class="reference external" href="http://docs.ansible.com/ansible/guide_cloudstack.html" target="_blank">http://docs.ansible.com/ansible/guide_cloudstack.html</a>
+</li> <li>This module supports check mode.</li> </ul> </div>  <h3 id="status">Status</h3> <p>This module is flagged as <strong>stableinterface</strong> which means that the maintainers for this module guarantee that no backward incompatible interface changes will be made.</p> <p>For help in developing on modules, should you be so inclined, please read <a class="reference internal" href="https://docs.ansible.com/ansible/latest/community.html" target="_blank"><span class="doc">Community Information &amp; Contributing</span></a>, <a class="reference internal" href="../dev_guide/testing/"><span class="doc">Testing Ansible</span></a> and <a class="reference internal" href="../dev_guide/developing_modules/"><span class="doc">Developing Modules</span></a>.</p>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2012–2017 Michael DeHaan<br>© 2017 Red Hat, Inc.<br>Licensed under the GNU General Public License version 3.<br>
+    <a href="https://docs.ansible.com/ansible/latest/cs_network_module.html" class="_attribution-link" target="_blank">https://docs.ansible.com/ansible/latest/cs_network_module.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

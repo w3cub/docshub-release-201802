@@ -1,0 +1,87 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Repo Merge - Ansible - W3cubDocs</title>
+  
+  <meta name="description" content="On Tuesday 6th December 2016, the Ansible Core Team re-merged the module repositories back into ansible&#47;ansible in GitHub. The two module repos &hellip;">
+  <meta name="keywords" content="repo, merge, -, ansible">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/ansible/dev_guide/repomerge/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/ansible.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/ansible/" class="_nav-link" title="" style="margin-left:0;">Ansible</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _sphinx">
+				
+<h1 id="repo-merge">Repo Merge</h1>  <h2 id="background">Background</h2> <p>On Tuesday 6th December 2016, the Ansible Core Team re-merged the module repositories back into <a class="reference external" href="https://github.com/ansible/ansible/" target="_blank">ansible/ansible</a> in GitHub. The two module repos will be essentially locked, though they will be kept in place for the existing 2.1 and 2.2 dependencies. Once 2.2 moves out of official support (early 2018), these repositories will be fully readonly for all branches. Until then, any issues/PRs opened there will be auto-closed with a note to open it on <a class="reference external" href="https://github.com/ansible/ansible/" target="_blank">ansible/ansible</a>.</p>   <h2 id="why-are-we-doing-this-again">Why Are We Doing This (Again...)?</h2> <p>For those who’ve been using Ansible long enough, you know that originally we started with a single repository. The original intention of the core vs. extras split was that core would be better supported/tested/etc. Extras would have been a bit more of a “wild-west” for modules, to allow new modules to make it into the distribution more quickly. Unfortunately this never really worked out, as well as the following:</p> <ol class="arabic simple"> <li>Many modules in the core repo were also essentially “grand-fathered” in, despite not having a good set of tests or dedicated maintainers from the community.</li> <li>The time in queue for modules to be merged into extras was not really any different from the time to merge modules into core.</li> <li>The split introduced a few other problems for contributors such as having to submit multiple related PRs for modules with tests, or for those which rely on action plugins.</li> <li>git submodules are notoriously complicated, even for contributors with decent git experience. The constant need to update git submodule pointers for devel and each stable branch can lead to testing surprises and really buys us nothing in terms of flexibility.</li> <li>Users can already be confused about where to open issues, especially when the problem appears to be with a module but is actually an action plugin (ie. template) or something more fundamental like includes. Having everything back in one repo makes it easier to link issues, and you’re always sure to open a bug report in the right place.</li> </ol>   <h2 id="metadata-support-ownership-and-module-status">Metadata - Support/Ownership and Module Status</h2> <p>As part of this move, we will be introducing module metadata, which will contain a couple of pieces of information regarding modules:</p> <ol class="arabic simple"> <li>Support Status: This field indicates who supports the module, whether it’s the core team, the community, the person who wrote it, or if it is an abandoned module which is not receiving regular updates. The Ansible team has gone through the list of modules and we have marked about 100 of them as “Core Supported”, meaning a member of the Ansible core team should be actively fixing bugs on those modules. The vast majority of the rest will be community supported. This is not really a change from the status quo, this just makes it clearer.</li> <li>Module Status: This field indicates how well supported that module may be. This generally applies to the maturity of the module’s parameters, however, not necessarily its bug status.</li> </ol> <p>The documentation pages for modules will be updated to reflect the above information as well, so that users can evaluate the status of a module before committing to using it in playbooks and roles.</p>   <h2 id="prmover">Move Issues and PRs to new Repo</h2> <p id="move-issues-and-prs-to-new-repo">A tool has been developed to move a PR from the old repos to <code>ansible/ansible</code> this can be found at <a class="reference external" href="https://prmover.pythonanywhere.com/" target="_blank">prmover tool</a></p> <p>Before using prmover please ensure you have a fork of the Ansible repo.</p> <p>To move issues please use <a class="reference external" href="https://github-issue-mover.appspot.com/" target="_blank">GitHub Issue Mover</a></p> <p>If you have <em>any</em> issues with updating your PR please ask for support in <code>#ansible-devel</code></p> <p>For support please use <code>#ansible-devel</code> on Freenode IRC</p>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2012–2017 Michael DeHaan<br>© 2017 Red Hat, Inc.<br>Licensed under the GNU General Public License version 3.<br>
+    <a href="https://docs.ansible.com/ansible/latest/dev_guide/repomerge.html" class="_attribution-link" target="_blank">https://docs.ansible.com/ansible/latest/dev_guide/repomerge.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

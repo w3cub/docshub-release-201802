@@ -1,0 +1,198 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Validate-modules - Ansible - W3cubDocs</title>
+  
+  <meta name="description" content=" Python program to help test or validate Ansible modules. ">
+  <meta name="keywords" content="validate-modules, -, ansible">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/ansible/dev_guide/testing_validate-modules/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/ansible.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/ansible/" class="_nav-link" title="" style="margin-left:0;">Ansible</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _sphinx">
+				
+<h1 id="validate-modules">validate-modules</h1>   <ul> <li><a class="reference internal" href="#usage" id="id2">Usage</a></li> <li><a class="reference internal" href="#help" id="id3">Help</a></li> <li><a class="reference internal" href="#extending-validate-modules" id="id4">Extending validate-modules</a></li> <li>
+<a class="reference internal" href="#codes" id="id5">Codes</a><ul> <li><a class="reference internal" href="#errors" id="id6">Errors</a></li> <li><a class="reference internal" href="#warnings" id="id7">Warnings</a></li> </ul> </li> </ul>
+  <p>Python program to help test or validate Ansible modules.</p> <p><code>validate-modules</code> is one of the <code>ansible-test</code> Sanity Tests, see <a class="reference internal" href="../testing_sanity/"><span class="doc">Sanity Tests</span></a> for more information.</p> <p>Originally developed by Matt Martz (@sivel)</p>  <h2 id="usage">Usage</h2> <pre data-language="shell">cd /path/to/ansible/source
+source hacking/env-setup
+ansible-test sanity --test validate-modules
+</pre>   <h2 id="help">Help</h2> <pre data-language="shell">usage: validate-modules [-h] [-w] [--exclude EXCLUDE] [--arg-spec]
+                        [--base-branch BASE_BRANCH] [--format {json,plain}]
+                        [--output OUTPUT]
+                        modules [modules ...]
+
+positional arguments:
+  modules               Path to module or module directory
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -w, --warnings        Show warnings
+  --exclude EXCLUDE     RegEx exclusion pattern
+  --arg-spec            Analyze module argument spec
+  --base-branch BASE_BRANCH
+                        Used in determining if new options were added
+  --format {json,plain}
+                        Output format. Default: "plain"
+  --output OUTPUT       Output location, use "-" for stdout. Default "-"
+</pre>   <h2 id="extending-validate-modules">Extending validate-modules</h2> <p>The <code>validate-modules</code> tool has a <a class="reference external" href="https://github.com/ansible/ansible/blob/devel/test/sanity/validate-modules/schema.py" target="_blank">schema.py</a> that is used to validate the YAML blocks, such as <code>DOCUMENTATION</code> and <code>RETURNS</code>.</p>   <h2 id="codes">Codes</h2>  <h3 id="errors">Errors</h3> <table class="docutils">   <tr>
+<td>code</td> <td>sample message</td> </tr> <tr>
+<td><strong>1xx</strong></td> <td><strong>Locations</strong></td> </tr> <tr>
+<td>101</td> <td>Interpreter line is not <code>#!/usr/bin/python</code>
+</td> </tr> <tr>
+<td>102</td> <td>Interpreter line is not <code>#!powershell</code>
+</td> </tr> <tr>
+<td>103</td> <td>Did not find a call to <code>main()</code>
+</td> </tr> <tr>
+<td>104</td> <td>Call to <code>main()</code> not the last line</td> </tr> <tr>
+<td>105</td> <td>GPLv3 license header not found</td> </tr> <tr>
+<td>106</td> <td>Import found before documentation variables. All imports must appear below <code>DOCUMENTATION</code>/<code>EXAMPLES</code>/<code>RETURN</code>/<code>ANSIBLE_METADATA</code>
+</td> </tr> <tr>
+<td>107</td> <td>Imports should be directly below <code>DOCUMENTATION</code>/<code>EXAMPLES</code>/<code>RETURN</code>/<code>ANSIBLE_METADATA</code>
+</td> </tr> <tr>
+<td></td> <td> </td> </tr> <tr>
+<td><strong>2xx</strong></td> <td><strong>Imports</strong></td> </tr> <tr>
+<td>201</td> <td>Did not find a <code>module_utils</code> import</td> </tr> <tr>
+<td>203</td> <td>
+<code>requests</code> import found, should use <code>ansible.module_utils.urls</code> instead</td> </tr> <tr>
+<td>204</td> <td>
+<code>boto</code> import found, new modules should use <code>boto3</code>
+</td> </tr> <tr>
+<td>205</td> <td>
+<code>sys.exit()</code> call found. Should be <code>exit_json</code>/<code>fail_json</code>
+</td> </tr> <tr>
+<td>206</td> <td>
+<code>WANT_JSON</code> not found in module</td> </tr> <tr>
+<td>207</td> <td>
+<code>REPLACER_WINDOWS</code> not found in module</td> </tr> <tr>
+<td>208</td> <td>
+<code>module_utils</code> imports should import specific components, not <code>*</code>
+</td> </tr> <tr>
+<td>209</td> <td>Only the following <code>from __future__</code> imports are allowed: <code>absolute_import</code>, <code>division</code>, and <code>print_function</code>.</td> </tr> <tr>
+<td></td> <td> </td> </tr> <tr>
+<td><strong>3xx</strong></td> <td><strong>Documentation</strong></td> </tr> <tr>
+<td>301</td> <td>No <code>DOCUMENTATION</code> provided</td> </tr> <tr>
+<td>302</td> <td>
+<code>DOCUMENTATION</code> is not valid YAML</td> </tr> <tr>
+<td>303</td> <td>
+<code>DOCUMENTATION</code> fragment missing</td> </tr> <tr>
+<td>304</td> <td>Unknown <code>DOCUMENTATION</code> error</td> </tr> <tr>
+<td>305</td> <td>Invalid <code>DOCUMENTATION</code> schema</td> </tr> <tr>
+<td>306</td> <td>Module level <code>version_added</code> is not a valid version number</td> </tr> <tr>
+<td>307</td> <td>Module level <code>version_added</code> is incorrect</td> </tr> <tr>
+<td>308</td> <td>
+<code>version_added</code> for new option is not a valid version number</td> </tr> <tr>
+<td>309</td> <td>
+<code>version_added</code> for new option is incorrect</td> </tr> <tr>
+<td>310</td> <td>No <code>EXAMPLES</code> provided</td> </tr> <tr>
+<td>311</td> <td>
+<code>EXAMPLES</code> is not valid YAML</td> </tr> <tr>
+<td>312</td> <td>No <code>RETURN</code> documentation provided</td> </tr> <tr>
+<td>313</td> <td>
+<code>RETURN</code> is not valid YAML</td> </tr> <tr>
+<td>314</td> <td>No <code>ANSIBLE_METADATA</code> provided</td> </tr> <tr>
+<td>315</td> <td>
+<code>ANSIBLE_METADATA</code> is not valid YAML</td> </tr> <tr>
+<td>316</td> <td>Invalid <code>ANSIBLE_METADATA</code> schema</td> </tr> <tr>
+<td>317</td> <td>option is marked as required but specifies a default. Arguments with a default should not be marked as required</td> </tr> <tr>
+<td>318</td> <td>Module deprecated, but DOCUMENTATION.deprecated is missing</td> </tr> <tr>
+<td>319</td> <td>
+<code>RETURN</code> fragments missing or invalid</td> </tr> <tr>
+<td></td> <td> </td> </tr> <tr>
+<td><strong>4xx</strong></td> <td><strong>Syntax</strong></td> </tr> <tr>
+<td>401</td> <td>Python <code>SyntaxError</code> while parsing module</td> </tr> <tr>
+<td>402</td> <td>Indentation contains tabs</td> </tr> <tr>
+<td>403</td> <td>Type comparison using <code>type()</code> found. Use <code>isinstance()</code> instead</td> </tr> <tr>
+<td></td> <td> </td> </tr> <tr>
+<td><strong>5xx</strong></td> <td><strong>Naming</strong></td> </tr> <tr>
+<td>501</td> <td>Official Ansible modules must have a <code>.py</code> extension for python modules or a <code>.ps1</code> for powershell modules</td> </tr> <tr>
+<td>502</td> <td>Ansible module subdirectories must contain an <code>__init__.py</code>
+</td> </tr> <tr>
+<td>503</td> <td>Missing python documentation file</td> </tr>  </table>   <h3 id="warnings">Warnings</h3> <table class="docutils">   <tr>
+<td>code</td> <td>sample message</td> </tr> <tr>
+<td><strong>1xx</strong></td> <td><strong>Locations</strong></td> </tr> <tr>
+<td>107</td> <td>Imports should be directly below <code>DOCUMENTATION</code>/<code>EXAMPLES</code>/<code>RETURN</code>/<code>ANSIBLE_METADATA</code> for legacy modules</td> </tr> <tr>
+<td></td> <td> </td> </tr> <tr>
+<td><strong>2xx</strong></td> <td><strong>Imports</strong></td> </tr> <tr>
+<td>208</td> <td>
+<code>module_utils</code> imports should import specific components for legacy module, not <code>*</code>
+</td> </tr> <tr>
+<td>291</td> <td>Try/Except <code>HAS_</code> expression missing</td> </tr> <tr>
+<td>292</td> <td>Did not find <code>ansible.module_utils.basic</code> import</td> </tr> <tr>
+<td></td> <td> </td> </tr> <tr>
+<td><strong>3xx</strong></td> <td><strong>Documentation</strong></td> </tr> <tr>
+<td>312</td> <td>No <code>RETURN</code> documentation provided for legacy module</td> </tr> <tr>
+<td>391</td> <td>Unknown pre-existing <code>DOCUMENTATION</code> error</td> </tr> <tr>
+<td>392</td> <td>Pre-existing <code>DOCUMENTATION</code> fragment missing</td> </tr>  </table>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2012–2017 Michael DeHaan<br>© 2017 Red Hat, Inc.<br>Licensed under the GNU General Public License version 3.<br>
+    <a href="https://docs.ansible.com/ansible/latest/dev_guide/testing_validate-modules.html" class="_attribution-link" target="_blank">https://docs.ansible.com/ansible/latest/dev_guide/testing_validate-modules.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

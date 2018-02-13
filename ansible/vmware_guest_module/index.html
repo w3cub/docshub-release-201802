@@ -1,0 +1,241 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Vmware_guest - Ansible - W3cubDocs</title>
+  
+  <meta name="description" content=" New in version 2.2. ">
+  <meta name="keywords" content="vmware, guest, -, manages, virtual, machines, vcenter, ansible">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/ansible/vmware_guest_module/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/ansible.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/ansible/" class="_nav-link" title="" style="margin-left:0;">Ansible</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _sphinx">
+				
+<h1 id="vmware-guest">vmware_guest - Manages virtual machines in vCenter</h1> <div class="versionadded" id="vmware-guest-manages-virtual-machines-in-vcenter"> <p><span class="versionmodified">New in version 2.2.</span></p> </div>  <ul class="simple"> <li><a class="reference internal" href="#synopsis" id="id1">Synopsis</a></li> <li><a class="reference internal" href="#requirements-on-host-that-executes-module" id="id2">Requirements (on host that executes module)</a></li> <li><a class="reference internal" href="#options" id="id3">Options</a></li> <li><a class="reference internal" href="#examples" id="id4">Examples</a></li> <li><a class="reference internal" href="#return-values" id="id5">Return Values</a></li> <li>
+<a class="reference internal" href="#notes" id="id6">Notes</a><ul> <li><a class="reference internal" href="#status" id="id7">Status</a></li> </ul> </li> </ul>   <h2 id="synopsis">Synopsis</h2> <ul class="simple"> <li>Create new virtual machines (from templates or not).</li> <li>Power on/power off/restart a virtual machine.</li> <li>Modify, rename or remove a virtual machine.</li> </ul>   <h2 id="requirements-on-host-that-executes-module">Requirements (on host that executes module)</h2>  <ul class="simple"> <li>python &gt;= 2.6</li> <li>PyVmomi</li> </ul>    <h2 id="options">Options</h2> <table> <tr> <th class="head">parameter</th> <th class="head">required</th> <th class="head">default</th> <th class="head">choices</th> <th class="head">comments</th> </tr> <tr> <td>annotation<br><div style="font-size: small;">(added in 2.3)</div>
+</td> <td>no</td> <td></td> <td></td> <td> <div>A note or annotation to include in the VM.</div> </td> </tr> <tr> <td>cluster<br><div style="font-size: small;">(added in 2.3)</div>
+</td> <td>no</td> <td></td> <td></td> <td> <div>The cluster name where the VM will run.</div> </td> </tr> <tr> <td>customization<br><div style="font-size: small;">(added in 2.3)</div>
+</td> <td>no</td> <td></td> <td></td> <td> <div>Parameters for OS customization when cloning from template.</div> <div>Common parameters (Linux/Windows):</div> <div> - <code>dns_servers</code> (list): List of DNS servers to configure.</div> <div> - <code>dns_suffix</code> (list): List of domain suffixes, aka DNS search path (default: <code>domain</code> parameter).</div> <div> - <code>domain</code> (string): DNS domain name to use.</div> <div> - <code>hostname</code> (string): Computer hostname (default: shorted <code>name</code> parameter).</div> <div>Parameters related to Windows customization:</div> <div> - <code>autologon</code> (bool): Auto logon after VM customization (default: False).</div> <div> - <code>autologoncount</code> (int): Number of autologon after reboot (default: 1).</div> <div> - <code>domainadmin</code> (string): User used to join in AD domain (mandatory with <code>joindomain</code>).</div> <div> - <code>domainadminpassword</code> (string): Password used to join in AD domain (mandatory with <code>joindomain</code>).</div> <div> - <code>fullname</code> (string): Server owner name (default: Administrator).</div> <div> - <code>joindomain</code> (string): AD domain to join (Not compatible with <code>joinworkgroup</code>).</div> <div> - <code>joinworkgroup</code> (string): Workgroup to join (Not compatible with <code>joindomain</code>, default: WORKGROUP).</div> <div> - <code>orgname</code> (string): Organisation name (default: ACME).</div> <div> - <code>password</code> (string): Local administrator password.</div> <div> - <code>productid</code> (string): Product ID.</div> <div> - <code>runonce</code> (list): List of commands to run at first user logon.</div> <div> - <code>timezone</code> (int): Timezone (See <a href="https://msdn.microsoft.com/en-us/library/ms912391.aspx" target="_blank">https://msdn.microsoft.com/en-us/library/ms912391.aspx</a>).</div> </td> </tr> <tr> <td>customvalues<br><div style="font-size: small;">(added in 2.3)</div>
+</td> <td>no</td> <td></td> <td></td> <td> <div>Define a list of customvalues to set on VM.</div> <div>A customvalue object takes 2 fields <code>key</code> and <code>value</code>.</div> </td> </tr> <tr> <td>datacenter<br>
+</td> <td>no</td> <td>ha-datacenter</td> <td></td> <td> <div>Destination datacenter for the deploy operation.</div> </td> </tr> <tr> <td>disk<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>A list of disks to add.</div> <div>Valid attributes are:</div> <div> - <code>size_[tb,gb,mb,kb]</code> (integer): Disk storage size in specified unit.</div> <div> - <code>type</code> (string): Valid value is <code>thin</code> (default: None).</div> <div> - <code>datastore</code> (string): Datastore to use for the disk. If <code>autoselect_datastore</code> is enabled, filter datastore selection.</div> <div> - <code>autoselect_datastore</code> (bool): select the less used datastore.</div> </td> </tr> <tr> <td>esxi_hostname<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>The ESXi hostname where the VM will run.</div> </td> </tr> <tr> <td>folder<br>
+</td> <td>no</td> <td>/vm</td> <td></td> <td> <div>Destination folder, absolute or relative path to find an existing guest or create the new guest.</div> <div>The folder should include the datacenter. ESX's datacenter is ha-datacenter</div> <div>Examples:</div> <div> folder: /ha-datacenter/vm</div> <div> folder: ha-datacenter/vm</div> <div> folder: /datacenter1/vm</div> <div> folder: datacenter1/vm</div> <div> folder: /datacenter1/vm/folder1</div> <div> folder: datacenter1/vm/folder1</div> <div> folder: /folder1/datacenter1/vm</div> <div> folder: folder1/datacenter1/vm</div> <div> folder: /folder1/datacenter1/vm/folder2</div> <div> folder: vm/folder2</div> <div> folder: folder2</div> </td> </tr> <tr> <td>force<br>
+</td> <td>no</td> <td>no</td> <td><ul>
+<li>yes</li>
+<li>no</li>
+</ul></td> <td> <div>Ignore warnings and complete the actions.</div> </td> </tr> <tr> <td>guest_id<br><div style="font-size: small;">(added in 2.3)</div>
+</td> <td>no</td> <td></td> <td></td> <td> <div>Set the guest ID (Debian, RHEL, Windows...).</div> <div>This field is required when creating a VM.</div> <div>Valid values are referenced here: https://www.vmware.com/support/developer/converter-sdk/conv55_apireference/vim.vm.GuestOsDescriptor.GuestOsIdentifier.html </div> </td> </tr> <tr> <td>hardware<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>Manage some VM hardware attributes.</div> <div>Valid attributes are:</div> <div> - <code>memory_mb</code> (integer): Amount of memory in MB.</div> <div> - <code>num_cpus</code> (integer): Number of CPUs.</div> <div> - <code>scsi</code> (string): Valid values are <code>buslogic</code>, <code>lsilogic</code>, <code>lsilogicsas</code> and <code>paravirtual</code> (default).</div> </td> </tr> <tr> <td>hostname<br>
+</td> <td>yes</td> <td></td> <td></td> <td> <div>The hostname or IP address of the vSphere vCenter.</div> </td> </tr> <tr> <td>is_template<br><div style="font-size: small;">(added in 2.3)</div>
+</td> <td>no</td> <td>no</td> <td><ul>
+<li>yes</li>
+<li>no</li>
+</ul></td> <td> <div>Flag the instance as a template.</div> </td> </tr> <tr> <td>linked_clone<br><div style="font-size: small;">(added in 2.4)</div>
+</td> <td>no</td> <td>no</td> <td><ul>
+<li>yes</li>
+<li>no</li>
+</ul></td> <td> <div>Whether to create a Linked Clone from the snapshot specified.</div> </td> </tr> <tr> <td>name<br>
+</td> <td>yes</td> <td></td> <td></td> <td> <div>Name of the VM to work with.</div> <div>VM names in vCenter are not necessarily unique, which may be problematic, see <code>name_match</code>.</div> </td> </tr> <tr> <td>name_match<br>
+</td> <td>no</td> <td>first</td> <td><ul>
+<li>first</li>
+<li>last</li>
+</ul></td> <td> <div>If multiple VMs matching the name, use the first or last found.</div> </td> </tr> <tr> <td>networks<br><div style="font-size: small;">(added in 2.3)</div>
+</td> <td>no</td> <td></td> <td></td> <td> <div>A list of networks (in the order of the NICs).</div> <div>One of the below parameters is required per entry:</div> <div> - <code>name</code> (string): Name of the portgroup for this interface.</div> <div> - <code>vlan</code> (integer): VLAN number for this interface.</div> <div>Optional parameters per entry (used for virtual hardware):</div> <div> - <code>device_type</code> (string): Virtual network device (one of <code>e1000</code>, <code>e1000e</code>, <code>pcnet32</code>, <code>vmxnet2</code>, <code>vmxnet3</code> (default), <code>sriov</code>).</div> <div> - <code>mac</code> (string): Customize mac address.</div> <div>Optional parameters per entry (used for OS customization):</div> <div> - <code>type</code> (string): Type of IP assignment (either <code>dhcp</code> or <code>static</code>).</div> <div> - <code>ip</code> (string): Static IP address (implies <code>type: static</code>).</div> <div> - <code>netmask</code> (string): Static netmask required for <code>ip</code>.</div> <div> - <code>gateway</code> (string): Static gateway.</div> <div> - <code>dns_servers</code> (string): DNS servers for this network interface (Windows).</div> <div> - <code>domain</code> (string): Domain name for this network interface (Windows).</div> </td> </tr> <tr> <td>password<br>
+</td> <td>yes</td> <td></td> <td></td> <td> <div>The password of the vSphere vCenter.</div> <div style="font-size: small;">aliases: pass, pwd</div> </td> </tr> <tr> <td>resource_pool<br><div style="font-size: small;">(added in 2.3)</div>
+</td> <td>no</td> <td></td> <td></td> <td> <div>Affect machine to the given resource pool.</div> <div>Resource pool should be child of the selected host parent.</div> </td> </tr> <tr> <td>snapshot_src<br><div style="font-size: small;">(added in 2.4)</div>
+</td> <td>no</td> <td></td> <td></td> <td> <div>Name of an existing snapshot to use to create a clone of a VM.</div> </td> </tr> <tr> <td>state<br>
+</td> <td>yes</td> <td></td> <td><ul>
+<li>present</li>
+<li>absent</li>
+<li>poweredon</li>
+<li>poweredoff</li>
+<li>restarted</li>
+<li>suspended</li>
+<li>shutdownguest</li>
+<li>rebootguest</li>
+</ul></td> <td> <div>What state should the virtual machine be in?</div> <div>If <code>state</code> is set to <code>present</code> and VM exists, ensure the VM configuration conforms to task arguments.</div> </td> </tr> <tr> <td>template<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>Template used to create VM.</div> <div>If this value is not set, VM is created without using a template.</div> <div>If the VM exists already this setting will be ignored.</div> </td> </tr> <tr> <td>username<br>
+</td> <td>yes</td> <td></td> <td></td> <td> <div>The username of the vSphere vCenter.</div> <div style="font-size: small;">aliases: user, admin</div> </td> </tr> <tr> <td>uuid<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>UUID of the instance to manage if known, this is VMware's unique identifier.</div> <div>This is required if name is not supplied.</div> </td> </tr> <tr> <td>validate_certs<br>
+</td> <td>no</td> <td>True</td> <td><ul>
+<li>True</li>
+<li>False</li>
+</ul></td> <td> <div>Allows connection when SSL certificates are not valid. Set to false when certificates are not trusted.</div> </td> </tr> <tr> <td>wait_for_ip_address<br>
+</td> <td>no</td> <td>no</td> <td><ul>
+<li>yes</li>
+<li>no</li>
+</ul></td> <td> <div>Wait until vCenter detects an IP address for the VM.</div> <div>This requires vmware-tools (vmtoolsd) to properly work after creation.</div> </td> </tr> </table>   <h2 id="examples">Examples</h2>  <pre data-language="YAML">- name: Create a VM from a template
+  vmware_guest:
+    hostname: 192.0.2.44
+    username: administrator@vsphere.local
+    password: vmware
+    validate_certs: no
+    folder: /testvms
+    name: testvm_2
+    state: poweredon
+    template: template_el7
+    disk:
+    - size_gb: 10
+      type: thin
+      datastore: g73_datastore
+    hardware:
+      memory_mb: 512
+      num_cpus: 1
+      scsi: paravirtual
+    networks:
+    - name: VM Network
+      mac: aa:bb:dd:aa:00:14
+    wait_for_ip_address: yes
+  delegate_to: localhost
+  register: deploy
+
+- name: Clone a VM from Template and customize
+  vmware_guest:
+    hostname: 192.168.1.209
+    username: administrator@vsphere.local
+    password: vmware
+    validate_certs: no
+    datacenter: datacenter1
+    cluster: cluster
+    name: testvm-2
+    template: template_windows
+    networks:
+    - name: VM Network
+      ip: 192.168.1.100
+      netmask: 255.255.255.0
+      gateway: 192.168.1.1
+      mac: aa:bb:dd:aa:00:14
+      domain: my_domain
+      dns_servers:
+      - 192.168.1.1
+      - 192.168.1.2
+    - vlan: 1234
+      type: dhcp
+    customization:
+      autologon: yes
+      dns_servers:
+      - 192.168.1.1
+      - 192.168.1.2
+      domain: my_domain
+      password: new_vm_password
+      runonce:
+      - powershell.exe -ExecutionPolicy Unrestricted -File C:\Windows\Temp\ConfigureRemotingForAnsible.ps1 -ForceNewSSLCert -EnableCredSSP
+  delegate_to: localhost
+
+- name: Create a VM template
+  vmware_guest:
+    hostname: 192.0.2.88
+    username: administrator@vsphere.local
+    password: vmware
+    validate_certs: no
+    datacenter: datacenter1
+    cluster: vmware_cluster_esx
+    resource_pool: highperformance_pool
+    folder: /testvms
+    name: testvm_6
+    is_template: yes
+    guest_id: debian6_64Guest
+    disk:
+    - size_gb: 10
+      type: thin
+      datastore: g73_datastore
+    hardware:
+      memory_mb: 512
+      num_cpus: 1
+      scsi: lsilogic
+  delegate_to: localhost
+  register: deploy
+
+- name: Rename a VM (requires the VM's uuid)
+  vmware_guest:
+    hostname: 192.168.1.209
+    username: administrator@vsphere.local
+    password: vmware
+    uuid: 421e4592-c069-924d-ce20-7e7533fab926
+    name: new_name
+    state: present
+  delegate_to: localhost
+
+- name: Remove a VM by uuid
+  vmware_guest:
+    hostname: 192.168.1.209
+    username: administrator@vsphere.local
+    password: vmware
+    uuid: 421e4592-c069-924d-ce20-7e7533fab926
+    state: absent
+  delegate_to: localhost
+</pre>    <h2 id="return-values">Return Values</h2> <p>Common return values are documented here <a class="reference internal" href="../common_return_values/"><span class="doc">Return Values</span></a>, the following are the fields unique to this module:</p> <table> <tr> <th class="head">name</th> <th class="head">description</th> <th class="head">returned</th> <th class="head">type</th> <th class="head">sample</th> </tr> <tr> <td>instance</td> <td> <div>metadata about the new virtualmachine</div> </td> <td align="center">always</td> <td align="center">dict</td> <td align="center">None</td> </tr> </table>   <h2 id="notes">Notes</h2> <div class="admonition note"> <p class="first admonition-title">Note</p> <ul class="last simple"> <li>Tested on vSphere 5.5 and 6.0</li> </ul> </div>  <h3 id="status">Status</h3> <p>This module is flagged as <strong>preview</strong> which means that it is not guaranteed to have a backwards compatible interface.</p> <p>For help in developing on modules, should you be so inclined, please read <a class="reference internal" href="https://docs.ansible.com/ansible/latest/community.html" target="_blank"><span class="doc">Community Information &amp; Contributing</span></a>, <a class="reference internal" href="../dev_guide/testing/"><span class="doc">Testing Ansible</span></a> and <a class="reference internal" href="../dev_guide/developing_modules/"><span class="doc">Developing Modules</span></a>.</p>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2012–2017 Michael DeHaan<br>© 2017 Red Hat, Inc.<br>Licensed under the GNU General Public License version 3.<br>
+    <a href="https://docs.ansible.com/ansible/latest/vmware_guest_module.html" class="_attribution-link" target="_blank">https://docs.ansible.com/ansible/latest/vmware_guest_module.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

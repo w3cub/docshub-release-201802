@@ -1,0 +1,154 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Cloudscale_server - Ansible - W3cubDocs</title>
+  
+  <meta name="description" content=" New in version 2.3. ">
+  <meta name="keywords" content="cloudscale, server, -, manages, servers, on, ch, iaas, service, ansible">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/ansible/cloudscale_server_module/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/ansible.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/ansible/" class="_nav-link" title="" style="margin-left:0;">Ansible</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _sphinx">
+				
+<h1 id="cloudscale-server">cloudscale_server - Manages servers on the cloudscale.ch IaaS service</h1> <div class="versionadded" id="cloudscale-server-manages-servers-on-the-cloudscale-ch-iaas-service"> <p><span class="versionmodified">New in version 2.3.</span></p> </div>  <ul class="simple"> <li><a class="reference internal" href="#synopsis" id="id1">Synopsis</a></li> <li><a class="reference internal" href="#options" id="id2">Options</a></li> <li><a class="reference internal" href="#examples" id="id3">Examples</a></li> <li><a class="reference internal" href="#return-values" id="id4">Return Values</a></li> <li>
+<a class="reference internal" href="#notes" id="id5">Notes</a><ul> <li><a class="reference internal" href="#status" id="id6">Status</a></li> </ul> </li> </ul>   <h2 id="synopsis">Synopsis</h2> <ul class="simple"> <li>Create, start, stop and delete servers on the cloudscale.ch IaaS service.</li> <li>All operations are performed using the cloudscale.ch public API v1.</li> <li>For details consult the full API documentation: <a class="reference external" href="https://www.cloudscale.ch/en/api/v1" target="_blank">https://www.cloudscale.ch/en/api/v1</a>.</li> <li>An valid API token is required for all operations. You can create as many tokens as you like using the cloudscale.ch control panel at <a class="reference external" href="https://control.cloudscale.ch" target="_blank">https://control.cloudscale.ch</a>.</li> </ul>   <h2 id="options">Options</h2> <table> <tr> <th class="head">parameter</th> <th class="head">required</th> <th class="head">default</th> <th class="head">choices</th> <th class="head">comments</th> </tr> <tr> <td>anti_affinity_with<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>UUID of another server to create an anti-affinity group with</div> </td> </tr> <tr> <td>api_token<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>cloudscale.ch API token.</div> <div>This can also be passed in the CLOUDSCALE_API_TOKEN environment variable.</div> </td> </tr> <tr> <td>bulk_volume_size_gb<br>
+</td> <td>no</td> <td>null (no bulk storage volume)</td> <td></td> <td> <div>Size of the bulk storage volume in GB</div> </td> </tr> <tr> <td>flavor<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>Flavor of the server</div> </td> </tr> <tr> <td>image<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>Image used to create the server</div> </td> </tr> <tr> <td>name<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>Name of the Server</div> <div>Either <code>name</code> or <code>uuid</code> are required. These options are mutually exclusive.</div> </td> </tr> <tr> <td>ssh_keys<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>List of SSH public keys</div> <div>Use the full content of your .pub file here.</div> </td> </tr> <tr> <td>state<br>
+</td> <td>no</td> <td>running</td> <td><ul>
+<li>running</li>
+<li>stopped</li>
+<li>absent</li>
+</ul></td> <td> <div>State of the server</div> </td> </tr> <tr> <td>use_ipv6<br>
+</td> <td>no</td> <td>True</td> <td></td> <td> <div>Enable IPv6 on the public network interface</div> </td> </tr> <tr> <td>use_private_network<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>Attach a private network interface to the server</div> </td> </tr> <tr> <td>use_public_network<br>
+</td> <td>no</td> <td>True</td> <td></td> <td> <div>Attach a public network interface to the server</div> </td> </tr> <tr> <td>user_data<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>Cloud-init configuration (cloud-config) data to use for the server.</div> </td> </tr> <tr> <td>uuid<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>UUID of the server</div> <div>Either <code>name</code> or <code>uuid</code> are required. These options are mutually exclusive.</div> </td> </tr> <tr> <td>volume_size_gb<br>
+</td> <td>no</td> <td>10</td> <td></td> <td> <div>Size of the root volume in GB</div> </td> </tr> </table>   <h2 id="examples">Examples</h2>  <pre data-language="YAML"># Start a server (if it does not exist) and register the server details
+- name: Start cloudscale.ch server
+  cloudscale_server:
+    name: my-shiny-cloudscale-server
+    image: debian-8
+    flavor: flex-4
+    ssh_keys: ssh-rsa XXXXXXXXXX...XXXX ansible@cloudscale
+    use_private_network: True
+    bulk_volume_size_gb: 100
+    api_token: xxxxxx
+  register: server1
+
+# Start another server in anti-affinity to the first one
+- name: Start second cloudscale.ch server
+  cloudscale_server:
+    name: my-other-shiny-server
+    image: ubuntu-16.04
+    flavor: flex-8
+    ssh_keys: ssh-rsa XXXXXXXXXXX ansible@cloudscale
+    anti_affinity_with: '{{ server1.uuid }}'
+    api_token: xxxxxx
+
+# Stop the first server
+- name: Stop my first server
+  cloudscale_server:
+    uuid: '{{ server1.uuid }}'
+    state: stopped
+    api_token: xxxxxx
+
+# Delete my second server
+- name: Delete my second server
+  cloudscale_server:
+    name: my-other-shiny-server
+    state: absent
+    api_token: xxxxxx
+
+# Start a server and wait for the SSH host keys to be generated
+- name: Start server and wait for SSH host keys
+  cloudscale_server:
+    name: my-cloudscale-server-with-ssh-key
+    image: debian-8
+    flavor: flex-4
+    ssh_keys: ssh-rsa XXXXXXXXXXX ansible@cloudscale
+    api_token: xxxxxx
+  register: server
+  until: server.ssh_fingerprints
+  retries: 60
+  delay: 2
+</pre>    <h2 id="return-values">Return Values</h2> <p>Common return values are documented here <a class="reference internal" href="../common_return_values/"><span class="doc">Return Values</span></a>, the following are the fields unique to this module:</p> <table> <tr> <th class="head">name</th> <th class="head">description</th> <th class="head">returned</th> <th class="head">type</th> <th class="head">sample</th> </tr> <tr> <td>uuid</td> <td> <div>The unique identifier for this server</div> </td> <td align="center">success</td> <td align="center">string</td> <td align="center">cfde831a-4e87-4a75-960f-89b0148aa2cc</td> </tr> <tr> <td>image</td> <td> <div>The image used for booting this server</div> </td> <td align="center">success when not state == absent</td> <td align="center">string</td> <td align="center">debian-8</td> </tr> <tr> <td>state</td> <td> <div>The current status of the server</div> </td> <td align="center">success</td> <td align="center">string</td> <td align="center">running</td> </tr> <tr> <td>name</td> <td> <div>The display name of the server</div> </td> <td align="center">success</td> <td align="center">string</td> <td align="center">its-a-me-mario.cloudscale.ch</td> </tr> <tr> <td>anti_affinity_with</td> <td> <div>List of servers in the same anti-affinity group</div> </td> <td align="center">success when not state == absent</td> <td align="center">string</td> <td align="center">[]</td> </tr> <tr> <td>ssh_fingerprints</td> <td> <div>A list of SSH host key fingerprints. Will be null until the host keys could be retrieved from the server.</div> </td> <td align="center">success when not state == absent</td> <td align="center">list</td> <td align="center">['ecdsa-sha2-nistp256 SHA256:XXXX', '...']</td> </tr> <tr> <td>href</td> <td> <div>API URL to get details about this server</div> </td> <td align="center">success when not state == absent</td> <td align="center">string</td> <td align="center">https://api.cloudscale.ch/v1/servers/cfde831a-4e87-4a75-960f-89b0148aa2cc</td> </tr> <tr> <td>volumes</td> <td> <div>List of volumes attached to the server</div> </td> <td align="center">success when not state == absent</td> <td align="center">list</td> <td align="center">[{'device': '/dev/vda', 'size_gb': '50', 'type': 'ssd'}]</td> </tr> <tr> <td>flavor</td> <td> <div>The flavor that has been used for this server</div> </td> <td align="center">success when not state == absent</td> <td align="center">string</td> <td align="center">flex-8</td> </tr> <tr> <td>interfaces</td> <td> <div>List of network ports attached to the server</div> </td> <td align="center">success when not state == absent</td> <td align="center">list</td> <td align="center">[{'type': 'public', 'addresses': ['...']}]</td> </tr> <tr> <td>ssh_host_keys</td> <td> <div>A list of SSH host keys. Will be null until the host keys could be retrieved from the server.</div> </td> <td align="center">success when not state == absent</td> <td align="center">list</td> <td align="center">['ecdsa-sha2-nistp256 XXXXX', '...']</td> </tr> </table>   <h2 id="notes">Notes</h2> <div class="admonition note"> <p class="first admonition-title">Note</p> <ul class="last simple"> <li>Instead of the api_token parameter the CLOUDSCALE_API_TOKEN environment variable can be used.</li> <li>To create a new server at least the <code>name</code>, <code>ssh_key</code>, <code>image</code> and <code>flavor</code> options are required.</li> <li>If more than one server with the name given by the <code>name</code> option exists, execution is aborted.</li> <li>Once a server is created all parameters except <code>state</code> are read-only. You can’t change the name, flavor or any other property. This is a limitation of the cloudscale.ch API. The module will silently ignore differences between the configured parameters and the running server if a server with the correct name or UUID exists. Only state changes will be applied.</li> </ul> </div>  <h3 id="status">Status</h3> <p>This module is flagged as <strong>preview</strong> which means that it is not guaranteed to have a backwards compatible interface.</p> <p>For help in developing on modules, should you be so inclined, please read <a class="reference internal" href="https://docs.ansible.com/ansible/latest/community.html" target="_blank"><span class="doc">Community Information &amp; Contributing</span></a>, <a class="reference internal" href="../dev_guide/testing/"><span class="doc">Testing Ansible</span></a> and <a class="reference internal" href="../dev_guide/developing_modules/"><span class="doc">Developing Modules</span></a>.</p>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2012–2017 Michael DeHaan<br>© 2017 Red Hat, Inc.<br>Licensed under the GNU General Public License version 3.<br>
+    <a href="https://docs.ansible.com/ansible/latest/cloudscale_server_module.html" class="_attribution-link" target="_blank">https://docs.ansible.com/ansible/latest/cloudscale_server_module.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

@@ -1,0 +1,178 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Ce_evpn_bd_vni - Ansible - W3cubDocs</title>
+  
+  <meta name="description" content=" New in version 2.4. ">
+  <meta name="keywords" content="ce, evpn, bd, vni, -, manages, vxlan, network, identifier, on, huawei, cloudengine, switches, ansible">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/ansible/ce_evpn_bd_vni_module/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/ansible.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/ansible/" class="_nav-link" title="" style="margin-left:0;">Ansible</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _sphinx">
+				
+<h1 id="ce-evpn-bd-vni">ce_evpn_bd_vni - Manages EVPN VXLAN Network Identifier (VNI) on HUAWEI CloudEngine switches.</h1> <div class="versionadded" id="ce-evpn-bd-vni-manages-evpn-vxlan-network-identifier-vni-on-huawei-cloudengine-switches"> <p><span class="versionmodified">New in version 2.4.</span></p> </div>  <ul class="simple"> <li><a class="reference internal" href="#synopsis" id="id1">Synopsis</a></li> <li><a class="reference internal" href="#options" id="id2">Options</a></li> <li><a class="reference internal" href="#examples" id="id3">Examples</a></li> <li><a class="reference internal" href="#return-values" id="id4">Return Values</a></li> <li>
+<a class="reference internal" href="#notes" id="id5">Notes</a><ul> <li><a class="reference internal" href="#status" id="id6">Status</a></li> </ul> </li> </ul>   <h2 id="synopsis">Synopsis</h2> <ul class="simple"> <li>Manages Ethernet Virtual Private Network (EVPN) VXLAN Network Identifier (VNI) configurations on HUAWEI CloudEngine switches.</li> </ul>   <h2 id="options">Options</h2> <table> <tr> <th class="head">parameter</th> <th class="head">required</th> <th class="head">default</th> <th class="head">choices</th> <th class="head">comments</th> </tr> <tr> <td>bridge_domain_id<br>
+</td> <td>yes</td> <td></td> <td></td> <td> <div>Specify an existed bridge domain (BD).The value is an integer ranging from 1 to 16777215.</div> </td> </tr> <tr> <td>evpn<br>
+</td> <td>no</td> <td>enable</td> <td><ul>
+<li>enable</li>
+<li>disable</li>
+</ul></td> <td> <div>Create or delete an EVPN instance for a VXLAN in BD view.</div> </td> </tr> <tr> <td>route_distinguisher<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>Configures a route distinguisher (RD) for a BD EVPN instance. The format of an RD can be as follows</div> <div>1) 2-byte AS number:4-byte user-defined number, for example, 1:3. An AS number is an integer ranging from 0 to 65535, and a user-defined number is an integer ranging from 0 to 4294967295. The AS and user-defined numbers cannot be both 0s. This means that an RD cannot be 0:0.</div> <div>2) Integral 4-byte AS number:2-byte user-defined number, for example, 65537:3. An AS number is an integer ranging from 65536 to 4294967295, and a user-defined number is an integer ranging from 0 to 65535.</div> <div>3) 4-byte AS number in dotted notation:2-byte user-defined number, for example, 0.0:3 or 0.1:0. A 4-byte AS number in dotted notation is in the format of x.y, where x and y are integers ranging from 0 to 65535.</div> <div>4) A user-defined number is an integer ranging from 0 to 65535. The AS and user-defined numbers cannot be both 0s. This means that an RD cannot be 0.0:0.</div> <div>5) 32-bit IP address:2-byte user-defined number. For example, 192.168.122.15:1. An IP address ranges from 0.0.0.0 to 255.255.255.255, and a user-defined number is an integer ranging from 0 to 65535.</div> <div>6) 'auto' specifies the RD that is automatically generated.</div> </td> </tr> <tr> <td>state<br>
+</td> <td>no</td> <td>present</td> <td><ul>
+<li>present</li>
+<li>absent</li>
+</ul></td> <td> <div>Manage the state of the resource.</div> </td> </tr> <tr> <td>vpn_target_both<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>Add VPN targets to both the import and export VPN target lists of a BD EVPN instance. The format is the same as route_distinguisher.</div> </td> </tr> <tr> <td>vpn_target_export<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>Add VPN targets to the export VPN target list of a BD EVPN instance. The format is the same as route_distinguisher.</div> </td> </tr> <tr> <td>vpn_target_import<br>
+</td> <td>yes</td> <td></td> <td></td> <td> <div>Add VPN targets to the import VPN target list of a BD EVPN instance. The format is the same as route_distinguisher.</div> </td> </tr> </table>   <h2 id="examples">Examples</h2>  <pre data-language="YAML">- name: EVPN BD VNI test
+  hosts: cloudengine
+  connection: local
+  gather_facts: no
+  vars:
+    cli:
+      host: "{{ inventory_hostname }}"
+      port: "{{ ansible_ssh_port }}"
+      username: "{{ username }}"
+      password: "{{ password }}"
+      transport: cli
+
+  tasks:
+
+  - name: "Configure an EVPN instance for a VXLAN in BD view"
+    ce_evpn_bd_vni:
+      bridge_domain_id: 20
+      evpn: enable
+      provider: "{{ cli }}"
+
+  - name: "Configure a route distinguisher (RD) for a BD EVPN instance"
+    ce_evpn_bd_vni:
+      bridge_domain_id: 20
+      route_distinguisher: '22:22'
+      provider: "{{ cli }}"
+
+  - name: "Configure VPN targets to both the import and export VPN target lists of a BD EVPN instance"
+    ce_evpn_bd_vni:
+      bridge_domain_id: 20
+      vpn_target_both: 22:100,22:101
+      provider: "{{ cli }}"
+
+  - name: "Configure VPN targets to the import VPN target list of a BD EVPN instance"
+    ce_evpn_bd_vni:
+      bridge_domain_id: 20
+      vpn_target_import: 22:22,22:23
+      provider: "{{ cli }}"
+
+  - name: "Configure VPN targets to the export VPN target list of a BD EVPN instance"
+    ce_evpn_bd_vni:
+      bridge_domain_id: 20
+      vpn_target_export: 22:38,22:39
+      provider: "{{ cli }}"
+
+  - name: "Unconfigure VPN targets to both the import and export VPN target lists of a BD EVPN instance"
+    ce_evpn_bd_vni:
+      bridge_domain_id: 20
+      vpn_target_both: '22:100'
+      state: absent
+      provider: "{{ cli }}"
+
+  - name: "Unconfigure VPN targets to the import VPN target list of a BD EVPN instance"
+    ce_evpn_bd_vni:
+      bridge_domain_id: 20
+      vpn_target_import: '22:22'
+      state: absent
+      provider: "{{ cli }}"
+
+  - name: "Unconfigure VPN targets to the export VPN target list of a BD EVPN instance"
+    ce_evpn_bd_vni:
+      bridge_domain_id: 20
+      vpn_target_export: '22:38'
+      state: absent
+      provider: "{{ cli }}"
+
+  - name: "Unconfigure a route distinguisher (RD) of a BD EVPN instance"
+    ce_evpn_bd_vni:
+      bridge_domain_id: 20
+      route_distinguisher: '22:22'
+      state: absent
+      provider: "{{ cli }}"
+
+  - name: "Unconfigure an EVPN instance for a VXLAN in BD view"
+    ce_evpn_bd_vni:
+      bridge_domain_id: 20
+      evpn: disable
+      provider: "{{ cli }}"
+</pre>    <h2 id="return-values">Return Values</h2> <p>Common return values are documented here <a class="reference internal" href="../common_return_values/"><span class="doc">Return Values</span></a>, the following are the fields unique to this module:</p> <table> <tr> <th class="head">name</th> <th class="head">description</th> <th class="head">returned</th> <th class="head">type</th> <th class="head">sample</th> </tr> <tr> <td>end_state</td> <td> <div>k/v pairs of end attributes on the device</div> </td> <td align="center">always</td> <td align="center">dict</td> <td align="center">{'vpn_target_export': ['22:38', '22:39'], 'route_distinguisher': '22:22', 'vpn_target_both': ['22:100', '22:101'], 'evpn': 'enable', 'vpn_target_import': ['22:22', '22:23'], 'bridge_domain_id': '2'}</td> </tr> <tr> <td>changed</td> <td> <div>check to see if a change was made on the device</div> </td> <td align="center">always</td> <td align="center">boolean</td> <td align="center">True</td> </tr> <tr> <td>updates</td> <td> <div>command list sent to the device</div> </td> <td align="center">always</td> <td align="center">list</td> <td align="center">['bridge-domain 2', ' evpn', ' route-distinguisher 22:22', ' vpn-target 22:38 export-extcommunity', ' vpn-target 22:39 export-extcommunity', ' vpn-target 22:100 export-extcommunity', ' vpn-target 22:101 export-extcommunity', ' vpn-target 22:22 import-extcommunity', ' vpn-target 22:23 import-extcommunity', ' vpn-target 22:100 import-extcommunity', ' vpn-target 22:101 import-extcommunity']</td> </tr> <tr> <td>proposed</td> <td> <div>k/v pairs of parameters passed into module</div> </td> <td align="center">always</td> <td align="center">dict</td> <td align="center">{'vpn_target_export': ['22:38', '22:39'], 'state': 'present', 'route_distinguisher': '22:22', 'vpn_target_both': ['22:100', '22:101'], 'evpn': 'enable', 'vpn_target_import': ['22:22', '22:23'], 'bridge_domain_id': '2'}</td> </tr> <tr> <td>existing</td> <td> <div>k/v pairs of existing attributes on the device</div> </td> <td align="center">always</td> <td align="center">dict</td> <td align="center">{'vpn_target_export': [], 'route_distinguisher': None, 'vpn_target_both': [], 'evpn': 'disable', 'vpn_target_import': [], 'bridge_domain_id': '2'}</td> </tr> </table>   <h2 id="notes">Notes</h2> <div class="admonition note"> <p class="first admonition-title">Note</p> <ul class="last simple"> <li>Ensure that EVPN has been configured to serve as the VXLAN control plane when state is present.</li> <li>Ensure that a bridge domain (BD) has existed when state is present.</li> <li>Ensure that a VNI has been created and associated with a broadcast domain (BD) when state is present.</li> <li>If you configure evpn:false to delete an EVPN instance, all configurations in the EVPN instance are deleted.</li> <li>After an EVPN instance has been created in the BD view, you can configure an RD using route_distinguisher parameter in BD-EVPN instance view.</li> <li>Before configuring VPN targets for a BD EVPN instance, ensure that an RD has been configured for the BD EVPN instance</li> <li>If you unconfigure route_distinguisher, all VPN target attributes for the BD EVPN instance will be removed at the same time.</li> <li>When using state:absent, evpn is not supported and it will be ignored.</li> <li>When using state:absent to delete VPN target attributes, ensure the configuration of VPN target attributes has existed and otherwise it will report an error.</li> </ul> </div>  <h3 id="status">Status</h3> <p>This module is flagged as <strong>preview</strong> which means that it is not guaranteed to have a backwards compatible interface.</p> <p>For help in developing on modules, should you be so inclined, please read <a class="reference internal" href="https://docs.ansible.com/ansible/latest/community.html" target="_blank"><span class="doc">Community Information &amp; Contributing</span></a>, <a class="reference internal" href="../dev_guide/testing/"><span class="doc">Testing Ansible</span></a> and <a class="reference internal" href="../dev_guide/developing_modules/"><span class="doc">Developing Modules</span></a>.</p>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2012–2017 Michael DeHaan<br>© 2017 Red Hat, Inc.<br>Licensed under the GNU General Public License version 3.<br>
+    <a href="https://docs.ansible.com/ansible/latest/ce_evpn_bd_vni_module.html" class="_attribution-link" target="_blank">https://docs.ansible.com/ansible/latest/ce_evpn_bd_vni_module.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

@@ -1,0 +1,146 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Bigip_virtual_address - Ansible - W3cubDocs</title>
+  
+  <meta name="description" content=" New in version 2.4. ">
+  <meta name="keywords" content="bigip, virtual, address, -, manage, ltm, addresses, on, big-ip, ansible">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/ansible/bigip_virtual_address_module/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/ansible.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/ansible/" class="_nav-link" title="" style="margin-left:0;">Ansible</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _sphinx">
+				
+<h1 id="bigip-virtual-address">bigip_virtual_address - Manage LTM virtual addresses on a BIG-IP.</h1> <div class="versionadded" id="bigip-virtual-address-manage-ltm-virtual-addresses-on-a-big-ip"> <p><span class="versionmodified">New in version 2.4.</span></p> </div>  <ul class="simple"> <li><a class="reference internal" href="#synopsis" id="id1">Synopsis</a></li> <li><a class="reference internal" href="#options" id="id2">Options</a></li> <li><a class="reference internal" href="#examples" id="id3">Examples</a></li> <li><a class="reference internal" href="#return-values" id="id4">Return Values</a></li> <li>
+<a class="reference internal" href="#notes" id="id5">Notes</a><ul> <li><a class="reference internal" href="#status" id="id6">Status</a></li> </ul> </li> </ul>   <h2 id="synopsis">Synopsis</h2> <ul class="simple"> <li>Manage LTM virtual addresses on a BIG-IP.</li> </ul>   <h2 id="options">Options</h2> <table> <tr> <th class="head">parameter</th> <th class="head">required</th> <th class="head">default</th> <th class="head">choices</th> <th class="head">comments</th> </tr> <tr> <td>address<br>
+</td> <td>yes</td> <td></td> <td></td> <td> <div>Virtual address. This value cannot be modified after it is set.</div> <div style="font-size: small;">aliases: name</div> </td> </tr> <tr> <td>advertise_route<br>
+</td> <td>no</td> <td></td> <td><ul>
+<li>always</li>
+<li>when_all_available</li>
+<li>when_any_available</li>
+</ul></td> <td> <div>Specifies what routes of the virtual address the system advertises. When <code>when_any_available</code>, advertises the route when any virtual server is available. When <code>when_all_available</code>, advertises the route when all virtual servers are available. When (always), always advertises the route regardless of the virtual servers available.</div> </td> </tr> <tr> <td>arp_state<br>
+</td> <td>no</td> <td></td> <td><ul>
+<li>enabled</li>
+<li>disabled</li>
+</ul></td> <td> <div>Specifies whether the system accepts ARP requests. When (disabled), specifies that the system does not accept ARP requests. Note that both ARP and ICMP Echo must be disabled in order for forwarding virtual servers using that virtual address to forward ICMP packets. If (enabled), then the packets are dropped.</div> </td> </tr> <tr> <td>auto_delete<br>
+</td> <td>no</td> <td></td> <td><ul>
+<li>enabled</li>
+<li>disabled</li>
+</ul></td> <td> <div>Specifies whether the system automatically deletes the virtual address with the deletion of the last associated virtual server. When <code>disabled</code>, specifies that the system leaves the virtual address even when all associated virtual servers have been deleted. When creating the virtual address, the default value is <code>enabled</code>.</div> </td> </tr> <tr> <td>connection_limit<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>Specifies the number of concurrent connections that the system allows on this virtual address.</div> </td> </tr> <tr> <td>icmp_echo<br>
+</td> <td>no</td> <td></td> <td><ul>
+<li>enabled</li>
+<li>disabled</li>
+<li>selective</li>
+</ul></td> <td> <div>Specifies how the systems sends responses to (ICMP) echo requests on a per-virtual address basis for enabling route advertisement. When <code>enabled</code>, the BIG-IP system intercepts ICMP echo request packets and responds to them directly. When <code>disabled</code>, the BIG-IP system passes ICMP echo requests through to the backend servers. When (selective), causes the BIG-IP system to internally enable or disable responses based on virtual server state; <code>when_any_available</code>, <code>when_all_available, or C(always</code>, regardless of the state of any virtual servers.</div> </td> </tr> <tr> <td>netmask<br>
+</td> <td>no</td> <td>255.255.255.255</td> <td></td> <td> <div>Netmask of the provided virtual address. This value cannot be modified after it is set.</div> </td> </tr> <tr> <td>password<br>
+</td> <td>yes</td> <td></td> <td></td> <td> <div>The password for the user account used to connect to the BIG-IP. This option can be omitted if the environment variable <code>F5_PASSWORD</code> is set.</div> </td> </tr> <tr> <td>server<br>
+</td> <td>yes</td> <td></td> <td></td> <td> <div>The BIG-IP host. This option can be omitted if the environment variable <code>F5_SERVER</code> is set.</div> </td> </tr> <tr> <td>server_port<br><div style="font-size: small;">(added in 2.2)</div>
+</td> <td>no</td> <td>443</td> <td></td> <td> <div>The BIG-IP server port. This option can be omitted if the environment variable <code>F5_SERVER_PORT</code> is set.</div> </td> </tr> <tr> <td>state<br>
+</td> <td>no</td> <td>present</td> <td><ul>
+<li>present</li>
+<li>absent</li>
+<li>enabled</li>
+<li>disabled</li>
+</ul></td> <td> <div>The virtual address state. If <code>absent</code>, an attempt to delete the virtual address will be made. This will only succeed if this virtual address is not in use by a virtual server. <code>present</code> creates the virtual address and enables it. If <code>enabled</code>, enable the virtual address if it exists. If <code>disabled</code>, create the virtual address if needed, and set state to <code>disabled</code>.</div> </td> </tr> <tr> <td>use_route_advertisement<br>
+</td> <td>no</td> <td></td> <td><ul>
+<li>True</li>
+<li>False</li>
+</ul></td> <td> <div>Specifies whether the system uses route advertisement for this virtual address. When disabled, the system does not advertise routes for this virtual address.</div> </td> </tr> <tr> <td>user<br>
+</td> <td>yes</td> <td></td> <td></td> <td> <div>The username to connect to the BIG-IP with. This user must have administrative privileges on the device. This option can be omitted if the environment variable <code>F5_USER</code> is set.</div> </td> </tr> <tr> <td>validate_certs<br><div style="font-size: small;">(added in 2.0)</div>
+</td> <td>no</td> <td>True</td> <td><ul>
+<li>True</li>
+<li>False</li>
+</ul></td> <td> <div>If <code>no</code>, SSL certificates will not be validated. This should only be used on personally controlled sites using self-signed certificates. This option can be omitted if the environment variable <code>F5_VALIDATE_CERTS</code> is set.</div> </td> </tr> </table>   <h2 id="examples">Examples</h2>  <pre data-language="YAML">- name: Add virtual address
+  bigip_virtual_address:
+      server: "lb.mydomain.net"
+      user: "admin"
+      password: "secret"
+      state: "present"
+      partition: "Common"
+      address: "10.10.10.10"
+  delegate_to: localhost
+
+- name: Enable route advertisement on the virtual address
+  bigip_virtual_address:
+      server: "lb.mydomain.net"
+      user: "admin"
+      password: "secret"
+      state: "present"
+      address: "10.10.10.10"
+      use_route_advertisement: yes
+  delegate_to: localhost
+</pre>    <h2 id="return-values">Return Values</h2> <p>Common return values are documented here <a class="reference internal" href="../common_return_values/"><span class="doc">Return Values</span></a>, the following are the fields unique to this module:</p> <table> <tr> <th class="head">name</th> <th class="head">description</th> <th class="head">returned</th> <th class="head">type</th> <th class="head">sample</th> </tr> <tr> <td>icmp_echo</td> <td> <div>New ICMP echo setting applied to virtual address.</div> </td> <td align="center">changed</td> <td align="center">string</td> <td align="center">disabled</td> </tr> <tr> <td>use_route_advertisement</td> <td> <div>The new setting for whether to use route advertising or not.</div> </td> <td align="center">changed</td> <td align="center">bool</td> <td align="center">True</td> </tr> <tr> <td>connection_limit</td> <td> <div>The new connection limit of the virtual address.</div> </td> <td align="center">changed</td> <td align="center">int</td> <td align="center">1000</td> </tr> <tr> <td>netmask</td> <td> <div>The netmask of the virtual address.</div> </td> <td align="center">created</td> <td align="center">int</td> <td align="center">2345</td> </tr> <tr> <td>state</td> <td> <div>The new state of the virtual address.</div> </td> <td align="center">changed</td> <td align="center">string</td> <td align="center">disabled</td> </tr> <tr> <td>arp_state</td> <td> <div>The new way the virtual address handles ARP requests.</div> </td> <td align="center">changed</td> <td align="center">string</td> <td align="center">disabled</td> </tr> <tr> <td>address</td> <td> <div>The address of the virtual address.</div> </td> <td align="center">created</td> <td align="center">int</td> <td align="center">2345</td> </tr> <tr> <td>auto_delete</td> <td> <div>New setting for auto deleting virtual address.</div> </td> <td align="center">changed</td> <td align="center">string</td> <td align="center">enabled</td> </tr> </table>   <h2 id="notes">Notes</h2> <div class="admonition note"> <p class="first admonition-title">Note</p> <ul class="last simple"> <li>Requires the f5-sdk Python package on the host. This is as easy as pip install f5-sdk.</li> <li>Requires the netaddr Python package on the host. This is as easy as pip install netaddr.</li> </ul> </div>  <h3 id="status">Status</h3> <p>This module is flagged as <strong>preview</strong> which means that it is not guaranteed to have a backwards compatible interface.</p> <p>For help in developing on modules, should you be so inclined, please read <a class="reference internal" href="https://docs.ansible.com/ansible/latest/community.html" target="_blank"><span class="doc">Community Information &amp; Contributing</span></a>, <a class="reference internal" href="../dev_guide/testing/"><span class="doc">Testing Ansible</span></a> and <a class="reference internal" href="../dev_guide/developing_modules/"><span class="doc">Developing Modules</span></a>.</p>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2012–2017 Michael DeHaan<br>© 2017 Red Hat, Inc.<br>Licensed under the GNU General Public License version 3.<br>
+    <a href="https://docs.ansible.com/ansible/latest/bigip_virtual_address_module.html" class="_attribution-link" target="_blank">https://docs.ansible.com/ansible/latest/bigip_virtual_address_module.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

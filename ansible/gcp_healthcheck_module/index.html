@@ -1,0 +1,160 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Gcp_healthcheck - Ansible - W3cubDocs</title>
+  
+  <meta name="description" content=" New in version 2.4. ">
+  <meta name="keywords" content="gcp, healthcheck, -, create, update, or, destroy, ansible">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/ansible/gcp_healthcheck_module/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/ansible.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/ansible/" class="_nav-link" title="" style="margin-left:0;">Ansible</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _sphinx">
+				
+<h1 id="gcp-healthcheck">gcp_healthcheck - Create, Update or Destroy a Healthcheck.</h1> <div class="versionadded" id="gcp-healthcheck-create-update-or-destroy-a-healthcheck"> <p><span class="versionmodified">New in version 2.4.</span></p> </div>  <ul class="simple"> <li><a class="reference internal" href="#synopsis" id="id1">Synopsis</a></li> <li><a class="reference internal" href="#requirements-on-host-that-executes-module" id="id2">Requirements (on host that executes module)</a></li> <li><a class="reference internal" href="#options" id="id3">Options</a></li> <li><a class="reference internal" href="#examples" id="id4">Examples</a></li> <li><a class="reference internal" href="#return-values" id="id5">Return Values</a></li> <li>
+<a class="reference internal" href="#notes" id="id6">Notes</a><ul> <li><a class="reference internal" href="#status" id="id7">Status</a></li> </ul> </li> </ul>   <h2 id="synopsis">Synopsis</h2> <ul class="simple"> <li>Create, Update or Destroy a Healthcheck. Currently only HTTP and HTTPS Healthchecks are supported. Healthchecks are used to monitor individual instances, managed instance groups and/or backend services. Healtchecks are reusable.</li> <li>Visit <a class="reference external" href="https://cloud.google.com/compute/docs/load-balancing/health-checks" target="_blank">https://cloud.google.com/compute/docs/load-balancing/health-checks</a> for an overview of Healthchecks on GCP.</li> <li>See <a class="reference external" href="https://cloud.google.com/compute/docs/reference/latest/httpHealthChecks" target="_blank">https://cloud.google.com/compute/docs/reference/latest/httpHealthChecks</a> for API details on HTTP Healthchecks.</li> <li>See <a class="reference external" href="https://cloud.google.com/compute/docs/reference/latest/httpsHealthChecks" target="_blank">https://cloud.google.com/compute/docs/reference/latest/httpsHealthChecks</a> for more details on the HTTPS Healtcheck API.</li> </ul>   <h2 id="requirements-on-host-that-executes-module">Requirements (on host that executes module)</h2>  <ul class="simple"> <li>python &gt;= 2.6</li> <li>google-api-python-client &gt;= 1.6.2</li> <li>google-auth &gt;= 0.9.0</li> <li>google-auth-httplib2 &gt;= 0.0.2</li> </ul>    <h2 id="options">Options</h2> <table> <tr> <th class="head">parameter</th> <th class="head">required</th> <th class="head">default</th> <th class="head">choices</th> <th class="head">comments</th> </tr> <tr> <td>check_interval<br>
+</td> <td>no</td> <td>5</td> <td></td> <td> <div>How often (in seconds) to send a health check.</div> </td> </tr> <tr> <td>credentials_file<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>Path to the JSON file associated with the service account email</div> </td> </tr> <tr> <td>healthcheck_name<br>
+</td> <td>yes</td> <td></td> <td></td> <td> <div>Name of the Healthcheck.</div> </td> </tr> <tr> <td>healthcheck_type<br>
+</td> <td>yes</td> <td></td> <td><ul>
+<li>HTTP</li>
+<li>HTTPS</li>
+</ul></td> <td> <div>Type of Healthcheck.</div> </td> </tr> <tr> <td>healthy_threshold<br>
+</td> <td>no</td> <td>2</td> <td></td> <td> <div>A so-far unhealthy instance will be marked healthy after this many consecutive successes.</div> </td> </tr> <tr> <td>host_header<br>
+</td> <td>yes</td> <td></td> <td></td> <td> <div>The value of the host header in the health check request. If left empty, the public IP on behalf of which this health check is performed will be used.</div> </td> </tr> <tr> <td>port<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>The TCP port number for the health check request. The default value is 443 for HTTPS and 80 for HTTP.</div> </td> </tr> <tr> <td>project_id<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>Your GCP project ID</div> </td> </tr> <tr> <td>request_path<br>
+</td> <td>no</td> <td>/</td> <td></td> <td> <div>The request path of the HTTPS health check request.</div> </td> </tr> <tr> <td>service_account_email<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>service account email</div> </td> </tr> <tr> <td>service_account_permissions<br><div style="font-size: small;">(added in 2.0)</div>
+</td> <td>no</td> <td></td> <td><ul>
+<li>bigquery</li>
+<li>cloud-platform</li>
+<li>compute-ro</li>
+<li>compute-rw</li>
+<li>useraccounts-ro</li>
+<li>useraccounts-rw</li>
+<li>datastore</li>
+<li>logging-write</li>
+<li>monitoring</li>
+<li>sql-admin</li>
+<li>storage-full</li>
+<li>storage-ro</li>
+<li>storage-rw</li>
+<li>taskqueue</li>
+<li>userinfo-email</li>
+</ul></td> <td> <div>service account permissions (see <a href="https://cloud.google.com/sdk/gcloud/reference/compute/instances/create" target="_blank">https://cloud.google.com/sdk/gcloud/reference/compute/instances/create</a>, --scopes section for detailed information)</div> </td> </tr> <tr> <td>state<br>
+</td> <td>yes</td> <td></td> <td><ul>
+<li>present</li>
+<li>absent</li>
+</ul></td> <td> <div>State of the Healthcheck.</div> </td> </tr> <tr> <td>timeout<br>
+</td> <td>no</td> <td>5</td> <td></td> <td> <div>How long (in seconds) to wait for a response before claiming failure. It is invalid for timeout to have a greater value than check_interval.</div> </td> </tr> <tr> <td>unhealthy_threshold<br>
+</td> <td>no</td> <td>2</td> <td></td> <td> <div>A so-far healthy instance will be marked unhealthy after this many consecutive failures.</div> </td> </tr> </table>   <h2 id="examples">Examples</h2>  <pre data-language="YAML">- name: Create Minimum HealthCheck
+  gcp_healthcheck:
+    service_account_email: "{{ service_account_email }}"
+    credentials_file: "{{ credentials_file }}"
+    project_id: "{{ project_id }}"
+    healthcheck_name: my-healthcheck
+    healthcheck_type: HTTP
+    state: present
+- name: Create HTTP HealthCheck
+  gcp_healthcheck:
+    service_account_email: "{{ service_account_email }}"
+    credentials_file: "{{ credentials_file }}"
+    project_id: "{{ project_id }}"
+    healthcheck_name: my-healthcheck
+    healthcheck_type: HTTP
+    host: my-host
+    request_path: /hc
+    check_interval: 10
+    timeout: 30
+    unhealthy_threshhold: 2
+    healthy_threshhold: 1
+    state: present
+- name: Create HTTPS HealthCheck
+  gcp_healthcheck:
+    service_account_email: "{{ service_account_email }}"
+    credentials_file: "{{ credentials_file }}"
+    project_id: "{{ project_id }}"
+    healthcheck_name: "{{ https_healthcheck }}"
+    healthcheck_type: HTTPS
+    host_header: my-host
+    request_path: /hc
+    check_interval: 5
+    timeout: 5
+    unhealthy_threshold: 2
+    healthy_threshold: 1
+    state: present
+</pre>    <h2 id="return-values">Return Values</h2> <p>Common return values are documented here <a class="reference internal" href="../common_return_values/"><span class="doc">Return Values</span></a>, the following are the fields unique to this module:</p> <table> <tr> <th class="head">name</th> <th class="head">description</th> <th class="head">returned</th> <th class="head">type</th> <th class="head">sample</th> </tr> <tr> <td>healthcheck_name</td> <td> <div>Name of the Healthcheck</div> </td> <td align="center">Always</td> <td align="center">str</td> <td align="center">my-url-map</td> </tr> <tr> <td>healthcheck_type</td> <td> <div>Type of the Healthcheck</div> </td> <td align="center">Always</td> <td align="center">str</td> <td align="center">HTTP</td> </tr> <tr> <td>state</td> <td> <div>state of the Healthcheck</div> </td> <td align="center">Always.</td> <td align="center">str</td> <td align="center">present</td> </tr> <tr> <td>healthcheck</td> <td> <div>GCP Healthcheck dictionary</div> </td> <td align="center">Always. Refer to GCP documentation for detailed field descriptions.</td> <td align="center">dict</td> <td align="center">{'port': 443, 'requestPath': '/foo', 'name': 'my-hc'}</td> </tr> </table>   <h2 id="notes">Notes</h2> <div class="admonition note"> <p class="first admonition-title">Note</p> <ul class="last simple"> <li>Only supports HTTP and HTTPS Healthchecks currently.</li> </ul> </div>  <h3 id="status">Status</h3> <p>This module is flagged as <strong>preview</strong> which means that it is not guaranteed to have a backwards compatible interface.</p> <p>For help in developing on modules, should you be so inclined, please read <a class="reference internal" href="https://docs.ansible.com/ansible/latest/community.html" target="_blank"><span class="doc">Community Information &amp; Contributing</span></a>, <a class="reference internal" href="../dev_guide/testing/"><span class="doc">Testing Ansible</span></a> and <a class="reference internal" href="../dev_guide/developing_modules/"><span class="doc">Developing Modules</span></a>.</p>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2012–2017 Michael DeHaan<br>© 2017 Red Hat, Inc.<br>Licensed under the GNU General Public License version 3.<br>
+    <a href="https://docs.ansible.com/ansible/latest/gcp_healthcheck_module.html" class="_attribution-link" target="_blank">https://docs.ansible.com/ansible/latest/gcp_healthcheck_module.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

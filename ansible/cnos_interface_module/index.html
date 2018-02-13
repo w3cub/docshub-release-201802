@@ -1,0 +1,561 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Cnos_interface - Ansible - W3cubDocs</title>
+  
+  <meta name="description" content=" New in version 2.3. ">
+  <meta name="keywords" content="cnos, interface, -, manage, configuration, on, devices, running, lenovo, ansible">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/ansible/cnos_interface_module/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/ansible.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/ansible/" class="_nav-link" title="" style="margin-left:0;">Ansible</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _sphinx">
+				
+<h1 id="cnos-interface">cnos_interface - Manage interface configuration on devices running Lenovo CNOS</h1> <div class="versionadded" id="cnos-interface-manage-interface-configuration-on-devices-running-lenovo-cnos"> <p><span class="versionmodified">New in version 2.3.</span></p> </div>  <ul class="simple"> <li><a class="reference internal" href="#synopsis" id="id1">Synopsis</a></li> <li><a class="reference internal" href="#options" id="id2">Options</a></li> <li><a class="reference internal" href="#examples" id="id3">Examples</a></li> <li>
+<a class="reference internal" href="#return-values" id="id4">Return Values</a><ul> <li><a class="reference internal" href="#status" id="id5">Status</a></li> </ul> </li> </ul>   <h2 id="synopsis">Synopsis</h2> <ul class="simple"> <li>This module allows you to work with interface related configurations. The operators used are overloaded to ensure control over switch interface configurations. Apart from the regular device connection related attributes, there are seven interface arguments that will perform further configurations. They are interfaceArg1, interfaceArg2, interfaceArg3, interfaceArg4, interfaceArg5, interfaceArg6, and interfaceArg7. For more details on how to use these arguments, see [Overloaded Variables]. Interface configurations are taken care at six contexts in a regular CLI. They are 1. Interface Name - Configurations 2. Ethernet Interface - Configurations 3. Loopback Interface Configurations 4. Management Interface Configurations 5. Port Aggregation - Configurations 6. VLAN Configurations This module uses SSH to manage network device configuration. The results of the operation will be placed in a directory named ‘results’ that must be created by the user in their local directory to where the playbook is run. For more information about this module from Lenovo and customizing it usage for your use cases, please visit <a class="reference external" href="http://systemx.lenovofiles.com/help/index.jsp?topic=%2Fcom.lenovo.switchmgt.ansible.doc%2Fcnos_interface.html" target="_blank">http://systemx.lenovofiles.com/help/index.jsp?topic=%2Fcom.lenovo.switchmgt.ansible.doc%2Fcnos_interface.html</a>
+</li> </ul>   <h2 id="options">Options</h2> <table> <tr> <th class="head">parameter</th> <th class="head">required</th> <th class="head">default</th> <th class="head">choices</th> <th class="head">comments</th> </tr> <tr> <td>deviceType<br><div style="font-size: small;">(added in 2.3)</div>
+</td> <td>yes</td> <td></td> <td><ul>
+<li>g8272_cnos</li>
+<li>g8296_cnos</li>
+<li>g8332_cnos</li>
+<li>NE1072T</li>
+<li>NE1032</li>
+<li>NE1032T</li>
+<li>NE10032</li>
+<li>NE2572</li>
+</ul></td> <td> <div>This specifies the type of device where the method is executed. The choices NE1072T,NE1032,NE1032T,NE10032, NE2572 are added since version 2.4</div> </td> </tr> <tr> <td>enablePassword<br><div style="font-size: small;">(added in 2.3)</div>
+</td> <td>no</td> <td></td> <td></td> <td> <div>Configures the password used to enter Global Configuration command mode on the switch. If the switch does not request this password, the parameter is ignored.While generally the value should come from the inventory file, you can also specify it as a variable. This parameter is optional. If it is not specified, no default value will be used.</div> </td> </tr> <tr> <td>host<br><div style="font-size: small;">(added in 2.3)</div>
+</td> <td>yes</td> <td></td> <td></td> <td> <div>This is the variable used to search the hosts file at /etc/ansible/hosts and identify the IP address of the device on which the template is going to be applied. Usually the Ansible keyword {{ inventory_hostname }} is specified in the playbook as an abstraction of the group of network elements that need to be configured.</div> </td> </tr> <tr> <td>interfaceArg1<br>
+</td> <td>yes</td> <td></td> <td><ul>
+<li>aggregation-group</li>
+<li>bfd</li>
+<li>bridgeport</li>
+<li>description</li>
+<li>duplex</li>
+<li>flowcontrol</li>
+<li>ip</li>
+<li>ipv6</li>
+<li>lacp</li>
+<li>lldp</li>
+<li>load-interval</li>
+<li>mac</li>
+<li>mac-address</li>
+<li>mac-learn</li>
+<li>microburst-detection</li>
+<li>mtu</li>
+<li>service</li>
+<li>service-policy</li>
+<li>shutdown</li>
+<li>snmp</li>
+<li>spanning-tree</li>
+<li>speed</li>
+<li>storm-control</li>
+<li>vlan</li>
+<li>vrrp</li>
+<li>port-aggregation</li>
+</ul></td> <td> <div>This is an overloaded interface first argument. Usage of this argument can be found is the User Guide referenced above.</div> </td> </tr> <tr> <td>interfaceArg2<br>
+</td> <td>no</td> <td></td> <td><ul>
+<li>aggregation-group number</li>
+<li>access or mode or trunk</li>
+<li>description</li>
+<li>auto or full or half</li>
+<li>receive or send</li>
+<li>port-priority</li>
+<li>suspend-individual</li>
+<li>timeout</li>
+<li>receive or transmit or trap-notification</li>
+<li>tlv-select</li>
+<li>Load interval delay in seconds</li>
+<li>counter</li>
+<li>Name for the MAC Access List</li>
+<li>mac-address in HHHH.HHHH.HHHH format</li>
+<li>THRESHOLD Value in unit of buffer cell</li>
+<li>&lt;64-9216&gt; MTU in bytes-&lt;64-9216&gt; for L2 packet</li>
+<li>&lt;576-9216&gt; for L3 IPv4 packet</li>
+<li>&lt;1280-9216&gt; for L3 IPv6 packet</li>
+<li>enter the instance id</li>
+<li>input or output</li>
+<li>copp-system-policy</li>
+<li>type</li>
+<li>1000 or 10000 or 40000 or auto</li>
+<li>broadcast or multicast or unicast</li>
+<li>disable or enable or egress-only</li>
+<li>Virtual router identifier</li>
+<li>destination-ip or destination-mac or destination-port or source-dest-ip or source-dest-mac or source-dest-port or source-interface or source-ip or source-mac or source-port</li>
+</ul></td> <td> <div>This is an overloaded interface second argument. Usage of this argument can be found is the User Guide referenced above.</div> </td> </tr> <tr> <td>interfaceArg3<br>
+</td> <td>no</td> <td></td> <td><ul>
+<li>active or on or passive</li>
+<li>on or off</li>
+<li>LACP port priority</li>
+<li>long or short</li>
+<li>link-aggregation or mac-phy-status or management-address or max-frame-size or port-description or port-protocol-vlan or port-vlan or power-mdi or protocol-identity or system-capabilities or system-description or system-name or vid-management or vlan-name</li>
+<li>counter for load interval</li>
+<li>policy input name</li>
+<li>all or Copp class name to attach</li>
+<li>qos</li>
+<li>queueing</li>
+<li>Enter the allowed traffic level</li>
+<li>ipv6</li>
+</ul></td> <td> <div>This is an overloaded interface third argument. Usage of this argument can be found is the User Guide referenced above.</div> </td> </tr> <tr> <td>interfaceArg4<br>
+</td> <td>no</td> <td></td> <td><ul>
+<li>key-chain</li>
+<li>key-id</li>
+<li>keyed-md5 or keyed-sha1 or meticulous-keyed-md5 or meticulous-keyed-sha1 or simple</li>
+<li>Interval value in milliseconds</li>
+<li>Destination IP (Both IPV4 and IPV6)</li>
+<li>in or out</li>
+<li>MAC address</li>
+<li>Time-out value in seconds</li>
+<li>class-id</li>
+<li>request</li>
+<li>Specify the IPv4 address</li>
+<li>OSPF area ID as a decimal value</li>
+<li>OSPF area ID in IP address format</li>
+<li>anycast or secondary</li>
+<li>ethernet</li>
+<li>vlan</li>
+<li>MAC (hardware) address in HHHH.HHHH.HHHH format</li>
+<li>Load interval delay in seconds</li>
+<li>Specify policy input name</li>
+<li>input or output</li>
+<li>cost</li>
+<li>port-priority</li>
+<li>BFD minimum receive interval</li>
+<li>source-interface</li>
+</ul></td> <td> <div>This is an overloaded interface fourth argument. Usage of this argument can be found is the User Guide referenced above.</div> </td> </tr> <tr> <td>interfaceArg5<br>
+</td> <td>no</td> <td></td> <td><ul>
+<li>name of key-chain</li>
+<li>key-Id Value</li>
+<li>key-chain</li>
+<li>key-id</li>
+<li>BFD minimum receive interval</li>
+<li>Value of Hello Multiplier</li>
+<li>admin-down or multihop or non-persistent</li>
+<li>Vendor class-identifier name</li>
+<li>bootfile-name or host-name or log-server or ntp-server or tftp-server-name</li>
+<li>Slot/chassis number</li>
+<li>Vlan interface</li>
+<li>Specify policy input name</li>
+<li>Port path cost or auto</li>
+<li>Port priority increments of 32</li>
+</ul></td> <td> <div>This is an overloaded interface fifth argument. Usage of this argument can be found is the User Guide referenced above.</div> </td> </tr> <tr> <td>interfaceArg6<br>
+</td> <td>no</td> <td></td> <td><ul>
+<li>Authentication key string</li>
+<li>name of key-chain</li>
+<li>key-Id Value</li>
+<li>Value of Hello Multiplier</li>
+<li>admin-down or non-persistent</li>
+</ul></td> <td> <div>This is an overloaded interface sixth argument. Usage of this argument can be found is the User Guide referenced above.</div> </td> </tr> <tr> <td>interfaceArg7<br>
+</td> <td>no</td> <td></td> <td><ul>
+<li>Authentication key string</li>
+<li>admin-down</li>
+</ul></td> <td> <div>This is an overloaded interface seventh argument. Usage of this argument can be found is the User Guide referenced above.</div> </td> </tr> <tr> <td>interfaceOption<br>
+</td> <td>yes</td> <td></td> <td><ul>
+<li>None</li>
+<li>ethernet</li>
+<li>loopback</li>
+<li>mgmt</li>
+<li>port-aggregation</li>
+<li>vlan</li>
+</ul></td> <td> <div>This specifies the attribute you specify subsequent to interface command</div> </td> </tr> <tr> <td>interfaceRange<br>
+</td> <td>yes</td> <td></td> <td></td> <td> <div>This specifies the interface range in which the port aggregation is envisaged</div> </td> </tr> <tr> <td>outputfile<br><div style="font-size: small;">(added in 2.3)</div>
+</td> <td>yes</td> <td></td> <td></td> <td> <div>This specifies the file path where the output of each command execution is saved. Each command that is specified in the merged template file and each response from the device are saved here. Usually the location is the results folder, but you can choose another location based on your write permission.</div> </td> </tr> <tr> <td>password<br><div style="font-size: small;">(added in 2.3)</div>
+</td> <td>yes</td> <td></td> <td></td> <td> <div>Configures the password used to authenticate the connection to the remote device. The value of the password parameter is used to authenticate the SSH session. While generally the value should come from the inventory file, you can also specify it as a variable. This parameter is optional. If it is not specified, no default value will be used.</div> </td> </tr> <tr> <td>username<br><div style="font-size: small;">(added in 2.3)</div>
+</td> <td>yes</td> <td></td> <td></td> <td> <div>Configures the username used to authenticate the connection to the remote device. The value of the username parameter is used to authenticate the SSH session. While generally the value should come from the inventory file, you can also specify it as a variable. This parameter is optional. If it is not specified, no default value will be used.</div> </td> </tr> </table>   <h2 id="examples">Examples</h2>  <pre data-language="YAML">Tasks : The following are examples of using the module cnos_interface. These are written in the main.yml file of the tasks directory.
+---
+- name: Test Interface Ethernet - aggregation-group
+  cnos_interface:
+      host: "{{ inventory_hostname }}"
+      username: "{{ hostvars[inventory_hostname]['username'] }}"
+      password: "{{ hostvars[inventory_hostname]['password'] }}"
+      deviceType: "{{ hostvars[inventory_hostname]['deviceType'] }}"
+      enablePassword: "{{ hostvars[inventory_hostname]['enablePassword'] }}"
+      outputfile: "./results/test_interface_{{ inventory_hostname }}_output.txt"
+      interfaceOption: 'ethernet'
+      interfaceRange: 1
+      interfaceArg1: "aggregation-group"
+      interfaceArg2: 33
+      interfaceArg3: "on"
+
+- name: Test Interface Ethernet - bridge-port
+  cnos_interface:
+      host: "{{ inventory_hostname }}"
+      username: "{{ hostvars[inventory_hostname]['username'] }}"
+      password: "{{ hostvars[inventory_hostname]['password'] }}"
+      deviceType: "{{ hostvars[inventory_hostname]['deviceType'] }}"
+      enablePassword: "{{ hostvars[inventory_hostname]['enablePassword'] }}"
+      outputfile: "./results/test_interface_{{ inventory_hostname }}_output.txt"
+      interfaceOption: 'ethernet'
+      interfaceRange: 33
+      interfaceArg1: "bridge-port"
+      interfaceArg2: "access"
+      interfaceArg3: 33
+
+- name: Test Interface Ethernet - bridgeport mode
+  cnos_interface:
+      host: "{{ inventory_hostname }}"
+      username: "{{ hostvars[inventory_hostname]['username'] }}"
+      password: "{{ hostvars[inventory_hostname]['password'] }}"
+      deviceType: "{{ hostvars[inventory_hostname]['deviceType'] }}"
+      enablePassword: "{{ hostvars[inventory_hostname]['enablePassword'] }}"
+      outputfile: "./results/test_interface_{{ inventory_hostname }}_output.txt"
+      interfaceOption: 'ethernet'
+      interfaceRange: 33
+      interfaceArg1: "bridge-port"
+      interfaceArg2: "mode"
+      interfaceArg3: "access"
+
+- name: Test Interface Ethernet  - Description
+  cnos_interface:
+      host: "{{ inventory_hostname }}"
+      username: "{{ hostvars[inventory_hostname]['username'] }}"
+      password: "{{ hostvars[inventory_hostname]['password'] }}"
+      deviceType: "{{ hostvars[inventory_hostname]['deviceType'] }}"
+      enablePassword: "{{ hostvars[inventory_hostname]['enablePassword'] }}"
+      outputfile: "./results/test_interface_{{ inventory_hostname }}_output.txt"
+      interfaceOption: 'ethernet'
+      interfaceRange: 33
+      interfaceArg1: "description"
+      interfaceArg2: "Hentammoo "
+
+- name: Test Interface Ethernet - Duplex
+  cnos_interface:
+      host: "{{ inventory_hostname }}"
+      username: "{{ hostvars[inventory_hostname]['username'] }}"
+      password: "{{ hostvars[inventory_hostname]['password'] }}"
+      deviceType: "{{ hostvars[inventory_hostname]['deviceType'] }}"
+      enablePassword: "{{ hostvars[inventory_hostname]['enablePassword'] }}"
+      outputfile: "./results/test_interface_{{ inventory_hostname }}_output.txt"
+      interfaceOption: 'ethernet'
+      interfaceRange: 1
+      interfaceArg1: "duplex"
+      interfaceArg2: "auto"
+
+- name: Test Interface Ethernet - flowcontrol
+  cnos_interface:
+      host: "{{ inventory_hostname }}"
+      username: "{{ hostvars[inventory_hostname]['username'] }}"
+      password: "{{ hostvars[inventory_hostname]['password'] }}"
+      deviceType: "{{ hostvars[inventory_hostname]['deviceType'] }}"
+      enablePassword: "{{ hostvars[inventory_hostname]['enablePassword'] }}"
+      outputfile: "./results/test_interface_{{ inventory_hostname }}_output.txt"
+      interfaceOption: 'ethernet'
+      interfaceRange: 33
+      interfaceArg1: "flowcontrol"
+      interfaceArg2: "send"
+      interfaceArg3: "off"
+
+- name: Test Interface Ethernet - lacp
+  cnos_interface:
+      host: "{{ inventory_hostname }}"
+      username: "{{ hostvars[inventory_hostname]['username'] }}"
+      password: "{{ hostvars[inventory_hostname]['password'] }}"
+      deviceType: "{{ hostvars[inventory_hostname]['deviceType'] }}"
+      enablePassword: "{{ hostvars[inventory_hostname]['enablePassword'] }}"
+      outputfile: "./results/test_interface_{{ inventory_hostname }}_output.txt"
+      interfaceOption: 'ethernet'
+      interfaceRange: 33
+      interfaceArg1: "lacp"
+      interfaceArg2: "port-priority"
+      interfaceArg3: 33
+
+- name: Test Interface Ethernet  - lldp
+  cnos_interface:
+      host: "{{ inventory_hostname }}"
+      username: "{{ hostvars[inventory_hostname]['username'] }}"
+      password: "{{ hostvars[inventory_hostname]['password'] }}"
+      deviceType: "{{ hostvars[inventory_hostname]['deviceType'] }}"
+      enablePassword: "{{ hostvars[inventory_hostname]['enablePassword'] }}"
+      outputfile: "./results/test_interface_{{ inventory_hostname }}_output.txt"
+      interfaceOption: 'ethernet'
+      interfaceRange: 33
+      interfaceArg1: "lldp"
+      interfaceArg2: "tlv-select"
+      interfaceArg3: "max-frame-size"
+
+- name: Test Interface Ethernet - load-interval
+  cnos_interface:
+      host: "{{ inventory_hostname }}"
+      username: "{{ hostvars[inventory_hostname]['username'] }}"
+      password: "{{ hostvars[inventory_hostname]['password'] }}"
+      deviceType: "{{ hostvars[inventory_hostname]['deviceType'] }}"
+      enablePassword: "{{ hostvars[inventory_hostname]['enablePassword'] }}"
+      outputfile: "./results/test_interface_{{ inventory_hostname }}_output.txt"
+      interfaceOption: 'ethernet'
+      interfaceRange: 33
+      interfaceArg1: "load-interval"
+      interfaceArg2: "counter"
+      interfaceArg3: 2
+      interfaceArg4: 33
+
+- name: Test Interface Ethernet - mac
+  cnos_interface:
+      host: "{{ inventory_hostname }}"
+      username: "{{ hostvars[inventory_hostname]['username'] }}"
+      password: "{{ hostvars[inventory_hostname]['password'] }}"
+      deviceType: "{{ hostvars[inventory_hostname]['deviceType'] }}"
+      enablePassword: "{{ hostvars[inventory_hostname]['enablePassword'] }}"
+      outputfile: "./results/test_interface_{{ inventory_hostname }}_output.txt"
+      interfaceOption: 'ethernet'
+      interfaceRange: 33
+      interfaceArg1: "mac"
+      interfaceArg2: "copp-system-acl-vlag-hc"
+
+- name: Test Interface Ethernet - microburst-detection
+  cnos_interface:
+      host: "{{ inventory_hostname }}"
+      username: "{{ hostvars[inventory_hostname]['username'] }}"
+      password: "{{ hostvars[inventory_hostname]['password'] }}"
+      deviceType: "{{ hostvars[inventory_hostname]['deviceType'] }}"
+      enablePassword: "{{ hostvars[inventory_hostname]['enablePassword'] }}"
+      outputfile: "./results/test_interface_{{ inventory_hostname }}_output.txt"
+      interfaceOption: 'ethernet'
+      interfaceRange: 33
+      interfaceArg1: "microburst-detection"
+      interfaceArg2: 25
+
+- name: Test Interface Ethernet  - mtu
+  cnos_interface:
+      host: "{{ inventory_hostname }}"
+      username: "{{ hostvars[inventory_hostname]['username'] }}"
+      password: "{{ hostvars[inventory_hostname]['password'] }}"
+      deviceType: "{{ hostvars[inventory_hostname]['deviceType'] }}"
+      enablePassword: "{{ hostvars[inventory_hostname]['enablePassword'] }}"
+      outputfile: "./results/test_interface_{{ inventory_hostname }}_output.txt"
+      interfaceOption: 'ethernet'
+      interfaceRange: 33
+      interfaceArg1: "mtu"
+      interfaceArg2: 66
+
+- name: Test Interface Ethernet - service-policy
+  cnos_interface:
+      host: "{{ inventory_hostname }}"
+      username: "{{ hostvars[inventory_hostname]['username'] }}"
+      password: "{{ hostvars[inventory_hostname]['password'] }}"
+      deviceType: "{{ hostvars[inventory_hostname]['deviceType'] }}"
+      enablePassword: "{{ hostvars[inventory_hostname]['enablePassword'] }}"
+      outputfile: "./results/test_interface_{{ inventory_hostname }}_output.txt"
+      interfaceOption: 'ethernet'
+      interfaceRange: 33
+      interfaceArg1: "service-policy"
+      interfaceArg2: "input"
+      interfaceArg3: "Anil"
+
+- name: Test Interface Ethernet - speed
+  cnos_interface:
+      host: "{{ inventory_hostname }}"
+      username: "{{ hostvars[inventory_hostname]['username'] }}"
+      password: "{{ hostvars[inventory_hostname]['password'] }}"
+      deviceType: "{{ hostvars[inventory_hostname]['deviceType'] }}"
+      enablePassword: "{{ hostvars[inventory_hostname]['enablePassword'] }}"
+      outputfile: "./results/test_interface_{{ inventory_hostname }}_output.txt"
+      interfaceOption: 'ethernet'
+      interfaceRange: 1
+      interfaceArg1: "speed"
+      interfaceArg2: "auto"
+
+- name: Test Interface Ethernet - storm
+  cnos_interface:
+      host: "{{ inventory_hostname }}"
+      username: "{{ hostvars[inventory_hostname]['username'] }}"
+      password: "{{ hostvars[inventory_hostname]['password'] }}"
+      deviceType: "{{ hostvars[inventory_hostname]['deviceType'] }}"
+      enablePassword: "{{ hostvars[inventory_hostname]['enablePassword'] }}"
+      outputfile: "./results/test_interface_{{ inventory_hostname }}_output.txt"
+      interfaceOption: 'ethernet'
+      interfaceRange: 33
+      interfaceArg1: "storm-control"
+      interfaceArg2: "broadcast"
+      interfaceArg3: 12.5
+
+- name: Test Interface Ethernet - vlan
+  cnos_interface:
+      host: "{{ inventory_hostname }}"
+      username: "{{ hostvars[inventory_hostname]['username'] }}"
+      password: "{{ hostvars[inventory_hostname]['password'] }}"
+      deviceType: "{{ hostvars[inventory_hostname]['deviceType'] }}"
+      enablePassword: "{{ hostvars[inventory_hostname]['enablePassword'] }}"
+      outputfile: "./results/test_interface_{{ inventory_hostname }}_output.txt"
+      interfaceOption: 'ethernet'
+      interfaceRange: 33
+      interfaceArg1: "vlan"
+      interfaceArg2: "disable"
+
+- name: Test Interface Ethernet - vrrp
+  cnos_interface:
+      host: "{{ inventory_hostname }}"
+      username: "{{ hostvars[inventory_hostname]['username'] }}"
+      password: "{{ hostvars[inventory_hostname]['password'] }}"
+      deviceType: "{{ hostvars[inventory_hostname]['deviceType'] }}"
+      enablePassword: "{{ hostvars[inventory_hostname]['enablePassword'] }}"
+      outputfile: "./results/test_interface_{{ inventory_hostname }}_output.txt"
+      interfaceOption: 'ethernet'
+      interfaceRange: 33
+      interfaceArg1: "vrrp"
+      interfaceArg2: 33
+
+- name: Test Interface Ethernet - spanning tree1
+  cnos_interface:
+      host: "{{ inventory_hostname }}"
+      username: "{{ hostvars[inventory_hostname]['username'] }}"
+      password: "{{ hostvars[inventory_hostname]['password'] }}"
+      deviceType: "{{ hostvars[inventory_hostname]['deviceType'] }}"
+      enablePassword: "{{ hostvars[inventory_hostname]['enablePassword'] }}"
+      outputfile: "./results/test_interface_{{ inventory_hostname }}_output.txt"
+      interfaceOption: 'ethernet'
+      interfaceRange: 33
+      interfaceArg1: "spanning-tree"
+      interfaceArg2: "bpduguard"
+      interfaceArg3: "enable"
+
+- name: Test Interface Ethernet - spanning tree 2
+  cnos_interface:
+      host: "{{ inventory_hostname }}"
+      username: "{{ hostvars[inventory_hostname]['username'] }}"
+      password: "{{ hostvars[inventory_hostname]['password'] }}"
+      deviceType: "{{ hostvars[inventory_hostname]['deviceType'] }}"
+      enablePassword: "{{ hostvars[inventory_hostname]['enablePassword'] }}"
+      outputfile: "./results/test_interface_{{ inventory_hostname }}_output.txt"
+      interfaceOption: 'ethernet'
+      interfaceRange: 33
+      interfaceArg1: "spanning-tree"
+      interfaceArg2: "mst"
+      interfaceArg3: "33-35"
+      interfaceArg4: "cost"
+      interfaceArg5: 33
+
+- name: Test Interface Ethernet - ip1
+  cnos_interface:
+      host: "{{ inventory_hostname }}"
+      username: "{{ hostvars[inventory_hostname]['username'] }}"
+      password: "{{ hostvars[inventory_hostname]['password'] }}"
+      deviceType: "{{ hostvars[inventory_hostname]['deviceType'] }}"
+      enablePassword: "{{ hostvars[inventory_hostname]['enablePassword'] }}"
+      outputfile: "./results/test_interface_{{ inventory_hostname }}_output.txt"
+      interfaceOption: 'ethernet'
+      interfaceRange: 33
+      interfaceArg1: "ip"
+      interfaceArg2: "access-group"
+      interfaceArg3: "anil"
+      interfaceArg4: "in"
+
+- name: Test Interface Ethernet - ip2
+  cnos_interface:
+      host: "{{ inventory_hostname }}"
+      username: "{{ hostvars[inventory_hostname]['username'] }}"
+      password: "{{ hostvars[inventory_hostname]['password'] }}"
+      deviceType: "{{ hostvars[inventory_hostname]['deviceType'] }}"
+      enablePassword: "{{ hostvars[inventory_hostname]['enablePassword'] }}"
+      outputfile: "./results/test_interface_{{ inventory_hostname }}_output.txt"
+      interfaceOption: 'ethernet'
+      interfaceRange: 33
+      interfaceArg1: "ip"
+      interfaceArg2: "port"
+      interfaceArg3: "anil"
+
+- name: Test Interface Ethernet - bfd
+  cnos_interface:
+      host: "{{ inventory_hostname }}"
+      username: "{{ hostvars[inventory_hostname]['username'] }}"
+      password: "{{ hostvars[inventory_hostname]['password'] }}"
+      deviceType: "{{ hostvars[inventory_hostname]['deviceType'] }}"
+      enablePassword: "{{ hostvars[inventory_hostname]['enablePassword'] }}"
+      outputfile: "./results/test_interface_{{ inventory_hostname }}_output.txt"
+      interfaceOption: 'ethernet'
+      interfaceRange: 33
+      interfaceArg1: "bfd"
+      interfaceArg2: "interval"
+      interfaceArg3: 55
+      interfaceArg4: 55
+      interfaceArg5: 33
+
+- name: Test Interface Ethernet - bfd
+  cnos_interface:
+      host: "{{ inventory_hostname }}"
+      username: "{{ hostvars[inventory_hostname]['username'] }}"
+      password: "{{ hostvars[inventory_hostname]['password'] }}"
+      deviceType: "{{ hostvars[inventory_hostname]['deviceType'] }}"
+      enablePassword: "{{ hostvars[inventory_hostname]['enablePassword'] }}"
+      outputfile: "./results/test_interface_{{ inventory_hostname }}_output.txt"
+      interfaceOption: 'ethernet'
+      interfaceRange: 33
+      interfaceArg1: "bfd"
+      interfaceArg2: "ipv4"
+      interfaceArg3: "authentication"
+      interfaceArg4: "meticulous-keyed-md5"
+      interfaceArg5: "key-chain"
+      interfaceArg6: "mychain"
+</pre>    <h2 id="return-values">Return Values</h2> <p>Common return values are documented here <a class="reference internal" href="../common_return_values/"><span class="doc">Return Values</span></a>, the following are the fields unique to this module:</p> <table> <tr> <th class="head">name</th> <th class="head">description</th> <th class="head">returned</th> <th class="head">type</th> <th class="head">sample</th> </tr> <tr> <td>msg</td> <td> <div>Success or failure message</div> </td> <td align="center">always</td> <td align="center">string</td> <td align="center">Interface configurations accomplished.</td> </tr> </table>  <h3 id="status">Status</h3> <p>This module is flagged as <strong>preview</strong> which means that it is not guaranteed to have a backwards compatible interface.</p> <p>For help in developing on modules, should you be so inclined, please read <a class="reference internal" href="https://docs.ansible.com/ansible/latest/community.html" target="_blank"><span class="doc">Community Information &amp; Contributing</span></a>, <a class="reference internal" href="../dev_guide/testing/"><span class="doc">Testing Ansible</span></a> and <a class="reference internal" href="../dev_guide/developing_modules/"><span class="doc">Developing Modules</span></a>.</p>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2012–2017 Michael DeHaan<br>© 2017 Red Hat, Inc.<br>Licensed under the GNU General Public License version 3.<br>
+    <a href="https://docs.ansible.com/ansible/latest/cnos_interface_module.html" class="_attribution-link" target="_blank">https://docs.ansible.com/ansible/latest/cnos_interface_module.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

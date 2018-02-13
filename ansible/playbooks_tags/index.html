@@ -1,0 +1,142 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Tags - Ansible - W3cubDocs</title>
+  
+  <meta name="description" content=" If you have a large playbook it may become useful to be able to run a specific part of the configuration without running the whole playbook. ">
+  <meta name="keywords" content="tags, -, ansible">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/ansible/playbooks_tags/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/ansible.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/ansible/" class="_nav-link" title="" style="margin-left:0;">Ansible</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _sphinx">
+				
+<h1 id="tags">Tags</h1> <p>If you have a large playbook it may become useful to be able to run a specific part of the configuration without running the whole playbook.</p> <p>Both plays and tasks support a “tags:” attribute for this reason. You can <strong>ONLY</strong> filter tasks based on tags from the command line with <code>--tags</code> or <code>--skip-tags</code>. Adding “tags:” in any part of a play (including roles) adds those tags to the contained tasks.</p> <p>Example:</p> <pre data-language="YAML">tasks:
+
+    - yum: name={{ item }} state=installed
+      with_items:
+         - httpd
+         - memcached
+      tags:
+         - packages
+
+    - template: src=templates/src.j2 dest=/etc/foo.conf
+      tags:
+         - configuration
+</pre> <p>If you wanted to just run the “configuration” and “packages” part of a very long playbook, you could do this:</p> <pre data-language="YAML">ansible-playbook example.yml --tags "configuration,packages"
+</pre> <p>On the other hand, if you want to run a playbook <em>without</em> certain tasks, you could do this:</p> <pre data-language="YAML">ansible-playbook example.yml --skip-tags "notification"
+</pre>  <h2 id="id1">Tag Reuse</h2> <p id="tag-reuse">You can apply the same tag name to more than one task, in the same file or included files. This will run all tasks with that tag.</p> <p>Example:</p> <pre data-language="YAML">---
+# file: roles/common/tasks/main.yml
+
+- name: be sure ntp is installed
+  yum: name=ntp state=installed
+  tags: ntp
+
+- name: be sure ntp is configured
+  template: src=ntp.conf.j2 dest=/etc/ntp.conf
+  notify:
+    - restart ntpd
+  tags: ntp
+
+- name: be sure ntpd is running and enabled
+  service: name=ntpd state=started enabled=yes
+  tags: ntp
+</pre>   <h2 id="id2">Tag Inheritance</h2> <p id="tag-inheritance">You can apply tags to more than tasks, but they ONLY affect the tasks themselves. Applying tags anywhere else is just a convenience so you don’t have to write it on every task:</p> <pre data-language="YAML">- hosts: all
+  tags:
+    - bar
+  tasks:
+    ...
+
+- hosts: all
+  tags: ['foo']
+  tasks:
+    ...
+</pre> <p>You may also apply tags to roles:</p> <pre data-language="YAML">roles:
+  - { role: webserver, port: 5000, tags: [ 'web', 'foo' ] }
+</pre> <p>And import/include statements:</p> <pre data-language="YAML">- import_tasks: foo.yml
+  tags: [web,foo]
+</pre> <p>or:</p> <pre data-language="YAML">- include_tasks: foo.yml
+  tags: [web,foo]
+</pre> <p>All of these apply the specified tags to EACH task inside the play, included file, or role, so that these tasks can be selectively run when the playbook is invoked with the corresponding tags.</p> <p>Tags are inherited <em>down</em> the dependency chain. In order for tags to be applied to a role and all its dependencies, the tag should be applied to the role, not to all the tasks within a role.</p> <p>You can see which tags are applied to tasks by running <code>ansible-playbook</code> with the <code>--list-tasks</code> option. You can display all tags using the <code>--list-tags</code> option.</p>   <h2 id="id3">Special Tags</h2> <p id="special-tags">There is a special <code>always</code> tag that will always run a task, unless specifically skipped (<code>--skip-tags always</code>)</p> <p>Example:</p> <pre data-language="YAML">tasks:
+
+    - debug: msg="Always runs"
+      tags:
+        - always
+
+    - debug: msg="runs when you use tag1"
+      tags:
+        - tag1
+</pre> <p>There are another 3 special keywords for tags, <code>tagged</code>, <code>untagged</code> and <code>all</code>, which run only tagged, only untagged and all tasks respectively.</p> <p>By default ansible runs as if <code>--tags all</code> had been specified.</p> <div class="admonition seealso"> <p class="first admonition-title">See also</p> <dl class="last docutils"> <dt><a class="reference internal" href="../playbooks/"><span class="doc">Playbooks</span></a></dt> <dd>An introduction to playbooks</dd> <dt><a class="reference internal" href="../playbooks_reuse_roles/"><span class="doc">Roles</span></a></dt> <dd>Playbook organization by roles</dd> <dt><a class="reference external" href="http://groups.google.com/group/ansible-devel" target="_blank">User Mailing List</a></dt> <dd>Have a question? Stop by the google group!</dd> <dt><a class="reference external" href="http://irc.freenode.net" target="_blank">irc.freenode.net</a></dt> <dd>#ansible IRC chat channel</dd> </dl> </div>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2012–2017 Michael DeHaan<br>© 2017 Red Hat, Inc.<br>Licensed under the GNU General Public License version 3.<br>
+    <a href="https://docs.ansible.com/ansible/latest/playbooks_tags.html" class="_attribution-link" target="_blank">https://docs.ansible.com/ansible/latest/playbooks_tags.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

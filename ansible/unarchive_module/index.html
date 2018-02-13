@@ -1,0 +1,145 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Unarchive - Ansible - W3cubDocs</title>
+  
+  <meta name="description" content=" New in version 1.4. ">
+  <meta name="keywords" content="unarchive, -, unpacks, archive, after, optionally, copying, it, from, local, machine, ansible">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/ansible/unarchive_module/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/ansible.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/ansible/" class="_nav-link" title="" style="margin-left:0;">Ansible</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _sphinx">
+				
+<h1 id="unarchive">unarchive - Unpacks an archive after (optionally) copying it from the local machine.</h1> <div class="versionadded" id="unarchive-unpacks-an-archive-after-optionally-copying-it-from-the-local-machine"> <p><span class="versionmodified">New in version 1.4.</span></p> </div>  <ul class="simple"> <li><a class="reference internal" href="#synopsis" id="id1">Synopsis</a></li> <li><a class="reference internal" href="#options" id="id2">Options</a></li> <li><a class="reference internal" href="#examples" id="id3">Examples</a></li> <li>
+<a class="reference internal" href="#notes" id="id4">Notes</a><ul> <li><a class="reference internal" href="#status" id="id5">Status</a></li> <li><a class="reference internal" href="#maintenance-info" id="id6">Maintenance Info</a></li> </ul> </li> </ul>   <h2 id="synopsis">Synopsis</h2> <ul class="simple"> <li>The <code>unarchive</code> module unpacks an archive.</li> <li>By default, it will copy the source file from the local system to the target before unpacking.</li> <li>Set <code>remote_src=yes</code> to unpack an archive which already exists on the target.</li> <li>For Windows targets, use the <a class="reference internal" href="../win_unzip_module/#win-unzip"><span class="std std-ref">win_unzip</span></a> module instead.</li> </ul>   <h2 id="options">Options</h2> <table> <tr> <th class="head">parameter</th> <th class="head">required</th> <th class="head">default</th> <th class="head">choices</th> <th class="head">comments</th> </tr> <tr> <td>attributes<br><div style="font-size: small;">(added in 2.3)</div>
+</td> <td>no</td> <td>None</td> <td></td> <td> <div>Attributes the file or directory should have. To get supported flags look at the man page for <em>chattr</em> on the target system. This string should contain the attributes in the same order as the one displayed by <em>lsattr</em>.</div> <div style="font-size: small;">aliases: attr</div> </td> </tr> <tr> <td>copy<br>
+</td> <td>no</td> <td>yes</td> <td><ul>
+<li>yes</li>
+<li>no</li>
+</ul></td> <td> <div>If true, the file is copied from local 'master' to the target machine, otherwise, the plugin will look for src archive at the target machine.</div> <div>This option has been deprecated in favor of <code>remote_src</code>.</div> <div>This option is mutually exclusive with <code>remote_src</code>.</div> </td> </tr> <tr> <td>creates<br><div style="font-size: small;">(added in 1.6)</div>
+</td> <td>no</td> <td></td> <td></td> <td> <div>A filename, when it already exists, this step will <b>not</b> be run.</div> </td> </tr> <tr> <td>decrypt<br><div style="font-size: small;">(added in 2.4)</div>
+</td> <td>no</td> <td>Yes</td> <td><ul>
+<li>yes</li>
+<li>no</li>
+</ul></td> <td> <div>This option controls the autodecryption of source files using vault.</div> </td> </tr> <tr> <td>dest<br>
+</td> <td>yes</td> <td></td> <td></td> <td> <div>Remote absolute path where the archive should be unpacked.</div> </td> </tr> <tr> <td>exclude<br><div style="font-size: small;">(added in 2.1)</div>
+</td> <td>no</td> <td></td> <td></td> <td> <div>List the directory and file entries that you would like to exclude from the unarchive action.</div> </td> </tr> <tr> <td>extra_opts<br><div style="font-size: small;">(added in 2.1)</div>
+</td> <td>no</td> <td></td> <td></td> <td> <div>Specify additional options by passing in an array.</div> </td> </tr> <tr> <td>group<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>Name of the group that should own the file/directory, as would be fed to <em>chown</em>.</div> </td> </tr> <tr> <td>keep_newer<br><div style="font-size: small;">(added in 2.1)</div>
+</td> <td>no</td> <td>no</td> <td><ul>
+<li>yes</li>
+<li>no</li>
+</ul></td> <td> <div>Do not replace existing files that are newer than files from the archive.</div> </td> </tr> <tr> <td>list_files<br><div style="font-size: small;">(added in 2.0)</div>
+</td> <td>no</td> <td>no</td> <td><ul>
+<li>yes</li>
+<li>no</li>
+</ul></td> <td> <div>If set to True, return the list of files that are contained in the tarball.</div> </td> </tr> <tr> <td>mode<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>Mode the file or directory should be. For those used to <em>/usr/bin/chmod</em> remember that modes are actually octal numbers (like 0644). Leaving off the leading zero will likely have unexpected results. As of version 1.8, the mode may be specified as a symbolic mode (for example, <code>u+rwx</code> or <code>u=rw,g=r,o=r</code>).</div> </td> </tr> <tr> <td>owner<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>Name of the user that should own the file/directory, as would be fed to <em>chown</em>.</div> </td> </tr> <tr> <td>remote_src<br><div style="font-size: small;">(added in 2.2)</div>
+</td> <td>no</td> <td>no</td> <td><ul>
+<li>yes</li>
+<li>no</li>
+</ul></td> <td> <div>Set to <code>yes</code> to indicate the archived file is already on the remote system and not local to the Ansible controller.</div> <div>This option is mutually exclusive with <code>copy</code>.</div> </td> </tr> <tr> <td>selevel<br>
+</td> <td>no</td> <td>s0</td> <td></td> <td> <div>Level part of the SELinux file context. This is the MLS/MCS attribute, sometimes known as the <code>range</code>. <code>_default</code> feature works as for <em>seuser</em>.</div> </td> </tr> <tr> <td>serole<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>Role part of SELinux file context, <code>_default</code> feature works as for <em>seuser</em>.</div> </td> </tr> <tr> <td>setype<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>Type part of SELinux file context, <code>_default</code> feature works as for <em>seuser</em>.</div> </td> </tr> <tr> <td>seuser<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>User part of SELinux file context. Will default to system policy, if applicable. If set to <code>_default</code>, it will use the <code>user</code> portion of the policy if available.</div> </td> </tr> <tr> <td>src<br>
+</td> <td>yes</td> <td></td> <td></td> <td> <div>If <code>remote_src=no</code> (default), local path to archive file to copy to the target server; can be absolute or relative. If <code>remote_src=yes</code>, path on the target server to existing archive file to unpack.</div> <div>If <code>remote_src=yes</code> and <code>src</code> contains <code>://</code>, the remote machine will download the file from the URL first. (version_added 2.0). This is only for simple cases, for full download support use the <span class="module">get_url</span> module.</div> </td> </tr> <tr> <td>unsafe_writes<br><div style="font-size: small;">(added in 2.2)</div>
+</td> <td>no</td> <td></td> <td><ul>
+<li>yes</li>
+<li>no</li>
+</ul></td> <td> <div>Normally this module uses atomic operations to prevent data corruption or inconsistent reads from the target files, sometimes systems are configured or just broken in ways that prevent this. One example are docker mounted files, they cannot be updated atomically and can only be done in an unsafe manner.</div> <div>This boolean option allows ansible to fall back to unsafe methods of updating files for those cases in which you do not have any other choice. Be aware that this is subject to race conditions and can lead to data corruption.</div> </td> </tr> <tr> <td>validate_certs<br><div style="font-size: small;">(added in 2.2)</div>
+</td> <td>no</td> <td>yes</td> <td><ul>
+<li>yes</li>
+<li>no</li>
+</ul></td> <td> <div>This only applies if using a https URL as the source of the file.</div> <div>This should only set to <code>no</code> used on personally controlled sites using self-signed certificate.</div> <div>Prior to 2.2 the code worked as if this was set to <code>yes</code>.</div> </td> </tr> </table>   <h2 id="examples">Examples</h2>  <pre data-language="YAML">- name: Extract foo.tgz into /var/lib/foo
+  unarchive:
+    src: foo.tgz
+    dest: /var/lib/foo
+
+- name: Unarchive a file that is already on the remote machine
+  unarchive:
+    src: /tmp/foo.zip
+    dest: /usr/local/bin
+    remote_src: yes
+
+- name: Unarchive a file that needs to be downloaded (added in 2.0)
+  unarchive:
+    src: https://example.com/example.zip
+    dest: /usr/local/bin
+    remote_src: yes
+</pre>    <h2 id="notes">Notes</h2> <div class="admonition note"> <p class="first admonition-title">Note</p> <ul class="last simple"> <li>Requires <code>gtar</code>/<code>unzip</code> command on target host.</li> <li>Can handle <em>.zip</em> files using <code>unzip</code> as well as <em>.tar</em>, <em>.tar.gz</em>, <em>.tar.bz2</em> and <em>.tar.xz</em> files using <code>gtar</code>.</li> <li>Uses gtar’s <code>--diff</code> arg to calculate if changed or not. If this <code>arg</code> is not supported, it will always unpack the archive.</li> <li>Existing files/directories in the destination which are not in the archive are not touched. This is the same behavior as a normal archive extraction.</li> <li>Existing files/directories in the destination which are not in the archive are ignored for purposes of deciding if the archive should be unpacked or not.</li> <li>For Windows targets, use the <a class="reference internal" href="../win_unzip_module/#win-unzip"><span class="std std-ref">win_unzip</span></a> module instead.</li> </ul> </div>  <h3 id="status">Status</h3> <p>This module is flagged as <strong>preview</strong> which means that it is not guaranteed to have a backwards compatible interface.</p>   <h3 id="maintenance-info">Maintenance Info</h3> <p>For more information about Red Hat’s this support of this module, please refer to this <code>knowledge base article&lt;https://access.redhat.com/articles/rhel-top-support-policies&gt;</code></p> <p>For help in developing on modules, should you be so inclined, please read <a class="reference internal" href="https://docs.ansible.com/ansible/latest/community.html" target="_blank"><span class="doc">Community Information &amp; Contributing</span></a>, <a class="reference internal" href="../dev_guide/testing/"><span class="doc">Testing Ansible</span></a> and <a class="reference internal" href="../dev_guide/developing_modules/"><span class="doc">Developing Modules</span></a>.</p>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2012–2017 Michael DeHaan<br>© 2017 Red Hat, Inc.<br>Licensed under the GNU General Public License version 3.<br>
+    <a href="https://docs.ansible.com/ansible/latest/unarchive_module.html" class="_attribution-link" target="_blank">https://docs.ansible.com/ansible/latest/unarchive_module.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

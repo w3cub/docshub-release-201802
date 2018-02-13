@@ -1,0 +1,102 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Unit Tests - Ansible - W3cubDocs</title>
+  
+  <meta name="description" content=" Unit tests are small isolated tests that target a specific library or module. ">
+  <meta name="keywords" content="unit, tests, -, ansible">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/ansible/dev_guide/testing_units/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/ansible.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/ansible/" class="_nav-link" title="" style="margin-left:0;">Ansible</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _sphinx">
+				
+<h1 id="unit-tests">Unit Tests</h1> <p>Unit tests are small isolated tests that target a specific library or module.</p>   <ul> <li><a class="reference internal" href="#available-tests" id="id2">Available Tests</a></li> <li><a class="reference internal" href="#running-tests" id="id3">Running Tests</a></li> <li><a class="reference internal" href="#installing-dependencies" id="id4">Installing dependencies</a></li> <li>
+<a class="reference internal" href="#extending-unit-tests" id="id5">Extending unit tests</a><ul> <li><a class="reference internal" href="#fixtures-files" id="id6">Fixtures files</a></li> <li><a class="reference internal" href="#code-coverage" id="id7">Code Coverage</a></li> </ul> </li> </ul>
+   <h2 id="available-tests">Available Tests</h2> <p>Unit tests can be found in <a class="reference external" href="https://github.com/ansible/ansible/tree/devel/test/units" target="_blank">test/units</a>, notice that the directory structure matches that of <code>lib/ansible/</code></p>   <h2 id="running-tests">Running Tests</h2> <p>Unit tests can be run across the whole code base by doing:</p> <pre data-language="shell">cd /path/to/ansible/source
+source hacking/env-setup
+ansible-test units --tox
+</pre> <p>Against a single file by doing:</p> <pre data-language="shell">ansible-test units --tox apt
+</pre> <p>Or against a specific Python version by doing:</p> <pre data-language="shell">ansible-test units --tox --python 2.7 apt
+</pre> <p>For advanced usage see the online help:</p> <pre data-language="YAML">ansible-test units --help
+</pre>   <h2 id="installing-dependencies">Installing dependencies</h2> <p><code>ansible-test</code> has a number of dependencies , for <code>units</code> tests we suggest using <code>tox</code></p> <p>The dependencies can be installed using the <code>--requirements</code> argument, which will install all the required dependencies needed for unit tests. For example:</p> <pre data-language="shell">ansible-test units --tox --python 2.7 --requirements apache2_module
+</pre> <div class="admonition note"> <p class="first admonition-title">Note</p> <p>tox version requirement</p> <p class="last">When using <code>ansible-test</code> with <code>--tox</code> requires tox &gt;= 2.5.0</p> </div> <p>The full list of requirements can be found at <a class="reference external" href="https://github.com/ansible/ansible/tree/devel/test/runner/requirements" target="_blank">test/runner/requirements</a>. Requirements files are named after their respective commands. See also the <a class="reference external" href="https://github.com/ansible/ansible/blob/devel/test/runner/requirements/constraints.txt" target="_blank">constraints</a> applicable to all commands.</p>   <h2 id="extending-unit-tests">Extending unit tests</h2> <div class="admonition warning"> <p class="first admonition-title">Warning</p> <p>What a unit test isn’t</p> <p class="last">If you start writing a test that requires external services then you may be writing an integration test, rather than a unit test.</p> </div>  <h3 id="fixtures-files">Fixtures files</h3> <p>To mock out fetching results from devices, you can use <code>fixtures</code> to read in pre-generated data.</p> <p>Text files live in <code>test/units/modules/network/PLATFORM/fixtures/</code></p> <p>Data is loaded using the <code>load_fixture</code> method</p> <p>See <a class="reference external" href="https://github.com/ansible/ansible/blob/devel/test/units/modules/network/eos/test_eos_banner.py" target="_blank">eos_banner test</a> for a practical example.</p>   <h3 id="code-coverage">Code Coverage</h3> <p>Most <code>ansible-test</code> commands allow you to collect code coverage, this is particularly useful when to indicate where to extend testing.</p> <p>To collect coverage data add the <code>--coverage</code> argument to your <code>ansible-test</code> command line:</p> <pre data-language="shell">ansible-test units --coverage apt
+ansible-test coverage html
+</pre> <p>Results will be written to <code>test/results/reports/coverage/index.html</code></p> <p>Reports can be generated in several different formats:</p> <ul class="simple"> <li>
+<code>ansible-test coverage report</code> - Console report.</li> <li>
+<code>ansible-test coverage html</code> - HTML report.</li> <li>
+<code>ansible-test coverage xml</code> - XML report.</li> </ul> <p>To clear data between test runs, use the <code>ansible-test coverage erase</code> command. For a full list of features see the online help:</p> <pre data-language="YAML">ansible-test coverage --help
+</pre>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2012–2017 Michael DeHaan<br>© 2017 Red Hat, Inc.<br>Licensed under the GNU General Public License version 3.<br>
+    <a href="https://docs.ansible.com/ansible/latest/dev_guide/testing_units.html" class="_attribution-link" target="_blank">https://docs.ansible.com/ansible/latest/dev_guide/testing_units.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

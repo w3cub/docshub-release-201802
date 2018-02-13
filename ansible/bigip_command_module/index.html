@@ -1,0 +1,155 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Bigip_command - Ansible - W3cubDocs</title>
+  
+  <meta name="description" content=" New in version 2.4. ">
+  <meta name="keywords" content="bigip, command, -, run, arbitrary, on, f, devices, ansible">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/ansible/bigip_command_module/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/ansible.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/ansible/" class="_nav-link" title="" style="margin-left:0;">Ansible</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _sphinx">
+				
+<h1 id="bigip-command">bigip_command - Run arbitrary command on F5 devices.</h1> <div class="versionadded" id="bigip-command-run-arbitrary-command-on-f5-devices"> <p><span class="versionmodified">New in version 2.4.</span></p> </div>  <ul class="simple"> <li><a class="reference internal" href="#synopsis" id="id1">Synopsis</a></li> <li><a class="reference internal" href="#requirements-on-host-that-executes-module" id="id2">Requirements (on host that executes module)</a></li> <li><a class="reference internal" href="#options" id="id3">Options</a></li> <li><a class="reference internal" href="#examples" id="id4">Examples</a></li> <li><a class="reference internal" href="#return-values" id="id5">Return Values</a></li> <li>
+<a class="reference internal" href="#notes" id="id6">Notes</a><ul> <li><a class="reference internal" href="#status" id="id7">Status</a></li> </ul> </li> </ul>   <h2 id="synopsis">Synopsis</h2> <ul class="simple"> <li>Sends an arbitrary command to an BIG-IP node and returns the results read from the device. This module includes an argument that will cause the module to wait for a specific condition before returning or timing out if the condition is not met.</li> </ul>   <h2 id="requirements-on-host-that-executes-module">Requirements (on host that executes module)</h2>  <ul class="simple"> <li>f5-sdk &gt;= 2.2.3</li> </ul>    <h2 id="options">Options</h2> <table> <tr> <th class="head">parameter</th> <th class="head">required</th> <th class="head">default</th> <th class="head">choices</th> <th class="head">comments</th> </tr> <tr> <td>commands<br>
+</td> <td>yes</td> <td></td> <td></td> <td> <div>The commands to send to the remote BIG-IP device over the configured provider. The resulting output from the command is returned. If the <em>wait_for</em> argument is provided, the module is not returned until the condition is satisfied or the number of retries as expired.</div> <div>The <em>commands</em> argument also accepts an alternative form that allows for complex values that specify the command to run and the output format to return. This can be done on a command by command basis. The complex argument supports the keywords <code>command</code> and <code>output</code> where <code>command</code> is the command to run and <code>output</code> is 'text' or 'one-line'.</div> </td> </tr> <tr> <td>interval<br>
+</td> <td>no</td> <td>1</td> <td></td> <td> <div>Configures the interval in seconds to wait between retries of the command. If the command does not pass the specified conditional, the interval indicates how to long to wait before trying the command again.</div> </td> </tr> <tr> <td>match<br>
+</td> <td>no</td> <td>all</td> <td></td> <td> <div>The <em>match</em> argument is used in conjunction with the <em>wait_for</em> argument to specify the match policy. Valid values are <code>all</code> or <code>any</code>. If the value is set to <code>all</code> then all conditionals in the <em>wait_for</em> must be satisfied. If the value is set to <code>any</code> then only one of the values must be satisfied.</div> </td> </tr> <tr> <td>password<br>
+</td> <td>yes</td> <td></td> <td></td> <td> <div>The password for the user account used to connect to the BIG-IP. This option can be omitted if the environment variable <code>F5_PASSWORD</code> is set.</div> </td> </tr> <tr> <td>retries<br>
+</td> <td>no</td> <td>10</td> <td></td> <td> <div>Specifies the number of retries a command should by tried before it is considered failed. The command is run on the target device every retry and evaluated against the <em>wait_for</em> conditionals.</div> </td> </tr> <tr> <td>server<br>
+</td> <td>yes</td> <td></td> <td></td> <td> <div>The BIG-IP host. This option can be omitted if the environment variable <code>F5_SERVER</code> is set.</div> </td> </tr> <tr> <td>server_port<br><div style="font-size: small;">(added in 2.2)</div>
+</td> <td>no</td> <td>443</td> <td></td> <td> <div>The BIG-IP server port. This option can be omitted if the environment variable <code>F5_SERVER_PORT</code> is set.</div> </td> </tr> <tr> <td>user<br>
+</td> <td>yes</td> <td></td> <td></td> <td> <div>The username to connect to the BIG-IP with. This user must have administrative privileges on the device. This option can be omitted if the environment variable <code>F5_USER</code> is set.</div> </td> </tr> <tr> <td>validate_certs<br><div style="font-size: small;">(added in 2.0)</div>
+</td> <td>no</td> <td>True</td> <td><ul>
+<li>True</li>
+<li>False</li>
+</ul></td> <td> <div>If <code>no</code>, SSL certificates will not be validated. This should only be used on personally controlled sites using self-signed certificates. This option can be omitted if the environment variable <code>F5_VALIDATE_CERTS</code> is set.</div> </td> </tr> <tr> <td>wait_for<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>Specifies what to evaluate from the output of the command and what conditionals to apply. This argument will cause the task to wait for a particular conditional to be true before moving forward. If the conditional is not true by the configured retries, the task fails. See examples.</div> <div style="font-size: small;">aliases: waitfor</div> </td> </tr> </table>   <h2 id="examples">Examples</h2>  <pre data-language="YAML">- name: run show version on remote devices
+  bigip_command:
+    commands: show sys version
+    server: "lb.mydomain.com"
+    password: "secret"
+    user: "admin"
+    validate_certs: "no"
+  delegate_to: localhost
+
+- name: run show version and check to see if output contains BIG-IP
+  bigip_command:
+    commands: show sys version
+    wait_for: result[0] contains BIG-IP
+    server: "lb.mydomain.com"
+    password: "secret"
+    user: "admin"
+    validate_certs: "no"
+  delegate_to: localhost
+
+- name: run multiple commands on remote nodes
+  bigip_command:
+    commands:
+      - show sys version
+      - list ltm virtual
+    server: "lb.mydomain.com"
+    password: "secret"
+    user: "admin"
+    validate_certs: "no"
+  delegate_to: localhost
+
+- name: run multiple commands and evaluate the output
+  bigip_command:
+    commands:
+      - show sys version
+      - list ltm virtual
+    wait_for:
+      - result[0] contains BIG-IP
+      - result[1] contains my-vs
+    server: "lb.mydomain.com"
+    password: "secret"
+    user: "admin"
+    validate_certs: "no"
+  delegate_to: localhost
+
+- name: tmsh prefixes will automatically be handled
+  bigip_command:
+    commands:
+      - show sys version
+      - tmsh list ltm virtual
+    server: "lb.mydomain.com"
+    password: "secret"
+    user: "admin"
+    validate_certs: "no"
+  delegate_to: localhost
+</pre>    <h2 id="return-values">Return Values</h2> <p>Common return values are documented here <a class="reference internal" href="../common_return_values/"><span class="doc">Return Values</span></a>, the following are the fields unique to this module:</p> <table> <tr> <th class="head">name</th> <th class="head">description</th> <th class="head">returned</th> <th class="head">type</th> <th class="head">sample</th> </tr> <tr> <td>stdout_lines</td> <td> <div>The value of stdout split into a list</div> </td> <td align="center">always</td> <td align="center">list</td> <td align="center">[['...', '...'], ['...'], ['...']]</td> </tr> <tr> <td>stdout</td> <td> <div>The set of responses from the commands</div> </td> <td align="center">always</td> <td align="center">list</td> <td align="center">['...', '...']</td> </tr> <tr> <td>failed_conditions</td> <td> <div>The list of conditionals that have failed</div> </td> <td align="center">failed</td> <td align="center">list</td> <td align="center">['...', '...']</td> </tr> </table>   <h2 id="notes">Notes</h2> <div class="admonition note"> <p class="first admonition-title">Note</p> <ul class="last simple"> <li>Requires the f5-sdk Python package on the host. This is as easy as pip install f5-sdk.</li> </ul> </div>  <h3 id="status">Status</h3> <p>This module is flagged as <strong>preview</strong> which means that it is not guaranteed to have a backwards compatible interface.</p> <p>For help in developing on modules, should you be so inclined, please read <a class="reference internal" href="https://docs.ansible.com/ansible/latest/community.html" target="_blank"><span class="doc">Community Information &amp; Contributing</span></a>, <a class="reference internal" href="../dev_guide/testing/"><span class="doc">Testing Ansible</span></a> and <a class="reference internal" href="../dev_guide/developing_modules/"><span class="doc">Developing Modules</span></a>.</p>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2012–2017 Michael DeHaan<br>© 2017 Red Hat, Inc.<br>Licensed under the GNU General Public License version 3.<br>
+    <a href="https://docs.ansible.com/ansible/latest/bigip_command_module.html" class="_attribution-link" target="_blank">https://docs.ansible.com/ansible/latest/bigip_command_module.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

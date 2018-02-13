@@ -1,0 +1,143 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Ovirt_storage_connections - Ansible - W3cubDocs</title>
+  
+  <meta name="description" content=" New in version 2.4. ">
+  <meta name="keywords" content="ovirt, storage, connections, -, module, manage, ansible">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/ansible/ovirt_storage_connections_module/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/ansible.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/ansible/" class="_nav-link" title="" style="margin-left:0;">Ansible</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _sphinx">
+				
+<h1 id="ovirt-storage-connections">ovirt_storage_connections - Module to manage storage connections in oVirt</h1> <div class="versionadded" id="ovirt-storage-connections-module-to-manage-storage-connections-in-ovirt"> <p><span class="versionmodified">New in version 2.4.</span></p> </div>  <ul class="simple"> <li><a class="reference internal" href="#synopsis" id="id1">Synopsis</a></li> <li><a class="reference internal" href="#requirements-on-host-that-executes-module" id="id2">Requirements (on host that executes module)</a></li> <li><a class="reference internal" href="#options" id="id3">Options</a></li> <li><a class="reference internal" href="#examples" id="id4">Examples</a></li> <li><a class="reference internal" href="#return-values" id="id5">Return Values</a></li> <li>
+<a class="reference internal" href="#notes" id="id6">Notes</a><ul> <li><a class="reference internal" href="#status" id="id7">Status</a></li> </ul> </li> </ul>   <h2 id="synopsis">Synopsis</h2> <ul class="simple"> <li>Module to manage storage connections in oVirt</li> </ul>   <h2 id="requirements-on-host-that-executes-module">Requirements (on host that executes module)</h2>  <ul class="simple"> <li>python &gt;= 2.7</li> <li>ovirt-engine-sdk-python &gt;= 4.0.0</li> </ul>    <h2 id="options">Options</h2> <table> <tr> <th class="head">parameter</th> <th class="head">required</th> <th class="head">default</th> <th class="head">choices</th> <th class="head">comments</th> </tr> <tr> <td>address<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>Address of the storage server. E.g.: myserver.mydomain.com</div> </td> </tr> <tr> <td>auth<br>
+</td> <td>yes</td> <td></td> <td></td> <td> <div>Dictionary with values needed to create HTTP/HTTPS connection to oVirt:</div> <div>
+<code>username</code>[<em>required</em>] - The name of the user, something like <em>admin@internal</em>. Default value is set by <em>OVIRT_USERNAME</em> environment variable.</div> <div>
+<code>password</code>[<em>required</em>] - The password of the user. Default value is set by <em>OVIRT_PASSWORD</em> environment variable.</div> <div>
+<code>url</code>[<em>required</em>] - A string containing the base URL of the server, usually something like `<em>https://server.example.com/ovirt-engine/api</em>`. Default value is set by <em>OVIRT_URL</em> environment variable.</div> <div>
+<code>token</code> - Token to be used instead of login with username/password. Default value is set by <em>OVIRT_TOKEN</em> environment variable.</div> <div>
+<code>insecure</code> - A boolean flag that indicates if the server TLS certificate and host name should be checked.</div> <div>
+<code>ca_file</code> - A PEM file containing the trusted CA certificates. The certificate presented by the server will be verified using these CA certificates. If `<code>ca_file</code>` parameter is not set, system wide CA certificate store is used. Default value is set by <em>OVIRT_CAFILE</em> environment variable.</div> <div>
+<code>kerberos</code> - A boolean flag indicating if Kerberos authentication should be used instead of the default basic authentication.</div> <div>
+<code>headers</code> - Dictionary of HTTP headers to be added to each API call.</div> </td> </tr> <tr> <td>fetch_nested<br><div style="font-size: small;">(added in 2.3)</div>
+</td> <td>no</td> <td></td> <td></td> <td> <div>If <em>True</em> the module will fetch additional data from the API.</div> <div>It will fetch IDs of the VMs disks, snapshots, etc. User can configure to fetch other attributes of the nested entities by specifying <code>nested_attributes</code>.</div> </td> </tr> <tr> <td>force<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>This parameter is releven only when updating a connection.</div> <div>If <em>true</em> the storage domain don't have to be in <em>MAINTENANCE</em> state, so the storage connection is updated.</div> </td> </tr> <tr> <td>id<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>Id of the storage connection to manage.</div> </td> </tr> <tr> <td>mount_options<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>Option which will be passed when mounting storage.</div> </td> </tr> <tr> <td>nested_attributes<br><div style="font-size: small;">(added in 2.3)</div>
+</td> <td>no</td> <td></td> <td></td> <td> <div>Specifies list of the attributes which should be fetched from the API.</div> <div>This parameter apply only when <code>fetch_nested</code> is <em>true</em>.</div> </td> </tr> <tr> <td>nfs_retrans<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>The number of times to retry a request before attempting further recovery actions. Range 0 to 65535.</div> </td> </tr> <tr> <td>nfs_timeout<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>The time in tenths of a second to wait for a response before retrying NFS requests. Range 0 to 65535.</div> </td> </tr> <tr> <td>nfs_version<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>NFS version. One of: <em>auto</em>, <em>v3</em>, <em>v4</em> or <em>v4_1</em>.</div> </td> </tr> <tr> <td>password<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>A CHAP password for logging into a target.</div> </td> </tr> <tr> <td>path<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>Path of the mount point of the storage. E.g.: /path/to/my/data</div> </td> </tr> <tr> <td>poll_interval<br>
+</td> <td>no</td> <td>3</td> <td></td> <td> <div>Number of the seconds the module waits until another poll request on entity status is sent.</div> </td> </tr> <tr> <td>port<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>Port of the iSCSI storage server.</div> </td> </tr> <tr> <td>state<br>
+</td> <td>no</td> <td>present</td> <td><ul>
+<li>present</li>
+<li>absent</li>
+</ul></td> <td> <div>Should the storage connection be present or absent.</div> </td> </tr> <tr> <td>storage<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>Name of the storage domain to be used with storage connection.</div> </td> </tr> <tr> <td>target<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>The target IQN for the storage device.</div> </td> </tr> <tr> <td>timeout<br>
+</td> <td>no</td> <td>180</td> <td></td> <td> <div>The amount of time in seconds the module should wait for the instance to get into desired state.</div> </td> </tr> <tr> <td>type<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>Storage type. For example: <em>nfs</em>, <em>iscsi</em>, etc.</div> </td> </tr> <tr> <td>username<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>A CHAP username for logging into a target.</div> </td> </tr> <tr> <td>vfs_type<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>Virtual File System type.</div> </td> </tr> <tr> <td>wait<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>
+<em>True</em> if the module should wait for the entity to get into desired state.</div> </td> </tr> </table>   <h2 id="examples">Examples</h2>  <pre data-language="YAML"># Examples don't contain auth parameter for simplicity,
+# look at ovirt_auth module to see how to reuse authentication:
+
+# Add new storage connection:
+- ovirt_storage_connections:
+    storage: myiscsi
+    address: 10.34.63.199
+    target: iqn.2016-08-09.domain-01:nickname
+    port: 3260
+    type: iscsi
+
+# Update the existing storage connection address:
+- ovirt_storage_connections:
+    id: 26915c96-92ff-47e5-9e77-b581db2f2d36
+    address: 10.34.63.204
+    force: true
+
+# Remove storage connection:
+- ovirt_storage_connections:
+    id: 26915c96-92ff-47e5-9e77-b581db2f2d36
+</pre>    <h2 id="return-values">Return Values</h2> <p>Common return values are documented here <a class="reference internal" href="../common_return_values/"><span class="doc">Return Values</span></a>, the following are the fields unique to this module:</p> <table> <tr> <th class="head">name</th> <th class="head">description</th> <th class="head">returned</th> <th class="head">type</th> <th class="head">sample</th> </tr> <tr> <td>storage_connection</td> <td> <div>Dictionary of all the storage connection attributes. Storage connection attributes can be found on your oVirt instance at following url: https://ovirt.example.com/ovirt-engine/api/model#types/storage_connection.</div> </td> <td align="center">On success if storage connection is found.</td> <td align="center">dict</td> <td align="center"></td> </tr> <tr> <td>id</td> <td> <div>ID of the storage connection which is managed</div> </td> <td align="center">On success if storage connection is found.</td> <td align="center">string</td> <td align="center">7de90f31-222c-436c-a1ca-7e655bd5b60c</td> </tr> </table>   <h2 id="notes">Notes</h2> <div class="admonition note"> <p class="first admonition-title">Note</p> <ul class="last simple"> <li>In order to use this module you have to install oVirt Python SDK. To ensure it’s installed with correct version you can create the following task: <em>pip: name=ovirt-engine-sdk-python version=4.0.0</em>
+</li> </ul> </div>  <h3 id="status">Status</h3> <p>This module is flagged as <strong>preview</strong> which means that it is not guaranteed to have a backwards compatible interface.</p> <p>For help in developing on modules, should you be so inclined, please read <a class="reference internal" href="https://docs.ansible.com/ansible/latest/community.html" target="_blank"><span class="doc">Community Information &amp; Contributing</span></a>, <a class="reference internal" href="../dev_guide/testing/"><span class="doc">Testing Ansible</span></a> and <a class="reference internal" href="../dev_guide/developing_modules/"><span class="doc">Developing Modules</span></a>.</p>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2012–2017 Michael DeHaan<br>© 2017 Red Hat, Inc.<br>Licensed under the GNU General Public License version 3.<br>
+    <a href="https://docs.ansible.com/ansible/latest/ovirt_storage_connections_module.html" class="_attribution-link" target="_blank">https://docs.ansible.com/ansible/latest/ovirt_storage_connections_module.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

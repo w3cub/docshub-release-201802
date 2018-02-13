@@ -1,0 +1,112 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Aws_direct_connect_link_aggregation_group - Ansible - W3cubDocs</title>
+  
+  <meta name="description" content=" New in version 2.4. ">
+  <meta name="keywords" content="aws, direct, connect, link, aggregation, group, -, manage, lag, bundles, ansible">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/ansible/aws_direct_connect_link_aggregation_group_module/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/ansible.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/ansible/" class="_nav-link" title="" style="margin-left:0;">Ansible</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _sphinx">
+				
+<h1 id="aws-direct-connect-link-aggregation-group">aws_direct_connect_link_aggregation_group - Manage Direct Connect LAG bundles.</h1> <div class="versionadded" id="aws-direct-connect-link-aggregation-group-manage-direct-connect-lag-bundles"> <p><span class="versionmodified">New in version 2.4.</span></p> </div>  <ul class="simple"> <li><a class="reference internal" href="#synopsis" id="id1">Synopsis</a></li> <li><a class="reference internal" href="#requirements-on-host-that-executes-module" id="id2">Requirements (on host that executes module)</a></li> <li><a class="reference internal" href="#options" id="id3">Options</a></li> <li><a class="reference internal" href="#examples" id="id4">Examples</a></li> <li>
+<a class="reference internal" href="#return-values" id="id5">Return Values</a><ul> <li><a class="reference internal" href="#status" id="id6">Status</a></li> </ul> </li> </ul>   <h2 id="synopsis">Synopsis</h2> <ul class="simple"> <li>Create, delete, or modify a Direct Connect link aggregation group.</li> </ul>   <h2 id="requirements-on-host-that-executes-module">Requirements (on host that executes module)</h2>  <ul class="simple"> <li>boto3</li> <li>botocore</li> </ul>    <h2 id="options">Options</h2> <table> <tr> <th class="head">parameter</th> <th class="head">required</th> <th class="head">default</th> <th class="head">choices</th> <th class="head">comments</th> </tr> <tr> <td>bandwidth<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>The bandwidth of the link aggregation group.</div> </td> </tr> <tr> <td>connection_id<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>A connection ID to link with the link aggregation group upon creation.</div> </td> </tr> <tr> <td>delete_with_disassociation<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>To be used with <em>state=absent</em> to delete connections after disassociating them with the LAG.</div> </td> </tr> <tr> <td>force_delete<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>This allows the minimum number of links to be set to 0, any hosted connections disassociated, and any virtual interfaces associated to the LAG deleted.</div> </td> </tr> <tr> <td>link_aggregation_group_id<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>The ID of the Direct Connect link aggregation group.</div> </td> </tr> <tr> <td>location<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>The location of the link aggregation group.</div> </td> </tr> <tr> <td>min_links<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>The minimum number of physical connections that must be operational for the LAG itself to be operational.</div> </td> </tr> <tr> <td>name<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>The name of the Direct Connect link aggregation group.</div> </td> </tr> <tr> <td>num_connections<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>The number of connections with which to intialize the link aggregation group.</div> </td> </tr> <tr> <td>state<br>
+</td> <td>no</td> <td></td> <td><ul>
+<li>present</li>
+<li>absent</li>
+</ul></td> <td> <div>The state of the Direct Connect link aggregation group.</div> </td> </tr> <tr> <td>wait<br>
+</td> <td>no</td> <td></td> <td><ul>
+<li>yes</li>
+<li>no</li>
+</ul></td> <td> <div>Whether or not to wait for the operation to complete. May be useful when waiting for virtual interfaces to be deleted. May modify the time of waiting with <code>wait_timeout</code>.</div> </td> </tr> <tr> <td>wait_timeout<br>
+</td> <td>no</td> <td>120</td> <td></td> <td> <div>The duration in seconds to wait if <em>wait</em> is True.</div> </td> </tr> </table>   <h2 id="examples">Examples</h2>  <pre data-language="YAML"># create a Direct Connect connection
+- aws_direct_connect_link_aggregation_group:
+  state: present
+  location: EqDC2
+  lag_id: dxlag-xxxxxxxx
+  bandwidth: 1Gbps
+</pre>    <h2 id="return-values">Return Values</h2> <p>Common return values are documented here <a class="reference internal" href="../common_return_values/"><span class="doc">Return Values</span></a>, the following are the fields unique to this module:</p> <table> <tr> <th class="head">name</th> <th class="head">description</th> <th class="head">returned</th> <th class="head">type</th> <th class="head">sample</th> </tr> <tr> <td>connections</td> <td> <div>A list of connections bundled by this LAG.</div> </td> <td align="center">when I(state=present)</td> <td align="center">list</td> <td align="center">{'connections': [{'aws_device': 'EqSe2-1bwfvazist2k0', 'region': 'us-west-2', 'connection_state': 'down', 'connection_name': 'Requested Connection 1 for Lag dxlag-fgtoh97h', 'owner_account': '448830907657', 'connection_id': 'dxcon-fgzjah5a', 'bandwidth': '1Gbps', 'location': 'EqSe2', 'lag_id': 'dxlag-fgnsp4rq'}]}</td> </tr> <tr> <td>aws_device</td> <td> <div>The AWS Direct Connection endpoint that hosts the LAG.</div> </td> <td align="center">when I(state=present)</td> <td align="center">str</td> <td align="center">EqSe2-1bwfvazist2k0</td> </tr> <tr> <td>changed</td> <td> <div>Whether or not the LAG has changed.</div> </td> <td align="center">always</td> <td align="center">str</td> <td align="center"></td> </tr> <tr> <td>region</td> <td> <div>The region in which the LAG exists.</div> </td> <td align="center">when I(state=present)</td> <td align="center">str</td> <td align="center"></td> </tr> <tr> <td>lag_state</td> <td> <div>State of the LAG.</div> </td> <td align="center">when I(state=present)</td> <td align="center">str</td> <td align="center">pending</td> </tr> <tr> <td>connections_bandwidth</td> <td> <div>The individual bandwidth of the physical connections bundled by the LAG.</div> </td> <td align="center">when I(state=present)</td> <td align="center">str</td> <td align="center">1Gbps</td> </tr> <tr> <td>owner_account</td> <td> <div>Owner account ID of the LAG.</div> </td> <td align="center">when I(state=present)</td> <td align="center">str</td> <td align="center"></td> </tr> <tr> <td>minimum_links</td> <td> <div>The minimum number of physical connections that must be operational for the LAG itself to be operational.</div> </td> <td align="center">when I(state=present)</td> <td align="center">int</td> <td align="center"></td> </tr> <tr> <td>location</td> <td> <div>Where the connection is located.</div> </td> <td align="center">when I(state=present)</td> <td align="center">str</td> <td align="center">EqSe2</td> </tr> <tr> <td>lag_id</td> <td> <div>Unique identifier for the link aggregation group.</div> </td> <td align="center">when I(state=present)</td> <td align="center">str</td> <td align="center">dxlag-fgnsp4rq</td> </tr> <tr> <td>lag_name</td> <td> <div>User-provided name for the link aggregation group.</div> </td> <td align="center">when I(state=present)</td> <td align="center">str</td> <td align="center"></td> </tr> <tr> <td>number_of_connections</td> <td> <div>The number of physical connections bundled by the LAG.</div> </td> <td align="center">when I(state=present)</td> <td align="center">int</td> <td align="center"></td> </tr> </table>  <h3 id="status">Status</h3> <p>This module is flagged as <strong>preview</strong> which means that it is not guaranteed to have a backwards compatible interface.</p> <p>For help in developing on modules, should you be so inclined, please read <a class="reference internal" href="https://docs.ansible.com/ansible/latest/community.html" target="_blank"><span class="doc">Community Information &amp; Contributing</span></a>, <a class="reference internal" href="../dev_guide/testing/"><span class="doc">Testing Ansible</span></a> and <a class="reference internal" href="../dev_guide/developing_modules/"><span class="doc">Developing Modules</span></a>.</p>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2012–2017 Michael DeHaan<br>© 2017 Red Hat, Inc.<br>Licensed under the GNU General Public License version 3.<br>
+    <a href="https://docs.ansible.com/ansible/latest/aws_direct_connect_link_aggregation_group_module.html" class="_attribution-link" target="_blank">https://docs.ansible.com/ansible/latest/aws_direct_connect_link_aggregation_group_module.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

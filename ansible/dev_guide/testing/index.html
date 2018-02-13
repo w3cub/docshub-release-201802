@@ -1,0 +1,119 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Testing Ansible - Ansible - W3cubDocs</title>
+  
+  <meta name="description" content=" This document describes&#58; ">
+  <meta name="keywords" content="testing, ansible, -">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/ansible/dev_guide/testing/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/ansible.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/ansible/" class="_nav-link" title="" style="margin-left:0;">Ansible</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _sphinx">
+				
+<h1 id="testing-ansible">Testing Ansible</h1>   <ul> <li><a class="reference internal" href="#introduction" id="id2">Introduction</a></li> <li><a class="reference internal" href="#types-of-tests" id="id3">Types of tests</a></li> <li>
+<a class="reference internal" href="#testing-within-github-shippable" id="id4">Testing within GitHub &amp; Shippable</a><ul> <li><a class="reference internal" href="#organization" id="id5">Organization</a></li> <li><a class="reference internal" href="#rerunning-a-failing-ci-job" id="id6">Rerunning a failing CI job</a></li> </ul> </li> <li>
+<a class="reference internal" href="#how-to-test-a-pr" id="id7">How to test a PR</a><ul> <li><a class="reference internal" href="#setup-checking-out-a-pull-request" id="id8">Setup: Checking out a Pull Request</a></li> <li><a class="reference internal" href="#testing-the-pull-request" id="id9">Testing the Pull Request</a></li> </ul> </li> <li><a class="reference internal" href="#want-to-know-more-about-testing" id="id10">Want to know more about testing?</a></li> </ul>
+   <h2 id="introduction">Introduction</h2> <p>This document describes:</p> <ul class="simple"> <li>how Ansible is tested</li> <li>how to test Ansible locally</li> <li>how to extend the testing capabilities</li> </ul>   <h2 id="types-of-tests">Types of tests</h2> <p>At a high level we have the following classifications of tests:</p> <table class="docutils field-list" frame="void" rules="none"> <col class="field-name"> <col class="field-body">  <tr>
+<th class="field-name">compile:</th>
+<td class="field-body">
+<ul class="first simple"> <li><a class="reference internal" href="../testing_compile/"><span class="doc">Compile Tests</span></a></li> <li>Test python code against a variety of Python versions.</li> </ul> </td> </tr> <tr>
+<th class="field-name">sanity:</th>
+<td class="field-body">
+<ul class="first simple"> <li><a class="reference internal" href="../testing_sanity/"><span class="doc">Sanity Tests</span></a></li> <li>Sanity tests are made up of scripts and tools used to perform static code analysis.</li> <li>The primary purpose of these tests is to enforce Ansible coding standards and requirements.</li> </ul> </td> </tr> <tr>
+<th class="field-name">integration:</th>
+<td class="field-body">
+<ul class="first simple"> <li><a class="reference internal" href="../testing_integration/"><span class="doc">Integration tests</span></a></li> <li>Functional tests of modules and Ansible core functionality.</li> </ul> </td> </tr> <tr>
+<th class="field-name">units:</th>
+<td class="field-body">
+<ul class="first last simple"> <li><a class="reference internal" href="../testing_units/"><span class="doc">Unit Tests</span></a></li> <li>Tests directly against individual parts of the code base.</li> </ul> </td> </tr>  </table> <p>If you’re a developer, one of the most valuable things you can do is look at the GitHub issues list and help fix bugs. We almost always prioritize bug fixing over feature development, so helping to fix bugs is one of the best things you can do.</p> <p>Even if you’re not a developer, helping to test pull requests for bug fixes and features is still immensely valuable.</p>   <h2 id="testing-within-github-shippable">Testing within GitHub &amp; Shippable</h2>  <h3 id="organization">Organization</h3> <p>When Pull Requests (PRs) are created they are tested using Shippable, a Continuous Integration (CI) tool. Results are shown at the end of every PR.</p> <p>When Shippable detects an error and it can be linked back to a file that has been modified in the PR then the relevant lines will be added as a GitHub comment. For example:</p> <pre data-language="YAML">The test `ansible-test sanity --test pep8` failed with the following errors:
+
+lib/ansible/modules/network/foo/bar.py:509:17: E265 block comment should start with '# '
+
+The test `ansible-test sanity --test validate-modules` failed with the following errors:
+lib/ansible/modules/network/foo/bar.py:0:0: E307 version_added should be 2.4. Currently 2.3
+lib/ansible/modules/network/foo/bar.py:0:0: E316 ANSIBLE_METADATA.metadata_version: required key not provided @ data['metadata_version']. Got None
+</pre> <p>From the above example we can see that <code>--test pep8</code> and <code>--test validate-modules</code> have identified issues. The commands given allow you to run the same tests locally to ensure you’ve fixed the issues without having to push your changed to GitHub and wait for Shippable, for example:</p> <p>If you haven’t already got Ansible available, use the local checkout by running:</p> <pre data-language="YAML">source hacking/env-setup
+</pre> <p>Then run the tests detailed in the GitHub comment:</p> <pre data-language="YAML">ansible-test sanity --test pep8
+ansible-test sanity --test validate-modules
+</pre> <p>If there isn’t a GitHub comment stating what’s failed you can inspect the results by clicking on the “Details” button under the “checks have failed” message at the end of the PR.</p>   <h3 id="rerunning-a-failing-ci-job">Rerunning a failing CI job</h3> <p>Occasionally you may find your PR fails due to a reason unrelated to your change. This could happen for several reasons, including:</p> <ul class="simple"> <li>a temporary issue accessing an external resource, such as a yum or git repo</li> <li>a timeout creating a virtual machine to run the tests on</li> </ul> <p>If either of these issues appear to be the case, you can rerun the Shippable test by:</p> <ul class="simple"> <li>closing and re-opening the PR</li> <li>making another change to the PR and pushing to GitHub</li> </ul> <p>If the issue persists, please contact us in <code>#ansible-devel</code> on Freenode IRC.</p>    <h2 id="how-to-test-a-pr">How to test a PR</h2> <p>If you’re a developer, one of the most valuable things you can do is look at the GitHub issues list and help fix bugs. We almost always prioritize bug fixing over feature development, so helping to fix bugs is one of the best things you can do.</p> <p>Even if you’re not a developer, helping to test pull requests for bug fixes and features is still immensely valuable.</p> <p>Ideally, code should add tests that prove that the code works. That’s not always possible and tests are not always comprehensive, especially when a user doesn’t have access to a wide variety of platforms, or is using an API or web service. In these cases, live testing against real equipment can be more valuable than automation that runs against simulated interfaces. In any case, things should always be tested manually the first time as well.</p> <p>Thankfully, helping to test Ansible is pretty straightforward, assuming you are familiar with how Ansible works.</p>  <h3 id="setup-checking-out-a-pull-request">Setup: Checking out a Pull Request</h3> <p>You can do this by:</p> <ul class="simple"> <li>checking out Ansible</li> <li>making a test branch off the main branch</li> <li>merging a GitHub issue</li> <li>testing</li> <li>commenting on that particular issue on GitHub</li> </ul> <p>Here’s how:</p> <div class="admonition warning"> <p class="first admonition-title">Warning</p> <p class="last">Testing source code from GitHub pull requests sent to us does have some inherent risk, as the source code sent may have mistakes or malicious code that could have a negative impact on your system. We recommend doing all testing on a virtual machine, whether a cloud instance, or locally. Some users like Vagrant or Docker for this, but they are optional. It is also useful to have virtual machines of different Linux or other flavors, since some features (apt vs. yum, for example) are specific to those OS versions.</p> </div> <p>Create a fresh area to work:</p> <pre data-language="YAML">git clone https://github.com/ansible/ansible.git ansible-pr-testing
+cd ansible-pr-testing
+</pre> <p>Next, find the pull request you’d like to test and make note of the line at the top which describes the source and destination repositories. It will look something like this:</p> <pre data-language="YAML">Someuser wants to merge 1 commit into ansible:devel from someuser:feature_branch_name
+</pre> <div class="admonition note"> <p class="first admonition-title">Note</p> <p>Only test <code>ansible:devel</code></p> <p class="last">It is important that the PR request target be <code>ansible:devel</code>, as we do not accept pull requests into any other branch. Dot releases are cherry-picked manually by Ansible staff.</p> </div> <p>The username and branch at the end are the important parts, which will be turned into git commands as follows:</p> <pre data-language="YAML">git checkout -b testing_PRXXXX devel
+git pull https://github.com/someuser/ansible.git feature_branch_name
+</pre> <p>The first command creates and switches to a new branch named <code>testing_PRXXXX</code>, where the XXXX is the actual issue number associated with the pull request (for example, 1234). This branch is based on the <code>devel</code> branch. The second command pulls the new code from the users feature branch into the newly created branch.</p> <div class="admonition note"> <p class="first admonition-title">Note</p> <p class="last">If the GitHub user interface shows that the pull request will not merge cleanly, we do not recommend proceeding if you are not somewhat familiar with git and coding, as you will have to resolve a merge conflict. This is the responsibility of the original pull request contributor.</p> </div> <div class="admonition note"> <p class="first admonition-title">Note</p> <p class="last">Some users do not create feature branches, which can cause problems when they have multiple, unrelated commits in their version of <code>devel</code>. If the source looks like <code>someuser:devel</code>, make sure there is only one commit listed on the pull request.</p> </div> <p>The Ansible source includes a script that allows you to use Ansible directly from source without requiring a full installation that is frequently used by developers on Ansible.</p> <p>Simply source it (to use the Linux/Unix terminology) to begin using it immediately:</p> <pre data-language="YAML">source ./hacking/env-setup
+</pre> <p>This script modifies the <code>PYTHONPATH</code> environment variables (along with a few other things), which will be temporarily set as long as your shell session is open.</p>   <h3 id="testing-the-pull-request">Testing the Pull Request</h3> <p>At this point, you should be ready to begin testing!</p> <p>Some ideas of what to test are:</p> <ul class="simple"> <li>Create a test Playbook with the examples in and check if they function correctly</li> <li>Test to see if any Python backtraces returned (that’s a bug)</li> <li>Test on different operating systems, or against different library versions</li> </ul> <p>Any potential issues should be added as comments on the pull request (and it’s acceptable to comment if the feature works as well), remembering to include the output of <code>ansible --version</code></p> <p>Example:</p> <pre data-language="YAML">Works for me! Tested on `Ansible 2.3.0`.  I verified this on CentOS 6.5 and also Ubuntu 14.04.
+</pre> <p>If the PR does not resolve the issue, or if you see any failures from the unit/integration tests, just include that output instead:</p>       <h2 id="want-to-know-more-about-testing">Want to know more about testing?</h2> <p>If you’d like to know more about the plans for improving testing Ansible then why not join the <a class="reference external" href="https://github.com/ansible/community/blob/master/meetings/README.md" target="_blank">Testing Working Group</a>.</p>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2012–2017 Michael DeHaan<br>© 2017 Red Hat, Inc.<br>Licensed under the GNU General Public License version 3.<br>
+    <a href="https://docs.ansible.com/ansible/latest/dev_guide/testing.html" class="_attribution-link" target="_blank">https://docs.ansible.com/ansible/latest/dev_guide/testing.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

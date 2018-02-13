@@ -1,0 +1,165 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Junos_linkagg - Ansible - W3cubDocs</title>
+  
+  <meta name="description" content=" New in version 2.4. ">
+  <meta name="keywords" content="junos, linkagg, -, manage, link, aggregation, groups, on, juniper, network, devices, ansible">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/ansible/junos_linkagg_module/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/ansible.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/ansible/" class="_nav-link" title="" style="margin-left:0;">Ansible</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _sphinx">
+				
+<h1 id="junos-linkagg">junos_linkagg - Manage link aggregation groups on Juniper JUNOS network devices</h1> <div class="versionadded" id="junos-linkagg-manage-link-aggregation-groups-on-juniper-junos-network-devices"> <p><span class="versionmodified">New in version 2.4.</span></p> </div>  <ul class="simple"> <li><a class="reference internal" href="#synopsis" id="id1">Synopsis</a></li> <li><a class="reference internal" href="#requirements-on-host-that-executes-module" id="id2">Requirements (on host that executes module)</a></li> <li><a class="reference internal" href="#options" id="id3">Options</a></li> <li><a class="reference internal" href="#examples" id="id4">Examples</a></li> <li><a class="reference internal" href="#return-values" id="id5">Return Values</a></li> <li>
+<a class="reference internal" href="#notes" id="id6">Notes</a><ul> <li><a class="reference internal" href="#status" id="id7">Status</a></li> <li><a class="reference internal" href="#maintenance-info" id="id8">Maintenance Info</a></li> </ul> </li> </ul>   <h2 id="synopsis">Synopsis</h2> <ul class="simple"> <li>This module provides declarative management of link aggregation groups on Juniper JUNOS network devices.</li> </ul>   <h2 id="requirements-on-host-that-executes-module">Requirements (on host that executes module)</h2>  <ul class="simple"> <li>ncclient (&gt;=v0.5.2)</li> </ul>    <h2 id="options">Options</h2> <table> <tr> <th class="head">parameter</th> <th class="head">required</th> <th class="head">default</th> <th class="head">choices</th> <th class="head">comments</th> </tr> <tr> <td>active<br>
+</td> <td>no</td> <td>True</td> <td><ul>
+<li>True</li>
+<li>False</li>
+</ul></td> <td> <div>Specifies whether or not the configuration is active or deactivated</div> </td> </tr> <tr> <td>aggregate<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>List of link aggregation definitions.</div> </td> </tr> <tr> <td>description<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>Description of Interface.</div> </td> </tr> <tr> <td>device_count<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>Number of aggregated ethernet devices that can be configured. Acceptable integer value is between 1 and 128.</div> </td> </tr> <tr> <td>members<br>
+</td> <td>yes</td> <td></td> <td></td> <td> <div>List of members interfaces of the link aggregation group. The value can be single interface or list of interfaces.</div> </td> </tr> <tr> <td>min_links<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>Minimum members that should be up before bringing up the link aggregation group.</div> </td> </tr> <tr> <td>mode<br>
+</td> <td>no</td> <td></td> <td><ul>
+<li>on</li>
+<li>off</li>
+<li>active</li>
+<li>passive</li>
+</ul></td> <td> <div>Mode of the link aggregation group. A value of <code>on</code> will enable LACP in <code>passive</code> mode. <code>active</code> configures the link to actively information about the state of the link, or it can be configured in <code>passive</code> mode ie. send link state information only when received them from another link. A value of <code>off</code> will disable LACP.</div> </td> </tr> <tr> <td>name<br>
+</td> <td>yes</td> <td></td> <td></td> <td> <div>Name of the link aggregation group.</div> </td> </tr> <tr> <td>state<br>
+</td> <td>no</td> <td>present</td> <td><ul>
+<li>present</li>
+<li>absent</li>
+<li>up</li>
+<li>down</li>
+</ul></td> <td> <div>State of the link aggregation group.</div> </td> </tr> </table>   <h2 id="examples">Examples</h2>  <pre data-language="YAML">- name: configure link aggregation
+  junos_linkagg:
+    name: ae11
+    members:
+      - ge-0/0/5
+      - ge-0/0/6
+      - ge-0/0/7
+    lacp: active
+    device_count: 4
+    state: present
+
+- name: delete link aggregation
+  junos_linkagg:
+    name: ae11
+    members:
+      - ge-0/0/5
+      - ge-0/0/6
+      - ge-0/0/7
+    lacp: active
+    device_count: 4
+    state: delete
+
+- name: deactivate link aggregation
+  junos_linkagg:
+    name: ae11
+    members:
+      - ge-0/0/5
+      - ge-0/0/6
+      - ge-0/0/7
+    lacp: active
+    device_count: 4
+    state: present
+    active: False
+
+- name: Activate link aggregation
+  junos_linkagg:
+    name: ae11
+    members:
+      - ge-0/0/5
+      - ge-0/0/6
+      - ge-0/0/7
+    lacp: active
+    device_count: 4
+    state: present
+    active: True
+
+- name: Disable link aggregation
+  junos_linkagg:
+    name: ae11
+    state: down
+
+- name: Enable link aggregation
+  junos_linkagg:
+    name: ae11
+    state: up
+</pre>    <h2 id="return-values">Return Values</h2> <p>Common return values are documented here <a class="reference internal" href="../common_return_values/"><span class="doc">Return Values</span></a>, the following are the fields unique to this module:</p> <table> <tr> <th class="head">name</th> <th class="head">description</th> <th class="head">returned</th> <th class="head">type</th> <th class="head">sample</th> </tr> <tr> <td>diff</td> <td> <div>Configuration difference before and after applying change.</div> </td> <td align="center">when configuration is changed and diff option is enabled.</td> <td align="center">string</td> <td align="center">[edit interfaces] + ge-0/0/6 { + ether-options { + 802.3ad ae0; + } + } [edit interfaces ge-0/0/7] + ether-options { + 802.3ad ae0; + } [edit interfaces] + ae0 { + description "configured by junos_linkagg"; + aggregated-ether-options { + lacp { + active; + } + } + } </td> </tr> </table>   <h2 id="notes">Notes</h2> <div class="admonition note"> <p class="first admonition-title">Note</p> <ul class="last simple"> <li>This module requires the netconf system service be enabled on the remote device being managed.</li> <li>Tested against vSRX JUNOS version 15.1X49-D15.4, vqfx-10000 JUNOS Version 15.1X53-D60.4.</li> </ul> </div>  <h3 id="status">Status</h3> <p>This module is flagged as <strong>preview</strong> which means that it is not guaranteed to have a backwards compatible interface.</p>   <h3 id="maintenance-info">Maintenance Info</h3> <p>For more information about Red Hat’s this support of this module, please refer to this <code>knowledge base article&lt;https://access.redhat.com/articles/rhel-top-support-policies&gt;</code></p> <p>For help in developing on modules, should you be so inclined, please read <a class="reference internal" href="https://docs.ansible.com/ansible/latest/community.html" target="_blank"><span class="doc">Community Information &amp; Contributing</span></a>, <a class="reference internal" href="../dev_guide/testing/"><span class="doc">Testing Ansible</span></a> and <a class="reference internal" href="../dev_guide/developing_modules/"><span class="doc">Developing Modules</span></a>.</p>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2012–2017 Michael DeHaan<br>© 2017 Red Hat, Inc.<br>Licensed under the GNU General Public License version 3.<br>
+    <a href="https://docs.ansible.com/ansible/latest/junos_linkagg_module.html" class="_attribution-link" target="_blank">https://docs.ansible.com/ansible/latest/junos_linkagg_module.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

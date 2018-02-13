@@ -1,0 +1,199 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Avi_virtualservice - Ansible - W3cubDocs</title>
+  
+  <meta name="description" content=" New in version 2.3. ">
+  <meta name="keywords" content="avi, virtualservice, -, module, for, setup, restful, object, ansible">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/ansible/avi_virtualservice_module/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/ansible.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/ansible/" class="_nav-link" title="" style="margin-left:0;">Ansible</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _sphinx">
+				
+<h1 id="avi-virtualservice">avi_virtualservice - Module for setup of VirtualService Avi RESTful Object</h1> <div class="versionadded" id="avi-virtualservice-module-for-setup-of-virtualservice-avi-restful-object"> <p><span class="versionmodified">New in version 2.3.</span></p> </div>  <ul class="simple"> <li><a class="reference internal" href="#synopsis" id="id1">Synopsis</a></li> <li><a class="reference internal" href="#requirements-on-host-that-executes-module" id="id2">Requirements (on host that executes module)</a></li> <li><a class="reference internal" href="#options" id="id3">Options</a></li> <li><a class="reference internal" href="#examples" id="id4">Examples</a></li> <li>
+<a class="reference internal" href="#return-values" id="id5">Return Values</a><ul> <li><a class="reference internal" href="#status" id="id6">Status</a></li> </ul> </li> </ul>   <h2 id="synopsis">Synopsis</h2> <ul class="simple"> <li>This module is used to configure VirtualService object</li> <li>more examples at <a class="reference external" href="https://github.com/avinetworks/devops" target="_blank">https://github.com/avinetworks/devops</a>
+</li> </ul>   <h2 id="requirements-on-host-that-executes-module">Requirements (on host that executes module)</h2>  <ul class="simple"> <li>avisdk</li> </ul>    <h2 id="options">Options</h2> <table> <tr> <th class="head">parameter</th> <th class="head">required</th> <th class="head">default</th> <th class="head">choices</th> <th class="head">comments</th> </tr> <tr> <td>active_standby_se_tag<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>This configuration only applies if the virtualservice is in legacy active standby ha mode and load distribution among active standby is enabled.</div> <div>This field is used to tag the virtualservice so that virtualservices with the same tag will share the same active serviceengine.</div> <div>Virtualservices with different tags will have different active serviceengines.</div> <div>If one of the serviceengine's in the serviceenginegroup fails, all virtualservices will end up using the same active serviceengine.</div> <div>Redistribution of the virtualservices can be either manual or automated when the failed serviceengine recovers.</div> <div>Redistribution is based on the auto redistribute property of the serviceenginegroup.</div> <div>Enum options - ACTIVE_STANDBY_SE_1, ACTIVE_STANDBY_SE_2.</div> <div>Default value when not specified in API or module is interpreted by Avi Controller as ACTIVE_STANDBY_SE_1.</div> </td> </tr> <tr> <td>analytics_policy<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>Determines analytics settings for the application.</div> </td> </tr> <tr> <td>analytics_profile_ref<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>Specifies settings related to analytics.</div> <div>It is a reference to an object of type analyticsprofile.</div> </td> </tr> <tr> <td>api_version<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>Avi API version of to use for Avi API and objects.</div> </td> </tr> <tr> <td>application_profile_ref<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>Enable application layer specific features for the virtual service.</div> <div>It is a reference to an object of type applicationprofile.</div> </td> </tr> <tr> <td>auto_allocate_floating_ip<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>Auto-allocate floating/elastic ip from the cloud infrastructure.</div> <div>Field deprecated in 17.1.1.</div> <div>Default value when not specified in API or module is interpreted by Avi Controller as False.</div> </td> </tr> <tr> <td>auto_allocate_ip<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>Auto-allocate vip from the provided subnet.</div> <div>Field deprecated in 17.1.1.</div> <div>Default value when not specified in API or module is interpreted by Avi Controller as False.</div> </td> </tr> <tr> <td>availability_zone<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>Availability-zone to place the virtual service.</div> <div>Field deprecated in 17.1.1.</div> </td> </tr> <tr> <td>avi_allocated_fip<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>(internal-use) fip allocated by avi in the cloud infrastructure.</div> <div>Field deprecated in 17.1.1.</div> <div>Default value when not specified in API or module is interpreted by Avi Controller as False.</div> </td> </tr> <tr> <td>avi_allocated_vip<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>(internal-use) vip allocated by avi in the cloud infrastructure.</div> <div>Field deprecated in 17.1.1.</div> <div>Default value when not specified in API or module is interpreted by Avi Controller as False.</div> </td> </tr> <tr> <td>client_auth<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>Http authentication configuration for protected resources.</div> </td> </tr> <tr> <td>cloud_config_cksum<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>Checksum of cloud configuration for vs.</div> <div>Internally set by cloud connector.</div> </td> </tr> <tr> <td>cloud_ref<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>It is a reference to an object of type cloud.</div> </td> </tr> <tr> <td>cloud_type<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>Enum options - cloud_none, cloud_vcenter, cloud_openstack, cloud_aws, cloud_vca, cloud_apic, cloud_mesos, cloud_linuxserver, cloud_docker_ucp,</div> <div>cloud_rancher, cloud_oshift_k8s.</div> <div>Default value when not specified in API or module is interpreted by Avi Controller as CLOUD_NONE.</div> </td> </tr> <tr> <td>connections_rate_limit<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>Rate limit the incoming connections to this virtual service.</div> </td> </tr> <tr> <td>content_rewrite<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>Profile used to match and rewrite strings in request and/or response body.</div> </td> </tr> <tr> <td>controller<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>IP address or hostname of the controller. The default value is the environment variable <code>AVI_CONTROLLER</code>.</div> </td> </tr> <tr> <td>created_by<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>Creator name.</div> </td> </tr> <tr> <td>delay_fairness<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>Select the algorithm for qos fairness.</div> <div>This determines how multiple virtual services sharing the same service engines will prioritize traffic over a congested network.</div> <div>Default value when not specified in API or module is interpreted by Avi Controller as False.</div> </td> </tr> <tr> <td>description<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>User defined description for the object.</div> </td> </tr> <tr> <td>discovered_network_ref<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>(internal-use) discovered networks providing reachability for client facing virtual service ip.</div> <div>This field is deprecated.</div> <div>It is a reference to an object of type network.</div> <div>Field deprecated in 17.1.1.</div> </td> </tr> <tr> <td>discovered_networks<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>(internal-use) discovered networks providing reachability for client facing virtual service ip.</div> <div>This field is used internally by avi, not editable by the user.</div> <div>Field deprecated in 17.1.1.</div> </td> </tr> <tr> <td>discovered_subnet<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>(internal-use) discovered subnets providing reachability for client facing virtual service ip.</div> <div>This field is deprecated.</div> <div>Field deprecated in 17.1.1.</div> </td> </tr> <tr> <td>dns_info<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>Service discovery specific data including fully qualified domain name, type and time-to-live of the dns record.</div> <div>Note that only one of fqdn and dns_info setting is allowed.</div> </td> </tr> <tr> <td>dns_policies<br><div style="font-size: small;">(added in 2.4)</div>
+</td> <td>no</td> <td></td> <td></td> <td> <div>Dns policies applied on the dns traffic of the virtual service.</div> <div>Field introduced in 17.1.1.</div> </td> </tr> <tr> <td>east_west_placement<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>Force placement on all se's in service group (mesos mode only).</div> <div>Default value when not specified in API or module is interpreted by Avi Controller as False.</div> </td> </tr> <tr> <td>enable_autogw<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>Response traffic to clients will be sent back to the source mac address of the connection, rather than statically sent to a default gateway.</div> <div>Default value when not specified in API or module is interpreted by Avi Controller as True.</div> </td> </tr> <tr> <td>enable_rhi<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>Enable route health injection using the bgp config in the vrf context.</div> </td> </tr> <tr> <td>enable_rhi_snat<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>Enable route health injection for source nat'ted floating ip address using the bgp config in the vrf context.</div> </td> </tr> <tr> <td>enabled<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>Enable or disable the virtual service.</div> <div>Default value when not specified in API or module is interpreted by Avi Controller as True.</div> </td> </tr> <tr> <td>floating_ip<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>Floating ip to associate with this virtual service.</div> <div>Field deprecated in 17.1.1.</div> </td> </tr> <tr> <td>floating_subnet_uuid<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>If auto_allocate_floating_ip is true and more than one floating-ip subnets exist, then the subnet for the floating ip address allocation.</div> <div>This field is applicable only if the virtualservice belongs to an openstack or aws cloud.</div> <div>In openstack or aws cloud it is required when auto_allocate_floating_ip is selected.</div> <div>Field deprecated in 17.1.1.</div> </td> </tr> <tr> <td>flow_dist<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>Criteria for flow distribution among ses.</div> <div>Enum options - LOAD_AWARE, CONSISTENT_HASH_SOURCE_IP_ADDRESS, CONSISTENT_HASH_SOURCE_IP_ADDRESS_AND_PORT.</div> <div>Default value when not specified in API or module is interpreted by Avi Controller as LOAD_AWARE.</div> </td> </tr> <tr> <td>flow_label_type<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>Criteria for flow labelling.</div> <div>Enum options - NO_LABEL, SERVICE_LABEL.</div> <div>Default value when not specified in API or module is interpreted by Avi Controller as NO_LABEL.</div> </td> </tr> <tr> <td>fqdn<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>Dns resolvable, fully qualified domain name of the virtualservice.</div> <div>Only one of 'fqdn' and 'dns_info' configuration is allowed.</div> </td> </tr> <tr> <td>host_name_xlate<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>Translate the host name sent to the servers to this value.</div> <div>Translate the host name sent from servers back to the value used by the client.</div> </td> </tr> <tr> <td>http_policies<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>Http policies applied on the data traffic of the virtual service.</div> </td> </tr> <tr> <td>ign_pool_net_reach<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>Ignore pool servers network reachability constraints for virtual service placement.</div> <div>Default value when not specified in API or module is interpreted by Avi Controller as False.</div> </td> </tr> <tr> <td>ip_address<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>Ip address of the virtual service.</div> <div>Field deprecated in 17.1.1.</div> </td> </tr> <tr> <td>ipam_network_subnet<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>Subnet and/or network for allocating virtualservice ip by ipam provider module.</div> </td> </tr> <tr> <td>limit_doser<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>Limit potential dos attackers who exceed max_cps_per_client significantly to a fraction of max_cps_per_client for a while.</div> <div>Default value when not specified in API or module is interpreted by Avi Controller as False.</div> </td> </tr> <tr> <td>max_cps_per_client<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>Maximum connections per second per client ip.</div> <div>Allowed values are 10-1000.</div> <div>Special values are 0- 'unlimited'.</div> <div>Default value when not specified in API or module is interpreted by Avi Controller as 0.</div> </td> </tr> <tr> <td>microservice_ref<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>Microservice representing the virtual service.</div> <div>It is a reference to an object of type microservice.</div> </td> </tr> <tr> <td>name<br>
+</td> <td>yes</td> <td></td> <td></td> <td> <div>Name for the virtual service.</div> </td> </tr> <tr> <td>network_profile_ref<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>Determines network settings such as protocol, tcp or udp, and related options for the protocol.</div> <div>It is a reference to an object of type networkprofile.</div> </td> </tr> <tr> <td>network_ref<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>Manually override the network on which the virtual service is placed.</div> <div>It is a reference to an object of type network.</div> <div>Field deprecated in 17.1.1.</div> </td> </tr> <tr> <td>network_security_policy_ref<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>Network security policies for the virtual service.</div> <div>It is a reference to an object of type networksecuritypolicy.</div> </td> </tr> <tr> <td>nsx_securitygroup<br><div style="font-size: small;">(added in 2.4)</div>
+</td> <td>no</td> <td></td> <td></td> <td> <div>A list of nsx service groups representing the clients which can access the virtual ip of the virtual service.</div> <div>Field introduced in 17.1.1.</div> </td> </tr> <tr> <td>password<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>Password of Avi user in Avi controller. The default value is the environment variable <code>AVI_PASSWORD</code>.</div> </td> </tr> <tr> <td>performance_limits<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>Optional settings that determine performance limits like max connections or bandwdith etc.</div> </td> </tr> <tr> <td>pool_group_ref<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>The pool group is an object that contains pools.</div> <div>It is a reference to an object of type poolgroup.</div> </td> </tr> <tr> <td>pool_ref<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>The pool is an object that contains destination servers and related attributes such as load-balancing and persistence.</div> <div>It is a reference to an object of type pool.</div> </td> </tr> <tr> <td>port_uuid<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>(internal-use) network port assigned to the virtual service ip address.</div> <div>Field deprecated in 17.1.1.</div> </td> </tr> <tr> <td>remove_listening_port_on_vs_down<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>Remove listening port if virtualservice is down.</div> <div>Default value when not specified in API or module is interpreted by Avi Controller as False.</div> </td> </tr> <tr> <td>requests_rate_limit<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>Rate limit the incoming requests to this virtual service.</div> </td> </tr> <tr> <td>scaleout_ecmp<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>Disable re-distribution of flows across service engines for a virtual service.</div> <div>Enable if the network itself performs flow hashing with ecmp in environments such as gcp.</div> <div>Default value when not specified in API or module is interpreted by Avi Controller as False.</div> </td> </tr> <tr> <td>se_group_ref<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>The service engine group to use for this virtual service.</div> <div>Moving to a new se group is disruptive to existing connections for this vs.</div> <div>It is a reference to an object of type serviceenginegroup.</div> </td> </tr> <tr> <td>server_network_profile_ref<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>Determines the network settings profile for the server side of tcp proxied connections.</div> <div>Leave blank to use the same settings as the client to vs side of the connection.</div> <div>It is a reference to an object of type networkprofile.</div> </td> </tr> <tr> <td>service_metadata<br><div style="font-size: small;">(added in 2.4)</div>
+</td> <td>no</td> <td></td> <td></td> <td> <div>Metadata pertaining to the service provided by this virtual service.</div> <div>In openshift/kubernetes environments, egress pod info is stored.</div> <div>Any user input to this field will be overwritten by avi vantage.</div> </td> </tr> <tr> <td>service_pool_select<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>Select pool based on destination port.</div> </td> </tr> <tr> <td>services<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>List of services defined for this virtual service.</div> </td> </tr> <tr> <td>sideband_profile<br><div style="font-size: small;">(added in 2.4)</div>
+</td> <td>no</td> <td></td> <td></td> <td> <div>Sideband configuration to be used for this virtualservice.it can be used for sending traffic to sideband vips for external inspection etc.</div> </td> </tr> <tr> <td>snat_ip<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>Nat'ted floating source ip address(es) for upstream connection to servers.</div> </td> </tr> <tr> <td>ssl_key_and_certificate_refs<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>Select or create one or two certificates, ec and/or rsa, that will be presented to ssl/tls terminated connections.</div> <div>It is a reference to an object of type sslkeyandcertificate.</div> </td> </tr> <tr> <td>ssl_profile_ref<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>Determines the set of ssl versions and ciphers to accept for ssl/tls terminated connections.</div> <div>It is a reference to an object of type sslprofile.</div> </td> </tr> <tr> <td>ssl_sess_cache_avg_size<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>Expected number of ssl session cache entries (may be exceeded).</div> <div>Allowed values are 1024-16383.</div> <div>Default value when not specified in API or module is interpreted by Avi Controller as 1024.</div> </td> </tr> <tr> <td>state<br>
+</td> <td>no</td> <td>present</td> <td><ul>
+<li>absent</li>
+<li>present</li>
+</ul></td> <td> <div>The state that should be applied on the entity.</div> </td> </tr> <tr> <td>static_dns_records<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>List of static dns records applied to this virtual service.</div> <div>These are static entries and no health monitoring is performed against the ip addresses.</div> </td> </tr> <tr> <td>subnet<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>Subnet providing reachability for client facing virtual service ip.</div> <div>Field deprecated in 17.1.1.</div> </td> </tr> <tr> <td>subnet_uuid<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>It represents subnet for the virtual service ip address allocation when auto_allocate_ip is true.it is only applicable in openstack or aws cloud.</div> <div>This field is required if auto_allocate_ip is true.</div> <div>Field deprecated in 17.1.1.</div> </td> </tr> <tr> <td>tenant<br>
+</td> <td>no</td> <td>admin</td> <td></td> <td> <div>Name of tenant used for all Avi API calls and context of object.</div> </td> </tr> <tr> <td>tenant_ref<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>It is a reference to an object of type tenant.</div> </td> </tr> <tr> <td>tenant_uuid<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>UUID of tenant used for all Avi API calls and context of object.</div> </td> </tr> <tr> <td>traffic_clone_profile_ref<br><div style="font-size: small;">(added in 2.4)</div>
+</td> <td>no</td> <td></td> <td></td> <td> <div>Server network or list of servers for cloning traffic.</div> <div>It is a reference to an object of type trafficcloneprofile.</div> <div>Field introduced in 17.1.1.</div> </td> </tr> <tr> <td>type<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>Specify if this is a normal virtual service, or if it is the parent or child of an sni-enabled virtual hosted virtual service.</div> <div>Enum options - VS_TYPE_NORMAL, VS_TYPE_VH_PARENT, VS_TYPE_VH_CHILD.</div> <div>Default value when not specified in API or module is interpreted by Avi Controller as VS_TYPE_NORMAL.</div> </td> </tr> <tr> <td>url<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>Avi controller URL of the object.</div> </td> </tr> <tr> <td>use_bridge_ip_as_vip<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>Use bridge ip as vip on each host in mesos deployments.</div> <div>Default value when not specified in API or module is interpreted by Avi Controller as False.</div> </td> </tr> <tr> <td>username<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>Username used for accessing Avi controller. The default value is the environment variable <code>AVI_USERNAME</code>.</div> </td> </tr> <tr> <td>uuid<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>Uuid of the virtualservice.</div> </td> </tr> <tr> <td>vh_domain_name<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>The exact name requested from the client's sni-enabled tls hello domain name field.</div> <div>If this is a match, the parent vs will forward the connection to this child vs.</div> </td> </tr> <tr> <td>vh_parent_vs_uuid<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>Specifies the virtual service acting as virtual hosting (sni) parent.</div> </td> </tr> <tr> <td>vip<br><div style="font-size: small;">(added in 2.4)</div>
+</td> <td>no</td> <td></td> <td></td> <td> <div>List of virtual service ips.</div> <div>While creating a 'shared vs',please use vsvip_ref to point to the shared entities.</div> <div>Field introduced in 17.1.1.</div> </td> </tr> <tr> <td>vrf_context_ref<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>Virtual routing context that the virtual service is bound to.</div> <div>This is used to provide the isolation of the set of networks the application is attached to.</div> <div>It is a reference to an object of type vrfcontext.</div> </td> </tr> <tr> <td>vs_datascripts<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>Datascripts applied on the data traffic of the virtual service.</div> </td> </tr> <tr> <td>vsvip_ref<br><div style="font-size: small;">(added in 2.4)</div>
+</td> <td>no</td> <td></td> <td></td> <td> <div>Mostly used during the creation of shared vs, this fieldrefers to entities that can be shared across virtual services.</div> <div>It is a reference to an object of type vsvip.</div> <div>Field introduced in 17.1.1.</div> </td> </tr> <tr> <td>weight<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>The quality of service weight to assign to traffic transmitted from this virtual service.</div> <div>A higher weight will prioritize traffic versus other virtual services sharing the same service engines.</div> <div>Default value when not specified in API or module is interpreted by Avi Controller as 1.</div> </td> </tr> </table>   <h2 id="examples">Examples</h2>  <pre data-language="YAML">- name: Create SSL Virtual Service using Pool testpool2
+  avi_virtualservice:
+    controller: 10.10.27.90
+    username: admin
+    password: AviNetworks123!
+    name: newtestvs
+    state: present
+    performance_limits:
+    max_concurrent_connections: 1000
+    services:
+        - port: 443
+          enable_ssl: true
+        - port: 80
+    ssl_profile_ref: '/api/sslprofile?name=System-Standard'
+    application_profile_ref: '/api/applicationprofile?name=System-Secure-HTTP'
+    ssl_key_and_certificate_refs:
+        - '/api/sslkeyandcertificate?name=System-Default-Cert'
+    ip_address:
+    addr: 10.90.131.103
+    type: V4
+    pool_ref: '/api/pool?name=testpool2'
+</pre>    <h2 id="return-values">Return Values</h2> <p>Common return values are documented here <a class="reference internal" href="../common_return_values/"><span class="doc">Return Values</span></a>, the following are the fields unique to this module:</p> <table> <tr> <th class="head">name</th> <th class="head">description</th> <th class="head">returned</th> <th class="head">type</th> <th class="head">sample</th> </tr> <tr> <td>obj</td> <td> <div>VirtualService (api/virtualservice) object</div> </td> <td align="center">success, changed</td> <td align="center">dict</td> <td align="center"></td> </tr> </table>  <h3 id="status">Status</h3> <p>This module is flagged as <strong>preview</strong> which means that it is not guaranteed to have a backwards compatible interface.</p> <p>For help in developing on modules, should you be so inclined, please read <a class="reference internal" href="https://docs.ansible.com/ansible/latest/community.html" target="_blank"><span class="doc">Community Information &amp; Contributing</span></a>, <a class="reference internal" href="../dev_guide/testing/"><span class="doc">Testing Ansible</span></a> and <a class="reference internal" href="../dev_guide/developing_modules/"><span class="doc">Developing Modules</span></a>.</p>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2012–2017 Michael DeHaan<br>© 2017 Red Hat, Inc.<br>Licensed under the GNU General Public License version 3.<br>
+    <a href="https://docs.ansible.com/ansible/latest/avi_virtualservice_module.html" class="_attribution-link" target="_blank">https://docs.ansible.com/ansible/latest/avi_virtualservice_module.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

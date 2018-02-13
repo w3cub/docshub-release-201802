@@ -1,0 +1,91 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Developing Modules - Ansible - W3cubDocs</title>
+  
+  <meta name="description" content=" This section discusses how to develop, debug, review, and test modules. ">
+  <meta name="keywords" content="developing, modules, -, ansible">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/ansible/dev_guide/developing_modules/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/ansible.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/ansible/" class="_nav-link" title="" style="margin-left:0;">Ansible</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _sphinx">
+				
+<h1 id="developing-modules">Developing Modules</h1>   <ul> <li><a class="reference internal" href="#welcome" id="id2">Welcome</a></li> <li><a class="reference internal" href="#should-you-develop-a-module" id="id3">Should You Develop A Module?</a></li> <li><a class="reference internal" href="#how-to-develop-a-module" id="id4">How To Develop A Module</a></li> <li><a class="reference internal" href="#appendix-module-utilities" id="id5">Appendix: Module Utilities</a></li> </ul>
+   <h2 id="module-dev-welcome">Welcome</h2> <p id="welcome">This section discusses how to develop, debug, review, and test modules.</p> <p>Ansible modules are reusable, standalone scripts that can be used by the Ansible API, or by the <strong class="command">ansible</strong> or <strong class="command">ansible-playbook</strong> programs. They return information to ansible by printing a JSON string to stdout before exiting. They take arguments in one of several ways which we’ll go into as we work through this tutorial.</p> <p>See <a class="reference internal" href="../../modules/"><span class="doc">About Modules</span></a> for a list of existing modules.</p> <p>Modules can be written in any language and are found in the path specified by <a class="reference internal" href="../../config/#envvar-ANSIBLE_LIBRARY" id="index-0"><code>ANSIBLE_LIBRARY</code></a> or the <code>--module-path</code> command line option or in the <a class="reference external" href="http://docs.ansible.com/ansible/intro_configuration.html#library" target="_blank">library section of the Ansible configuration file</a>.</p>   <h2 id="module-dev-should-you">Should You Develop A Module?</h2> <p id="should-you-develop-a-module">Before diving into the work of creating a new module, you should think about whether you actually <em>should</em> develop a module. Ask the following questions:</p> <ol class="arabic simple"> <li>Does a similar module already exist?</li> </ol> <p>There are a lot of existing modules available, you should check out the list of existing modules at <a class="reference internal" href="../../modules/"><span class="doc">About Modules</span></a></p> <ol class="arabic simple" start="2"> <li>Has someone already worked on a similar Pull Request?</li> </ol> <p>It’s possible that someone has already started developing a similar PR. There are a few ways to find open module Pull Requests:</p> <ul class="simple"> <li><a class="reference external" href="https://github.com/ansible/ansible/labels/new_module" target="_blank">GitHub new module PRs</a></li> <li><a class="reference external" href="https://github.com/ansible/ansible/labels/module" target="_blank">All updates to modules</a></li> <li>
+<a class="reference external" href="https://ansible.sivel.net/pr/byfile.html" target="_blank">New module PRs listed by directory</a> search for <code>lib/ansible/modules/</code>
+</li> </ul> <p>If you find an existing PR that looks like it addresses the issue you are trying to solve, please provide feedback on the PR - this will speed up getting the PR merged.</p> <ol class="arabic simple" start="3"> <li>Should you use or develop an action plugin instead?</li> </ol> <p>Action plugins get run on the master instead of on the target. For modules like file/copy/template, some of the work needs to be done on the master before the module executes on the target. Action plugins execute first on the master and can then execute the normal module on the target if necessary.</p> <p>For more information about action plugins, <a class="reference external" href="https://docs.ansible.com/ansible/dev_guide/developing_plugins.html" target="_blank">read the action plugins documentation here</a>.</p> <ol class="arabic simple" start="4"> <li>Should you use a role instead?</li> </ol> <p>Check out the roles documentation <a class="reference external" href="http://docs.ansible.com/ansible/playbooks_reuse_roles.html#roles" target="_blank">available here</a>.</p>   <h2 id="developing-modules-all">How To Develop A Module</h2> <p id="how-to-develop-a-module">The following topics will discuss how to develop and work with modules:</p> <dl class="docutils"> <dt><a class="reference internal" href="../developing_modules_general/"><span class="doc">Ansible Module Development Walkthrough</span></a></dt> <dd>A general overview of how to develop, debug, and test modules.</dd> <dt><a class="reference internal" href="../developing_modules_general_windows/"><span class="doc">Windows Ansible Module Development Walkthrough</span></a></dt> <dd>A general overview of how to develop, debug and test Windows modules.</dd> <dt><a class="reference internal" href="../developing_modules_documenting/"><span class="doc">Documenting Your Module</span></a></dt> <dd>How to include in-line documentation in your module.</dd> <dt><a class="reference internal" href="../developing_modules_best_practices/"><span class="doc">Conventions, Best Practices, and Pitfalls</span></a></dt> <dd>Best practices, recommendations, and things to avoid.</dd> <dt><a class="reference internal" href="../developing_modules_checklist/"><span class="doc">Contributing Your Module to Ansible</span></a></dt> <dd>Checklist for contributing your module to Ansible.</dd> <dt><a class="reference internal" href="../testing/"><span class="doc">Testing Ansible</span></a></dt> <dd>Developing unit and integration tests.</dd> <dt><a class="reference internal" href="../developing_python3/"><span class="doc">Ansible and Python 3</span></a></dt> <dd>Adding Python 3 support to modules (all new modules must be Python-2.6 and Python-3.5 compatible).</dd> <dt><a class="reference internal" href="../developing_modules_in_groups/"><span class="doc">Information for submitting a group of modules</span></a></dt> <dd>A guide for partners wanting to submit multiple modules.</dd> </dl> <div class="admonition seealso"> <p class="first admonition-title">See also</p> <dl class="last docutils"> <dt><a class="reference internal" href="../../modules/"><span class="doc">About Modules</span></a></dt> <dd>Learn about available modules</dd> <dt><a class="reference internal" href="../developing_plugins/"><span class="doc">Developing Plugins</span></a></dt> <dd>Learn about developing plugins</dd> <dt><a class="reference internal" href="../developing_api/"><span class="doc">Python API</span></a></dt> <dd>Learn about the Python API for playbook and task execution</dd> <dt><a class="reference external" href="https://github.com/ansible/ansible/tree/devel/lib/ansible/modules" target="_blank">GitHub modules directory</a></dt> <dd>Browse module source code</dd> <dt><a class="reference external" href="http://groups.google.com/group/ansible-devel" target="_blank">Mailing List</a></dt> <dd>Development mailing list</dd> <dt><a class="reference external" href="http://irc.freenode.net" target="_blank">irc.freenode.net</a></dt> <dd>#ansible IRC chat channel</dd> </dl> </div>   <h2 id="appendix-module-utilities">Appendix: Module Utilities</h2> <p>Ansible provides a number of module utilities that provide helper functions that you can use when developing your own modules. The <code>basic.py</code> module utility provides the main entry point for accessing the Ansible library, and all Ansible modules must, at minimum, import from basic.py:</p> <pre data-language="YAML">from ansible.module_utils.basic import *
+</pre> <p>The following is a list of module_utils files and a general description. The module utility source code lives in the <code>./lib/module_utils</code> directory under your main Ansible path - for more details on any specific module utility, please see the source code.</p> <ul class="simple"> <li>a10.py - Utilities used by the a10_server module to manage A10 Networks devices.</li> <li>aireos.py - Definitions and helper functions for modules that manage Cisco WLC devices.</li> <li>api.py - Adds shared support for generic API modules.</li> <li>aos.py - Module support utilities for managing Apstra AOS Server.</li> <li>aruba.py - Helper functions for modules working with Aruba networking devices.</li> <li>asa.py - Module support utilities for managing Cisco ASA network devices.</li> <li>azure_rm_common.py - Definitions and utilities for Microsoft Azure Resource Manager template deployments.</li> <li>basic.py - General definitions and helper utilities for Ansible modules.</li> <li>cloudstack.py - Utilities for CloudStack modules.</li> <li>database.py - Miscellaneous helper functions for PostGRES and MySQL</li> <li>docker_common.py - Definitions and helper utilities for modules working with Docker.</li> <li>ec2.py - Definitions and utilities for modules working with Amazon EC2</li> <li>eos.py - Helper functions for modules working with EOS networking devices.</li> <li>f5.py - Helper functions for modules working with F5 networking devices.</li> <li>facts.py - Helper functions for modules that return facts.</li> <li>gce.py - Definitions and helper functions for modules that work with Google Compute Engine resources.</li> <li>ios.py - Definitions and helper functions for modules that manage Cisco IOS networking devices</li> <li>iosxr.py - Definitions and helper functions for modules that manage Cisco IOS-XR networking devices</li> <li>ismount.py - Contains single helper function that fixes os.path.ismount</li> <li>junos.py - Definitions and helper functions for modules that manage Junos networking devices</li> <li>known_hosts.py - utilities for working with known_hosts file</li> <li>manageiq.py - Functions and utilities for modules that work with ManageIQ platform and its resources.</li> <li>mysql.py - Allows modules to connect to a MySQL instance</li> <li>netapp.py - Functions and utilities for modules that work with the NetApp storage platforms.</li> <li>netcfg.py - Configuration utility functions for use by networking modules</li> <li>netcmd.py - Defines commands and comparison operators for use in networking modules</li> <li>netscaler.py - Utilities specifically for the netscaler network modules.</li> <li>network.py - Functions for running commands on networking devices</li> <li>nxos.py - Contains definitions and helper functions specific to Cisco NXOS networking devices</li> <li>openstack.py - Utilities for modules that work with Openstack instances.</li> <li>openswitch.py - Definitions and helper functions for modules that manage OpenSwitch devices</li> <li>powershell.ps1 - Utilities for working with Microsoft Windows clients</li> <li>pure.py - Functions and utilities for modules that work with the Pure Storage storage platforms.</li> <li>pycompat24.py - Exception workaround for Python 2.4.</li> <li>rax.py - Definitions and helper functions for modules that work with Rackspace resources.</li> <li>redhat.py - Functions for modules that manage Red Hat Network registration and subscriptions</li> <li>service.py - Contains utilities to enable modules to work with Linux services (placeholder, not in use).</li> <li>shell.py - Functions to allow modules to create shells and work with shell commands</li> <li>six/__init__.py - Bundled copy of the <a class="reference external" href="https://pythonhosted.org/six/" target="_blank">Six Python library</a> to aid in writing code compatible with both Python 2 and Python 3.</li> <li>splitter.py - String splitting and manipulation utilities for working with Jinja2 templates</li> <li>urls.py - Utilities for working with http and https requests</li> <li>vca.py - Contains utilities for modules that work with VMware vCloud Air</li> <li>vmware.py - Contains utilities for modules that work with VMware vSphere VMs</li> <li>vyos.py - Definitions and functions for working with VyOS networking</li> </ul>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2012–2017 Michael DeHaan<br>© 2017 Red Hat, Inc.<br>Licensed under the GNU General Public License version 3.<br>
+    <a href="https://docs.ansible.com/ansible/latest/dev_guide/developing_modules.html" class="_attribution-link" target="_blank">https://docs.ansible.com/ansible/latest/dev_guide/developing_modules.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

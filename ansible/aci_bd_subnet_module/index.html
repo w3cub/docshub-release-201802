@@ -1,0 +1,120 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Aci_bd_subnet - Ansible - W3cubDocs</title>
+  
+  <meta name="description" content=" New in version 2.4. ">
+  <meta name="keywords" content="aci, bd, subnet, -, manage, subnets, on, cisco, fabrics, fv, ansible">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/ansible/aci_bd_subnet_module/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/ansible.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/ansible/" class="_nav-link" title="" style="margin-left:0;">Ansible</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _sphinx">
+				
+<h1 id="aci-bd-subnet">aci_bd_subnet - Manage Subnets on Cisco ACI fabrics (fv:Subnet)</h1> <div class="versionadded" id="aci-bd-subnet-manage-subnets-on-cisco-aci-fabrics-fv-subnet"> <p><span class="versionmodified">New in version 2.4.</span></p> </div>  <ul class="simple"> <li><a class="reference internal" href="#synopsis" id="id1">Synopsis</a></li> <li><a class="reference internal" href="#requirements-on-host-that-executes-module" id="id2">Requirements (on host that executes module)</a></li> <li><a class="reference internal" href="#options" id="id3">Options</a></li> <li><a class="reference internal" href="#examples" id="id4">Examples</a></li> <li>
+<a class="reference internal" href="#notes" id="id5">Notes</a><ul> <li><a class="reference internal" href="#status" id="id6">Status</a></li> </ul> </li> </ul>   <h2 id="synopsis">Synopsis</h2> <ul class="simple"> <li>Manage Subnets on Cisco ACI fabrics.</li> <li>More information from the internal APIC class <em>fv:Subnet</em> at <a class="reference external" href="https://developer.cisco.com/media/mim-ref/MO-fvSubnet.html" target="_blank">https://developer.cisco.com/media/mim-ref/MO-fvSubnet.html</a>.</li> </ul>   <h2 id="requirements-on-host-that-executes-module">Requirements (on host that executes module)</h2>  <ul class="simple"> <li>ACI Fabric 1.0(3f)+</li> </ul>    <h2 id="options">Options</h2> <table> <tr> <th class="head">parameter</th> <th class="head">required</th> <th class="head">default</th> <th class="head">choices</th> <th class="head">comments</th> </tr> <tr> <td>bd<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>The name of the Bridge Domain.</div> </td> </tr> <tr> <td>description<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>The description for the Subnet.</div> </td> </tr> <tr> <td>enable_vip<br>
+</td> <td>no</td> <td></td> <td><ul>
+<li>False</li>
+<li>True</li>
+</ul></td> <td> <div>Determines if the Subnet should be treated as a VIP; used when the BD is extended to multiple sites.</div> <div>The APIC defaults new Subnets to <code>no</code>.</div> </td> </tr> <tr> <td>gateway<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>The IPv4 or IPv6 gateway address for the Subnet.</div> <div style="font-size: small;">aliases: gateway_ip</div> </td> </tr> <tr> <td>mask<br>
+</td> <td>no</td> <td></td> <td><ul>
+<li>Any 0 to 32 for IPv4 Addresses</li>
+<li>0-128 for IPv6 Addresses</li>
+</ul></td> <td> <div>The subnet mask for the Subnet.</div> <div>This is the number assocated with CIDR notation.</div> <div style="font-size: small;">aliases: subnet_mask</div> </td> </tr> <tr> <td>nd_prefix_policy<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>The IPv6 Neighbor Discovery Prefix Policy to associate with the Subnet.</div> </td> </tr> <tr> <td>preferred<br>
+</td> <td>no</td> <td></td> <td><ul>
+<li>False</li>
+<li>True</li>
+</ul></td> <td> <div>Determines if the Subnet is preferred over all available Subnets. Only one Subnet per Address Family (IPv4/IPv6). can be preferred in the Bridge Domain.</div> <div>The APIC defaults new Subnets to <code>no</code>.</div> </td> </tr> <tr> <td>route_profile<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>The Route Profile to the associate with the Subnet.</div> </td> </tr> <tr> <td>route_profile_l3_out<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>The L3 Out that contains the assocated Route Profile.</div> </td> </tr> <tr> <td>scope<br>
+</td> <td>no</td> <td>private</td> <td><ul>
+<li>private</li>
+<li>public</li>
+<li>shared</li>
+</ul></td> <td> <div>Determines if scope of the Subnet.</div> <div>The private option only allows communication with hosts in the same VRF.</div> <div>The public option allows the Subnet to be advertised outside of the ACI Fabric, and allows communication with hosts in other VRFs.</div> <div>The shared option limits communication to hosts in either the same VRF or the shared VRF.</div> <div>The APIC defaults new Subnets to <code>private</code>.</div> </td> </tr> <tr> <td>subnet_control<br>
+</td> <td>no</td> <td>nd_ra</td> <td><ul>
+<li>nd_ra</li>
+<li>no_gw</li>
+<li>querier_ip</li>
+<li>unspecified</li>
+</ul></td> <td> <div>Determines the Subnet's Control State.</div> <div>The querier_ip option is used to treat the gateway_ip as an IGMP querier source IP.</div> <div>The nd_ra option is used to treate the gateway_ip address as a Neighbor Discovery Router Advertisement Prefix.</div> <div>The no_gw option is used to remove default gateway functionality from the gateway address.</div> <div>The APIC defaults new Subnets to <code>nd_ra</code>.</div> </td> </tr> <tr> <td>subnet_name<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>The name of the Subnet.</div> <div style="font-size: small;">aliases: name</div> </td> </tr> <tr> <td>tenant<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>The name of the Tenant.</div> <div style="font-size: small;">aliases: tenant_name</div> </td> </tr> </table>   <h2 id="examples">Examples</h2>  <pre data-language="YAML">#
+</pre>    <h2 id="notes">Notes</h2> <div class="admonition note"> <p class="first admonition-title">Note</p> <ul class="last simple"> <li>The <code>gateway</code> parameter is the root key used to access the Subnet (not name), so the <code>gateway</code> is required when the state is <code>absent</code> or <code>present</code>.</li> <li>The <code>tenant</code> and <code>bd</code> used must exist before using this module in your playbook. The <a class="reference internal" href="../aci_tenant_module/#aci-tenant"><span class="std std-ref">aci_tenant</span></a> module and <a class="reference internal" href="../aci_bd_module/#aci-bd"><span class="std std-ref">aci_bd</span></a> can be used for these.</li> </ul> </div>  <h3 id="status">Status</h3> <p>This module is flagged as <strong>preview</strong> which means that it is not guaranteed to have a backwards compatible interface.</p> <p>For help in developing on modules, should you be so inclined, please read <a class="reference internal" href="https://docs.ansible.com/ansible/latest/community.html" target="_blank"><span class="doc">Community Information &amp; Contributing</span></a>, <a class="reference internal" href="../dev_guide/testing/"><span class="doc">Testing Ansible</span></a> and <a class="reference internal" href="../dev_guide/developing_modules/"><span class="doc">Developing Modules</span></a>.</p>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2012–2017 Michael DeHaan<br>© 2017 Red Hat, Inc.<br>Licensed under the GNU General Public License version 3.<br>
+    <a href="https://docs.ansible.com/ansible/latest/aci_bd_subnet_module.html" class="_attribution-link" target="_blank">https://docs.ansible.com/ansible/latest/aci_bd_subnet_module.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

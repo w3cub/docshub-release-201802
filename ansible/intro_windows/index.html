@@ -1,0 +1,228 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Windows Support - Ansible - W3cubDocs</title>
+  
+  <meta name="description" content=" As you may have already read, Ansible manages Linux&#47;Unix machines using SSH by default. ">
+  <meta name="keywords" content="windows, support, -, ansible">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/ansible/intro_windows/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/ansible.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/ansible/" class="_nav-link" title="" style="margin-left:0;">Ansible</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _sphinx">
+				
+<h1 id="windows-support">Windows Support</h1>   <ul> <li><a class="reference internal" href="#windows-how-does-it-work" id="id6">Windows: How Does It Work</a></li> <li><a class="reference internal" href="#installing-on-the-control-machine" id="id7">Installing on the Control Machine</a></li> <li><a class="reference internal" href="#using-a-windows-control-machine" id="id8">Using a Windows control machine</a></li> <li>
+<a class="reference internal" href="#authentication-options" id="id9">Authentication Options</a><ul> <li><a class="reference internal" href="#certificate" id="id10">Certificate</a></li> <li>
+<a class="reference internal" href="#kerberos" id="id11">Kerberos</a><ul> <li><a class="reference internal" href="#installing-python-kerberos-dependencies" id="id12">Installing python-kerberos dependencies</a></li> <li><a class="reference internal" href="#installing-python-kerberos" id="id13">Installing python-kerberos</a></li> <li><a class="reference internal" href="#configuring-kerberos" id="id14">Configuring Kerberos</a></li> <li><a class="reference internal" href="#testing-a-kerberos-connection" id="id15">Testing a kerberos connection</a></li> <li><a class="reference internal" href="#automatic-kerberos-ticket-management" id="id16">Automatic kerberos ticket management</a></li> <li><a class="reference internal" href="#troubleshooting-kerberos-connections" id="id17">Troubleshooting kerberos connections</a></li> </ul> </li> <li>
+<a class="reference internal" href="#credssp" id="id18">CredSSP</a><ul> <li><a class="reference internal" href="#installing-requests-credssp" id="id19">Installing requests-credssp</a></li> <li><a class="reference internal" href="#credssp-and-tls-1-2" id="id20">CredSSP and TLS 1.2</a></li> </ul> </li> <li><a class="reference internal" href="#credential-delegation" id="id21">Credential Delegation</a></li> </ul> </li> <li><a class="reference internal" href="#inventory" id="id22">Inventory</a></li> <li><a class="reference internal" href="#windows-system-prep" id="id23">Windows System Prep</a></li> <li><a class="reference internal" href="#getting-to-powershell-3-0-or-higher" id="id24">Getting to PowerShell 3.0 or higher</a></li> <li><a class="reference internal" href="#what-modules-are-available" id="id25">What modules are available</a></li> <li><a class="reference internal" href="#developers-supported-modules-and-how-it-works" id="id26">Developers: Supported modules and how it works</a></li> <li><a class="reference internal" href="#windows-facts" id="id27">Windows Facts</a></li> <li><a class="reference internal" href="#windows-playbook-examples" id="id28">Windows Playbook Examples</a></li> <li><a class="reference internal" href="#windows-contributions" id="id29">Windows Contributions</a></li> </ul>
+   <h2 id="id1">Windows: How Does It Work</h2> <p id="windows-how-does-it-work">As you may have already read, Ansible manages Linux/Unix machines using SSH by default.</p> <p>Starting in version 1.7, Ansible also contains support for managing Windows machines. This uses native PowerShell remoting, rather than SSH.</p> <p>Ansible will still be run from a Linux control machine, and uses the “winrm” Python module to talk to remote hosts. While not supported by Microsoft or Ansible, this Linux control machine can be a Windows Subsystem for Linux (WSL) bash shell.</p> <p>No additional software needs to be installed on the remote machines for Ansible to manage them, it still maintains the agentless properties that make it popular on Linux/Unix.</p> <p>Note that it is expected you have a basic understanding of Ansible prior to jumping into this section, so if you haven’t written a Linux playbook first, it might be worthwhile to dig in there first.</p>   <h2 id="windows-installing">Installing on the Control Machine</h2> <p id="installing-on-the-control-machine">On a Linux control machine:</p> <pre data-language="YAML">pip install "pywinrm&gt;=0.2.2"
+</pre> <div class="admonition note"> <p class="first admonition-title">Note</p> <p class="last">on distributions with multiple python versions, use pip2 or pip2.x, where x matches the python minor version Ansible is running under.</p> </div>   <h2 id="windows-control-machine">Using a Windows control machine</h2> <p id="using-a-windows-control-machine">A Linux control machine is required to manage Windows hosts. This Linux control machine can be a Windows Subsystem for Linux (WSL) bash shell.</p> <div class="admonition note"> <p class="first admonition-title">Note</p> <p class="last">Running Ansible from a Windows control machine directly is not a goal of the project. Refrain from asking for this feature, as it limits what technologies, features, and code we can use in the main project in the future.</p> </div> <div class="admonition note"> <p class="first admonition-title">Note</p> <p class="last">The Windows Subsystem for Linux (Beta) is not supported by Microsoft or Ansible and should not be used for production systems.</p> </div> <p>If you would like to experiment with the Windows Subsystem for Linux (WSL), first enable the Windows Subsystem for Linux using <a class="reference external" href="https://www.jeffgeerling.com/blog/2017/using-ansible-through-windows-10s-subsystem-linux" target="_blank">these instructions</a>. This requires a reboot.</p> <p>Once WSL is enabled, you can open the Bash terminal. At the prompt, you can quickly start using the latest Ansible release by running the following commands:</p> <pre data-language="YAML">sudo apt-get update
+sudo apt-get install python-pip git libffi-dev libssl-dev -y
+pip install ansible pywinrm
+
+# this step is only necessary for Windows builds earlier than 16188, and must be repeated each time bash is launched,
+# unless bash is launched as ``bash --login``
+# see https://github.com/Microsoft/BashOnWindows/issues/2148 and
+# https://github.com/Microsoft/BashOnWindows/issues/816#issuecomment-301216901 for details
+source ~/.profile
+</pre> <p>After you’ve successfully run these commands, you can start to create your inventory, write example playbooks and start targeting systems using the plethora of available Windows modules.</p> <p>If you want to run Ansible from source for development purposes, simply uninstall the pip-installed version (which will leave all the necessary dependencies behind), then clone the Ansible source, and run the hacking script to configure it to run from source:</p> <pre data-language="YAML">pip uninstall ansible -y
+git clone https://github.com/ansible/ansible.git
+source ansible/hacking/env-setup
+</pre> <div class="admonition note"> <p class="first admonition-title">Note</p> <p class="last">Ansible is also reported to “work” on Cygwin, but installation is more cumbersome, and will incur sporadic failures due to Cygwin’s implementation of <code>fork()</code>.</p> </div>   <h2 id="authentication-options">Authentication Options</h2> <p>When connecting to a Windows host there are different authentication options that can be used. The options and the features they support are:</p> <table class="docutils">  <thead valign="bottom"> <tr>
+<th class="head">Option</th> <th class="head">Local Accounts</th> <th class="head">Active Directory Accounts</th> <th class="head">Credential Delegation</th> </tr> </thead>  <tr>
+<td>Basic</td> <td>Yes</td> <td>No</td> <td>No</td> </tr> <tr>
+<td>Certificate</td> <td>Yes</td> <td>No</td> <td>No</td> </tr> <tr>
+<td>Kerberos</td> <td>No</td> <td>Yes</td> <td>Yes</td> </tr> <tr>
+<td>NTLM</td> <td>Yes</td> <td>Yes</td> <td>No</td> </tr> <tr>
+<td>CredSSP</td> <td>Yes</td> <td>Yes</td> <td>Yes</td> </tr>  </table> <p>You can specify which authentication option you wish to use by setting it to the <code>ansible_winrm_transport</code> variable.</p>  <h3 id="certificate">Certificate</h3> <p>Certificate authentication is similar to SSH where a certificate is assigned to a local user and instead of using a password to authenticate a certificate is used instead.</p>   <h3 id="kerberos">Kerberos</h3> <p>Kerberos is the preferred option compared to NTLM to use when using an Active Directory account but it requires a few extra steps to set up on the Ansible control host. You will need to install the “python-kerberos” module on the Ansible control host (and the MIT krb5 libraries it depends on). The Ansible control host also requires a properly configured computer account in Active Directory.</p>  <h4 id="installing-python-kerberos-dependencies">Installing python-kerberos dependencies</h4> <pre data-language="bash"># Via Yum
+yum -y install python-devel krb5-devel krb5-libs krb5-workstation
+
+# Via Apt (Ubuntu)
+sudo apt-get install python-dev libkrb5-dev krb5-user
+
+# Via Portage (Gentoo)
+emerge -av app-crypt/mit-krb5
+emerge -av dev-python/setuptools
+
+# Via pkg (FreeBSD)
+sudo pkg install security/krb5
+
+# Via OpenCSW (Solaris)
+pkgadd -d http://get.opencsw.org/now
+/opt/csw/bin/pkgutil -U
+/opt/csw/bin/pkgutil -y -i libkrb5_3
+
+# Via Pacman (Arch Linux)
+pacman -S krb5
+</pre>   <h4 id="installing-python-kerberos">Installing python-kerberos</h4> <p>Once you’ve installed the necessary dependencies, the python-kerberos wrapper can be installed via pip:</p> <pre data-language="bash">pip install pywinrm[kerberos]
+</pre> <p>Kerberos is installed and configured by default on OS X and many Linux distributions. If your control machine has not already done this for you, you will need to.</p>   <h4 id="configuring-kerberos">Configuring Kerberos</h4> <p>Edit your /etc/krb5.conf (which should be installed as a result of installing packages above) and add the following information for each domain you need to connect to:</p> <p>In the section that starts with</p> <pre data-language="ini">[realms]
+</pre> <p>add the full domain name and the fully qualified domain names of your primary and secondary Active Directory domain controllers. It should look something like this:</p> <pre data-language="ini">[realms]
+
+ MY.DOMAIN.COM = {
+  kdc = domain-controller1.my.domain.com
+  kdc = domain-controller2.my.domain.com
+ }
+</pre> <p>and in the [domain_realm] section add a line like the following for each domain you want to access:</p> <pre data-language="ini">[domain_realm]
+    .my.domain.com = MY.DOMAIN.COM
+</pre> <p>You may wish to configure other settings here, such as the default domain.</p>   <h4 id="testing-a-kerberos-connection">Testing a kerberos connection</h4> <p>If you have installed krb5-workstation (yum) or krb5-user (apt-get) you can use the following command to test that you can be authorised by your domain controller.</p> <pre data-language="bash">kinit user@MY.DOMAIN.COM
+</pre> <p>Note that the domain part has to be fully qualified and must be in upper case.</p> <p>To see what tickets if any you have acquired, use the command klist</p> <pre data-language="bash">klist
+</pre>   <h4 id="automatic-kerberos-ticket-management">Automatic kerberos ticket management</h4> <p>Ansible defaults to automatically managing kerberos tickets (as of Ansible 2.3) when both username and password are specified for a host that’s configured for kerberos. A new ticket is created in a temporary credential cache for each host, before each task executes (to minimize the chance of ticket expiration). The temporary credential caches are deleted after each task, and will not interfere with the default credential cache.</p> <p>To disable automatic ticket management (e.g., to use an existing SSO ticket or call <code>kinit</code> manually to populate the default credential cache), set <code>ansible_winrm_kinit_mode=manual</code> via inventory.</p> <p>Automatic ticket management requires a standard <code>kinit</code> binary on the control host system path. To specify a different location or binary name, set the <code>ansible_winrm_kinit_cmd</code> inventory var to the fully-qualified path to an MIT krbv5 <code>kinit</code>-compatible binary.</p>   <h4 id="troubleshooting-kerberos-connections">Troubleshooting kerberos connections</h4> <p>If you unable to connect using kerberos, check the following:</p> <p>Ensure that forward and reverse DNS lookups are working properly on your domain.</p> <p>To test this, ping the windows host you want to control by name then use the ip address returned with nslookup. You should get the same name back from DNS when you use nslookup on the ip address.</p> <p>If you get different hostnames back than the name you originally pinged, speak to your active directory administrator and get them to check that DNS Scavenging is enabled and that DNS and DHCP are updating each other.</p> <p>Ensure that the Ansible controller has a properly configured computer account in the domain.</p> <p>Check your Ansible controller’s clock is synchronised with your domain controller. Kerberos is time sensitive and a little clock drift can cause tickets not be granted.</p> <p>Check you are using the real fully qualified domain name for the domain. Sometimes domains are commonly known to users by aliases. To check this run:</p> <pre data-language="bash">kinit -C user@MY.DOMAIN.COM
+klist
+</pre> <p>If the domain name returned by klist is different from the domain name you requested, you are requesting using an alias, and you need to update your krb5.conf so you are using the fully qualified domain name, not its alias.</p>    <h3 id="windows-inventory">CredSSP</h3> <p id="credssp">CredSSP authentication can be used to authenticate with both domain and local accounts. It allows credential delegation to do second hop authentication on a remote host by sending an encrypted form of the credentials to the remote host using the CredSSP protocol.</p>  <h4 id="installing-requests-credssp">Installing requests-credssp</h4> <p>To install credssp you can use pip to install the requests-credssp library:</p> <pre data-language="bash">pip install pywinrm[credssp]
+</pre>   <h4 id="credssp-and-tls-1-2">CredSSP and TLS 1.2</h4> <p>CredSSP requires the remote host to have TLS 1.2 configured or else the connection will fail. TLS 1.2 is installed by default from Server 2012 and Windows 8 onwards. For Server 2008, 2008 R2 and Windows 7 you can add TLS 1.2 support by:</p> <ul class="simple"> <li>Installing the <a class="reference external" href="https://support.microsoft.com/en-us/help/3080079/update-to-add-rds-support-for-tls-1.1-and-tls-1.2-in-windows-7-or-windows-server-2008-r2" target="_blank">TLS 1.2 update from Microsoft</a>
+</li> <li>Adding the TLS 1.2 registry keys as shown on this <a class="reference external" href="https://technet.microsoft.com/en-us/library/dn786418.aspx#BKMK_SchannelTR_TLS12" target="_blank">page</a>
+</li> </ul>    <h3 id="credential-delegation">Credential Delegation</h3> <p>If you need to interact with a remote resource or run a process that requires the credentials to be stored in the current session like a certreq.exe then an authentication protocol that supports credential delegation needs to be used.</p>    <h2 id="inventory">Inventory</h2> <p>Ansible’s windows support relies on a few standard variables to indicate the username, password, and connection type (windows) of the remote hosts. These variables are most easily set up in inventory. This is used instead of SSH-keys or passwords as normally fed into Ansible:</p> <pre data-language="YAML">[windows]
+winserver1.example.com
+winserver2.example.com
+</pre> <div class="admonition note"> <p class="first admonition-title">Note</p> <p class="last">Ansible 2.0 has deprecated the “ssh” from <code>ansible_ssh_user</code>, <code>ansible_ssh_host</code>, and <code>ansible_ssh_port</code> to become <code>ansible_user</code>, <code>ansible_host</code>, and <code>ansible_port</code>. If you are using a version of Ansible prior to 2.0, you should continue using the older style variables (<code>ansible_ssh_*</code>). These shorter variables are ignored, without warning, in older versions of Ansible.</p> </div> <p>In <code>group_vars/windows.yml</code>, define the following inventory variables:</p> <pre data-language="YAML"># it is suggested that these be encrypted with ansible-vault:
+# ansible-vault edit group_vars/windows.yml
+
+ansible_user: Administrator
+ansible_password: SecretPasswordGoesHere
+ansible_port: 5986
+ansible_connection: winrm
+# The following is necessary for Python 2.7.9+ (or any older Python that has backported SSLContext, eg, Python 2.7.5 on RHEL7) when using default WinRM self-signed certificates:
+ansible_winrm_server_cert_validation: ignore
+</pre> <p>Attention for the older style variables (<code>ansible_ssh_*</code>): ansible_ssh_password doesn’t exist, should be ansible_ssh_pass.</p> <p>Although Ansible is mostly an SSH-oriented system, Windows management will not happen over SSH (<a class="reference external" href="http://blogs.msdn.com/b/powershell/archive/2015/06/03/looking-forward-microsoft-support-for-secure-shell-ssh.aspx" target="_blank">yet</a>).</p> <p>If you have installed the <code>kerberos</code> module and <code>ansible_user</code> contains <code>@</code> (e.g. <code>username@realm</code>), Ansible will first attempt Kerberos authentication. <em>This method uses the principal you are authenticated to Kerberos with on the control machine and not</em> <code>ansible_user</code>. If that fails, either because you are not signed into Kerberos on the control machine or because the corresponding domain account on the remote host is not available, then Ansible will fall back to “plain” username/password authentication.</p> <p>When using your playbook, don’t forget to specify <code>--ask-vault-pass</code> to provide the password to unlock the file.</p> <p>Test your configuration like so, by trying to contact your Windows nodes. Note this is not an ICMP ping, but tests the Ansible communication channel that leverages Windows remoting:</p> <pre data-language="YAML">ansible windows [-i inventory] -m win_ping --ask-vault-pass
+</pre> <p>If you haven’t done anything to prep your systems yet, this won’t work yet. This is covered in a later section about how to enable PowerShell remoting - and if necessary - how to upgrade PowerShell to a version that is 3 or higher.</p> <p>You’ll run this command again later though, to make sure everything is working.</p> <p>Since 2.0, the following custom inventory variables are also supported for additional configuration of WinRM connections</p> <ul class="simple"> <li>
+<code>ansible_winrm_scheme</code>: Specify the connection scheme (<code>http</code> or <code>https</code>) to use for the WinRM connection. Ansible uses <code>https</code> by default unless the port is 5985.</li> <li>
+<code>ansible_winrm_path</code>: Specify an alternate path to the WinRM endpoint. Ansible uses <code>/wsman</code> by default.</li> <li>
+<code>ansible_winrm_realm</code>: Specify the realm to use for Kerberos authentication. If the username contains <code>@</code>, Ansible will use the part of the username after <code>@</code> by default.</li> <li>
+<code>ansible_winrm_transport</code>: Specify one or more transports as a comma-separated list. By default, Ansible will use <code>kerberos,plaintext</code> if the <code>kerberos</code> module is installed and a realm is defined, otherwise <code>plaintext</code>.</li> <li>
+<code>ansible_winrm_server_cert_validation</code>: Specify the server certificate validation mode (<code>ignore</code> or <code>validate</code>). Ansible defaults to <code>validate</code> on Python 2.7.9 and higher, which will result in certificate validation errors against the Windows self-signed certificates. Unless verifiable certificates have been configured on the WinRM listeners, this should be set to <code>ignore</code>.</li> <li>
+<code>ansible_winrm_kerberos_delegation</code>: Set to <code>true</code> to enable delegation of commands on the remote host when using kerberos.</li> <li>
+<code>ansible_winrm_operation_timeout_sec</code>: Increase the default timeout for WinRM operations (default: <code>20</code>).</li> <li>
+<code>ansible_winrm_read_timeout_sec</code>: Increase the WinRM read timeout if you experience read timeout errors (default: <code>30</code>), e.g. intermittent network issues.</li> <li>
+<code>ansible_winrm_*</code>: Any additional keyword arguments supported by <code>winrm.Protocol</code> may be provided.</li> </ul>   <h2 id="id2">Windows System Prep</h2> <p id="windows-system-prep">In order for Ansible to manage your windows machines, you will have to enable and configure PowerShell remoting.</p> <p>To automate the setup of WinRM, you can run the <a class="reference external" href="https://github.com/ansible/ansible/blob/devel/examples/scripts/ConfigureRemotingForAnsible.ps1" target="_blank">examples/scripts/ConfigureRemotingForAnsible.ps1</a> script on the remote machine in a PowerShell console as an administrator.</p> <p>The example script accepts a few arguments which Admins may choose to use to modify the default setup slightly, which might be appropriate in some cases.</p> <p>Pass the <code>-CertValidityDays</code> option to customize the expiration date of the generated certificate:</p> <pre data-language="YAML">powershell.exe -File ConfigureRemotingForAnsible.ps1 -CertValidityDays 100
+</pre> <p>Pass the <code>-EnableCredSSP</code> switch to enable CredSSP as an authentication option:</p> <pre data-language="YAML">powershell.exe -File ConfigureRemotingForAnsible.ps1 -EnableCredSSP
+</pre> <p>Pass the <code>-ForceNewSSLCert</code> switch to force a new SSL certificate to be attached to an already existing winrm listener. (Avoids SSL winrm errors on syspreped Windows images after the CN changes):</p> <pre data-language="YAML">powershell.exe -File ConfigureRemotingForAnsible.ps1 -ForceNewSSLCert
+</pre> <p>Pass the <code>-SkipNetworkProfileCheck</code> switch to configure winrm to listen on PUBLIC zone interfaces. (Without this option, the script will fail if any network interface on device is in PUBLIC zone):</p> <pre data-language="YAML">powershell.exe -File ConfigureRemotingForAnsible.ps1 -SkipNetworkProfileCheck
+</pre> <p>To troubleshoot the <code>ConfigureRemotingForAnsible.ps1</code> writes every change it makes to the Windows EventLog (useful when run unattendedly). Additionally the <code>-Verbose</code> option can be used to get more information on screen about what it is doing.</p> <div class="admonition note"> <p class="first admonition-title">Note</p> <p>On Windows 7 and Server 2008 R2 machines, due to a bug in Windows Management Framework 3.0, it may be necessary to install this hotfix <a class="reference external" href="http://support.microsoft.com/kb/2842230" target="_blank">http://support.microsoft.com/kb/2842230</a> to avoid receiving out of memory and stack overflow exceptions. Newly-installed Server 2008 R2 systems which are not fully up to date with windows updates are known to have this issue.</p> <p class="last">Windows 8.1 and Server 2012 R2 are not affected by this issue as they come with Windows Management Framework 4.0.</p> </div>   <h2 id="getting-to-powershell-three-or-higher">Getting to PowerShell 3.0 or higher</h2> <p id="getting-to-powershell-3-0-or-higher">PowerShell 3.0 or higher is needed for most provided Ansible modules for Windows, and is also required to run the above setup script. Note that PowerShell 3.0 is only supported on Windows 7 SP1, Windows Server 2008 SP1, and later releases of Windows.</p> <p>Looking at an Ansible checkout, copy the <a class="reference external" href="https://github.com/ansible/ansible/blob/devel/examples/scripts/upgrade_to_ps3.ps1" target="_blank">examples/scripts/upgrade_to_ps3.ps1</a> script onto the remote host and run a PowerShell console as an administrator. You will now be running PowerShell 3 and can try connectivity again using the <code>win_ping</code> technique referenced above.</p>   <h2 id="what-windows-modules-are-available">What modules are available</h2> <p id="what-modules-are-available">Most of the Ansible modules in core Ansible are written for a combination of Linux/Unix machines and arbitrary web services, though there are various Windows-only modules. These are listed in the <a class="reference external" href="http://docs.ansible.com/list_of_windows_modules.html" target="_blank">“windows” subcategory of the Ansible module index</a>.</p> <p>In addition, the following core modules/action-plugins work with Windows:</p> <ul class="simple"> <li>add_host</li> <li>assert</li> <li>async_status</li> <li>debug</li> <li>fail</li> <li>fetch</li> <li>group_by</li> <li>include</li> <li>include_role</li> <li>include_vars</li> <li>meta</li> <li>pause</li> <li>raw</li> <li>script</li> <li>set_fact</li> <li>set_stats</li> <li>setup</li> <li>slurp</li> <li>template (also: win_template)</li> <li>wait_for_connection</li> </ul> <p>Some modules can be utilised in playbooks that target windows by delegating to localhost, depending on what you are attempting to achieve. For example, <code>assemble</code> can be used to create a file on your ansible controller that is then sent to your windows targets using <code>win_copy</code>.</p> <p>In many cases, there is no need to use or write an Ansible module. In particular, the <code>script</code> module can be used to run arbitrary PowerShell scripts, allowing Windows administrators familiar with PowerShell a very native way to do things, as in the following playbook:</p> <pre data-language="YAML">- hosts: windows
+  tasks:
+    - script: foo.ps1 --argument --other-argument
+</pre> <p>But also the <code>win_shell</code> module allows for running Powershell snippets inline:</p> <pre data-language="YAML">- hosts: windows
+  tasks:
+    - name: Remove Appx packages (and their hindering file assocations)
+      win_shell: |
+        Get-AppxPackage -name "Microsoft.ZuneMusic" | Remove-AppxPackage
+        Get-AppxPackage -name "Microsoft.ZuneVideo" | Remove-AppxPackage
+</pre>   <h2 id="developers-developers-developers">Developers: Supported modules and how it works</h2> <p id="developers-supported-modules-and-how-it-works">Developing Ansible modules are covered in a <a class="reference external" href="http://docs.ansible.com/developing_modules.html" target="_blank">later section of the documentation</a>, with a focus on Linux/Unix. What if you want to write Windows modules for Ansible though?</p> <p>For Windows, Ansible modules are implemented in PowerShell. Skim those Linux/Unix module development chapters before proceeding. Windows modules in the core and extras repo live in a <code>windows/</code> subdir. Custom modules can go directly into the Ansible <code>library/</code> directories or those added in ansible.cfg. Documentation lives in a <code>.py</code> file with the same name. For example, if a module is named <code>win_ping</code>, there will be embedded documentation in the <code>win_ping.py</code> file, and the actual PowerShell code will live in a <code>win_ping.ps1</code> file. Take a look at the sources and this will make more sense.</p> <p>Modules (ps1 files) should start as follows:</p> <pre data-language="YAML">#!powershell
+# &lt;license&gt;
+
+# WANT_JSON
+# POWERSHELL_COMMON
+
+# code goes here, reading in stdin as JSON and outputting JSON
+</pre> <p>The above magic is necessary to tell Ansible to mix in some common code and also know how to push modules out. The common code contains some nice wrappers around working with hash data structures and emitting JSON results, and possibly a few more useful things. Regular Ansible has this same concept for reusing Python code - this is just the windows equivalent.</p> <p>What modules you see in <code>windows/</code> are just a start. Additional modules may be submitted as pull requests to github.</p>   <h2 id="id3">Windows Facts</h2> <p id="windows-facts">Just as with Linux/Unix, facts can be gathered for windows hosts, which will return things such as the operating system version. To see what variables are available about a windows host, run the following:</p> <pre data-language="YAML">ansible winhost.example.com -m setup
+</pre> <p>Note that this command invocation is exactly the same as the Linux/Unix equivalent.</p>   <h2 id="windows-playbook-example">Windows Playbook Examples</h2> <p id="windows-playbook-examples">Here is an example of pushing and running a PowerShell script:</p> <pre data-language="YAML">- name: test script module
+  hosts: windows
+  tasks:
+    - name: run test script
+      script: files/test_script.ps1
+</pre> <p>Running individual commands uses the <code>win_command &lt;https://docs.ansible.com/ansible/win_command_module.html&gt;</code> or <code>win_shell &lt;https://docs.ansible.com/ansible/win_shell_module.html&gt;</code> module, as opposed to the shell or command module as is common on Linux/Unix operating systems:</p> <pre data-language="YAML">- name: test raw module
+  hosts: windows
+  tasks:
+    - name: run ipconfig
+      win_command: ipconfig
+      register: ipconfig
+    - debug: var=ipconfig
+</pre> <p>Running common DOS commands like <code>del</code>, <code>move</code>, or <code>copy</code> is unlikely to work on a remote Windows Server using Powershell, but they can work by prefacing the commands with <code>CMD /C</code> and enclosing the command in double quotes as in this example:</p> <pre data-language="YAML">- name: another raw module example
+  hosts: windows
+  tasks:
+     - name: Move file on remote Windows Server from one location to another
+       win_command: CMD /C "MOVE /Y C:\teststuff\myfile.conf C:\builds\smtp.conf"
+</pre> <p>You may wind up with a more readable playbook by using the PowerShell equivalents of DOS commands. For example, to achieve the same effect as the example above, you could use:</p> <pre data-language="YAML">- name: another raw module example demonstrating powershell one liner
+  hosts: windows
+  tasks:
+     - name: Move file on remote Windows Server from one location to another
+       win_command: Powershell.exe "Move-Item C:\teststuff\myfile.conf C:\builds\smtp.conf"
+</pre> <p>Bear in mind that using <code>win_command</code> or <code>win_shell</code> will always report <code>changed</code>, and it is your responsibility to ensure PowerShell will need to handle idempotency as appropriate (the move examples above are inherently not idempotent), so where possible use (or write) a module.</p> <p>Here’s an example of how to use the <code>win_stat</code> module to test for file existence. Note that the data returned by the <code>win_stat</code> module is slightly different than what is provided by the Linux equivalent:</p> <pre data-language="YAML">- name: test stat module
+  hosts: windows
+  tasks:
+    - name: test stat module on file
+      win_stat: path="C:/Windows/win.ini"
+      register: stat_file
+
+    - debug: var=stat_file
+
+    - name: check stat_file result
+      assert:
+          that:
+             - "stat_file.stat.exists"
+             - "not stat_file.stat.isdir"
+             - "stat_file.stat.size &gt; 0"
+             - "stat_file.stat.md5"
+</pre>   <h2 id="id4">Windows Contributions</h2> <p id="windows-contributions">Windows support in Ansible is still relatively new, and contributions are quite welcome, whether this is in the form of new modules, tweaks to existing modules, documentation, or something else. Please stop by the ansible-devel mailing list if you would like to get involved and say hi.</p> <div class="admonition seealso"> <p class="first admonition-title">See also</p> <dl class="last docutils"> <dt><a class="reference internal" href="../dev_guide/developing_modules/"><span class="doc">Developing Modules</span></a></dt> <dd>How to write modules</dd> <dt><a class="reference internal" href="../playbooks/"><span class="doc">Playbooks</span></a></dt> <dd>Learning Ansible’s configuration management language</dd> <dt><a class="reference external" href="http://docs.ansible.com/list_of_windows_modules.html" target="_blank">List of Windows Modules</a></dt> <dd>Windows specific module list, all implemented in PowerShell</dd> <dt><a class="reference external" href="http://groups.google.com/group/ansible-project" target="_blank">Mailing List</a></dt> <dd>Questions? Help? Ideas? Stop by the list on Google Groups</dd> <dt><a class="reference external" href="http://irc.freenode.net" target="_blank">irc.freenode.net</a></dt> <dd>#ansible IRC chat channel</dd> </dl> </div>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2012–2017 Michael DeHaan<br>© 2017 Red Hat, Inc.<br>Licensed under the GNU General Public License version 3.<br>
+    <a href="https://docs.ansible.com/ansible/latest/intro_windows.html" class="_attribution-link" target="_blank">https://docs.ansible.com/ansible/latest/intro_windows.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

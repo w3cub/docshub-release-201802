@@ -1,0 +1,216 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Aci_rest - Ansible - W3cubDocs</title>
+  
+  <meta name="description" content=" New in version 2.4. ">
+  <meta name="keywords" content="aci, rest, -, direct, access, cisco, apic, api, ansible">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/ansible/aci_rest_module/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/ansible.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/ansible/" class="_nav-link" title="" style="margin-left:0;">Ansible</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _sphinx">
+				
+<h1 id="aci-rest">aci_rest - Direct access to the Cisco APIC REST API</h1> <div class="versionadded" id="aci-rest-direct-access-to-the-cisco-apic-rest-api"> <p><span class="versionmodified">New in version 2.4.</span></p> </div>  <ul class="simple"> <li><a class="reference internal" href="#synopsis" id="id1">Synopsis</a></li> <li><a class="reference internal" href="#requirements-on-host-that-executes-module" id="id2">Requirements (on host that executes module)</a></li> <li><a class="reference internal" href="#options" id="id3">Options</a></li> <li><a class="reference internal" href="#examples" id="id4">Examples</a></li> <li><a class="reference internal" href="#return-values" id="id5">Return Values</a></li> <li>
+<a class="reference internal" href="#notes" id="id6">Notes</a><ul> <li><a class="reference internal" href="#status" id="id7">Status</a></li> </ul> </li> </ul>   <h2 id="synopsis">Synopsis</h2> <ul class="simple"> <li>Enables the management of the Cisco ACI fabric through direct access to the Cisco APIC REST API.</li> <li>More information regarding the Cisco APIC REST API is available from <a class="reference external" href="http://www.cisco.com/c/en/us/td/docs/switches/datacenter/aci/apic/sw/2-x/rest_cfg/2_1_x/b_Cisco_APIC_REST_API_Configuration_Guide.html" target="_blank">http://www.cisco.com/c/en/us/td/docs/switches/datacenter/aci/apic/sw/2-x/rest_cfg/2_1_x/b_Cisco_APIC_REST_API_Configuration_Guide.html</a>.</li> </ul>   <h2 id="requirements-on-host-that-executes-module">Requirements (on host that executes module)</h2>  <ul class="simple"> <li>lxml (when using XML content)</li> <li>xmljson &gt;= 0.1.8 (when using XML content)</li> <li>python 2.7+ (when using xmljson)</li> </ul>    <h2 id="options">Options</h2> <table> <tr> <th class="head">parameter</th> <th class="head">required</th> <th class="head">default</th> <th class="head">choices</th> <th class="head">comments</th> </tr> <tr> <td>content<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>When used instead of <code>src</code>, sets the content of the API request directly.</div> <div>This may be convenient to template simple requests, for anything complex use the <span class="module">template</span> module.</div> </td> </tr> <tr> <td>hostname<br>
+</td> <td>yes</td> <td></td> <td></td> <td> <div>IP Address or hostname of APIC resolvable by Ansible control host.</div> <div style="font-size: small;">aliases: host</div> </td> </tr> <tr> <td>method<br>
+</td> <td>yes</td> <td>get</td> <td><ul>
+<li>delete</li>
+<li>get</li>
+<li>post</li>
+</ul></td> <td> <div>The HTTP method of the request.</div> <div>Using <code>delete</code> is typically used for deleting objects.</div> <div>Using <code>get</code> is typically used for querying objects.</div> <div>Using <code>post</code> is typically used for modifying objects.</div> <div style="font-size: small;">aliases: action</div> </td> </tr> <tr> <td>password<br>
+</td> <td>yes</td> <td></td> <td></td> <td> <div>The password to use for authentication.</div> </td> </tr> <tr> <td>path<br>
+</td> <td>yes</td> <td></td> <td></td> <td> <div>URI being used to execute API calls.</div> <div>Must end in <code>.xml</code> or <code>.json</code>.</div> <div style="font-size: small;">aliases: uri</div> </td> </tr> <tr> <td>src<br>
+</td> <td>no</td> <td></td> <td></td> <td> <div>Name of the absolute path of the filname that includes the body of the http request being sent to the ACI fabric.</div> <div style="font-size: small;">aliases: config_file</div> </td> </tr> <tr> <td>timeout<br>
+</td> <td>no</td> <td>30</td> <td></td> <td> <div>The socket level timeout in seconds.</div> </td> </tr> <tr> <td>use_proxy<br>
+</td> <td>no</td> <td>yes</td> <td><ul>
+<li>yes</li>
+<li>no</li>
+</ul></td> <td> <div>If <code>no</code>, it will not use a proxy, even if one is defined in an environment variable on the target hosts.</div> </td> </tr> <tr> <td>use_ssl<br>
+</td> <td>no</td> <td>yes</td> <td><ul>
+<li>yes</li>
+<li>no</li>
+</ul></td> <td> <div>If <code>no</code>, an HTTP connection will be used instead of the default HTTPS connection.</div> </td> </tr> <tr> <td>username<br>
+</td> <td>yes</td> <td>admin</td> <td></td> <td> <div>The username to use for authentication.</div> <div style="font-size: small;">aliases: user</div> </td> </tr> <tr> <td>validate_certs<br>
+</td> <td>no</td> <td>yes</td> <td><ul>
+<li>yes</li>
+<li>no</li>
+</ul></td> <td> <div>If <code>no</code>, SSL certificates will not be validated.</div> <div>This should only set to <code>no</code> used on personally controlled sites using self-signed certificates.</div> </td> </tr> </table>   <h2 id="examples">Examples</h2>  <pre data-language="YAML">- name: Add a tenant
+  aci_rest:
+    hostname: '{{ inventory_hostname }}'
+    username: '{{ aci_username }}'
+    password: '{{ aci_password }}'
+    method: post
+    path: /api/mo/uni.xml
+    src: /home/cisco/ansible/aci/configs/aci_config.xml
+  delegate_to: localhost
+
+- name: Add a tenant using inline YAML
+  aci_rest:
+    hostname: '{{ inventory_hostname }}'
+    username: '{{ aci_username }}'
+    password: '{{ aci_password }}'
+    validate_certs: no
+    path: /api/mo/uni/tn-[Sales].json
+    method: post
+    content:
+      fvTenant:
+        attributes:
+          name: Sales
+          descr: Sales departement
+  delegate_to: localhost
+
+- name: Add a tenant using a JSON string
+  aci_rest:
+    hostname: '{{ inventory_hostname }}'
+    username: '{{ aci_username }}'
+    password: '{{ aci_password }}'
+    validate_certs: no
+    path: /api/mo/uni/tn-[Sales].json
+    method: post
+    content: |
+      {
+        "fvTenant": {
+          "attributes": {
+            "name": "Sales",
+            "descr": "Sales departement"
+          }
+        }
+      }
+  delegate_to: localhost
+
+- name: Add a tenant using an XML string
+  aci_rest:
+    hostname: '{{ inventory_hostname }}'
+    username: '{{ aci_username }}'
+    password: '{{ aci_password }}'
+    validate_certs: no
+    path: /api/mo/uni/tn-[Sales].xml
+    method: post
+    content: |
+      &lt;fvTenant name="Sales" descr="Sales departement"/&gt;
+  delegate_to: localhost
+
+- name: Get tenants
+  aci_rest:
+    hostname: '{{ inventory_hostname }}'
+    username: '{{ aci_username }}'
+    password: '{{ aci_password }}'
+    method: get
+    path: /api/node/class/fvTenant.json
+  delegate_to: localhost
+
+- name: Configure contracts
+  aci_rest:
+    hostname: '{{ inventory_hostname }}'
+    username: '{{ aci_username }}'
+    password: '{{ aci_password }}'
+    method: post
+    path: /api/mo/uni.xml
+    src: /home/cisco/ansible/aci/configs/contract_config.xml
+  delegate_to: localhost
+
+- name: Register leaves and spines
+  aci_rest:
+    hostname: '{{ inventory_hostname }}'
+    username: '{{ aci_username }}'
+    password: '{{ aci_password }}'
+    validate_certs: no
+    method: post
+    path: /api/mo/uni/controller/nodeidentpol.xml
+    content: |
+      &lt;fabricNodeIdentPol&gt;
+        &lt;fabricNodeIdentP name="{{ item.name }}" nodeId="{{ item.nodeid }}" status="{{ item.status }}" serial="{{ item.serial }}"/&gt;
+      &lt;/fabricNodeIdentPol&gt;
+  with_items:
+  - '{{ apic_leavesspines }}'
+  delegate_to: localhost
+
+- name: Wait for all controllers to become ready
+  aci_rest:
+    hostname: '{{ inventory_hostname }}'
+    username: '{{ aci_username }}'
+    password: '{{ aci_password }}'
+    validate_certs: no
+    path: /api/node/class/topSystem.json?query-target-filter=eq(topSystem.role,"controller")
+  register: apics
+  until: "'totalCount' in apics and apics.totalCount|int &gt;= groups['apic']|count"
+  retries: 120
+  delay: 30
+  delegate_to: localhost
+  run_once: yes
+</pre>    <h2 id="return-values">Return Values</h2> <p>Common return values are documented here <a class="reference internal" href="../common_return_values/"><span class="doc">Return Values</span></a>, the following are the fields unique to this module:</p> <table> <tr> <th class="head">name</th> <th class="head">description</th> <th class="head">returned</th> <th class="head">type</th> <th class="head">sample</th> </tr> <tr> <td>imdata</td> <td> <div>Converted output returned by the APIC REST (register this for post-processing)</div> </td> <td align="center">always</td> <td align="center">string</td> <td align="center">[{'error': {'attributes': {'text': 'unknown managed object class foo', 'code': '122'}}}]</td> </tr> <tr> <td>status</td> <td> <div>HTTP status code</div> </td> <td align="center">always</td> <td align="center">int</td> <td align="center">400</td> </tr> <tr> <td>raw</td> <td> <div>The raw output returned by the APIC REST API (xml or json)</div> </td> <td align="center">parse error</td> <td align="center">string</td> <td align="center">&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;imdata totalCount="1"&gt;&lt;error code="122" text="unknown managed object class foo"/&gt;&lt;/imdata&gt;</td> </tr> <tr> <td>url</td> <td> <div>URL used for APIC REST call</div> </td> <td align="center">success</td> <td align="center">string</td> <td align="center">https://1.2.3.4/api/mo/uni/tn-[Dag].json?rsp-subtree=modified</td> </tr> <tr> <td>payload</td> <td> <div>The (templated) payload send to the APIC REST API (xml or json)</div> </td> <td align="center">always</td> <td align="center">string</td> <td align="center">&lt;foo bar="boo"/&gt;</td> </tr> <tr> <td>totalCount</td> <td> <div>Number of items in the imdata array</div> </td> <td align="center">always</td> <td align="center">string</td> <td align="center">0</td> </tr> <tr> <td>error_code</td> <td> <div>The REST ACI return code, useful for troubleshooting on failure</div> </td> <td align="center">always</td> <td align="center">int</td> <td align="center">122</td> </tr> <tr> <td>response</td> <td> <div>HTTP response string</div> </td> <td align="center">always</td> <td align="center">string</td> <td align="center">HTTP Error 400: Bad Request</td> </tr> <tr> <td>error_text</td> <td> <div>The REST ACI descriptive text, useful for troubleshooting on failure</div> </td> <td align="center">always</td> <td align="center">string</td> <td align="center">unknown managed object class foo</td> </tr> </table>   <h2 id="notes">Notes</h2> <div class="admonition note"> <p class="first admonition-title">Note</p> <ul class="last simple"> <li>When using inline-JSON (using <code>content</code>), YAML requires to start with a blank line. Otherwise the JSON statement will be parsed as a YAML mapping (dictionary) and translated into invalid JSON as a result.</li> <li>XML payloads require the <code>lxml</code> and <code>xmljson</code> python libraries. For JSON payloads nothing special is needed.</li> <li>By default, if an environment variable <code>&lt;protocol&gt;_proxy</code> is set on the target host, requests will be sent through that proxy. This behaviour can be overridden by setting a variable for this task (see <a class="reference external" href="http://docs.ansible.com/playbooks_environment.html" target="_blank">setting the environment</a>), or by using the <code>use_proxy</code> option.</li> <li>HTTP redirects can redirect from HTTP to HTTPS so you should be sure that your proxy environment for both protocols is correct.</li> </ul> </div>  <h3 id="status">Status</h3> <p>This module is flagged as <strong>preview</strong> which means that it is not guaranteed to have a backwards compatible interface.</p> <p>For help in developing on modules, should you be so inclined, please read <a class="reference internal" href="https://docs.ansible.com/ansible/latest/community.html" target="_blank"><span class="doc">Community Information &amp; Contributing</span></a>, <a class="reference internal" href="../dev_guide/testing/"><span class="doc">Testing Ansible</span></a> and <a class="reference internal" href="../dev_guide/developing_modules/"><span class="doc">Developing Modules</span></a>.</p>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2012–2017 Michael DeHaan<br>© 2017 Red Hat, Inc.<br>Licensed under the GNU General Public License version 3.<br>
+    <a href="https://docs.ansible.com/ansible/latest/aci_rest_module.html" class="_attribution-link" target="_blank">https://docs.ansible.com/ansible/latest/aci_rest_module.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

@@ -1,0 +1,264 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Documenting Your Module - Ansible - W3cubDocs</title>
+  
+  <meta name="description" content="The online module documentation is generated from the modules themselves. As the module documentation is generated from documentation strings &hellip;">
+  <meta name="keywords" content="documenting, your, module, -, ansible">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/ansible/dev_guide/developing_modules_documenting/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/ansible.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/ansible/" class="_nav-link" title="" style="margin-left:0;">Ansible</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _sphinx">
+				
+<h1 id="module-documenting">Documenting Your Module</h1>   <ul id="documenting-your-module"> <li><a class="reference internal" href="#copyright" id="id2">Copyright</a></li> <li>
+<a class="reference internal" href="#ansible-metadata-block" id="id3">ANSIBLE_METADATA Block</a><ul> <li>
+<a class="reference internal" href="#version-1-1-of-the-metadata" id="id4">Version 1.1 of the metadata</a><ul> <li><a class="reference internal" href="#structure" id="id5">Structure</a></li> <li><a class="reference internal" href="#fields" id="id6">Fields</a></li> </ul> </li> <li><a class="reference internal" href="#changes-from-version-1-0" id="id7">Changes from Version 1.0</a></li> </ul> </li> <li><a class="reference internal" href="#documentation-block" id="id8">DOCUMENTATION Block</a></li> <li><a class="reference internal" href="#examples-block" id="id9">EXAMPLES block</a></li> <li><a class="reference internal" href="#return-block" id="id10">RETURN Block</a></li> <li><a class="reference internal" href="#python-imports" id="id11">Python Imports</a></li> <li><a class="reference internal" href="#formatting-options" id="id12">Formatting options</a></li> <li><a class="reference internal" href="#documentation-fragments" id="id13">Documentation fragments</a></li> <li><a class="reference internal" href="#testing-documentation" id="id14">Testing documentation</a></li> </ul>
+  <p>The online module documentation is generated from the modules themselves. As the module documentation is generated from documentation strings contained in the modules, all modules included with Ansible must have a <code>DOCUMENTATION</code> string. This string must be a valid YAML document which conforms to the schema defined below. You may find it easier to start writing your <code>DOCUMENTATION</code> string in an editor with YAML syntax highlighting before you include it in your Python file.</p> <p>All modules must have the following sections defined in this order:</p> <ol class="arabic simple"> <li>Copyright</li> <li>ANSIBLE_METADATA</li> <li>DOCUMENTATION</li> <li>EXAMPLES</li> <li>RETURN</li> <li>Python imports</li> </ol> <div class="admonition note"> <p class="first admonition-title">Note</p> <p>Why don’t the imports go first?</p> <p class="last">Keen Python programmers may notice that contrary to PEP 8’s advice we don’t put <code>imports</code> at the top of the file. This is because the <code>ANSIBLE_METADATA</code> through <code>RETURN</code> sections are not used by the module code itself; they are essentially extra docstrings for the file. The imports are placed after these special variables for the same reason as PEP 8 puts the imports after the introductory comments and docstrings. This keeps the active parts of the code together and the pieces which are purely informational apart. The decision to exclude E402 is based on readability (which is what PEP 8 is about). Documentation strings in a module are much more similar to module level docstrings, than code, and are never utilized by the module itself. Placing the imports below this documentation and closer to the code, consolidates and groups all related code in a congruent manner to improve readability, debugging and understanding.</p> </div> <div class="admonition warning"> <p class="first admonition-title">Warning</p> <p>Why do some modules have imports at the bottom of the file?</p> <p class="last">If you look at some existing older modules, you may find imports at the bottom of the file. Do not copy that idiom into new modules as it is a historical oddity due to how modules used to be combined with libraries. Over time we’re moving the imports to be in their proper place.</p> </div>  <h2 id="copyright">Copyright</h2> <p>The beginning of every module should look about the same. After the shebang, there should be at least two lines covering copyright and licensing of the code.</p> <pre data-language="python">#!/usr/bin/python
+# Copyright (c) 2017 Ansible Project
+# GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
+</pre> <p>Every file should have a copyright line with the original copyright holder. Major additions to the module (for instance, rewrites) may add additional copyright lines. Code from the Ansible community should typically be assigned as “Copyright (c) 2017 Ansible Project” which covers all contributors. Any legal questions need to review the source control history, so an exhaustive copyright header is not necessary.</p> <p>The license declaration should be ONLY one line, not the full GPL prefix. If you notice a module with the full prefix, feel free to switch it to the one-line declaration instead.</p> <p>When adding a copyright line after completing a significant feature or rewrite, add the newer line above the older one, like so:</p> <pre data-language="python">#!/usr/bin/python
+# Copyright (c) 2017 [New Contributor(s)]
+# Copyright (c) 2015 [Original Contributor(s)]
+# GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
+</pre>   <h2 id="ansible-metadata-block">ANSIBLE_METADATA Block</h2> <p><code>ANSIBLE_METADATA</code> contains information about the module for use by other tools. At the moment, it informs other tools which type of maintainer the module has and to what degree users can rely on a module’s behaviour remaining the same over time.</p> <p>For new modules, the following block can be simply added into your module</p> <pre data-language="python">ANSIBLE_METADATA = {'metadata_version': '1.1',
+                    'status': ['preview'],
+                    'supported_by': 'community'}
+</pre> <div class="admonition warning"> <p class="first admonition-title">Warning</p> <ul class="last simple"> <li>
+<code>metadata_version</code> is the version of the <code>ANSIBLE_METADATA</code> schema, <em>not</em> the version of the module.</li> <li>Promoting a module’s <code>status</code> or <code>supported_by</code> status should only be done by members of the Ansible Core Team.</li> </ul> </div> <div class="admonition note"> <p class="first admonition-title">Note</p> <p>Pre-released metdata version</p> <p class="last">During development of Ansible-2.3, modules had an initial version of the metadata. This version was modified slightly after release to fix some points of confusion. You may occassionally see PRs for modules where the ANSIBLE_METADATA doesn’t look quite right because of this. Module metadata should be fixed before checking it into the repository.</p> </div>  <h3 id="version-1-1-of-the-metadata">Version 1.1 of the metadata</h3>  <h4 id="structure">Structure</h4> <pre data-language="python">ANSIBLE_METADATA = {
+    'metadata_version': '1.1',
+    'supported_by': 'community',
+    'status': ['preview', 'deprecated']
+}
+</pre>   <h4 id="fields">Fields</h4> <table class="docutils field-list" frame="void" rules="none"> <col class="field-name"> <col class="field-body">  <tr><th class="field-name" colspan="2">metadata_version:</th></tr> <tr>
+<td> </td>
+<td class="field-body">
+<p class="first">An “X.Y” formatted string. X and Y are integers which define the metadata format version. Modules shipped with Ansible are tied to an Ansible release, so we will only ship with a single version of the metadata. We’ll increment Y if we add fields or legal values to an existing field. We’ll increment X if we remove fields or values or change the type or meaning of a field. Current metadata_version is “1.1”</p> </td> </tr> <tr>
+<th class="field-name">supported_by:</th>
+<td class="field-body">
+<p class="first">This field records who supports the module. Default value is <code>community</code>. Values are:</p> <ul class="simple"> <li>core</li> <li>network</li> <li>certified</li> <li>community</li> <li>curated (Deprecated. Modules in this category should probably be core or certified instead)</li> </ul> <p>For information on what the support level values entail, please see <a class="reference external" href="http://docs.ansible.com/ansible/modules_support.html" target="_blank">Modules Support</a>.</p> </td> </tr> <tr>
+<th class="field-name">status:</th>
+<td class="field-body">
+<p class="first">This field records information about the module that is important to the end user. It’s a list of strings. The default value is a single element list [“preview”]. The following strings are valid statuses and have the following meanings:</p> <table class="last docutils field-list" frame="void" rules="none"> <col class="field-name"> <col class="field-body">  <tr><th class="field-name" colspan="2">stableinterface:</th></tr> <tr>
+<td> </td>
+<td class="field-body">This means that the module’s parameters are stable. Every effort will be made not to remove parameters or change their meaning. It is not a rating of the module’s code quality.</td> </tr> <tr>
+<th class="field-name">preview:</th>
+<td class="field-body">This module is a tech preview. This means it may be unstable, the parameters may change, or it may require libraries or web services that are themselves subject to incompatible changes.</td> </tr> <tr>
+<th class="field-name">deprecated:</th>
+<td class="field-body">This module is deprecated and will no longer be available in a future release.</td> </tr> <tr>
+<th class="field-name">removed:</th>
+<td class="field-body">This module is not present in the release. A stub is kept so that documentation can be built. The documentation helps users port from the removed module to new modules.</td> </tr>  </table> </td> </tr>  </table>    <h3 id="changes-from-version-1-0">Changes from Version 1.0</h3> <table class="docutils field-list" frame="void" rules="none"> <col class="field-name"> <col class="field-body">  <tr><th class="field-name" colspan="2">metadata_version:</th></tr> <tr>
+<td> </td>
+<td class="field-body">
+<p class="first">Version updated from 1.0 to 1.1</p> </td> </tr> <tr>
+<th class="field-name">supported_by:</th>
+<td class="field-body">
+<p class="first">All substantive changes were to potential values of the supported_by field</p> <ul class="last simple"> <li>Added the certified value</li> <li>Deprecated the curated value, modules shipped with Ansible will use certified instead. Third party modules are encouraged not to use this as it is meaningless within Ansible proper.</li> <li>Added the network value</li> </ul> </td> </tr>  </table>    <h2 id="documentation-block">DOCUMENTATION Block</h2> <p>See an example documentation string in the checkout under <a class="reference external" href="https://github.com/ansible/ansible/blob/devel/examples/DOCUMENTATION.yml" target="_blank">examples/DOCUMENTATION.yml</a>.</p> <p>Include it in your module file like this:</p> <pre data-language="python">#!/usr/bin/python
+# Copyright (c) 2017 [REPLACE THIS]
+# GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
+
+DOCUMENTATION = '''
+---
+module: modulename
+short_description: This is a sentence describing the module
+# ... snip ...
+'''
+</pre> <p>The following fields can be used and are all required unless specified otherwise:</p> <table class="docutils field-list" frame="void" rules="none"> <col class="field-name"> <col class="field-body">  <tr>
+<th class="field-name">module:</th>
+<td class="field-body">
+<p class="first">The name of the module. This must be the same as the filename, without the <code>.py</code> extension.</p> </td> </tr> <tr><th class="field-name" colspan="2">short_description:</th></tr> <tr>
+<td> </td>
+<td class="field-body">
+<ul class="first simple"> <li>A short description which is displayed on the <a class="reference internal" href="https://docs.ansible.com/ansible/latest/list_of_all_modules.html" target="_blank"><span class="doc">All Modules</span></a> page and <code>ansible-doc -l</code>.</li> <li>As the short description is displayed by <code>ansible-doc -l</code> without the category grouping it needs enough detail to explain its purpose without the context of the directory structure in which it lives.</li> <li>Unlike <code>description:</code> this field should not have a trailing full stop.</li> </ul> </td> </tr> <tr>
+<th class="field-name">description:</th>
+<td class="field-body">
+<ul class="first simple"> <li>A detailed description (generally two or more sentences).</li> <li>Must be written in full sentences, i.e. with capital letters and fullstops.</li> <li>Shouldn’t mention the name module.</li> </ul> </td> </tr> <tr>
+<th class="field-name">version_added:</th>
+<td class="field-body">
+<p class="first">The version of Ansible when the module was added. This is a <code>string</code>, and not a float, i.e. <code>version_added: "2.1"</code></p> </td> </tr> <tr>
+<th class="field-name">author:</th>
+<td class="field-body">
+<p class="first">Name of the module author in the form <code>First Last (@GitHubID)</code>. Use a multi-line list if there is more than one author.</p> </td> </tr> <tr>
+<th class="field-name">deprecated:</th>
+<td class="field-body">
+<p class="first">If this module is deprecated, detail when that happened, and what to use instead, e.g. <code>Deprecated in 2.3. Use M(whatmoduletouseinstead) instead.</code> Ensure <code>CHANGELOG.md</code> is updated to reflect this.</p> </td> </tr> <tr>
+<th class="field-name">options:</th>
+<td class="field-body">
+<p class="first">One per module argument:</p> <table class="docutils field-list" frame="void" rules="none"> <col class="field-name"> <col class="field-body">  <tr>
+<th class="field-name">option-name:</th>
+<td class="field-body">
+<ul class="first simple"> <li>Declarative operation (not CRUD)–this makes it easy for a user not to care what the existing state is, just about the final state, for example <code>online:</code>, rather than <code>is_online:</code>.</li> <li>The name of the option should be consistent with the rest of the module, as well as other modules in the same category.</li> </ul> </td> </tr> <tr>
+<th class="field-name">description:</th>
+<td class="field-body">
+<ul class="first simple"> <li>Detailed explanation of what this option does. It should be written in full sentences.</li> <li>Should not list the options values (that’s what <code>choices:</code> is for, though it should explain <code>what</code> the values do if they aren’t obvious.</li> <li>If an optional parameter is sometimes required this need to be reflected in the documentation, e.g. “Required when I(state=present).”</li> <li>Mutually exclusive options must be documented as the final sentence on each of the options.</li> </ul> </td> </tr> <tr>
+<th class="field-name">required:</th>
+<td class="field-body">
+<p class="first">Only needed if true, otherwise it is assumed to be false.</p> </td> </tr> <tr>
+<th class="field-name">default:</th>
+<td class="field-body">
+<ul class="first simple"> <li>If <code>required</code> is false/missing, <code>default</code> may be specified (assumed ‘null’ if missing).</li> <li>Ensure that the default parameter in the docs matches the default parameter in the code.</li> <li>The default option must not be listed as part of the description.</li> <li>If the option is a boolean value, you can use any of the boolean values recognized by Ansible: (such as true/false or yes/no). Choose the one that reads better in the context of the option.</li> </ul> </td> </tr> <tr>
+<th class="field-name">choices:</th>
+<td class="field-body">
+<p class="first">List of option values. Should be absent if empty.</p> </td> </tr> <tr>
+<th class="field-name">type:</th>
+<td class="field-body">
+<p class="first">If an argument is <code>type='bool'</code>, this field should be set to <code>type: bool</code> and no <code>choices</code> should be specified.</p> </td> </tr> <tr>
+<th class="field-name">aliases:</th>
+<td class="field-body">
+<p class="first">List of option name aliases; generally not needed.</p> </td> </tr> <tr>
+<th class="field-name">version_added:</th>
+<td class="field-body">
+<p class="first">Only needed if this option was extended after initial Ansible release, i.e. this is greater than the top level <code>version_added</code> field. This is a string, and not a float, i.e. <code>version_added: "2.3"</code>.</p> </td> </tr> <tr>
+<th class="field-name">suboptions:</th>
+<td class="field-body">
+<p class="first last">If this option takes a dict, you can define it here. See <code>azure_rm_securitygroup</code>, <code>os_ironic_node</code> for examples.</p> </td> </tr>  </table> </td> </tr> <tr>
+<th class="field-name">requirements:</th>
+<td class="field-body">
+<p class="first">List of requirements, and minimum versions (if applicable)</p> </td> </tr> <tr>
+<th class="field-name">notes:</th>
+<td class="field-body">
+<p class="first last">Details of any important information that doesn’t fit in one of the above sections; for example if <code>check_mode</code> isn’t supported, or a link to external documentation.</p> </td> </tr>  </table> <div class="admonition note"> <p class="first admonition-title">Note</p> <ul class="last simple"> <li>The above fields are are all in lowercase.</li> <li>If the module doesn’t doesn’t have any options (for example, it’s a <code>_facts</code> module), you can use <code>options: {}</code>.</li> </ul> </div>   <h2 id="examples-block">EXAMPLES block</h2> <p>The EXAMPLES section is required for all new modules.</p> <p>Examples should demonstrate real world usage, and be written in multi-line plain-text YAML format.</p> <p>Ensure that examples are kept in sync with the options during the PR review and any following code refactor.</p> <p>As per playbook best practice, a <code>name:</code> should be specified.</p> <p><code>EXAMPLES</code> string within the module like this:</p> <pre data-language="YAML">EXAMPLES = '''
+- name: Ensure foo is installed
+  modulename:
+    name: foo
+    state: present
+'''
+</pre> <p>If the module returns facts that are often needed, an example of how to use them can be helpful.</p>   <h2 id="return-block">RETURN Block</h2> <p>The RETURN section documents what the module returns, and is required for all new modules.</p> <p>For each value returned, provide a <code>description</code>, in what circumstances the value is <code>returned</code>, the <code>type</code> of the value and a <code>sample</code>. For example, from the <code>copy</code> module:</p> <p>The following fields can be used and are all required unless specified otherwise.</p> <table class="docutils field-list" frame="void" rules="none"> <col class="field-name"> <col class="field-body">  <tr>
+<th class="field-name">return name:</th>
+<td class="field-body">
+<p class="first">Name of the returned field.</p> <table class="last docutils field-list" frame="void" rules="none"> <col class="field-name"> <col class="field-body">  <tr>
+<th class="field-name">description:</th>
+<td class="field-body">
+<p class="first">Detailed description of what this value represents.</p> </td> </tr> <tr>
+<th class="field-name">returned:</th>
+<td class="field-body">
+<p class="first">When this value is returned, such as <code>always</code>, on <code>success</code>, <code>always</code></p> </td> </tr> <tr>
+<th class="field-name">type:</th>
+<td class="field-body">
+<p class="first">Data type</p> </td> </tr> <tr>
+<th class="field-name">sample:</th>
+<td class="field-body">
+<p class="first">One or more examples.</p> </td> </tr> <tr>
+<th class="field-name">version_added:</th>
+<td class="field-body">
+<p class="first">Only needed if this return was extended after initial Ansible release, i.e. this is greater than the top level <code>version_added</code> field. This is a string, and not a float, i.e. <code>version_added: "2.3"</code>.</p> </td> </tr> <tr>
+<th class="field-name">contains:</th>
+<td class="field-body">
+<p class="first">Optional, if you set <code>type: complex</code> you can detail the dictionary here by repeating the above elements.</p> <table class="last docutils field-list" frame="void" rules="none"> <col class="field-name"> <col class="field-body">  <tr>
+<th class="field-name">return name:</th>
+<td class="field-body">
+<p class="first">One per return</p> <table class="last docutils field-list" frame="void" rules="none"> <col class="field-name"> <col class="field-body">  <tr>
+<th class="field-name">description:</th>
+<td class="field-body">Detailed description of what this value represents.</td> </tr> <tr>
+<th class="field-name">returned:</th>
+<td class="field-body">When this value is returned, such as <code>always</code>, on <code>success</code>, <code>always</code>
+</td> </tr> <tr>
+<th class="field-name">type:</th>
+<td class="field-body">Data type</td> </tr> <tr>
+<th class="field-name">sample:</th>
+<td class="field-body">One or more examples.</td> </tr> <tr>
+<th class="field-name">version_added:</th>
+<td class="field-body">Only needed if this return was extended after initial Ansible release, i.e. this is greater than the top level <code>version_added</code> field. This is a string, and not a float, i.e. <code>version_added: "2.3"</code>.</td> </tr>  </table> </td> </tr>  </table> </td> </tr>  </table> </td> </tr>  </table> <p>For complex nested returns type can be specified as <code>type: complex</code>.</p> <p>Example:</p> <pre data-language="YAML">RETURN = '''
+dest:
+    description: destination file/path
+    returned: success
+    type: string
+    sample: /path/to/file.txt
+src:
+    description: source file used for the copy on the target machine
+    returned: changed
+    type: string
+    sample: /home/httpd/.ansible/tmp/ansible-tmp-1423796390.97-147729857856000/source
+md5sum:
+    description: md5 checksum of the file after running copy
+    returned: when supported
+    type: string
+    sample: 2a5aeecc61dc98c4d780b14b330e3282
+...
+</pre> <div class="admonition note"> <p class="first admonition-title">Note</p> <p class="last">If your module doesn’t return anything (apart from the standard returns), you can use <code>RETURN = ''' # '''</code>.</p> </div>   <h2 id="python-imports">Python Imports</h2> <p>Starting with Ansible version 2.2, all new modules are required to use imports in the form:</p> <pre data-language="python">from module_utils.basic import AnsibleModule
+</pre> <div class="admonition warning"> <p class="first admonition-title">Warning</p> <p class="last">The use of “wildcard” imports such as <code>from module_utils.basic import *</code> is no longer allowed.</p> </div>   <h2 id="formatting-options">Formatting options</h2> <p>These formatting functions are <code>U()</code> for URLs, <code>I()</code> for option names, <code>C()</code> for files and option values and <code>M()</code> for module names. Module names should be specified as <code>M(module)</code> to create a link to the online documentation for that module.</p> <p>Example usage:</p> <pre data-language="YAML">Or if not set the environment variable C(ACME_PASSWORD) will be used.
+...
+Required if I(state=present)
+...
+Mutually exclusive with I(project_src) and I(files).
+...
+See also M(win_copy) or M(win_template).
+...
+See U(https://www.ansible.com/tower) for an overview.
+</pre> <div class="admonition note"> <p class="first admonition-title">Note</p> <p class="last">If you wish to refer a collection of modules, use <code>C(..)</code>, e.g. <code>Refer to the C(win_*) modules.</code></p> </div>   <h2 id="documentation-fragments">Documentation fragments</h2> <p>Some categories of modules share common documentation, such as details on how to authenticate options, or file mode settings. Rather than duplicate that information it can be shared using <code>docs_fragments</code>.</p> <p>These shared fragments are similar to the standard documentation block used in a module, they are just contained in a <code>ModuleDocFragment</code> class.</p> <p>All the existing <code>docs_fragments</code> can be found in <code>lib/ansible/utils/module_docs_fragments/</code>.</p> <p>To include, simply add in <code>extends_documentation_fragment: FRAGMENT_NAME</code> into your module.</p> <p>Examples can be found by searching for <code>extends_documentation_fragment</code> under the Ansible source tree.</p>   <h2 id="testing-documentation">Testing documentation</h2> <p>Put your completed module file into the <code>lib/ansible/modules/$CATEGORY/</code> directory and then run the command: <code>make webdocs</code>. The new ‘modules.html’ file will be built in the <code>docs/docsite/_build/html/$MODULENAME_module.html</code> directory.</p> <p>In order to speed up the build process, you can limit the documentation build to only include modules you specify, or no modules at all. To do this, run the command: <code>MODULES=$MODULENAME make webdocs</code>. The <code>MODULES</code> environment variable accepts a comma-separated list of module names. To skip building documentation for all modules, specify a non-existent module name, for example: <code>MODULES=none make webdocs</code>.</p> <p>You may also build a single page of the entire docsite. From <code>ansible/docs/docsite</code> run <code>make htmlsingle rst=[relative path to the .rst file]</code>, for example: <code>make htmlsingle rst=dev_guide/developing_modules_documenting.rst</code></p> <p>To test your documentation against your <code>argument_spec</code> you can use <code>validate-modules</code>. Note that this option isn’t currently enabled in Shippable due to the time it takes to run.</p> <pre data-language="bash"># If you don't already, ensure you are using your local checkout
+source hacking/env-setup
+./test/sanity/validate-modules/validate-modules --arg-spec --warnings  lib/ansible/modules/your/modules/
+</pre> <div class="admonition tip"> <p class="first admonition-title">Tip</p> <p class="last">If you’re having a problem with the syntax of your YAML you can validate it on the <a class="reference external" href="http://www.yamllint.com/" target="_blank">YAML Lint</a> website.</p> </div> <p>For more information in testing, including how to add unit and integration tests, see <a class="reference internal" href="../testing/"><span class="doc">Testing Ansible</span></a>.</p>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2012–2017 Michael DeHaan<br>© 2017 Red Hat, Inc.<br>Licensed under the GNU General Public License version 3.<br>
+    <a href="https://docs.ansible.com/ansible/latest/dev_guide/developing_modules_documenting.html" class="_attribution-link" target="_blank">https://docs.ansible.com/ansible/latest/dev_guide/developing_modules_documenting.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>
