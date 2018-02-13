@@ -1,0 +1,671 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>12. Enter&#47;Leave &#38; List Transitions - Vue.js 2 - W3cubDocs</title>
+  
+  <meta name="description" content=" Vue provides a variety of ways to apply transition effects when items are inserted, updated, or removed from the DOM. This includes tools to&#58; ">
+  <meta name="keywords" content="enter, leave, &#38;, list, transitions, -, vue, js, vue~2">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/vue~2/guide/transitions/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/vue~2.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/vue~2/" class="_nav-link" title="" style="margin-left:0;">Vue.js 2</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _vue">
+				
+<h1>Enter/Leave &amp; List Transitions</h1> <h2 id="Overview">
+Overview</h2>
+<p>Vue provides a variety of ways to apply transition effects when items are inserted, updated, or removed from the DOM. This includes tools to:</p> <ul> <li>automatically apply classes for CSS transitions and animations</li> <li>integrate 3rd-party CSS animation libraries, such as Animate.css</li> <li>use JavaScript to directly manipulate the DOM during transition hooks</li> <li>integrate 3rd-party JavaScript animation libraries, such as Velocity.js</li> </ul> <p>On this page, we’ll only cover entering, leaving, and list transitions, but you can see the next section for <a href="../transitioning-state/">managing state transitions</a>.</p> <h2 id="Transitioning-Single-Elements-Components">
+Transitioning Single Elements/Components</h2>
+<p>Vue provides a <code>transition</code> wrapper component, allowing you to add entering/leaving transitions for any element or component in the following contexts:</p> <ul> <li>Conditional rendering (using <code>v-if</code>)</li> <li>Conditional display (using <code>v-show</code>)</li> <li>Dynamic components</li> <li>Component root nodes</li> </ul> <p>This is what an example looks like in action:</p> <pre class="highlight html" data-language="html">&lt;div id="demo"&gt;
+  &lt;button v-on:click="show = !show"&gt;
+    Toggle
+  &lt;/button&gt;
+  &lt;transition name="fade"&gt;
+    &lt;p v-if="show"&gt;hello&lt;/p&gt;
+  &lt;/transition&gt;
+&lt;/div&gt;</pre> <pre class="highlight js" data-language="js">new Vue({
+  el: '#demo',
+  data: {
+    show: true
+  }
+})</pre> <pre class="highlight css" data-language="css">.fade-enter-active, .fade-leave-active {
+  transition: opacity .5s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
+}</pre> <div id="demo"> <button v-on:click="show = !show"> Toggle </button> <transition name="demo-transition"> <p v-if="show">hello</p> </transition> </div>   <p>When an element wrapped in a <code>transition</code> component is inserted or removed, this is what happens:</p> <ol> <li>
+<p>Vue will automatically sniff whether the target element has CSS transitions or animations applied. If it does, CSS transition classes will be added/removed at appropriate timings.</p> </li> <li>
+<p>If the transition component provided <a href="#JavaScript-Hooks">JavaScript hooks</a>, these hooks will be called at appropriate timings.</p> </li> <li>
+<p>If no CSS transitions/animations are detected and no JavaScript hooks are provided, the DOM operations for insertion and/or removal will be executed immediately on next frame (Note: this is a browser animation frame, different from Vue’s concept of <code>nextTick</code>).</p> </li> </ol> <h3 id="Transition-Classes">
+Transition Classes</h3>
+<p>There are six classes applied for enter/leave transitions.</p> <ol> <li>
+<p><code>v-enter</code>: Starting state for enter. Added before element is inserted, removed one frame after element is inserted.</p> </li> <li>
+<p><code>v-enter-active</code>: Active state for enter. Applied during the entire entering phase. Added before element is inserted, removed when transition/animation finishes. This class can be used to define the duration, delay and easing curve for the entering transition.</p> </li> <li>
+<p><code>v-enter-to</code>: <strong>Only available in versions 2.1.8+.</strong> Ending state for enter. Added one frame after element is inserted (at the same time <code>v-enter</code> is removed), removed when transition/animation finishes.</p> </li> <li>
+<p><code>v-leave</code>: Starting state for leave. Added immediately when a leaving transition is triggered, removed after one frame.</p> </li> <li>
+<p><code>v-leave-active</code>: Active state for leave. Applied during the entire leaving phase. Added immediately when leave transition is triggered, removed when the transition/animation finishes. This class can be used to define the duration, delay and easing curve for the leaving transition.</p> </li> <li>
+<p><code>v-leave-to</code>: <strong>Only available in versions 2.1.8+.</strong> Ending state for leave. Added one frame after a leaving transition is triggered (at the same time <code>v-leave</code> is removed), removed when the transition/animation finishes.</p> </li> </ol> <p><img src="data:image/png;base64,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YVU0GZLJ4hsMg2DvrrJ3Nxd+pdHMo+Ta+KvGilTml8fkZyc7LUH+V61d7ogXRnf0ZeawdIno5q/yjbvsogbmovOLJ0+eHCy8/rMo+tMfRu0VmlExLTejPzX+/4zrTwYuGjz7jzlXyy4AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAoemFpe3ipzfbrc23iVz/3HdAOw9Qmz9GlC/8XwVrSHtotWCsWt4efLFjPt8e///l2GKaVbfIkFSzBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEizBEqy2C1bX0NBc/vYDTW/ZNTAw0I7B2rlz9McEa2pqag7PsDk9aF4G68zU1Pm57IDz/5fBqjdMTQVrbs/SruYfNTA00AbB6rp4NgzD3NtHWt0R34eHtja15YXb0TcIZ+60YbAWLNj/Yu/cgnX8t/FWCze2+ux7PQjWN7vtmaFtG7bM12ANbYu3WnRhS4s74Msg+KDZbVd8vWZ92wSrzjA1DtZ71+Mn0ZWRVnv1rzC809yWF1dH36Dn7nwP1p/iXCW+ay3gF/aE4bfRx/GR8Qbf4Wr+G9xrx2BF9h+cQ7C+LGzX+V5rz9evgyCO0PEflnzcKIlxi+ZrsN7fVthuUYvJjkK/MfrwzQ9LzjfMdZBu2y7BmnWYVjY+Osh7vLW1YE2G4WD8JBwZ/7T+d1ibfv3c/aF5Haw4O+GVu5cmwvQf1sIR1tpwU7TzuvaEj+vuiq53426Pxz8g7rRnsGqP2YpG2Qk6f7EyfkZ1/qPVI6yN6YdX6h/ArEn+GvM1WPHx5cKXlvY281esSv0ryReov+PO5H8ktFmwag/TysbZCa/dTc6Ftn/a6hHWO9GHf4c99U+hfh996dPjtxscVzz7YEV/z1z8D+qaDJs+diyd8qY92l730OyDMNx0pJT69gzWggW/rFyBqBus49EGH8YHCN9EN5a19oRd8fHiZoIVF2HNvA3W63FKtuTLvb61Q6znphY3Eaz3e9Md0H7BqjFMDYL1X/bu97eJI40DeC4UbN8VteCGC16hiDgS5IcSOT+UQ2ss3sBR6RB14+ZFlBeUEAtkKbEpV7CEj4qoOsA5kxDCCfVE/tWbZ37t7K69GztB2TVfv8p6HTs72eeTmWeemZRIE4qyauhApX2Usji/Gtg1q/0uYGMfENT/OHGwihfFzylAWRT58aS1vr7uXN5HduQk45rsaEtl0llzsC7aH7ZdYAcF49n6lkk8b+LicHDOK+Jg/cmbgUiHaCIlIbGmWX+gUplJsJap6WFOxbKSRa1N2rasJj9ir9xInKqyQF86VWUHYmDIvmgkys2S+REviuXxiIJFmozpvuZ5dtGNSiWxYiWNS26xI+d6WHNY4qhBTXUqzcAqVRoNag357IarAVbGM5PVT/EEy3czDYUO1+QfewYKRZGK0nqHKLX1kYhH+znrYbmjtJC06rZJ4iI/8TCw33LiYLHrV/0jAQrrMN39RaS0hDnVR+JIWFMd5kekPRsLXs2V5Mh6X/Wf2LOpV8Xrhk17qYll2RSBvdLog+XuzadD4nXNsWuE9zgu8Ds0I/pNn0SKJ1MUrxfDm0xNDglX5M18mfXUMhuyx3K5zN5qyemIbfDPiSZY+ucWbTHKm+HP/NtmRb9pV1zibMlsDn7EXpldlZ8xtqPkp2Z0N0Blhn9OTMFy30zBYLHQvCLjiccXdZgmXl+kwHuWaxOlMi/Nj9gQ6nZRRG0qr8N9jx2wrsbEKwOCJ2rIdTvCYN1SPyd73KOmIGHlgw+W37Y/WiwQbQZYJfkKzh470DaxN5SNvadbPb5gGbdZOjhef1aQ7PKQm3PeNCuHjM5RWSeoRzxg0RdZHa/z3vCMLFjsIiaNnNSIGMHKWYhNOWR0jj7pk6MesFblK6ghSv4GiDVYxs00FDYifGcMWPIi4yQePN3ijlIVlLzXYIL1jn3BA5My169qT8WsmdupUqTBsu4ZPx7/mSlFnrpv80qEJ9wfdmQ9vs5fx3pOqQ/i6IkAy7I/siFhzi6wq+dc8/YsPk0tbjk5dzl6vhWcJPvHOc/jpnkV3362s9e8Z68F32MqAxEE1q6RW1rVYJ0vpgvUjZjhQTlbbKzOi9dRnmes0ZriwcmT7pUKe26EjaLeiBTYCj/1xpvXiixYbwxIxCwCgXWmkqau5Fnhz4NSeVeOHOnKaw06Ys4TWOVWhQ0Ji60qGbUkWpSd8jXAYcDy/n7PmWOxcd9Z8xLnA8/+1OXZgJtpKCxxnjfwkmC9z9mPU3wk545S0mhh2Vp/xJnjUc2HhK/sLeqUbIs3+WOLDTSdcZAJVj7CYJnDNA3Wtuw0Mq7V0FY0mRr38WelRCrpvsfP0WibVCqYk4QOWAF2J//n++vjQifw7LXPdLY9WCIDkQ6f6XODNbshu1ZZHq9fJZRDrm6UZ5ZQjq3mhGzeksrIgjVlyKLBejAjjtglrwq3peyubpT63ikxqJRXLrppvgY4DFi+X54J1nyXZ10kdXk24GYKBmvPiBwN1juZhGcB7I7SqjnYUVEnk+5VPjhSAlquoVYswPrBmDxQYImBG+sykWUyS8cvo/a75I2dWyh4wBJjQtZIP+Y6fEQ/gcX+MFa6BWvM6HtUKvzby+MUqbo/xl/kBot6GFke7kvtc2UxAmtNXjKdkpMJn/il7xiNs2aAJUeL0vTp9mPvCIF1LvhswM3077CpfD9Yt1U6/rY7SpN61MTrjtxgiahm/ZSJ5Q4fEf0elg8s8QwbLQq51v/z6z9/HeYjvWGVoae1PB6wLJ7Cq/outy/BotRDujew1BetC98MDg46g0C5KmfGW4e1Q2PClfH2c/zxAivrKmTf/XpwcFbUZehzZVqW5AZLWL3boX6jH3pYdDMN9QiWKrMyotSIaVrL4waLBknbPJC34gnWpTY5LHm5z/ngrvRIZfDyVAOx4Bvr6TqsW/SSe7481aFzWH/91vNwldf9dCJnr3XowYcl3efa5bDGjMOVKSPpPOeKOg9Yq1QVsNuhmCteOayssfRoVbtggmVip8DibfmmQzHXYcDy/n5d9QTjvrMDn+vszYCbqYcclojbaX5oRqlr1OQDi0aPhbf+Yi4TrO1ozxLuG9W0Jlh75AvVaV39fp0qYMPAKl5PLbAep7fsrM9mCW9emz9EWUPbWUITLPLq9IFVCAeLj6XedKgijcUs4U4bsPg06HdJayccLOpdpuc7VJHGe5bQuZlCZwnzRv1B3uuLK0qDwapRMdIlf4GRTpNVo13WUJXpOlFDejVnDAn5CPitXGJYcg8J24FFx79c9/cndR3WD7Gvw3IVKIfVYY26lsa5h4SUmFnTOaxgsNgXD8Z1VVNMwNoV1aKqLbIGWDyZxS7q9KbOYQWCRccXOlX0xxgs180UWoel5vPkmEiDxb9wRakrzeMDi46/f8oz714IYlGHxZpCFY+9daqrlF/LBO++Np5KRUXS/eGjD96kuywGmVhu04nblm8Y70p3zxKwsEp3OYajEqM1Ayzul+qBidyU7o/tZgbNWUJRerrCP+1sIlZgkVIjGmDSViXdhV/syb+5xsuiP7aTyYx6ZgkJP1o1uZToK7A8N1NIpfsNPU5jgXglZyTdf6AvXFFKR8Ke5/96byTd5fBm7XoqZRRf+irdL0W70p3GgQIhWqV0W7TAfbVSp0AXv82FUk2hJlPNsgbpEC9PE8k8yy6YTXFXlty+i+9aQv/GIKFrCSeJkk/jonPAYvL8plypsyYSU2K0JKfARnR+2QFryVk0KHog5VY1JmDx0rIltTRpzFistMMvfU6AXp5SZQ28QyrmAjVYvPJDLhoUvS1fA8QTLP/NFLKWkAXcxGsVY3kRTLzSUazUcUdpVda/e8oaZMeEV4aLkLdsJ32j6ihLwftBRGC3hqd8lTbfTGFRkp36YDf/K/yiXtP9O3ynnHeiuRZ+q1NR6b4G6wZ9f06Wyutlgws588/Ds98+vozxbg1OruGwYPHdZWaTNr+oaVnZnalROShFKHW7zh8czMuzdHKyac2bGS0q3LJqslZJ8Faeik3hqCjeP2NZpC0vQONZuyIVx9Ll0TWdORiirtPPoo52YKxZcM0ZUuGWVVRtyfur/gaIIVhtb6ah0J1RUhPveZJK//Vnkfjx72KPFXeUUsBduVN/PGxmu5hpH8TKw7cy0nk6a9lMYk28tqn2NB/x/bCGdVl/ToEl98dSu8/I0wXRDZOTEbrodC+Vkn2nqqLbXJpjfEI+lvthneuwUWQwWGVnKcpSwlyKMpCZlh0Q+cgmjHUrWT14XB0YMMopJxUCMVmaI7qWxgUbS3NObyS8K3XUUiTeC5UqzckpRFVs27YB4gZWp5spbHuZml4xJwLLWZpD/SFPlOoN6KgTdkvvwiD3YaBw3Fd9lX3XPlMTqbDtayKx4+hLDsqz1zp1LpZV3jd2C11YfypkL/KGe3ZHqM+fql1SFumkvKfOQ3xTyF6GEQWr/X5r4WAlEgXxy31QVZmcMzxIZ6eN3azG1HT9HD88XTJ2HN3RAyGV/knEqIfFdNnh15SZ3NCpc84S33VH7maVoV7lqLO51YsNp1CLk39ZZfo22jdAvMDqfDOF7jhqPX4kgmhLJYbvP3SWO3uiVBxefVJwdhy1XkrNqAMm0lk0f79sOqD3NYj8nu52XW80IQZ6H+vO/jBWvW63f63e2aKuC2231R7uvg+oh+1nGkWwOu1oexiwEol0s9naMOf+Kk1ne5Ryq9k0Zv7YoTc/k5bPsHidlSpVetju/QT3dGfXW5lxpiFGE+ya9UU2WOsY2DaMxlL7zzRbDanS2d4b4C9xuJkOs6e7GXlihaDxhCdKLX+U2jJKixd1Ltl2xyT7pvpWLP4JRafFOl1u8n4pbFfD2IEV9Ojuv+bMhXcFPsO3njBYnWrfu9/kPdv79fflf80JWTVyiC1Ie3v0EVgWpdUXkwDreNUpnyoMtF9G94WA1aCJitkZgHUsYFmUVr+bA1h8aqLrPZYB1mG+r+s9lvsKrCk9bwGwjg7WrVT3eyxHHKwbvY3rCKyJ10mA9RnAunyk/9PXB2BNzgCszkvqunnQlH6+0E9gUW6up0tZv7OeSwKsjkO7Vqun/49aOTgoHiVcIwNWutXqyd3Vg4PSka6/L8Gy6nZP7BSPGKX4V/VfClgn98C/qu9DsHp+WFYSYAEsgAWw4gHWER8AC2ABLIAFsAAWwAJYAAtgASyABbAAFsACWAALYAEsgAWwABbAAlgAC2ABLIAFsAAWwAJYAAtgASyABbAAFsACWAALYAEsgAWwABbAAlgAC2ABLIAFsAAWwAJYAAtgASyABbAAFsACWAALYAEsgAWwABbAAlgAC2ABLIAFsAAWwAJYAAtgASyABbAAFsACWAALYAEsgAWwABbAAlgAC2ABLIAFsAAWwAJYAAtgASyABbAAFsACWAALYAEsgAWwABbAAlgAC2ABLIAFsAAWwAJYAAtgASyABbAAFsACWAALYAEsgAWwABbAAlgAC2ABLIAFsAAWwAJYAAtgASyABbAAFsACWAALYAEsgAWwABbAAlgAC2ABLIAFsAAWwAJYAAtgASyABbAAFsACWAALYAEsgAWwABbAAlgAC2ABLIAFsAAWwAJYAAtgASyABbAAFsACWAALYAEsgAWwABbAAlgAC2ABLIAFsAAWwAJYAAtgASyABbAAFsACWAALYAEsgAWwABbAAlgAC2ABLIAFsAAWwAJYAAtgASyABbAAFsACWAALYAEsgAWwABbAAlgAC2ABLIAFsAAWwAJYAAtgASyABbAAFsACWAALYAEsgAWwABbAAlgAC2ABLIAFsAAWwAJYAAtgASyABbAAFsACWAALYAGsqIM1eNyPb0ZG2ePY33YwZmB9ffyP4ubm5vRxv+l3sWmAIbqvho79beNwMx17ML2Ynh6dPvPFB6l4jHz1f3bOrSeKbAvApQGSeqBRXsBOi6IgdBMmhCAyBoINPeFwP9HIJQRUxkQxwwswMwTMgMaBmBxfPHgZ5/BfT+1bddWuamQizHR3fd/DDNhVJaxe69tr7aq2puaGAwT2bKn1fv2aOtLgLKgTsawlDtQVgUVYCIu6AgKLsBAWdUVgERbCoq4QFoFFWAiLuiKwCAsQFnVFYBEWwqKugMAiLIRFXRFYhAUIi7oisAgLYVFXQGARFsKirggswgKERV0RWISFsKgrILAIC2FRVwQWYQHCoq4ILMJCWNQVEFiEhbCoKwKLsABhUVcEFmEhLOoKCCzCQljUFYFFWICwqCsCi7AQFnUFBBZhISzqisAiLEBY1BWBRVgIi7oCAouwEBZ1RWARFiAs6orAIiyERV0BgUVYCIu6IrAIC2EBdUVgERbCoq4AYSEshEVdEViEhbCoK8JAYBEWwqKuCCzCAoRFXRFYhIWwqCsgsAgLYVFXBBZhAcKirggswkJY1BUQWISFsKgrAouwAGFRVwQWYSEs6goILMJCWNQVgUVYcDphXfNAWNQVgUVYQF0BgXVqb3ogLKCuKiWwDzwIAwB1BQAAAAAAAAAAAAAAAAAAAAAA50X6eHp6+kuKQABA+dP4b9d1b3cTCACoAGFd9YR1/cw6rM/7+3M9RBUAKkBY9Vdct7OdqAJ8ldZpj8vE4Z8WVgfCgr9Itm1/f3/ytEf3egdfrvxt1/pmr/TmefO/RViZvmzwxUw6e8KpfdEXh72LzY6eeEj1Ue/Vzw9k0jdn4e5pjx6ujm1Xsbq7t3jz49/jwvh4YUR8NVAYL6yOxgkr/ccz7+sDfcuw9njH7Vxzjybiz/684x27vdUT/Es+vxV/6HqHfC++bXs35A2Iq99Xe2zfsFCeibDunvboFpGyCKuqGRAmWTTllZuIEVbrc1dxx7NQ44ZrmIk5u3FMvzj7KvCXLPjnePXrH+IuV3ls+8m705Huy4T/IOP0qS9aRe2+KL5wse+k6yyJJE2VvizCqoIlTDy98FOPFlTg3faF9eSer5tFPV9rRqJn+zKSfxqsXIX3NhQPEcqreDL2dOsXm/M4/CtWav2cZx8vnLS55sXpSM7Ore/GC1vOtZ3cL+5776Cu6XciTY7GC3ILumvT68xzqjP3rli44Bw3/+xHOH38VgwCnd71Rer1HovvjirxScKwsMJpk+k7KYsyCdhqWdKNlTTRshMVluid3Nz4mj5OyKfzZ+Mv6+xh+ecFkSruSnyH1SL/vz0kr/qqAgLkFdF44Yv/1USoNQgMy+mNwvhqT/1r9xd3e0Tc6nkrYnIwXviQii3Lz88Omh8l5MHckn28Z57m4lom06hzXH3f0e6s+3kjdqby5psLevobHAuuenLxVOwGLvtn2d7qyXsWX23XXxW2uuOEFUwbx9nblJUlhR89O7xzU725NKREJZKj81VUWDJ63jD45JNKjtYr770lbuCKejV8dqPoKTomlKEC3drF7ILM04aGrLysO5iSl1M5XO7C+t30i8OWh9PhYVkUTEHXyd1AKyoe54iU5Z1j8V1ShFWyj3cGih37ii5Ve3Fz1Sm+r6TwvJd+y+lQBxLWRF/mpeL+aBm3CjKd0o/DE0lRWOG02fED8CLm7FAyVnMuXVWFM6bSYq9JMukLSybNSroh1a9XM68j3ZvblMtej3W2LNJFpyHbYl1M9mXysQZ5yH0vpF3NZ/pg6jmyYJqCfutWZ3hYDhSM6AiKtef93qXKMjEbFSX7+Mey3x4fUkUXEtZPPeuReB7t6Gj7LvO79GCHpd+LNbNvWp6TX7NesuWvNhMzEobTpqhvIWH77HAyVnsu3R+Vv++y3xfMh4VlEB3B042hYiXGn62DWryYJax5I8rZ0QoIkGmslJwDL4SH5aCwcrmJYIdVsix3kyKsUn28iG1uMOV0qc11GZnc4MO2KzJf0lmprJWLDX0q2BfUFWbbdVr++cPe//xRqqH1qoxvg1owRau/7toTaBnhN1brakM4IiwrbWSCHaxpf9lnWzs31Z5LI+K/3i9qaumWL6y8JazA98JAobMHLGH5FysKa8AsDPL6FfEsqbTxI90T7lp5VRyWlbDuXGr9pKaSPnn8YtYrtmE1BofK0s19mZyaTIqwSvXx/bK+LvbJ13VkBh11Z0YkhzTPC3MBT0ZZcYgRlpz2etW1mlKBebPf3IRecP/KYxF/9yaWFtWC9fiYEZaVNt73/5nUgrpln23v3FR7Ls3k1SMs0Q5rPSisW9pJnfLBKpFRsWdLrqdKdli3KkpYMiW82sirtb3OFJs1LItfKOdNyc4NXSTFrYi4svRyLe0khxJ9/EIwu5aLw9GboLDuOtbA7cWuxd9P1JfItQeexFkwjVxLOd+M1vNx7z35M6a1eLv9xLHSRuzG9B7uvw7er/fPjuzcVHkuvX+tliQTtYf63e9WkVh2splMxkln1Nr1pZhRobNlDB85GXGsONy/mBLWK/0m5cRy0vprxTzlN6xq5L+ySTBbJbe7rWHZX9+HI8KKK8tFJ1GU6OPHgpGZKYas3xbWk+cxwnphVgN1dFFYY2Zzq6WcdwrlVPcopULj773s+lGw0kY8ce13A90lznYTcC/HDHLh0de8+zIgt0Xv3dik/dShb8TxOlQAAA8xSURBVEkUZzx9tlxAO+VlDrsjTYocp9Te4IrOs8qIrPyZZ578Ln9ws9TfSeVjhCXKpSUirLiynEmWsEr08aGavHuCsHqDwupoL75gd1h3TIcls3O4rG9tyJ599Ia6f9USiYKVNumx4PhinZ1PkLBMCYbbHf38QY8UuZvbmttcEyua9MzqdLPZwwqfLe+1uqtzx8+sgpQvdE6/GzGH7LjWTmO5z4SPuobUMn7PdFjWsHyCsEqVZZKI7+NlZEYyqid3Sghr16TZ/R55ZCYbMJkZ0c0elsxDf31cKuc9LCXukTH1O6+f3GHd1U46mH6m8yz27ETcfF6Kfe78pau67sBOupcMS+GFzjo7cG+141VkIpChDC6VlTIWiXX6/qZeuvZCe1jFYTleWPO+sGLKMlEzYWwfn9d3CR2n9pJTSljzfpcqN632Jp2gsKw1Vm5d5fVTN2a3sJxnwq3n6kfsjexhhdNGbfpOqA9QiDwLnW0lYxJyyb4Zum6e/xgeCuwdyMcoQ8IKnV3/zI3/pOCY/wBgvS+1innCzffwSkTCxWE5Kqxms+Dn9e0euywTNxNG+niZTrntf81tDs22xwhLLXSrm+ZDFEdz++/k1BcnLLXGHkwX2lWWbsvPGoSeUy3DmdD+HFvxuaxw2kg/Xdf1JnfqgmdbyVjlufTJjdsA3zCr29PXam1cFUtbl1TS4OGv8pZZ5OzGDbWSfrT+XZXeDSMs7xCZhR0V9BmC/riu0RqWI8JSVfNxczVVqiwTNxNG+/h88Mn2qLDMUnE9+DFVMezFCitvjU9uue87mLsP89FJsXPLShtl/K1Nfw8rdLaVjMmkdmqqSX2YsrdpamrSfK5yb6rpxM/M7/mnhZV1ODX1UJe6d0hFPYI0HLuZGR6WI8IyJeYVXomyTOBMGHmocSny+HZQWCZyomBfBjeVY4XVes+XYvGyZf1Pd76Mc6pa6WZHw2mjlBTYdA+fHU5GcBL11FBEtveiE6FjDcv+lq+ppYzZuHtRqiyTNRPG9/HZNnX/ZftDt1b5staYbOCz+SHXfP2H2m84uKyfHclFeif9cTvRxbWpgz9eKuug5GMmQr3Sic24UNoMRIQVOjuUjJBw3kQnQscalmVBLqZ05si2fHjNCMuJLUuQNBxONT0svVCK7l63tnWHortPn7B2qiPUgHD4lVGgbGZC+9OO6l8G2LXSxnkgm6gP6/6+XPjs0M4NQHzvFRyWTxiPs18pS6C7D+fNZDRt0oexmy2nTUaAxA/LQDICAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPzjdAkIA+89KQXfTK9465+e619xs6am5iaRTiQ/eu/9g7O/7HfeZRFWMoXlvfU1CAsQFiAshIWwEBYgLEBYRBdhISxAWICwEBbCQliAsABhAcJCWICwAGEBwkJYgLAAYQHCQliAsABhAcJCWICwAGEBwkJYgLAAYQHCQliAsABhAcJCWICwAGEBwkJYgLAAYQHCQliAsABhAcJCWICwAGEBwkJYgLAAYQHCQliAsABhAcIqLawfayGJnKOwrhHdJPL07xEWJJdzEhYkF4QFCAsQlpo6ex8Q4sTSlk6fR0rdILKJJX0eKRUCYSVYWOeTUggruZz/zn5dUpGbw3XJhpQ6S655GfUdGQXnA7ff4WxpE8IiDICwAGEBwkJYgLAAYQHCgv+3c78/USR5HMdbE0n6gXDwBJyMLFwQoQkJIaBInOCMYzjkhxsuoMQoQi4BjDwBPImaBY2LIVme7LErq+f/elX1requ7hk8L8caGt+vBzoDPTWdqW8+9aN7AIEFAgsEFkBggcACgQUQWCCwQGABBBYILBBYAIEFAgsEFkBggcACgQUQWCCwQGABBBYILBBYAIEFAgtnMLAUAgsnGFi6pPgYAAAAAAAAAAAAAAAAAAA4c5rm+vkQcLIl1cuHgD/HRhiGj/gYzqi+aeXGt33Pzg9h2FPhs8efYaSkAuvebT6Is2ld9W746tu+Z1m/5/VGPnx07e7uTp5sS2O6uq5e4bM9m9p1945+k7c62t2dH9AP3un37GCfAS2XT2q4jFsqdL5Qj54N8OESWP+fi5fUQvBKPAbe57OHiZnRE26pb3N/ixUhgXUSgWVn6kcT+78xwfpuFIaK6R8UgyF50KlqInya/OL80H9rqziUbqw41Fu3pWMMcbHnTAVWuj/juvq6MjzmVe64sa/aCy1SUvkzVp2YqJqrKCPViepyqpM7N9dUxx/eMY8PJqpbwQ8vo3+Gv97WF3wOdPUdTlSbZWZUCsNo+YZtsXou+Nz2PJzx2trZXNEviN+g87N+vvex32+psFGtVrcay+qcls34qB5Vt/T4ePRSHbO9xWoxB1PvDdVpv+hOK2yYUqgXWKn+bDk6KIVr4V6z1NlE9WPgHt3NlKGvS/38ediz5eZPfRvmuObgaF+3Hqo3v2HqtnquzjkV/pACZD8+X0Z01y7oR3p7MrrrZ1lbKLr1JFs96ZmQ52qyvR46w/32Uox2zpblzXH9LAmsiy/dEZFMpdpL7uV+Sy0/mh3Sh/rZY11UT2RPq2XcHnLvDT126r12haQXZlJbmcBK92fZ1Vm42B90/uy2McdsFaTKMPHDinvVrKz9NtzzhQdxSd03dav+qzmnzlV7yHUGwXyNhz/aAjE7Sf7135G4jnTZmI5O6qA9fqxeEueVqQn1q5+iML1dkRwezuo5VpJSi+teS+YcOhpNkS246lKxNx4fw4786bfuxhvT60/rBFaqP00FWo+C4IGLlmuyrEuXYeJa8qpFXbVJSs0kv+qWEuquOaelW/ExC/RYrjy0BWJSwrtps0XPbsLtiZKUVSqwng3EMRMN98uvDl/a3o/DKUqmQyaJ9tZc2ZmrgTa+/JZsYLmJlZRZRcbasLpSU7Q4heRa74LNkNmB2sDK9Kf58XOXX25iZWphMVuGCVN1z02aRRXXZviTjq/UDEsCK3tO5m6HaGItu6rA6V8TliSodDj0eCsuUwE3G4M+2RKXVLo513XJrAkLvTJmnW8aks4/Jy3cu2ID69OdnX/3+639MmkDqNveHNPTHFyYrgR+SzawZMpWkepSMaZr9updeco9gKffuIRCy2rmjgIbWNn+LDz51NwYLF2WzQYz91kMgr42c7NLpgw976KP/XZiNSqVE356E/Tt3w7O98o0ramp1wVW5pzMT9VicOlDaucCeVgTXpZJ9bhUz06rMWmm3NHd80Pm9xJY0c0gKI7bezvj+b454NlAU68+xAWWWfgNSlutOmOKweD73bcyCZPqemV+mlo5uMCys73BW6ac7AqxqbedwMrPmrAii7mnXhXYwKrpT1UFDUe7bXa280DKpyzDX6YMG1x5GhemdldlQmYSKBlvr8U3ILvASp+TOZPHhabGawRWLteEs7fNwPZIiskMQg+8JaD+hd1OMrOjOLBGXcrEKrYYgmRbIdKV03XgjuiQlV+yVkguHrnAMmvCxUYz+avE55RsgeFUM+uvGRM5qpeTKvADy+/Pwc9r7qlbMFaCf8k4mi5Dt9+lr/QEf6xk9tYXg+MDK31O7X6ri4yB+VsTVvS/anxzW1Xd3saoTHNsx8e1EMfM0mqdwHrq7Yuqowteax2N5hXJVKk2sGR4vf1XXZoD/rYrgZWbNeF18++CXwW2o7P96T9XZWCGzpmln2XYS5ehGxxV8XR6Zdctbcx8IbDS51QmsHK+Jpwpy1eujplhjX4hsAb9wErKMjXDkgLZm14xgWReMfyFGZacRmVc3jI1IndQXaef7tHZyVvSrV+eYalqkAt2y5uuDPQLFvtKUmbpMmy5Fc+wJMl+32yTi4Ftqf2yOoGVOqd1v9VuOix/a8Jf38rWe8FuOMxJpVSKmt5kqB9Yr1zKzA6YI4u9fv40uN0Lc4jeZn1iSlTGyUoqsF6lAsusCbdW5Sg73ZczKdJfOVgTqulRNN0m8+GGuntYSX/qn0Y3+2UpqOtGP5jdtFOfTBnGW6ymkeuT8jUJG1jJ7NsU6ZtUYKXOqV32OXp1qwVKKm9rwrbkJqpE2V6eCYILfwmOC6z7bgEgm1Y7k0Hdb4yZ/Omw79QhG/zhJ1U4Rx8Dv6U4sOI5u76SbdYIPebk3vOtsNysCWvvcfLvgUr60+5Zya6B2WO45d13lSnD2MUXUo9lmSPJa9Rxhc/Nbm7/KhVYqXMy2yDDOt9aWumtXK4Ja/4Ih7nlONr+2/xm6d6VOoFl+lxN5B/ZW2AO53cPzMZUncCSd9jadIs6eUWkv0FR8VtKAsvtpd13U0B1wPznFa7o5GdNWPvHr8xP95oz/Wl+eri7ktxr7Ha93tSWYRJYeuzbnn7rFnXS5vb+iplBmWc90wcVL7D8czIjaBhtzW+ufcW3WHEK14S1l3fL/p3ttYHlxkE3YYqr4bgZlr8Llbzi04DXUhJY5rsUbt3o3ZZ8le/m5GVNWHuFZMxumKf7cyy9WRofZzfD02WYfYd4F6ozdev6SClzp3v2nLyNfv5YVk7XhDV3/D70L+VcbMsElqskNe61vPavuNQJrOJIOrAKgx/i+9srXksSWP1Jndp7my+u+F/eQF7WhJlvvZi7NqPhgUx/vs4Glt2Gf1ynDOtVp9Rl3wv/61vj7mpiXLeZcxoreRe2kbM14Yf6I02XfGV5W/89ITNSPbKFIpPzcil0j+0tMXvNjTI+Rtki+LvJxN/W4/sZynLrjfz1BteSOZGFxnjvIR5TWzZkRPz9Dr2VC2NhvT+HbEJF/2G9VH8OmnXd8I0n8b3s71KTab8Ms4l1tfmdWxsMbpRknddvCsYF1qV4lEuf0z9kNRktT9JbZ0Vv0PR+qnXuuN8WC61TU5P2NoMGdeRQUDi2rYL6vf/Xh4rBzlT8k1RLx/AOR26pXpyr7c8G1fv/exkOvlev8iuusONVkfrt1NwXz2VQFx0l9Z0pnMKW8P1WX4GiAwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAp99/AJ142zk3E5VMAAAAAElFTkSuQmCC" alt="Transition Diagram"></p> <p>Each of these classes will be prefixed with the name of the transition. Here the <code>v-</code> prefix is the default when you use a <code>&lt;transition&gt;</code> element with no name. If you use <code>&lt;transition name="my-transition"&gt;</code> for example, then the <code>v-enter</code> class would instead be <code>my-transition-enter</code>.</p> <p><code>v-enter-active</code> and <code>v-leave-active</code> give you the ability to specify different easing curves for enter/leave transitions, which you’ll see an example of in the following section.</p> <h3 id="CSS-Transitions">
+CSS Transitions</h3>
+<p>One of the most common transition types uses CSS transitions. Here’s an example:</p> <pre class="highlight html" data-language="html">&lt;div id="example-1"&gt;
+  &lt;button @click="show = !show"&gt;
+    Toggle render
+  &lt;/button&gt;
+  &lt;transition name="slide-fade"&gt;
+    &lt;p v-if="show"&gt;hello&lt;/p&gt;
+  &lt;/transition&gt;
+&lt;/div&gt;</pre> <pre class="highlight js" data-language="js">new Vue({
+  el: '#example-1',
+  data: {
+    show: true
+  }
+})</pre> <pre class="highlight css" data-language="css">/* Enter and leave animations can use different */
+/* durations and timing functions.              */
+.slide-fade-enter-active {
+  transition: all .3s ease;
+}
+.slide-fade-leave-active {
+  transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+}
+.slide-fade-enter, .slide-fade-leave-to
+/* .slide-fade-leave-active below version 2.1.8 */ {
+  transform: translateX(10px);
+  opacity: 0;
+}</pre>    <h3 id="CSS-Animations">
+CSS Animations</h3>
+<p>CSS animations are applied in the same way as CSS transitions, the difference being that <code>v-enter</code> is not removed immediately after the element is inserted, but on an <code>animationend</code> event.</p> <p>Here’s an example, omitting prefixed CSS rules for the sake of brevity:</p> <pre class="highlight html" data-language="html">&lt;div id="example-2"&gt;
+  &lt;button @click="show = !show"&gt;Toggle show&lt;/button&gt;
+  &lt;transition name="bounce"&gt;
+    &lt;p v-if="show"&gt;Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris facilisis enim libero, at lacinia diam fermentum id. Pellentesque habitant morbi tristique senectus et netus.&lt;/p&gt;
+  &lt;/transition&gt;
+&lt;/div&gt;</pre> <pre class="highlight js" data-language="js">new Vue({
+  el: '#example-2',
+  data: {
+    show: true
+  }
+})</pre> <pre class="highlight css" data-language="css">.bounce-enter-active {
+  animation: bounce-in .5s;
+}
+.bounce-leave-active {
+  animation: bounce-in .5s reverse;
+}
+@keyframes bounce-in {
+  0% {
+    transform: scale(0);
+  }
+  50% {
+    transform: scale(1.5);
+  }
+  100% {
+    transform: scale(1);
+  }
+}</pre>    <h3 id="Custom-Transition-Classes">
+Custom Transition Classes</h3>
+<p>You can also specify custom transition classes by providing the following attributes:</p> <ul> <li><code>enter-class</code></li> <li><code>enter-active-class</code></li> <li>
+<code>enter-to-class</code> (2.1.8+)</li> <li><code>leave-class</code></li> <li><code>leave-active-class</code></li> <li>
+<code>leave-to-class</code> (2.1.8+)</li> </ul> <p>These will override the conventional class names. This is especially useful when you want to combine Vue’s transition system with an existing CSS animation library, such as <a href="https://daneden.github.io/animate.css/" target="_blank" rel="noopener">Animate.css</a>.</p> <p>Here’s an example:</p> <pre class="highlight html" data-language="html">&lt;link href="https://cdn.jsdelivr.net/npm/animate.css@3.5.1" rel="stylesheet" type="text/css"&gt;
+
+&lt;div id="example-3"&gt;
+  &lt;button @click="show = !show"&gt;
+    Toggle render
+  &lt;/button&gt;
+  &lt;transition
+    name="custom-classes-transition"
+    enter-active-class="animated tada"
+    leave-active-class="animated bounceOutRight"
+  &gt;
+    &lt;p v-if="show"&gt;hello&lt;/p&gt;
+  &lt;/transition&gt;
+&lt;/div&gt;</pre> <pre class="highlight js" data-language="js">new Vue({
+  el: '#example-3',
+  data: {
+    show: true
+  }
+})</pre>    <h3 id="Using-Transitions-and-Animations-Together">
+Using Transitions and Animations Together</h3>
+<p>Vue needs to attach event listeners in order to know when a transition has ended. It can either be <code>transitionend</code> or <code>animationend</code>, depending on the type of CSS rules applied. If you are only using one or the other, Vue can automatically detect the correct type.</p> <p>However, in some cases you may want to have both on the same element, for example having a CSS animation triggered by Vue, along with a CSS transition effect on hover. In these cases, you will have to explicitly declare the type you want Vue to care about in a <code>type</code> attribute, with a value of either <code>animation</code> or <code>transition</code>.</p> <h3 id="Explicit-Transition-Durations">
+Explicit Transition Durations</h3>
+<blockquote> <p>New in 2.2.0+</p> </blockquote> <p>In most cases, Vue can automatically figure out when the transition has finished. By default, Vue waits for the first <code>transitionend</code> or <code>animationend</code> event on the root transition element. However, this may not always be desired - for example, we may have a choreographed transition sequence where some nested inner elements have a delayed transition or a longer transition duration than the root transition element.</p> <p>In such cases you can specify an explicit transition duration (in milliseconds) using the <code>duration</code> prop on the <code>&lt;transition&gt;</code> component:</p> <pre class="highlight html" data-language="html">&lt;transition :duration="1000"&gt;...&lt;/transition&gt;</pre> <p>You can also specify separate values for enter and leave durations:</p> <pre class="highlight html" data-language="html">&lt;transition :duration="{ enter: 500, leave: 800 }"&gt;...&lt;/transition&gt;</pre> <h3 id="JavaScript-Hooks">
+JavaScript Hooks</h3>
+<p>You can also define JavaScript hooks in attributes:</p> <pre class="highlight html" data-language="html">&lt;transition
+  v-on:before-enter="beforeEnter"
+  v-on:enter="enter"
+  v-on:after-enter="afterEnter"
+  v-on:enter-cancelled="enterCancelled"
+
+  v-on:before-leave="beforeLeave"
+  v-on:leave="leave"
+  v-on:after-leave="afterLeave"
+  v-on:leave-cancelled="leaveCancelled"
+&gt;
+  &lt;!-- ... --&gt;
+&lt;/transition&gt;</pre> <pre class="highlight js" data-language="js">// ...
+methods: {
+  // --------
+  // ENTERING
+  // --------
+
+  beforeEnter: function (el) {
+    // ...
+  },
+  // the done callback is optional when
+  // used in combination with CSS
+  enter: function (el, done) {
+    // ...
+    done()
+  },
+  afterEnter: function (el) {
+    // ...
+  },
+  enterCancelled: function (el) {
+    // ...
+  },
+
+  // --------
+  // LEAVING
+  // --------
+
+  beforeLeave: function (el) {
+    // ...
+  },
+  // the done callback is optional when
+  // used in combination with CSS
+  leave: function (el, done) {
+    // ...
+    done()
+  },
+  afterLeave: function (el) {
+    // ...
+  },
+  // leaveCancelled only available with v-show
+  leaveCancelled: function (el) {
+    // ...
+  }
+}</pre> <p>These hooks can be used in combination with CSS transitions/animations or on their own.</p> <p class="tip">When using JavaScript-only transitions, <strong>the <code>done</code> callbacks are required for the <code>enter</code> and <code>leave</code> hooks</strong>. Otherwise, the hooks will be called synchronously and the transition will finish immediately.</p> <p class="tip">It’s also a good idea to explicitly add <code>v-bind:css="false"</code> for JavaScript-only transitions so that Vue can skip the CSS detection. This also prevents CSS rules from accidentally interfering with the transition.</p> <p>Now let’s dive into an example. Here’s a JavaScript transition using Velocity.js:</p> <pre class="highlight html" data-language="html">&lt;!--
+Velocity works very much like jQuery.animate and is
+a great option for JavaScript animations
+--&gt;
+&lt;script src="https://cdnjs.cloudflare.com/ajax/libs/velocity/1.2.3/velocity.min.js"&gt;&lt;/script&gt;
+
+&lt;div id="example-4"&gt;
+  &lt;button @click="show = !show"&gt;
+    Toggle
+  &lt;/button&gt;
+  &lt;transition
+    v-on:before-enter="beforeEnter"
+    v-on:enter="enter"
+    v-on:leave="leave"
+    v-bind:css="false"
+  &gt;
+    &lt;p v-if="show"&gt;
+      Demo
+    &lt;/p&gt;
+  &lt;/transition&gt;
+&lt;/div&gt;</pre> <pre class="highlight js" data-language="js">new Vue({
+  el: '#example-4',
+  data: {
+    show: false
+  },
+  methods: {
+    beforeEnter: function (el) {
+      el.style.opacity = 0
+    },
+    enter: function (el, done) {
+      Velocity(el, { opacity: 1, fontSize: '1.4em' }, { duration: 300 })
+      Velocity(el, { fontSize: '1em' }, { complete: done })
+    },
+    leave: function (el, done) {
+      Velocity(el, { translateX: '15px', rotateZ: '50deg' }, { duration: 600 })
+      Velocity(el, { rotateZ: '100deg' }, { loop: 2 })
+      Velocity(el, {
+        rotateZ: '45deg',
+        translateY: '30px',
+        translateX: '30px',
+        opacity: 0
+      }, { complete: done })
+    }
+  }
+})</pre>    <h2 id="Transitions-on-Initial-Render">
+Transitions on Initial Render</h2>
+<p>If you also want to apply a transition on the initial render of a node, you can add the <code>appear</code> attribute:</p> <pre class="highlight html" data-language="html">&lt;transition appear&gt;
+  &lt;!-- ... --&gt;
+&lt;/transition&gt;</pre> <p>By default, this will use the transitions specified for entering and leaving. If you’d like however, you can also specify custom CSS classes:</p> <pre class="highlight html" data-language="html">&lt;transition
+  appear
+  appear-class="custom-appear-class"
+  appear-to-class="custom-appear-to-class" (2.1.8+)
+  appear-active-class="custom-appear-active-class"
+&gt;
+  &lt;!-- ... --&gt;
+&lt;/transition&gt;</pre> <p>and custom JavaScript hooks:</p> <pre class="highlight html" data-language="html">&lt;transition
+  appear
+  v-on:before-appear="customBeforeAppearHook"
+  v-on:appear="customAppearHook"
+  v-on:after-appear="customAfterAppearHook"
+  v-on:appear-cancelled="customAppearCancelledHook"
+&gt;
+  &lt;!-- ... --&gt;
+&lt;/transition&gt;</pre> <h2 id="Transitioning-Between-Elements">
+Transitioning Between Elements</h2>
+<p>We discuss <a href="#Transitioning-Between-Components">transitioning between components</a> later, but you can also transition between raw elements using <code>v-if</code>/<code>v-else</code>. One of the most common two-element transitions is between a list container and a message describing an empty list:</p> <pre class="highlight html" data-language="html">&lt;transition&gt;
+  &lt;table v-if="items.length &gt; 0"&gt;
+    &lt;!-- ... --&gt;
+  &lt;/table&gt;
+  &lt;p v-else&gt;Sorry, no items found.&lt;/p&gt;
+&lt;/transition&gt;</pre> <p>This works well, but there’s one caveat to be aware of:</p> <p class="tip">When toggling between elements that have <strong>the same tag name</strong>, you must tell Vue that they are distinct elements by giving them unique <code>key</code> attributes. Otherwise, Vue’s compiler will only replace the content of the element for efficiency. Even when technically unnecessary though, <strong>it’s considered good practice to always key multiple items within a <code>&lt;transition&gt;</code> component.</strong></p> <p>For example:</p> <pre class="highlight html" data-language="html">&lt;transition&gt;
+  &lt;button v-if="isEditing" key="save"&gt;
+    Save
+  &lt;/button&gt;
+  &lt;button v-else key="edit"&gt;
+    Edit
+  &lt;/button&gt;
+&lt;/transition&gt;</pre> <p>In these cases, you can also use the <code>key</code> attribute to transition between different states of the same element. Instead of using <code>v-if</code> and <code>v-else</code>, the above example could be rewritten as:</p> <pre class="highlight html" data-language="html">&lt;transition&gt;
+  &lt;button v-bind:key="isEditing"&gt;
+    {{ isEditing ? 'Save' : 'Edit' }}
+  &lt;/button&gt;
+&lt;/transition&gt;</pre> <p>It’s actually possible to transition between any number of elements, either by using multiple <code>v-if</code>s or binding a single element to a dynamic property. For example:</p> <pre class="highlight html" data-language="html">&lt;transition&gt;
+  &lt;button v-if="docState === 'saved'" key="saved"&gt;
+    Edit
+  &lt;/button&gt;
+  &lt;button v-if="docState === 'edited'" key="edited"&gt;
+    Save
+  &lt;/button&gt;
+  &lt;button v-if="docState === 'editing'" key="editing"&gt;
+    Cancel
+  &lt;/button&gt;
+&lt;/transition&gt;</pre> <p>Which could also be written as:</p> <pre class="highlight html" data-language="html">&lt;transition&gt;
+  &lt;button v-bind:key="docState"&gt;
+    {{ buttonMessage }}
+  &lt;/button&gt;
+&lt;/transition&gt;</pre> <pre class="highlight js" data-language="js">// ...
+computed: {
+  buttonMessage: function () {
+    switch (this.docState) {
+      case 'saved': return 'Edit'
+      case 'edited': return 'Save'
+      case 'editing': return 'Cancel'
+    }
+  }
+}</pre> <h3 id="Transition-Modes">
+Transition Modes</h3>
+<p>There’s still one problem though. Try clicking the button below:</p>    <p>As it’s transitioning between the “on” button and the “off” button, both buttons are rendered - one transitioning out while the other transitions in. This is the default behavior of <code>&lt;transition&gt;</code> - entering and leaving happens simultaneously.</p> <p>Sometimes this works great, like when transitioning items are absolutely positioned on top of each other:</p>    <p>And then maybe also translated so that they look like slide transitions:</p>    <p>Simultaneous entering and leaving transitions aren’t always desirable though, so Vue offers some alternative <strong>transition modes</strong>:</p> <ul> <li>
+<p><code>in-out</code>: New element transitions in first, then when complete, the current element transitions out.</p> </li> <li>
+<p><code>out-in</code>: Current element transitions out first, then when complete, the new element transitions in.</p> </li> </ul> <p>Now let’s update the transition for our on/off buttons with <code>out-in</code>:</p> <pre class="highlight html" data-language="html">&lt;transition name="fade" mode="out-in"&gt;
+  &lt;!-- ... the buttons ... --&gt;
+&lt;/transition&gt;</pre>    <p>With one attribute addition, we’ve fixed that original transition without having to add any special styling.</p> <p>The <code>in-out</code> mode isn’t used as often, but can sometimes be useful for a slightly different transition effect. Let’s try combining it with the slide-fade transition we worked on earlier:</p>    <p>Pretty cool, right?</p> <h2 id="Transitioning-Between-Components">
+Transitioning Between Components</h2>
+<p>Transitioning between components is even simpler - we don’t even need the <code>key</code> attribute. Instead, we wrap a <a href="../components/#Dynamic-Components">dynamic component</a>:</p> <pre class="highlight html" data-language="html">&lt;transition name="component-fade" mode="out-in"&gt;
+  &lt;component v-bind:is="view"&gt;&lt;/component&gt;
+&lt;/transition&gt;</pre> <pre class="highlight js" data-language="js">new Vue({
+  el: '#transition-components-demo',
+  data: {
+    view: 'v-a'
+  },
+  components: {
+    'v-a': {
+      template: '&lt;div&gt;Component A&lt;/div&gt;'
+    },
+    'v-b': {
+      template: '&lt;div&gt;Component B&lt;/div&gt;'
+    }
+  }
+})</pre> <pre class="highlight css" data-language="css">.component-fade-enter-active, .component-fade-leave-active {
+  transition: opacity .3s ease;
+}
+.component-fade-enter, .component-fade-leave-to
+/* .component-fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
+}</pre>    <h2 id="List-Transitions">
+List Transitions</h2>
+<p>So far, we’ve managed transitions for:</p> <ul> <li>Individual nodes</li> <li>Multiple nodes where only 1 is rendered at a time</li> </ul> <p>So what about for when we have a whole list of items we want to render simultaneously, for example with <code>v-for</code>? In this case, we’ll use the <code>&lt;transition-group&gt;</code> component. Before we dive into an example though, there are a few things that are important to know about this component:</p> <ul> <li>Unlike <code>&lt;transition&gt;</code>, it renders an actual element: a <code>&lt;span&gt;</code> by default. You can change the element that’s rendered with the <code>tag</code> attribute.</li> <li>Elements inside are <strong>always required</strong> to have a unique <code>key</code> attribute</li> </ul> <h3 id="List-Entering-Leaving-Transitions">
+List Entering/Leaving Transitions</h3>
+<p>Now let’s dive into an example, transitioning entering and leaving using the same CSS classes we’ve used previously:</p> <pre class="highlight html" data-language="html">&lt;div id="list-demo"&gt;
+  &lt;button v-on:click="add"&gt;Add&lt;/button&gt;
+  &lt;button v-on:click="remove"&gt;Remove&lt;/button&gt;
+  &lt;transition-group name="list" tag="p"&gt;
+    &lt;span v-for="item in items" v-bind:key="item" class="list-item"&gt;
+      {{ item }}
+    &lt;/span&gt;
+  &lt;/transition-group&gt;
+&lt;/div&gt;</pre> <pre class="highlight js" data-language="js">new Vue({
+  el: '#list-demo',
+  data: {
+    items: [1,2,3,4,5,6,7,8,9],
+    nextNum: 10
+  },
+  methods: {
+    randomIndex: function () {
+      return Math.floor(Math.random() * this.items.length)
+    },
+    add: function () {
+      this.items.splice(this.randomIndex(), 0, this.nextNum++)
+    },
+    remove: function () {
+      this.items.splice(this.randomIndex(), 1)
+    },
+  }
+})</pre> <pre class="highlight css" data-language="css">.list-item {
+  display: inline-block;
+  margin-right: 10px;
+}
+.list-enter-active, .list-leave-active {
+  transition: all 1s;
+}
+.list-enter, .list-leave-to /* .list-leave-active below version 2.1.8 */ {
+  opacity: 0;
+  transform: translateY(30px);
+}</pre>    <p>There’s one problem with this example. When you add or remove an item, the ones around it instantly snap into their new place instead of smoothly transitioning. We’ll fix that later.</p> <h3 id="List-Move-Transitions">
+List Move Transitions</h3>
+<p>The <code>&lt;transition-group&gt;</code> component has another trick up its sleeve. It can not only animate entering and leaving, but also changes in position. The only new concept you need to know to use this feature is the addition of <strong>the <code>v-move</code> class</strong>, which is added when items are changing positions. Like the other classes, its prefix will match the value of a provided <code>name</code> attribute and you can also manually specify a class with the <code>move-class</code> attribute.</p> <p>This class is mostly useful for specifying the transition timing and easing curve, as you’ll see below:</p> <pre class="highlight html" data-language="html">&lt;script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.14.1/lodash.min.js"&gt;&lt;/script&gt;
+
+&lt;div id="flip-list-demo" class="demo"&gt;
+  &lt;button v-on:click="shuffle"&gt;Shuffle&lt;/button&gt;
+  &lt;transition-group name="flip-list" tag="ul"&gt;
+    &lt;li v-for="item in items" v-bind:key="item"&gt;
+      {{ item }}
+    &lt;/li&gt;
+  &lt;/transition-group&gt;
+&lt;/div&gt;</pre> <pre class="highlight js" data-language="js">new Vue({
+  el: '#flip-list-demo',
+  data: {
+    items: [1,2,3,4,5,6,7,8,9]
+  },
+  methods: {
+    shuffle: function () {
+      this.items = _.shuffle(this.items)
+    }
+  }
+})</pre> <pre class="highlight css" data-language="css">.flip-list-move {
+  transition: transform 1s;
+}</pre>     <p>This might seem like magic, but under the hood, Vue is using an animation technique called <a href="https://aerotwist.com/blog/flip-your-animations/" target="_blank" rel="noopener">FLIP</a> to smoothly transition elements from their old position to their new position using transforms.</p> <p>We can combine this technique with our previous implementation to animate every possible change to our list!</p> <pre class="highlight html" data-language="html">&lt;script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.14.1/lodash.min.js"&gt;&lt;/script&gt;
+
+&lt;div id="list-complete-demo" class="demo"&gt;
+  &lt;button v-on:click="shuffle"&gt;Shuffle&lt;/button&gt;
+  &lt;button v-on:click="add"&gt;Add&lt;/button&gt;
+  &lt;button v-on:click="remove"&gt;Remove&lt;/button&gt;
+  &lt;transition-group name="list-complete" tag="p"&gt;
+    &lt;span
+      v-for="item in items"
+      v-bind:key="item"
+      class="list-complete-item"
+    &gt;
+      {{ item }}
+    &lt;/span&gt;
+  &lt;/transition-group&gt;
+&lt;/div&gt;</pre> <pre class="highlight js" data-language="js">new Vue({
+  el: '#list-complete-demo',
+  data: {
+    items: [1,2,3,4,5,6,7,8,9],
+    nextNum: 10
+  },
+  methods: {
+    randomIndex: function () {
+      return Math.floor(Math.random() * this.items.length)
+    },
+    add: function () {
+      this.items.splice(this.randomIndex(), 0, this.nextNum++)
+    },
+    remove: function () {
+      this.items.splice(this.randomIndex(), 1)
+    },
+    shuffle: function () {
+      this.items = _.shuffle(this.items)
+    }
+  }
+})</pre> <pre class="highlight css" data-language="css">.list-complete-item {
+  transition: all 1s;
+  display: inline-block;
+  margin-right: 10px;
+}
+.list-complete-enter, .list-complete-leave-to
+/* .list-complete-leave-active below version 2.1.8 */ {
+  opacity: 0;
+  transform: translateY(30px);
+}
+.list-complete-leave-active {
+  position: absolute;
+}</pre>     <p class="tip">One important note is that these FLIP transitions do not work with elements set to <code>display: inline</code>. As an alternative, you can use <code>display: inline-block</code> or place elements in a flex context.</p> <p>These FLIP animations are also not limited to a single axis. Items in a multidimensional grid can be <a href="https://jsfiddle.net/chrisvfritz/sLrhk1bc/" target="_blank" rel="noopener">transitioned too</a>:</p>    <h3 id="Staggering-List-Transitions">
+Staggering List Transitions</h3>
+<p>By communicating with JavaScript transitions through data attributes, it’s also possible to stagger transitions in a list:</p> <pre class="highlight html" data-language="html">&lt;script src="https://cdnjs.cloudflare.com/ajax/libs/velocity/1.2.3/velocity.min.js"&gt;&lt;/script&gt;
+
+&lt;div id="staggered-list-demo"&gt;
+  &lt;input v-model="query"&gt;
+  &lt;transition-group
+    name="staggered-fade"
+    tag="ul"
+    v-bind:css="false"
+    v-on:before-enter="beforeEnter"
+    v-on:enter="enter"
+    v-on:leave="leave"
+  &gt;
+    &lt;li
+      v-for="(item, index) in computedList"
+      v-bind:key="item.msg"
+      v-bind:data-index="index"
+    &gt;{{ item.msg }}&lt;/li&gt;
+  &lt;/transition-group&gt;
+&lt;/div&gt;</pre> <pre class="highlight js" data-language="js">new Vue({
+  el: '#staggered-list-demo',
+  data: {
+    query: '',
+    list: [
+      { msg: 'Bruce Lee' },
+      { msg: 'Jackie Chan' },
+      { msg: 'Chuck Norris' },
+      { msg: 'Jet Li' },
+      { msg: 'Kung Fury' }
+    ]
+  },
+  computed: {
+    computedList: function () {
+      var vm = this
+      return this.list.filter(function (item) {
+        return item.msg.toLowerCase().indexOf(vm.query.toLowerCase()) !== -1
+      })
+    }
+  },
+  methods: {
+    beforeEnter: function (el) {
+      el.style.opacity = 0
+      el.style.height = 0
+    },
+    enter: function (el, done) {
+      var delay = el.dataset.index * 150
+      setTimeout(function () {
+        Velocity(
+          el,
+          { opacity: 1, height: '1.6em' },
+          { complete: done }
+        )
+      }, delay)
+    },
+    leave: function (el, done) {
+      var delay = el.dataset.index * 150
+      setTimeout(function () {
+        Velocity(
+          el,
+          { opacity: 0, height: 0 },
+          { complete: done }
+        )
+      }, delay)
+    }
+  }
+})</pre>    <h2 id="Reusable-Transitions">
+Reusable Transitions</h2>
+<p>Transitions can be reused through Vue’s component system. To create a reusable transition, all you have to do is place a <code>&lt;transition&gt;</code> or <code>&lt;transition-group&gt;</code> component at the root, then pass any children into the transition component.</p> <p>Here’s an example using a template component:</p> <pre class="highlight js" data-language="js">Vue.component('my-special-transition', {
+  template: '\
+    &lt;transition\
+      name="very-special-transition"\
+      mode="out-in"\
+      v-on:before-enter="beforeEnter"\
+      v-on:after-enter="afterEnter"\
+    &gt;\
+      &lt;slot&gt;&lt;/slot&gt;\
+    &lt;/transition&gt;\
+  ',
+  methods: {
+    beforeEnter: function (el) {
+      // ...
+    },
+    afterEnter: function (el) {
+      // ...
+    }
+  }
+})</pre> <p>And functional components are especially well-suited to this task:</p> <pre class="highlight js" data-language="js">Vue.component('my-special-transition', {
+  functional: true,
+  render: function (createElement, context) {
+    var data = {
+      props: {
+        name: 'very-special-transition',
+        mode: 'out-in'
+      },
+      on: {
+        beforeEnter: function (el) {
+          // ...
+        },
+        afterEnter: function (el) {
+          // ...
+        }
+      }
+    }
+    return createElement('transition', data, context.children)
+  }
+})</pre> <h2 id="Dynamic-Transitions">
+Dynamic Transitions</h2>
+<p>Yes, even transitions in Vue are data-driven! The most basic example of a dynamic transition binds the <code>name</code> attribute to a dynamic property.</p> <pre class="highlight html" data-language="html">&lt;transition v-bind:name="transitionName"&gt;
+  &lt;!-- ... --&gt;
+&lt;/transition&gt;</pre> <p>This can be useful when you’ve defined CSS transitions/animations using Vue’s transition class conventions and want to switch between them.</p> <p>Really though, any transition attribute can be dynamically bound. And it’s not only attributes. Since event hooks are methods, they have access to any data in the context. That means depending on the state of your component, your JavaScript transitions can behave differently.</p> <pre class="highlight html" data-language="html">&lt;script src="https://cdnjs.cloudflare.com/ajax/libs/velocity/1.2.3/velocity.min.js"&gt;&lt;/script&gt;
+
+&lt;div id="dynamic-fade-demo" class="demo"&gt;
+  Fade In: &lt;input type="range" v-model="fadeInDuration" min="0" v-bind:max="maxFadeDuration"&gt;
+  Fade Out: &lt;input type="range" v-model="fadeOutDuration" min="0" v-bind:max="maxFadeDuration"&gt;
+  &lt;transition
+    v-bind:css="false"
+    v-on:before-enter="beforeEnter"
+    v-on:enter="enter"
+    v-on:leave="leave"
+  &gt;
+    &lt;p v-if="show"&gt;hello&lt;/p&gt;
+  &lt;/transition&gt;
+  &lt;button
+    v-if="stop"
+    v-on:click="stop = false; show = false"
+  &gt;Start animating&lt;/button&gt;
+  &lt;button
+    v-else
+    v-on:click="stop = true"
+  &gt;Stop it!&lt;/button&gt;
+&lt;/div&gt;</pre> <pre class="highlight js" data-language="js">new Vue({
+  el: '#dynamic-fade-demo',
+  data: {
+    show: true,
+    fadeInDuration: 1000,
+    fadeOutDuration: 1000,
+    maxFadeDuration: 1500,
+    stop: true
+  },
+  mounted: function () {
+    this.show = false
+  },
+  methods: {
+    beforeEnter: function (el) {
+      el.style.opacity = 0
+    },
+    enter: function (el, done) {
+      var vm = this
+      Velocity(el,
+        { opacity: 1 },
+        {
+          duration: this.fadeInDuration,
+          complete: function () {
+            done()
+            if (!vm.stop) vm.show = false
+          }
+        }
+      )
+    },
+    leave: function (el, done) {
+      var vm = this
+      Velocity(el,
+        { opacity: 0 },
+        {
+          duration: this.fadeOutDuration,
+          complete: function () {
+            done()
+            vm.show = true
+          }
+        }
+      )
+    }
+  }
+})</pre>    <p>Finally, the ultimate way of creating dynamic transitions is through components that accept props to change the nature of the transition(s) to be used. It may sound cheesy, but the only limit really is your imagination.</p>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2013–2017 Evan You, Vue.js contributors<br>Licensed under the MIT License.<br>
+    <a href="https://vuejs.org/v2/guide/transitions.html" class="_attribution-link" target="_blank">https://vuejs.org/v2/guide/transitions.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>
