@@ -1,0 +1,218 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Cache-loader - Webpack - W3cubDocs</title>
+  
+  <meta name="description" content=" Caches the result of following loaders on disk (default) or in the database ">
+  <meta name="keywords" content="cache-loader, -, webpack">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/webpack/loaders/cache-loader/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/webpack.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/webpack/" class="_nav-link" title="" style="margin-left:0;">webpack</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _webpack">
+				
+<h1>cache-loader</h1>
+<p>Caches the result of following loaders on disk (default) or in the database</p> <h2 class="header" id="install">Install</h2> <pre data-language="bash">npm install --save-dev cache-loader
+</pre> <h2 class="header" id="usage">Usage</h2> <p>Add this loader in front of other (expensive) loaders to cache the result on disk.</p> <p><strong>webpack.config.js</strong></p> <pre data-language="js">module.exports = {
+  module: {
+    rules: [
+      {
+        test: /\.ext$/,
+        use: [
+          'cache-loader',
+          ...loaders
+        ],
+        include: path.resolve('src')
+      }
+    ]
+  }
+}
+</pre> <blockquote> <p>⚠️ Note that there is an overhead for saving the reading and saving the cache file, so only use this loader to cache expensive loaders.</p> </blockquote> <h2 class="header" id="options">Options</h2> <div class="table"> <table class="table-wrap"> <thead class="table-header"> <tr class="table-tr">
+<th class="table-th">Name</th>
+<th class="table-th">Type</th>
+<th class="table-th">Default</th>
+<th class="table-th">Description</th>
+</tr> </thead> <tbody class="table-body"> <tr class="table-tr">
+<td class="table-td">  <div class="table-td-content"> <strong><code>cacheKey</code></strong> </div> </td>
+<td class="table-td">  <div class="table-td-content"> <code>{Function(options, request) -&gt; {String}}</code> </div> </td>
+<td class="table-td">  <div class="table-td-content"> <code>undefined</code> </div> </td>
+<td class="table-td">  <div class="table-td-content"> Allows you to override default cache key generator </div> </td>
+</tr>
+<tr class="table-tr">
+<td class="table-td">  <div class="table-td-content"> <strong><code>cacheDirectory</code></strong> </div> </td>
+<td class="table-td">  <div class="table-td-content"> <code>{String}</code> </div> </td>
+<td class="table-td">  <div class="table-td-content"> <code>path.resolve('.cache-loader')</code> </div> </td>
+<td class="table-td">  <div class="table-td-content"> Provide a cache directory where cache items should be stored (used for default read/write implementation) </div> </td>
+</tr>
+<tr class="table-tr">
+<td class="table-td">  <div class="table-td-content"> <strong><code>cacheIdentifier</code></strong> </div> </td>
+<td class="table-td">  <div class="table-td-content"> <code>{String}</code> </div> </td>
+<td class="table-td">  <div class="table-td-content"> <code>cache-loader:{version} {process.env.NODE_ENV}</code> </div> </td>
+<td class="table-td">  <div class="table-td-content"> Provide an invalidation identifier which is used to generate the hashes. You can use it for extra dependencies of loaders (used for default read/write implementation) </div> </td>
+</tr>
+<tr class="table-tr">
+<td class="table-td">  <div class="table-td-content"> <strong><code>write</code></strong> </div> </td>
+<td class="table-td">  <div class="table-td-content"> <code>{Function(cacheKey, data, callback) -&gt; {void}}</code> </div> </td>
+<td class="table-td">  <div class="table-td-content"> <code>undefined</code> </div> </td>
+<td class="table-td">  <div class="table-td-content"> Allows you to override default write cache data to file (e.g. Redis, memcached) </div> </td>
+</tr>
+<tr class="table-tr">
+<td class="table-td">  <div class="table-td-content"> <strong><code>read</code></strong> </div> </td>
+<td class="table-td">  <div class="table-td-content"> <code>{Function(cacheKey, callback) -&gt; {void}}</code> </div> </td>
+<td class="table-td">  <div class="table-td-content"> <code>undefined</code> </div> </td>
+<td class="table-td">  <div class="table-td-content"> Allows you to override default read cache data from file </div> </td>
+</tr> </tbody> </table> </div>
+<h2 class="header" id="examples">Examples</h2> <p><strong>webpack.config.js</strong></p> <pre data-language="js">module.exports = {
+  module: {
+    rules: [
+      {
+        test: /\.js$/,
+        use: [
+          'cache-loader',
+          'babel-loader'
+        ],
+        include: path.resolve('src')
+      }
+    ]
+  }
+}
+</pre> <p>##</p> <p><strong>webpack.config.js</strong></p> <pre data-language="js">// Or different database client - memcached, mongodb, ...
+const redis = require('redis');
+const crypto = require('crypto');
+
+// ...
+// connect to client
+// ...
+
+const BUILD_CACHE_TIMEOUT = 24 * 3600; // 1 day
+
+function digest(str) {
+  return crypto.createHash('md5').update(str).digest('hex');
+}
+
+// Generate own cache key
+function cacheKey(options, request) {
+  return `build:cache:${digest(request)}`;
+}
+
+
+// Read data from database and parse them
+function read(key, callback) {
+  client.get(key, (err, result) =&gt; {
+    if (err) {
+      return callback(err);
+    }
+
+    if (!result) {
+      return callback(new Error(`Key ${key} not found`));
+    }
+
+    try {
+      let data = JSON.parse(result);
+      callback(null, data);
+    } catch (e) {
+      callback(e);
+    }
+  });
+}
+
+
+// Write data to database under cacheKey
+function write(key, data, callback) {
+  client.set(key, JSON.stringify(data), 'EX', BUILD_CACHE_TIMEOUT, callback);
+}
+
+module.exports = {
+  module: {
+    rules: [
+      {
+        test: /\.js$/,
+        use: [
+          {
+            loader: 'cache-loader',
+            options: {
+              cacheKey,
+              read,
+              write,
+            }
+          },
+          'babel-loader'
+        ],
+        include: path.resolve('src')
+      }
+    ]
+  }
+}
+</pre>   <div class="_attribution">
+  <p class="_attribution-p">
+    © JS Foundation and other contributors<br>Licensed under the Creative Commons Attribution License 4.0.<br>
+    <a href="https://webpack.js.org/loaders/cache-loader" class="_attribution-link" target="_blank">https://webpack.js.org/loaders/cache-loader</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

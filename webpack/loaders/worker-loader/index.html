@@ -1,0 +1,211 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Worker-loader - Webpack - W3cubDocs</title>
+  
+  <meta name="description" content=" This loader registers the script as Web Worker ">
+  <meta name="keywords" content="worker-loader, -, webpack">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/webpack/loaders/worker-loader/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/webpack.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/webpack/" class="_nav-link" title="" style="margin-left:0;">webpack</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _webpack">
+				
+<h1>worker-loader</h1>
+<p>This loader registers the script as <a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API" target="_blank">Web Worker</a></p> <h2 class="header" id="install">Install</h2> <pre data-language="bash">npm i -D worker-loader
+</pre> <h2 class="header" id="usage"><a href="../../concepts/loaders/">Usage</a></h2> <p>##</p> <p><strong>App.js</strong></p> <pre data-language="js">import Worker from 'worker-loader!./Worker.js';
+</pre> <h3 class="header" id="config"><code>Config</code></h3> <p><strong>webpack.config.js</strong></p> <pre data-language="js">{
+  module: {
+    rules: [
+      {
+        test: /\.worker\.js$/,
+        use: { loader: 'worker-loader' }
+      }
+    ]
+  }
+}
+</pre> <p><strong>App.js</strong></p> <pre data-language="js">import Worker from './file.worker.js';
+
+const worker = new Worker();
+
+worker.postMessage({ a: 1 });
+worker.onmessage = function (event) {};
+
+worker.addEventListener("message", function (event) {});
+</pre> <h2 class="header" id="options">Options</h2> <div class="table"> <table class="table-wrap"> <thead class="table-header"> <tr class="table-tr">
+<th class="table-th">Name</th>
+<th class="table-th">Type</th>
+<th class="table-th">Default</th>
+<th class="table-th">Description</th>
+</tr> </thead> <tbody class="table-body"> <tr class="table-tr">
+<td class="table-td">  <div class="table-td-content"> <a href="#name"><strong><code>name</code></strong></a> </div> </td>
+<td class="table-td">  <div class="table-td-content"> <code>{String}</code> </div> </td>
+<td class="table-td">  <div class="table-td-content"> <code>[hash].worker.js</code> </div> </td>
+<td class="table-td">  <div class="table-td-content"> Set a custom name for the output script </div> </td>
+</tr>
+<tr class="table-tr">
+<td class="table-td">  <div class="table-td-content"> <a href="#inline"><strong><code>inline</code></strong></a> </div> </td>
+<td class="table-td">  <div class="table-td-content"> <code>{Boolean}</code> </div> </td>
+<td class="table-td">  <div class="table-td-content"> <code>false</code> </div> </td>
+<td class="table-td">  <div class="table-td-content"> Inline the worker as a BLOB </div> </td>
+</tr>
+<tr class="table-tr">
+<td class="table-td">  <div class="table-td-content"> <a href="#fallback"><strong><code>fallback</code></strong></a> </div> </td>
+<td class="table-td">  <div class="table-td-content"> <code>{Boolean}</code> </div> </td>
+<td class="table-td">  <div class="table-td-content"> <code>false</code> </div> </td>
+<td class="table-td">  <div class="table-td-content"> Require a fallback for non-worker supporting environments </div> </td>
+</tr>
+<tr class="table-tr">
+<td class="table-td">  <div class="table-td-content"> <a href="#publicPath"><strong><code>publicPath</code></strong></a> </div> </td>
+<td class="table-td">  <div class="table-td-content"> <code>{String}</code> </div> </td>
+<td class="table-td">  <div class="table-td-content"> <code>null</code> </div> </td>
+<td class="table-td">  <div class="table-td-content"> Override the path from which worker scripts are downloaded </div> </td>
+</tr> </tbody> </table> </div>
+<h3 class="header" id="name"><code>name</code></h3> <p>To set a custom name for the output script, use the <code>name</code> parameter. The name may contain the string <code>[hash]</code>, which will be replaced with a content dependent hash for caching purposes</p> <p><em>webpack.config.js*</em></p> <pre data-language="js">{
+  loader: 'worker-loader',
+  options: { name: 'WorkerName.[hash].js' }
+}
+</pre> <h3 class="header" id="inline"><code>inline</code></h3> <p>You can also inline the worker as a BLOB with the <code>inline</code> parameter</p> <p><strong>webpack.config.js</strong></p> <pre data-language="js">{
+  loader: 'worker-loader',
+  options: { inline: true }
+}
+</pre> <blockquote> <p>ℹ️ Inline mode will also create chunks for browsers without support for inline workers, to disable this behavior just set <code>fallback</code> parameter as <code>false</code></p> </blockquote> <p><strong>webpack.config.js</strong></p> <pre data-language="js">{
+  loader: 'worker-loader'
+  options: { inline: true, fallback: false }
+}
+</pre> <h3 class="header" id="fallback"><code>fallback</code></h3> <p>Require a fallback for non-worker supporting environments</p> <p><strong>webpack.config.js</strong></p> <pre data-language="js">{
+  loader: 'worker-loader'
+  options: { fallback: false }
+}
+</pre> <h3 class="header" id="publicpath"><code>publicPath</code></h3> <p>Overrides the path from which worker scripts are downloaded. If not specified, the same public path used for other webpack assets is used</p> <p><strong>webpack.config.js</strong></p> <pre data-language="js">{
+  loader: 'worker-loader'
+  options: { publicPath: '/scripts/workers/' }
+}
+</pre> <h2 class="header" id="examples">Examples</h2> <p>The worker file can import dependencies just like any other file</p> <p><strong>Worker.js</strong></p> <pre data-language="js">const _ = require('lodash')
+
+const obj = { foo: 'foo' }
+
+_.has(obj, 'foo')
+
+// Post data to parent thread
+self.postMessage({ foo: 'foo' })
+
+// Respond to message from parent thread
+self.addEventListener('message', (event) =&gt; console.log(event))
+</pre> <h3 class="header" id="integrating-with-es2015-modules"><code>Integrating with ES2015 Modules</code></h3> <blockquote> <p>ℹ️ You can even use ES2015 Modules if you have the <a href="https://github.com/babel/babel-loader" target="_blank"><code>babel-loader</code></a> configured.</p> </blockquote> <p><strong>Worker.js</strong></p> <pre data-language="js">import _ from 'lodash'
+
+const obj = { foo: 'foo' }
+
+_.has(obj, 'foo')
+
+// Post data to parent thread
+self.postMessage({ foo: 'foo' })
+
+// Respond to message from parent thread
+self.addEventListener('message', (event) =&gt; console.log(event))
+</pre> <h3 class="header" id="integrating-with-typescript"><code>Integrating with TypeScript</code></h3> <p>To integrate with TypeScript, you will need to define a custom module for the exports of your worker</p> <p><strong>typings/custom.d.ts</strong></p> <pre data-language="typescript">declare module "worker-loader!*" {
+  class WebpackWorker extends Worker {
+    constructor();
+  }
+
+  export = WebpackWorker;
+}
+</pre> <p><strong>Worker.ts</strong></p> <pre data-language="typescript">const ctx: Worker = self as any;
+
+// Post data to parent thread
+ctx.postMessage({ foo: "foo" });
+
+// Respond to message from parent thread
+ctx.addEventListener("message", (event) =&gt; console.log(event));
+</pre> <p><strong>App.ts</strong></p> <pre data-language="typescript">import Worker = require("worker-loader!./Worker");
+
+const worker = new Worker();
+
+worker.postMessage({ a: 1 });
+worker.onmessage = (event) =&gt; {};
+
+worker.addEventListener("message", (event) =&gt; {});
+</pre> <h3 class="header" id="cross-origin-policy"><code>Cross-Origin Policy</code></h3> <p><a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API" target="_blank"><code>WebWorkers</code></a> are restricted by a <a href="https://en.wikipedia.org/wiki/Same-origin_policy" target="_blank">same-origin policy</a>, so if your <code>webpack</code> assets are not being served from the same origin as your application, their download may be blocked by your browser. This scenario can commonly occur if you are hosting your assets under a CDN domain. Even downloads from the <code>webpack-dev-server</code> could be blocked. There are two workarounds</p> <p>Firstly, you can inline the worker as a blob instead of downloading it as an external script via the <a href="#inline"><code>inline</code></a> parameter</p> <p><strong>App.js</strong></p> <pre data-language="js">import Worker from './file.worker.js';
+</pre> <p><strong>webpack.config.js</strong></p> <pre data-language="js">{
+  loader: 'worker-loader'
+  options: { inline: true }
+}
+</pre> <p>Secondly, you may override the base download URL for your worker script via the <a href="#publicpath"><code>publicPath</code></a> option</p> <p><strong>App.js</strong></p> <pre data-language="js">// This will cause the worker to be downloaded from `/workers/file.worker.js`
+import Worker from './file.worker.js';
+</pre> <p><strong>webpack.config.js</strong></p> <pre data-language="js">{
+  loader: 'worker-loader'
+  options: { publicPath: '/workers/' }
+}
+</pre>   <div class="_attribution">
+  <p class="_attribution-p">
+    © JS Foundation and other contributors<br>Licensed under the Creative Commons Attribution License 4.0.<br>
+    <a href="https://webpack.js.org/loaders/worker-loader" class="_attribution-link" target="_blank">https://webpack.js.org/loaders/worker-loader</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

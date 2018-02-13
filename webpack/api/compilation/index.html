@@ -1,0 +1,171 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Compilation - Webpack - W3cubDocs</title>
+  
+  <meta name="description" content="The Compilation instance extends from the compiler i.e. compiler.compilation. It is the literal compilation of all the objects in the require graph &hellip;">
+  <meta name="keywords" content="compilation, -, webpack">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/webpack/api/compilation/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/webpack.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/webpack/" class="_nav-link" title="" style="margin-left:0;">webpack</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _webpack">
+				
+<h1>Compilation</h1>
+<p>The Compilation instance extends from the compiler i.e. <code>compiler.compilation</code>. It is the literal compilation of all the objects in the require graph. This object has access to all the modules and their dependencies (most of which are circular references). In the compilation phase, modules are loaded, sealed, optimized, chunked, hashed and restored, etc. This would be the main lifecycle of any operations of the compilation.</p> <pre data-language="js">compiler.plugin("compilation", function(compilation) {
+  // the main compilation instance
+  // all subsequent methods are derived from compilation.plugin
+});
+</pre> <h2 class="header" id="normal-module-loader"><code>normal-module-loader</code></h2> <p>The normal module loader, is the function that actually loads all the modules in the module graph (one-by-one).</p> <pre data-language="js">compilation.plugin('normal-module-loader', function(loaderContext, module) {
+  // this is where all the modules are loaded
+  // one by one, no dependencies are created yet
+});
+</pre> <h2 class="header" id="seal"><code>seal</code></h2> <p>The sealing of the compilation has started.</p> <pre data-language="js">compilation.plugin('seal', function() {
+  // you are not accepting any more modules
+  // no arguments
+});
+</pre> <h2 class="header" id="optimize"><code>optimize</code></h2> <p>Optimize the compilation.</p> <pre data-language="js">compilation.plugin('optimize', function() {
+  // webpack is begining the optimization phase
+  // no arguments
+});
+</pre> <h2 class="header" id="optimize-tree-chunks-modules-async">
+<code>optimize-tree(chunks, modules)</code> async</h2> <p>Async optimization of the tree.</p> <pre data-language="js">compilation.plugin('optimize-tree', function(chunks, modules) {
+
+});
+</pre> <h3 class="header" id="optimize-modules-modules-module-"><code>optimize-modules(modules: Module[])</code></h3> <p>Optimize the modules.</p> <pre data-language="js">compilation.plugin('optimize-modules', function(modules) {
+  // handle to the modules array during tree optimization
+});
+</pre> <h2 class="header" id="after-optimize-modules-modules-module-"><code>after-optimize-modules(modules: Module[])</code></h2> <p>Optimizing the modules has finished.</p> <h2 class="header" id="optimize-chunks-chunks-chunk-"><code>optimize-chunks(chunks: Chunk[])</code></h2> <p>Optimize the chunks.</p> <pre data-language="javascript">//optimize chunks may be run several times in a compilation
+
+compilation.plugin('optimize-chunks', function(chunks) {
+    // Unless you've specified multiple entries in your config
+    // there's only one chunk at this point
+    chunks.forEach(function (chunk) {
+        // Chunks have circular references to their modules
+        chunk.modules.forEach(function (module){
+            // module.loaders, module.rawRequest, module.dependencies, etc.
+        });
+    });
+});
+</pre> <h2 class="header" id="after-optimize-chunks-chunks-chunk-"><code>after-optimize-chunks(chunks: Chunk[])</code></h2> <p>Optimizing the chunks has finished.</p> <h2 class="header" id="revive-modules-modules-module-records-"><code>revive-modules(modules: Module[], records)</code></h2> <p>Restore module info from records.</p> <h2 class="header" id="optimize-module-order-modules-module-"><code>optimize-module-order(modules: Module[])</code></h2> <p>Sort the modules in order of importance. The first is the most important module. It will get the smallest id.</p> <h2 class="header" id="optimize-module-ids-modules-module-"><code>optimize-module-ids(modules: Module[])</code></h2> <p>Optimize the module ids.</p> <h2 class="header" id="after-optimize-module-ids-modules-module-"><code>after-optimize-module-ids(modules: Module[])</code></h2> <p>Optimizing the module ids has finished.</p> <h2 class="header" id="record-modules-modules-module-records-"><code>record-modules(modules: Module[], records)</code></h2> <p>Store module info to the records.</p> <h2 class="header" id="revive-chunks-chunks-chunk-records-"><code>revive-chunks(chunks: Chunk[], records)</code></h2> <p>Restore chunk info from records.</p> <h2 class="header" id="optimize-chunk-order-chunks-chunk-"><code>optimize-chunk-order(chunks: Chunk[])</code></h2> <p>Sort the chunks in order of importance. The first is the most important chunk. It will get the smallest id.</p> <h2 class="header" id="optimize-chunk-ids-chunks-chunk-"><code>optimize-chunk-ids(chunks: Chunk[])</code></h2> <p>Optimize the chunk ids.</p> <h2 class="header" id="after-optimize-chunk-ids-chunks-chunk-"><code>after-optimize-chunk-ids(chunks: Chunk[])</code></h2> <p>Optimizing the chunk ids has finished.</p> <h2 class="header" id="record-chunks-chunks-chunk-records-"><code>record-chunks(chunks: Chunk[], records)</code></h2> <p>Store chunk info to the records.</p> <h2 class="header" id="before-hash"><code>before-hash</code></h2> <p>Before the compilation is hashed.</p> <h2 class="header" id="after-hash"><code>after-hash</code></h2> <p>After the compilation is hashed.</p> <h2 class="header" id="before-chunk-assets"><code>before-chunk-assets</code></h2> <p>Before creating the chunk assets.</p> <h2 class="header" id="additional-chunk-assets-chunks-chunk-"><code>additional-chunk-assets(chunks: Chunk[])</code></h2> <p>Create additional assets for the chunks.</p> <h2 class="header" id="record-compilation-records-"><code>record(compilation, records)</code></h2> <p>Store info about the compilation to the records</p> <h2 class="header" id="additional-assets-async">
+<code>additional-assets</code> async</h2> <p>Create additional assets for the compilation</p> <p>Here's an example that downloads an image.</p> <pre data-language="js">compiler.plugin('compilation', function(compilation) {
+  compilation.plugin('additional-assets', function(callback) {
+    download('https://img.shields.io/npm/v/webpack.svg', function(resp) {
+      if(resp.status === 200) {
+        compilation.assets['webpack-version.svg'] = toAsset(resp);
+        callback();
+      } else {
+        callback(new Error('[webpack-example-plugin] Unable to download the image'));
+      }
+    })
+  });
+});
+</pre> <h2 class="header" id="optimize-chunk-assets-chunks-chunk-async">
+<code>optimize-chunk-assets(chunks: Chunk[])</code> async</h2> <p>Optimize the assets for the chunks.</p> <p>The assets are stored in <code>this.assets</code>, but not all of them are chunk assets. A <code>Chunk</code> has a property <code>files</code> which points to all files created by this chunk. The additional chunk assets are stored in <code>this.additionalChunkAssets</code>.</p> <p>Here's an example that simply adds a banner to each chunk.</p> <pre data-language="js">compilation.plugin("optimize-chunk-assets", function(chunks, callback) {
+  chunks.forEach(function(chunk) {
+    chunk.files.forEach(function(file) {
+      compilation.assets[file] = new ConcatSource("\/**Sweet Banner**\/", "\n", compilation.assets[file]);
+    });
+  });
+  callback();
+});
+</pre> <h2 class="header" id="after-optimize-chunk-assets-chunks-chunk-"><code>after-optimize-chunk-assets(chunks: Chunk[])</code></h2> <p>The chunk assets have been optimized. Here's an example plugin from <a href="https://github.com/boopathi" target="_blank">@boopathi</a> that outputs exactly what went into each chunk.</p> <pre data-language="js">var PrintChunksPlugin = function() {};
+
+PrintChunksPlugin.prototype.apply = function(compiler) {
+  compiler.plugin('compilation', function(compilation, params) {
+    compilation.plugin('after-optimize-chunk-assets', function(chunks) {
+      console.log(chunks.map(function(c) {
+        return {
+          id: c.id,
+          name: c.name,
+          includes: c.modules.map(function(m) {
+            return m.request;
+          })
+        };
+      }));
+    });
+  });
+};
+</pre> <h2 class="header" id="optimize-assets-assets-object-name-source-async">
+<code>optimize-assets(assets: Object{name: Source})</code> async</h2> <p>Optimize all assets.</p> <p>The assets are stored in <code>this.assets</code>.</p> <h2 class="header" id="after-optimize-assets-assets-object-name-source-"><code>after-optimize-assets(assets: Object{name: Source})</code></h2> <p>The assets has been optimized.</p> <h2 class="header" id="build-module-module-"><code>build-module(module)</code></h2> <p>Before a module build has started.</p> <pre data-language="js">compilation.plugin('build-module', function(module){
+  console.log('About to build: ', module);
+});
+</pre> <h2 class="header" id="succeed-module-module-"><code>succeed-module(module)</code></h2> <p>A module has been built successfully.</p> <pre data-language="js">compilation.plugin('succeed-module', function(module){
+  console.log('Successfully built: ', module);
+});
+</pre> <h2 class="header" id="failed-module-module-"><code>failed-module(module)</code></h2> <p>The module build has failed.</p> <pre data-language="js">compilation.plugin('failed-module', function(module){
+  console.log('Failed to build: ', module);
+});
+</pre> <h2 class="header" id="module-asset-module-filename-"><code>module-asset(module, filename)</code></h2> <p>An asset from a module was added to the compilation.</p> <h2 class="header" id="chunk-asset-chunk-filename-"><code>chunk-asset(chunk, filename)</code></h2> <p>An asset from a chunk was added to the compilation.</p> <div class="_attribution">
+  <p class="_attribution-p">
+    © JS Foundation and other contributors<br>Licensed under the Creative Commons Attribution License 4.0.<br>
+    <a href="https://webpack.js.org/api/compilation" class="_attribution-link" target="_blank">https://webpack.js.org/api/compilation</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

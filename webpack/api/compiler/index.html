@@ -1,0 +1,291 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Compiler - Webpack - W3cubDocs</title>
+  
+  <meta name="description" content="The Compiler module of webpack is the main engine that creates a compilation instance with all the options passed through webpack CLI or webpack api &hellip;">
+  <meta name="keywords" content="compiler, -, webpack">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/webpack/api/compiler/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/webpack.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/webpack/" class="_nav-link" title="" style="margin-left:0;">webpack</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _webpack">
+				
+<h1>Compiler</h1>
+<p>The <code>Compiler</code> module of webpack is the main engine that creates a compilation instance with all the options passed through webpack CLI or <code>webpack</code> api or webpack configuration file.</p> <p>It is exported by <code>webpack</code> api under <code>webpack.Compiler</code>.</p> <p>The compiler is used by webpack by instantiating it and then calling the <code>run</code> method. Below is a trivial example of how one might use the <code>Compiler</code>. In fact, this is really close to how webpack itself uses it.</p> <p><a href="https://github.com/pksjce/webpack-internal-examples/tree/master/compiler-example" target="_blank"><strong>compiler-example</strong></a></p> <pre data-language="javascript">// Can be imported from webpack package
+import {Compiler} from 'webpack';
+
+// Create a new compiler instance
+const compiler = new Compiler();
+
+// Populate all required options
+compiler.options = {...};
+
+// Creating a plugin.
+class LogPlugin {
+  apply (compiler) {
+    compiler.plugin('should-emit', compilation =&gt; {
+      console.log('should I emit?');
+      return true;
+    })
+  }
+}
+
+// Apply the compiler to the plugin
+new LogPlugin().apply(compiler);
+
+/* Add other supporting plugins */
+
+// Callback to be executed after run is complete
+const callback = (err, stats) =&gt; {
+  console.log('Compiler has finished execution.');
+  // Display stats...
+};
+
+// call run on the compiler along with the callback
+compiler.run(callback);
+</pre> <p>The <code>Compiler</code> is what we call a <code>Tapable</code> instance. By this, we mean that it mixes in <code>Tapable</code> class to imbibe functionality to register and call plugins on itself. Most user facing plugins are first registered on the <code>Compiler</code>. The working of a Compiler can be condensed into the following highlights</p> <ul> <li>Usually there is one master instance of Compiler. Child compilers can be created for delegating specific tasks.</li> <li>A lot of the complexity in creating a compiler goes into populating all the relevant options for it.</li> <li>
+<code>webpack</code> has <a href="https://github.com/webpack/webpack/blob/master/lib/WebpackOptionsDefaulter.js" target="_blank"><code>WebpackOptionsDefaulter</code></a> and <a href="https://github.com/webpack/webpack/blob/master/lib/WebpackOptionsApply.js" target="_blank"><code>WebpackOptionsApply</code></a> specifically designed to provide the <code>Compiler</code> with all the initial data it requires.</li> <li>The <code>Compiler</code> is ultimately just a function which performs bare minimum functionality to keep a lifecycle running. It delegates all the loading/bundling/writing work to various plugins.</li> <li>
+<code>new LogPlugin(args).apply(compiler)</code> registers the plugin to any particular hook event in the <code>Compiler</code>'s lifecycle.</li> <li>The <code>Compiler</code> exposes a <code>run</code> method which kickstarts all compilation work for <code>webpack</code>. When that is done, it should call the passed in <code>callback</code> function. All the tail end work of logging stats and errors are done in this callback function.</li> </ul> <h2 class="header" id="watching">Watching</h2> <p>The <code>Compiler</code> supports "watch mode" which monitors the file system and recompiles as files change. When in watch mode, the compiler will emit the additional events <a href="#event-hooks">"watch-run", "watch-close", and "invalid"</a>. This is typically used in <a href="../../guides/development/">development</a>, usually under the hood of tools like <code>webpack-dev-server</code>, so that the developer doesn't need to re-compile manually every time.</p> <p>For more details about watch mode, see the <a href="../node/#watching">Node.js API documentation</a> or the <a href="../cli/#watch-options">CLI watch options</a>.</p> <h2 class="header" id="multicompiler">MultiCompiler</h2> <p>This module, MultiCompiler, allows webpack to run multiple configurations in separate compiler. If the <code>options</code> parameter in the webpack's NodeJS api is an array of options, webpack applies separate compilers and calls the <code>callback</code> method at the end of each compiler execution.</p> <pre data-language="javascript">var webpack = require('webpack');
+
+var config1 = {
+  entry: './index1.js',
+  output: {filename: 'bundle1.js'}
+}
+var config2 = {
+  entry: './index2.js',
+  output: {filename:'bundle2.js'}
+}
+
+webpack([config1, config2], (err, stats) =&gt; {
+  process.stdout.write(stats.toString() + "\n");
+})
+</pre> <h2 class="header" id="event-hooks">Event Hooks</h2> <p>This a reference guide to all the event hooks exposed by the <code>Compiler</code>.</p> <div class="table"> <table class="table-wrap"> <thead class="table-header"> <tr class="table-tr">
+<th class="table-th">Event name</th>
+<th class="table-th">Reason</th>
+<th class="table-th">Params</th>
+<th class="table-th">Type</th>
+</tr> </thead> <tbody class="table-body"> <tr class="table-tr">
+<td class="table-td">  <div class="table-td-content"> <strong><code>entry-option</code></strong> </div> </td>
+<td class="table-td">  <div class="table-td-content"> - </div> </td>
+<td class="table-td">  <div class="table-td-content"> - </div> </td>
+<td class="table-td">  <div class="table-td-content"> bailResult </div> </td>
+</tr>
+<tr class="table-tr">
+<td class="table-td">  <div class="table-td-content"> <strong><code>after-plugins</code></strong> </div> </td>
+<td class="table-td">  <div class="table-td-content"> After setting up initial set of plugins </div> </td>
+<td class="table-td">  <div class="table-td-content"> <code>compiler</code> </div> </td>
+<td class="table-td">  <div class="table-td-content"> sync </div> </td>
+</tr>
+<tr class="table-tr">
+<td class="table-td">  <div class="table-td-content"> <strong><code>after-resolvers</code></strong> </div> </td>
+<td class="table-td">  <div class="table-td-content"> After setting up the resolvers </div> </td>
+<td class="table-td">  <div class="table-td-content"> <code>compiler</code> </div> </td>
+<td class="table-td">  <div class="table-td-content"> sync </div> </td>
+</tr>
+<tr class="table-tr">
+<td class="table-td">  <div class="table-td-content"> <strong><code>environment</code></strong> </div> </td>
+<td class="table-td">  <div class="table-td-content"> - </div> </td>
+<td class="table-td">  <div class="table-td-content"> - </div> </td>
+<td class="table-td">  <div class="table-td-content"> sync </div> </td>
+</tr>
+<tr class="table-tr">
+<td class="table-td">  <div class="table-td-content"> <strong><code>after-environment</code></strong> </div> </td>
+<td class="table-td">  <div class="table-td-content"> Environment setup complete </div> </td>
+<td class="table-td">  <div class="table-td-content"> - </div> </td>
+<td class="table-td">  <div class="table-td-content"> sync </div> </td>
+</tr>
+<tr class="table-tr">
+<td class="table-td">  <div class="table-td-content"> <strong><code>before-run</code></strong> </div> </td>
+<td class="table-td">  <div class="table-td-content"> <code>compiler.run()</code> starts </div> </td>
+<td class="table-td">  <div class="table-td-content"> <code>compiler</code> </div> </td>
+<td class="table-td">  <div class="table-td-content"> async </div> </td>
+</tr>
+<tr class="table-tr">
+<td class="table-td">  <div class="table-td-content"> <strong><code>run</code></strong> </div> </td>
+<td class="table-td">  <div class="table-td-content"> Before reading records </div> </td>
+<td class="table-td">  <div class="table-td-content"> <code>compiler</code> </div> </td>
+<td class="table-td">  <div class="table-td-content"> async </div> </td>
+</tr>
+<tr class="table-tr">
+<td class="table-td">  <div class="table-td-content"> <strong><code>watch-run</code></strong> </div> </td>
+<td class="table-td">  <div class="table-td-content"> Before starting compilation after watch </div> </td>
+<td class="table-td">  <div class="table-td-content"> <code>compiler</code> </div> </td>
+<td class="table-td">  <div class="table-td-content"> async </div> </td>
+</tr>
+<tr class="table-tr">
+<td class="table-td">  <div class="table-td-content"> <strong><code>normal-module-factory</code></strong> </div> </td>
+<td class="table-td">  <div class="table-td-content"> After creating a <code>NormalModuleFactory</code> </div> </td>
+<td class="table-td">  <div class="table-td-content"> <code>normalModuleFactory</code> </div> </td>
+<td class="table-td">  <div class="table-td-content"> sync </div> </td>
+</tr>
+<tr class="table-tr">
+<td class="table-td">  <div class="table-td-content"> <strong><code>context-module-factory</code></strong> </div> </td>
+<td class="table-td">  <div class="table-td-content"> After creating a <code>ContextModuleFactory</code> </div> </td>
+<td class="table-td">  <div class="table-td-content"> <code>contextModuleFactory</code> </div> </td>
+<td class="table-td">  <div class="table-td-content"> sync </div> </td>
+</tr>
+<tr class="table-tr">
+<td class="table-td">  <div class="table-td-content"> <strong><code>before-compile</code></strong> </div> </td>
+<td class="table-td">  <div class="table-td-content"> Compilation parameters created </div> </td>
+<td class="table-td">  <div class="table-td-content"> <code>compilationParams</code> </div> </td>
+<td class="table-td">  <div class="table-td-content"> async </div> </td>
+</tr>
+<tr class="table-tr">
+<td class="table-td">  <div class="table-td-content"> <strong><code>compile</code></strong> </div> </td>
+<td class="table-td">  <div class="table-td-content"> Before creating new compilation </div> </td>
+<td class="table-td">  <div class="table-td-content"> <code>compilationParams</code> </div> </td>
+<td class="table-td">  <div class="table-td-content"> sync </div> </td>
+</tr>
+<tr class="table-tr">
+<td class="table-td">  <div class="table-td-content"> <strong><code>this-compilation</code></strong> </div> </td>
+<td class="table-td">  <div class="table-td-content"> Before emitting <code>compilation</code> event </div> </td>
+<td class="table-td">  <div class="table-td-content"> <code>compilation</code> </div> </td>
+<td class="table-td">  <div class="table-td-content"> sync </div> </td>
+</tr>
+<tr class="table-tr">
+<td class="table-td">  <div class="table-td-content"> <strong><code>compilation</code></strong> </div> </td>
+<td class="table-td">  <div class="table-td-content"> Compilation creation completed </div> </td>
+<td class="table-td">  <div class="table-td-content"> <code>compilation</code> </div> </td>
+<td class="table-td">  <div class="table-td-content"> sync </div> </td>
+</tr>
+<tr class="table-tr">
+<td class="table-td">  <div class="table-td-content"> <strong><code>make</code></strong> </div> </td>
+<td class="table-td">  <div class="table-td-content"> - </div> </td>
+<td class="table-td">  <div class="table-td-content"> <code>compilation</code> </div> </td>
+<td class="table-td">  <div class="table-td-content"> parallel </div> </td>
+</tr>
+<tr class="table-tr">
+<td class="table-td">  <div class="table-td-content"> <strong><code>after-compile</code></strong> </div> </td>
+<td class="table-td">  <div class="table-td-content"> - </div> </td>
+<td class="table-td">  <div class="table-td-content"> <code>compilation</code> </div> </td>
+<td class="table-td">  <div class="table-td-content"> async </div> </td>
+</tr>
+<tr class="table-tr">
+<td class="table-td">  <div class="table-td-content"> <strong><code>should-emit</code></strong> </div> </td>
+<td class="table-td">  <div class="table-td-content"> Can return true/false at this point </div> </td>
+<td class="table-td">  <div class="table-td-content"> <code>compilation</code> </div> </td>
+<td class="table-td">  <div class="table-td-content"> bailResult </div> </td>
+</tr>
+<tr class="table-tr">
+<td class="table-td">  <div class="table-td-content"> <strong><code>need-additional-pass</code></strong> </div> </td>
+<td class="table-td">  <div class="table-td-content"> - </div> </td>
+<td class="table-td">  <div class="table-td-content"> - </div> </td>
+<td class="table-td">  <div class="table-td-content"> bailResult </div> </td>
+</tr>
+<tr class="table-tr">
+<td class="table-td">  <div class="table-td-content"> <strong><code>emit</code></strong> </div> </td>
+<td class="table-td">  <div class="table-td-content"> Before emitting assets to output dir </div> </td>
+<td class="table-td">  <div class="table-td-content"> <code>compilation</code> </div> </td>
+<td class="table-td">  <div class="table-td-content"> async </div> </td>
+</tr>
+<tr class="table-tr">
+<td class="table-td">  <div class="table-td-content"> <strong><code>after-emit</code></strong> </div> </td>
+<td class="table-td">  <div class="table-td-content"> After emitting assets to output dir </div> </td>
+<td class="table-td">  <div class="table-td-content"> <code>compilation</code> </div> </td>
+<td class="table-td">  <div class="table-td-content"> async </div> </td>
+</tr>
+<tr class="table-tr">
+<td class="table-td">  <div class="table-td-content"> <strong><code>done</code></strong> </div> </td>
+<td class="table-td">  <div class="table-td-content"> Completion of compile </div> </td>
+<td class="table-td">  <div class="table-td-content"> <code>stats</code> </div> </td>
+<td class="table-td">  <div class="table-td-content"> sync </div> </td>
+</tr>
+<tr class="table-tr">
+<td class="table-td">  <div class="table-td-content"> <strong><code>failed</code></strong> </div> </td>
+<td class="table-td">  <div class="table-td-content"> Failure of compile </div> </td>
+<td class="table-td">  <div class="table-td-content"> <code>error</code> </div> </td>
+<td class="table-td">  <div class="table-td-content"> sync </div> </td>
+</tr>
+<tr class="table-tr">
+<td class="table-td">  <div class="table-td-content"> <strong><code>invalid</code></strong> </div> </td>
+<td class="table-td">  <div class="table-td-content"> After invalidating a watch compile </div> </td>
+<td class="table-td">  <div class="table-td-content"> <code>fileName</code>, <code>changeTime</code> </div> </td>
+<td class="table-td">  <div class="table-td-content"> sync </div> </td>
+</tr>
+<tr class="table-tr">
+<td class="table-td">  <div class="table-td-content"> <strong><code>watch-close</code></strong> </div> </td>
+<td class="table-td">  <div class="table-td-content"> After stopping a watch compile </div> </td>
+<td class="table-td">  <div class="table-td-content"> - </div> </td>
+<td class="table-td">  <div class="table-td-content"> sync </div> </td>
+</tr> </tbody> </table> </div>
+<h2 class="header" id="usage">Usage</h2> <p>Here's an example of an asynchronous <code>emit</code> event handler:</p> <pre data-language="javascript">compiler.plugin("emit", function(compilation, callback) {
+  // Do something async...
+  setTimeout(function() {
+    console.log("Done with async work...");
+    callback();
+  }, 1000);
+});
+</pre> <div class="_attribution">
+  <p class="_attribution-p">
+    © JS Foundation and other contributors<br>Licensed under the Creative Commons Attribution License 4.0.<br>
+    <a href="https://webpack.js.org/api/compiler" class="_attribution-link" target="_blank">https://webpack.js.org/api/compiler</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

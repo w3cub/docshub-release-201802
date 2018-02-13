@@ -1,0 +1,398 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Postcss-loader - Webpack - W3cubDocs</title>
+  
+  <meta name="description" content=" Loader for webpack to process CSS with PostCSS ">
+  <meta name="keywords" content="postcss-loader, -, webpack">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/webpack/loaders/postcss-loader/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/webpack.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/webpack/" class="_nav-link" title="" style="margin-left:0;">webpack</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _webpack">
+				
+<h1>postcss-loader</h1>
+
+<p>Loader for <a href="http://webpack.js.org/" target="_blank">webpack</a> to process CSS with <a href="http://postcss.org/" target="_blank">PostCSS</a></p>  <h2 class="header" id="install">Install</h2> <pre data-language="bash">npm i -D postcss-loader
+</pre> <h2 class="header" id="usage">Usage</h2> <p>##</p> <p><strong>postcss.config.js</strong></p> <pre data-language="js">module.exports = {
+  parser: 'sugarss',
+  plugins: {
+    'postcss-import': {},
+    'postcss-cssnext': {},
+    'cssnano': {}
+  }
+}
+</pre> <p>You can read more about common PostCSS Config <a href="https://github.com/michael-ciniawsky/postcss-load-config" target="_blank">here</a>.</p> <h3 class="header" id="config-cascade"><code>Config Cascade</code></h3> <p>You can use different <code>postcss.config.js</code> files in different directories. Config lookup starts from <code>path.dirname(file)</code> and walks the file tree upwards until a config file is found.</p> <pre>|– components
+| |– component
+| | |– index.js
+| | |– index.png
+| | |– style.css (1)
+| | |– postcss.config.js (1)
+| |– component
+| | |– index.js
+| | |– image.png
+| | |– style.css (2)
+|
+|– postcss.config.js (1 &amp;&amp; 2 (recommended))
+|– webpack.config.js
+|
+|– package.json
+</pre>
+<p>After setting up your <code>postcss.config.js</code>, add <code>postcss-loader</code> to your <code>webpack.config.js</code>. You can use it standalone or in conjunction with <code>css-loader</code> (recommended). Use it <strong>after</strong> <code>css-loader</code> and <code>style-loader</code>, but <strong>before</strong> other preprocessor loaders like e.g <code>sass|less|stylus-loader</code>, if you use any.</p> <p><strong>webpack.config.js</strong></p> <pre data-language="js">module.exports = {
+  module: {
+    rules: [
+      {
+        test: /\.css$/,
+        use: [ 'style-loader', 'postcss-loader' ]
+      }
+    ]
+  }
+}
+</pre> <blockquote> <p>⚠️ When <code>postcss-loader</code> is used standalone (without <code>css-loader</code>) don't use <code>@import</code> in your CSS, since this can lead to quite bloated bundles</p> </blockquote> <p><strong>webpack.config.js (recommended)</strong></p> <pre data-language="js">module.exports = {
+  module: {
+    rules: [
+      {
+        test: /\.css$/,
+        use: [
+          'style-loader',
+          { loader: 'css-loader', options: { importLoaders: 1 } },
+          'postcss-loader'
+        ]
+      }
+    ]
+  }
+}
+</pre> <h2 class="header" id="options">Options</h2>  <table class="table-wrap"> <thead class="table-header"> <tr class="table-tr">
+<th class="table-th">Name</th>
+<th class="table-th">Type</th>
+<th class="table-th">Default</th>
+<th class="table-th">Description</th>
+</tr> </thead> <tbody class="table-body"> <tr class="table-tr">
+<td class="table-td">  <div class="table-td-content"> <a href="#exec"><code>exec</code></a> </div> </td>
+<td class="table-td">  <div class="table-td-content"> <code>{Boolean}</code> </div> </td>
+<td class="table-td">  <div class="table-td-content"> <code>undefined</code> </div> </td>
+<td class="table-td">  <div class="table-td-content"> Enable PostCSS Parser support in <code>CSS-in-JS</code> </div> </td>
+</tr>
+<tr class="table-tr">
+<td class="table-td">  <div class="table-td-content"> <a href="#syntaxes"><code>parser</code></a> </div> </td>
+<td class="table-td">  <div class="table-td-content"> <code>{String|Object}</code> </div> </td>
+<td class="table-td">  <div class="table-td-content"> <code>undefined</code> </div> </td>
+<td class="table-td">  <div class="table-td-content"> Set PostCSS Parser </div> </td>
+</tr>
+<tr class="table-tr">
+<td class="table-td">  <div class="table-td-content"> <a href="#syntaxes"><code>syntax</code></a> </div> </td>
+<td class="table-td">  <div class="table-td-content"> <code>{String|Object}</code> </div> </td>
+<td class="table-td">  <div class="table-td-content"> <code>undefined</code> </div> </td>
+<td class="table-td">  <div class="table-td-content"> Set PostCSS Syntax </div> </td>
+</tr>
+<tr class="table-tr">
+<td class="table-td">  <div class="table-td-content"> <a href="#syntaxes"><code>stringifier</code></a> </div> </td>
+<td class="table-td">  <div class="table-td-content"> <code>{String|Object}</code> </div> </td>
+<td class="table-td">  <div class="table-td-content"> <code>undefined</code> </div> </td>
+<td class="table-td">  <div class="table-td-content"> Set PostCSS Stringifier </div> </td>
+</tr>
+<tr class="table-tr">
+<td class="table-td">  <div class="table-td-content"> <a href="#config"><code>config</code></a> </div> </td>
+<td class="table-td">  <div class="table-td-content"> <code>{Object}</code> </div> </td>
+<td class="table-td">  <div class="table-td-content"> <code>undefined</code> </div> </td>
+<td class="table-td">  <div class="table-td-content"> Set <code>postcss.config.js</code> config path &amp;&amp; <code>ctx</code> </div> </td>
+</tr>
+<tr class="table-tr">
+<td class="table-td">  <div class="table-td-content"> <a href="#plugins"><code>plugins</code></a> </div> </td>
+<td class="table-td">  <div class="table-td-content"> <code>{Array|Function}</code> </div> </td>
+<td class="table-td">  <div class="table-td-content"> <code>[]</code> </div> </td>
+<td class="table-td">  <div class="table-td-content"> Set PostCSS Plugins </div> </td>
+</tr>
+<tr class="table-tr">
+<td class="table-td">  <div class="table-td-content"> <a href="#sourceMap"><code>sourceMap</code></a> </div> </td>
+<td class="table-td">  <div class="table-td-content"> <code>{String|Boolean}</code> </div> </td>
+<td class="table-td">  <div class="table-td-content"> <code>false</code> </div> </td>
+<td class="table-td">  <div class="table-td-content"> Enable Source Maps </div> </td>
+</tr> </tbody> </table> <h3 class="header" id="exec"><code>Exec</code></h3> <p>If you use JS styles without the [<code>postcss-js</code>][postcss-js] parser, add the <code>exec</code> option.</p> <pre data-language="js">{
+  test: /\.style.js$/,
+  use: [
+    'style-loader',
+    { loader: 'css-loader', options: { importLoaders: 1 } },
+    { loader: 'postcss-loader', options: { parser: 'sugarss', exec: true } }
+  ]
+}
+</pre> <h3 class="header" id="config"><code>Config</code></h3>  <table class="table-wrap"> <thead class="table-header"> <tr class="table-tr">
+<th class="table-th">Name</th>
+<th class="table-th">Type</th>
+<th class="table-th">Default</th>
+<th class="table-th">Description</th>
+</tr> </thead> <tbody class="table-body"> <tr class="table-tr">
+<td class="table-td">  <div class="table-td-content"> <a href="#path"><code>path</code></a> </div> </td>
+<td class="table-td">  <div class="table-td-content"> <code>{String}</code> </div> </td>
+<td class="table-td">  <div class="table-td-content"> <code>undefined</code> </div> </td>
+<td class="table-td">  <div class="table-td-content"> PostCSS Config Path </div> </td>
+</tr>
+<tr class="table-tr">
+<td class="table-td">  <div class="table-td-content"> <a href="#context"><code>context</code></a> </div> </td>
+<td class="table-td">  <div class="table-td-content"> <code>{Object}</code> </div> </td>
+<td class="table-td">  <div class="table-td-content"> <code>undefined</code> </div> </td>
+<td class="table-td">  <div class="table-td-content"> PostCSS Config Context </div> </td>
+</tr> </tbody> </table> <h4 class="header" id="path"><code>Path</code></h4> <p>You can manually specify the path to search for your config (<code>postcss.config.js</code>) with the <code>config.path</code> option. This is needed if you store your config in a separate e.g <code>./config || ./.config</code> folder.</p> <blockquote> <p>⚠️ Otherwise it is <strong>unnecessary</strong> to set this option and is <strong>not</strong> recommended</p> </blockquote> <p><strong>webpack.config.js</strong></p> <pre data-language="js">{
+  loader: 'postcss-loader',
+  options: {
+    config: {
+      path: 'path/to/postcss.config.js'
+    }
+  }
+}
+</pre> <h4 class="header" id="context-ctx-"><code>Context (ctx)</code></h4>  <table class="table-wrap"> <thead class="table-header"> <tr class="table-tr">
+<th class="table-th">Name</th>
+<th class="table-th">Type</th>
+<th class="table-th">Default</th>
+<th class="table-th">Description</th>
+</tr> </thead> <tbody class="table-body"> <tr class="table-tr">
+<td class="table-td">  <div class="table-td-content"> <code>env</code> </div> </td>
+<td class="table-td">  <div class="table-td-content"> <code>{String}</code> </div> </td>
+<td class="table-td">  <div class="table-td-content"> <code>'development'</code> </div> </td>
+<td class="table-td">  <div class="table-td-content"> <code>process.env.NODE_ENV</code> </div> </td>
+</tr>
+<tr class="table-tr">
+<td class="table-td">  <div class="table-td-content"> <code>file</code> </div> </td>
+<td class="table-td">  <div class="table-td-content"> <code>{Object}</code> </div> </td>
+<td class="table-td">  <div class="table-td-content"> <code>loader.resourcePath</code> </div> </td>
+<td class="table-td">  <div class="table-td-content"> <code>extname</code>, <code>dirname</code>, <code>basename</code> </div> </td>
+</tr>
+<tr class="table-tr">
+<td class="table-td">  <div class="table-td-content"> <code>options</code> </div> </td>
+<td class="table-td">  <div class="table-td-content"> <code>{Object}</code> </div> </td>
+<td class="table-td">  <div class="table-td-content"> <code>{}</code> </div> </td>
+<td class="table-td">  <div class="table-td-content"> Options </div> </td>
+</tr> </tbody> </table> <p><code>postcss-loader</code> exposes context <code>ctx</code> to the config file, making your <code>postcss.config.js</code> dynamic, so can use it to do some real magic ✨</p> <p><strong>postcss.config.js</strong></p> <pre data-language="js">module.exports = ({ file, options, env }) =&gt; ({
+  parser: file.extname === '.sss' ? 'sugarss' : false,
+  plugins: {
+    'postcss-import': { root: file.dirname },
+    'postcss-cssnext': options.cssnext ? options.cssnext : false,
+    'autoprefixer': env == 'production' ? options.autoprefixer : false,
+    'cssnano': env === 'production' ? options.cssnano : false
+  }
+})
+</pre> <p><strong>webpack.config.js</strong></p> <pre data-language="js">{
+  loader: 'postcss-loader',
+  options: {
+    config: {
+      ctx: {
+        cssnext: {...options},
+        cssnano: {...options},
+        autoprefixer: {...options}
+      }
+    }
+  }
+}
+</pre> <h3 class="header" id="plugins"><code>Plugins</code></h3> <p><strong>webpack.config.js</strong></p> <pre data-language="js">{
+  loader: 'postcss-loader',
+  options: {
+    ident: 'postcss',
+    plugins: (loader) =&gt; [
+      require('postcss-import')({ root: loader.resourcePath }),
+      require('postcss-cssnext')(),
+      require('autoprefixer')(),
+      require('cssnano')()
+    ]
+  }
+}
+</pre> <blockquote> <p>⚠️ webpack requires an identifier (<code>ident</code>) in <code>options</code> when <code>{Function}/require</code> is used (Complex Options). The <code>ident</code> can be freely named as long as it is unique. It's recommended to name it (<code>ident: 'postcss'</code>)</p> </blockquote> <h3 class="header" id="syntaxes"><code>Syntaxes</code></h3>  <table class="table-wrap"> <thead class="table-header"> <tr class="table-tr">
+<th class="table-th">Name</th>
+<th class="table-th">Type</th>
+<th class="table-th">Default</th>
+<th class="table-th">Description</th>
+</tr> </thead> <tbody class="table-body"> <tr class="table-tr">
+<td class="table-td">  <div class="table-td-content"> <a href="#parser"><code>parser</code></a> </div> </td>
+<td class="table-td">  <div class="table-td-content"> <code>{String|Function}</code> </div> </td>
+<td class="table-td">  <div class="table-td-content"> <code>undefined</code> </div> </td>
+<td class="table-td">  <div class="table-td-content"> Custom PostCSS Parser </div> </td>
+</tr>
+<tr class="table-tr">
+<td class="table-td">  <div class="table-td-content"> <a href="#syntax"><code>syntax</code></a> </div> </td>
+<td class="table-td">  <div class="table-td-content"> <code>{String|Function}</code> </div> </td>
+<td class="table-td">  <div class="table-td-content"> <code>undefined</code> </div> </td>
+<td class="table-td">  <div class="table-td-content"> Custom PostCSS Syntax </div> </td>
+</tr>
+<tr class="table-tr">
+<td class="table-td">  <div class="table-td-content"> <a href="#stringifier"><code>stringifier</code></a> </div> </td>
+<td class="table-td">  <div class="table-td-content"> <code>{String|Function}</code> </div> </td>
+<td class="table-td">  <div class="table-td-content"> <code>undefined</code> </div> </td>
+<td class="table-td">  <div class="table-td-content"> Custom PostCSS Stringifier </div> </td>
+</tr> </tbody> </table> <h4 class="header" id="parser"><code>Parser</code></h4> <p><strong>webpack.config.js</strong></p> <pre data-language="js">{
+  test: /\.sss$/,
+  use: [
+    ...,
+    { loader: 'postcss-loader', options: { parser: 'sugarss' } }
+  ]
+}
+</pre> <h4 class="header" id="syntax"><code>Syntax</code></h4> <p><strong>webpack.config.js</strong></p> <pre data-language="js">{
+  test: /\.css$/,
+  use: [
+    ...,
+    { loader: 'postcss-loader', options: { syntax: 'sugarss' } }
+  ]
+}
+</pre> <h4 class="header" id="stringifier"><code>Stringifier</code></h4> <p><strong>webpack.config.js</strong></p> <pre data-language="js">{
+  test: /\.css$/,
+  use: [
+    ...,
+    { loader: 'postcss-loader', options: { stringifier: 'midas' } }
+  ]
+}
+</pre> <h3 class="header" id="sourcemap"><code>SourceMap</code></h3> <p>Enables source map support, <code>postcss-loader</code> will use the previous source map given by other loaders and update it accordingly, if no previous loader is applied before <code>postcss-loader</code>, the loader will generate a source map for you.</p> <blockquote> <p>:warning: If a previous loader like e.g <code>sass-loader</code> is applied and it's <code>sourceMap</code> option is set, but the <code>sourceMap</code> option in <code>postcss-loader</code> is omitted, previous source maps will be discarded by <code>postcss-loader</code> <strong>entirely</strong>.</p> </blockquote> <p><strong>webpack.config.js</strong></p> <pre data-language="js">{
+  test: /\.css/,
+  use: [
+    { loader: 'style-loader', options: { sourceMap: true } },
+    { loader: 'css-loader', options: { sourceMap: true } },
+    { loader: 'postcss-loader', options: { sourceMap: true } },
+    { loader: 'sass-loader', options: { sourceMap: true } }
+  ]
+}
+</pre> <h4 class="header" id="-inline-"><code>'inline'</code></h4> <p>You can set the <code>sourceMap: 'inline'</code> option to inline the source map within the CSS directly as an annotation comment.</p> <p><strong>webpack.config.js</strong></p> <pre data-language="js">{
+  loader: 'postcss-loader',
+  options: {
+    sourceMap: 'inline'
+  }
+}
+</pre> <pre data-language="css">.class { color: red; }
+
+/*# sourceMappingURL=data:application/json;base64, ... */
+</pre> <h2 class="header" id="examples">Examples</h2> <h3 class="header" id="stylelint"><code>Stylelint</code></h3> <p><strong>webpack.config.js</strong></p> <pre data-language="js">{
+  test: /\.css$/,
+  use: [
+    'style-loader',
+    'css-loader',
+    {
+      loader: 'postcss-loader',
+      options: {
+        ident: 'postcss',
+        plugins: [
+          require('postcss-import')(),
+          require('stylelint')(),
+          ...,
+        ]
+      }
+    }
+  ]
+}
+</pre> <h3 class="header" id="css-modules"><code>CSS Modules</code></h3> <p>This loader [cannot be used] with [CSS Modules] out of the box due to the way <code>css-loader</code> processes file imports. To make them work properly, either add the css-loader’s [<code>importLoaders</code>] option.</p> <p><strong>webpack.config.js</strong></p> <pre data-language="js">{
+  test: /\.css$/,
+  use: [
+    'style-loader',
+    { loader: 'css-loader', options: { modules: true, importLoaders: 1 } },
+    'postcss-loader'
+  ]
+}
+</pre> <p>or use [postcss-modules] instead of <code>css-loader</code>.</p> <h3 class="header" id="css-in-js"><code>CSS-in-JS</code></h3> <p>If you want to process styles written in JavaScript, use the [postcss-js] parser.</p> <pre data-language="js">{
+  test: /\.style.js$/,
+  use: [
+    'style-loader',
+    { loader: 'css-loader', options: { importLoaders: 2 } },
+    { loader: 'postcss-loader', options: { parser: 'postcss-js' } },
+    'babel-loader'
+  ]
+}
+</pre> <p>As result you will be able to write styles in the following way</p> <pre data-language="js">import colors from './styles/colors'
+
+export default {
+    '.menu': {
+      color: colors.main,
+      height: 25,
+      '&amp;_link': {
+      color: 'white'
+    }
+  }
+}
+</pre> <blockquote> <p>:warning: If you are using Babel you need to do the following in order for the setup to work</p> <ol> <li>Add [babel-plugin-add-module-exports] to your configuration</li> <li>You need to have only one <strong>default</strong> export per style module</li> </ol> </blockquote> <h3 class="header" id="-extract-css-extractplugin-">[Extract CSS][ExtractPlugin]</h3> <p><strong>webpack.config.js</strong></p> <pre data-language="js">const ExtractTextPlugin = require('extract-text-webpack-plugin')
+
+module.exports = {
+  module: {
+    rules: [
+      {
+        test: /\.css$/,
+        use: ExtractTextPlugin.extract({
+          fallback: 'style-loader',
+          use: [
+            { loader: 'css-loader', options: { importLoaders: 1 } },
+            'postcss-loader'
+          ]
+        })
+      }
+    ]
+  },
+  plugins: [
+    new ExtractTextPlugin('[name].css')
+  ]
+}
+</pre>  <div class="_attribution">
+  <p class="_attribution-p">
+    © JS Foundation and other contributors<br>Licensed under the Creative Commons Attribution License 4.0.<br>
+    <a href="https://webpack.js.org/loaders/postcss-loader" class="_attribution-link" target="_blank">https://webpack.js.org/loaders/postcss-loader</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

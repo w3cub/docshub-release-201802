@@ -1,0 +1,284 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>File-loader - Webpack - W3cubDocs</title>
+  
+  <meta name="description" content=" Instructs webpack to emit the required object as file and to return its public URL ">
+  <meta name="keywords" content="file-loader, -, webpack">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/webpack/loaders/file-loader/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/webpack.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/webpack/" class="_nav-link" title="" style="margin-left:0;">webpack</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _webpack">
+				
+<h1>file-loader</h1>
+<p>Instructs webpack to emit the required object as file and to return its public URL</p> <h2 class="header" id="install">Install</h2> <pre data-language="bash">npm install --save-dev file-loader
+</pre> <h2 class="header" id="usage"><a href="../../concepts/loaders/">Usage</a></h2> <p>By default the filename of the resulting file is the MD5 hash of the file's contents with the original extension of the required resource.</p> <pre data-language="js">import img from './file.png'
+</pre> <p><strong>webpack.config.js</strong></p> <pre data-language="js">module.exports = {
+  module: {
+    rules: [
+      {
+        test: /\.(png|jpg|gif)$/,
+        use: [
+          {
+            loader: 'file-loader',
+            options: {}  
+          }
+        ]
+      }
+    ]
+  }
+}
+</pre> <p>Emits <code>file.png</code> as file in the output directory and returns the public URL</p> <pre>"/public/path/0dcbbaa7013869e351f.png"
+</pre>
+<h2 class="header" id="options">Options</h2> <div class="table"> <table class="table-wrap"> <thead class="table-header"> <tr class="table-tr">
+<th class="table-th">Name</th>
+<th class="table-th">Type</th>
+<th class="table-th">Default</th>
+<th class="table-th">Description</th>
+</tr> </thead> <tbody class="table-body"> <tr class="table-tr">
+<td class="table-td">  <div class="table-td-content"> <strong><code>name</code></strong> </div> </td>
+<td class="table-td">  <div class="table-td-content"> <code>{String|Function}</code> </div> </td>
+<td class="table-td">  <div class="table-td-content"> <code>[hash].[ext]</code> </div> </td>
+<td class="table-td">  <div class="table-td-content"> Configure a custom filename template for your file </div> </td>
+</tr>
+<tr class="table-tr">
+<td class="table-td">  <div class="table-td-content"> <strong><code>context</code></strong> </div> </td>
+<td class="table-td">  <div class="table-td-content"> <code>{String}</code> </div> </td>
+<td class="table-td">  <div class="table-td-content"> <code>this.options.context</code> </div> </td>
+<td class="table-td">  <div class="table-td-content"> Configure a custom file context, defaults to <code>webpack.config.js</code> <a href="../../configuration/entry-context/#context">context</a> </div> </td>
+</tr>
+<tr class="table-tr">
+<td class="table-td">  <div class="table-td-content"> <strong><code>publicPath</code></strong> </div> </td>
+<td class="table-td">  <div class="table-td-content"> <code>{String|Function}</code> </div> </td>
+<td class="table-td">  <div class="table-td-content"> <a href="../../api/module-variables/#__webpack_public_path__-webpack-specific-"><code>__webpack_public_path__</code></a> </div> </td>
+<td class="table-td">  <div class="table-td-content"> Configure a custom <code>public</code> path for your files </div> </td>
+</tr>
+<tr class="table-tr">
+<td class="table-td">  <div class="table-td-content"> <strong><code>outputPath</code></strong> </div> </td>
+<td class="table-td">  <div class="table-td-content"> <code>{String|Function}</code> </div> </td>
+<td class="table-td">  <div class="table-td-content"> <code>'undefined'</code> </div> </td>
+<td class="table-td">  <div class="table-td-content"> Configure a custom <code>output</code> path for your files </div> </td>
+</tr>
+<tr class="table-tr">
+<td class="table-td">  <div class="table-td-content"> <strong><code>useRelativePath</code></strong> </div> </td>
+<td class="table-td">  <div class="table-td-content"> <code>{Boolean}</code> </div> </td>
+<td class="table-td">  <div class="table-td-content"> <code>false</code> </div> </td>
+<td class="table-td">  <div class="table-td-content"> Should be <code>true</code> if you wish to generate a <code>context</code> relative URL for each file </div> </td>
+</tr>
+<tr class="table-tr">
+<td class="table-td">  <div class="table-td-content"> <strong><code>emitFile</code></strong> </div> </td>
+<td class="table-td">  <div class="table-td-content"> <code>{Boolean}</code> </div> </td>
+<td class="table-td">  <div class="table-td-content"> <code>true</code> </div> </td>
+<td class="table-td">  <div class="table-td-content"> By default a file is emitted, however this can be disabled if required (e.g. for server side packages) </div> </td>
+</tr> </tbody> </table> </div>
+<p>##</p> <p>You can configure a custom filename template for your file using the query parameter <code>name</code>. For instance, to copy a file from your <code>context</code> directory into the output directory retaining the full directory structure, you might use</p> <h4 class="header" id="-string-"><code>{String}</code></h4> <p><strong>webpack.config.js</strong></p> <pre data-language="js">{
+  loader: 'file-loader',
+  options: {
+    name: '[path][name].[ext]'
+  }  
+}
+</pre> <h4 class="header" id="-function-"><code>{Function}</code></h4> <p><strong>webpack.config.js</strong></p> <pre data-language="js">{
+  loader: 'file-loader',
+  options: {
+    name (file) {
+      if (env === 'development') {
+        return '[path][name].[ext]'
+      }
+
+      return '[hash].[ext]'
+    }
+  }  
+}
+</pre> <h4 class="header" id="placeholders"><code>placeholders</code></h4> <div class="table"> <table class="table-wrap"> <thead class="table-header"> <tr class="table-tr">
+<th class="table-th">Name</th>
+<th class="table-th">Type</th>
+<th class="table-th">Default</th>
+<th class="table-th">Description</th>
+</tr> </thead> <tbody class="table-body"> <tr class="table-tr">
+<td class="table-td">  <div class="table-td-content"> <strong><code>[ext]</code></strong> </div> </td>
+<td class="table-td">  <div class="table-td-content"> <code>{String}</code> </div> </td>
+<td class="table-td">  <div class="table-td-content"> <code>file.extname</code> </div> </td>
+<td class="table-td">  <div class="table-td-content"> The extension of the resource </div> </td>
+</tr>
+<tr class="table-tr">
+<td class="table-td">  <div class="table-td-content"> <strong><code>[name]</code></strong> </div> </td>
+<td class="table-td">  <div class="table-td-content"> <code>{String}</code> </div> </td>
+<td class="table-td">  <div class="table-td-content"> <code>file.basename</code> </div> </td>
+<td class="table-td">  <div class="table-td-content"> The basename of the resource </div> </td>
+</tr>
+<tr class="table-tr">
+<td class="table-td">  <div class="table-td-content"> <strong><code>[path]</code></strong> </div> </td>
+<td class="table-td">  <div class="table-td-content"> <code>{String}</code> </div> </td>
+<td class="table-td">  <div class="table-td-content"> <code>file.dirname</code> </div> </td>
+<td class="table-td">  <div class="table-td-content"> The path of the resource relative to the <code>context</code> </div> </td>
+</tr>
+<tr class="table-tr">
+<td class="table-td">  <div class="table-td-content"> <strong><code>[hash]</code></strong> </div> </td>
+<td class="table-td">  <div class="table-td-content"> <code>{String}</code> </div> </td>
+<td class="table-td">  <div class="table-td-content"> <code>md5</code> </div> </td>
+<td class="table-td">  <div class="table-td-content"> The hash of the content, hashes below for more info </div> </td>
+</tr>
+<tr class="table-tr">
+<td class="table-td">  <div class="table-td-content"> <strong><code>[N]</code></strong> </div> </td>
+<td class="table-td">  <div class="table-td-content"> <code>{Number}</code> </div> </td>
+<td class="table-td">  <div class="table-td-content"> `` </div> </td>
+<td class="table-td">  <div class="table-td-content"> The <code>n-th</code> match obtained from matching the current file name against the query param <code>regExp</code> </div> </td>
+</tr> </tbody> </table> </div>
+<h4 class="header" id="hashes"><code>hashes</code></h4> <p><code>[&lt;hashType&gt;:hash:&lt;digestType&gt;:&lt;length&gt;]</code> optionally you can configure</p> <div class="table"> <table class="table-wrap"> <thead class="table-header"> <tr class="table-tr">
+<th class="table-th">Name</th>
+<th class="table-th">Type</th>
+<th class="table-th">Default</th>
+<th class="table-th">Description</th>
+</tr> </thead> <tbody class="table-body"> <tr class="table-tr">
+<td class="table-td">  <div class="table-td-content"> <strong><code>hashType</code></strong> </div> </td>
+<td class="table-td">  <div class="table-td-content"> <code>{String}</code> </div> </td>
+<td class="table-td">  <div class="table-td-content"> <code>md5</code> </div> </td>
+<td class="table-td">  <div class="table-td-content"> <code>sha1</code>, <code>md5</code>, <code>sha256</code>, <code>sha512</code> </div> </td>
+</tr>
+<tr class="table-tr">
+<td class="table-td">  <div class="table-td-content"> <strong><code>digestType</code></strong> </div> </td>
+<td class="table-td">  <div class="table-td-content"> <code>{String}</code> </div> </td>
+<td class="table-td">  <div class="table-td-content"> <code>base64</code> </div> </td>
+<td class="table-td">  <div class="table-td-content"> <code>hex</code>, <code>base26</code>, <code>base32</code>, <code>base36</code>, <code>base49</code>, <code>base52</code>, <code>base58</code>, <code>base62</code>, <code>base64</code> </div> </td>
+</tr>
+<tr class="table-tr">
+<td class="table-td">  <div class="table-td-content"> <strong><code>length</code></strong> </div> </td>
+<td class="table-td">  <div class="table-td-content"> <code>{Number}</code> </div> </td>
+<td class="table-td">  <div class="table-td-content"> <code>9999</code> </div> </td>
+<td class="table-td">  <div class="table-td-content"> The length in chars </div> </td>
+</tr> </tbody> </table> </div>
+<p>By default, the path and name you specify will output the file in that same directory and will also use that same URL path to access the file.</p> <h3 class="header" id="context"><code>context</code></h3> <p><strong>webpack.config.js</strong></p> <pre data-language="js">{
+  loader: 'file-loader',
+  options: {
+    name: '[path][name].[ext]',
+    context: ''
+  }  
+}
+</pre> <p>You can specify custom <code>output</code> and <code>public</code> paths by using <code>outputPath</code>, <code>publicPath</code> and <code>useRelativePath</code></p> <h3 class="header" id="publicpath"><code>publicPath</code></h3> <p><strong>webpack.config.js</strong></p> <pre data-language="js">{
+  loader: 'file-loader',
+  options: {
+    name: '[path][name].[ext]',
+    publicPath: 'assets/'
+  }  
+}
+</pre> <h3 class="header" id="outputpath"><code>outputPath</code></h3> <p><strong>webpack.config.js</strong></p> <pre data-language="js">{
+  loader: 'file-loader',
+  options: {
+    name: '[path][name].[ext]',
+    outputPath: 'images/'
+  }  
+}
+</pre> <h3 class="header" id="userelativepath"><code>useRelativePath</code></h3> <p><code>useRelativePath</code> should be <code>true</code> if you wish to generate a relative URL to the for each file context.</p> <pre data-language="js">{
+  loader: 'file-loader',
+  options: {
+    useRelativePath: process.env.NODE_ENV === "production"
+  }
+}
+</pre> <h3 class="header" id="emitfile"><code>emitFile</code></h3> <p>By default a file is emitted, however this can be disabled if required (e.g. for server side packages).</p> <pre data-language="js">import img from './file.png'
+</pre> <pre data-language="js">{
+  loader: 'file-loader',
+  options: {
+    emitFile: false
+  }  
+}
+</pre> <blockquote> <p>⚠️ Returns the public URL but does <strong>not</strong> emit a file</p> </blockquote> <pre>`${publicPath}/0dcbbaa701328e351f.png`
+</pre>
+<h2 class="header" id="examples">Examples</h2> <pre data-language="js">import png from 'image.png'
+</pre> <p><strong>webpack.config.js</strong></p> <pre data-language="js">{
+  loader: 'file-loader',
+  options: {
+    name: 'dirname/[hash].[ext]'
+  }  
+}
+</pre> <pre>dirname/0dcbbaa701328ae351f.png
+</pre>
+<p><strong>webpack.config.js</strong></p> <pre data-language="js">{
+  loader: 'file-loader',
+  options: {
+    name: '[sha512:hash:base64:7].[ext]'
+  }  
+}
+</pre> <pre>gdyb21L.png
+</pre>
+<pre data-language="js">import png from 'path/to/file.png'
+</pre> <p><strong>webpack.config.js</strong></p> <pre data-language="js">{
+  loader: 'file-loader',
+  options: {
+    name: '[path][name].[ext]?[hash]'
+  }  
+}
+</pre> <pre>path/to/file.png?e43b20c069c4a01867c31e98cbce33c9
+</pre>  <div class="_attribution">
+  <p class="_attribution-p">
+    © JS Foundation and other contributors<br>Licensed under the Creative Commons Attribution License 4.0.<br>
+    <a href="https://webpack.js.org/loaders/file-loader" class="_attribution-link" target="_blank">https://webpack.js.org/loaders/file-loader</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>
