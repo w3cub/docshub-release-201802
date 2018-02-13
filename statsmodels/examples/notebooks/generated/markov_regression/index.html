@@ -1,0 +1,306 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Example&#58; Markov Switching Dynamic Regression Models - Statsmodels - W3cubDocs</title>
+  
+  <meta name="description" content="This notebook provides an example of the use of Markov switching models in Statsmodels to estimate dynamic regression models with changes in regime &hellip;">
+  <meta name="keywords" content="example, markov, switching, dynamic, regression, models, -, statsmodels">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/statsmodels/examples/notebooks/generated/markov_regression/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/statsmodels.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/statsmodels/" class="_nav-link" title="" style="margin-left:0;">Statsmodels</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _sphinx">
+				
+<h2 id="Markov-switching-dynamic-regression-models">Markov switching dynamic regression models</h2>        <p>This notebook provides an example of the use of Markov switching models in Statsmodels to estimate dynamic regression models with changes in regime. It follows the examples in the Stata Markov switching documentation, which can be found at <a href="http://www.stata.com/manuals14/tsmswitch.pdf" target="_blank">http://www.stata.com/manuals14/tsmswitch.pdf</a>.</p>     <div class="input"> <div class="prompt input_prompt">In [1]:</div>   <pre data-language="python">%matplotlib inline
+
+import numpy as np
+import pandas as pd
+import statsmodels.api as sm
+import matplotlib.pyplot as plt
+
+# NBER recessions
+from pandas_datareader.data import DataReader
+from datetime import datetime
+usrec = DataReader('USREC', 'fred', start=datetime(1947, 1, 1), end=datetime(2013, 4, 1))
+</pre>   </div>      <h3 id="Federal-funds-rate-with-switching-intercept">Federal funds rate with switching intercept</h3>
+<p>The first example models the federal funds rate as noise around a constant intercept, but where the intercept changes during different regimes. The model is simply:</p> $$r_t = \mu_{S_t} + \varepsilon_t \qquad \varepsilon_t \sim N(0, \sigma^2)$$<p>where $S_t \in \{0, 1\}$, and the regime transitions according to</p> $$ P(S_t = s_t | S_{t-1} = s_{t-1}) = \begin{bmatrix} p_{00} &amp; p_{10} \\ 1 - p_{00} &amp; 1 - p_{10} \end{bmatrix} $$<p>We will estimate the parameters of this model by maximum likelihood: $p_{00}, p_{10}, \mu_0, \mu_1, \sigma^2$.</p> <p>The data used in this example can be found at <a href="http://www.stata-press.com/data/r14/usmacro" target="_blank">http://www.stata-press.com/data/r14/usmacro</a>.</p>     <div class="input"> <div class="prompt input_prompt">In [2]:</div>   <pre data-language="python"># Get the federal funds rate data
+from statsmodels.tsa.regime_switching.tests.test_markov_regression import fedfunds
+dta_fedfunds = pd.Series(fedfunds, index=pd.date_range('1954-07-01', '2010-10-01', freq='QS'))
+
+# Plot the data
+dta_fedfunds.plot(title='Federal funds rate', figsize=(12,3))
+
+# Fit the model
+# (a switching mean is the default of the MarkovRegession model)
+mod_fedfunds = sm.tsa.MarkovRegression(dta_fedfunds, k_regimes=2)
+res_fedfunds = mod_fedfunds.fit()
+</pre>   </div> <div class="output_wrapper"> <div class="output"> <div class="output_area">  <div class="output_subarea output_text output_error"> <pre>
+<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">ModuleNotFoundError</span>                       Traceback (most recent call last)
+<span class="ansi-green-fg">&lt;ipython-input-2-cedfcf1aafb9&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span><span class="ansi-blue-fg">()</span>
+<span class="ansi-green-intense-fg ansi-bold">      1</span> <span class="ansi-red-fg"># Get the federal funds rate data</span>
+<span class="ansi-green-fg">----&gt; 2</span><span class="ansi-green-fg">from</span> statsmodels<span class="ansi-blue-fg">.</span>tsa<span class="ansi-blue-fg">.</span>regime_switching<span class="ansi-blue-fg">.</span>tests<span class="ansi-blue-fg">.</span>test_markov_regression <span class="ansi-green-fg">import</span> fedfunds
+<span class="ansi-green-intense-fg ansi-bold">      3</span> dta_fedfunds <span class="ansi-blue-fg">=</span> pd<span class="ansi-blue-fg">.</span>Series<span class="ansi-blue-fg">(</span>fedfunds<span class="ansi-blue-fg">,</span> index<span class="ansi-blue-fg">=</span>pd<span class="ansi-blue-fg">.</span>date_range<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">'1954-07-01'</span><span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">'2010-10-01'</span><span class="ansi-blue-fg">,</span> freq<span class="ansi-blue-fg">=</span><span class="ansi-blue-fg">'QS'</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">      4</span> 
+<span class="ansi-green-intense-fg ansi-bold">      5</span> <span class="ansi-red-fg"># Plot the data</span>
+
+<span class="ansi-green-fg">/private/tmp/statsmodels/statsmodels/tsa/regime_switching/tests/test_markov_regression.py</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span><span class="ansi-blue-fg">()</span>
+<span class="ansi-green-intense-fg ansi-bold">     14</span>                                               markov_regression)
+<span class="ansi-green-intense-fg ansi-bold">     15</span> <span class="ansi-green-fg">from</span> numpy<span class="ansi-blue-fg">.</span>testing <span class="ansi-green-fg">import</span> assert_equal<span class="ansi-blue-fg">,</span> assert_allclose<span class="ansi-blue-fg">,</span> assert_raises
+<span class="ansi-green-fg">---&gt; 16</span><span class="ansi-green-fg">from</span> nose<span class="ansi-blue-fg">.</span>exc <span class="ansi-green-fg">import</span> SkipTest
+<span class="ansi-green-intense-fg ansi-bold">     17</span> 
+<span class="ansi-green-intense-fg ansi-bold">     18</span> 
+
+<span class="ansi-red-fg">ModuleNotFoundError</span>: No module named 'nose'</pre> </div> </div> </div> </div>   <div class="input"> <div class="prompt input_prompt">In [3]:</div>   <pre data-language="python">res_fedfunds.summary()
+</pre>   </div> <div class="output_wrapper"> <div class="output"> <div class="output_area">  <div class="output_subarea output_text output_error"> <pre>
+<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">NameError</span>                                 Traceback (most recent call last)
+<span class="ansi-green-fg">&lt;ipython-input-3-1f0989d32c73&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span><span class="ansi-blue-fg">()</span>
+<span class="ansi-green-fg">----&gt; 1</span>res_fedfunds<span class="ansi-blue-fg">.</span>summary<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
+
+<span class="ansi-red-fg">NameError</span>: name 'res_fedfunds' is not defined</pre> </div> </div> </div> </div>      <p>From the summary output, the mean federal funds rate in the first regime (the "low regime") is estimated to be $3.7$ whereas in the "high regime" it is $9.6$. Below we plot the smoothed probabilities of being in the high regime. The model suggests that the 1980's was a time-period in which a high federal funds rate existed.</p>     <div class="input"> <div class="prompt input_prompt">In [4]:</div>   <pre data-language="python">res_fedfunds.smoothed_marginal_probabilities[1].plot(
+    title='Probability of being in the high regime', figsize=(12,3));
+</pre>   </div> <div class="output_wrapper"> <div class="output"> <div class="output_area">  <div class="output_subarea output_text output_error"> <pre>
+<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">NameError</span>                                 Traceback (most recent call last)
+<span class="ansi-green-fg">&lt;ipython-input-4-fdbf3815d594&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span><span class="ansi-blue-fg">()</span>
+<span class="ansi-green-fg">----&gt; 1</span><span class="ansi-red-fg"> res_fedfunds.smoothed_marginal_probabilities[1].plot(
+</span><span class="ansi-green-intense-fg ansi-bold">      2</span>     title='Probability of being in the high regime', figsize=(12,3));
+
+<span class="ansi-red-fg">NameError</span>: name 'res_fedfunds' is not defined</pre> </div> </div> </div> </div>      <p>From the estimated transition matrix we can calculate the expected duration of a low regime versus a high regime.</p>     <div class="input"> <div class="prompt input_prompt">In [5]:</div>   <pre data-language="python">print(res_fedfunds.expected_durations)
+</pre>   </div> <div class="output_wrapper"> <div class="output"> <div class="output_area">  <div class="output_subarea output_text output_error"> <pre>
+<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">NameError</span>                                 Traceback (most recent call last)
+<span class="ansi-green-fg">&lt;ipython-input-5-2dfd3d207e11&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span><span class="ansi-blue-fg">()</span>
+<span class="ansi-green-fg">----&gt; 1</span>print<span class="ansi-blue-fg">(</span>res_fedfunds<span class="ansi-blue-fg">.</span>expected_durations<span class="ansi-blue-fg">)</span>
+
+<span class="ansi-red-fg">NameError</span>: name 'res_fedfunds' is not defined</pre> </div> </div> </div> </div>      <p>A low regime is expected to persist for about fourteen years, whereas the high regime is expected to persist for only about five years.</p>        <h3 id="Federal-funds-rate-with-switching-intercept-and-lagged-dependent-variable">Federal funds rate with switching intercept and lagged dependent variable</h3>
+<p>The second example augments the previous model to include the lagged value of the federal funds rate.</p> $$r_t = \mu_{S_t} + r_{t-1} \beta_{S_t} + \varepsilon_t \qquad \varepsilon_t \sim N(0, \sigma^2)$$<p>where $S_t \in \{0, 1\}$, and the regime transitions according to</p> $$ P(S_t = s_t | S_{t-1} = s_{t-1}) = \begin{bmatrix} p_{00} &amp; p_{10} \\ 1 - p_{00} &amp; 1 - p_{10} \end{bmatrix} $$<p>We will estimate the parameters of this model by maximum likelihood: $p_{00}, p_{10}, \mu_0, \mu_1, \beta_0, \beta_1, \sigma^2$.</p>     <div class="input"> <div class="prompt input_prompt">In [6]:</div>   <pre data-language="python"># Fit the model
+mod_fedfunds2 = sm.tsa.MarkovRegression(
+    dta_fedfunds.iloc[1:], k_regimes=2, exog=dta_fedfunds.iloc[:-1])
+res_fedfunds2 = mod_fedfunds2.fit()
+</pre>   </div> <div class="output_wrapper"> <div class="output"> <div class="output_area">  <div class="output_subarea output_text output_error"> <pre>
+<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">NameError</span>                                 Traceback (most recent call last)
+<span class="ansi-green-fg">&lt;ipython-input-6-75fa1c90edac&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span><span class="ansi-blue-fg">()</span>
+<span class="ansi-green-intense-fg ansi-bold">      1</span> <span class="ansi-red-fg"># Fit the model</span>
+<span class="ansi-green-intense-fg ansi-bold">      2</span> mod_fedfunds2 = sm.tsa.MarkovRegression(
+<span class="ansi-green-fg">----&gt; 3</span><span class="ansi-red-fg">     dta_fedfunds.iloc[1:], k_regimes=2, exog=dta_fedfunds.iloc[:-1])
+</span><span class="ansi-green-intense-fg ansi-bold">      4</span> res_fedfunds2 <span class="ansi-blue-fg">=</span> mod_fedfunds2<span class="ansi-blue-fg">.</span>fit<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
+
+<span class="ansi-red-fg">NameError</span>: name 'dta_fedfunds' is not defined</pre> </div> </div> </div> </div>   <div class="input"> <div class="prompt input_prompt">In [7]:</div>   <pre data-language="python">res_fedfunds2.summary()
+</pre>   </div> <div class="output_wrapper"> <div class="output"> <div class="output_area">  <div class="output_subarea output_text output_error"> <pre>
+<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">NameError</span>                                 Traceback (most recent call last)
+<span class="ansi-green-fg">&lt;ipython-input-7-56e5fd580339&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span><span class="ansi-blue-fg">()</span>
+<span class="ansi-green-fg">----&gt; 1</span>res_fedfunds2<span class="ansi-blue-fg">.</span>summary<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
+
+<span class="ansi-red-fg">NameError</span>: name 'res_fedfunds2' is not defined</pre> </div> </div> </div> </div>      <p>There are several things to notice from the summary output:</p> <ol> <li>The information criteria have decreased substantially, indicating that this model has a better fit than the previous model.</li> <li>The interpretation of the regimes, in terms of the intercept, have switched. Now the first regime has the higher intercept and the second regime has a lower intercept.</li> </ol> <p>Examining the smoothed probabilities of the high regime state, we now see quite a bit more variability.</p>     <div class="input"> <div class="prompt input_prompt">In [8]:</div>   <pre data-language="python">res_fedfunds2.smoothed_marginal_probabilities[0].plot(
+    title='Probability of being in the high regime', figsize=(12,3));
+</pre>   </div> <div class="output_wrapper"> <div class="output"> <div class="output_area">  <div class="output_subarea output_text output_error"> <pre>
+<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">NameError</span>                                 Traceback (most recent call last)
+<span class="ansi-green-fg">&lt;ipython-input-8-79855d93d22a&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span><span class="ansi-blue-fg">()</span>
+<span class="ansi-green-fg">----&gt; 1</span><span class="ansi-red-fg"> res_fedfunds2.smoothed_marginal_probabilities[0].plot(
+</span><span class="ansi-green-intense-fg ansi-bold">      2</span>     title='Probability of being in the high regime', figsize=(12,3));
+
+<span class="ansi-red-fg">NameError</span>: name 'res_fedfunds2' is not defined</pre> </div> </div> </div> </div>      <p>Finally, the expected durations of each regime have decreased quite a bit.</p>     <div class="input"> <div class="prompt input_prompt">In [9]:</div>   <pre data-language="python">print(res_fedfunds2.expected_durations)
+</pre>   </div> <div class="output_wrapper"> <div class="output"> <div class="output_area">  <div class="output_subarea output_text output_error"> <pre>
+<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">NameError</span>                                 Traceback (most recent call last)
+<span class="ansi-green-fg">&lt;ipython-input-9-2e071d2f358f&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span><span class="ansi-blue-fg">()</span>
+<span class="ansi-green-fg">----&gt; 1</span>print<span class="ansi-blue-fg">(</span>res_fedfunds2<span class="ansi-blue-fg">.</span>expected_durations<span class="ansi-blue-fg">)</span>
+
+<span class="ansi-red-fg">NameError</span>: name 'res_fedfunds2' is not defined</pre> </div> </div> </div> </div>      <h3 id="Taylor-rule-with-2-or-3-regimes">Taylor rule with 2 or 3 regimes</h3>
+<p>We now include two additional exogenous variables - a measure of the output gap and a measure of inflation - to estimate a switching Taylor-type rule with both 2 and 3 regimes to see which fits the data better.</p> <p>Because the models can be often difficult to estimate, for the 3-regime model we employ a search over starting parameters to improve results, specifying 20 random search repetitions.</p>     <div class="input"> <div class="prompt input_prompt">In [10]:</div>   <pre data-language="python"># Get the additional data
+from statsmodels.tsa.regime_switching.tests.test_markov_regression import ogap, inf
+dta_ogap = pd.Series(ogap, index=pd.date_range('1954-07-01', '2010-10-01', freq='QS'))
+dta_inf = pd.Series(inf, index=pd.date_range('1954-07-01', '2010-10-01', freq='QS'))
+
+exog = pd.concat((dta_fedfunds.shift(), dta_ogap, dta_inf), axis=1).iloc[4:]
+
+# Fit the 2-regime model
+mod_fedfunds3 = sm.tsa.MarkovRegression(
+    dta_fedfunds.iloc[4:], k_regimes=2, exog=exog)
+res_fedfunds3 = mod_fedfunds3.fit()
+
+# Fit the 3-regime model
+np.random.seed(12345)
+mod_fedfunds4 = sm.tsa.MarkovRegression(
+    dta_fedfunds.iloc[4:], k_regimes=3, exog=exog)
+res_fedfunds4 = mod_fedfunds4.fit(search_reps=20)
+</pre>   </div> <div class="output_wrapper"> <div class="output"> <div class="output_area">  <div class="output_subarea output_text output_error"> <pre>
+<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">ModuleNotFoundError</span>                       Traceback (most recent call last)
+<span class="ansi-green-fg">&lt;ipython-input-10-aa182650bed3&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span><span class="ansi-blue-fg">()</span>
+<span class="ansi-green-intense-fg ansi-bold">      1</span> <span class="ansi-red-fg"># Get the additional data</span>
+<span class="ansi-green-fg">----&gt; 2</span><span class="ansi-green-fg">from</span> statsmodels<span class="ansi-blue-fg">.</span>tsa<span class="ansi-blue-fg">.</span>regime_switching<span class="ansi-blue-fg">.</span>tests<span class="ansi-blue-fg">.</span>test_markov_regression <span class="ansi-green-fg">import</span> ogap<span class="ansi-blue-fg">,</span> inf
+<span class="ansi-green-intense-fg ansi-bold">      3</span> dta_ogap <span class="ansi-blue-fg">=</span> pd<span class="ansi-blue-fg">.</span>Series<span class="ansi-blue-fg">(</span>ogap<span class="ansi-blue-fg">,</span> index<span class="ansi-blue-fg">=</span>pd<span class="ansi-blue-fg">.</span>date_range<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">'1954-07-01'</span><span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">'2010-10-01'</span><span class="ansi-blue-fg">,</span> freq<span class="ansi-blue-fg">=</span><span class="ansi-blue-fg">'QS'</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">      4</span> dta_inf <span class="ansi-blue-fg">=</span> pd<span class="ansi-blue-fg">.</span>Series<span class="ansi-blue-fg">(</span>inf<span class="ansi-blue-fg">,</span> index<span class="ansi-blue-fg">=</span>pd<span class="ansi-blue-fg">.</span>date_range<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">'1954-07-01'</span><span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">'2010-10-01'</span><span class="ansi-blue-fg">,</span> freq<span class="ansi-blue-fg">=</span><span class="ansi-blue-fg">'QS'</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">      5</span> 
+
+<span class="ansi-green-fg">/private/tmp/statsmodels/statsmodels/tsa/regime_switching/tests/test_markov_regression.py</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span><span class="ansi-blue-fg">()</span>
+<span class="ansi-green-intense-fg ansi-bold">     14</span>                                               markov_regression)
+<span class="ansi-green-intense-fg ansi-bold">     15</span> <span class="ansi-green-fg">from</span> numpy<span class="ansi-blue-fg">.</span>testing <span class="ansi-green-fg">import</span> assert_equal<span class="ansi-blue-fg">,</span> assert_allclose<span class="ansi-blue-fg">,</span> assert_raises
+<span class="ansi-green-fg">---&gt; 16</span><span class="ansi-green-fg">from</span> nose<span class="ansi-blue-fg">.</span>exc <span class="ansi-green-fg">import</span> SkipTest
+<span class="ansi-green-intense-fg ansi-bold">     17</span> 
+<span class="ansi-green-intense-fg ansi-bold">     18</span> 
+
+<span class="ansi-red-fg">ModuleNotFoundError</span>: No module named 'nose'</pre> </div> </div> </div> </div>   <div class="input"> <div class="prompt input_prompt">In [11]:</div>   <pre data-language="python">res_fedfunds3.summary()
+</pre>   </div> <div class="output_wrapper"> <div class="output"> <div class="output_area">  <div class="output_subarea output_text output_error"> <pre>
+<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">NameError</span>                                 Traceback (most recent call last)
+<span class="ansi-green-fg">&lt;ipython-input-11-22292529db1f&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span><span class="ansi-blue-fg">()</span>
+<span class="ansi-green-fg">----&gt; 1</span>res_fedfunds3<span class="ansi-blue-fg">.</span>summary<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
+
+<span class="ansi-red-fg">NameError</span>: name 'res_fedfunds3' is not defined</pre> </div> </div> </div> </div>   <div class="input"> <div class="prompt input_prompt">In [12]:</div>   <pre data-language="python">res_fedfunds4.summary()
+</pre>   </div> <div class="output_wrapper"> <div class="output"> <div class="output_area">  <div class="output_subarea output_text output_error"> <pre>
+<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">NameError</span>                                 Traceback (most recent call last)
+<span class="ansi-green-fg">&lt;ipython-input-12-7e0841129000&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span><span class="ansi-blue-fg">()</span>
+<span class="ansi-green-fg">----&gt; 1</span>res_fedfunds4<span class="ansi-blue-fg">.</span>summary<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
+
+<span class="ansi-red-fg">NameError</span>: name 'res_fedfunds4' is not defined</pre> </div> </div> </div> </div>      <p>Due to lower information criteria, we might prefer the 3-state model, with an interpretation of low-, medium-, and high-interest rate regimes. The smoothed probabilities of each regime are plotted below.</p>     <div class="input"> <div class="prompt input_prompt">In [13]:</div>   <pre data-language="python">fig, axes = plt.subplots(3, figsize=(10,7))
+
+ax = axes[0]
+ax.plot(res_fedfunds4.smoothed_marginal_probabilities[0])
+ax.set(title='Smoothed probability of a low-interest rate regime')
+
+ax = axes[1]
+ax.plot(res_fedfunds4.smoothed_marginal_probabilities[1])
+ax.set(title='Smoothed probability of a medium-interest rate regime')
+
+ax = axes[2]
+ax.plot(res_fedfunds4.smoothed_marginal_probabilities[2])
+ax.set(title='Smoothed probability of a high-interest rate regime')
+
+fig.tight_layout()
+</pre>   </div> <div class="output_wrapper"> <div class="output"> <div class="output_area">  <div class="output_subarea output_text output_error"> <pre>
+<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">NameError</span>                                 Traceback (most recent call last)
+<span class="ansi-green-fg">&lt;ipython-input-13-cb3e0847f7e1&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span><span class="ansi-blue-fg">()</span>
+<span class="ansi-green-intense-fg ansi-bold">      2</span> 
+<span class="ansi-green-intense-fg ansi-bold">      3</span> ax <span class="ansi-blue-fg">=</span> axes<span class="ansi-blue-fg">[</span><span class="ansi-cyan-fg">0</span><span class="ansi-blue-fg">]</span>
+<span class="ansi-green-fg">----&gt; 4</span>ax<span class="ansi-blue-fg">.</span>plot<span class="ansi-blue-fg">(</span>res_fedfunds4<span class="ansi-blue-fg">.</span>smoothed_marginal_probabilities<span class="ansi-blue-fg">[</span><span class="ansi-cyan-fg">0</span><span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">      5</span> ax<span class="ansi-blue-fg">.</span>set<span class="ansi-blue-fg">(</span>title<span class="ansi-blue-fg">=</span><span class="ansi-blue-fg">'Smoothed probability of a low-interest rate regime'</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">      6</span> 
+
+<span class="ansi-red-fg">NameError</span>: name 'res_fedfunds4' is not defined</pre> </div> </div> <div class="output_area">  <div class="output_png output_subarea "> <img src="data:image/png;base64,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%0A/qgAAAAASUVORK5CYII=%0A"> </div> </div> </div> </div>      <h3 id="Switching-variances">Switching variances</h3>
+<p>We can also accomodate switching variances. In particular, we consider the model</p> $$ y_t = \mu_{S_t} + y_{t-1} \beta_{S_t} + \varepsilon_t \quad \varepsilon_t \sim N(0, \sigma_{S_t}^2) $$<p>We use maximum likelihood to estimate the parameters of this model: $p_{00}, p_{10}, \mu_0, \mu_1, \beta_0, \beta_1, \sigma_0^2, \sigma_1^2$.</p> <p>The application is to absolute returns on stocks, where the data can be found at <a href="http://www.stata-press.com/data/r14/snp500" target="_blank">http://www.stata-press.com/data/r14/snp500</a>.</p>     <div class="input"> <div class="prompt input_prompt">In [14]:</div>   <pre data-language="python"># Get the federal funds rate data
+from statsmodels.tsa.regime_switching.tests.test_markov_regression import areturns
+dta_areturns = pd.Series(areturns, index=pd.date_range('2004-05-04', '2014-5-03', freq='W'))
+
+# Plot the data
+dta_areturns.plot(title='Absolute returns, S&amp;P500', figsize=(12,3))
+
+# Fit the model
+mod_areturns = sm.tsa.MarkovRegression(
+    dta_areturns.iloc[1:], k_regimes=2, exog=dta_areturns.iloc[:-1], switching_variance=True)
+res_areturns = mod_areturns.fit()
+</pre>   </div> <div class="output_wrapper"> <div class="output"> <div class="output_area">  <div class="output_subarea output_text output_error"> <pre>
+<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">ModuleNotFoundError</span>                       Traceback (most recent call last)
+<span class="ansi-green-fg">&lt;ipython-input-14-b0cbcb56e9a7&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span><span class="ansi-blue-fg">()</span>
+<span class="ansi-green-intense-fg ansi-bold">      1</span> <span class="ansi-red-fg"># Get the federal funds rate data</span>
+<span class="ansi-green-fg">----&gt; 2</span><span class="ansi-green-fg">from</span> statsmodels<span class="ansi-blue-fg">.</span>tsa<span class="ansi-blue-fg">.</span>regime_switching<span class="ansi-blue-fg">.</span>tests<span class="ansi-blue-fg">.</span>test_markov_regression <span class="ansi-green-fg">import</span> areturns
+<span class="ansi-green-intense-fg ansi-bold">      3</span> dta_areturns <span class="ansi-blue-fg">=</span> pd<span class="ansi-blue-fg">.</span>Series<span class="ansi-blue-fg">(</span>areturns<span class="ansi-blue-fg">,</span> index<span class="ansi-blue-fg">=</span>pd<span class="ansi-blue-fg">.</span>date_range<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">'2004-05-04'</span><span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">'2014-5-03'</span><span class="ansi-blue-fg">,</span> freq<span class="ansi-blue-fg">=</span><span class="ansi-blue-fg">'W'</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">      4</span> 
+<span class="ansi-green-intense-fg ansi-bold">      5</span> <span class="ansi-red-fg"># Plot the data</span>
+
+<span class="ansi-green-fg">/private/tmp/statsmodels/statsmodels/tsa/regime_switching/tests/test_markov_regression.py</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span><span class="ansi-blue-fg">()</span>
+<span class="ansi-green-intense-fg ansi-bold">     14</span>                                               markov_regression)
+<span class="ansi-green-intense-fg ansi-bold">     15</span> <span class="ansi-green-fg">from</span> numpy<span class="ansi-blue-fg">.</span>testing <span class="ansi-green-fg">import</span> assert_equal<span class="ansi-blue-fg">,</span> assert_allclose<span class="ansi-blue-fg">,</span> assert_raises
+<span class="ansi-green-fg">---&gt; 16</span><span class="ansi-green-fg">from</span> nose<span class="ansi-blue-fg">.</span>exc <span class="ansi-green-fg">import</span> SkipTest
+<span class="ansi-green-intense-fg ansi-bold">     17</span> 
+<span class="ansi-green-intense-fg ansi-bold">     18</span> 
+
+<span class="ansi-red-fg">ModuleNotFoundError</span>: No module named 'nose'</pre> </div> </div> </div> </div>   <div class="input"> <div class="prompt input_prompt">In [15]:</div>   <pre data-language="python">res_areturns.summary()
+</pre>   </div> <div class="output_wrapper"> <div class="output"> <div class="output_area">  <div class="output_subarea output_text output_error"> <pre>
+<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">NameError</span>                                 Traceback (most recent call last)
+<span class="ansi-green-fg">&lt;ipython-input-15-93076609f900&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span><span class="ansi-blue-fg">()</span>
+<span class="ansi-green-fg">----&gt; 1</span>res_areturns<span class="ansi-blue-fg">.</span>summary<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
+
+<span class="ansi-red-fg">NameError</span>: name 'res_areturns' is not defined</pre> </div> </div> </div> </div>      <p>The first regime is a low-variance regime and the second regime is a high-variance regime. Below we plot the probabilities of being in the low-variance regime. Between 2008 and 2012 there does not appear to be a clear indication of one regime guiding the economy.</p>     <div class="input"> <div class="prompt input_prompt">In [16]:</div>   <pre data-language="python">res_areturns.smoothed_marginal_probabilities[0].plot(
+    title='Probability of being in a low-variance regime', figsize=(12,3));
+</pre>   </div> <div class="output_wrapper"> <div class="output"> <div class="output_area">  <div class="output_subarea output_text output_error"> <pre>
+<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">NameError</span>                                 Traceback (most recent call last)
+<span class="ansi-green-fg">&lt;ipython-input-16-ae8db4266694&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span><span class="ansi-blue-fg">()</span>
+<span class="ansi-green-fg">----&gt; 1</span><span class="ansi-red-fg"> res_areturns.smoothed_marginal_probabilities[0].plot(
+</span><span class="ansi-green-intense-fg ansi-bold">      2</span>     title='Probability of being in a low-variance regime', figsize=(12,3));
+
+<span class="ansi-red-fg">NameError</span>: name 'res_areturns' is not defined</pre> </div> </div> </div> </div>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2009–2012 Statsmodels Developers<br>© 2006–2008 Scipy Developers<br>© 2006 Jonathan E. Taylor<br>Licensed under the 3-clause BSD License.<br>
+    <a href="http://www.statsmodels.org/stable/examples/notebooks/generated/markov_regression.html" class="_attribution-link" target="_blank">http://www.statsmodels.org/stable/examples/notebooks/generated/markov_regression.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

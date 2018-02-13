@@ -1,0 +1,87 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>SQLite Syntax&#58; Commit-stmt - SQLite - W3cubDocs</title>
+  
+  <meta name="description" content=" SQLite is in the Public Domain. https&#58;&#47;&#47;sqlite.org&#47;syntax&#47;commit-stmt.html ">
+  <meta name="keywords" content="commit-stmt, sqlite, syntax, -">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/sqlite/syntax/commit-stmt/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/sqlite.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/sqlite/" class="_nav-link" title="" style="margin-left:0;">SQLite</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _sqlite">
+				
+<h1>commit-stmt</h1> <div class="imgcontainer"> <img alt="syntax diagram commit-stmt" src="data:image/gif;base64,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"><br> Used by: <a href="../sql-stmt/">sql-stmt</a><br> See also: <a href="../../lang_transaction/">lang_transaction.html</a> </div>
+<div class="_attribution">
+  <p class="_attribution-p">
+    SQLite is in the Public Domain.<br>
+    <a href="https://sqlite.org/syntax/commit-stmt.html" class="_attribution-link" target="_blank">https://sqlite.org/syntax/commit-stmt.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

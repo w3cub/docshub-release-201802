@@ -1,0 +1,87 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>SQLite Syntax&#58; Attach-stmt - SQLite - W3cubDocs</title>
+  
+  <meta name="description" content=" SQLite is in the Public Domain. https&#58;&#47;&#47;sqlite.org&#47;syntax&#47;attach-stmt.html ">
+  <meta name="keywords" content="attach-stmt, sqlite, syntax, -">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/sqlite/syntax/attach-stmt/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/sqlite.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/sqlite/" class="_nav-link" title="" style="margin-left:0;">SQLite</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _sqlite">
+				
+<h1>attach-stmt</h1> <div class="imgcontainer"> <img alt="syntax diagram attach-stmt" src="data:image/gif;base64,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"><br> Used by: <a href="../sql-stmt/">sql-stmt</a><br> References: <a href="../expr/">expr</a><br> See also: <a href="../../lang_attach/">lang_attach.html</a> </div>
+<div class="_attribution">
+  <p class="_attribution-p">
+    SQLite is in the Public Domain.<br>
+    <a href="https://sqlite.org/syntax/attach-stmt.html" class="_attribution-link" target="_blank">https://sqlite.org/syntax/attach-stmt.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

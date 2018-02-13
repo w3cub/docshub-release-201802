@@ -1,0 +1,109 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>tsa.statespace.tools.companion_matrix() - Statsmodels - W3cubDocs</title>
+  
+  <meta name="description" content=" Create a companion matrix ">
+  <meta name="keywords" content="statsmodels, tsa, statespace, tools, companion, matrix, -">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/statsmodels/generated/statsmodels.tsa.statespace.tools.companion_matrix/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/statsmodels.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/statsmodels/" class="_nav-link" title="" style="margin-left:0;">Statsmodels</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _sphinx">
+				
+<h1 id="statsmodels-tsa-statespace-tools-companion-matrix">statsmodels.tsa.statespace.tools.companion_matrix</h1> <dl class="function"> <dt id="statsmodels.tsa.statespace.tools.companion_matrix">
+<code>statsmodels.tsa.statespace.tools.companion_matrix(polynomial)</code> <a class="reference internal" href="http://www.statsmodels.org/stable/_modules/statsmodels/tsa/statespace/tools.html#companion_matrix" target="_blank"><span class="viewcode-link">[source]</span></a>
+</dt> <dd>
+<p>Create a companion matrix</p> <table class="docutils field-list" frame="void" rules="none"> <col class="field-name"> <col class="field-body">  <tr class="field-odd field">
+<th class="field-name">Parameters:</th>
+<td class="field-body">
+<p class="first"><strong>polynomial</strong> : array_like or list</p>  <p>If an iterable, interpreted as the coefficients of the polynomial from which to form the companion matrix. Polynomial coefficients are in order of increasing degree, and may be either scalars (as in an AR(p) model) or coefficient matrices (as in a VAR(p) model). If an integer, it is interpereted as the size of a companion matrix of a scalar polynomial, where the polynomial coefficients are initialized to zeros. If a matrix polynomial is passed, <img class="math" src="http://www.statsmodels.org/stable/_images/math/e96061135084d3bf4eda8e165dee96b7572b3e81.png" alt="C_0" style="vertical-align: -3px"> may be set to the scalar value 1 to indicate an identity matrix (doing so will improve the speed of the companion matrix creation).</p>  </td> </tr> <tr class="field-even field">
+<th class="field-name">Returns:</th>
+<td class="field-body">
+<p class="first last"><strong>companion_matrix</strong> : array</p> </td> </tr>  </table> <h4 class="rubric">Notes</h4> <p>Given coefficients of a lag polynomial of the form:</p> <div class="math"> <p><img src="http://www.statsmodels.org/stable/_images/math/c69b99d5b8e3362c70f35399b15b8133a24617f6.png" alt="c(L) = c_0 + c_1 L + \dots + c_p L^p"></p> </div>
+<p>returns a matrix of the form</p> <div class="math"> <p><img src="http://www.statsmodels.org/stable/_images/math/44df0297e056a97b476139385ee143906b12e239.png" alt="\begin{bmatrix}
+    \phi_1 &amp; 1      &amp; 0 &amp; \cdots &amp; 0 \\
+    \phi_2 &amp; 0      &amp; 1 &amp;        &amp; 0 \\
+    \vdots &amp;        &amp;   &amp; \ddots &amp; 0 \\
+           &amp;        &amp;   &amp;        &amp; 1 \\
+    \phi_n &amp; 0      &amp; 0 &amp; \cdots &amp; 0 \\
+\end{bmatrix}"></p> </div>
+<p>where some or all of the <img class="math" src="http://www.statsmodels.org/stable/_images/math/f1efa017162fce0fd957a3aec78f059ef70a2bbc.png" alt="\phi_i" style="vertical-align: -4px"> may be non-zero (if <code>polynomial</code> is None, then all are equal to zero).</p> <p>If the coefficients provided are scalars <img class="math" src="http://www.statsmodels.org/stable/_images/math/d297a1392f6aad3c612dc4d852b7f28b027ac1a2.png" alt="(c_0, c_1, \dots, c_p)" style="vertical-align: -6px">, then the companion matrix is an <img class="math" src="http://www.statsmodels.org/stable/_images/math/1b3f6a6e3b9a49ba77e2aaaf8515fa39c60f5bbc.png" alt="n \times n" style="vertical-align: 0px"> matrix formed with the elements in the first column defined as <img class="math" src="http://www.statsmodels.org/stable/_images/math/a9bfc90927c5392e819f978563059939c906dd8f.png" alt="\phi_i = -\frac{c_i}{c_0}, i \in 1, \dots, p" style="vertical-align: -8px">.</p> <p>If the coefficients provided are matrices <img class="math" src="http://www.statsmodels.org/stable/_images/math/ef5176badf82e62e065942d68b72dc3bab3fc799.png" alt="(C_0, C_1, \dots, C_p)" style="vertical-align: -6px">, each of shape <img class="math" src="http://www.statsmodels.org/stable/_images/math/89f446232955b8559d727c272ec94b88571ded51.png" alt="(m, m)" style="vertical-align: -4px">, then the companion matrix is an <img class="math" src="http://www.statsmodels.org/stable/_images/math/e8d2262e54a73560e49224fc92c614a6676748a0.png" alt="nm \times nm" style="vertical-align: 0px"> matrix formed with the elements in the first column defined as <img class="math" src="http://www.statsmodels.org/stable/_images/math/f89618c4327122e6d6496531f864ab47dfaefa4c.png" alt="\phi_i = -C_0^{-1} C_i', i \in 1, \dots, p" style="vertical-align: -5px">.</p> <p>It is important to understand the expected signs of the coefficients. A typical AR(p) model is written as:</p> <div class="math"> <p><img src="http://www.statsmodels.org/stable/_images/math/ba42dc59db82453a74155de71aee311bd37fa52c.png" alt="y_t = a_1 y_{t-1} + \dots + a_p y_{t-p} + \varepsilon_t"></p> </div>
+<p>This can be rewritten as:</p> <div class="math"> <p><img src="http://www.statsmodels.org/stable/_images/math/4491b6ebab30bac1bee2fe573e54838a9af10fac.png" alt="(1 - a_1 L - \dots - a_p L^p )y_t = \varepsilon_t \\
+(1 + c_1 L + \dots + c_p L^p )y_t = \varepsilon_t \\
+c(L) y_t = \varepsilon_t"></p> </div>
+<p>The coefficients from this form are defined to be <img class="math" src="http://www.statsmodels.org/stable/_images/math/d76724ac11980e9f417bc8970d348dd53103604f.png" alt="c_i = - a_i" style="vertical-align: -3px">, and it is the <img class="math" src="http://www.statsmodels.org/stable/_images/math/a89ec4ec5ea68824cae8544bc968018fd330ea6d.png" alt="c_i" style="vertical-align: -3px"> coefficients that this function expects to be provided.</p> </dd>
+</dl>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2009–2012 Statsmodels Developers<br>© 2006–2008 Scipy Developers<br>© 2006 Jonathan E. Taylor<br>Licensed under the 3-clause BSD License.<br>
+    <a href="http://www.statsmodels.org/stable/generated/statsmodels.tsa.statespace.tools.companion_matrix.html" class="_attribution-link" target="_blank">http://www.statsmodels.org/stable/generated/statsmodels.tsa.statespace.tools.companion_matrix.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

@@ -1,0 +1,244 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Example&#58; VARMAX Models - Statsmodels - W3cubDocs</title>
+  
+  <meta name="description" content="This is a brief introduction notebook to VARMAX models in Statsmodels. The VARMAX model is generically specified as&#58; &#36;&#36; y_t &#61; &#92; &hellip;">
+  <meta name="keywords" content="varmax, models, example, -, statsmodels">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/statsmodels/examples/notebooks/generated/statespace_varmax/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/statsmodels.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/statsmodels/" class="_nav-link" title="" style="margin-left:0;">Statsmodels</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _sphinx">
+				
+<h1 id="VARMAX-models">VARMAX models</h1>
+<p>This is a brief introduction notebook to VARMAX models in Statsmodels. The VARMAX model is generically specified as: $$ y_t = \nu + A_1 y_{t-1} + \dots + A_p y_{t-p} + B x_t + \epsilon_t + M_1 \epsilon_{t-1} + \dots M_q \epsilon_{t-q} $$</p> <p>where $y_t$ is a $\text{k_endog} \times 1$ vector.</p>     <div class="input"> <div class="prompt input_prompt">In [1]:</div>   <pre data-language="python">%matplotlib inline
+</pre>   </div>   <div class="input"> <div class="prompt input_prompt">In [2]:</div>   <pre data-language="python">import numpy as np
+import pandas as pd
+import statsmodels.api as sm
+import matplotlib.pyplot as plt
+</pre>   </div>   <div class="input"> <div class="prompt input_prompt">In [3]:</div>   <pre data-language="python">dta = sm.datasets.webuse('lutkepohl2', 'http://www.stata-press.com/data/r12/')
+dta.index = dta.qtr
+endog = dta.ix['1960-04-01':'1978-10-01', ['dln_inv', 'dln_inc', 'dln_consump']]
+</pre>   </div>      <h2 id="Model-specification">Model specification</h2>
+<p>The <code>VARMAX</code> class in Statsmodels allows estimation of VAR, VMA, and VARMA models (through the <code>order</code> argument), optionally with a constant term (via the <code>trend</code> argument). Exogenous regressors may also be included (as usual in Statsmodels, by the <code>exog</code> argument), and in this way a time trend may be added. Finally, the class allows measurement error (via the <code>measurement_error</code> argument) and allows specifying either a diagonal or unstructured innovation covariance matrix (via the <code>error_cov_type</code> argument).</p>        <h2 id="Example-1:-VAR">Example 1: VAR</h2>
+<p>Below is a simple VARX(2) model in two endogenous variables and an exogenous series, but no constant term. Notice that we needed to allow for more iterations than the default (which is <code>maxiter=50</code>) in order for the likelihood estimation to converge. This is not unusual in VAR models which have to estimate a large number of parameters, often on a relatively small number of time series: this model, for example, estimates 27 parameters off of 75 observations of 3 variables.</p>     <div class="input"> <div class="prompt input_prompt">In [4]:</div>   <pre data-language="python">exog = endog['dln_consump']
+mod = sm.tsa.VARMAX(endog[['dln_inv', 'dln_inc']], order=(2,0), trend='nc', exog=exog)
+res = mod.fit(maxiter=1000, disp=False)
+print(res.summary())
+</pre>   </div> <div class="output_wrapper"> <div class="output"> <div class="output_area">  <div class="output_subarea output_stream output_stdout output_text"> <pre>                             Statespace Model Results                             
+==================================================================================
+Dep. Variable:     ['dln_inv', 'dln_inc']   No. Observations:                   75
+Model:                            VARX(2)   Log Likelihood                 348.269
+Date:                    Tue, 28 Feb 2017   AIC                           -670.537
+Time:                            21:35:16   BIC                           -640.410
+Sample:                        04-01-1960   HQIC                          -658.508
+                             - 10-01-1978                                         
+Covariance Type:                      opg                                         
+===================================================================================
+Ljung-Box (Q):                59.41, 42.46   Jarque-Bera (JB):         16.41, 13.03
+Prob(Q):                        0.02, 0.37   Prob(JB):                   0.00, 0.00
+Heteroskedasticity (H):         0.46, 1.03   Skew:                      0.05, -0.64
+Prob(H) (two-sided):            0.06, 0.95   Kurtosis:                   5.29, 4.59
+                            Results for equation dln_inv                            
+====================================================================================
+                       coef    std err          z      P&gt;|z|      [0.025      0.975]
+------------------------------------------------------------------------------------
+L1.dln_inv          -0.2773      0.088     -3.149      0.002      -0.450      -0.105
+L1.dln_inc           0.3374      0.620      0.544      0.586      -0.877       1.552
+L2.dln_inv          -0.1160      0.157     -0.740      0.459      -0.423       0.191
+L2.dln_inc           0.3971      0.387      1.025      0.305      -0.362       1.156
+beta.dln_consump     0.5448      0.752      0.724      0.469      -0.929       2.019
+                            Results for equation dln_inc                            
+====================================================================================
+                       coef    std err          z      P&gt;|z|      [0.025      0.975]
+------------------------------------------------------------------------------------
+L1.dln_inv           0.0335      0.042      0.794      0.427      -0.049       0.116
+L1.dln_inc           0.0962      0.133      0.726      0.468      -0.164       0.356
+L2.dln_inv           0.0516      0.051      1.017      0.309      -0.048       0.151
+L2.dln_inc           0.2734      0.169      1.622      0.105      -0.057       0.604
+beta.dln_consump     0.4818      0.198      2.427      0.015       0.093       0.871
+                                  Error covariance matrix                                   
+============================================================================================
+                               coef    std err          z      P&gt;|z|      [0.025      0.975]
+--------------------------------------------------------------------------------------------
+sqrt.var.dln_inv             0.0441      0.003     14.164      0.000       0.038       0.050
+sqrt.cov.dln_inv.dln_inc     0.0013      0.002      0.549      0.583      -0.003       0.006
+sqrt.var.dln_inc            -0.0127      0.001    -12.420      0.000      -0.015      -0.011
+============================================================================================
+
+Warnings:
+[1] Covariance matrix calculated using the outer product of gradients (complex-step).
+</pre> </div> </div> </div> </div>      <p>From the estimated VAR model, we can plot the impulse response functions of the endogenous variables.</p>     <div class="input"> <div class="prompt input_prompt">In [5]:</div>   <pre data-language="python">ax = res.impulse_responses(10, orthogonalized=True).plot(figsize=(13,3))
+ax.set(xlabel='t', title='Responses to a shock to `dln_inv`');
+</pre>   </div> <div class="output_wrapper"> <div class="output"> <div class="output_area">  <div class="output_png output_subarea "> <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAw8AAADgCAYAAABFJlocAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz%0AAAALEgAACxIB0t1+/AAAIABJREFUeJzt3Xl8XXWd//HX595sTbrRpHuapitQKEsbWllkV4pCC4IW%0AcIGKgkrBGceZwdlAZ5zBmf7GGdkUwYKOZZFRKDqIQgsWl5a0VAQKNt3TfU+3JL25n98f56S9SZPm%0AprnpyU3fz8fjPu453/M93/O5J5dyPuf7/Z5r7o6IiIiIiEhbYlEHICIiIiIi2UHJg4iIiIiIpEXJ%0Ag4iIiIiIpEXJg4iIiIiIpEXJg4iIiIiIpEXJg4iIiIiIpEXJg4iISAvM7AozuzLqODrCzG43s1Oj%0AjkNEug8lDyIi0inM7FUz+1yG27zFzF7PZJtHsRT4tpkNa09MZuZmNrojBzazvWY2siNthN4HZptZ%0APANtiYgoeRCR7Gdmq83sQHjBtcnMHjeznlHHFZXjfIHdZZnZvWb2P8e6v7tvBm4DHspcVGkfu6e7%0Ar8xAO68Cc4G/7nBQIiIoeRCR7uNqd+8JnAWcDXwt4nikG3D337j71VHH0RHu/q/ufl/UcYhI96Dk%0AQUS6FXffBLxEkEQAYGb5ZjbLzNaa2WYz+66Z9Qi3lZjZz81sl5ntMLMFZhYLt602s6+Z2btmttPM%0AZptZQUq7nzezqnC/uWY2JGWbm9kXzGx52PaDZmbhttFm9pqZ7TazbWb2dMp+p5jZr8M23zezT6Rs%0A+0gYyx4zW29mX23++cPx7d8Fzg17YnaF5X3M7IdmttXM1pjZPzR+zhbamGRmvw/j3mhmD5hZXit1%0AC8zsf8xse1j/DTMbmFJluJn9Noz5V2ZWkrLvVDN7J9zv1dSx+WY2zMx+Gsa73cweaOX4/2Fmr5tZ%0An2blU4C/A6aH5+GPYfmQ8G+1I/zbfb6ldo/GzIrDNmrMbBEw6ih1Hw//9r8Iz8FCM2u1fsp+h4Y+%0AHa0NM3vYzGY12/d5M/tKez+XiEg6lDyISLdiZqXAlUBVSvF9wFiChGI0MBT4p3DbXwHVQH9gIMEF%0Ap6fs+0ngCoILxLHAP4THuRT4N+ATwGBgDfBUs3CuAs4BzgjrXRGW/zPwK+AkoBS4P2yzCPg1MAcY%0AANwAPGRm48L9HgNud/dewOnAvOaf392XAV8Afh8Ofekbbrof6AOMBC4CPgPMOOIEBhqAvwRKgHOB%0Ay4AvtVL35rDdYUBxeOwDKdtvCo8zAMgDvhp+1rHAk8BfEJz7/wNeMLM8C8bn/5zgnJYT/L2anFsz%0Ai5nZ9wnO7YfdfXez8/BL4F+Bp8PzcGa46SmCv/cQ4HrgX8O/ZXs8CNQS/N0/G76O5gbg6wR/7yrg%0Am+083tHaeJIgQWpMTE8CPsyR30URkYxQ8iAi3cVzZrYHWAdsAe4BCC+qbgP+0t13uPsegovKG8L9%0ADhJcBA5394PuvsDdU5OHB9x9nbvvILhguzEs/yTwA3df4u51BMOkzjWz8pR973P3Xe6+FpjP4d6Q%0Ag8BwYIi717p74/yEq4DV7j7b3RPu/ibwv8DHU/YbZ2a93X2nuy9J58SEF+M3AF9z9z3uvhr4f8Cn%0AW6rv7ovd/Q9hDKuB7xEkHC05SJA0jHb3hnDfmpTts939z+5+AHgm5RxMB37h7r9294PALKAHcB4w%0AieDi/q/dfV+zcwSQS3DR3I9guNr+NM/DMOB84G/DNpcCjxIkUmkJz+V1wD+Fsb0NPNHGbj9z90Xu%0AngB+TEqvWDu01sYCgmT3g+H69QSJ44ZjOIaISJuUPIhId3FNeEf+YuAUgrvmENzVLgQWh8NjdgG/%0ADMsB/oPgTu6vzGylmd3drN11KctrCC5qCd/XNG5w973AdoK75I02pSzvBxoncf8NYMCicNhO453r%0A4cDkxjjDWD8JDAq3Xwd8BFgTDns6t62TEiohuOBek1K2plmsh5jZWAuGcm0ysxqCZKukpbrAjwiG%0AiT1lZhvM7N/NLDdle2vnoPn5SxKc66EEvRhrwgvllowGpgFfd/f6Vuq0ZAjQmEA2avU8tKI/kMOR%0A34ujae0ctEeLbYSJ7lMcTmpvIkguREQ6hZIHEelW3P014HGCO9kA2wiG0Zzm7n3DV59wcjXhnfi/%0AcveRwFTgK2Z2WUqTqY/pLAMa7+huILjYBw4NOSoG1qcR4yZ3/7y7DwFuJxiaNJrggvS1lDj7hkNu%0Avhju94a7TyMYAvQcwZ38Fg/RbH0bh3s7Uj9La7E+DLwHjHH33gRDuayVz3LQ3b/u7uMIeg2uIr07%0A+c3PnxGc6/UE56HMzHJa2XcZwVCoF83s5KMco/l52AD0M7NeKWVHOw8t2QokOPJ7EaUngevNbDgw%0AmaC3SkSkUyh5EJHu6L+AD5nZmeEd7e8TPK9/AICZDTWzK8LlqyyYwGzAboLx/smUtu4ws1Iz6wf8%0APdA4uflJYIaZnWVm+QR35xeGw3yOysw+Hs7NANhJcJGbJBjnP9bMPm1mueHrHDM7NZwL8Ekz6xMO%0A86lpFmeqzUBp4yRnd28gSDS+aWa9wovMrwCtPca0V9j+XjM7BfjiUT7LJWY2PhzOU0OQpLQWV6pn%0AgI+a2WVhT8VfAXXA74BFwEbgPjMrsmBS9vmpO7v7kwRJzctHmYC8GSi3cGK4u68L2/+3sM0zgFtp%0A/TwcITyXPwXuNbPCcD7Kzenu3xnC4W3bCIZgveTuu6KMR0S6NyUPItLtuPtW4IccnhT9twRDk/4Q%0ADsN5GWi8Yz0mXN8L/B54yN3npzQ3h2By80pgBfAv4TFeBv6R4C7vRoIJ1TeQnnOAhWa2l+AZ/F92%0A95XhcJoPh+1sIBiq8i0gP9zv08Dq8DN8gWBIU0vmAe8Am8xsW1h2J7Av/Byvh5/rB63s/1WC4S97%0ACBKvp1upB8GQqmcJEodlwGsEQ5mOyt3fBz5FMJF7G3A1wfyF+vAC/WqC4UlrCSY4T2+hjSeAbwDz%0Ams01afST8H27mTXOD7mRYBL2BuBnwD3h37I9ZhIMG9pE0Ms1u537d4Y5wOXhu4hIp7Gm8wJFRKSR%0Ama0GPncMF5ciIiLdknoeREREREQkLa1NRhMREZFOYmYfBF5saVvjZH4Rka5Iw5ZERERERCQtGrYk%0AIiIiIiJpycphSyUlJV5eXh51GCIiIiIiWWvx4sXb3L1/2zUPy8rkoby8nMrKyqjDEBERERHJWma2%0Apr37aNiSiIiIiIikRcmDiIiIiIikRcmDiIiIiIikJSvnPIiIiIiIpDp48CDV1dXU1tZGHUqXU1BQ%0AQGlpKbm5uR1uKyuTh/31DVGHICIiIiJdSHV1Nb169aK8vBwzizqcLsPd2b59O9XV1YwYMaLD7WXl%0AsKUtNcooRUREROSw2tpaiouLlTg0Y2YUFxdnrEcmK5OHPXUJ/rhuV9RhiIiIiEgXosShZZk8L1mZ%0APMTNuH9eVdRhiIiIiIicULIyeSjpmc/LyzbzzobdUYciIiIiInLCyMrkobhnHr3yc3hAvQ8iIiIi%0A0kXde++9zJo1i1tuuYVnn3223fvPnTuX++67rxMiO3ZZ+bSleMz41Pnl3D+vij9v3sPYgb2iDklE%0AREREuoivv/AO726oyWib44b05p6rT8tom22ZOnUqU6dOPa7HbEtW9jwAfPb8ERTlxdX7ICIiIiJd%0Axje/+U3Gjh3LBRdcwPvvv3/E9vLycu655x4mTJjA+PHjee+991pt6/HHH2fmzJkA3HLLLdx1112c%0Ad955jBw58lBPxg033MAvfvGLQ/scay9HurKy5wHgpKI8PnXucL7/m5V8+fIxjOrfM+qQRERERKQL%0AON49BI0WL17MU089xdKlS0kkEkyYMIGJEyceUa+kpIQlS5bw0EMPMWvWLB599NG02t+4cSOvv/46%0A7733HlOnTuX6669n+vTpPPPMM3z0ox+lvr6eV155hYcffjjTH+2QjPQ8mNkUM3vfzKrM7O4Wtueb%0A2dPh9oVmVt5se5mZ7TWzr7bnuJ//4EjycmI8OF+9DyIiIiISrQULFnDttddSWFhI7969Wx1y9LGP%0AfQyAiRMnsnr16rTbv+aaa4jFYowbN47NmzcDcOWVVzJ//nzq6up48cUXufDCC+nRo0eHP0trOpw8%0AmFkceBC4EhgH3Ghm45pVuxXY6e6jgW8D32q2/T+BF9t77JKe+Xxy8nCeX7qBtdv3tz94EREREZHj%0ALD8/H4B4PE4ikWj3fhD8cjRAQUEBF198MS+99BJPP/0006dPz2ywzWSi52ESUOXuK929HngKmNas%0AzjTgiXD5WeAyC3+twsyuAVYB7xzLwW+/cCTxmPHQq+p9EBEREZHoXHjhhTz33HMcOHCAPXv28MIL%0ALxyX406fPp3Zs2ezYMECpkyZ0qnHykTyMBRYl7JeHZa1WMfdE8BuoNjMegJ/C3y9rYOY2W1mVmlm%0AlVu3bj1UPqB3ATecM4z/XVJN9U71PoiIiIhINCZMmMD06dM588wzufLKKznnnHOOy3E//OEP89pr%0Ar3H55ZeTl5fXqceyxi6PY27A7Hpgirt/Llz/NDDZ3Wem1Hk7rFMdrq8AJgN3A4vc/RkzuxfY6+6z%0A2jpmRUWFV1ZWHlrfsOsAF/3HfKafM4x/uWZ8hz6PiIiIiGSfZcuWceqpp0YdRpfV0vkxs8XuXtGe%0AdjLR87AeGJayXhqWtVjHzHKAPsB2ggTi381sNfAXwN+Z2UzaaUjfHlw/cRjPvFHNpt217f8EIiIi%0AIiLSpkwkD28AY8xshJnlATcAc5vVmQvcHC5fD8zzwAfdvdzdy4H/Av7V3R84liC+dPEoGtz53m9W%0AHNunEBERERGJwOzZsznrrLOavO64446ow2pRh3/nwd0TYW/BS0Ac+IG7v2Nm3wAq3X0u8BjwIzOr%0AAnYQJBgZNaxfIdeePZQ5C9fyxYtHMaBXQaYPISIiIiKScTNmzGDGjBlRh5GWjPxInLv/H/B/zcr+%0AKWW5Fvh4G23c29E47rhkND9dUs2jC1bxdx/RmDcRERERkUzKyI/EdRUjSoqYeuYQ/ucPa9ixrz7q%0AcEREREREupVulTwAzLx0NAcONvDY6yujDkVEREREpFvpdsnD6AG9+Mjpg3nid2vYtV+9DyIiIiIi%0AmdLtkgcIeh/21iWY/dvVUYciIiIiIieoe++9l1mzZnHLLbfw7LPPtnv/uXPnct9993VCZMcuIxOm%0Au5pTB/fmw+MGMvu3q/jcB0fQqyA36pBERERE5Hh58W7Y9KfMtjloPFx5fC/kp06dytSpU4/rMdvS%0ALXseAO68dAw1tQl++Ps1UYciIiIiIieIb37zm4wdO5YLLriA999//4jt5eXl3HPPPUyYMIHx48fz%0A3nvvtdrW448/zsyZwe8n33LLLdx1112cd955jBw5sklPxre+9S3Gjx/PmWeeyd133535D5WiW/Y8%0AAIwv7cMlJ/fn0QUrueW8coryu+1HFREREZFUx7mHoNHixYt56qmnWLp0KYlEggkTJjBx4sQj6pWU%0AlLBkyRIeeughZs2axaOPPppW+xs3buT111/nvffeY+rUqVx//fW8+OKLPP/88yxcuJDCwkJ27NiR%0A6Y/VRLfteQC487Ix7Nx/kP/5g3ofRERERKRzLViwgGuvvZbCwkJ69+7d6pCjj33sYwBMnDiR1atX%0Ap93+NddcQywWY9y4cWzevBmAl19+mRkzZlBYWAhAv379OvYh2tCtk4cJZSfxwTElfH/BSg7UN0Qd%0AjoiIiIgI+fn5AMTjcRKJRLv3A3D3jMeVjm6dPEAw92Hb3nqeXLQ26lBEREREpBu78MILee655zhw%0A4AB79uzhhRde6PRjfuhDH2L27Nns378fQMOWOmrSiH5MHtGP7762gtqD6n0QERERkc4xYcIEpk+f%0AzplnnsmVV17JOeec0+nHnDJlClOnTqWiooKzzjqLWbNmderxLKouj46oqKjwysrKtOv/rmobNz26%0AkH+edhqfPre88wITERERkUgsW7aMU089NeowuqyWzo+ZLXb3iva00+17HgDOHVXMxOEn8fCrK6hP%0AJKMOR0REREQkK50QyYOZceelo9mwu5afLqmOOhwRERERkUNmz57NWWed1eR1xx13RB1Wi06YHz+4%0A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%0ARK5CYII=%0A"> </div> </div> </div> </div>      <h2 id="Example-2:-VMA">Example 2: VMA</h2>
+<p>A vector moving average model can also be formulated. Below we show a VMA(2) on the same data, but where the innovations to the process are uncorrelated. In this example we leave out the exogenous regressor but now include the constant term.</p>     <div class="input"> <div class="prompt input_prompt">In [6]:</div>   <pre data-language="python">mod = sm.tsa.VARMAX(endog[['dln_inv', 'dln_inc']], order=(0,2), error_cov_type='diagonal')
+res = mod.fit(maxiter=1000, disp=False)
+print(res.summary())
+</pre>   </div> <div class="output_wrapper"> <div class="output"> <div class="output_area">  <div class="output_subarea output_stream output_stdout output_text"> <pre>                             Statespace Model Results                             
+==================================================================================
+Dep. Variable:     ['dln_inv', 'dln_inc']   No. Observations:                   75
+Model:                             VMA(2)   Log Likelihood                 353.887
+                              + intercept   AIC                           -683.775
+Date:                    Tue, 28 Feb 2017   BIC                           -655.965
+Time:                            21:35:20   HQIC                          -672.670
+Sample:                        04-01-1960                                         
+                             - 10-01-1978                                         
+Covariance Type:                      opg                                         
+===================================================================================
+Ljung-Box (Q):                68.49, 39.14   Jarque-Bera (JB):         12.79, 13.08
+Prob(Q):                        0.00, 0.51   Prob(JB):                   0.00, 0.00
+Heteroskedasticity (H):         0.44, 0.81   Skew:                      0.06, -0.48
+Prob(H) (two-sided):            0.04, 0.60   Kurtosis:                   5.02, 4.81
+                           Results for equation dln_inv                          
+=================================================================================
+                    coef    std err          z      P&gt;|z|      [0.025      0.975]
+---------------------------------------------------------------------------------
+const             0.0182      0.005      3.800      0.000       0.009       0.028
+L1.e(dln_inv)    -0.2572      0.106     -2.430      0.015      -0.465      -0.050
+L1.e(dln_inc)     0.5135      0.633      0.812      0.417      -0.726       1.753
+L2.e(dln_inv)     0.0295      0.149      0.198      0.843      -0.263       0.322
+L2.e(dln_inc)     0.1819      0.475      0.383      0.702      -0.749       1.113
+                           Results for equation dln_inc                          
+=================================================================================
+                    coef    std err          z      P&gt;|z|      [0.025      0.975]
+---------------------------------------------------------------------------------
+const             0.0207      0.002     13.087      0.000       0.018       0.024
+L1.e(dln_inv)     0.0487      0.042      1.173      0.241      -0.033       0.130
+L1.e(dln_inc)    -0.0789      0.139     -0.568      0.570      -0.351       0.193
+L2.e(dln_inv)     0.0176      0.042      0.415      0.678      -0.066       0.101
+L2.e(dln_inc)     0.1290      0.153      0.844      0.399      -0.170       0.428
+                             Error covariance matrix                              
+==================================================================================
+                     coef    std err          z      P&gt;|z|      [0.025      0.975]
+----------------------------------------------------------------------------------
+sigma2.dln_inv     0.0020      0.000      7.351      0.000       0.001       0.003
+sigma2.dln_inc     0.0001   2.33e-05      5.822      0.000       9e-05       0.000
+==================================================================================
+
+Warnings:
+[1] Covariance matrix calculated using the outer product of gradients (complex-step).
+</pre> </div> </div> </div> </div>      <h2 id="Caution:-VARMA(p,q)-specifications">Caution: VARMA(p,q) specifications</h2>
+<p>Although the model allows estimating VARMA(p,q) specifications, these models are not identified without additional restrictions on the representation matrices, which are not built-in. For this reason, it is recommended that the user proceed with error (and indeed a warning is issued when these models are specified). Nonetheless, they may in some circumstances provide useful information.</p>     <div class="input"> <div class="prompt input_prompt">In [7]:</div>   <pre data-language="python">mod = sm.tsa.VARMAX(endog[['dln_inv', 'dln_inc']], order=(1,1))
+res = mod.fit(maxiter=1000, disp=False)
+print(res.summary())
+</pre>   </div> <div class="output_wrapper"> <div class="output"> <div class="output_area">  <div class="output_subarea output_stream output_stderr output_text"> <pre>/private/tmp/statsmodels/statsmodels/tsa/statespace/varmax.py:153: EstimationWarning: Estimation of VARMA(p,q) models is not generically robust, due especially to identification issues.
+  EstimationWarning)
+</pre> </div> </div> <div class="output_area">  <div class="output_subarea output_stream output_stdout output_text"> <pre>                             Statespace Model Results                             
+==================================================================================
+Dep. Variable:     ['dln_inv', 'dln_inc']   No. Observations:                   75
+Model:                         VARMA(1,1)   Log Likelihood                 354.291
+                              + intercept   AIC                           -682.583
+Date:                    Tue, 28 Feb 2017   BIC                           -652.455
+Time:                            21:35:24   HQIC                          -670.553
+Sample:                        04-01-1960                                         
+                             - 10-01-1978                                         
+Covariance Type:                      opg                                         
+===================================================================================
+Ljung-Box (Q):                69.15, 40.99   Jarque-Bera (JB):         11.03, 18.14
+Prob(Q):                        0.00, 0.43   Prob(JB):                   0.00, 0.00
+Heteroskedasticity (H):         0.45, 0.78   Skew:                      0.01, -0.52
+Prob(H) (two-sided):            0.05, 0.54   Kurtosis:                   4.88, 5.17
+                           Results for equation dln_inv                          
+=================================================================================
+                    coef    std err          z      P&gt;|z|      [0.025      0.975]
+---------------------------------------------------------------------------------
+const             0.0103      0.064      0.161      0.872      -0.115       0.135
+L1.dln_inv       -0.0059      0.685     -0.009      0.993      -1.349       1.337
+L1.dln_inc        0.3915      2.708      0.145      0.885      -4.916       5.699
+L1.e(dln_inv)    -0.2446      0.696     -0.352      0.725      -1.608       1.119
+L1.e(dln_inc)     0.1210      2.963      0.041      0.967      -5.686       5.928
+                           Results for equation dln_inc                          
+=================================================================================
+                    coef    std err          z      P&gt;|z|      [0.025      0.975]
+---------------------------------------------------------------------------------
+const             0.0164      0.026      0.619      0.536      -0.036       0.068
+L1.dln_inv       -0.0318      0.273     -0.116      0.907      -0.568       0.504
+L1.dln_inc        0.2372      1.079      0.220      0.826      -1.878       2.352
+L1.e(dln_inv)     0.0872      0.280      0.312      0.755      -0.461       0.636
+L1.e(dln_inc)    -0.2367      1.115     -0.212      0.832      -2.422       1.949
+                                  Error covariance matrix                                   
+============================================================================================
+                               coef    std err          z      P&gt;|z|      [0.025      0.975]
+--------------------------------------------------------------------------------------------
+sqrt.var.dln_inv             0.0449      0.003     14.510      0.000       0.039       0.051
+sqrt.cov.dln_inv.dln_inc     0.0017      0.003      0.654      0.513      -0.003       0.007
+sqrt.var.dln_inc             0.0116      0.001     11.775      0.000       0.010       0.013
+============================================================================================
+
+Warnings:
+[1] Covariance matrix calculated using the outer product of gradients (complex-step).
+</pre> </div> </div> </div> </div>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2009–2012 Statsmodels Developers<br>© 2006–2008 Scipy Developers<br>© 2006 Jonathan E. Taylor<br>Licensed under the 3-clause BSD License.<br>
+    <a href="http://www.statsmodels.org/stable/examples/notebooks/generated/statespace_varmax.html" class="_attribution-link" target="_blank">http://www.statsmodels.org/stable/examples/notebooks/generated/statespace_varmax.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

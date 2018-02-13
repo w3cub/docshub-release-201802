@@ -1,0 +1,87 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>SQLite Syntax&#58; Join-constraint - SQLite - W3cubDocs</title>
+  
+  <meta name="description" content=" SQLite is in the Public Domain. https&#58;&#47;&#47;sqlite.org&#47;syntax&#47;join-constraint.html ">
+  <meta name="keywords" content="join-constraint, sqlite, syntax, -">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/sqlite/syntax/join-constraint/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/sqlite.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/sqlite/" class="_nav-link" title="" style="margin-left:0;">SQLite</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _sqlite">
+				
+<h1>join-constraint</h1> <div class="imgcontainer"> <img alt="syntax diagram join-constraint" src="data:image/gif;base64,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"><br> Used by: <a href="../join-clause/">join-clause</a><br> References: <a href="../expr/">expr</a><br> See also: <a href="../../lang_altertable/">lang_altertable.html</a> <a href="../../lang_attach/">lang_attach.html</a> <a href="../../lang_createindex/">lang_createindex.html</a> <a href="../../lang_createtable/">lang_createtable.html</a> <a href="../../lang_createtrigger/">lang_createtrigger.html</a> <a href="../../lang_createview/">lang_createview.html</a> <a href="../../lang_delete/">lang_delete.html</a> <a href="../../lang_expr/">lang_expr.html</a> <a href="../../lang_insert/">lang_insert.html</a> <a href="../../lang_select/">lang_select.html</a> <a href="../../lang_update/">lang_update.html</a> <a href="../../lang_with/">lang_with.html</a> <a href="../../partialindex/">partialindex.html</a> </div>
+<div class="_attribution">
+  <p class="_attribution-p">
+    SQLite is in the Public Domain.<br>
+    <a href="https://sqlite.org/syntax/join-constraint.html" class="_attribution-link" target="_blank">https://sqlite.org/syntax/join-constraint.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

@@ -1,0 +1,87 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>SQLite Syntax&#58; Vacuum-stmt - SQLite - W3cubDocs</title>
+  
+  <meta name="description" content=" SQLite is in the Public Domain. https&#58;&#47;&#47;sqlite.org&#47;syntax&#47;vacuum-stmt.html ">
+  <meta name="keywords" content="vacuum-stmt, sqlite, syntax, -">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/sqlite/syntax/vacuum-stmt/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/sqlite.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/sqlite/" class="_nav-link" title="" style="margin-left:0;">SQLite</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _sqlite">
+				
+<h1>vacuum-stmt</h1> <div class="imgcontainer"> <img alt="syntax diagram vacuum-stmt" src="data:image/gif;base64,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"><br> Used by: <a href="../sql-stmt/">sql-stmt</a><br> See also: <a href="../../lang_vacuum/">lang_vacuum.html</a> </div>
+<div class="_attribution">
+  <p class="_attribution-p">
+    SQLite is in the Public Domain.<br>
+    <a href="https://sqlite.org/syntax/vacuum-stmt.html" class="_attribution-link" target="_blank">https://sqlite.org/syntax/vacuum-stmt.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

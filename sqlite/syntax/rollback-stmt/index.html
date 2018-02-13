@@ -1,0 +1,87 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>SQLite Syntax&#58; Rollback-stmt - SQLite - W3cubDocs</title>
+  
+  <meta name="description" content=" SQLite is in the Public Domain. https&#58;&#47;&#47;sqlite.org&#47;syntax&#47;rollback-stmt.html ">
+  <meta name="keywords" content="rollback-stmt, sqlite, syntax, -">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/sqlite/syntax/rollback-stmt/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/sqlite.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/sqlite/" class="_nav-link" title="" style="margin-left:0;">SQLite</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _sqlite">
+				
+<h1>rollback-stmt</h1> <div class="imgcontainer"> <img alt="syntax diagram rollback-stmt" src="data:image/gif;base64,R0lGODdhyQI2APUgAO7u7gkJCQ4ODhERERcXFxkZGRsbGyIiIiQkJCkpKS0tLTMzMzY2Njs7Oz8/P0NDQ0RERFJSUlVVVV9fX2ZmZnBwcHd3d319fYiIiJmZmaqqqrGxsbu7u8zMzN3d3f///wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACwAAAAAyQI2AAAG/8CPcEgsGo/IpHLJbDqf0Kh0Sq1ar9isdsvter/gsHhMLpvP6LR6zW673/C4fE6v2+/4vH7P7/v/gIGCg4SFhoeIiYqLXwAcFhIHCyCUlZaXmJmam5ydnAsHEhYcAG4dGRYQnqusra6vqwgLFBgcgB4aqQMIrwoDEBYaHm64urywyMnIvsDCjM/QShgDlgwPENjZ2tvc3d7f4OHglxZrHZOVBwzi7O3u7/DhCZYDGnwAFPQO8dSVEqVp8OmLR7CgwX6U/kVbCM2DKhC0bEU7RYHagg5oLFACRophFQ4Y8oFQiIfDARADLGTASKXYyXpoTKJUyTKaS5T22IDEYKGnz/+fQIMKHUq0qNGjSJNiWBktg8WaHj84RImhzDmqUbXIhFkHgMaRALN4TRg2zFiwWYecJWkGAzoQ85TJnUuX1UlKC6oq4kCpXFoiGCjlNHsSwrC/WM5CjaORaxeZEsg0Hoz4A2QzU0GEsrCBg+fPoEOLHk26tOnTqFOr3gDprmFEAE5Srsx3QFkvGiNX1hJ4AZ3at7nEBjH7McrgiIcXx4138e4pVwdkOJT7ORGNEMIAt55FlV84ysfUPuwlPHch48VomHkey1eJg7afBzBJbxfz7asAoAbfTXXJIGT3xX/5YWcWf/lhsZ5thKiy3G4daPZFYLolWMV6FbYBwHFmTOL/XGIcWughGN5Z6N5IhAwwQBPbSDCdEF5hQ0F/2BhRYxHbWEAeetiU5UEqwJB34wcZAMPEJMhdkU9/RwC5zQctvsgjBGX1KEQHRn4QIwQuFsGBlUP8iI2OQjipDZbfbTnjEGCi2YSEb/BFgRJmZgMjkGsyoZGUW8jJxJZdEvEllUNgAMFgRRbJjRDaSIBBWGrC52abRtY5JBJ7frGeb3j8yGQew32oBgc7hnmEBwG+iUk5HSBEiZSUGBFrEZgMsKNIUrZKD0uzZhCiEksaUaoUSC7x0CUfZPIdrkRQMqdlqdKn2UPffcDsla4OgNGxlvAloK6WvOgseqkyoUqST6Dr/4RG9h3BbSUfgFsJn0jwVS2MV7C7hLQHUEvEtR+s9+wHk6CKiRCYcCrvq+RmNy602b07axL2WjFsmcTlUfERINwLh68eW5yEB58S2Q+hRHA523ohywpCoamq8iwH1Bw28RA3I/yyEBJ0TISKKApxkl+96RyviqIWEZjHGRzwKBVwqtrszh8EJuAHQGdYCUbeBhx0hCsOkfUQQwtRNM5Udw0lROjVnCwlXJe7hEYlQxEbmVP0nPTUKbNtmdtKbHi1WgfgLYXeS2B4JUo/U5OhijCC4FvORkt1ki0ytw3CMF1vDTHfTQhuhUmGM7q5FACgwpIHql8pEckApI7BYY6knv9BWLnk5IgHu2swe7wQ7dj771K1riUpGdzuKYwZEB9FhBli0fTTaj0knaCUPHBS9HxphrdGD9KadoARHnCdz2+7rD7G9oF8UinlX+cX3Eg7wVf0QjtbN8VBS432EGpzHwjCQolffI5CQ+gAfAQIv6h9oCeg+1z8hqCRchQwO2pbAshOFCB6NeEkTpjYBDHWMiKA0AhfgYAHmXBCafRPgUNg4BCC5auqUC59QljSCB/os86hBINyw+EHqUaFh0hgMIyLggeoMbQlVqIcGhmGBGyzgAGcZDp8QQeDjrUAR3SsNgXMTLXAiBIPOLEv0ELHW25XxStOwYFZuEueVNEvuFH/EATT2Q8IGrANAVjiiD3b39R8Mgnfoa9hlYsg2rAxiQzpLVO+Gpj43OiEDa2DG3ehhNMyUABZhKNnJVyfzgiZsQ88Eo9oC0wGuubEXwSDCKecTiSVMLGuLQ17DgOBKjOoBHtZqhsOWIABAtAvbTiAHjoigCQccI1rdAOOSZjYLQEYRCSoYh/bOGYlUuIBAhhgAdj8BjSFRQ1XUiaWQ2CZtU63kWzMb2cdOEkHpolIH+4yiDe0JggGBY4GKKAAxHyAMyGgAEsUbgPVbEJg7EEBF72mX8CrygAoEEUoreh+RNJlDaumS3thVJXJutdH8VikYUC0Yh7akChOB4GwRUEV/xuIBwMSANAEaEN7Br0AnAIzsGB9wI+eoMAEUMkETESmgrhM5P/Ex0jNsGRD5otQdpDKMZT8agn3W4VAWdGAhEaTiEaNXFTlFqsDHGA9AhJTJTgFVeBN9ZBVpeZbx5iqsp7VqyjUpcTmcgCRxGKA/uMhXQeHBKt6oq+t4IW6hKBWvIjVrT8z3wA41c4x6cwSc02qDz9gVrQqcgko6V5dNKNTTkGhe4UbBgYkMAkBhYIvGlAFNk5CslIGSCMAGYlHe+gzn1GrYhVbbWuhhbmdBUi2EKCtFC43Wk0cU0CeNZvkcgFHPWrmaRsD7T4907MMKC6dQaOceMenG18toCeUqP9thjyjsw5oxLRzIyqOCkgmR1hgEtdDAuRCCNbtcqC7GT3vV2z2Mm8lVCa2MC96N4dRAPanlqn6rhAUFysDExYJgdxXzzrGlCL4KiE5oQhZkOBT7YI3QxJGglSP8OGRhDgDImFLEUrcBAQHeMHkycd69HLDvvTkRSlW3GYt/NkkrNjI+KVJXvWXvymwrmcDWBoHFiCgCq5IFaDxorhWOowNzeiLvLVgOVAxCuB2TMpUJu7aEIYN/3bEbnhV8UuCMSzrkYkawZgEn441ACZpJE+Rg+9X72gBPdZEFeIiolITiSoBvaUSjwoRqsI2qxIxAXFe6iCmKFE3VVwsrksVLMH/MMHjnW34rfah26gvEWkGSSWJieyaodmEylmdeoiXdmoSzFo6AJbtCPSkJdVmbboVEmGDRuD1xWTSsmA3SZd3tMWjKWGfBZ1OiEUm9tqwWFdTb6TISEA2Elr76f04rSw0Vuhretaz2qZ1XIHpgFcik8Uf6VJgPFwlmMtRMb9Rk98da3fX+FJcNsd73lJQZyUdlyRv8UkDCMEfKpwXQ+S0UNiE5mFKUiG5Rbrzbdqw4HGT6zNUmW9xvtGI09yCvlnp0dgmVPSEPw3eAyAHfPyNYAVNnsCO49Bg2QFbLaaxOZ6jnIcrn0S1IFzlmXCcsjsD+p98noT12Hxk4YMRgozQ/2AT33HjqhD0s4uDi31tPdP4K4LQQVIzowMPvhbxeDYwcsPG9CTsiJyV1EMd3/AZyMglczYT4vnE9WjGrAAppJa0aAsD+/wrbNstwMvxa3JN3vBmtTnB15wsKjFeCvmAuRFAqQRnCKsnWYcC6b0eYIxVAmVvw2zsXz979nC0WsqF/CEhrC0Xpt0JPWsXeMVe2P7GUHLBVu7E/u6Ubdoj+afT/b2YfsfX55Zqf6eTv/W7TwWNE2sg2NuidQ97JDiR5on7PjXE3/wCPh+uys0htC/bLWyfz/p5xz4+ZX4qwBlhQ7biZOsnBZ5xGCQzeG9GcDAUJqQSOg24BAf4BAq0WP9HIB+DpxkUWAZOJEh/UoBq4Ahv1hIDSAVHZiNw5QafkS6ekYFFAILoV2NXJSxxFgXFYgS+cnWo44HmcoI0CFg2iIFMkIIBoYNhYGkVyINPcIMs2Cfdpwj4wQSBIXxuYHVLCA1GCDUu1YJnZyKVJBvpF0pQkG5DsHphcDZVIIY8g4SVYYbPJnq5RgFViAU/8oJ/AACZ8wRo2AY9I0mV8V5YAApVpxl0yIUwkg+/RwQX4DRaYAEHcAFI8HLaMYJVYAEG4IhHAIncQTPhpwQRUADiZ3Y4QYhPAHGSU4UQUABd8RSV4QH49Yk7qARQJoWiKCgvQYGqlgXZZQSGJ2Ni8RX/YAiDJbSLcQgbvrgED8B/USAQI9Fhs6h2GbBhhfZSyOgGdohGaUF0r4EFqhBfATKI7bEWGXiLWJCLXPcSqXda5oiLaoge6fgXW3GO24iLmRQgA2UQ9niP+CgOBsWB+oQHRHdbzJgIxdBS1tgd05hAahQRXHgKHBeK69KE47iOd6JJohCClfQIkTBi6giGZ7EZFpkI9pWRaPGKWgAAudBSXdVcKrmSyQAKoqABw2g6eeABU1QJBcCSONkKmTQAEuCKTxCPejKPOTmURAlUKAGHUCCOV0CO9cItQukJx4AX53haEglATkmUWKkJUTldP3mQzTgHQDmTuTAB+ViW+RgB/3T2BRNwAN54PJBglnAZl+4wAWkpBRWQAPxoP1XpjG/5DhOgkF7AAQhQAVDAkBIgl4jpl4AJBRCQAF/JB2H5mIKAc5IpBqrgk0G4l3zQdZWZBLzQmXgQmaDZBwo3ml1ADUz4i33wfaMpOqZJB6L5mjMJhLKpjhf2EZrJB5OQl18peLXJBrH5m3ZAhnfQloDwhEuZm3tAhRpSCE6EmcJZhF4ZneBBDbIoByrDCADAblzAlITAbjEpFqkVCFehmtRpmdN5nlO4EbyZBqjVa4KQOkwUnvWinHswHNJBn1aQQm4oBx4QGDOonmQQnAIaB1dBCZeUmAVhlC5mAWSpoIjJAP+ZFI3daZ/3CXnqAKHAhEwekKAayg8FdJ0FWgYEOqJwsFqSkJV0QQEMMG0qWhcc8QXeaQiPsFcvalC6d6OrwAwWAJ0mygUl+qOzaF3n9pUz+pstdkRC+phBuqRc+GftmYmDOaLK5qSP2QCOaaWVeTugyZnUWXZa+pUbQnxhWqbRwJpmmqZR4Sdq2qbPsJtuGqdRkQ8iKqd2Spq0eadXYJx6KqMx2KeAqgfgGahUQDp8SqijQw1TiaiMugb4yaWN6gRGtKiR+jxfwYeVmqkagqEe+qGe+qmg6g0FlQ6c8aCheqqomqrdkJIOqamuGicNqaOyOqu0qkkU4KK1mqu6SpQyB+BK+vmqwBqsYgB5gCasxnqsyBoI5kY9ydqszvqsdLCA0Dqt1Fqt1nqt2Jqt2vqbQQAAOw=="><br> Used by: <a href="../sql-stmt/">sql-stmt</a><br> See also: <a href="../../lang_savepoint/">lang_savepoint.html</a> <a href="../../lang_transaction/">lang_transaction.html</a> </div>
+<div class="_attribution">
+  <p class="_attribution-p">
+    SQLite is in the Public Domain.<br>
+    <a href="https://sqlite.org/syntax/rollback-stmt.html" class="_attribution-link" target="_blank">https://sqlite.org/syntax/rollback-stmt.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

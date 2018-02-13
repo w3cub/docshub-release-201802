@@ -1,0 +1,103 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>SARIMAXResults.test_heteroskedasticity() - Statsmodels - W3cubDocs</title>
+  
+  <meta name="description" content=" Test for heteroskedasticity of standardized residuals ">
+  <meta name="keywords" content="statsmodels, tsa, statespace, sarimax, sarimaxresults, test, heteroskedasticity, -">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/statsmodels/generated/statsmodels.tsa.statespace.sarimax.sarimaxresults.test_heteroskedasticity/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/statsmodels.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/statsmodels/" class="_nav-link" title="" style="margin-left:0;">Statsmodels</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _sphinx">
+				
+<h1 id="statsmodels-tsa-statespace-sarimax-sarimaxresults-test-heteroskedasticity">statsmodels.tsa.statespace.sarimax.SARIMAXResults.test_heteroskedasticity</h1> <dl class="method"> <dt id="statsmodels.tsa.statespace.sarimax.SARIMAXResults.test_heteroskedasticity">
+<code>SARIMAXResults.test_heteroskedasticity(method, alternative='two-sided', use_f=True)</code> </dt> <dd>
+<p>Test for heteroskedasticity of standardized residuals</p> <p>Tests whether the sum-of-squares in the first third of the sample is significantly different than the sum-of-squares in the last third of the sample. Analogous to a Goldfeld-Quandt test.</p> <table class="docutils field-list" frame="void" rules="none"> <col class="field-name"> <col class="field-body">  <tr class="field-odd field">
+<th class="field-name">Parameters:</th>
+<td class="field-body">
+<p class="first"><strong>method</strong> : string {‘breakvar’} or None</p>  <p>The statistical test for heteroskedasticity. Must be ‘breakvar’ for test of a break in the variance. If None, an attempt is made to select an appropriate test.</p>  <p><strong>alternative</strong> : string, ‘increasing’, ‘decreasing’ or ‘two-sided’</p>  <p>This specifies the alternative for the p-value calculation. Default is two-sided.</p>  <p><strong>use_f</strong> : boolean, optional</p>  <p>Whether or not to compare against the asymptotic distribution (chi-squared) or the approximate small-sample distribution (F). Default is True (i.e. default is to compare against an F distribution).</p>  </td> </tr> <tr class="field-even field">
+<th class="field-name">Returns:</th>
+<td class="field-body">
+<p class="first"><strong>output</strong> : array</p>  <p>An array with <code>(test_statistic, pvalue)</code> for each endogenous variable. The array is then sized <code>(k_endog, 2)</code>. If the method is called as <code>het = res.test_heteroskedasticity()</code>, then <code>het[0]</code> is an array of size 2 corresponding to the first endogenous variable, where <code>het[0][0]</code> is the test statistic, and <code>het[0][1]</code> is the p-value.</p>  </td> </tr>  </table> <h4 class="rubric">Notes</h4> <p>The null hypothesis is of no heteroskedasticity. That means different things depending on which alternative is selected:</p> <ul class="simple"> <li>Increasing: Null hypothesis is that the variance is not increasing throughout the sample; that the sum-of-squares in the later subsample is <em>not</em> greater than the sum-of-squares in the earlier subsample.</li> <li>Decreasing: Null hypothesis is that the variance is not decreasing throughout the sample; that the sum-of-squares in the earlier subsample is <em>not</em> greater than the sum-of-squares in the later subsample.</li> <li>Two-sided: Null hypothesis is that the variance is not changing throughout the sample. Both that the sum-of-squares in the earlier subsample is not greater than the sum-of-squares in the later subsample <em>and</em> that the sum-of-squares in the later subsample is not greater than the sum-of-squares in the earlier subsample.</li> </ul> <p>For <img class="math" src="http://www.statsmodels.org/stable/_images/math/1ac3d86c630b9763cae9a15e60d2acb47e089774.png" alt="h = [T/3]" style="vertical-align: -5px">, the test statistic is:</p> <div class="math"> <p><img src="http://www.statsmodels.org/stable/_images/math/3a1ccd1f582f15dd5801b27a944462fc5a9e9b6c.png" alt="H(h) = \sum_{t=T-h+1}^T  \tilde v_t^2
+\Bigg / \sum_{t=d+1}^{d+1+h} \tilde v_t^2"></p> </div>
+<p>where <img class="math" src="http://www.statsmodels.org/stable/_images/math/c86042ffb3d3d357c09df77fee86d0b5ecc0ae02.png" alt="d" style="vertical-align: 0px"> is the number of periods in which the loglikelihood was burned in the parent model (usually corresponding to diffuse initialization).</p> <p>This statistic can be tested against an <img class="math" src="http://www.statsmodels.org/stable/_images/math/76a7faf3042deef6085ae9dd36992ac3283b7e8b.png" alt="F(h,h)" style="vertical-align: -4px"> distribution. Alternatively, <img class="math" src="http://www.statsmodels.org/stable/_images/math/038e2cdb3f8a30fda74ffbf727bb596dff74e57d.png" alt="h H(h)" style="vertical-align: -4px"> is asymptotically distributed according to <img class="math" src="http://www.statsmodels.org/stable/_images/math/daf16cbee0524c0d1a3d00f7d4d0cf4e5b9d5f14.png" alt="\chi_h^2" style="vertical-align: -5px">; this second test can be applied by passing <code>asymptotic=True</code> as an argument.</p> <p>See section 5.4 of <a class="reference internal" href="#r89" id="id1">[R89]</a> for the above formula and discussion, as well as additional details.</p> <p>TODO</p> <ul class="simple"> <li>Allow specification of <img class="math" src="http://www.statsmodels.org/stable/_images/math/9cd0d4269389ccc2c3fc96c538e266229f00bd9f.png" alt="h" style="vertical-align: 0px">
+</li> </ul> <h4 class="rubric">References</h4> <table class="docutils citation" frame="void" id="r89" rules="none">   <tr>
+<td class="label">[R89]</td>
+<td>
+<em>(<a class="fn-backref" href="#id1">1</a>, <a class="fn-backref" href="#id2">2</a>)</em> Harvey, Andrew C. 1990. Forecasting, Structural Time Series Models and the Kalman Filter. Cambridge University Press.</td>
+</tr>  </table> </dd>
+</dl>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2009–2012 Statsmodels Developers<br>© 2006–2008 Scipy Developers<br>© 2006 Jonathan E. Taylor<br>Licensed under the 3-clause BSD License.<br>
+    <a href="http://www.statsmodels.org/stable/generated/statsmodels.tsa.statespace.sarimax.SARIMAXResults.test_heteroskedasticity.html" class="_attribution-link" target="_blank">http://www.statsmodels.org/stable/generated/statsmodels.tsa.statespace.sarimax.SARIMAXResults.test_heteroskedasticity.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

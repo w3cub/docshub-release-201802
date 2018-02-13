@@ -1,0 +1,97 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>DynamicFactor.update() - Statsmodels - W3cubDocs</title>
+  
+  <meta name="description" content=" Update the parameters of the model ">
+  <meta name="keywords" content="statsmodels, tsa, statespace, dynamic, factor, dynamicfactor, update, -">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/statsmodels/generated/statsmodels.tsa.statespace.dynamic_factor.dynamicfactor.update/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/statsmodels.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/statsmodels/" class="_nav-link" title="" style="margin-left:0;">Statsmodels</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _sphinx">
+				
+<h1 id="statsmodels-tsa-statespace-dynamic-factor-dynamicfactor-update">statsmodels.tsa.statespace.dynamic_factor.DynamicFactor.update</h1> <dl class="method"> <dt id="statsmodels.tsa.statespace.dynamic_factor.DynamicFactor.update">
+<code>DynamicFactor.update(params, transformed=True, complex_step=False)</code> <a class="reference internal" href="http://www.statsmodels.org/stable/_modules/statsmodels/tsa/statespace/dynamic_factor.html#DynamicFactor.update" target="_blank"><span class="viewcode-link">[source]</span></a>
+</dt> <dd>
+<p>Update the parameters of the model</p> <p>Updates the representation matrices to fill in the new parameter values.</p> <table class="docutils field-list" frame="void" rules="none"> <col class="field-name"> <col class="field-body">  <tr class="field-odd field">
+<th class="field-name">Parameters:</th>
+<td class="field-body">
+<p class="first"><strong>params</strong> : array_like</p>  <p>Array of new parameters.</p>  <p><strong>transformed</strong> : boolean, optional</p>  <p>Whether or not <code>params</code> is already transformed. If set to False, <code>transform_params</code> is called. Default is True..</p>  </td> </tr> <tr class="field-even field">
+<th class="field-name">Returns:</th>
+<td class="field-body">
+<p class="first"><strong>params</strong> : array_like</p>  <p>Array of parameters.</p>  </td> </tr>  </table> <h4 class="rubric">Notes</h4> <p>Let <code>n = k_endog</code>, <code>m = k_factors</code>, and <code>p = factor_order</code>. Then the <code>params</code> vector has length <img class="math" src="http://www.statsmodels.org/stable/_images/math/926380cec1a446da333f89f94d3a584c0d7eef50.png" alt="[n       imes m] + [n] + [m^2    imes p]" style="vertical-align: -5px">. It is expanded in the following way:</p> <ul class="simple"> <li>The first <img class="math" src="http://www.statsmodels.org/stable/_images/math/2f8a0c7ad537f4c8c0c1795338bcfe7c8b9af3c8.png" alt="n    imes m" style="vertical-align: 0px"> parameters fill out the factor loading matrix, starting from the [0,0] entry and then proceeding along rows. These parameters are not modified in <code>transform_params</code>.</li> <li>The next <img class="math" src="http://www.statsmodels.org/stable/_images/math/3492c6d4b042ddb93d57b7a5aa9532131d9af611.png" alt="n" style="vertical-align: 0px"> parameters provide variances for the error_cov errors in the observation equation. They fill in the diagonal of the observation covariance matrix, and are constrained to be positive by <code>transofrm_params</code>.</li> <li>The next <img class="math" src="http://www.statsmodels.org/stable/_images/math/8bbab91c490d22a42c16c1d478c36d059a3204e9.png" alt="m^2   imes p" style="vertical-align: -4px"> parameters are used to create the <code>p</code> coefficient matrices for the vector autoregression describing the factor transition. They are transformed in <code>transform_params</code> to enforce stationarity of the VAR(p). They are placed so as to make the transition matrix a companion matrix for the VAR. In particular, we assume that the first <img class="math" src="http://www.statsmodels.org/stable/_images/math/6615292a97d0ab7ed942f7c45e021c2ff8aee720.png" alt="m^2" style="vertical-align: 0px"> parameters fill the first coefficient matrix (starting at [0,0] and filling along rows), the second <img class="math" src="http://www.statsmodels.org/stable/_images/math/6615292a97d0ab7ed942f7c45e021c2ff8aee720.png" alt="m^2" style="vertical-align: 0px"> parameters fill the second matrix, etc.</li> </ul> </dd>
+</dl>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2009–2012 Statsmodels Developers<br>© 2006–2008 Scipy Developers<br>© 2006 Jonathan E. Taylor<br>Licensed under the 3-clause BSD License.<br>
+    <a href="http://www.statsmodels.org/stable/generated/statsmodels.tsa.statespace.dynamic_factor.DynamicFactor.update.html" class="_attribution-link" target="_blank">http://www.statsmodels.org/stable/generated/statsmodels.tsa.statespace.dynamic_factor.DynamicFactor.update.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

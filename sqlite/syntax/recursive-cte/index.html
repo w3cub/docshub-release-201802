@@ -1,0 +1,87 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>SQLite Syntax&#58; Recursive-cte - SQLite - W3cubDocs</title>
+  
+  <meta name="description" content=" SQLite is in the Public Domain. https&#58;&#47;&#47;sqlite.org&#47;syntax&#47;recursive-cte.html ">
+  <meta name="keywords" content="recursive-cte, sqlite, syntax, -">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/sqlite/syntax/recursive-cte/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/sqlite.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/sqlite/" class="_nav-link" title="" style="margin-left:0;">SQLite</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _sqlite">
+				
+<h1>recursive-cte</h1> <div class="imgcontainer"> <img alt="syntax diagram recursive-cte" src="data:image/gif;base64,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"><br> <br> References: <a href="../cte-table-name/">cte-table-name</a><br> See also: <a href="../../lang_with/">lang_with.html</a> </div>
+<div class="_attribution">
+  <p class="_attribution-p">
+    SQLite is in the Public Domain.<br>
+    <a href="https://sqlite.org/syntax/recursive-cte.html" class="_attribution-link" target="_blank">https://sqlite.org/syntax/recursive-cte.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

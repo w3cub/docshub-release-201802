@@ -1,0 +1,112 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Why Is SQLite Coded in C - SQLite - W3cubDocs</title>
+  
+  <meta name="description" content="Since its inception on 2000-05-29, SQLite has been implemented in generic C. C was and continues to be the best language for implementing a software &hellip;">
+  <meta name="keywords" content="why, is, sqlite, coded, c, best, -">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/sqlite/whyc/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/sqlite.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/sqlite/" class="_nav-link" title="" style="margin-left:0;">SQLite</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _sqlite">
+				
+<h1 class="fancy_title"> Why Is SQLite Coded In C </h1> <div class="fancy_toc">  <div id="toc_sub">
+<div class="fancy-toc1"><a href="#c_is_best">1. C Is Best</a></div> <div class="fancy-toc2"><a href="#performance">1.1. Performance</a></div> <div class="fancy-toc2"><a href="#compatibility">1.2. Compatibility</a></div> <div class="fancy-toc2"><a href="#low_dependency">1.3. Low-Dependency</a></div> <div class="fancy-toc2"><a href="#stability">1.4. Stability</a></div> </div> </div>   <h1 id="c_is_best">
+<span>1. </span>C Is Best</h1> <p> Since its inception on 2000-05-29, SQLite has been implemented in generic C. C was and continues to be the best language for implementing a software library like SQLite. There are no plans to recode SQLite in any other programming language anytime soon. </p>
+<p> The reasons why C is the best language to implement SQLite include: </p>
+<ul> <li> Performance </li>
+<li> Compatibility </li>
+<li> Low-dependency </li>
+<li> Stability </li>
+</ul> <h2 id="performance">
+<span>1.1. </span>Performance</h2> <p>An intensively used low-level library like SQLite needs to be fast. (And SQLite is fast, see <a href="../intern-v-extern-blob/">Internal Versus External BLOBs</a> and <a href="../fasterthanfs/">35% Faster Than The Filesystem</a> for example.) </p>
+<p>C is a great language for writing fast code. C is sometimes described as "portable assembly language". It enables to developers to code as close to the underlying hardware as possible while still remaining portable across platforms. </p>
+<p>Other programming languages sometimes claim to be "as fast as C". But no other language claims to be faster than C for general-purpose programming, because none are. </p>
+<h2 id="compatibility">
+<span>1.2. </span>Compatibility</h2> <p>Nearly all systems have the ability to call with libraries written in C. This is not true of other implementation languages. </p>
+<p>So, for example, Android applications written in Java are able to invoke SQLite (through an adaptor). Maybe it would have been more convenient for Android if SQLite had been coded in Java as that would make the interface simpler. However, on iPhone applications are coded in Objective-C or Swift, neither of which have the ability to call libraries written in Java. Thus, SQLite would be unusable on iPhones had it been written in Java. </p>
+<h2 id="low_dependency">
+<span>1.3. </span>Low-Dependency</h2> <p>Libraries written in C doe not have a huge run-time dependency. In its minimum configuration, SQLite requires only the following routines from the standard C library: </p> <table> <tr> <td valign="top"> <ul> <li> memcmp() </li>
+<li> memcpy() </li>
+<li> memmove() </li>
+<li> memset() </li>
+</ul> </td> <td> </td> <td valign="top"> <ul> <li> strcmp() </li>
+<li> strlen() </li>
+<li> strncmp() </li>
+</ul> </td> </tr> </table>  <p> In a more complete build, SQLite also uses library routines like malloc() and free() and operating system interfaces for opening, reading, writing, and closing files. But even then, the number of dependencies is very small. Other "modern" language, in contrast, often require multi-megabyte runtimes loaded with thousands and thousands of interfaces. </p>
+<h2 id="stability">
+<span>1.4. </span>Stability</h2> <p> The C language is old and boring. It is a well-known and well-understood language. This is exactly what one wants when developing a module like SQLite. Writing a small, fast, and reliable database engine is hard enough as it is without the implementation language changing out from under you with each update to the implementation language specification. </p>
+<div class="_attribution">
+  <p class="_attribution-p">
+    SQLite is in the Public Domain.<br>
+    <a href="https://sqlite.org/whyc.html" class="_attribution-link" target="_blank">https://sqlite.org/whyc.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

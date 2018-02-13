@@ -1,0 +1,96 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>SARIMAX.fit() - Statsmodels - W3cubDocs</title>
+  
+  <meta name="description" content=" Fits the model by maximum likelihood via Kalman filter. ">
+  <meta name="keywords" content="statsmodels, tsa, statespace, sarimax, fit, -">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/statsmodels/generated/statsmodels.tsa.statespace.sarimax.sarimax.fit/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/statsmodels.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/statsmodels/" class="_nav-link" title="" style="margin-left:0;">Statsmodels</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _sphinx">
+				
+<h1 id="statsmodels-tsa-statespace-sarimax-sarimax-fit">statsmodels.tsa.statespace.sarimax.SARIMAX.fit</h1> <dl class="method"> <dt id="statsmodels.tsa.statespace.sarimax.SARIMAX.fit">
+<code>SARIMAX.fit(start_params=None, transformed=True, cov_type='opg', cov_kwds=None, method='lbfgs', maxiter=50, full_output=1, disp=5, callback=None, return_params=False, optim_score=None, optim_complex_step=None, optim_hessian=None, **kwargs)</code> </dt> <dd>
+<p>Fits the model by maximum likelihood via Kalman filter.</p> <table class="docutils field-list" frame="void" rules="none"> <col class="field-name"> <col class="field-body">  <tr class="field-odd field">
+<th class="field-name">Parameters:</th>
+<td class="field-body">
+<p class="first"><strong>start_params</strong> : array_like, optional</p>  <p>Initial guess of the solution for the loglikelihood maximization. If None, the default is given by Model.start_params.</p>  <p><strong>transformed</strong> : boolean, optional</p>  <p>Whether or not <code>start_params</code> is already transformed. Default is True.</p>  <p><strong>cov_type</strong> : str, optional</p>  <p>The <code>cov_type</code> keyword governs the method for calculating the covariance matrix of parameter estimates. Can be one of:</p> <ul class="simple"> <li>‘opg’ for the outer product of gradient estimator</li> <li>‘oim’ for the observed information matrix estimator, calculated using the method of Harvey (1989)</li> <li>‘approx’ for the observed information matrix estimator, calculated using a numerical approximation of the Hessian matrix.</li> <li>‘robust’ for an approximate (quasi-maximum likelihood) covariance matrix that may be valid even in the presense of some misspecifications. Intermediate calculations use the ‘oim’ method.</li> <li>‘robust_approx’ is the same as ‘robust’ except that the intermediate calculations use the ‘approx’ method.</li> <li>‘none’ for no covariance matrix calculation.</li> </ul>  <p><strong>cov_kwds</strong> : dict or None, optional</p>  <p>A dictionary of arguments affecting covariance matrix computation.</p> <p><strong>opg, oim, approx, robust, robust_approx</strong></p> <ul class="simple"> <li>‘approx_complex_step’ : boolean, optional - If True, numerical approximations are computed using complex-step methods. If False, numerical approximations are computed using finite difference methods. Default is True.</li> <li>‘approx_centered’ : boolean, optional - If True, numerical approximations computed using finite difference methods use a centered approximation. Default is False.</li> </ul>  <p><strong>method</strong> : str, optional</p>  <p>The <code>method</code> determines which solver from <code>scipy.optimize</code> is used, and it can be chosen from among the following strings:</p> <ul class="simple"> <li>‘newton’ for Newton-Raphson, ‘nm’ for Nelder-Mead</li> <li>‘bfgs’ for Broyden-Fletcher-Goldfarb-Shanno (BFGS)</li> <li>‘lbfgs’ for limited-memory BFGS with optional box constraints</li> <li>‘powell’ for modified Powell’s method</li> <li>‘cg’ for conjugate gradient</li> <li>‘ncg’ for Newton-conjugate gradient</li> <li>‘basinhopping’ for global basin-hopping solver</li> </ul> <p>The explicit arguments in <code>fit</code> are passed to the solver, with the exception of the basin-hopping solver. Each solver has several optional arguments that are not the same across solvers. See the notes section below (or scipy.optimize) for the available arguments and for the list of explicit arguments that the basin-hopping solver supports.</p>  <p><strong>maxiter</strong> : int, optional</p>  <p>The maximum number of iterations to perform.</p>  <p><strong>full_output</strong> : boolean, optional</p>  <p>Set to True to have all available output in the Results object’s mle_retvals attribute. The output is dependent on the solver. See LikelihoodModelResults notes section for more information.</p>  <p><strong>disp</strong> : boolean, optional</p>  <p>Set to True to print convergence messages.</p>  <p><strong>callback</strong> : callable callback(xk), optional</p>  <p>Called after each iteration, as callback(xk), where xk is the current parameter vector.</p>  <p><strong>return_params</strong> : boolean, optional</p>  <p>Whether or not to return only the array of maximizing parameters. Default is False.</p>  <p><strong>optim_score</strong> : {‘harvey’, ‘approx’} or None, optional</p>  <p>The method by which the score vector is calculated. ‘harvey’ uses the method from Harvey (1989), ‘approx’ uses either finite difference or complex step differentiation depending upon the value of <code>optim_complex_step</code>, and None uses the built-in gradient approximation of the optimizer. Default is None. This keyword is only relevant if the optimization method uses the score.</p>  <p><strong>optim_complex_step</strong> : bool, optional</p>  <p>Whether or not to use complex step differentiation when approximating the score; if False, finite difference approximation is used. Default is True. This keyword is only relevant if <code>optim_score</code> is set to ‘harvey’ or ‘approx’.</p>  <p><strong>optim_hessian</strong> : {‘opg’,’oim’,’approx’}, optional</p>  <p>The method by which the Hessian is numerically approximated. ‘opg’ uses outer product of gradients, ‘oim’ uses the information matrix formula from Harvey (1989), and ‘approx’ uses numerical approximation. This keyword is only relevant if the optimization method uses the Hessian matrix.</p>  <p><strong>**kwargs</strong></p>  <p>Additional keyword arguments to pass to the optimizer.</p>  </td> </tr> <tr class="field-even field">
+<th class="field-name">Returns:</th>
+<td class="field-body">
+<p class="first last">MLEResults</p> </td> </tr>  </table> <div class="admonition seealso"> <p class="first admonition-title">See also</p> <p class="last"><a class="reference internal" href="http://www.statsmodels.org/stable/dev/generated/statsmodels.base.model.LikelihoodModel.fit.html#statsmodels.base.model.LikelihoodModel.fit" title="statsmodels.base.model.LikelihoodModel.fit" target="_blank"><code>statsmodels.base.model.LikelihoodModel.fit</code></a>, <code>MLEResults</code></p> </div> </dd>
+</dl>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2009–2012 Statsmodels Developers<br>© 2006–2008 Scipy Developers<br>© 2006 Jonathan E. Taylor<br>Licensed under the 3-clause BSD License.<br>
+    <a href="http://www.statsmodels.org/stable/generated/statsmodels.tsa.statespace.sarimax.SARIMAX.fit.html" class="_attribution-link" target="_blank">http://www.statsmodels.org/stable/generated/statsmodels.tsa.statespace.sarimax.SARIMAX.fit.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

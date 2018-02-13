@@ -1,0 +1,98 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>tsa.stattools.coint() - Statsmodels - W3cubDocs</title>
+  
+  <meta name="description" content=" Test for no-cointegration of a univariate equation ">
+  <meta name="keywords" content="statsmodels, tsa, stattools, coint, -">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/statsmodels/generated/statsmodels.tsa.stattools.coint/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/statsmodels.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/statsmodels/" class="_nav-link" title="" style="margin-left:0;">Statsmodels</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _sphinx">
+				
+<h1 id="statsmodels-tsa-stattools-coint">statsmodels.tsa.stattools.coint</h1> <dl class="function"> <dt id="statsmodels.tsa.stattools.coint">
+<code>statsmodels.tsa.stattools.coint(y0, y1, trend='c', method='aeg', maxlag=None, autolag='aic', return_results=None)</code> <a class="reference internal" href="http://www.statsmodels.org/stable/_modules/statsmodels/tsa/stattools.html#coint" target="_blank"><span class="viewcode-link">[source]</span></a>
+</dt> <dd>
+<p>Test for no-cointegration of a univariate equation</p> <p>The null hypothesis is no cointegration. Variables in y0 and y1 are assumed to be integrated of order 1, I(1).</p> <p>This uses the augmented Engle-Granger two-step cointegration test. Constant or trend is included in 1st stage regression, i.e. in cointegrating equation.</p> <table class="docutils field-list" frame="void" rules="none"> <col class="field-name"> <col class="field-body">  <tr class="field-odd field">
+<th class="field-name">Parameters:</th>
+<td class="field-body">
+<p class="first"><strong>y1</strong> : array_like, 1d</p>  <p>first element in cointegrating vector</p>  <p><strong>y2</strong> : array_like</p>  <p>remaining elements in cointegrating vector</p>  <p><strong>trend</strong> : str {‘c’, ‘ct’}</p>  <p>trend term included in regression for cointegrating equation * ‘c’ : constant * ‘ct’ : constant and linear trend * also available quadratic trend ‘ctt’, and no constant ‘nc’</p>  <p><strong>method</strong> : string</p>  <p>currently only ‘aeg’ for augmented Engle-Granger test is available. default might change.</p>  <p><strong>maxlag</strong> : None or int</p>  <p>keyword for <code>adfuller</code>, largest or given number of lags</p>  <p><strong>autolag</strong> : string</p>  <p>keyword for <code>adfuller</code>, lag selection criterion.</p>  <p><strong>return_results</strong> : bool</p>  <p>for future compatibility, currently only tuple available. If True, then a results instance is returned. Otherwise, a tuple with the test outcome is returned. Set <code>return_results=False</code> to avoid future changes in return.</p>  </td> </tr> <tr class="field-even field">
+<th class="field-name">Returns:</th>
+<td class="field-body">
+<p class="first"><strong>coint_t</strong> : float</p>  <p>t-statistic of unit-root test on residuals</p>  <p><strong>pvalue</strong> : float</p>  <p>MacKinnon’s approximate, asymptotic p-value based on MacKinnon (1994)</p>  <p><strong>crit_value</strong> : dict</p>  <p>Critical values for the test statistic at the 1 %, 5 %, and 10 % levels based on regression curve. This depends on the number of observations.</p>  </td> </tr>  </table> <h4 class="rubric">Notes</h4> <p>The Null hypothesis is that there is no cointegration, the alternative hypothesis is that there is cointegrating relationship. If the pvalue is small, below a critical size, then we can reject the hypothesis that there is no cointegrating relationship.</p> <p>P-values and critical values are obtained through regression surface approximation from MacKinnon 1994 and 2010.</p> <p>TODO: We could handle gaps in data by dropping rows with nans in the auxiliary regressions. Not implemented yet, currently assumes no nans and no gaps in time series.</p> <h4 class="rubric">References</h4> <dl class="docutils"> <dt>MacKinnon, J.G. 1994 “Approximate Asymptotic Distribution Functions for</dt> <dd>Unit-Root and Cointegration Tests.” Journal of Business &amp; Economics Statistics, 12.2, 167-76.</dd> <dt>MacKinnon, J.G. 2010. “Critical Values for Cointegration Tests.”</dt> <dd>Queen’s University, Dept of Economics Working Papers 1227. <a class="reference external" href="http://ideas.repec.org/p/qed/wpaper/1227.html" target="_blank">http://ideas.repec.org/p/qed/wpaper/1227.html</a>
+</dd> </dl> </dd>
+</dl>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2009–2012 Statsmodels Developers<br>© 2006–2008 Scipy Developers<br>© 2006 Jonathan E. Taylor<br>Licensed under the 3-clause BSD License.<br>
+    <a href="http://www.statsmodels.org/stable/generated/statsmodels.tsa.stattools.coint.html" class="_attribution-link" target="_blank">http://www.statsmodels.org/stable/generated/statsmodels.tsa.stattools.coint.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

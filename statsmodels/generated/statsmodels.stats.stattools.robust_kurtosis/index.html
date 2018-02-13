@@ -1,0 +1,109 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>stats.stattools.robust_kurtosis() - Statsmodels - W3cubDocs</title>
+  
+  <meta name="description" content=" Calculates the four kurtosis measures in Kim &#38; White ">
+  <meta name="keywords" content="statsmodels, stats, stattools, robust, kurtosis, -">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/statsmodels/generated/statsmodels.stats.stattools.robust_kurtosis/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/statsmodels.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/statsmodels/" class="_nav-link" title="" style="margin-left:0;">Statsmodels</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _sphinx">
+				
+<h1 id="statsmodels-stats-stattools-robust-kurtosis">statsmodels.stats.stattools.robust_kurtosis</h1> <dl class="function"> <dt id="statsmodels.stats.stattools.robust_kurtosis">
+<code>statsmodels.stats.stattools.robust_kurtosis(y, axis=0, ab=(5.0, 50.0), dg=(2.5, 25.0), excess=True)</code> <a class="reference internal" href="http://www.statsmodels.org/stable/_modules/statsmodels/stats/stattools.html#robust_kurtosis" target="_blank"><span class="viewcode-link">[source]</span></a>
+</dt> <dd>
+<p>Calculates the four kurtosis measures in Kim &amp; White</p> <table class="docutils field-list" frame="void" rules="none"> <col class="field-name"> <col class="field-body">  <tr class="field-odd field">
+<th class="field-name">Parameters:</th>
+<td class="field-body">
+<p class="first"><strong>y</strong> : array-like</p> <p><strong>axis</strong> : int or None, optional</p>  <p>Axis along which the kurtoses are computed. If <code>None</code>, the entire array is used.</p>  <p><strong>ab: iterable, optional</strong></p>  <p>Contains 100*(alpha, beta) in the kr3 measure where alpha is the tail quantile cut-off for measuring the extreme tail and beta is the central quantile cutoff for the standardization of the measure</p>  <p><strong>db: iterable, optional</strong></p>  <p>Contains 100*(delta, gamma) in the kr4 measure where delta is the tail quantile for measuring extreme values and gamma is the central quantile used in the the standardization of the measure</p>  <p><strong>excess</strong> : bool, optional</p>  <p>If true (default), computed values are excess of those for a standard normal distribution.</p>  </td> </tr> <tr class="field-even field">
+<th class="field-name">Returns:</th>
+<td class="field-body">
+<p class="first"><strong>kr1</strong> : ndarray</p>  <p>The standard kurtosis estimator.</p>  <p><strong>kr2</strong> : ndarray</p>  <p>Kurtosis estimator based on octiles.</p>  <p><strong>kr3</strong> : ndarray</p>  <p>Kurtosis estimators based on exceedence expectations.</p>  <p><strong>kr4</strong> : ndarray</p>  <p>Kurtosis measure based on the spread between high and low quantiles.</p>  </td> </tr>  </table> <h4 class="rubric">Notes</h4> <p>The robust kurtosis measures are defined</p> <div class="math"> <p><img src="http://www.statsmodels.org/stable/_images/math/3b99a1eab3f9e8c6ab9ea874de16d8dd4a6afdbf.png" alt="KR_{2}=\frac{\left(\hat{q}_{.875}-\hat{q}_{.625}\right)
++\left(\hat{q}_{.375}-\hat{q}_{.125}\right)}
+{\hat{q}_{.75}-\hat{q}_{.25}}"></p> </div>
+<div class="math"> <p><img src="http://www.statsmodels.org/stable/_images/math/4237417c3477a7c50849220d4ce28feff620850b.png" alt="KR_{3}=\frac{\hat{E}\left(y|y&gt;\hat{q}_{1-\alpha}\right)
+-\hat{E}\left(y|y&lt;\hat{q}_{\alpha}\right)}
+{\hat{E}\left(y|y&gt;\hat{q}_{1-\beta}\right)
+-\hat{E}\left(y|y&lt;\hat{q}_{\beta}\right)}"></p> </div>
+<div class="math"> <p><img src="http://www.statsmodels.org/stable/_images/math/9efbcb0f07006d43fa43b33a8275a146afac2da0.png" alt="KR_{4}=\frac{\hat{q}_{1-\delta}-\hat{q}_{\delta}}
+{\hat{q}_{1-\gamma}-\hat{q}_{\gamma}}"></p> </div>
+<p>where <img class="math" src="http://www.statsmodels.org/stable/_images/math/9b30c6050610272092a950e0e5041fe7e5a6d570.png" alt="\hat{q}_{p}" style="vertical-align: -6px"> is the estimated quantile at <img class="math" src="http://www.statsmodels.org/stable/_images/math/e4b98fa2422dae77531f07b1bbdd8599962267df.png" alt="p" style="vertical-align: -4px">.</p> <table class="docutils citation" frame="void" id="r58" rules="none">   <tr>
+<td class="label">[R58]</td>
+<td>Tae-Hwan Kim and Halbert White, “On more robust estimation of skewness and kurtosis,” Finance Research Letters, vol. 1, pp. 56-73, March 2004.</td>
+</tr>  </table> </dd>
+</dl>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2009–2012 Statsmodels Developers<br>© 2006–2008 Scipy Developers<br>© 2006 Jonathan E. Taylor<br>Licensed under the 3-clause BSD License.<br>
+    <a href="http://www.statsmodels.org/stable/generated/statsmodels.stats.stattools.robust_kurtosis.html" class="_attribution-link" target="_blank">http://www.statsmodels.org/stable/generated/statsmodels.stats.stattools.robust_kurtosis.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>
