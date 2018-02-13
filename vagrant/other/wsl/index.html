@@ -1,0 +1,110 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Vagrant and Windows Subsystem for Linux - Vagrant - W3cubDocs</title>
+  
+  <meta name="description" content="Windows has recently introduced a new feature called the Windows Subsystem for Linux (WSL). This is a beta feature available in developer mode on &hellip;">
+  <meta name="keywords" content="vagrant, and, windows, subsystem, for, linux, installation, usage, -">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/vagrant/other/wsl/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/vagrant.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/vagrant/" class="_nav-link" title="" style="margin-left:0;">Vagrant</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _vagrant">
+				
+<h1 id="vagrant-and-windows-subsystem-for-linux">  Vagrant and Windows Subsystem for Linux </h1> <p>Windows has recently introduced a new feature called the Windows Subsystem for Linux (WSL). This is a beta feature available in developer mode on recent releases of Windows 10. It is important to note that this feature is still in <em>beta</em> on Windows, and Vagrant support should be considered <em>alpha</em>.</p> <blockquote class="alert alert-warning"> <p><strong>Warning: Advanced Topic!</strong> Using Vagrant within the Windows Subsystem for Linux is an advanced topic that only experienced Vagrant users who are reasonably comfortable with Windows, WSL, and Linux should approach.</p> </blockquote>
+<h1 id="installation">  Installation </h1> <p>Installation requires WSL, Ubuntu on Windows, and Vagrant. Read on for installation instructions for each item.</p> <h2 id="windows-subsystem-for-linux-and-ubuntu-on-windows">  Windows Subsystem for Linux and Ubuntu on Windows </h2> <p>First install the Windows Subsystem for Linux, followed by Ubuntu on Windows. This guide from Microsoft walks through the process:</p> <ul> <li>
+<a href="https://msdn.microsoft.com/en-us/commandline/wsl/install_guide" target="_blank">https://msdn.microsoft.com/en-us/commandline/wsl/install_guide</a> </li> </ul> <h2 id="vagrant-installation">  Vagrant Installation </h2> <p>Vagrant <em>must</em> be installed within Ubuntu on Windows. Even though the <code>vagrant.exe</code> file can be executed from within the WSL, it will not function as expected. To install Vagrant into the WSL, follow these steps:</p> <ul> <li>Download the 64-bit Debian package from the downloads page. </li> <li>Open a <code>cmd</code> or <code>powershell</code> window </li> <li>Enter the command: <code>bash</code> </li> <li>Install vagrant: <code>sudo dpkg -i vagrant_VERSION_x86_64.deb</code> </li> </ul> <div class="highlight"><pre class="highlight plaintext">C:\Users\vagrant&gt; bash
+vagrant@vagrant-10:/mnt/c/Users/vagrant$ sudo dpkg -i vagrant_VERSION_x86_64.deb
+[sudo] password for vagrant:
+(Reading database ... 31885 files and directories currently installed.)
+Preparing to unpack vagrant_VERSION_x86_64.deb ...
+Unpacking vagrant (1:VERSION) ...
+Setting up vagrant (1:VERSION) ...
+vagrant@vagrant-10:/mnt/c/Users/vagrant$ vagrant help
+Usage: vagrant [options] &lt;command&gt; [&lt;args&gt;]
+</pre></div>
+<h1 id="vagrant-usage">  Vagrant Usage </h1> <p>Vagrant will detect when it is being run within the WSL and adjust how it locates and executes third party executables. For example, when using the VirtualBox provider Vagrant will interact with VirtualBox installed on the Windows system, not within the WSL. It is important to ensure that any required Windows executable is available within your <code>PATH</code> to allow Vagrant to access them.</p> <h2 id="windows-access">  Windows Access </h2> <p>Working within the WSL provides a layer of isolation from the actual Windows system. In most cases Vagrant will need access to the actual Windows system to function correctly. As most Vagrant providers will need to be installed on Windows directly (not within the WSL) Vagrant will require Windows access. Access to the Windows system is controlled via an environment variable: <code>VAGRANT_WSL_ENABLE_WINDOWS_ACCESS</code>. If this environment variable is set, Vagrant will access the Windows system to run executables and enable things like synced folders. When running in a bash shell within WSL, the environment variable can be setup like so:</p> <div class="highlight"><pre class="highlight plaintext">$ export VAGRANT_WSL_ENABLE_WINDOWS_ACCESS="1"
+</pre></div>
+<p>This will enable Vagrant to access the Windows system outside of the WSL and properly interact with Windows executables. This will automatically modify the <code>VAGRANT_HOME</code> environment variable if it is not already defined, setting it to be within the user's home directory on Windows.</p> <p>It is important to note that paths shared with the Windows system will not have Linux permissions enforced. For example, when a directory within the WSL is synced to a guest using the VirtualBox provider, any local permissions defined on that directory (or its contents) will not be visible from the guest. Likewise, any files created from the guest within the synced folder will be world readable/writeable in WSL.</p> <p>Other useful WSL related environment variables:</p> <ul> <li>
+<a href="#vagrant_wsl_windows_access_user"><code>VAGRANT_WSL_WINDOWS_ACCESS_USER</code></a> - Override current Windows username </li> <li>
+<a href="#vagrant_wsl_disable_vagrant_home"><code>VAGRANT_WSL_DISABLE_VAGRANT_HOME</code></a> - Do not modify the <code>VAGRANT_HOME</code> variable </li> <li>
+<a href="#vagrant_wsl_windows_access_user_home_path"><code>VAGRANT_WSL_WINDOWS_ACCESS_USER_HOME_PATH</code></a> - Custom Windows system home path </li> </ul> <p>If a Vagrant project directory is not within the user's home directory on the Windows system, certain actions that include permission checks may fail (like <code>vagrant ssh</code>). When accessing Vagrant projects outside the WSL Vagrant will skip these permission checks when the project path is within the path defined in the <code>VAGRANT_WSL_WINDOWS_ACCESS_USER_HOME_PATH</code> environment variable. For example, if a user wants to run a Vagrant project from the WSL that is located at <code>C:\TestDir\vagrant-project</code>:</p> <div class="highlight"><pre class="highlight plaintext">C:\Users\vagrant&gt; cd C:\TestDir\vagrant-project
+C:\TestDir\vagrant-project&gt; bash
+vagrant@vagrant-10:/mnt/c/TestDir/vagrant-project$ export VAGRANT_WSL_WINDOWS_ACCESS_USER_HOME_PATH="/mnt/c/TestDir"
+vagrant@vagrant-10:/mnt/c/TestDir/vagrant-project$ vagrant ssh
+</pre></div>
+<h2 id="using-docker">  Using Docker </h2> <p>The docker daemon cannot be run inside the Windows Subsystem for Linux. However, the daemon <em>can</em> be run on Windows and accessed by Vagrant while running in the WSL. Once docker is installed and running on Windows, export the following environment variable to give Vagrant access:</p> <div class="highlight"><pre class="highlight plaintext">vagrant@vagrant-10:/mnt/c/Users/vagrant$ export DOCKER_HOST=tcp://127.0.0.1:2375
+</pre></div>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2010–2017 Mitchell Hashimoto<br>Licensed under the MPL 2.0 License.<br>
+    <a href="https://www.vagrantup.com/docs/other/wsl.html" class="_attribution-link" target="_blank">https://www.vagrantup.com/docs/other/wsl.html</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>
