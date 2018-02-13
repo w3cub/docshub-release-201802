@@ -1,0 +1,493 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Linear Algebra - Julia 0.6 - W3cubDocs</title>
+  
+  <meta name="description" content="In addition to (and as part of) its support for multi-dimensional arrays, Julia provides native implementations of many common and useful linear &hellip;">
+  <meta name="keywords" content="linear, algebra, -, julia, julia~0.6">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/julia~0.6/manual/linear-algebra/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/julia~0.6.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/julia~0.6/" class="_nav-link" title="" style="margin-left:0;">Julia 0.6</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _julia">
+				
+<h1 id="Linear-algebra-1">Linear algebra</h1>
+<p>In addition to (and as part of) its support for multi-dimensional arrays, Julia provides native implementations of many common and useful linear algebra operations. Basic operations, such as <a href="../../stdlib/linalg/#Base.LinAlg.trace"><code>trace</code></a>, <a href="../../stdlib/linalg/#Base.LinAlg.det"><code>det</code></a>, and <a href="../../stdlib/linalg/#Base.inv"><code>inv</code></a> are all supported:</p>
+<pre>julia&gt; A = [1 2 3; 4 1 6; 7 8 1]
+3×3 Array{Int64,2}:
+ 1  2  3
+ 4  1  6
+ 7  8  1
+
+julia&gt; trace(A)
+3
+
+julia&gt; det(A)
+104.0
+
+julia&gt; inv(A)
+3×3 Array{Float64,2}:
+ -0.451923   0.211538    0.0865385
+  0.365385  -0.192308    0.0576923
+  0.240385   0.0576923  -0.0673077</pre>
+<p>As well as other useful operations, such as finding eigenvalues or eigenvectors:</p>
+<pre>julia&gt; A = [1.5 2 -4; 3 -1 -6; -10 2.3 4]
+3×3 Array{Float64,2}:
+   1.5   2.0  -4.0
+   3.0  -1.0  -6.0
+ -10.0   2.3   4.0
+
+julia&gt; eigvals(A)
+3-element Array{Complex{Float64},1}:
+  9.31908+0.0im
+ -2.40954+2.72095im
+ -2.40954-2.72095im
+
+julia&gt; eigvecs(A)
+3×3 Array{Complex{Float64},2}:
+ -0.488645+0.0im  0.182546-0.39813im   0.182546+0.39813im
+ -0.540358+0.0im  0.692926+0.0im       0.692926-0.0im
+   0.68501+0.0im  0.254058-0.513301im  0.254058+0.513301im</pre>
+<p>In addition, Julia provides many <a href="#man-linalg-factorizations-1">factorizations</a> which can be used to speed up problems such as linear solve or matrix exponentiation by pre-factorizing a matrix into a form more amenable (for performance or memory reasons) to the problem. See the documentation on <a href="../../stdlib/linalg/#Base.LinAlg.factorize"><code>factorize</code></a> for more information. As an example:</p>
+<pre>julia&gt; A = [1.5 2 -4; 3 -1 -6; -10 2.3 4]
+3×3 Array{Float64,2}:
+   1.5   2.0  -4.0
+   3.0  -1.0  -6.0
+ -10.0   2.3   4.0
+
+julia&gt; factorize(A)
+Base.LinAlg.LU{Float64,Array{Float64,2}} with factors L and U:
+[1.0 0.0 0.0; -0.15 1.0 0.0; -0.3 -0.132196 1.0]
+[-10.0 2.3 4.0; 0.0 2.345 -3.4; 0.0 0.0 -5.24947]</pre>
+<p>Since <code>A</code> is not Hermitian, symmetric, triangular, tridiagonal, or bidiagonal, an LU factorization may be the best we can do. Compare with:</p>
+<pre>julia&gt; B = [1.5 2 -4; 2 -1 -3; -4 -3 5]
+3×3 Array{Float64,2}:
+  1.5   2.0  -4.0
+  2.0  -1.0  -3.0
+ -4.0  -3.0   5.0
+
+julia&gt; factorize(B)
+Base.LinAlg.BunchKaufman{Float64,Array{Float64,2}}([-1.64286 0.142857 -0.8; 2.0 -2.8 -0.6; -4.0 -3.0 5.0], [1, 2, 3], 'U', true, false, 0)</pre>
+<p>Here, Julia was able to detect that <code>B</code> is in fact symmetric, and used a more appropriate factorization. Often it's possible to write more efficient code for a matrix that is known to have certain properties e.g. it is symmetric, or tridiagonal. Julia provides some special types so that you can "tag" matrices as having these properties. For instance:</p>
+<pre>julia&gt; B = [1.5 2 -4; 2 -1 -3; -4 -3 5]
+3×3 Array{Float64,2}:
+  1.5   2.0  -4.0
+  2.0  -1.0  -3.0
+ -4.0  -3.0   5.0
+
+julia&gt; sB = Symmetric(B)
+3×3 Symmetric{Float64,Array{Float64,2}}:
+  1.5   2.0  -4.0
+  2.0  -1.0  -3.0
+ -4.0  -3.0   5.0</pre>
+<p><code>sB</code> has been tagged as a matrix that's (real) symmetric, so for later operations we might perform on it, such as eigenfactorization or computing matrix-vector products, efficiencies can be found by only referencing half of it. For example:</p>
+<pre>julia&gt; B = [1.5 2 -4; 2 -1 -3; -4 -3 5]
+3×3 Array{Float64,2}:
+  1.5   2.0  -4.0
+  2.0  -1.0  -3.0
+ -4.0  -3.0   5.0
+
+julia&gt; sB = Symmetric(B)
+3×3 Symmetric{Float64,Array{Float64,2}}:
+  1.5   2.0  -4.0
+  2.0  -1.0  -3.0
+ -4.0  -3.0   5.0
+
+julia&gt; x = [1; 2; 3]
+3-element Array{Int64,1}:
+ 1
+ 2
+ 3
+
+julia&gt; sB\x
+3-element Array{Float64,1}:
+ -1.73913
+ -1.1087
+ -1.45652</pre>
+<p>The <code>\</code> operation here performs the linear solution. Julia's parser provides convenient dispatch to specialized methods for the <em>transpose</em> of a matrix left-divided by a vector, or for the various combinations of transpose operations in matrix-matrix solutions. Many of these are further specialized for certain special matrix types. For example, <code>A\B</code> will end up calling <a href="../../stdlib/linalg/#Base.LinAlg.A_ldiv_B!"><code>Base.LinAlg.A_ldiv_B!</code></a> while <code>A'\B</code> will end up calling <a href="../../stdlib/linalg/#Base.Ac_ldiv_B"><code>Base.LinAlg.Ac_ldiv_B</code></a>, even though we used the same left-division operator. This works for matrices too: <code>A.'\B.'</code> would call <a href="../../stdlib/linalg/#Base.At_ldiv_Bt"><code>Base.LinAlg.At_ldiv_Bt</code></a>. The left-division operator is pretty powerful and it's easy to write compact, readable code that is flexible enough to solve all sorts of systems of linear equations.</p>
+<h2 id="Special-matrices-1">Special matrices</h2>
+<p><a href="http://www2.imm.dtu.dk/pubdb/views/publication_details.php?id=3274" target="_blank">Matrices with special symmetries and structures</a> arise often in linear algebra and are frequently associated with various matrix factorizations. Julia features a rich collection of special matrix types, which allow for fast computation with specialized routines that are specially developed for particular matrix types.</p>
+<p>The following tables summarize the types of special matrices that have been implemented in Julia, as well as whether hooks to various optimized methods for them in LAPACK are available.</p>
+<table>
+<tr>
+<th>Type</th>
+<th>Description</th>
+</tr>
+<tr>
+<td><a href="../../stdlib/linalg/#Base.LinAlg.Hermitian"><code>Hermitian</code></a></td>
+<td><a href="https://en.wikipedia.org/wiki/Hermitian_matrix" target="_blank">Hermitian matrix</a></td>
+</tr>
+<tr>
+<td><a href="../../stdlib/linalg/#Base.LinAlg.UpperTriangular"><code>UpperTriangular</code></a></td>
+<td>Upper <a href="https://en.wikipedia.org/wiki/Triangular_matrix" target="_blank">triangular matrix</a>
+</td>
+</tr>
+<tr>
+<td><a href="../../stdlib/linalg/#Base.LinAlg.LowerTriangular"><code>LowerTriangular</code></a></td>
+<td>Lower <a href="https://en.wikipedia.org/wiki/Triangular_matrix" target="_blank">triangular matrix</a>
+</td>
+</tr>
+<tr>
+<td><a href="../../stdlib/linalg/#Base.LinAlg.Tridiagonal"><code>Tridiagonal</code></a></td>
+<td><a href="https://en.wikipedia.org/wiki/Tridiagonal_matrix" target="_blank">Tridiagonal matrix</a></td>
+</tr>
+<tr>
+<td><a href="../../stdlib/linalg/#Base.LinAlg.SymTridiagonal"><code>SymTridiagonal</code></a></td>
+<td>Symmetric tridiagonal matrix</td>
+</tr>
+<tr>
+<td><a href="../../stdlib/linalg/#Base.LinAlg.Bidiagonal"><code>Bidiagonal</code></a></td>
+<td>Upper/lower <a href="https://en.wikipedia.org/wiki/Bidiagonal_matrix" target="_blank">bidiagonal matrix</a>
+</td>
+</tr>
+<tr>
+<td><a href="../../stdlib/linalg/#Base.LinAlg.Diagonal"><code>Diagonal</code></a></td>
+<td><a href="https://en.wikipedia.org/wiki/Diagonal_matrix" target="_blank">Diagonal matrix</a></td>
+</tr>
+<tr>
+<td><code>UniformScaling</code></td>
+<td><a href="https://en.wikipedia.org/wiki/Uniform_scaling" target="_blank">Uniform scaling operator</a></td>
+</tr>
+</table>
+<h3 id="Elementary-operations-1">Elementary operations</h3>
+<table>
+<tr>
+<th>Matrix type</th>
+<th><code>+</code></th>
+<th><code>-</code></th>
+<th><code>*</code></th>
+<th><code>\</code></th>
+<th>Other functions with optimized methods</th>
+</tr>
+<tr>
+<td><a href="../../stdlib/linalg/#Base.LinAlg.Hermitian"><code>Hermitian</code></a></td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td>MV</td>
+<td>
+<a href="../../stdlib/linalg/#Base.inv"><code>inv()</code></a>, <a href="../../stdlib/linalg/#Base.LinAlg.sqrtm"><code>sqrtm()</code></a>, <a href="../../stdlib/linalg/#Base.LinAlg.expm"><code>expm()</code></a>
+</td>
+</tr>
+<tr>
+<td><a href="../../stdlib/linalg/#Base.LinAlg.UpperTriangular"><code>UpperTriangular</code></a></td>
+<td> </td>
+<td> </td>
+<td>MV</td>
+<td>MV</td>
+<td>
+<a href="../../stdlib/linalg/#Base.inv"><code>inv()</code></a>, <a href="../../stdlib/linalg/#Base.LinAlg.det"><code>det()</code></a>
+</td>
+</tr>
+<tr>
+<td><a href="../../stdlib/linalg/#Base.LinAlg.LowerTriangular"><code>LowerTriangular</code></a></td>
+<td> </td>
+<td> </td>
+<td>MV</td>
+<td>MV</td>
+<td>
+<a href="../../stdlib/linalg/#Base.inv"><code>inv()</code></a>, <a href="../../stdlib/linalg/#Base.LinAlg.det"><code>det()</code></a>
+</td>
+</tr>
+<tr>
+<td><a href="../../stdlib/linalg/#Base.LinAlg.SymTridiagonal"><code>SymTridiagonal</code></a></td>
+<td>M</td>
+<td>M</td>
+<td>MS</td>
+<td>MV</td>
+<td>
+<a href="../../stdlib/linalg/#Base.LinAlg.eigmax"><code>eigmax()</code></a>, <a href="../../stdlib/linalg/#Base.LinAlg.eigmin"><code>eigmin()</code></a>
+</td>
+</tr>
+<tr>
+<td><a href="../../stdlib/linalg/#Base.LinAlg.Tridiagonal"><code>Tridiagonal</code></a></td>
+<td>M</td>
+<td>M</td>
+<td>MS</td>
+<td>MV</td>
+<td> </td>
+</tr>
+<tr>
+<td><a href="../../stdlib/linalg/#Base.LinAlg.Bidiagonal"><code>Bidiagonal</code></a></td>
+<td>M</td>
+<td>M</td>
+<td>MS</td>
+<td>MV</td>
+<td> </td>
+</tr>
+<tr>
+<td><a href="../../stdlib/linalg/#Base.LinAlg.Diagonal"><code>Diagonal</code></a></td>
+<td>M</td>
+<td>M</td>
+<td>MV</td>
+<td>MV</td>
+<td>
+<a href="../../stdlib/linalg/#Base.inv"><code>inv()</code></a>, <a href="../../stdlib/linalg/#Base.LinAlg.det"><code>det()</code></a>, <a href="../../stdlib/linalg/#Base.LinAlg.logdet"><code>logdet()</code></a>, <a href="../../stdlib/math/#Base.:/"><code>/()</code></a>
+</td>
+</tr>
+<tr>
+<td><code>UniformScaling</code></td>
+<td>M</td>
+<td>M</td>
+<td>MVS</td>
+<td>MVS</td>
+<td><a href="../../stdlib/math/#Base.:/"><code>/()</code></a></td>
+</tr>
+</table>
+<p>Legend:</p>
+<table>
+<tr>
+<th>Key</th>
+<th>Description</th>
+</tr>
+<tr>
+<td>M (matrix)</td>
+<td>An optimized method for matrix-matrix operations is available</td>
+</tr>
+<tr>
+<td>V (vector)</td>
+<td>An optimized method for matrix-vector operations is available</td>
+</tr>
+<tr>
+<td>S (scalar)</td>
+<td>An optimized method for matrix-scalar operations is available</td>
+</tr>
+</table>
+<h3 id="Matrix-factorizations-1">Matrix factorizations</h3>
+<table>
+<tr>
+<th>Matrix type</th>
+<th>LAPACK</th>
+<th><a href="../../stdlib/linalg/#Base.LinAlg.eig"><code>eig()</code></a></th>
+<th><a href="../../stdlib/linalg/#Base.LinAlg.eigvals"><code>eigvals()</code></a></th>
+<th><a href="../../stdlib/linalg/#Base.LinAlg.eigvecs"><code>eigvecs()</code></a></th>
+<th><a href="../../stdlib/linalg/#Base.LinAlg.svd"><code>svd()</code></a></th>
+<th><a href="../../stdlib/linalg/#Base.LinAlg.svdvals"><code>svdvals()</code></a></th>
+</tr>
+<tr>
+<td><a href="../../stdlib/linalg/#Base.LinAlg.Hermitian"><code>Hermitian</code></a></td>
+<td>HE</td>
+<td> </td>
+<td>ARI</td>
+<td> </td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td><a href="../../stdlib/linalg/#Base.LinAlg.UpperTriangular"><code>UpperTriangular</code></a></td>
+<td>TR</td>
+<td>A</td>
+<td>A</td>
+<td>A</td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td><a href="../../stdlib/linalg/#Base.LinAlg.LowerTriangular"><code>LowerTriangular</code></a></td>
+<td>TR</td>
+<td>A</td>
+<td>A</td>
+<td>A</td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td><a href="../../stdlib/linalg/#Base.LinAlg.SymTridiagonal"><code>SymTridiagonal</code></a></td>
+<td>ST</td>
+<td>A</td>
+<td>ARI</td>
+<td>AV</td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td><a href="../../stdlib/linalg/#Base.LinAlg.Tridiagonal"><code>Tridiagonal</code></a></td>
+<td>GT</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td><a href="../../stdlib/linalg/#Base.LinAlg.Bidiagonal"><code>Bidiagonal</code></a></td>
+<td>BD</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td>A</td>
+<td>A</td>
+</tr>
+<tr>
+<td><a href="../../stdlib/linalg/#Base.LinAlg.Diagonal"><code>Diagonal</code></a></td>
+<td>DI</td>
+<td> </td>
+<td>A</td>
+<td> </td>
+<td> </td>
+<td> </td>
+</tr>
+</table>
+<p>Legend:</p>
+<table>
+<tr>
+<th>Key</th>
+<th>Description</th>
+<th>Example</th>
+</tr>
+<tr>
+<td>A (all)</td>
+<td>An optimized method to find all the characteristic values and/or vectors is available</td>
+<td>e.g. <code>eigvals(M)</code>
+</td>
+</tr>
+<tr>
+<td>R (range)</td>
+<td>An optimized method to find the <code>il</code>th through the <code>ih</code>th characteristic values are available</td>
+<td><code>eigvals(M, il, ih)</code></td>
+</tr>
+<tr>
+<td>I (interval)</td>
+<td>An optimized method to find the characteristic values in the interval [<code>vl</code>, <code>vh</code>] is available</td>
+<td><code>eigvals(M, vl, vh)</code></td>
+</tr>
+<tr>
+<td>V (vectors)</td>
+<td>An optimized method to find the characteristic vectors corresponding to the characteristic values <code>x=[x1, x2,...]</code> is available</td>
+<td><code>eigvecs(M, x)</code></td>
+</tr>
+</table>
+<h3 id="The-uniform-scaling-operator-1">The uniform scaling operator</h3>
+<p>A <code>UniformScaling</code> operator represents a scalar times the identity operator, <code>λ*I</code>. The identity operator <code>I</code> is defined as a constant and is an instance of <code>UniformScaling</code>. The size of these operators are generic and match the other matrix in the binary operations <a href="../../stdlib/math/#Base.:+"><code>+</code></a>, <a href="#"><code>-</code></a>, <a href="#"><code>*</code></a> and <a href="#"><code>\</code></a>. For <code>A+I</code> and <code>A-I</code> this means that <code>A</code> must be square. Multiplication with the identity operator <code>I</code> is a noop (except for checking that the scaling factor is one) and therefore almost without overhead.</p>
+<h2 id="man-linalg-factorizations-1">Matrix factorizations</h2>
+<p><a href="https://en.wikipedia.org/wiki/Matrix_decomposition" target="_blank">Matrix factorizations (a.k.a. matrix decompositions)</a> compute the factorization of a matrix into a product of matrices, and are one of the central concepts in linear algebra.</p>
+<p>The following table summarizes the types of matrix factorizations that have been implemented in Julia. Details of their associated methods can be found in the <a href="../../stdlib/linalg/#Linear-Algebra-1">Linear Algebra</a> section of the standard library documentation.</p>
+<table>
+<tr>
+<th>Type</th>
+<th>Description</th>
+</tr>
+<tr>
+<td><code>Cholesky</code></td>
+<td><a href="https://en.wikipedia.org/wiki/Cholesky_decomposition" target="_blank">Cholesky factorization</a></td>
+</tr>
+<tr>
+<td><code>CholeskyPivoted</code></td>
+<td>
+<a href="https://en.wikipedia.org/wiki/Pivot_element" target="_blank">Pivoted</a> Cholesky factorization</td>
+</tr>
+<tr>
+<td><code>LU</code></td>
+<td><a href="https://en.wikipedia.org/wiki/LU_decomposition" target="_blank">LU factorization</a></td>
+</tr>
+<tr>
+<td><code>LUTridiagonal</code></td>
+<td>LU factorization for <a href="../../stdlib/linalg/#Base.LinAlg.Tridiagonal"><code>Tridiagonal</code></a> matrices</td>
+</tr>
+<tr>
+<td><code>UmfpackLU</code></td>
+<td>LU factorization for sparse matrices (computed by UMFPack)</td>
+</tr>
+<tr>
+<td><code>QR</code></td>
+<td><a href="https://en.wikipedia.org/wiki/QR_decomposition" target="_blank">QR factorization</a></td>
+</tr>
+<tr>
+<td><code>QRCompactWY</code></td>
+<td>Compact WY form of the QR factorization</td>
+</tr>
+<tr>
+<td><code>QRPivoted</code></td>
+<td>Pivoted <a href="https://en.wikipedia.org/wiki/QR_decomposition" target="_blank">QR factorization</a>
+</td>
+</tr>
+<tr>
+<td><code>Hessenberg</code></td>
+<td><a href="http://mathworld.wolfram.com/HessenbergDecomposition.html" target="_blank">Hessenberg decomposition</a></td>
+</tr>
+<tr>
+<td><code>Eigen</code></td>
+<td><a href="https://en.wikipedia.org/wiki/Eigendecomposition_(matrix)" target="_blank">Spectral decomposition</a></td>
+</tr>
+<tr>
+<td><code>SVD</code></td>
+<td><a href="https://en.wikipedia.org/wiki/Singular_value_decomposition" target="_blank">Singular value decomposition</a></td>
+</tr>
+<tr>
+<td><code>GeneralizedSVD</code></td>
+<td><a href="https://en.wikipedia.org/wiki/Generalized_singular_value_decomposition#Higher_order_version" target="_blank">Generalized SVD</a></td>
+</tr>
+</table>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2009–2016 Jeff Bezanson, Stefan Karpinski, Viral B. Shah, and other contributors<br>Licensed under the MIT License.<br>
+    <a href="https://docs.julialang.org/en/release-0.6/manual/linear-algebra/" class="_attribution-link" target="_blank">https://docs.julialang.org/en/release-0.6/manual/linear-algebra/</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

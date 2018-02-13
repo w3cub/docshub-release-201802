@@ -1,0 +1,142 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Dynamic Linker - Julia 0.6 - W3cubDocs</title>
+  
+  <meta name="description" content=" The names in Base.Libdl are not exported and need to be called e.g. as Libdl.dlopen(). ">
+  <meta name="keywords" content="dynamic, linker, -, julia, julia~0.6">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/julia~0.6/stdlib/libdl/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/julia~0.6.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/julia~0.6/" class="_nav-link" title="" style="margin-left:0;">Julia 0.6</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _julia">
+				
+<h1 id="Dynamic-Linker-1">Dynamic Linker</h1>
+<p>The names in <code>Base.Libdl</code> are not exported and need to be called e.g. as <code>Libdl.dlopen()</code>.</p>
+<h3 id="Base.Libdl.dlopen">
+<code>Base.Libdl.dlopen</code><span class="docstring-category">Function</span>
+</h3>
+<pre>dlopen(libfile::AbstractString [, flags::Integer])</pre>
+<p>Load a shared library, returning an opaque handle.</p>
+<p>The extension given by the constant <code>dlext</code> (<code>.so</code>, <code>.dll</code>, or <code>.dylib</code>) can be omitted from the <code>libfile</code> string, as it is automatically appended if needed. If <code>libfile</code> is not an absolute path name, then the paths in the array <code>DL_LOAD_PATH</code> are searched for <code>libfile</code>, followed by the system load path.</p>
+<p>The optional flags argument is a bitwise-or of zero or more of <code>RTLD_LOCAL</code>, <code>RTLD_GLOBAL</code>, <code>RTLD_LAZY</code>, <code>RTLD_NOW</code>, <code>RTLD_NODELETE</code>, <code>RTLD_NOLOAD</code>, <code>RTLD_DEEPBIND</code>, and <code>RTLD_FIRST</code>. These are converted to the corresponding flags of the POSIX (and/or GNU libc and/or MacOS) dlopen command, if possible, or are ignored if the specified functionality is not available on the current platform. The default flags are platform specific. On MacOS the default <code>dlopen</code> flags are <code>RTLD_LAZY|RTLD_DEEPBIND|RTLD_GLOBAL</code> while on other platforms the defaults are <code>RTLD_LAZY|RTLD_DEEPBIND|RTLD_LOCAL</code>. An important usage of these flags is to specify non default behavior for when the dynamic library loader binds library references to exported symbols and if the bound references are put into process local or global scope. For instance <code>RTLD_LAZY|RTLD_DEEPBIND|RTLD_GLOBAL</code> allows the library's symbols to be available for usage in other shared libraries, addressing situations where there are dependencies between shared libraries.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/libdl.jl#L68-L91">source</a><br><h3 id="Base.Libdl.dlopen_e">
+<code>Base.Libdl.dlopen_e</code><span class="docstring-category">Function</span>
+</h3>
+<pre>dlopen_e(libfile::AbstractString [, flags::Integer])</pre>
+<p>Similar to <a href="#Base.Libdl.dlopen"><code>dlopen</code></a>, except returns a <code>NULL</code> pointer instead of raising errors.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/libdl.jl#L100-L104">source</a><br><h3 id="Base.Libdl.RTLD_NOW">
+<code>Base.Libdl.RTLD_NOW</code><span class="docstring-category">Constant</span>
+</h3>
+<pre>RTLD_DEEPBIND
+RTLD_FIRST
+RTLD_GLOBAL
+RTLD_LAZY
+RTLD_LOCAL
+RTLD_NODELETE
+RTLD_NOLOAD
+RTLD_NOW</pre>
+<p>Enum constant for <a href="#Base.Libdl.dlopen"><code>dlopen</code></a>. See your platform man page for details, if applicable.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/libdl.jl#L32-L44">source</a><br><h3 id="Base.Libdl.dlsym">
+<code>Base.Libdl.dlsym</code><span class="docstring-category">Function</span>
+</h3>
+<pre>dlsym(handle, sym)</pre>
+<p>Look up a symbol from a shared library handle, return callable function pointer on success.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/libdl.jl#L48-L52">source</a><br><h3 id="Base.Libdl.dlsym_e">
+<code>Base.Libdl.dlsym_e</code><span class="docstring-category">Function</span>
+</h3>
+<pre>dlsym_e(handle, sym)</pre>
+<p>Look up a symbol from a shared library handle, silently return <code>NULL</code> pointer on lookup failure.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/libdl.jl#L58-L62">source</a><br><h3 id="Base.Libdl.dlclose">
+<code>Base.Libdl.dlclose</code><span class="docstring-category">Function</span>
+</h3>
+<pre>dlclose(handle)</pre>
+<p>Close shared library referenced by handle.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/libdl.jl#L113-L117">source</a><br><h3 id="Base.Libdl.dlext">
+<code>Base.Libdl.dlext</code><span class="docstring-category">Constant</span>
+</h3>
+<pre>dlext</pre>
+<p>File extension for dynamic libraries (e.g. dll, dylib, so) on the current platform.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/libdl.jl#L175-L179">source</a><br><h3 id="Base.Libdl.find_library">
+<code>Base.Libdl.find_library</code><span class="docstring-category">Function</span>
+</h3>
+<pre>find_library(names, locations)</pre>
+<p>Searches for the first library in <code>names</code> in the paths in the <code>locations</code> list, <code>DL_LOAD_PATH</code>, or system library paths (in that order) which can successfully be dlopen'd. On success, the return value will be one of the names (potentially prefixed by one of the paths in locations). This string can be assigned to a <code>global const</code> and used as the library name in future <code>ccall</code>'s. On failure, it returns the empty string.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/libdl.jl#L122-L130">source</a><br><h3 id="Base.Libdl.DL_LOAD_PATH">
+<code>Base.Libdl.DL_LOAD_PATH</code><span class="docstring-category">Constant</span>
+</h3>
+<pre>DL_LOAD_PATH</pre>
+<p>When calling <a href="#Base.Libdl.dlopen"><code>dlopen</code></a>, the paths in this list will be searched first, in order, before searching the system locations for a valid library handle.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/libdl.jl#L9-L14">source</a><br><div class="_attribution">
+  <p class="_attribution-p">
+    © 2009–2016 Jeff Bezanson, Stefan Karpinski, Viral B. Shah, and other contributors<br>Licensed under the MIT License.<br>
+    <a href="https://docs.julialang.org/en/release-0.6/stdlib/libdl/" class="_attribution-link" target="_blank">https://docs.julialang.org/en/release-0.6/stdlib/libdl/</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

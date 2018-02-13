@@ -1,0 +1,1081 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Tasks and Parallel Computing - Julia 0.6 - W3cubDocs</title>
+  
+  <meta name="description" content=" Create a Task (i.e. coroutine) to execute the given function (which must be callable with no arguments). The task exits when this function returns. ">
+  <meta name="keywords" content="tasks, and, parallel, computing, -, julia, julia~0.6">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/julia~0.6/stdlib/parallel/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/julia~0.6.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/julia~0.6/" class="_nav-link" title="" style="margin-left:0;">Julia 0.6</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _julia">
+				
+<h1 id="Tasks-and-Parallel-Computing-1">Tasks and Parallel Computing</h1>
+<h2 id="Tasks-1">Tasks</h2>
+<h3 id="Core.Task">
+<code>Core.Task</code><span class="docstring-category">Type</span>
+</h3>
+<pre>Task(func)</pre>
+<p>Create a <code>Task</code> (i.e. coroutine) to execute the given function (which must be callable with no arguments). The task exits when this function returns.</p>
+<p><strong>Example</strong></p>
+<pre>julia&gt; a() = det(rand(1000, 1000));
+
+julia&gt; b = Task(a);</pre>
+<p>In this example, <code>b</code> is a runnable <code>Task</code> that hasn't started yet.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/docs/helpdb/Base.jl#L1640-L1654">source</a><br><h3 id="Base.current_task">
+<code>Base.current_task</code><span class="docstring-category">Function</span>
+</h3>
+<pre>current_task()</pre>
+<p>Get the currently running <a href="#Core.Task"><code>Task</code></a>.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/task.jl#L83-L87">source</a><br><h3 id="Base.istaskdone">
+<code>Base.istaskdone</code><span class="docstring-category">Function</span>
+</h3>
+<pre>istaskdone(t::Task) -&gt; Bool</pre>
+<p>Determine whether a task has exited.</p>
+<pre>julia&gt; a2() = det(rand(1000, 1000));
+
+julia&gt; b = Task(a2);
+
+julia&gt; istaskdone(b)
+false
+
+julia&gt; schedule(b);
+
+julia&gt; yield();
+
+julia&gt; istaskdone(b)
+true</pre>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/task.jl#L90-L110">source</a><br><h3 id="Base.istaskstarted">
+<code>Base.istaskstarted</code><span class="docstring-category">Function</span>
+</h3>
+<pre>istaskstarted(t::Task) -&gt; Bool</pre>
+<p>Determine whether a task has started executing.</p>
+<pre>julia&gt; a3() = det(rand(1000, 1000));
+
+julia&gt; b = Task(a3);
+
+julia&gt; istaskstarted(b)
+false</pre>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/task.jl#L113-L126">source</a><br><h3 id="Base.yield">
+<code>Base.yield</code><span class="docstring-category">Function</span>
+</h3>
+<pre>yield()</pre>
+<p>Switch to the scheduler to allow another scheduled task to run. A task that calls this function is still runnable, and will be restarted immediately if there are no other runnable tasks.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/event.jl#L143-L149">source</a><br><pre>yield(t::Task, arg = nothing)</pre>
+<p>A fast, unfair-scheduling version of <code>schedule(t, arg); yield()</code> which immediately yields to <code>t</code> before calling the scheduler.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/event.jl#L152-L157">source</a><br><h3 id="Base.yieldto">
+<code>Base.yieldto</code><span class="docstring-category">Function</span>
+</h3>
+<pre>yieldto(t::Task, arg = nothing)</pre>
+<p>Switch to the given task. The first time a task is switched to, the task's function is called with no arguments. On subsequent switches, <code>arg</code> is returned from the task's last call to <code>yieldto</code>. This is a low-level call that only switches tasks, not considering states or scheduling in any way. Its use is discouraged.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/event.jl#L165-L172">source</a><br><h3 id="Base.task_local_storage-Tuple{Any}">
+<code>Base.task_local_storage</code><span class="docstring-category">Method</span>
+</h3>
+<pre>task_local_storage(key)</pre>
+<p>Look up the value of a key in the current task's task-local storage.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/task.jl#L141-L145">source</a><br><h3 id="Base.task_local_storage-Tuple{Any,Any}">
+<code>Base.task_local_storage</code><span class="docstring-category">Method</span>
+</h3>
+<pre>task_local_storage(key, value)</pre>
+<p>Assign a value to a key in the current task's task-local storage.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/task.jl#L148-L152">source</a><br><h3 id="Base.task_local_storage-Tuple{Function,Any,Any}">
+<code>Base.task_local_storage</code><span class="docstring-category">Method</span>
+</h3>
+<pre>task_local_storage(body, key, value)</pre>
+<p>Call the function <code>body</code> with a modified task-local storage, in which <code>value</code> is assigned to <code>key</code>; the previous value of <code>key</code>, or lack thereof, is restored afterwards. Useful for emulating dynamic scoping.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/task.jl#L155-L161">source</a><br><h3 id="Base.Condition">
+<code>Base.Condition</code><span class="docstring-category">Type</span>
+</h3>
+<pre>Condition()</pre>
+<p>Create an edge-triggered event source that tasks can wait for. Tasks that call <a href="#Base.wait"><code>wait</code></a> on a <code>Condition</code> are suspended and queued. Tasks are woken up when <a href="#Base.notify"><code>notify</code></a> is later called on the <code>Condition</code>. Edge triggering means that only tasks waiting at the time <a href="#Base.notify"><code>notify</code></a> is called can be woken up. For level-triggered notifications, you must keep extra state to keep track of whether a notification has happened. The <a href="#Base.Channel"><code>Channel</code></a> type does this, and so can be used for level-triggered events.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/event.jl#L5-L14">source</a><br><h3 id="Base.notify">
+<code>Base.notify</code><span class="docstring-category">Function</span>
+</h3>
+<pre>notify(condition, val=nothing; all=true, error=false)</pre>
+<p>Wake up tasks waiting for a condition, passing them <code>val</code>. If <code>all</code> is <code>true</code> (the default), all waiting tasks are woken, otherwise only one is. If <code>error</code> is <code>true</code>, the passed value is raised as an exception in the woken tasks.</p>
+<p>Returns the count of tasks woken up. Returns 0 if no tasks are waiting on <code>condition</code>.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/event.jl#L34-L42">source</a><br><h3 id="Base.schedule">
+<code>Base.schedule</code><span class="docstring-category">Function</span>
+</h3>
+<pre>schedule(t::Task, [val]; error=false)</pre>
+<p>Add a <a href="#Core.Task"><code>Task</code></a> to the scheduler's queue. This causes the task to run constantly when the system is otherwise idle, unless the task performs a blocking operation such as <a href="#Base.wait"><code>wait</code></a>.</p>
+<p>If a second argument <code>val</code> is provided, it will be passed to the task (via the return value of <a href="#Base.yieldto"><code>yieldto</code></a>) when it runs again. If <code>error</code> is <code>true</code>, the value is raised as an exception in the woken task.</p>
+<pre>julia&gt; a5() = det(rand(1000, 1000));
+
+julia&gt; b = Task(a5);
+
+julia&gt; istaskstarted(b)
+false
+
+julia&gt; schedule(b);
+
+julia&gt; yield();
+
+julia&gt; istaskstarted(b)
+true
+
+julia&gt; istaskdone(b)
+true</pre>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/event.jl#L91-L119">source</a><br><h3 id="Base.@schedule">
+<code>Base.@schedule</code><span class="docstring-category">Macro</span>
+</h3>
+<pre>@schedule</pre>
+<p>Wrap an expression in a <a href="#Core.Task"><code>Task</code></a> and add it to the local machine's scheduler queue. Similar to <a href="#Base.@async"><code>@async</code></a> except that an enclosing <code>@sync</code> does NOT wait for tasks started with an <code>@schedule</code>.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/event.jl#L65-L71">source</a><br><h3 id="Base.@task">
+<code>Base.@task</code><span class="docstring-category">Macro</span>
+</h3>
+<pre>@task</pre>
+<p>Wrap an expression in a <a href="#Core.Task"><code>Task</code></a> without executing it, and return the <a href="#Core.Task"><code>Task</code></a>. This only creates a task, and does not run it.</p>
+<pre>julia&gt; a1() = det(rand(1000, 1000));
+
+julia&gt; b = @task a1();
+
+julia&gt; istaskstarted(b)
+false
+
+julia&gt; schedule(b);
+
+julia&gt; yield();
+
+julia&gt; istaskdone(b)
+true</pre>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/task.jl#L57-L78">source</a><br><h3 id="Base.sleep">
+<code>Base.sleep</code><span class="docstring-category">Function</span>
+</h3>
+<pre>sleep(seconds)</pre>
+<p>Block the current task for a specified number of seconds. The minimum sleep time is 1 millisecond or input of <code>0.001</code>.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/event.jl#L403-L408">source</a><br><h3 id="Base.Channel">
+<code>Base.Channel</code><span class="docstring-category">Type</span>
+</h3>
+<pre>Channel{T}(sz::Int)</pre>
+<p>Constructs a <code>Channel</code> with an internal buffer that can hold a maximum of <code>sz</code> objects of type <code>T</code>. <a href="#Base.put!-Tuple%7BChannel,Any%7D"><code>put!</code></a> calls on a full channel block until an object is removed with <a href="#"><code>take!</code></a>.</p>
+<p><code>Channel(0)</code> constructs an unbuffered channel. <code>put!</code> blocks until a matching <code>take!</code> is called. And vice-versa.</p>
+<p>Other constructors:</p>
+<ul>
+<li><p><code>Channel(Inf)</code>: equivalent to <code>Channel{Any}(typemax(Int))</code></p></li>
+<li><p><code>Channel(sz)</code>: equivalent to <code>Channel{Any}(sz)</code></p></li>
+</ul>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/channels.jl#L5-L19">source</a><br><h3 id="Base.put!-Tuple{Channel,Any}">
+<code>Base.put!</code><span class="docstring-category">Method</span>
+</h3>
+<pre>put!(c::Channel, v)</pre>
+<p>Appends an item <code>v</code> to the channel <code>c</code>. Blocks if the channel is full.</p>
+<p>For unbuffered channels, blocks until a <a href="#"><code>take!</code></a> is performed by a different task.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/channels.jl#L252-L259">source</a><br><h3 id="Base.take!-Tuple{Channel}">
+<code>Base.take!</code><span class="docstring-category">Method</span>
+</h3>
+<pre>take!(c::Channel)</pre>
+<p>Removes and returns a value from a <a href="#Base.Channel"><code>Channel</code></a>. Blocks until data is available.</p>
+<p>For unbuffered channels, blocks until a <a href="#Base.put!-Tuple%7BChannel,Any%7D"><code>put!</code></a> is performed by a different task.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/channels.jl#L309-L316">source</a><br><h3 id="Base.isready-Tuple{Channel}">
+<code>Base.isready</code><span class="docstring-category">Method</span>
+</h3>
+<pre>isready(c::Channel)</pre>
+<p>Determine whether a <a href="#Base.Channel"><code>Channel</code></a> has a value stored to it. Returns immediately, does not block.</p>
+<p>For unbuffered channels returns <code>true</code> if there are tasks waiting on a <a href="#Base.put!-Tuple%7BChannel,Any%7D"><code>put!</code></a>.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/channels.jl#L348-L356">source</a><br><h3 id="Base.fetch-Tuple{Channel}">
+<code>Base.fetch</code><span class="docstring-category">Method</span>
+</h3>
+<pre>fetch(c::Channel)</pre>
+<p>Waits for and gets the first available item from the channel. Does not remove the item. <code>fetch</code> is unsupported on an unbuffered (0-size) channel.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/channels.jl#L295-L300">source</a><br><h3 id="Base.close-Tuple{Channel}">
+<code>Base.close</code><span class="docstring-category">Method</span>
+</h3>
+<pre>close(c::Channel)</pre>
+<p>Closes a channel. An exception is thrown by:</p>
+<ul>
+<li><p><a href="#Base.put!-Tuple%7BChannel,Any%7D"><code>put!</code></a> on a closed channel.</p></li>
+<li><p><a href="#"><code>take!</code></a> and <a href="#Base.fetch-Tuple%7BChannel%7D"><code>fetch</code></a> on an empty, closed channel.</p></li>
+</ul>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/channels.jl#L135-L142">source</a><br><h3 id="Base.bind-Tuple{Channel,Task}">
+<code>Base.bind</code><span class="docstring-category">Method</span>
+</h3>
+<pre>bind(chnl::Channel, task::Task)</pre>
+<p>Associates the lifetime of <code>chnl</code> with a task. Channel <code>chnl</code> is automatically closed when the task terminates. Any uncaught exception in the task is propagated to all waiters on <code>chnl</code>.</p>
+<p>The <code>chnl</code> object can be explicitly closed independent of task termination. Terminating tasks have no effect on already closed Channel objects.</p>
+<p>When a channel is bound to multiple tasks, the first task to terminate will close the channel. When multiple channels are bound to the same task, termination of the task will close all of the bound channels.</p>
+<pre>julia&gt; c = Channel(0);
+
+julia&gt; task = @schedule foreach(i-&gt;put!(c, i), 1:4);
+
+julia&gt; bind(c,task);
+
+julia&gt; for i in c
+           @show i
+       end;
+i = 1
+i = 2
+i = 3
+i = 4
+
+julia&gt; isopen(c)
+false</pre>
+<pre>julia&gt; c = Channel(0);
+
+julia&gt; task = @schedule (put!(c,1);error("foo"));
+
+julia&gt; bind(c,task);
+
+julia&gt; take!(c)
+1
+
+julia&gt; put!(c,1);
+ERROR: foo
+Stacktrace:
+ [1] check_channel_state(::Channel{Any}) at ./channels.jl:131
+ [2] put!(::Channel{Any}, ::Int64) at ./channels.jl:261</pre>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/channels.jl#L151-L200">source</a><br><h3 id="Base.asyncmap">
+<code>Base.asyncmap</code><span class="docstring-category">Function</span>
+</h3>
+<pre>asyncmap(f, c...; ntasks=0, batch_size=nothing)</pre>
+<p>Uses multiple concurrent tasks to map <code>f</code> over a collection (or multiple equal length collections). For multiple collection arguments, <code>f</code> is applied elementwise.</p>
+<p><code>ntasks</code> specifies the number of tasks to run concurrently. Depending on the length of the collections, if <code>ntasks</code> is unspecified, up to 100 tasks will be used for concurrent mapping.</p>
+<p><code>ntasks</code> can also be specified as a zero-arg function. In this case, the number of tasks to run in parallel is checked before processing every element and a new task started if the value of <code>ntasks_func()</code> is less than the current number of tasks.</p>
+<p>If <code>batch_size</code> is specified, the collection is processed in batch mode. <code>f</code> must then be a function that must accept a <code>Vector</code> of argument tuples and must return a vector of results. The input vector will have a length of <code>batch_size</code> or less.</p>
+<p>The following examples highlight execution in different tasks by returning the <code>object_id</code> of the tasks in which the mapping function is executed.</p>
+<p>First, with <code>ntasks</code> undefined, each element is processed in a different task.</p>
+<pre>julia&gt; tskoid() = object_id(current_task());
+
+julia&gt; asyncmap(x-&gt;tskoid(), 1:5)
+5-element Array{UInt64,1}:
+ 0x6e15e66c75c75853
+ 0x440f8819a1baa682
+ 0x9fb3eeadd0c83985
+ 0xebd3e35fe90d4050
+ 0x29efc93edce2b961
+
+julia&gt; length(unique(asyncmap(x-&gt;tskoid(), 1:5)))
+5</pre>
+<p>With <code>ntasks=2</code> all elements are processed in 2 tasks.</p>
+<pre>julia&gt; asyncmap(x-&gt;tskoid(), 1:5; ntasks=2)
+5-element Array{UInt64,1}:
+ 0x027ab1680df7ae94
+ 0xa23d2f80cd7cf157
+ 0x027ab1680df7ae94
+ 0xa23d2f80cd7cf157
+ 0x027ab1680df7ae94
+
+julia&gt; length(unique(asyncmap(x-&gt;tskoid(), 1:5; ntasks=2)))
+2</pre>
+<p>With <code>batch_size</code> defined, the mapping function needs to be changed to accept an array of argument tuples and return an array of results. <code>map</code> is used in the modified mapping function to achieve this.</p>
+<pre>julia&gt; batch_func(input) = map(x-&gt;string("args_tuple: ", x, ", element_val: ", x[1], ", task: ", tskoid()), input)
+batch_func (generic function with 1 method)
+
+julia&gt; asyncmap(batch_func, 1:5; ntasks=2, batch_size=2)
+5-element Array{String,1}:
+ "args_tuple: (1,), element_val: 1, task: 9118321258196414413"
+ "args_tuple: (2,), element_val: 2, task: 4904288162898683522"
+ "args_tuple: (3,), element_val: 3, task: 9118321258196414413"
+ "args_tuple: (4,), element_val: 4, task: 4904288162898683522"
+ "args_tuple: (5,), element_val: 5, task: 9118321258196414413"</pre>
+<div class="admonition note">
+<div class="admonition-title">Note</div>
+<div class="admonition-text"><p>Currently, all tasks in Julia are executed in a single OS thread co-operatively. Consequently, <code>ayncmap</code> is beneficial only when the mapping function involves any I/O - disk, network, remote worker invocation, etc.</p></div>
+</div>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/asyncmap.jl#L5-L79">source</a><br><h3 id="Base.asyncmap!">
+<code>Base.asyncmap!</code><span class="docstring-category">Function</span>
+</h3>
+<pre>asyncmap!(f, results, c...; ntasks=0, batch_size=nothing)</pre>
+<p>Like <a href="#Base.asyncmap"><code>asyncmap()</code></a>, but stores output in <code>results</code> rather than returning a collection.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/asyncmap.jl#L415-L420">source</a><br><h2 id="General-Parallel-Computing-Support-1">General Parallel Computing Support</h2>
+<h3 id="Base.Distributed.addprocs">
+<code>Base.Distributed.addprocs</code><span class="docstring-category">Function</span>
+</h3>
+<pre>addprocs(manager::ClusterManager; kwargs...) -&gt; List of process identifiers</pre>
+<p>Launches worker processes via the specified cluster manager.</p>
+<p>For example, Beowulf clusters are supported via a custom cluster manager implemented in the package <code>ClusterManagers.jl</code>.</p>
+<p>The number of seconds a newly launched worker waits for connection establishment from the master can be specified via variable <code>JULIA_WORKER_TIMEOUT</code> in the worker process's environment. Relevant only when using TCP/IP as transport.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/distributed/cluster.jl#L302-L313">source</a><br><pre>addprocs(machines; tunnel=false, sshflags=``, max_parallel=10, kwargs...) -&gt; List of process identifiers</pre>
+<p>Add processes on remote machines via SSH. Requires <code>julia</code> to be installed in the same location on each node, or to be available via a shared file system.</p>
+<p><code>machines</code> is a vector of machine specifications. Workers are started for each specification.</p>
+<p>A machine specification is either a string <code>machine_spec</code> or a tuple - <code>(machine_spec, count)</code>.</p>
+<p><code>machine_spec</code> is a string of the form <code>[user@]host[:port] [bind_addr[:port]]</code>. <code>user</code> defaults to current user, <code>port</code> to the standard ssh port. If <code>[bind_addr[:port]]</code> is specified, other workers will connect to this worker at the specified <code>bind_addr</code> and <code>port</code>.</p>
+<p><code>count</code> is the number of workers to be launched on the specified host. If specified as <code>:auto</code> it will launch as many workers as the number of cores on the specific host.</p>
+<p>Keyword arguments:</p>
+<ul>
+<li><p><code>tunnel</code>: if <code>true</code> then SSH tunneling will be used to connect to the worker from the master process. Default is <code>false</code>.</p></li>
+<li><p><code>sshflags</code>: specifies additional ssh options, e.g. <code>sshflags=`-i /home/foo/bar.pem</code>`</p></li>
+<li><p><code>max_parallel</code>: specifies the maximum number of workers connected to in parallel at a host. Defaults to 10.</p></li>
+<li><p><code>dir</code>: specifies the working directory on the workers. Defaults to the host's current directory (as found by <code>pwd()</code>)</p></li>
+<li><p><code>enable_threaded_blas</code>: if <code>true</code> then BLAS will run on multiple threads in added processes. Default is <code>false</code>.</p></li>
+<li><p><code>exename</code>: name of the <code>julia</code> executable. Defaults to <code>"$JULIA_HOME/julia"</code> or <code>"$JULIA_HOME/julia-debug"</code> as the case may be.</p></li>
+<li><p><code>exeflags</code>: additional flags passed to the worker processes.</p></li>
+<li>
+<p><code>topology</code>: Specifies how the workers connect to each other. Sending a message between unconnected workers results in an error.</p>
+<ul>
+<li><p><code>topology=:all_to_all</code>: All processes are connected to each other. The default.</p></li>
+<li><p><code>topology=:master_slave</code>: Only the driver process, i.e. <code>pid</code> 1 connects to the workers. The workers do not connect to each other.</p></li>
+<li><p><code>topology=:custom</code>: The <code>launch</code> method of the cluster manager specifies the connection topology via fields <code>ident</code> and <code>connect_idents</code> in <code>WorkerConfig</code>. A worker with a cluster manager identity <code>ident</code> will connect to all workers specified in <code>connect_idents</code>.</p></li>
+</ul>
+</li>
+</ul>
+<p>Environment variables :</p>
+<p>If the master process fails to establish a connection with a newly launched worker within 60.0 seconds, the worker treats it as a fatal situation and terminates. This timeout can be controlled via environment variable <code>JULIA_WORKER_TIMEOUT</code>. The value of <code>JULIA_WORKER_TIMEOUT</code> on the master process specifies the number of seconds a newly launched worker waits for connection establishment.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/distributed/managers.jl#L51-L111">source</a><br><pre>addprocs(; kwargs...) -&gt; List of process identifiers</pre>
+<p>Equivalent to <code>addprocs(Sys.CPU_CORES; kwargs...)</code></p>
+<p>Note that workers do not run a <code>.juliarc.jl</code> startup script, nor do they synchronize their global state (such as global variables, new method definitions, and loaded modules) with any of the other running processes.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/distributed/managers.jl#L289-L297">source</a><br><pre>addprocs(np::Integer; restrict=true, kwargs...) -&gt; List of process identifiers</pre>
+<p>Launches workers using the in-built <code>LocalManager</code> which only launches workers on the local host. This can be used to take advantage of multiple cores. <code>addprocs(4)</code> will add 4 processes on the local machine. If <code>restrict</code> is <code>true</code>, binding is restricted to <code>127.0.0.1</code>. Keyword args <code>dir</code>, <code>exename</code>, <code>exeflags</code>, <code>topology</code>, and <code>enable_threaded_blas</code> have the same effect as documented for <code>addprocs(machines)</code>.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/distributed/managers.jl#L300-L308">source</a><br><h3 id="Base.Distributed.nprocs">
+<code>Base.Distributed.nprocs</code><span class="docstring-category">Function</span>
+</h3>
+<pre>nprocs()</pre>
+<p>Get the number of available processes.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/distributed/cluster.jl#L649-L653">source</a><br><h3 id="Base.Distributed.nworkers">
+<code>Base.Distributed.nworkers</code><span class="docstring-category">Function</span>
+</h3>
+<pre>nworkers()</pre>
+<p>Get the number of available worker processes. This is one less than <code>nprocs()</code>. Equal to <code>nprocs()</code> if <code>nprocs() == 1</code>.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/distributed/cluster.jl#L669-L674">source</a><br><h3 id="Base.Distributed.procs-Tuple{}">
+<code>Base.Distributed.procs</code><span class="docstring-category">Method</span>
+</h3>
+<pre>procs()</pre>
+<p>Returns a list of all process identifiers.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/distributed/cluster.jl#L680-L684">source</a><br><h3 id="Base.Distributed.procs-Tuple{Integer}">
+<code>Base.Distributed.procs</code><span class="docstring-category">Method</span>
+</h3>
+<pre>procs(pid::Integer)</pre>
+<p>Returns a list of all process identifiers on the same physical node. Specifically all workers bound to the same ip-address as <code>pid</code> are returned.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/distributed/cluster.jl#L711-L716">source</a><br><h3 id="Base.Distributed.workers">
+<code>Base.Distributed.workers</code><span class="docstring-category">Function</span>
+</h3>
+<pre>workers()</pre>
+<p>Returns a list of all worker process identifiers.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/distributed/cluster.jl#L731-L735">source</a><br><h3 id="Base.Distributed.rmprocs">
+<code>Base.Distributed.rmprocs</code><span class="docstring-category">Function</span>
+</h3>
+<pre>rmprocs(pids...; waitfor=typemax(Int))</pre>
+<p>Removes the specified workers. Note that only process 1 can add or remove workers.</p>
+<p>Argument <code>waitfor</code> specifies how long to wait for the workers to shut down: - If unspecified, <code>rmprocs</code> will wait until all requested <code>pids</code> are removed. - An <code>ErrorException</code> is raised if all workers cannot be terminated before the requested <code>waitfor</code> seconds. - With a <code>waitfor</code> value of 0, the call returns immediately with the workers scheduled for removal in a different task. The scheduled <code>Task</code> object is returned. The user should call <code>wait</code> on the task before invoking any other parallel calls.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/distributed/cluster.jl#L751-L765">source</a><br><h3 id="Base.Distributed.interrupt">
+<code>Base.Distributed.interrupt</code><span class="docstring-category">Function</span>
+</h3>
+<pre>interrupt(pids::Integer...)</pre>
+<p>Interrupt the current executing task on the specified workers. This is equivalent to pressing Ctrl-C on the local machine. If no arguments are given, all workers are interrupted.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/distributed/cluster.jl#L936-L941">source</a><br><pre>interrupt(pids::AbstractVector=workers())</pre>
+<p>Interrupt the current executing task on the specified workers. This is equivalent to pressing Ctrl-C on the local machine. If no arguments are given, all workers are interrupted.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/distributed/cluster.jl#L944-L949">source</a><br><h3 id="Base.Distributed.myid">
+<code>Base.Distributed.myid</code><span class="docstring-category">Function</span>
+</h3>
+<pre>myid()</pre>
+<p>Get the id of the current process.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/distributed/cluster.jl#L642-L646">source</a><br><h3 id="Base.Distributed.pmap">
+<code>Base.Distributed.pmap</code><span class="docstring-category">Function</span>
+</h3>
+<pre>pmap([::AbstractWorkerPool], f, c...; distributed=true, batch_size=1, on_error=nothing, retry_delays=[]), retry_check=nothing) -&gt; collection</pre>
+<p>Transform collection <code>c</code> by applying <code>f</code> to each element using available workers and tasks.</p>
+<p>For multiple collection arguments, apply <code>f</code> elementwise.</p>
+<p>Note that <code>f</code> must be made available to all worker processes; see <a href="../../manual/parallel-computing/#Code-Availability-and-Loading-Packages-1">Code Availability and Loading Packages</a> for details.</p>
+<p>If a worker pool is not specified, all available workers, i.e., the default worker pool is used.</p>
+<p>By default, <code>pmap</code> distributes the computation over all specified workers. To use only the local process and distribute over tasks, specify <code>distributed=false</code>. This is equivalent to using <a href="#Base.asyncmap"><code>asyncmap</code></a>. For example, <code>pmap(f, c; distributed=false)</code> is equivalent to <code>asyncmap(f,c; ntasks=()-&gt;nworkers())</code></p>
+<p><code>pmap</code> can also use a mix of processes and tasks via the <code>batch_size</code> argument. For batch sizes greater than 1, the collection is processed in multiple batches, each of length <code>batch_size</code> or less. A batch is sent as a single request to a free worker, where a local <a href="#Base.asyncmap"><code>asyncmap</code></a> processes elements from the batch using multiple concurrent tasks.</p>
+<p>Any error stops <code>pmap</code> from processing the remainder of the collection. To override this behavior you can specify an error handling function via argument <code>on_error</code> which takes in a single argument, i.e., the exception. The function can stop the processing by rethrowing the error, or, to continue, return any value which is then returned inline with the results to the caller.</p>
+<p>Consider the following two examples. The first one returns the exception object inline, the second a 0 in place of any exception:</p>
+<pre>julia&gt; pmap(x-&gt;iseven(x) ? error("foo") : x, 1:4; on_error=identity)
+4-element Array{Any,1}:
+ 1
+  ErrorException("foo")
+ 3
+  ErrorException("foo")
+
+julia&gt; pmap(x-&gt;iseven(x) ? error("foo") : x, 1:4; on_error=ex-&gt;0)
+4-element Array{Int64,1}:
+ 1
+ 0
+ 3
+ 0</pre>
+<p>Errors can also be handled by retrying failed computations. Keyword arguments <code>retry_delays</code> and <code>retry_check</code> are passed through to <a href="../base/#Base.retry"><code>retry</code></a> as keyword arguments <code>delays</code> and <code>check</code> respectively. If batching is specified, and an entire batch fails, all items in the batch are retried.</p>
+<p>Note that if both <code>on_error</code> and <code>retry_delays</code> are specified, the <code>on_error</code> hook is called before retrying. If <code>on_error</code> does not throw (or rethrow) an exception, the element will not be retried.</p>
+<p>Example: On errors, retry <code>f</code> on an element a maximum of 3 times without any delay between retries.</p>
+<pre>pmap(f, c; retry_delays = zeros(3))</pre>
+<p>Example: Retry <code>f</code> only if the exception is not of type <code>InexactError</code>, with exponentially increasing delays up to 3 times. Return a <code>NaN</code> in place for all <code>InexactError</code> occurrences.</p>
+<pre>pmap(f, c; on_error = e-&gt;(isa(e, InexactError) ? NaN : rethrow(e)), retry_delays = ExponentialBackOff(n = 3))</pre>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/distributed/pmap.jl#L32-L98">source</a><br><h3 id="Base.Distributed.RemoteException">
+<code>Base.Distributed.RemoteException</code><span class="docstring-category">Type</span>
+</h3>
+<pre>RemoteException(captured)</pre>
+<p>Exceptions on remote computations are captured and rethrown locally. A <code>RemoteException</code> wraps the <code>pid</code> of the worker and a captured exception. A <code>CapturedException</code> captures the remote exception and a serializable form of the call stack when the exception was raised.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/distributed/process_messages.jl#L24-L30">source</a><br><h3 id="Base.Distributed.Future">
+<code>Base.Distributed.Future</code><span class="docstring-category">Type</span>
+</h3>
+<pre>Future(pid::Integer=myid())</pre>
+<p>Create a <code>Future</code> on process <code>pid</code>. The default <code>pid</code> is the current process.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/distributed/remotecall.jl#L72-L77">source</a><br><h3 id="Base.Distributed.RemoteChannel-Tuple{Integer}">
+<code>Base.Distributed.RemoteChannel</code><span class="docstring-category">Method</span>
+</h3>
+<pre>RemoteChannel(pid::Integer=myid())</pre>
+<p>Make a reference to a <code>Channel{Any}(1)</code> on process <code>pid</code>. The default <code>pid</code> is the current process.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/distributed/remotecall.jl#L80-L85">source</a><br><h3 id="Base.Distributed.RemoteChannel-Tuple{Function,Integer}">
+<code>Base.Distributed.RemoteChannel</code><span class="docstring-category">Method</span>
+</h3>
+<pre>RemoteChannel(f::Function, pid::Integer=myid())</pre>
+<p>Create references to remote channels of a specific size and type. <code>f()</code> is a function that when executed on <code>pid</code> must return an implementation of an <code>AbstractChannel</code>.</p>
+<p>For example, <code>RemoteChannel(()-&gt;Channel{Int}(10), pid)</code>, will return a reference to a channel of type <code>Int</code> and size 10 on <code>pid</code>.</p>
+<p>The default <code>pid</code> is the current process.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/distributed/remotecall.jl#L88-L98">source</a><br><h3 id="Base.wait">
+<code>Base.wait</code><span class="docstring-category">Function</span>
+</h3>
+<pre>wait([x])</pre>
+<p>Block the current task until some event occurs, depending on the type of the argument:</p>
+<ul>
+<li><p><a href="#Base.Distributed.RemoteChannel-Tuple%7BInteger%7D"><code>RemoteChannel</code></a> : Wait for a value to become available on the specified remote channel.</p></li>
+<li><p><a href="#Base.Distributed.Future"><code>Future</code></a> : Wait for a value to become available for the specified future.</p></li>
+<li><p><a href="#Base.Channel"><code>Channel</code></a>: Wait for a value to be appended to the channel.</p></li>
+<li><p><a href="#Base.Condition"><code>Condition</code></a>: Wait for <a href="#Base.notify"><code>notify</code></a> on a condition.</p></li>
+<li><p><code>Process</code>: Wait for a process or process chain to exit. The <code>exitcode</code> field of a process can be used to determine success or failure.</p></li>
+<li><p><a href="#Core.Task"><code>Task</code></a>: Wait for a <code>Task</code> to finish, returning its result value. If the task fails with an exception, the exception is propagated (re-thrown in the task that called <code>wait</code>).</p></li>
+<li><p><code>RawFD</code>: Wait for changes on a file descriptor (see <a href="../io-network/#Base.Filesystem.poll_fd"><code>poll_fd</code></a> for keyword arguments and return code)</p></li>
+</ul>
+<p>If no argument is passed, the task blocks for an undefined period. A task can only be restarted by an explicit call to <a href="#Base.schedule"><code>schedule</code></a> or <a href="#Base.yieldto"><code>yieldto</code></a>.</p>
+<p>Often <code>wait</code> is called within a <code>while</code> loop to ensure a waited-for condition is met before proceeding.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/docs/helpdb/Base.jl#L1544-L1566">source</a><br><h3 id="Base.fetch-Tuple{Any}">
+<code>Base.fetch</code><span class="docstring-category">Method</span>
+</h3>
+<pre>fetch(x)</pre>
+<p>Waits and fetches a value from <code>x</code> depending on the type of <code>x</code>:</p>
+<ul>
+<li><p><a href="#Base.Distributed.Future"><code>Future</code></a>: Wait for and get the value of a <code>Future</code>. The fetched value is cached locally. Further calls to <code>fetch</code> on the same reference return the cached value. If the remote value is an exception, throws a <a href="#Base.Distributed.RemoteException"><code>RemoteException</code></a> which captures the remote exception and backtrace.</p></li>
+<li><p><a href="#Base.Distributed.RemoteChannel-Tuple%7BInteger%7D"><code>RemoteChannel</code></a>: Wait for and get the value of a remote reference. Exceptions raised are same as for a <code>Future</code> .</p></li>
+</ul>
+<p>Does not remove the item fetched.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/distributed/remotecall.jl#L469-L481">source</a><br><h3 id="Base.Distributed.remotecall-Tuple{Any,Integer,Vararg{Any,N} where N}">
+<code>Base.Distributed.remotecall</code><span class="docstring-category">Method</span>
+</h3>
+<pre>remotecall(f, id::Integer, args...; kwargs...) -&gt; Future</pre>
+<p>Call a function <code>f</code> asynchronously on the given arguments on the specified process. Returns a <a href="#Base.Distributed.Future"><code>Future</code></a>. Keyword arguments, if any, are passed through to <code>f</code>.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/distributed/remotecall.jl#L329-L335">source</a><br><h3 id="Base.Distributed.remotecall_wait-Tuple{Any,Integer,Vararg{Any,N} where N}">
+<code>Base.Distributed.remotecall_wait</code><span class="docstring-category">Method</span>
+</h3>
+<pre>remotecall_wait(f, id::Integer, args...; kwargs...)</pre>
+<p>Perform a faster <code>wait(remotecall(...))</code> in one message on the <code>Worker</code> specified by worker id <code>id</code>. Keyword arguments, if any, are passed through to <code>f</code>.</p>
+<p>See also <a href="#Base.wait"><code>wait</code></a> and <a href="#Base.Distributed.remotecall-Tuple%7BAny,Integer,Vararg%7BAny,N%7D%20where%20N%7D"><code>remotecall</code></a>.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/distributed/remotecall.jl#L386-L393">source</a><br><h3 id="Base.Distributed.remotecall_fetch-Tuple{Any,Integer,Vararg{Any,N} where N}">
+<code>Base.Distributed.remotecall_fetch</code><span class="docstring-category">Method</span>
+</h3>
+<pre>remotecall_fetch(f, id::Integer, args...; kwargs...)</pre>
+<p>Perform <code>fetch(remotecall(...))</code> in one message. Keyword arguments, if any, are passed through to <code>f</code>. Any remote exceptions are captured in a <a href="#Base.Distributed.RemoteException"><code>RemoteException</code></a> and thrown.</p>
+<p>See also <a href="#Base.fetch-Tuple%7BChannel%7D"><code>fetch</code></a> and <a href="#Base.Distributed.remotecall-Tuple%7BAny,Integer,Vararg%7BAny,N%7D%20where%20N%7D"><code>remotecall</code></a>.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/distributed/remotecall.jl#L357-L366">source</a><br><h3 id="Base.Distributed.remote_do-Tuple{Any,Integer,Vararg{Any,N} where N}">
+<code>Base.Distributed.remote_do</code><span class="docstring-category">Method</span>
+</h3>
+<pre>remote_do(f, id::Integer, args...; kwargs...) -&gt; nothing</pre>
+<p>Executes <code>f</code> on worker <code>id</code> asynchronously. Unlike <a href="#Base.Distributed.remotecall-Tuple%7BAny,Integer,Vararg%7BAny,N%7D%20where%20N%7D"><code>remotecall</code></a>, it does not store the result of computation, nor is there a way to wait for its completion.</p>
+<p>A successful invocation indicates that the request has been accepted for execution on the remote node.</p>
+<p>While consecutive <code>remotecall</code>s to the same worker are serialized in the order they are invoked, the order of executions on the remote worker is undetermined. For example, <code>remote_do(f1, 2); remotecall(f2, 2); remote_do(f3, 2)</code> will serialize the call to <code>f1</code>, followed by <code>f2</code> and <code>f3</code> in that order. However, it is not guaranteed that <code>f1</code> is executed before <code>f3</code> on worker 2.</p>
+<p>Any exceptions thrown by <code>f</code> are printed to <a href="../io-network/#Base.STDERR"><code>STDERR</code></a> on the remote worker.</p>
+<p>Keyword arguments, if any, are passed through to <code>f</code>.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/distributed/remotecall.jl#L412-L431">source</a><br><h3 id="Base.put!-Tuple{RemoteChannel,Vararg{Any,N} where N}">
+<code>Base.put!</code><span class="docstring-category">Method</span>
+</h3>
+<pre>put!(rr::RemoteChannel, args...)</pre>
+<p>Store a set of values to the <a href="#Base.Distributed.RemoteChannel-Tuple%7BInteger%7D"><code>RemoteChannel</code></a>. If the channel is full, blocks until space is available. Returns its first argument.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/distributed/remotecall.jl#L514-L520">source</a><br><h3 id="Base.put!-Tuple{Future,Any}">
+<code>Base.put!</code><span class="docstring-category">Method</span>
+</h3>
+<pre>put!(rr::Future, v)</pre>
+<p>Store a value to a <a href="#Base.Distributed.Future"><code>Future</code></a> <code>rr</code>. <code>Future</code>s are write-once remote references. A <code>put!</code> on an already set <code>Future</code> throws an <code>Exception</code>. All asynchronous remote calls return <code>Future</code>s and set the value to the return value of the call upon completion.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/distributed/remotecall.jl#L486-L494">source</a><br><h3 id="Base.take!-Tuple{RemoteChannel,Vararg{Any,N} where N}">
+<code>Base.take!</code><span class="docstring-category">Method</span>
+</h3>
+<pre>take!(rr::RemoteChannel, args...)</pre>
+<p>Fetch value(s) from a <a href="#Base.Distributed.RemoteChannel-Tuple%7BInteger%7D"><code>RemoteChannel</code></a> <code>rr</code>, removing the value(s) in the processs.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/distributed/remotecall.jl#L532-L537">source</a><br><h3 id="Base.isready-Tuple{RemoteChannel,Vararg{Any,N} where N}">
+<code>Base.isready</code><span class="docstring-category">Method</span>
+</h3>
+<pre>isready(rr::RemoteChannel, args...)</pre>
+<p>Determine whether a <a href="#Base.Distributed.RemoteChannel-Tuple%7BInteger%7D"><code>RemoteChannel</code></a> has a value stored to it. Note that this function can cause race conditions, since by the time you receive its result it may no longer be true. However, it can be safely used on a <a href="#Base.Distributed.Future"><code>Future</code></a> since they are assigned only once.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/distributed/remotecall.jl#L187-L194">source</a><br><h3 id="Base.isready-Tuple{Future}">
+<code>Base.isready</code><span class="docstring-category">Method</span>
+</h3>
+<pre>isready(rr::Future)</pre>
+<p>Determine whether a <a href="#Base.Distributed.Future"><code>Future</code></a> has a value stored to it.</p>
+<p>If the argument <code>Future</code> is owned by a different node, this call will block to wait for the answer. It is recommended to wait for <code>rr</code> in a separate task instead or to use a local <a href="#Base.Channel"><code>Channel</code></a> as a proxy:</p>
+<pre>c = Channel(1)
+@async put!(c, remotecall_fetch(long_computation, p))
+isready(c)  # will not block</pre>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/distributed/remotecall.jl#L163-L175">source</a><br><h3 id="Base.Distributed.WorkerPool">
+<code>Base.Distributed.WorkerPool</code><span class="docstring-category">Type</span>
+</h3>
+<pre>WorkerPool(workers::Vector{Int})</pre>
+<p>Create a WorkerPool from a vector of worker ids.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/distributed/workerpool.jl#L32-L36">source</a><br><h3 id="Base.Distributed.CachingPool">
+<code>Base.Distributed.CachingPool</code><span class="docstring-category">Type</span>
+</h3>
+<pre>CachingPool(workers::Vector{Int})</pre>
+<p>An implementation of an <code>AbstractWorkerPool</code>. <a href="#Base.Distributed.remote"><code>remote</code></a>, <a href="#Base.Distributed.remotecall_fetch-Tuple%7BAny,Integer,Vararg%7BAny,N%7D%20where%20N%7D"><code>remotecall_fetch</code></a>, <a href="#Base.Distributed.pmap"><code>pmap</code></a> (and other remote calls which execute functions remotely) benefit from caching the serialized/deserialized functions on the worker nodes, especially closures (which may capture large amounts of data).</p>
+<p>The remote cache is maintained for the lifetime of the returned <code>CachingPool</code> object. To clear the cache earlier, use <code>clear!(pool)</code>.</p>
+<p>For global variables, only the bindings are captured in a closure, not the data. <code>let</code> blocks can be used to capture global data.</p>
+<p>For example:</p>
+<pre>const foo=rand(10^8);
+wp=CachingPool(workers())
+let foo=foo
+    pmap(wp, i-&gt;sum(foo)+i, 1:100);
+end</pre>
+<p>The above would transfer <code>foo</code> only once to each worker.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/distributed/workerpool.jl#L233-L259">source</a><br><h3 id="Base.Distributed.default_worker_pool">
+<code>Base.Distributed.default_worker_pool</code><span class="docstring-category">Function</span>
+</h3>
+<pre>default_worker_pool()</pre>
+<p><code>WorkerPool</code> containing idle <code>workers()</code> - used by <code>remote(f)</code> and <a href="#Base.Distributed.pmap"><code>pmap</code></a> (by default).</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/distributed/workerpool.jl#L190-L194">source</a><br><h3 id="Base.Distributed.clear!-Tuple{CachingPool}">
+<code>Base.Distributed.clear!</code><span class="docstring-category">Method</span>
+</h3>
+<pre>clear!(pool::CachingPool) -&gt; pool</pre>
+<p>Removes all cached functions from all participating workers.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/distributed/workerpool.jl#L268-L272">source</a><br><h3 id="Base.Distributed.remote">
+<code>Base.Distributed.remote</code><span class="docstring-category">Function</span>
+</h3>
+<pre>remote([::AbstractWorkerPool], f) -&gt; Function</pre>
+<p>Returns an anonymous function that executes function <code>f</code> on an available worker using <a href="#Base.Distributed.remotecall_fetch-Tuple%7BAny,Integer,Vararg%7BAny,N%7D%20where%20N%7D"><code>remotecall_fetch</code></a>.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/distributed/workerpool.jl#L208-L213">source</a><br><h3 id="Base.Distributed.remotecall-Tuple{Any,Base.Distributed.AbstractWorkerPool,Vararg{Any,N} where N}">
+<code>Base.Distributed.remotecall</code><span class="docstring-category">Method</span>
+</h3>
+<pre>remotecall(f, pool::AbstractWorkerPool, args...; kwargs...) -&gt; Future</pre>
+<p><code>WorkerPool</code> variant of <code>remotecall(f, pid, ....)</code>. Waits for and takes a free worker from <code>pool</code> and performs a <code>remotecall</code> on it.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/distributed/workerpool.jl#L155-L159">source</a><br><h3 id="Base.Distributed.remotecall_wait-Tuple{Any,Base.Distributed.AbstractWorkerPool,Vararg{Any,N} where N}">
+<code>Base.Distributed.remotecall_wait</code><span class="docstring-category">Method</span>
+</h3>
+<pre>remotecall_wait(f, pool::AbstractWorkerPool, args...; kwargs...) -&gt; Future</pre>
+<p><code>WorkerPool</code> variant of <code>remotecall_wait(f, pid, ....)</code>. Waits for and takes a free worker from <code>pool</code> and performs a <code>remotecall_wait</code> on it.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/distributed/workerpool.jl#L163-L168">source</a><br><h3 id="Base.Distributed.remotecall_fetch-Tuple{Any,Base.Distributed.AbstractWorkerPool,Vararg{Any,N} where N}">
+<code>Base.Distributed.remotecall_fetch</code><span class="docstring-category">Method</span>
+</h3>
+<pre>remotecall_fetch(f, pool::AbstractWorkerPool, args...; kwargs...) -&gt; result</pre>
+<p><code>WorkerPool</code> variant of <code>remotecall_fetch(f, pid, ....)</code>. Waits for and takes a free worker from <code>pool</code> and performs a <code>remotecall_fetch</code> on it.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/distributed/workerpool.jl#L172-L177">source</a><br><h3 id="Base.Distributed.remote_do-Tuple{Any,Base.Distributed.AbstractWorkerPool,Vararg{Any,N} where N}">
+<code>Base.Distributed.remote_do</code><span class="docstring-category">Method</span>
+</h3>
+<pre>remote_do(f, pool::AbstractWorkerPool, args...; kwargs...) -&gt; nothing</pre>
+<p><code>WorkerPool</code> variant of <code>remote_do(f, pid, ....)</code>. Waits for and takes a free worker from <code>pool</code> and performs a <code>remote_do</code> on it.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/distributed/workerpool.jl#L180-L185">source</a><br><h3 id="Base.timedwait">
+<code>Base.timedwait</code><span class="docstring-category">Function</span>
+</h3>
+<pre>timedwait(testcb::Function, secs::Float64; pollint::Float64=0.1)</pre>
+<p>Waits until <code>testcb</code> returns <code>true</code> or for <code>secs</code> seconds, whichever is earlier. <code>testcb</code> is polled every <code>pollint</code> seconds.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/task.jl#L340-L345">source</a><br><h3 id="Base.Distributed.@spawn">
+<code>Base.Distributed.@spawn</code><span class="docstring-category">Macro</span>
+</h3>
+<pre>@spawn</pre>
+<p>Creates a closure around an expression and runs it on an automatically-chosen process, returning a <a href="#Base.Distributed.Future"><code>Future</code></a> to the result.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/docs/helpdb/Base.jl#L2078-L2083">source</a><br><h3 id="Base.Distributed.@spawnat">
+<code>Base.Distributed.@spawnat</code><span class="docstring-category">Macro</span>
+</h3>
+<pre>@spawnat</pre>
+<p>Accepts two arguments, <code>p</code> and an expression. A closure is created around the expression and run asynchronously on process <code>p</code>. Returns a <a href="#Base.Distributed.Future"><code>Future</code></a> to the result.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/docs/helpdb/Base.jl#L564-L569">source</a><br><h3 id="Base.Distributed.@fetch">
+<code>Base.Distributed.@fetch</code><span class="docstring-category">Macro</span>
+</h3>
+<pre>@fetch</pre>
+<p>Equivalent to <code>fetch(@spawn expr)</code>. See <a href="#Base.fetch-Tuple%7BChannel%7D"><code>fetch</code></a> and <a href="#Base.Distributed.@spawn"><code>@spawn</code></a>.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/distributed/macros.jl#L29-L34">source</a><br><h3 id="Base.Distributed.@fetchfrom">
+<code>Base.Distributed.@fetchfrom</code><span class="docstring-category">Macro</span>
+</h3>
+<pre>@fetchfrom</pre>
+<p>Equivalent to <code>fetch(@spawnat p expr)</code>. See <a href="#Base.fetch-Tuple%7BChannel%7D"><code>fetch</code></a> and <a href="#Base.Distributed.@spawnat"><code>@spawnat</code></a>.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/distributed/macros.jl#L40-L45">source</a><br><h3 id="Base.@async">
+<code>Base.@async</code><span class="docstring-category">Macro</span>
+</h3>
+<pre>@async</pre>
+<p>Like <code>@schedule</code>, <code>@async</code> wraps an expression in a <code>Task</code> and adds it to the local machine's scheduler queue. Additionally it adds the task to the set of items that the nearest enclosing <code>@sync</code> waits for.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/task.jl#L327-L333">source</a><br><h3 id="Base.@sync">
+<code>Base.@sync</code><span class="docstring-category">Macro</span>
+</h3>
+<pre>@sync</pre>
+<p>Wait until all dynamically-enclosed uses of <code>@async</code>, <code>@spawn</code>, <code>@spawnat</code> and <code>@parallel</code> are complete. All exceptions thrown by enclosed async operations are collected and thrown as a <code>CompositeException</code>.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/task.jl#L292-L298">source</a><br><h3 id="Base.Distributed.@parallel">
+<code>Base.Distributed.@parallel</code><span class="docstring-category">Macro</span>
+</h3>
+<pre>@parallel</pre>
+<p>A parallel for loop of the form :</p>
+<pre>@parallel [reducer] for var = range
+    body
+end</pre>
+<p>The specified range is partitioned and locally executed across all workers. In case an optional reducer function is specified, <code>@parallel</code> performs local reductions on each worker with a final reduction on the calling process.</p>
+<p>Note that without a reducer function, <code>@parallel</code> executes asynchronously, i.e. it spawns independent tasks on all available workers and returns immediately without waiting for completion. To wait for completion, prefix the call with <a href="#Base.@sync"><code>@sync</code></a>, like :</p>
+<pre>@sync @parallel for var = range
+    body
+end</pre>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/distributed/macros.jl#L180-L200">source</a><br><h3 id="Base.Distributed.@everywhere">
+<code>Base.Distributed.@everywhere</code><span class="docstring-category">Macro</span>
+</h3>
+<pre>@everywhere expr</pre>
+<p>Execute an expression under <code>Main</code> everywhere. Equivalent to calling <code>eval(Main, expr)</code> on all processes. Errors on any of the processes are collected into a <code>CompositeException</code> and thrown. For example :</p>
+<pre>@everywhere bar=1</pre>
+<p>will define <code>Main.bar</code> on all processes.</p>
+<p>Unlike <a href="#Base.Distributed.@spawn"><code>@spawn</code></a> and <a href="#Base.Distributed.@spawnat"><code>@spawnat</code></a>, <code>@everywhere</code> does not capture any local variables. Prefixing <code>@everywhere</code> with <a href="../base/#Base.@eval"><code>@eval</code></a> allows us to broadcast local variables using interpolation :</p>
+<pre>foo = 1
+@eval @everywhere bar=$foo</pre>
+<p>The expression is evaluated under <code>Main</code> irrespective of where <code>@everywhere</code> is called from. For example :</p>
+<pre>module FooBar
+    foo() = @everywhere bar()=myid()
+end
+FooBar.foo()</pre>
+<p>will result in <code>Main.bar</code> being defined on all processes and not <code>FooBar.bar</code>.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/distributed/macros.jl#L67-L95">source</a><br><h3 id="Base.Distributed.clear!-Tuple{Any,Any}">
+<code>Base.Distributed.clear!</code><span class="docstring-category">Method</span>
+</h3>
+<pre>clear!(syms, pids=workers(); mod=Main)</pre>
+<p>Clears global bindings in modules by initializing them to <code>nothing</code>. <code>syms</code> should be of type <code>Symbol</code> or a collection of <code>Symbol</code>s . <code>pids</code> and <code>mod</code> identify the processes and the module in which global variables are to be reinitialized. Only those names found to be defined under <code>mod</code> are cleared.</p>
+<p>An exception is raised if a global constant is requested to be cleared.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/distributed/clusterserialize.jl#L228-L237">source</a><br><h3 id="Base.Distributed.remoteref_id">
+<code>Base.Distributed.remoteref_id</code><span class="docstring-category">Function</span>
+</h3>
+<pre>Base.remoteref_id(r::AbstractRemoteRef) -&gt; RRID</pre>
+<p><code>Future</code>s and <code>RemoteChannel</code>s are identified by fields:</p>
+<ul>
+<li><p><code>where</code> - refers to the node where the underlying object/storage referred to by the reference actually exists.</p></li>
+<li><p><code>whence</code> - refers to the node the remote reference was created from. Note that this is different from the node where the underlying object referred to actually exists. For example calling <code>RemoteChannel(2)</code> from the master process would result in a <code>where</code> value of 2 and a <code>whence</code> value of 1.</p></li>
+<li><p><code>id</code> is unique across all references created from the worker specified by <code>whence</code>.</p></li>
+</ul>
+<p>Taken together, <code>whence</code> and <code>id</code> uniquely identify a reference across all workers.</p>
+<p><code>Base.remoteref_id</code> is a low-level API which returns a <code>Base.RRID</code> object that wraps <code>whence</code> and <code>id</code> values of a remote reference.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/distributed/remotecall.jl#L109-L129">source</a><br><h3 id="Base.Distributed.channel_from_id">
+<code>Base.Distributed.channel_from_id</code><span class="docstring-category">Function</span>
+</h3>
+<pre>Base.channel_from_id(id) -&gt; c</pre>
+<p>A low-level API which returns the backing <code>AbstractChannel</code> for an <code>id</code> returned by <a href="#Base.Distributed.remoteref_id"><code>remoteref_id</code></a>. The call is valid only on the node where the backing channel exists.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/distributed/remotecall.jl#L132-L138">source</a><br><h3 id="Base.Distributed.worker_id_from_socket">
+<code>Base.Distributed.worker_id_from_socket</code><span class="docstring-category">Function</span>
+</h3>
+<pre>Base.worker_id_from_socket(s) -&gt; pid</pre>
+<p>A low-level API which given a <code>IO</code> connection or a <code>Worker</code>, returns the <code>pid</code> of the worker it is connected to. This is useful when writing custom <a href="../io-network/#Base.Serializer.serialize"><code>serialize</code></a> methods for a type, which optimizes the data written out depending on the receiving process id.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/distributed/cluster.jl#L842-L849">source</a><br><h3 id="Base.Distributed.cluster_cookie-Tuple{}">
+<code>Base.Distributed.cluster_cookie</code><span class="docstring-category">Method</span>
+</h3>
+<pre>Base.cluster_cookie() -&gt; cookie</pre>
+<p>Returns the cluster cookie.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/distributed/cluster.jl#L569-L573">source</a><br><h3 id="Base.Distributed.cluster_cookie-Tuple{Any}">
+<code>Base.Distributed.cluster_cookie</code><span class="docstring-category">Method</span>
+</h3>
+<pre>Base.cluster_cookie(cookie) -&gt; cookie</pre>
+<p>Sets the passed cookie as the cluster cookie, then returns it.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/distributed/cluster.jl#L576-L580">source</a><br><h2 id="Shared-Arrays-1">Shared Arrays</h2>
+<h3 id="Base.SharedArray">
+<code>Base.SharedArray</code><span class="docstring-category">Type</span>
+</h3>
+<pre>SharedArray{T}(dims::NTuple; init=false, pids=Int[])
+SharedArray{T,N}(...)</pre>
+<p>Construct a <code>SharedArray</code> of a bits type <code>T</code> and size <code>dims</code> across the processes specified by <code>pids</code> - all of which have to be on the same host. If <code>N</code> is specified by calling <code>SharedArray{T,N}(dims)</code>, then <code>N</code> must match the length of <code>dims</code>.</p>
+<p>If <code>pids</code> is left unspecified, the shared array will be mapped across all processes on the current host, including the master. But, <code>localindexes</code> and <code>indexpids</code> will only refer to worker processes. This facilitates work distribution code to use workers for actual computation with the master process acting as a driver.</p>
+<p>If an <code>init</code> function of the type <code>initfn(S::SharedArray)</code> is specified, it is called on all the participating workers.</p>
+<p>The shared array is valid as long as a reference to the <code>SharedArray</code> object exists on the node which created the mapping.</p>
+<pre>SharedArray{T}(filename::AbstractString, dims::NTuple, [offset=0]; mode=nothing, init=false, pids=Int[])
+SharedArray{T,N}(...)</pre>
+<p>Construct a <code>SharedArray</code> backed by the file <code>filename</code>, with element type <code>T</code> (must be a bits type) and size <code>dims</code>, across the processes specified by <code>pids</code> - all of which have to be on the same host. This file is mmapped into the host memory, with the following consequences:</p>
+<ul>
+<li><p>The array data must be represented in binary format (e.g., an ASCII format like CSV cannot be supported)</p></li>
+<li><p>Any changes you make to the array values (e.g., <code>A[3] = 0</code>) will also change the values on disk</p></li>
+</ul>
+<p>If <code>pids</code> is left unspecified, the shared array will be mapped across all processes on the current host, including the master. But, <code>localindexes</code> and <code>indexpids</code> will only refer to worker processes. This facilitates work distribution code to use workers for actual computation with the master process acting as a driver.</p>
+<p><code>mode</code> must be one of <code>"r"</code>, <code>"r+"</code>, <code>"w+"</code>, or <code>"a+"</code>, and defaults to <code>"r+"</code> if the file specified by <code>filename</code> already exists, or <code>"w+"</code> if not. If an <code>init</code> function of the type <code>initfn(S::SharedArray)</code> is specified, it is called on all the participating workers. You cannot specify an <code>init</code> function if the file is not writable.</p>
+<p><code>offset</code> allows you to skip the specified number of bytes at the beginning of the file.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/sharedarray.jl#L37-L86">source</a><br><h3 id="Base.Distributed.procs-Tuple{SharedArray}">
+<code>Base.Distributed.procs</code><span class="docstring-category">Method</span>
+</h3>
+<pre>procs(S::SharedArray)</pre>
+<p>Get the vector of processes mapping the shared array.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/sharedarray.jl#L288-L292">source</a><br><h3 id="Base.sdata">
+<code>Base.sdata</code><span class="docstring-category">Function</span>
+</h3>
+<pre>sdata(S::SharedArray)</pre>
+<p>Returns the actual <code>Array</code> object backing <code>S</code>.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/sharedarray.jl#L304-L308">source</a><br><h3 id="Base.indexpids">
+<code>Base.indexpids</code><span class="docstring-category">Function</span>
+</h3>
+<pre>indexpids(S::SharedArray)</pre>
+<p>Returns the current worker's index in the list of workers mapping the <code>SharedArray</code> (i.e. in the same list returned by <code>procs(S)</code>), or 0 if the <code>SharedArray</code> is not mapped locally.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/sharedarray.jl#L295-L301">source</a><br><h3 id="Base.localindexes">
+<code>Base.localindexes</code><span class="docstring-category">Function</span>
+</h3>
+<pre>localindexes(S::SharedArray)</pre>
+<p>Returns a range describing the "default" indexes to be handled by the current process. This range should be interpreted in the sense of linear indexing, i.e., as a sub-range of <code>1:length(S)</code>. In multi-process contexts, returns an empty range in the parent process (or any process for which <a href="#Base.indexpids"><code>indexpids</code></a> returns 0).</p>
+<p>It's worth emphasizing that <code>localindexes</code> exists purely as a convenience, and you can partition work on the array among workers any way you wish. For a <code>SharedArray</code>, all indexes should be equally fast for each worker process.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/sharedarray.jl#L312-L325">source</a><br><h2 id="Multi-Threading-1">Multi-Threading</h2>
+<p>This experimental interface supports Julia's multi-threading capabilities. Types and functions described here might (and likely will) change in the future.</p>
+<h3 id="Base.Threads.threadid">
+<code>Base.Threads.threadid</code><span class="docstring-category">Function</span>
+</h3>
+<pre>Threads.threadid()</pre>
+<p>Get the ID number of the current thread of execution. The master thread has ID <code>1</code>.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/threadingconstructs.jl#L5-L9">source</a><br><h3 id="Base.Threads.nthreads">
+<code>Base.Threads.nthreads</code><span class="docstring-category">Function</span>
+</h3>
+<pre>Threads.nthreads()</pre>
+<p>Get the number of threads available to the Julia process. This is the inclusive upper bound on <code>threadid()</code>.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/threadingconstructs.jl#L13-L18">source</a><br><h3 id="Base.Threads.@threads">
+<code>Base.Threads.@threads</code><span class="docstring-category">Macro</span>
+</h3>
+<pre>Threads.@threads</pre>
+<p>A macro to parallelize a for-loop to run with multiple threads. This spawns <code>nthreads()</code> number of threads, splits the iteration space amongst them, and iterates in parallel. A barrier is placed at the end of the loop which waits for all the threads to finish execution, and the loop returns.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/threadingconstructs.jl#L79-L86">source</a><br><h3 id="Base.Threads.Atomic">
+<code>Base.Threads.Atomic</code><span class="docstring-category">Type</span>
+</h3>
+<pre>Threads.Atomic{T}</pre>
+<p>Holds a reference to an object of type <code>T</code>, ensuring that it is only accessed atomically, i.e. in a thread-safe manner.</p>
+<p>Only certain "simple" types can be used atomically, namely the primitive integer and float-point types. These are <code>Int8</code>...<code>Int128</code>, <code>UInt8</code>...<code>UInt128</code>, and <code>Float16</code>...<code>Float64</code>.</p>
+<p>New atomic objects can be created from a non-atomic values; if none is specified, the atomic object is initialized with zero.</p>
+<p>Atomic objects can be accessed using the <code>[]</code> notation:</p>
+<pre>julia&gt; x = Threads.Atomic{Int}(3)
+Base.Threads.Atomic{Int64}(3)
+
+julia&gt; x[] = 1
+1
+
+julia&gt; x[]
+1</pre>
+<p>Atomic operations use an <code>atomic_</code> prefix, such as <code>atomic_add!</code>, <code>atomic_xchg!</code>, etc.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/atomics.jl#L35-L63">source</a><br><h3 id="Base.Threads.atomic_cas!">
+<code>Base.Threads.atomic_cas!</code><span class="docstring-category">Function</span>
+</h3>
+<pre>Threads.atomic_cas!{T}(x::Atomic{T}, cmp::T, newval::T)</pre>
+<p>Atomically compare-and-set <code>x</code></p>
+<p>Atomically compares the value in <code>x</code> with <code>cmp</code>. If equal, write <code>newval</code> to <code>x</code>. Otherwise, leaves <code>x</code> unmodified. Returns the old value in <code>x</code>. By comparing the returned value to <code>cmp</code> (via <code>===</code>) one knows whether <code>x</code> was modified and now holds the new value <code>newval</code>.</p>
+<p>For further details, see LLVM's <code>cmpxchg</code> instruction.</p>
+<p>This function can be used to implement transactional semantics. Before the transaction, one records the value in <code>x</code>. After the transaction, the new value is stored only if <code>x</code> has not been modified in the mean time.</p>
+<pre>julia&gt; x = Threads.Atomic{Int}(3)
+Base.Threads.Atomic{Int64}(3)
+
+julia&gt; Threads.atomic_cas!(x, 4, 2);
+
+julia&gt; x
+Base.Threads.Atomic{Int64}(3)
+
+julia&gt; Threads.atomic_cas!(x, 3, 2);
+
+julia&gt; x
+Base.Threads.Atomic{Int64}(2)</pre>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/atomics.jl#L72-L103">source</a><br><h3 id="Base.Threads.atomic_xchg!">
+<code>Base.Threads.atomic_xchg!</code><span class="docstring-category">Function</span>
+</h3>
+<pre>Threads.atomic_xchg!{T}(x::Atomic{T}, newval::T)</pre>
+<p>Atomically exchange the value in <code>x</code></p>
+<p>Atomically exchanges the value in <code>x</code> with <code>newval</code>. Returns the <strong>old</strong> value.</p>
+<p>For further details, see LLVM's <code>atomicrmw xchg</code> instruction.</p>
+<pre>julia&gt; x = Threads.Atomic{Int}(3)
+Base.Threads.Atomic{Int64}(3)
+
+julia&gt; Threads.atomic_xchg!(x, 2)
+3
+
+julia&gt; x[]
+2</pre>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/atomics.jl#L106-L126">source</a><br><h3 id="Base.Threads.atomic_add!">
+<code>Base.Threads.atomic_add!</code><span class="docstring-category">Function</span>
+</h3>
+<pre>Threads.atomic_add!{T}(x::Atomic{T}, val::T)</pre>
+<p>Atomically add <code>val</code> to <code>x</code></p>
+<p>Performs <code>x[] += val</code> atomically. Returns the <strong>old</strong> value.</p>
+<p>For further details, see LLVM's <code>atomicrmw add</code> instruction.</p>
+<pre>julia&gt; x = Threads.Atomic{Int}(3)
+Base.Threads.Atomic{Int64}(3)
+
+julia&gt; Threads.atomic_add!(x, 2)
+3
+
+julia&gt; x[]
+5</pre>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/atomics.jl#L129-L148">source</a><br><h3 id="Base.Threads.atomic_sub!">
+<code>Base.Threads.atomic_sub!</code><span class="docstring-category">Function</span>
+</h3>
+<pre>Threads.atomic_sub!{T}(x::Atomic{T}, val::T)</pre>
+<p>Atomically subtract <code>val</code> from <code>x</code></p>
+<p>Performs <code>x[] -= val</code> atomically. Returns the <strong>old</strong> value.</p>
+<p>For further details, see LLVM's <code>atomicrmw sub</code> instruction.</p>
+<pre>julia&gt; x = Threads.Atomic{Int}(3)
+Base.Threads.Atomic{Int64}(3)
+
+julia&gt; Threads.atomic_sub!(x, 2)
+3
+
+julia&gt; x[]
+1</pre>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/atomics.jl#L151-L170">source</a><br><h3 id="Base.Threads.atomic_and!">
+<code>Base.Threads.atomic_and!</code><span class="docstring-category">Function</span>
+</h3>
+<pre>Threads.atomic_and!{T}(x::Atomic{T}, val::T)</pre>
+<p>Atomically bitwise-and <code>x</code> with <code>val</code></p>
+<p>Performs <code>x[] &amp;= val</code> atomically. Returns the <strong>old</strong> value.</p>
+<p>For further details, see LLVM's <code>atomicrmw and</code> instruction.</p>
+<pre>julia&gt; x = Threads.Atomic{Int}(3)
+Base.Threads.Atomic{Int64}(3)
+
+julia&gt; Threads.atomic_and!(x, 2)
+3
+
+julia&gt; x[]
+2</pre>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/atomics.jl#L173-L192">source</a><br><h3 id="Base.Threads.atomic_nand!">
+<code>Base.Threads.atomic_nand!</code><span class="docstring-category">Function</span>
+</h3>
+<pre>Threads.atomic_nand!{T}(x::Atomic{T}, val::T)</pre>
+<p>Atomically bitwise-nand (not-and) <code>x</code> with <code>val</code></p>
+<p>Performs <code>x[] = ~(x[] &amp; val)</code> atomically. Returns the <strong>old</strong> value.</p>
+<p>For further details, see LLVM's <code>atomicrmw nand</code> instruction.</p>
+<pre>julia&gt; x = Threads.Atomic{Int}(3)
+Base.Threads.Atomic{Int64}(3)
+
+julia&gt; Threads.atomic_nand!(x, 2)
+3
+
+julia&gt; x[]
+-3</pre>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/atomics.jl#L195-L214">source</a><br><h3 id="Base.Threads.atomic_or!">
+<code>Base.Threads.atomic_or!</code><span class="docstring-category">Function</span>
+</h3>
+<pre>Threads.atomic_or!{T}(x::Atomic{T}, val::T)</pre>
+<p>Atomically bitwise-or <code>x</code> with <code>val</code></p>
+<p>Performs <code>x[] |= val</code> atomically. Returns the <strong>old</strong> value.</p>
+<p>For further details, see LLVM's <code>atomicrmw or</code> instruction.</p>
+<pre>julia&gt; x = Threads.Atomic{Int}(5)
+Base.Threads.Atomic{Int64}(5)
+
+julia&gt; Threads.atomic_or!(x, 7)
+5
+
+julia&gt; x[]
+7</pre>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/atomics.jl#L217-L236">source</a><br><h3 id="Base.Threads.atomic_xor!">
+<code>Base.Threads.atomic_xor!</code><span class="docstring-category">Function</span>
+</h3>
+<pre>Threads.atomic_xor!{T}(x::Atomic{T}, val::T)</pre>
+<p>Atomically bitwise-xor (exclusive-or) <code>x</code> with <code>val</code></p>
+<p>Performs <code>x[] $= val</code> atomically. Returns the <strong>old</strong> value.</p>
+<p>For further details, see LLVM's <code>atomicrmw xor</code> instruction.</p>
+<pre>julia&gt; x = Threads.Atomic{Int}(5)
+Base.Threads.Atomic{Int64}(5)
+
+julia&gt; Threads.atomic_xor!(x, 7)
+5
+
+julia&gt; x[]
+2</pre>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/atomics.jl#L239-L258">source</a><br><h3 id="Base.Threads.atomic_max!">
+<code>Base.Threads.atomic_max!</code><span class="docstring-category">Function</span>
+</h3>
+<pre>Threads.atomic_max!{T}(x::Atomic{T}, val::T)</pre>
+<p>Atomically store the maximum of <code>x</code> and <code>val</code> in <code>x</code></p>
+<p>Performs <code>x[] = max(x[], val)</code> atomically. Returns the <strong>old</strong> value.</p>
+<p>For further details, see LLVM's <code>atomicrmw max</code> instruction.</p>
+<pre>julia&gt; x = Threads.Atomic{Int}(5)
+Base.Threads.Atomic{Int64}(5)
+
+julia&gt; Threads.atomic_max!(x, 7)
+5
+
+julia&gt; x[]
+7</pre>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/atomics.jl#L261-L280">source</a><br><h3 id="Base.Threads.atomic_min!">
+<code>Base.Threads.atomic_min!</code><span class="docstring-category">Function</span>
+</h3>
+<pre>Threads.atomic_min!{T}(x::Atomic{T}, val::T)</pre>
+<p>Atomically store the minimum of <code>x</code> and <code>val</code> in <code>x</code></p>
+<p>Performs <code>x[] = min(x[], val)</code> atomically. Returns the <strong>old</strong> value.</p>
+<p>For further details, see LLVM's <code>atomicrmw min</code> instruction.</p>
+<pre>julia&gt; x = Threads.Atomic{Int}(7)
+Base.Threads.Atomic{Int64}(7)
+
+julia&gt; Threads.atomic_min!(x, 5)
+7
+
+julia&gt; x[]
+5</pre>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/atomics.jl#L283-L302">source</a><br><h3 id="Base.Threads.atomic_fence">
+<code>Base.Threads.atomic_fence</code><span class="docstring-category">Function</span>
+</h3>
+<pre>Threads.atomic_fence()</pre>
+<p>Insert a sequential-consistency memory fence</p>
+<p>Inserts a memory fence with sequentially-consistent ordering semantics. There are algorithms where this is needed, i.e. where an acquire/release ordering is insufficient.</p>
+<p>This is likely a very expensive operation. Given that all other atomic operations in Julia already have acquire/release semantics, explicit fences should not be necessary in most cases.</p>
+<p>For further details, see LLVM's <code>fence</code> instruction.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/atomics.jl#L464-L478">source</a><br><h2 id="ccall-using-a-threadpool-(Experimental)-1">ccall using a threadpool (Experimental)</h2>
+<h3 id="Base.@threadcall">
+<code>Base.@threadcall</code><span class="docstring-category">Macro</span>
+</h3>
+<pre>@threadcall((cfunc, clib), rettype, (argtypes...), argvals...)</pre>
+<p>The <code>@threadcall</code> macro is called in the same way as <a href="../c/#ccall"><code>ccall</code></a> but does the work in a different thread. This is useful when you want to call a blocking C function without causing the main <code>julia</code> thread to become blocked. Concurrency is limited by size of the libuv thread pool, which defaults to 4 threads but can be increased by setting the <code>UV_THREADPOOL_SIZE</code> environment variable and restarting the <code>julia</code> process.</p>
+<p>Note that the called function should never call back into Julia.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/threadcall.jl#L17-L28">source</a><br><h2 id="Synchronization-Primitives-1">Synchronization Primitives</h2>
+<h3 id="Base.Threads.AbstractLock">
+<code>Base.Threads.AbstractLock</code><span class="docstring-category">Type</span>
+</h3>
+<pre>AbstractLock</pre>
+<p>Abstract supertype describing types that implement the thread-safe synchronization primitives: <code>lock</code>, <code>trylock</code>, <code>unlock</code>, and <code>islocked</code></p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/locks.jl#L13-L19">source</a><br><h3 id="Base.lock">
+<code>Base.lock</code><span class="docstring-category">Function</span>
+</h3>
+<pre>lock(the_lock)</pre>
+<p>Acquires the lock when it becomes available. If the lock is already locked by a different task/thread, it waits for it to become available.</p>
+<p>Each <code>lock</code> must be matched by an <code>unlock</code>.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/lock.jl#L54-L62">source</a><br><h3 id="Base.unlock">
+<code>Base.unlock</code><span class="docstring-category">Function</span>
+</h3>
+<pre>unlock(the_lock)</pre>
+<p>Releases ownership of the lock.</p>
+<p>If this is a recursive lock which has been acquired before, it just decrements an internal counter and returns immediately.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/lock.jl#L78-L85">source</a><br><h3 id="Base.trylock">
+<code>Base.trylock</code><span class="docstring-category">Function</span>
+</h3>
+<pre>trylock(the_lock) -&gt; Success (Boolean)</pre>
+<p>Acquires the lock if it is available, returning <code>true</code> if successful. If the lock is already locked by a different task/thread, returns <code>false</code>.</p>
+<p>Each successful <code>trylock</code> must be matched by an <code>unlock</code>.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/lock.jl#L31-L40">source</a><br><h3 id="Base.islocked">
+<code>Base.islocked</code><span class="docstring-category">Function</span>
+</h3>
+<pre>islocked(the_lock) -&gt; Status (Boolean)</pre>
+<p>Check whether the lock is held by any task/thread. This should not be used for synchronization (see instead <code>trylock</code>).</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/lock.jl#L21-L26">source</a><br><h3 id="Base.ReentrantLock">
+<code>Base.ReentrantLock</code><span class="docstring-category">Type</span>
+</h3>
+<pre>ReentrantLock()</pre>
+<p>Creates a reentrant lock for synchronizing Tasks. The same task can acquire the lock as many times as required. Each <code>lock</code> must be matched with an <code>unlock</code>.</p>
+<p>This lock is NOT threadsafe. See <code>Threads.Mutex</code> for a threadsafe lock.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/lock.jl#L4-L12">source</a><br><h3 id="Base.Threads.Mutex">
+<code>Base.Threads.Mutex</code><span class="docstring-category">Type</span>
+</h3>
+<pre>Mutex()</pre>
+<p>These are standard system mutexes for locking critical sections of logic.</p>
+<p>On Windows, this is a critical section object, on pthreads, this is a <code>pthread_mutex_t</code>.</p>
+<p>See also SpinLock for a lighter-weight lock.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/locks.jl#L172-L181">source</a><br><h3 id="Base.Threads.SpinLock">
+<code>Base.Threads.SpinLock</code><span class="docstring-category">Type</span>
+</h3>
+<pre>SpinLock()</pre>
+<p>Creates a non-reentrant lock. Recursive use will result in a deadlock. Each <code>lock</code> must be matched with an <code>unlock</code>.</p>
+<p>Test-and-test-and-set spin locks are quickest up to about 30ish contending threads. If you have more contention than that, perhaps a lock is the wrong way to synchronize.</p>
+<p>See also RecursiveSpinLock for a version that permits recursion.</p>
+<p>See also Mutex for a more efficient version on one core or if the lock may be held for a considerable length of time.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/locks.jl#L35-L49">source</a><br><h3 id="Base.Threads.RecursiveSpinLock">
+<code>Base.Threads.RecursiveSpinLock</code><span class="docstring-category">Type</span>
+</h3>
+<pre>RecursiveSpinLock()</pre>
+<p>Creates a reentrant lock. The same thread can acquire the lock as many times as required. Each <code>lock</code> must be matched with an <code>unlock</code>.</p>
+<p>See also SpinLock for a slightly faster version.</p>
+<p>See also Mutex for a more efficient version on one core or if the lock may be held for a considerable length of time.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/locks.jl#L95-L105">source</a><br><h3 id="Base.Semaphore">
+<code>Base.Semaphore</code><span class="docstring-category">Type</span>
+</h3>
+<pre>Semaphore(sem_size)</pre>
+<p>Creates a counting semaphore that allows at most <code>sem_size</code> acquires to be in use at any time. Each acquire must be mached with a release.</p>
+<p>This construct is NOT threadsafe.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/lock.jl#L118-L126">source</a><br><h3 id="Base.acquire">
+<code>Base.acquire</code><span class="docstring-category">Function</span>
+</h3>
+<pre>acquire(s::Semaphore)</pre>
+<p>Wait for one of the <code>sem_size</code> permits to be available, blocking until one can be acquired.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/lock.jl#L134-L139">source</a><br><h3 id="Base.release">
+<code>Base.release</code><span class="docstring-category">Function</span>
+</h3>
+<pre>release(s::Semaphore)</pre>
+<p>Return one permit to the pool, possibly allowing another task to acquire it and resume execution.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/lock.jl#L151-L157">source</a><br><h2 id="Cluster-Manager-Interface-1">Cluster Manager Interface</h2>
+<p>This interface provides a mechanism to launch and manage Julia workers on different cluster environments. There are two types of managers present in Base: <code>LocalManager</code>, for launching additional workers on the same host, and <code>SSHManager</code>, for launching on remote hosts via <code>ssh</code>. TCP/IP sockets are used to connect and transport messages between processes. It is possible for Cluster Managers to provide a different transport.</p>
+<h3 id="Base.Distributed.launch">
+<code>Base.Distributed.launch</code><span class="docstring-category">Function</span>
+</h3>
+<pre>launch(manager::ClusterManager, params::Dict, launched::Array, launch_ntfy::Condition)</pre>
+<p>Implemented by cluster managers. For every Julia worker launched by this function, it should append a <code>WorkerConfig</code> entry to <code>launched</code> and notify <code>launch_ntfy</code>. The function MUST exit once all workers, requested by <code>manager</code> have been launched. <code>params</code> is a dictionary of all keyword arguments <a href="#Base.Distributed.addprocs"><code>addprocs</code></a> was called with.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/distributed/managers.jl#L342-L349">source</a><br><h3 id="Base.Distributed.manage">
+<code>Base.Distributed.manage</code><span class="docstring-category">Function</span>
+</h3>
+<pre>manage(manager::ClusterManager, id::Integer, config::WorkerConfig. op::Symbol)</pre>
+<p>Implemented by cluster managers. It is called on the master process, during a worker's lifetime, with appropriate <code>op</code> values:</p>
+<ul>
+<li><p>with <code>:register</code>/<code>:deregister</code> when a worker is added / removed from the Julia worker pool.</p></li>
+<li><p>with <code>:interrupt</code> when <code>interrupt(workers)</code> is called. The <code>ClusterManager</code> should signal the appropriate worker with an interrupt signal.</p></li>
+<li><p>with <code>:finalize</code> for cleanup purposes.</p></li>
+</ul>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/distributed/managers.jl#L352-L362">source</a><br><h3 id="Base.kill-Tuple{ClusterManager,Int64,WorkerConfig}">
+<code>Base.kill</code><span class="docstring-category">Method</span>
+</h3>
+<pre>kill(manager::ClusterManager, pid::Int, config::WorkerConfig)</pre>
+<p>Implemented by cluster managers. It is called on the master process, by <a href="#Base.Distributed.rmprocs"><code>rmprocs</code></a>. It should cause the remote worker specified by <code>pid</code> to exit. <code>kill(manager::ClusterManager.....)</code> executes a remote <code>exit()</code> on <code>pid</code>.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/distributed/managers.jl#L517-L525">source</a><br><h3 id="Base.Distributed.init_worker">
+<code>Base.Distributed.init_worker</code><span class="docstring-category">Function</span>
+</h3>
+<pre>init_worker(cookie::AbstractString, manager::ClusterManager=DefaultClusterManager())</pre>
+<p>Called by cluster managers implementing custom transports. It initializes a newly launched process as a worker. Command line argument <code>--worker</code> has the effect of initializing a process as a worker using TCP/IP sockets for transport. <code>cookie</code> is a <a href="#Base.Distributed.cluster_cookie-Tuple%7B%7D"><code>cluster_cookie</code></a>.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/distributed/cluster.jl#L265-L272">source</a><br><h3 id="Base.connect-Tuple{ClusterManager,Int64,WorkerConfig}">
+<code>Base.connect</code><span class="docstring-category">Method</span>
+</h3>
+<pre>connect(manager::ClusterManager, pid::Int, config::WorkerConfig) -&gt; (instrm::IO, outstrm::IO)</pre>
+<p>Implemented by cluster managers using custom transports. It should establish a logical connection to worker with id <code>pid</code>, specified by <code>config</code> and return a pair of <code>IO</code> objects. Messages from <code>pid</code> to current process will be read off <code>instrm</code>, while messages to be sent to <code>pid</code> will be written to <code>outstrm</code>. The custom transport implementation must ensure that messages are delivered and received completely and in order. <code>connect(manager::ClusterManager.....)</code> sets up TCP/IP socket connections in-between workers.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/distributed/managers.jl#L372-L382">source</a><br><h3 id="Base.Distributed.process_messages">
+<code>Base.Distributed.process_messages</code><span class="docstring-category">Function</span>
+</h3>
+<pre>Base.process_messages(r_stream::IO, w_stream::IO, incoming::Bool=true)</pre>
+<p>Called by cluster managers using custom transports. It should be called when the custom transport implementation receives the first message from a remote worker. The custom transport must manage a logical connection to the remote worker and provide two <code>IO</code> objects, one for incoming messages and the other for messages addressed to the remote worker. If <code>incoming</code> is <code>true</code>, the remote peer initiated the connection. Whichever of the pair initiates the connection sends the cluster cookie and its Julia version number to perform the authentication handshake.</p>
+<p>See also <a href="#Base.Distributed.cluster_cookie-Tuple%7B%7D"><code>cluster_cookie</code></a>.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/distributed/process_messages.jl#L121-L134">source</a><br><div class="_attribution">
+  <p class="_attribution-p">
+    © 2009–2016 Jeff Bezanson, Stefan Karpinski, Viral B. Shah, and other contributors<br>Licensed under the MIT License.<br>
+    <a href="https://docs.julialang.org/en/release-0.6/stdlib/parallel/" class="_attribution-link" target="_blank">https://docs.julialang.org/en/release-0.6/stdlib/parallel/</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

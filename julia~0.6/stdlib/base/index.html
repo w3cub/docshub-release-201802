@@ -1,0 +1,1735 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Essentials - Julia 0.6 - W3cubDocs</title>
+  
+  <meta name="description" content="The Julia standard library contains a range of functions and macros appropriate for performing scientific and numerical computing, but is also as &hellip;">
+  <meta name="keywords" content="essentials, -, julia, julia~0.6">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/julia~0.6/stdlib/base/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/julia~0.6.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/julia~0.6/" class="_nav-link" title="" style="margin-left:0;">Julia 0.6</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _julia">
+				
+<h1 id="Essentials-1">Essentials</h1>
+<h2 id="Introduction-1">Introduction</h2>
+<p>The Julia standard library contains a range of functions and macros appropriate for performing scientific and numerical computing, but is also as broad as those of many general purpose programming languages. Additional functionality is available from a growing collection of available packages. Functions are grouped by topic below.</p>
+<p>Some general notes:</p>
+<ul>
+<li><p>Except for functions in built-in modules (<code>Pkg</code>, <code>Collections</code>, <code>Test</code> and <code>Profile</code>), all functions documented here are directly available for use in programs.</p></li>
+<li><p>To use module functions, use <code>import Module</code> to import the module, and <code>Module.fn(x)</code> to use the functions.</p></li>
+<li><p>Alternatively, <code>using Module</code> will import all exported <code>Module</code> functions into the current namespace.</p></li>
+<li><p>By convention, function names ending with an exclamation point (<code>!</code>) modify their arguments. Some functions have both modifying (e.g., <code>sort!</code>) and non-modifying (<code>sort</code>) versions.</p></li>
+</ul>
+<h2 id="Getting-Around-1">Getting Around</h2>
+<h3 id="Base.exit">
+<code>Base.exit</code><span class="docstring-category">Function</span>
+</h3>
+<pre>exit([code])</pre>
+<p>Quit (or control-D at the prompt). The default exit code is zero, indicating that the processes completed successfully.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/docs/helpdb/Base.jl#L2486-L2491">source</a><br><h3 id="Base.quit">
+<code>Base.quit</code><span class="docstring-category">Function</span>
+</h3>
+<pre>quit()</pre>
+<p>Quit the program indicating that the processes completed successfully. This function calls <code>exit(0)</code> (see <a href="#Base.exit"><code>exit</code></a>).</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/docs/helpdb/Base.jl#L1381-L1386">source</a><br><h3 id="Base.atexit">
+<code>Base.atexit</code><span class="docstring-category">Function</span>
+</h3>
+<pre>atexit(f)</pre>
+<p>Register a zero-argument function <code>f()</code> to be called at process exit. <code>atexit()</code> hooks are called in last in first out (LIFO) order and run before object finalizers.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/docs/helpdb/Base.jl#L1569-L1574">source</a><br><h3 id="Base.atreplinit">
+<code>Base.atreplinit</code><span class="docstring-category">Function</span>
+</h3>
+<pre>atreplinit(f)</pre>
+<p>Register a one-argument function to be called before the REPL interface is initialized in interactive sessions; this is useful to customize the interface. The argument of <code>f</code> is the REPL object. This function should be called from within the <code>.juliarc.jl</code> initialization file.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/client.jl#L344-L351">source</a><br><h3 id="Base.isinteractive">
+<code>Base.isinteractive</code><span class="docstring-category">Function</span>
+</h3>
+<pre>isinteractive() -&gt; Bool</pre>
+<p>Determine whether Julia is running an interactive session.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/docs/helpdb/Base.jl#L537-L541">source</a><br><h3 id="Base.whos">
+<code>Base.whos</code><span class="docstring-category">Function</span>
+</h3>
+<pre>whos(io::IO=STDOUT, m::Module=current_module(), pattern::Regex=r"")</pre>
+<p>Print information about exported global variables in a module, optionally restricted to those matching <code>pattern</code>.</p>
+<p>The memory consumption estimate is an approximate lower bound on the size of the internal structure of the object.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/interactiveutil.jl#L699-L705">source</a><br><h3 id="Base.summarysize">
+<code>Base.summarysize</code><span class="docstring-category">Function</span>
+</h3>
+<pre>Base.summarysize(obj; exclude=Union{...}, chargeall=Union{...}) -&gt; Int</pre>
+<p>Compute the amount of memory used by all unique objects reachable from the argument.</p>
+<p><strong>Keyword Arguments</strong></p>
+<ul>
+<li><p><code>exclude</code>: specifies the types of objects to exclude from the traversal.</p></li>
+<li><p><code>chargeall</code>: specifies the types of objects to always charge the size of all of their fields, even if those fields would normally be excluded.</p></li>
+</ul>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/summarysize.jl#L12-L21">source</a><br><h3 id="Base.edit-Tuple{AbstractString,Integer}">
+<code>Base.edit</code><span class="docstring-category">Method</span>
+</h3>
+<pre>edit(path::AbstractString, line::Integer=0)</pre>
+<p>Edit a file or directory optionally providing a line number to edit the file at. Returns to the <code>julia</code> prompt when you quit the editor. The editor can be changed by setting <code>JULIA_EDITOR</code>, <code>VISUAL</code> or <code>EDITOR</code> as an environment variable.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/interactiveutil.jl#L26-L32">source</a><br><h3 id="Base.edit-Tuple{Any}">
+<code>Base.edit</code><span class="docstring-category">Method</span>
+</h3>
+<pre>edit(function, [types])</pre>
+<p>Edit the definition of a function, optionally specifying a tuple of types to indicate which method to edit. The editor can be changed by setting <code>JULIA_EDITOR</code>, <code>VISUAL</code> or <code>EDITOR</code> as an environment variable.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/interactiveutil.jl#L80-L86">source</a><br><h3 id="Base.@edit">
+<code>Base.@edit</code><span class="docstring-category">Macro</span>
+</h3>
+<pre>@edit</pre>
+<p>Evaluates the arguments to the function or macro call, determines their types, and calls the <code>edit</code> function on the resulting expression.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/interactiveutil.jl#L469-L474">source</a><br><h3 id="Base.less-Tuple{AbstractString}">
+<code>Base.less</code><span class="docstring-category">Method</span>
+</h3>
+<pre>less(file::AbstractString, [line::Integer])</pre>
+<p>Show a file using the default pager, optionally providing a starting line number. Returns to the <code>julia</code> prompt when you quit the pager.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/interactiveutil.jl#L106-L111">source</a><br><h3 id="Base.less-Tuple{Any}">
+<code>Base.less</code><span class="docstring-category">Method</span>
+</h3>
+<pre>less(function, [types])</pre>
+<p>Show the definition of a function using the default pager, optionally specifying a tuple of types to indicate which method to see.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/interactiveutil.jl#L114-L119">source</a><br><h3 id="Base.@less">
+<code>Base.@less</code><span class="docstring-category">Macro</span>
+</h3>
+<pre>@less</pre>
+<p>Evaluates the arguments to the function or macro call, determines their types, and calls the <code>less</code> function on the resulting expression.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/interactiveutil.jl#L461-L466">source</a><br><h3 id="Base.clipboard-Tuple{Any}">
+<code>Base.clipboard</code><span class="docstring-category">Method</span>
+</h3>
+<pre>clipboard(x)</pre>
+<p>Send a printed form of <code>x</code> to the operating system clipboard ("copy").</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/interactiveutil.jl#L203-L207">source</a><br><h3 id="Base.clipboard-Tuple{}">
+<code>Base.clipboard</code><span class="docstring-category">Method</span>
+</h3>
+<pre>clipboard() -&gt; AbstractString</pre>
+<p>Return a string with the contents of the operating system clipboard ("paste").</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/interactiveutil.jl#L210-L214">source</a><br><h3 id="Base.reload">
+<code>Base.reload</code><span class="docstring-category">Function</span>
+</h3>
+<pre>reload(name::AbstractString)</pre>
+<p>Force reloading of a package, even if it has been loaded before. This is intended for use during package development as code is modified.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/loading.jl#L366-L371">source</a><br><h3 id="Base.require">
+<code>Base.require</code><span class="docstring-category">Function</span>
+</h3>
+<pre>require(module::Symbol)</pre>
+<p>This function is part of the implementation of <code>using</code> / <code>import</code>, if a module is not already defined in <code>Main</code>. It can also be called directly to force reloading a module, regardless of whether it has been loaded before (for example, when interactively developing libraries).</p>
+<p>Loads a source file, in the context of the <code>Main</code> module, on every active node, searching standard locations for files. <code>require</code> is considered a top-level operation, so it sets the current <code>include</code> path but does not use it to search for files (see help for <code>include</code>). This function is typically used to load library code, and is implicitly called by <code>using</code> to load packages.</p>
+<p>When searching for files, <code>require</code> first looks for package code under <code>Pkg.dir()</code>, then tries paths in the global array <code>LOAD_PATH</code>. <code>require</code> is case-sensitive on all platforms, including those with case-insensitive filesystems like macOS and Windows.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/loading.jl#L385-L403">source</a><br><h3 id="Base.compilecache">
+<code>Base.compilecache</code><span class="docstring-category">Function</span>
+</h3>
+<pre>Base.compilecache(module::String)</pre>
+<p>Creates a precompiled cache file for a module and all of its dependencies. This can be used to reduce package load times. Cache files are stored in <code>LOAD_CACHE_PATH[1]</code>, which defaults to <code>~/.julia/lib/VERSION</code>. See <a href="../../manual/modules/#Module-initialization-and-precompilation-1">Module initialization and precompilation</a> for important notes.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/loading.jl#L666-L675">source</a><br><h3 id="Base.__precompile__">
+<code>Base.__precompile__</code><span class="docstring-category">Function</span>
+</h3>
+<pre>__precompile__(isprecompilable::Bool=true)</pre>
+<p>Specify whether the file calling this function is precompilable. If <code>isprecompilable</code> is <code>true</code>, then <code>__precompile__</code> throws an exception when the file is loaded by <code>using</code>/<code>import</code>/<code>require</code> <em>unless</em> the file is being precompiled, and in a module file it causes the module to be automatically precompiled when it is imported. Typically, <code>__precompile__()</code> should occur before the <code>module</code> declaration in the file, or better yet <code>VERSION &gt;= v"0.4" &amp;&amp; __precompile__()</code> in order to be backward-compatible with Julia 0.3.</p>
+<p>If a module or file is <em>not</em> safely precompilable, it should call <code>__precompile__(false)</code> in order to throw an error if Julia attempts to precompile it.</p>
+<p><code>__precompile__()</code> should <em>not</em> be used in a module unless all of its dependencies are also using <code>__precompile__()</code>. Failure to do so can result in a runtime error when loading the module.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/loading.jl#L321-L336">source</a><br><h3 id="Base.include">
+<code>Base.include</code><span class="docstring-category">Function</span>
+</h3>
+<pre>include(path::AbstractString)</pre>
+<p>Evaluate the contents of the input source file in the current context. Returns the result of the last evaluated expression of the input file. During including, a task-local include path is set to the directory containing the file. Nested calls to <code>include</code> will search relative to that path. All paths refer to files on node 1 when running in parallel, and files will be fetched from node 1. This function is typically used to load source interactively, or to combine files in packages that are broken into multiple source files.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/loading.jl#L591-L600">source</a><br><h3 id="Base.include_string">
+<code>Base.include_string</code><span class="docstring-category">Function</span>
+</h3>
+<pre>include_string(code::AbstractString, filename::AbstractString="string")</pre>
+<p>Like <code>include</code>, except reads code from the given string rather than from a file. Since there is no file path involved, no path processing or fetching from node 1 is done.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/loading.jl#L516-L521">source</a><br><h3 id="Base.include_dependency">
+<code>Base.include_dependency</code><span class="docstring-category">Function</span>
+</h3>
+<pre>include_dependency(path::AbstractString)</pre>
+<p>In a module, declare that the file specified by <code>path</code> (relative or absolute) is a dependency for precompilation; that is, the module will need to be recompiled if this file changes.</p>
+<p>This is only needed if your module depends on a file that is not used via <code>include</code>. It has no effect outside of compilation.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/loading.jl#L287-L296">source</a><br><h3 id="Base.Docs.apropos">
+<code>Base.Docs.apropos</code><span class="docstring-category">Function</span>
+</h3>
+<pre>apropos(string)</pre>
+<p>Search through all documentation for a string, ignoring case.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/docs/utils.jl#L440-L444">source</a><br><h3 id="Base.which-Tuple{Any,Any}">
+<code>Base.which</code><span class="docstring-category">Method</span>
+</h3>
+<pre>which(f, types)</pre>
+<p>Returns the method of <code>f</code> (a <code>Method</code> object) that would be called for arguments of the given <code>types</code>.</p>
+<p>If <code>types</code> is an abstract type, then the method that would be called by <code>invoke</code> is returned.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/reflection.jl#L809-L815">source</a><br><h3 id="Base.which-Tuple{Symbol}">
+<code>Base.which</code><span class="docstring-category">Method</span>
+</h3>
+<pre>which(symbol)</pre>
+<p>Return the module in which the binding for the variable referenced by <code>symbol</code> was created.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/reflection.jl#L841-L845">source</a><br><h3 id="Base.@which">
+<code>Base.@which</code><span class="docstring-category">Macro</span>
+</h3>
+<pre>@which</pre>
+<p>Applied to a function or macro call, it evaluates the arguments to the specified call, and returns the <code>Method</code> object for the method that would be called for those arguments. Applied to a variable, it returns the module in which the variable was bound. It calls out to the <code>which</code> function.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/interactiveutil.jl#L451-L458">source</a><br><h3 id="Base.methods">
+<code>Base.methods</code><span class="docstring-category">Function</span>
+</h3>
+<pre>methods(f, [types])</pre>
+<p>Returns the method table for <code>f</code>.</p>
+<p>If <code>types</code> is specified, returns an array of methods whose types match.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/reflection.jl#L572-L578">source</a><br><h3 id="Base.methodswith">
+<code>Base.methodswith</code><span class="docstring-category">Function</span>
+</h3>
+<pre>methodswith(typ[, module or function][, showparents::Bool=false])</pre>
+<p>Return an array of methods with an argument of type <code>typ</code>.</p>
+<p>The optional second argument restricts the search to a particular module or function (the default is all modules, starting from Main).</p>
+<p>If optional <code>showparents</code> is <code>true</code>, also return arguments with a parent type of <code>typ</code>, excluding type <code>Any</code>.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/interactiveutil.jl#L534-L544">source</a><br><h3 id="Base.@show">
+<code>Base.@show</code><span class="docstring-category">Macro</span>
+</h3>
+<pre>@show</pre>
+<p>Show an expression and result, returning the result.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/docs/helpdb/Base.jl#L815-L819">source</a><br><h3 id="Base.versioninfo">
+<code>Base.versioninfo</code><span class="docstring-category">Function</span>
+</h3>
+<pre>versioninfo(io::IO=STDOUT, verbose::Bool=false)</pre>
+<p>Print information about the version of Julia in use. If the <code>verbose</code> argument is <code>true</code>, detailed system information is shown as well.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/interactiveutil.jl#L247-L252">source</a><br><h3 id="Base.workspace">
+<code>Base.workspace</code><span class="docstring-category">Function</span>
+</h3>
+<pre>workspace()</pre>
+<p>Replace the top-level module (<code>Main</code>) with a new one, providing a clean workspace. The previous <code>Main</code> module is made available as <code>LastMain</code>. A previously-loaded package can be accessed using a statement such as <code>using LastMain.Package</code>.</p>
+<p>This function should only be used interactively.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/interactiveutil.jl#L648-L656">source</a><br><h3 id="ans">
+<code>ans</code><span class="docstring-category">Keyword</span>
+</h3>
+<pre>ans</pre>
+<p>A variable referring to the last computed value, automatically set at the interactive prompt.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/docs/basedocs.jl#L684-L688">source</a><br><h2 id="All-Objects-1">All Objects</h2>
+<h3 id="Core.:===">
+<code>Core.:===</code><span class="docstring-category">Function</span>
+</h3>
+<pre>===(x,y) -&gt; Bool
+≡(x,y) -&gt; Bool</pre>
+<p>Determine whether <code>x</code> and <code>y</code> are identical, in the sense that no program could distinguish them. Compares mutable objects by address in memory, and compares immutable objects (such as numbers) by contents at the bit level. This function is sometimes called <code>egal</code>.</p>
+<pre>julia&gt; a = [1, 2]; b = [1, 2];
+
+julia&gt; a == b
+true
+
+julia&gt; a === b
+false
+
+julia&gt; a === a
+true</pre>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/operators.jl#L132-L152">source</a><br><h3 id="Core.isa">
+<code>Core.isa</code><span class="docstring-category">Function</span>
+</h3>
+<pre>isa(x, type) -&gt; Bool</pre>
+<p>Determine whether <code>x</code> is of the given <code>type</code>. Can also be used as an infix operator, e.g. <code>x isa type</code>.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/docs/helpdb/Base.jl#L2146-L2151">source</a><br><h3 id="Base.isequal-Tuple{Any,Any}">
+<code>Base.isequal</code><span class="docstring-category">Method</span>
+</h3>
+<pre>isequal(x, y)</pre>
+<p>Similar to <code>==</code>, except treats all floating-point <code>NaN</code> values as equal to each other, and treats <code>-0.0</code> as unequal to <code>0.0</code>. The default implementation of <code>isequal</code> calls <code>==</code>, so if you have a type that doesn't have these floating-point subtleties then you probably only need to define <code>==</code>.</p>
+<p><code>isequal</code> is the comparison function used by hash tables (<code>Dict</code>). <code>isequal(x,y)</code> must imply that <code>hash(x) == hash(y)</code>.</p>
+<p>This typically means that if you define your own <code>==</code> function then you must define a corresponding <code>hash</code> (and vice versa). Collections typically implement <code>isequal</code> by calling <code>isequal</code> recursively on all contents.</p>
+<p>Scalar types generally do not need to implement <code>isequal</code> separate from <code>==</code>, unless they represent floating-point numbers amenable to a more efficient implementation than that provided as a generic fallback (based on <code>isnan</code>, <code>signbit</code>, and <code>==</code>).</p>
+<pre>julia&gt; isequal([1., NaN], [1., NaN])
+true
+
+julia&gt; [1., NaN] == [1., NaN]
+false
+
+julia&gt; 0.0 == -0.0
+true
+
+julia&gt; isequal(0.0, -0.0)
+false</pre>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/operators.jl#L54-L86">source</a><br><h3 id="Base.isequal-Tuple{Nullable,Nullable}">
+<code>Base.isequal</code><span class="docstring-category">Method</span>
+</h3>
+<pre>isequal(x, y)</pre>
+<p>Similar to <code>==</code>, except treats all floating-point <code>NaN</code> values as equal to each other, and treats <code>-0.0</code> as unequal to <code>0.0</code>. The default implementation of <code>isequal</code> calls <code>==</code>, so if you have a type that doesn't have these floating-point subtleties then you probably only need to define <code>==</code>.</p>
+<p><code>isequal</code> is the comparison function used by hash tables (<code>Dict</code>). <code>isequal(x,y)</code> must imply that <code>hash(x) == hash(y)</code>.</p>
+<p>This typically means that if you define your own <code>==</code> function then you must define a corresponding <code>hash</code> (and vice versa). Collections typically implement <code>isequal</code> by calling <code>isequal</code> recursively on all contents.</p>
+<p>Scalar types generally do not need to implement <code>isequal</code> separate from <code>==</code>, unless they represent floating-point numbers amenable to a more efficient implementation than that provided as a generic fallback (based on <code>isnan</code>, <code>signbit</code>, and <code>==</code>).</p>
+<pre>julia&gt; isequal([1., NaN], [1., NaN])
+true
+
+julia&gt; [1., NaN] == [1., NaN]
+false
+
+julia&gt; 0.0 == -0.0
+true
+
+julia&gt; isequal(0.0, -0.0)
+false</pre>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/operators.jl#L54-L86">source</a><br><pre>isequal(x::Nullable, y::Nullable)</pre>
+<p>If neither <code>x</code> nor <code>y</code> is null, compare them according to their values (i.e. <code>isequal(get(x), get(y))</code>). Else, return <code>true</code> if both arguments are null, and <code>false</code> if one is null but not the other: nulls are considered equal.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/nullable.jl#L198-L204">source</a><br><h3 id="Base.isless">
+<code>Base.isless</code><span class="docstring-category">Function</span>
+</h3>
+<pre>isless(x, y)</pre>
+<p>Test whether <code>x</code> is less than <code>y</code>, according to a canonical total order. Values that are normally unordered, such as <code>NaN</code>, are ordered in an arbitrary but consistent fashion. This is the default comparison used by <a href="../sort/#Base.sort"><code>sort</code></a>. Non-numeric types with a canonical total order should implement this function. Numeric types only need to implement it if they have special values such as <code>NaN</code>.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/docs/helpdb/Base.jl#L1743-L1751">source</a><br><h3 id="Base.isless-Tuple{Nullable,Nullable}">
+<code>Base.isless</code><span class="docstring-category">Method</span>
+</h3>
+<pre>isless(x::Nullable, y::Nullable)</pre>
+<p>If neither <code>x</code> nor <code>y</code> is null, compare them according to their values (i.e. <code>isless(get(x), get(y))</code>). Else, return <code>true</code> if only <code>y</code> is null, and <code>false</code> otherwise: nulls are always considered greater than non-nulls, but not greater than another null.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/nullable.jl#L217-L224">source</a><br><h3 id="Base.ifelse">
+<code>Base.ifelse</code><span class="docstring-category">Function</span>
+</h3>
+<pre>ifelse(condition::Bool, x, y)</pre>
+<p>Return <code>x</code> if <code>condition</code> is <code>true</code>, otherwise return <code>y</code>. This differs from <code>?</code> or <code>if</code> in that it is an ordinary function, so all the arguments are evaluated first. In some cases, using <code>ifelse</code> instead of an <code>if</code> statement can eliminate the branch in generated code and provide higher performance in tight loops.</p>
+<pre>julia&gt; ifelse(1 &gt; 2, 1, 2)
+2</pre>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/operators.jl#L269-L281">source</a><br><h3 id="Base.lexcmp">
+<code>Base.lexcmp</code><span class="docstring-category">Function</span>
+</h3>
+<pre>lexcmp(x, y)</pre>
+<p>Compare <code>x</code> and <code>y</code> lexicographically and return -1, 0, or 1 depending on whether <code>x</code> is less than, equal to, or greater than <code>y</code>, respectively. This function should be defined for lexicographically comparable types, and <code>lexless</code> will call <code>lexcmp</code> by default.</p>
+<pre>julia&gt; lexcmp("abc", "abd")
+-1
+
+julia&gt; lexcmp("abc", "abc")
+0</pre>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/operators.jl#L305-L319">source</a><br><h3 id="Base.lexless">
+<code>Base.lexless</code><span class="docstring-category">Function</span>
+</h3>
+<pre>lexless(x, y)</pre>
+<p>Determine whether <code>x</code> is lexicographically less than <code>y</code>.</p>
+<pre>julia&gt; lexless("abc", "abd")
+true</pre>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/operators.jl#L322-L331">source</a><br><h3 id="Core.typeof">
+<code>Core.typeof</code><span class="docstring-category">Function</span>
+</h3>
+<pre>typeof(x)</pre>
+<p>Get the concrete type of <code>x</code>.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/docs/helpdb/Base.jl#L1017-L1021">source</a><br><h3 id="Core.tuple">
+<code>Core.tuple</code><span class="docstring-category">Function</span>
+</h3>
+<pre>tuple(xs...)</pre>
+<p>Construct a tuple of the given objects.</p>
+<p><strong>Example</strong></p>
+<pre>julia&gt; tuple(1, 'a', pi)
+(1, 'a', π = 3.1415926535897...)</pre>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/docs/helpdb/Base.jl#L580-L590">source</a><br><h3 id="Base.ntuple">
+<code>Base.ntuple</code><span class="docstring-category">Function</span>
+</h3>
+<pre>ntuple(f::Function, n::Integer)</pre>
+<p>Create a tuple of length <code>n</code>, computing each element as <code>f(i)</code>, where <code>i</code> is the index of the element.</p>
+<pre>julia&gt; ntuple(i -&gt; 2*i, 4)
+(2, 4, 6, 8)</pre>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/tuple.jl#L96-L106">source</a><br><h3 id="Base.object_id">
+<code>Base.object_id</code><span class="docstring-category">Function</span>
+</h3>
+<pre>object_id(x)</pre>
+<p>Get a hash value for <code>x</code> based on object identity. <code>object_id(x)==object_id(y)</code> if <code>x === y</code>.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/docs/helpdb/Base.jl#L1829-L1833">source</a><br><h3 id="Base.hash">
+<code>Base.hash</code><span class="docstring-category">Function</span>
+</h3>
+<pre>hash(x[, h::UInt])</pre>
+<p>Compute an integer hash code such that <code>isequal(x,y)</code> implies <code>hash(x)==hash(y)</code>. The optional second argument <code>h</code> is a hash code to be mixed with the result.</p>
+<p>New types should implement the 2-argument form, typically by calling the 2-argument <code>hash</code> method recursively in order to mix hashes of the contents with each other (and with <code>h</code>). Typically, any type that implements <code>hash</code> should also implement its own <code>==</code> (hence <code>isequal</code>) to guarantee the property mentioned above.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/docs/helpdb/Base.jl#L1469-L1479">source</a><br><h3 id="Base.finalizer">
+<code>Base.finalizer</code><span class="docstring-category">Function</span>
+</h3>
+<pre>finalizer(x, f)</pre>
+<p>Register a function <code>f(x)</code> to be called when there are no program-accessible references to <code>x</code>. The type of <code>x</code> must be a <code>mutable struct</code>, otherwise the behavior of this function is unpredictable.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/docs/helpdb/Base.jl#L1879-L1885">source</a><br><h3 id="Base.finalize">
+<code>Base.finalize</code><span class="docstring-category">Function</span>
+</h3>
+<pre>finalize(x)</pre>
+<p>Immediately run finalizers registered for object <code>x</code>.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/docs/helpdb/Base.jl#L1129-L1133">source</a><br><h3 id="Base.copy">
+<code>Base.copy</code><span class="docstring-category">Function</span>
+</h3>
+<pre>copy(x)</pre>
+<p>Create a shallow copy of <code>x</code>: the outer structure is copied, but not all internal values. For example, copying an array produces a new array with identically-same elements as the original.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/docs/helpdb/Base.jl#L1577-L1583">source</a><br><h3 id="Base.deepcopy">
+<code>Base.deepcopy</code><span class="docstring-category">Function</span>
+</h3>
+<pre>deepcopy(x)</pre>
+<p>Create a deep copy of <code>x</code>: everything is copied recursively, resulting in a fully independent object. For example, deep-copying an array produces a new array whose elements are deep copies of the original elements. Calling <code>deepcopy</code> on an object should generally have the same effect as serializing and then deserializing it.</p>
+<p>As a special case, functions can only be actually deep-copied if they are anonymous, otherwise they are just copied. The difference is only relevant in the case of closures, i.e. functions which may contain hidden internal references.</p>
+<p>While it isn't normally necessary, user-defined types can override the default <code>deepcopy</code> behavior by defining a specialized version of the function <code>deepcopy_internal(x::T, dict::ObjectIdDict)</code> (which shouldn't otherwise be used), where <code>T</code> is the type to be specialized for, and <code>dict</code> keeps track of objects copied so far within the recursion. Within the definition, <code>deepcopy_internal</code> should be used in place of <code>deepcopy</code>, and the <code>dict</code> variable should be updated as appropriate before returning.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/docs/helpdb/Base.jl#L2518-L2536">source</a><br><h3 id="Core.isdefined">
+<code>Core.isdefined</code><span class="docstring-category">Function</span>
+</h3>
+<pre>isdefined([m::Module,] s::Symbol)
+isdefined(object, s::Symbol)
+isdefined(object, index::Int)</pre>
+<p>Tests whether an assignable location is defined. The arguments can be a module and a symbol or a composite object and field name (as a symbol) or index. With a single symbol argument, tests whether a global variable with that name is defined in <a href="#Base.current_module"><code>current_module()</code></a>.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/docs/helpdb/Base.jl#L1526-L1534">source</a><br><h3 id="Base.convert">
+<code>Base.convert</code><span class="docstring-category">Function</span>
+</h3>
+<pre>convert(T, x)</pre>
+<p>Convert <code>x</code> to a value of type <code>T</code>.</p>
+<p>If <code>T</code> is an <a href="../numbers/#Core.Integer"><code>Integer</code></a> type, an <a href="#Core.InexactError"><code>InexactError</code></a> will be raised if <code>x</code> is not representable by <code>T</code>, for example if <code>x</code> is not integer-valued, or is outside the range supported by <code>T</code>.</p>
+<p><strong>Examples</strong></p>
+<pre>julia&gt; convert(Int, 3.0)
+3
+
+julia&gt; convert(Int, 3.5)
+ERROR: InexactError()
+Stacktrace:
+ [1] convert(::Type{Int64}, ::Float64) at ./float.jl:679</pre>
+<p>If <code>T</code> is a <a href="../numbers/#Core.AbstractFloat"><code>AbstractFloat</code></a> or <a href="../numbers/#Base.Rational"><code>Rational</code></a> type, then it will return the closest value to <code>x</code> representable by <code>T</code>.</p>
+<pre>julia&gt; x = 1/3
+0.3333333333333333
+
+julia&gt; convert(Float32, x)
+0.33333334f0
+
+julia&gt; convert(Rational{Int32}, x)
+1//3
+
+julia&gt; convert(Rational{Int64}, x)
+6004799503160661//18014398509481984</pre>
+<p>If <code>T</code> is a collection type and <code>x</code> a collection, the result of <code>convert(T, x)</code> may alias <code>x</code>.</p>
+<pre>julia&gt; x = Int[1,2,3];
+
+julia&gt; y = convert(Vector{Int}, x);
+
+julia&gt; y === x
+true</pre>
+<p>Similarly, if <code>T</code> is a composite type and <code>x</code> a related instance, the result of <code>convert(T, x)</code> may alias part or all of <code>x</code>.</p>
+<pre>julia&gt; x = speye(5);
+
+julia&gt; typeof(x)
+SparseMatrixCSC{Float64,Int64}
+
+julia&gt; y = convert(SparseMatrixCSC{Float64,Int64}, x);
+
+julia&gt; z = convert(SparseMatrixCSC{Float32,Int64}, y);
+
+julia&gt; y === x
+true
+
+julia&gt; z === x
+false
+
+julia&gt; z.colptr === x.colptr
+true</pre>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/docs/helpdb/Base.jl#L2173-L2241">source</a><br><h3 id="Base.promote">
+<code>Base.promote</code><span class="docstring-category">Function</span>
+</h3>
+<pre>promote(xs...)</pre>
+<p>Convert all arguments to their common promotion type (if any), and return them all (as a tuple).</p>
+<p><strong>Example</strong></p>
+<pre>julia&gt; promote(Int8(1), Float16(4.5), Float32(4.1))
+(1.0f0, 4.5f0, 4.1f0)</pre>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/docs/helpdb/Base.jl#L407-L417">source</a><br><h3 id="Base.oftype">
+<code>Base.oftype</code><span class="docstring-category">Function</span>
+</h3>
+<pre>oftype(x, y)</pre>
+<p>Convert <code>y</code> to the type of <code>x</code> (<code>convert(typeof(x), y)</code>).</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/docs/helpdb/Base.jl#L377-L381">source</a><br><h3 id="Base.widen">
+<code>Base.widen</code><span class="docstring-category">Function</span>
+</h3>
+<pre>widen(x)</pre>
+<p>If <code>x</code> is a type, return a "larger" type (for numeric types, this will be a type with at least as much range and precision as the argument, and usually more). Otherwise <code>x</code> is converted to <code>widen(typeof(x))</code>.</p>
+<p><strong>Examples</strong></p>
+<pre>julia&gt; widen(Int32)
+Int64
+
+julia&gt; widen(1.5f0)
+1.5</pre>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/docs/helpdb/Base.jl#L2539-L2554">source</a><br><h3 id="Base.identity">
+<code>Base.identity</code><span class="docstring-category">Function</span>
+</h3>
+<pre>identity(x)</pre>
+<p>The identity function. Returns its argument.</p>
+<pre>julia&gt; identity("Well, what did you expect?")
+"Well, what did you expect?"</pre>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/operators.jl#L387-L396">source</a><br><h2 id="Types-1">Types</h2>
+<h3 id="Base.supertype">
+<code>Base.supertype</code><span class="docstring-category">Function</span>
+</h3>
+<pre>supertype(T::DataType)</pre>
+<p>Return the supertype of DataType <code>T</code>.</p>
+<pre>julia&gt; supertype(Int32)
+Signed</pre>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/operators.jl#L30-L39">source</a><br><h3 id="Core.issubtype">
+<code>Core.issubtype</code><span class="docstring-category">Function</span>
+</h3>
+<pre>issubtype(type1, type2)</pre>
+<p>Return <code>true</code> if and only if all values of <code>type1</code> are also of <code>type2</code>. Can also be written using the <code>&lt;:</code> infix operator as <code>type1 &lt;: type2</code>.</p>
+<p><strong>Examples</strong></p>
+<pre>julia&gt; issubtype(Int8, Int32)
+false
+
+julia&gt; Int8 &lt;: Integer
+true</pre>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/docs/helpdb/Base.jl#L1862-L1876">source</a><br><h3 id="Base.:&lt;:">
+<code>Base.:&lt;:</code><span class="docstring-category">Function</span>
+</h3>
+<pre>&lt;:(T1, T2)</pre>
+<p>Subtype operator, equivalent to <code>issubtype(T1, T2)</code>.</p>
+<pre>julia&gt; Float64 &lt;: AbstractFloat
+true
+
+julia&gt; Vector{Int} &lt;: AbstractArray
+true
+
+julia&gt; Matrix{Float64} &lt;: Matrix{AbstractFloat}
+false</pre>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/operators.jl#L5-L20">source</a><br><h3 id="Base.:&gt;:">
+<code>Base.:&gt;:</code><span class="docstring-category">Function</span>
+</h3>
+<pre>&gt;:(T1, T2)</pre>
+<p>Supertype operator, equivalent to <code>issubtype(T2, T1)</code>.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/operators.jl#L23-L27">source</a><br><h3 id="Base.subtypes">
+<code>Base.subtypes</code><span class="docstring-category">Function</span>
+</h3>
+<pre>subtypes(T::DataType)</pre>
+<p>Return a list of immediate subtypes of DataType <code>T</code>. Note that all currently loaded subtypes are included, including those not visible in the current module.</p>
+<pre>julia&gt; subtypes(Integer)
+4-element Array{Union{DataType, UnionAll},1}:
+ BigInt
+ Bool
+ Signed
+ Unsigned</pre>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/reflection.jl#L445-L459">source</a><br><h3 id="Base.typemin">
+<code>Base.typemin</code><span class="docstring-category">Function</span>
+</h3>
+<pre>typemin(T)</pre>
+<p>The lowest value representable by the given (real) numeric DataType <code>T</code>.</p>
+<p><strong>Examples</strong></p>
+<pre>julia&gt; typemin(Float16)
+-Inf16
+
+julia&gt; typemin(Float32)
+-Inf32</pre>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/docs/helpdb/Base.jl#L1001-L1014">source</a><br><h3 id="Base.typemax">
+<code>Base.typemax</code><span class="docstring-category">Function</span>
+</h3>
+<pre>typemax(T)</pre>
+<p>The highest value representable by the given (real) numeric <code>DataType</code>.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/docs/helpdb/Base.jl#L1616-L1620">source</a><br><h3 id="Base.realmin">
+<code>Base.realmin</code><span class="docstring-category">Function</span>
+</h3>
+<pre>realmin(T)</pre>
+<p>The smallest in absolute value non-subnormal value representable by the given floating-point DataType <code>T</code>.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/docs/helpdb/Base.jl#L2504-L2508">source</a><br><h3 id="Base.realmax">
+<code>Base.realmax</code><span class="docstring-category">Function</span>
+</h3>
+<pre>realmax(T)</pre>
+<p>The highest finite value representable by the given floating-point DataType <code>T</code>.</p>
+<p><strong>Examples</strong></p>
+<pre>julia&gt; realmax(Float16)
+Float16(6.55e4)
+
+julia&gt; realmax(Float32)
+3.4028235f38</pre>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/docs/helpdb/Base.jl#L974-L987">source</a><br><h3 id="Base.maxintfloat">
+<code>Base.maxintfloat</code><span class="docstring-category">Function</span>
+</h3>
+<pre>maxintfloat(T)</pre>
+<p>The largest integer losslessly representable by the given floating-point DataType <code>T</code>.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/docs/helpdb/Base.jl#L1316-L1320">source</a><br><pre>maxintfloat(T, S)</pre>
+<p>The largest integer losslessly representable by the given floating-point DataType <code>T</code> that also does not exceed the maximum integer representable by the integer DataType <code>S</code>.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/docs/helpdb/Base.jl#L1323-L1328">source</a><br><h3 id="Base.sizeof-Tuple{Type}">
+<code>Base.sizeof</code><span class="docstring-category">Method</span>
+</h3>
+<pre>sizeof(T)</pre>
+<p>Size, in bytes, of the canonical binary representation of the given DataType <code>T</code>, if any.</p>
+<p><strong>Examples</strong></p>
+<pre>julia&gt; sizeof(Float32)
+4
+
+julia&gt; sizeof(Complex128)
+16</pre>
+<p>If <code>T</code> does not have a specific size, an error is thrown.</p>
+<pre>julia&gt; sizeof(Base.LinAlg.LU)
+ERROR: argument is an abstract type; size is indeterminate
+Stacktrace:
+ [1] sizeof(::Type{T} where T) at ./essentials.jl:159</pre>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/docs/helpdb/Base.jl#L332-L354">source</a><br><h3 id="Base.eps-Tuple{Type{#s27} where #s27&lt;:AbstractFloat}">
+<code>Base.eps</code><span class="docstring-category">Method</span>
+</h3>
+<pre>eps(::Type{T}) where T&lt;:AbstractFloat
+eps()</pre>
+<p>Returns the <em>machine epsilon</em> of the floating point type <code>T</code> (<code>T = Float64</code> by default). This is defined as the gap between 1 and the next largest value representable by <code>T</code>, and is equivalent to <code>eps(one(T))</code>.</p>
+<pre>julia&gt; eps()
+2.220446049250313e-16
+
+julia&gt; eps(Float32)
+1.1920929f-7
+
+julia&gt; 1.0 + eps()
+1.0000000000000002
+
+julia&gt; 1.0 + eps()/2
+1.0</pre>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/float.jl#L718-L739">source</a><br><h3 id="Base.eps-Tuple{AbstractFloat}">
+<code>Base.eps</code><span class="docstring-category">Method</span>
+</h3>
+<pre>eps(x::AbstractFloat)</pre>
+<p>Returns the <em>unit in last place</em> (ulp) of <code>x</code>. This is the distance between consecutive representable floating point values at <code>x</code>. In most cases, if the distance on either side of <code>x</code> is different, then the larger of the two is taken, that is</p>
+<pre>eps(x) == max(x-prevfloat(x), nextfloat(x)-x)</pre>
+<p>The exceptions to this rule are the smallest and largest finite values (e.g. <code>nextfloat(-Inf)</code> and <code>prevfloat(Inf)</code> for <a href="../numbers/#Core.Float64"><code>Float64</code></a>), which round to the smaller of the values.</p>
+<p>The rationale for this behavior is that <code>eps</code> bounds the floating point rounding error. Under the default <code>RoundNearest</code> rounding mode, if <span>$y$</span> is a real number and <span>$x$</span> is the nearest floating point number to <span>$y$</span>, then</p>\[|y-x| \leq \operatorname{eps}(x)/2.\]<pre>julia&gt; eps(1.0)
+2.220446049250313e-16
+
+julia&gt; eps(prevfloat(2.0))
+2.220446049250313e-16
+
+julia&gt; eps(2.0)
+4.440892098500626e-16
+
+julia&gt; x = prevfloat(Inf)      # largest finite Float64
+1.7976931348623157e308
+
+julia&gt; x + eps(x)/2            # rounds up
+Inf
+
+julia&gt; x + prevfloat(eps(x)/2) # rounds down
+1.7976931348623157e308</pre>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/float.jl#L742-L782">source</a><br><h3 id="Base.promote_type">
+<code>Base.promote_type</code><span class="docstring-category">Function</span>
+</h3>
+<pre>promote_type(type1, type2)</pre>
+<p>Determine a type big enough to hold values of each argument type without loss, whenever possible. In some cases, where no type exists to which both types can be promoted losslessly, some loss is tolerated; for example, <code>promote_type(Int64, Float64)</code> returns <a href="../numbers/#Core.Float64"><code>Float64</code></a> even though strictly, not all <a href="../numbers/#Core.Int64"><code>Int64</code></a> values can be represented exactly as <code>Float64</code> values.</p>
+<pre>julia&gt; promote_type(Int64, Float64)
+Float64
+
+julia&gt; promote_type(Int32, Int64)
+Int64
+
+julia&gt; promote_type(Float32, BigInt)
+BigFloat</pre>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/promotion.jl#L134-L153">source</a><br><h3 id="Base.promote_rule">
+<code>Base.promote_rule</code><span class="docstring-category">Function</span>
+</h3>
+<pre>promote_rule(type1, type2)</pre>
+<p>Specifies what type should be used by <a href="#Base.promote"><code>promote</code></a> when given values of types <code>type1</code> and <code>type2</code>. This function should not be called directly, but should have definitions added to it for new types as appropriate.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/docs/helpdb/Base.jl#L2086-L2092">source</a><br><h3 id="Core.getfield">
+<code>Core.getfield</code><span class="docstring-category">Function</span>
+</h3>
+<pre>getfield(value, name::Symbol)</pre>
+<p>Extract a named field from a <code>value</code> of composite type. The syntax <code>a.b</code> calls <code>getfield(a, :b)</code>.</p>
+<p><strong>Example</strong></p>
+<pre>julia&gt; a = 1//2
+1//2
+
+julia&gt; getfield(a, :num)
+1</pre>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/docs/helpdb/Base.jl#L836-L850">source</a><br><h3 id="Core.setfield!">
+<code>Core.setfield!</code><span class="docstring-category">Function</span>
+</h3>
+<pre>setfield!(value, name::Symbol, x)</pre>
+<p>Assign <code>x</code> to a named field in <code>value</code> of composite type. The syntax <code>a.b = c</code> calls <code>setfield!(a, :b, c)</code>.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/docs/helpdb/Base.jl#L1909-L1914">source</a><br><h3 id="Base.fieldoffset">
+<code>Base.fieldoffset</code><span class="docstring-category">Function</span>
+</h3>
+<pre>fieldoffset(type, i)</pre>
+<p>The byte offset of field <code>i</code> of a type relative to the data start. For example, we could use it in the following manner to summarize information about a struct:</p>
+<pre>julia&gt; structinfo(T) = [(fieldoffset(T,i), fieldname(T,i), fieldtype(T,i)) for i = 1:nfields(T)];
+
+julia&gt; structinfo(Base.Filesystem.StatStruct)
+12-element Array{Tuple{UInt64,Symbol,DataType},1}:
+ (0x0000000000000000, :device, UInt64)
+ (0x0000000000000008, :inode, UInt64)
+ (0x0000000000000010, :mode, UInt64)
+ (0x0000000000000018, :nlink, Int64)
+ (0x0000000000000020, :uid, UInt64)
+ (0x0000000000000028, :gid, UInt64)
+ (0x0000000000000030, :rdev, UInt64)
+ (0x0000000000000038, :size, Int64)
+ (0x0000000000000040, :blksize, Int64)
+ (0x0000000000000048, :blocks, Int64)
+ (0x0000000000000050, :mtime, Float64)
+ (0x0000000000000058, :ctime, Float64)</pre>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/reflection.jl#L310-L334">source</a><br><h3 id="Core.fieldtype">
+<code>Core.fieldtype</code><span class="docstring-category">Function</span>
+</h3>
+<pre>fieldtype(T, name::Symbol | index::Int)</pre>
+<p>Determine the declared type of a field (specified by name or index) in a composite DataType <code>T</code>.</p>
+<pre>julia&gt; struct Foo
+           x::Int64
+           y::String
+       end
+
+julia&gt; fieldtype(Foo, :x)
+Int64
+
+julia&gt; fieldtype(Foo, 2)
+String</pre>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/reflection.jl#L337-L354">source</a><br><h3 id="Base.isimmutable">
+<code>Base.isimmutable</code><span class="docstring-category">Function</span>
+</h3>
+<pre>isimmutable(v)</pre>
+<p>Return <code>true</code> iff value <code>v</code> is immutable. See <a href="../../manual/types/#Mutable-Composite-Types-1">Mutable Composite Types</a> for a discussion of immutability. Note that this function works on values, so if you give it a type, it will tell you that a value of <code>DataType</code> is mutable.</p>
+<pre>julia&gt; isimmutable(1)
+true
+
+julia&gt; isimmutable([1,2])
+false</pre>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/reflection.jl#L199-L213">source</a><br><h3 id="Base.isbits">
+<code>Base.isbits</code><span class="docstring-category">Function</span>
+</h3>
+<pre>isbits(T)</pre>
+<p>Return <code>true</code> if <code>T</code> is a "plain data" type, meaning it is immutable and contains no references to other values. Typical examples are numeric types such as <a href="../numbers/#Core.UInt8"><code>UInt8</code></a>, <a href="../numbers/#Core.Float64"><code>Float64</code></a>, and <a href="../numbers/#Base.Complex"><code>Complex{Float64}</code></a>.</p>
+<pre>julia&gt; isbits(Complex{Float64})
+true
+
+julia&gt; isbits(Complex)
+false</pre>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/reflection.jl#L218-L232">source</a><br><h3 id="Base.isleaftype">
+<code>Base.isleaftype</code><span class="docstring-category">Function</span>
+</h3>
+<pre>isleaftype(T)</pre>
+<p>Determine whether <code>T</code>'s only subtypes are itself and <code>Union{}</code>. This means <code>T</code> is a concrete type that can have instances.</p>
+<pre>julia&gt; isleaftype(Complex)
+false
+
+julia&gt; isleaftype(Complex{Float32})
+true
+
+julia&gt; isleaftype(Vector{Complex})
+true
+
+julia&gt; isleaftype(Vector{Complex{Float32}})
+true</pre>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/reflection.jl#L237-L256">source</a><br><h3 id="Base.typejoin">
+<code>Base.typejoin</code><span class="docstring-category">Function</span>
+</h3>
+<pre>typejoin(T, S)</pre>
+<p>Compute a type that contains both <code>T</code> and <code>S</code>.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/docs/helpdb/Base.jl#L1389-L1393">source</a><br><h3 id="Base.typeintersect">
+<code>Base.typeintersect</code><span class="docstring-category">Function</span>
+</h3>
+<pre>typeintersect(T, S)</pre>
+<p>Compute a type that contains the intersection of <code>T</code> and <code>S</code>. Usually this will be the smallest such type or one close to it.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/reflection.jl#L301-L306">source</a><br><h3 id="Base.Val">
+<code>Base.Val</code><span class="docstring-category">Type</span>
+</h3>
+<pre>Val{c}</pre>
+<p>Create a "value type" out of <code>c</code>, which must be an <code>isbits</code> value. The intent of this construct is to be able to dispatch on constants, e.g., <code>f(Val{false})</code> allows you to dispatch directly (at compile-time) to an implementation <code>f(::Type{Val{false}})</code>, without having to test the boolean value at runtime.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/docs/helpdb/Base.jl#L2574-L2581">source</a><br><h3 id="Base.Enums.@enum">
+<code>Base.Enums.@enum</code><span class="docstring-category">Macro</span>
+</h3>
+<pre>@enum EnumName[::BaseType] value1[=x] value2[=y]</pre>
+<p>Create an <code>Enum{BaseType}</code> subtype with name <code>EnumName</code> and enum member values of <code>value1</code> and <code>value2</code> with optional assigned values of <code>x</code> and <code>y</code>, respectively. <code>EnumName</code> can be used just like other types and enum member values as regular values, such as</p>
+<pre>julia&gt; @enum Fruit apple=1 orange=2 kiwi=3
+
+julia&gt; f(x::Fruit) = "I'm a Fruit with value: $(Int(x))"
+f (generic function with 1 method)
+
+julia&gt; f(apple)
+"I'm a Fruit with value: 1"</pre>
+<p><code>BaseType</code>, which defaults to <a href="../numbers/#Core.Int32"><code>Int32</code></a>, must be a primitive subtype of <code>Integer</code>. Member values can be converted between the enum type and <code>BaseType</code>. <code>read</code> and <code>write</code> perform these conversions automatically.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/Enums.jl#L31-L51">source</a><br><h3 id="Base.instances">
+<code>Base.instances</code><span class="docstring-category">Function</span>
+</h3>
+<pre>instances(T::Type)</pre>
+<p>Return a collection of all instances of the given type, if applicable. Mostly used for enumerated types (see <code>@enum</code>).</p>
+<pre>julia&gt; @enum Color red blue green
+
+julia&gt; instances(Color)
+(red::Color = 0, blue::Color = 1, green::Color = 2)</pre>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/reflection.jl#L386-L398">source</a><br><h2 id="Generic-Functions-1">Generic Functions</h2>
+<h3 id="Core.Function">
+<code>Core.Function</code><span class="docstring-category">Type</span>
+</h3>
+<pre>Function</pre>
+<p>Abstract type of all functions.</p>
+<pre>julia&gt; isa(+, Function)
+true
+
+julia&gt; typeof(sin)
+Base.#sin
+
+julia&gt; ans &lt;: Function
+true</pre>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/docs/basedocs.jl#L726-L741">source</a><br><h3 id="Base.method_exists">
+<code>Base.method_exists</code><span class="docstring-category">Function</span>
+</h3>
+<pre>method_exists(f, Tuple type, world=typemax(UInt)) -&gt; Bool</pre>
+<p>Determine whether the given generic function has a method matching the given <code>Tuple</code> of argument types with the upper bound of world age given by <code>world</code>.</p>
+<pre>julia&gt; method_exists(length, Tuple{Array})
+true</pre>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/reflection.jl#L921-L931">source</a><br><h3 id="Core.applicable">
+<code>Core.applicable</code><span class="docstring-category">Function</span>
+</h3>
+<pre>applicable(f, args...) -&gt; Bool</pre>
+<p>Determine whether the given generic function has a method applicable to the given arguments.</p>
+<p><strong>Examples</strong></p>
+<pre>julia&gt; function f(x, y)
+           x + y
+       end;
+
+julia&gt; applicable(f, 1)
+false
+
+julia&gt; applicable(f, 1, 2)
+true</pre>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/docs/helpdb/Base.jl#L2244-L2261">source</a><br><h3 id="Core.invoke">
+<code>Core.invoke</code><span class="docstring-category">Function</span>
+</h3>
+<pre>invoke(f, types &lt;: Tuple, args...)</pre>
+<p>Invoke a method for the given generic function matching the specified types, on the specified arguments. The arguments must be compatible with the specified types. This allows invoking a method other than the most specific matching method, which is useful when the behavior of a more general definition is explicitly needed (often as part of the implementation of a more specific method of the same function).</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/docs/helpdb/Base.jl#L1143-L1151">source</a><br><h3 id="Base.invokelatest">
+<code>Base.invokelatest</code><span class="docstring-category">Function</span>
+</h3>
+<pre>invokelatest(f, args...)</pre>
+<p>Calls <code>f(args...)</code>, but guarantees that the most recent method of <code>f</code> will be executed. This is useful in specialized circumstances, e.g. long-running event loops or callback functions that may call obsolete versions of a function <code>f</code>. (The drawback is that <code>invokelatest</code> is somewhat slower than calling <code>f</code> directly, and the type of the result cannot be inferred by the compiler.)</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/essentials.jl#L360-L369">source</a><br><h3 id="Base.:|&gt;">
+<code>Base.:|&gt;</code><span class="docstring-category">Function</span>
+</h3>
+<pre>|&gt;(x, f)</pre>
+<p>Applies a function to the preceding argument. This allows for easy function chaining.</p>
+<pre>julia&gt; [1:5;] |&gt; x-&gt;x.^2 |&gt; sum |&gt; inv
+0.01818181818181818</pre>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/operators.jl#L852-L861">source</a><br><h3 id="Base.:∘">
+<code>Base.:∘</code><span class="docstring-category">Function</span>
+</h3>
+<pre>f ∘ g</pre>
+<p>Compose functions: i.e. <code>(f ∘ g)(args...)</code> means <code>f(g(args...))</code>. The <code>∘</code> symbol can be entered in the Julia REPL (and most editors, appropriately configured) by typing <code>\circ&lt;tab&gt;</code>. Example:</p>
+<pre>julia&gt; map(uppercase∘hex, 250:255)
+6-element Array{String,1}:
+ "FA"
+ "FB"
+ "FC"
+ "FD"
+ "FE"
+ "FF"</pre>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/operators.jl#L866-L883">source</a><br><h2 id="Syntax-1">Syntax</h2>
+<h3 id="Core.eval">
+<code>Core.eval</code><span class="docstring-category">Function</span>
+</h3>
+<pre>eval([m::Module], expr::Expr)</pre>
+<p>Evaluate an expression in the given module and return the result. Every <code>Module</code> (except those defined with <code>baremodule</code>) has its own 1-argument definition of <code>eval</code>, which evaluates expressions in that module.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/expr.jl#L102-L108">source</a><br><h3 id="Base.@eval">
+<code>Base.@eval</code><span class="docstring-category">Macro</span>
+</h3>
+<pre>@eval [mod,] ex</pre>
+<p>Evaluate an expression with values interpolated into it using <code>eval</code>. If two arguments are provided, the first is the module to evaluate in.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/essentials.jl#L46-L51">source</a><br><h3 id="Base.evalfile">
+<code>Base.evalfile</code><span class="docstring-category">Function</span>
+</h3>
+<pre>evalfile(path::AbstractString, args::Vector{String}=String[])</pre>
+<p>Load the file using <a href="#Base.include"><code>include</code></a>, evaluate all expressions, and return the value of the last one.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/loading.jl#L603-L608">source</a><br><h3 id="Base.esc">
+<code>Base.esc</code><span class="docstring-category">Function</span>
+</h3>
+<pre>esc(e::ANY)</pre>
+<p>Only valid in the context of an <code>Expr</code> returned from a macro. Prevents the macro hygiene pass from turning embedded variables into gensym variables. See the <a href="../../manual/metaprogramming/#man-macros-1">Macros</a> section of the Metaprogramming chapter of the manual for more details and examples.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/essentials.jl#L193-L199">source</a><br><h3 id="Base.@inbounds">
+<code>Base.@inbounds</code><span class="docstring-category">Macro</span>
+</h3>
+<pre>@inbounds(blk)</pre>
+<p>Eliminates array bounds checking within expressions.</p>
+<p>In the example below the bound check of array A is skipped to improve performance.</p>
+<pre>function sum(A::AbstractArray)
+    r = zero(eltype(A))
+    for i = 1:length(A)
+        @inbounds r += A[i]
+    end
+    return r
+end</pre>
+<div class="admonition warning">
+<div class="admonition-title">Warning</div>
+<div class="admonition-text"><p>Using <code>@inbounds</code> may return incorrect results/crashes/corruption for out-of-bounds indices. The user is responsible for checking it manually.</p></div>
+</div>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/essentials.jl#L209-L230">source</a><br><h3 id="Base.@inline">
+<code>Base.@inline</code><span class="docstring-category">Macro</span>
+</h3>
+<pre>@inline</pre>
+<p>Give a hint to the compiler that this function is worth inlining.</p>
+<p>Small functions typically do not need the <code>@inline</code> annotation, as the compiler does it automatically. By using <code>@inline</code> on bigger functions, an extra nudge can be given to the compiler to inline it. This is shown in the following example:</p>
+<pre>@inline function bigfunction(x)
+    #=
+        Function Definition
+    =#
+end</pre>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/expr.jl#L111-L128">source</a><br><h3 id="Base.@noinline">
+<code>Base.@noinline</code><span class="docstring-category">Macro</span>
+</h3>
+<pre>@noinline</pre>
+<p>Prevents the compiler from inlining a function.</p>
+<p>Small functions are typically inlined automatically. By using <code>@noinline</code> on small functions, auto-inlining can be prevented. This is shown in the following example:</p>
+<pre>@noinline function smallfunction(x)
+    #=
+        Function Definition
+    =#
+end</pre>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/expr.jl#L133-L149">source</a><br><h3 id="Base.gensym">
+<code>Base.gensym</code><span class="docstring-category">Function</span>
+</h3>
+<pre>gensym([tag])</pre>
+<p>Generates a symbol which will not conflict with other variable names.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/expr.jl#L5-L9">source</a><br><h3 id="Base.@gensym">
+<code>Base.@gensym</code><span class="docstring-category">Macro</span>
+</h3>
+<pre>@gensym</pre>
+<p>Generates a gensym symbol for a variable. For example, <code>@gensym x y</code> is transformed into <code>x = gensym("x"); y = gensym("y")</code>.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/expr.jl#L18-L23">source</a><br><h3 id="Base.@polly">
+<code>Base.@polly</code><span class="docstring-category">Macro</span>
+</h3>
+<pre>@polly</pre>
+<p>Tells the compiler to apply the polyhedral optimizer Polly to a function.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/expr.jl#L173-L177">source</a><br><h3 id="Base.parse-Tuple{Any,Any}">
+<code>Base.parse</code><span class="docstring-category">Method</span>
+</h3>
+<pre>parse(str, start; greedy=true, raise=true)</pre>
+<p>Parse the expression string and return an expression (which could later be passed to eval for execution). <code>start</code> is the index of the first character to start parsing. If <code>greedy</code> is <code>true</code> (default), <code>parse</code> will try to consume as much input as it can; otherwise, it will stop as soon as it has parsed a valid expression. Incomplete but otherwise syntactically valid expressions will return <code>Expr(:incomplete, "(error message)")</code>. If <code>raise</code> is <code>true</code> (default), syntax errors other than incomplete expressions will raise an error. If <code>raise</code> is <code>false</code>, <code>parse</code> will return an expression that will raise an error upon evaluation.</p>
+<pre>julia&gt; parse("x = 3, y = 5", 7)
+(:(y = 5), 13)
+
+julia&gt; parse("x = 3, y = 5", 5)
+(:((3, y) = 5), 13)</pre>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/docs/helpdb/Base.jl#L1154-L1172">source</a><br><h3 id="Base.parse-Tuple{Any}">
+<code>Base.parse</code><span class="docstring-category">Method</span>
+</h3>
+<pre>parse(str; raise=true)</pre>
+<p>Parse the expression string greedily, returning a single expression. An error is thrown if there are additional characters after the first expression. If <code>raise</code> is <code>true</code> (default), syntax errors will raise an error; otherwise, <code>parse</code> will return an expression that will raise an error upon evaluation.</p>
+<pre>julia&gt; parse("x = 3")
+:(x = 3)
+
+julia&gt; parse("x = ")
+:($(Expr(:incomplete, "incomplete: premature end of input")))
+
+julia&gt; parse("1.0.2")
+ERROR: ParseError("invalid numeric constant \"1.0.\"")
+Stacktrace:
+[...]
+
+julia&gt; parse("1.0.2"; raise = false)
+:($(Expr(:error, "invalid numeric constant \"1.0.\"")))</pre>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/docs/helpdb/Base.jl#L1175-L1198">source</a><br><h2 id="Nullables-1">Nullables</h2>
+<h3 id="Base.Nullable">
+<code>Base.Nullable</code><span class="docstring-category">Type</span>
+</h3>
+<pre>Nullable(x, hasvalue::Bool=true)</pre>
+<p>Wrap value <code>x</code> in an object of type <code>Nullable</code>, which indicates whether a value is present. <code>Nullable(x)</code> yields a non-empty wrapper and <code>Nullable{T}()</code> yields an empty instance of a wrapper that might contain a value of type <code>T</code>.</p>
+<p><code>Nullable(x, false)</code> yields <code>Nullable{typeof(x)}()</code> with <code>x</code> stored in the result's <code>value</code> field.</p>
+<p><strong>Examples</strong></p>
+<pre>julia&gt; Nullable(1)
+Nullable{Int64}(1)
+
+julia&gt; Nullable{Int64}()
+Nullable{Int64}()
+
+julia&gt; Nullable(1, false)
+Nullable{Int64}()
+
+julia&gt; dump(Nullable(1, false))
+Nullable{Int64}
+  hasvalue: Bool false
+  value: Int64 1</pre>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/nullable.jl#L6-L33">source</a><br><h3 id="Base.get-Tuple{Nullable,Any}">
+<code>Base.get</code><span class="docstring-category">Method</span>
+</h3>
+<pre>get(x::Nullable[, y])</pre>
+<p>Attempt to access the value of <code>x</code>. Returns the value if it is present; otherwise, returns <code>y</code> if provided, or throws a <code>NullException</code> if not.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/nullable.jl#L78-L83">source</a><br><h3 id="Base.isnull">
+<code>Base.isnull</code><span class="docstring-category">Function</span>
+</h3>
+<pre>isnull(x)</pre>
+<p>Return whether or not <code>x</code> is null for <a href="#Base.Nullable"><code>Nullable</code></a> <code>x</code>; return <code>false</code> for all other <code>x</code>.</p>
+<p><strong>Examples</strong></p>
+<pre>julia&gt; x = Nullable(1, false)
+Nullable{Int64}()
+
+julia&gt; isnull(x)
+true
+
+julia&gt; x = Nullable(1, true)
+Nullable{Int64}(1)
+
+julia&gt; isnull(x)
+false
+
+julia&gt; x = 1
+1
+
+julia&gt; isnull(x)
+false</pre>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/nullable.jl#L128-L155">source</a><br><h3 id="Base.unsafe_get">
+<code>Base.unsafe_get</code><span class="docstring-category">Function</span>
+</h3>
+<pre>unsafe_get(x)</pre>
+<p>Return the value of <code>x</code> for <a href="#Base.Nullable"><code>Nullable</code></a> <code>x</code>; return <code>x</code> for all other <code>x</code>.</p>
+<p>This method does not check whether or not <code>x</code> is null before attempting to access the value of <code>x</code> for <code>x::Nullable</code> (hence "unsafe").</p>
+<pre>julia&gt; x = Nullable(1)
+Nullable{Int64}(1)
+
+julia&gt; unsafe_get(x)
+1
+
+julia&gt; x = Nullable{String}()
+Nullable{String}()
+
+julia&gt; unsafe_get(x)
+ERROR: UndefRefError: access to undefined reference
+Stacktrace:
+ [1] unsafe_get(::Nullable{String}) at ./nullable.jl:125
+
+julia&gt; x = 1
+1
+
+julia&gt; unsafe_get(x)
+1</pre>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/nullable.jl#L94-L124">source</a><br><h2 id="System-1">System</h2>
+<h3 id="Base.run">
+<code>Base.run</code><span class="docstring-category">Function</span>
+</h3>
+<pre>run(command, args...)</pre>
+<p>Run a command object, constructed with backticks. Throws an error if anything goes wrong, including the process exiting with a non-zero status.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/process.jl#L643-L648">source</a><br><h3 id="Base.spawn">
+<code>Base.spawn</code><span class="docstring-category">Function</span>
+</h3>
+<pre>spawn(command)</pre>
+<p>Run a command object asynchronously, returning the resulting <code>Process</code> object.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/docs/helpdb/Base.jl#L1519-L1523">source</a><br><h3 id="Base.DevNull">
+<code>Base.DevNull</code><span class="docstring-category">Constant</span>
+</h3>
+<pre>DevNull</pre>
+<p>Used in a stream redirect to discard all data written to it. Essentially equivalent to /dev/null on Unix or NUL on Windows. Usage:</p>
+<pre>run(pipeline(`cat test.txt`, DevNull))</pre>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/docs/basedocs.jl#L714-L723">source</a><br><h3 id="Base.success">
+<code>Base.success</code><span class="docstring-category">Function</span>
+</h3>
+<pre>success(command)</pre>
+<p>Run a command object, constructed with backticks, and tell whether it was successful (exited with a code of 0). An exception is raised if the process cannot be started.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/process.jl#L672-L677">source</a><br><h3 id="Base.process_running">
+<code>Base.process_running</code><span class="docstring-category">Function</span>
+</h3>
+<pre>process_running(p::Process)</pre>
+<p>Determine whether a process is currently running.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/process.jl#L728-L732">source</a><br><h3 id="Base.process_exited">
+<code>Base.process_exited</code><span class="docstring-category">Function</span>
+</h3>
+<pre>process_exited(p::Process)</pre>
+<p>Determine whether a process has exited.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/process.jl#L737-L741">source</a><br><h3 id="Base.kill-Tuple{Base.Process,Integer}">
+<code>Base.kill</code><span class="docstring-category">Method</span>
+</h3>
+<pre>kill(p::Process, signum=SIGTERM)</pre>
+<p>Send a signal to a process. The default is to terminate the process.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/process.jl#L705-L709">source</a><br><h3 id="Base.Sys.set_process_title">
+<code>Base.Sys.set_process_title</code><span class="docstring-category">Function</span>
+</h3>
+<pre>Sys.set_process_title(title::AbstractString)</pre>
+<p>Set the process title. No-op on some operating systems.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/sysinfo.jl#L181-L185">source</a><br><h3 id="Base.Sys.get_process_title">
+<code>Base.Sys.get_process_title</code><span class="docstring-category">Function</span>
+</h3>
+<pre>Sys.get_process_title()</pre>
+<p>Get the process title. On some systems, will always return an empty string.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/sysinfo.jl#L169-L173">source</a><br><h3 id="Base.readandwrite">
+<code>Base.readandwrite</code><span class="docstring-category">Function</span>
+</h3>
+<pre>readandwrite(command)</pre>
+<p>Starts running a command asynchronously, and returns a tuple (stdout,stdin,process) of the output stream and input stream of the process, and the process object itself.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/process.jl#L614-L619">source</a><br><h3 id="Base.ignorestatus">
+<code>Base.ignorestatus</code><span class="docstring-category">Function</span>
+</h3>
+<pre>ignorestatus(command)</pre>
+<p>Mark a command object so that running it will not throw an error if the result code is non-zero.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/process.jl#L180-L184">source</a><br><h3 id="Base.detach">
+<code>Base.detach</code><span class="docstring-category">Function</span>
+</h3>
+<pre>detach(command)</pre>
+<p>Mark a command object so that it will be run in a new process group, allowing it to outlive the julia process, and not have Ctrl-C interrupts passed to it.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/process.jl#L189-L193">source</a><br><h3 id="Base.Cmd">
+<code>Base.Cmd</code><span class="docstring-category">Type</span>
+</h3>
+<pre>Cmd(cmd::Cmd; ignorestatus, detach, windows_verbatim, windows_hide, env, dir)</pre>
+<p>Construct a new <code>Cmd</code> object, representing an external program and arguments, from <code>cmd</code>, while changing the settings of the optional keyword arguments:</p>
+<ul>
+<li><p><code>ignorestatus::Bool</code>: If <code>true</code> (defaults to <code>false</code>), then the <code>Cmd</code> will not throw an error if the return code is nonzero.</p></li>
+<li><p><code>detach::Bool</code>: If <code>true</code> (defaults to <code>false</code>), then the <code>Cmd</code> will be run in a new process group, allowing it to outlive the <code>julia</code> process and not have Ctrl-C passed to it.</p></li>
+<li><p><code>windows_verbatim::Bool</code>: If <code>true</code> (defaults to <code>false</code>), then on Windows the <code>Cmd</code> will send a command-line string to the process with no quoting or escaping of arguments, even arguments containing spaces. (On Windows, arguments are sent to a program as a single "command-line" string, and programs are responsible for parsing it into arguments. By default, empty arguments and arguments with spaces or tabs are quoted with double quotes <code>"</code> in the command line, and <code>\</code> or <code>"</code> are preceded by backslashes. <code>windows_verbatim=true</code> is useful for launching programs that parse their command line in nonstandard ways.) Has no effect on non-Windows systems.</p></li>
+<li><p><code>windows_hide::Bool</code>: If <code>true</code> (defaults to <code>false</code>), then on Windows no new console window is displayed when the <code>Cmd</code> is executed. This has no effect if a console is already open or on non-Windows systems.</p></li>
+<li><p><code>env</code>: Set environment variables to use when running the <code>Cmd</code>. <code>env</code> is either a dictionary mapping strings to strings, an array of strings of the form <code>"var=val"</code>, an array or tuple of <code>"var"=&gt;val</code> pairs, or <code>nothing</code>. In order to modify (rather than replace) the existing environment, create <code>env</code> by <code>copy(ENV)</code> and then set <code>env["var"]=val</code> as desired.</p></li>
+<li><p><code>dir::AbstractString</code>: Specify a working directory for the command (instead of the current directory).</p></li>
+</ul>
+<p>For any keywords that are not specified, the current settings from <code>cmd</code> are used. Normally, to create a <code>Cmd</code> object in the first place, one uses backticks, e.g.</p>
+<pre>Cmd(`echo "Hello world"`, ignorestatus=true, detach=false)</pre>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/process.jl#L33-L67">source</a><br><h3 id="Base.setenv">
+<code>Base.setenv</code><span class="docstring-category">Function</span>
+</h3>
+<pre>setenv(command::Cmd, env; dir="")</pre>
+<p>Set environment variables to use when running the given <code>command</code>. <code>env</code> is either a dictionary mapping strings to strings, an array of strings of the form <code>"var=val"</code>, or zero or more <code>"var"=&gt;val</code> pair arguments. In order to modify (rather than replace) the existing environment, create <code>env</code> by <code>copy(ENV)</code> and then setting <code>env["var"]=val</code> as desired, or use <code>withenv</code>.</p>
+<p>The <code>dir</code> keyword argument can be used to specify a working directory for the command.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/process.jl#L214-L224">source</a><br><h3 id="Base.withenv">
+<code>Base.withenv</code><span class="docstring-category">Function</span>
+</h3>
+<pre>withenv(f::Function, kv::Pair...)</pre>
+<p>Execute <code>f()</code> in an environment that is temporarily modified (not replaced as in <code>setenv</code>) by zero or more <code>"var"=&gt;val</code> arguments <code>kv</code>. <code>withenv</code> is generally used via the <code>withenv(kv...) do ... end</code> syntax. A value of <code>nothing</code> can be used to temporarily unset an environment variable (if it is set). When <code>withenv</code> returns, the original environment has been restored.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/env.jl#L142-L150">source</a><br><h3 id="Base.pipeline-Tuple{Any,Any,Any,Vararg{Any,N} where N}">
+<code>Base.pipeline</code><span class="docstring-category">Method</span>
+</h3>
+<pre>pipeline(from, to, ...)</pre>
+<p>Create a pipeline from a data source to a destination. The source and destination can be commands, I/O streams, strings, or results of other <code>pipeline</code> calls. At least one argument must be a command. Strings refer to filenames. When called with more than two arguments, they are chained together from left to right. For example <code>pipeline(a,b,c)</code> is equivalent to <code>pipeline(pipeline(a,b),c)</code>. This provides a more concise way to specify multi-stage pipelines.</p>
+<p><strong>Examples</strong>:</p>
+<pre>run(pipeline(`ls`, `grep xyz`))
+run(pipeline(`ls`, "out.txt"))
+run(pipeline("out.txt", `grep xyz`))</pre>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/process.jl#L283-L300">source</a><br><h3 id="Base.pipeline-Tuple{Base.AbstractCmd}">
+<code>Base.pipeline</code><span class="docstring-category">Method</span>
+</h3>
+<pre>pipeline(command; stdin, stdout, stderr, append=false)</pre>
+<p>Redirect I/O to or from the given <code>command</code>. Keyword arguments specify which of the command's streams should be redirected. <code>append</code> controls whether file output appends to the file. This is a more general version of the 2-argument <code>pipeline</code> function. <code>pipeline(from, to)</code> is equivalent to <code>pipeline(from, stdout=to)</code> when <code>from</code> is a command, and to <code>pipeline(to, stdin=from)</code> when <code>from</code> is another kind of data source.</p>
+<p><strong>Examples</strong>:</p>
+<pre>run(pipeline(`dothings`, stdout="out.txt", stderr="errs.txt"))
+run(pipeline(`update`, stdout="log.txt", append=true))</pre>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/process.jl#L248-L263">source</a><br><h3 id="Base.Libc.gethostname">
+<code>Base.Libc.gethostname</code><span class="docstring-category">Function</span>
+</h3>
+<pre>gethostname() -&gt; AbstractString</pre>
+<p>Get the local machine's host name.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/libc.jl#L236-L240">source</a><br><h3 id="Base.getipaddr">
+<code>Base.getipaddr</code><span class="docstring-category">Function</span>
+</h3>
+<pre>getipaddr() -&gt; IPAddr</pre>
+<p>Get the IP address of the local machine.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/socket.jl#L666-L670">source</a><br><h3 id="Base.Libc.getpid">
+<code>Base.Libc.getpid</code><span class="docstring-category">Function</span>
+</h3>
+<pre>getpid() -&gt; Int32</pre>
+<p>Get Julia's process ID.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/libc.jl#L227-L231">source</a><br><h3 id="Base.Libc.time-Tuple{}">
+<code>Base.Libc.time</code><span class="docstring-category">Method</span>
+</h3>
+<pre>time()</pre>
+<p>Get the system time in seconds since the epoch, with fairly high (typically, microsecond) resolution.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/docs/helpdb/Base.jl#L1926-L1930">source</a><br><h3 id="Base.time_ns">
+<code>Base.time_ns</code><span class="docstring-category">Function</span>
+</h3>
+<pre>time_ns()</pre>
+<p>Get the time in nanoseconds. The time corresponding to 0 is undefined, and wraps every 5.8 years.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/util.jl#L9-L13">source</a><br><h3 id="Base.tic">
+<code>Base.tic</code><span class="docstring-category">Function</span>
+</h3>
+<pre>tic()</pre>
+<p>Set a timer to be read by the next call to <a href="#Base.toc"><code>toc</code></a> or <a href="#Base.toq"><code>toq</code></a>. The macro call <code>@time expr</code> can also be used to time evaluation.</p>
+<pre>julia&gt; tic()
+0x0000c45bc7abac95
+
+julia&gt; sleep(0.3)
+
+julia&gt; toc()
+elapsed time: 0.302745944 seconds
+0.302745944</pre>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/util.jl#L79-L95">source</a><br><h3 id="Base.toc">
+<code>Base.toc</code><span class="docstring-category">Function</span>
+</h3>
+<pre>toc()</pre>
+<p>Print and return the time elapsed since the last <a href="#Base.tic"><code>tic</code></a>. The macro call <code>@time expr</code> can also be used to time evaluation.</p>
+<pre>julia&gt; tic()
+0x0000c45bc7abac95
+
+julia&gt; sleep(0.3)
+
+julia&gt; toc()
+elapsed time: 0.302745944 seconds
+0.302745944</pre>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/util.jl#L129-L145">source</a><br><h3 id="Base.toq">
+<code>Base.toq</code><span class="docstring-category">Function</span>
+</h3>
+<pre>toq()</pre>
+<p>Return, but do not print, the time elapsed since the last <a href="#Base.tic"><code>tic</code></a>. The macro calls <code>@timed expr</code> and <code>@elapsed expr</code> also return evaluation time.</p>
+<pre>julia&gt; tic()
+0x0000c46477a9675d
+
+julia&gt; sleep(0.3)
+
+julia&gt; toq()
+0.302251004</pre>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/util.jl#L102-L117">source</a><br><h3 id="Base.@time">
+<code>Base.@time</code><span class="docstring-category">Macro</span>
+</h3>
+<pre>@time</pre>
+<p>A macro to execute an expression, printing the time it took to execute, the number of allocations, and the total number of bytes its execution caused to be allocated, before returning the value of the expression.</p>
+<p>See also <a href="#Base.@timev"><code>@timev</code></a>, <a href="#Base.@timed"><code>@timed</code></a>, <a href="#Base.@elapsed"><code>@elapsed</code></a>, and <a href="#Base.@allocated"><code>@allocated</code></a>.</p>
+<pre>julia&gt; @time rand(10^6);
+  0.001525 seconds (7 allocations: 7.630 MiB)
+
+julia&gt; @time begin
+           sleep(0.3)
+           1+1
+       end
+  0.301395 seconds (8 allocations: 336 bytes)</pre>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/util.jl#L212-L232">source</a><br><h3 id="Base.@timev">
+<code>Base.@timev</code><span class="docstring-category">Macro</span>
+</h3>
+<pre>@timev</pre>
+<p>This is a verbose version of the <code>@time</code> macro. It first prints the same information as <code>@time</code>, then any non-zero memory allocation counters, and then returns the value of the expression.</p>
+<p>See also <a href="#Base.@time"><code>@time</code></a>, <a href="#Base.@timed"><code>@timed</code></a>, <a href="#Base.@elapsed"><code>@elapsed</code></a>, and <a href="#Base.@allocated"><code>@allocated</code></a>.</p>
+<pre>julia&gt; @timev rand(10^6);
+  0.001006 seconds (7 allocations: 7.630 MiB)
+elapsed time (ns): 1005567
+bytes allocated:   8000256
+pool allocs:       6
+malloc() calls:    1</pre>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/util.jl#L246-L264">source</a><br><h3 id="Base.@timed">
+<code>Base.@timed</code><span class="docstring-category">Macro</span>
+</h3>
+<pre>@timed</pre>
+<p>A macro to execute an expression, and return the value of the expression, elapsed time, total bytes allocated, garbage collection time, and an object with various memory allocation counters.</p>
+<p>See also <a href="#Base.@time"><code>@time</code></a>, <a href="#Base.@timev"><code>@timev</code></a>, <a href="#Base.@elapsed"><code>@elapsed</code></a>, and <a href="#Base.@allocated"><code>@allocated</code></a>.</p>
+<pre>julia&gt; val, t, bytes, gctime, memallocs = @timed rand(10^6);
+
+julia&gt; t
+0.006634834
+
+julia&gt; bytes
+8000256
+
+julia&gt; gctime
+0.0055765
+
+julia&gt; fieldnames(typeof(memallocs))
+9-element Array{Symbol,1}:
+ :allocd
+ :malloc
+ :realloc
+ :poolalloc
+ :bigalloc
+ :freecall
+ :total_time
+ :pause
+ :full_sweep
+
+julia&gt; memallocs.total_time
+5576500</pre>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/util.jl#L336-L373">source</a><br><h3 id="Base.@elapsed">
+<code>Base.@elapsed</code><span class="docstring-category">Macro</span>
+</h3>
+<pre>@elapsed</pre>
+<p>A macro to evaluate an expression, discarding the resulting value, instead returning the number of seconds it took to execute as a floating-point number.</p>
+<p>See also <a href="#Base.@time"><code>@time</code></a>, <a href="#Base.@timev"><code>@timev</code></a>, <a href="#Base.@timed"><code>@timed</code></a>, and <a href="#Base.@allocated"><code>@allocated</code></a>.</p>
+<pre>julia&gt; @elapsed sleep(0.3)
+0.301391426</pre>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/util.jl#L276-L289">source</a><br><h3 id="Base.@allocated">
+<code>Base.@allocated</code><span class="docstring-category">Macro</span>
+</h3>
+<pre>@allocated</pre>
+<p>A macro to evaluate an expression, discarding the resulting value, instead returning the total number of bytes allocated during evaluation of the expression. Note: the expression is evaluated inside a local function, instead of the current context, in order to eliminate the effects of compilation, however, there still may be some allocations due to JIT compilation. This also makes the results inconsistent with the <code>@time</code> macros, which do not try to adjust for the effects of compilation.</p>
+<p>See also <a href="#Base.@time"><code>@time</code></a>, <a href="#Base.@timev"><code>@timev</code></a>, <a href="#Base.@timed"><code>@timed</code></a>, and <a href="#Base.@elapsed"><code>@elapsed</code></a>.</p>
+<pre>julia&gt; @allocated rand(10^6)
+8000080</pre>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/util.jl#L304-L321">source</a><br><h3 id="Base.EnvHash">
+<code>Base.EnvHash</code><span class="docstring-category">Type</span>
+</h3>
+<pre>EnvHash() -&gt; EnvHash</pre>
+<p>A singleton of this type provides a hash table interface to environment variables.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/env.jl#L61-L65">source</a><br><h3 id="Base.ENV">
+<code>Base.ENV</code><span class="docstring-category">Constant</span>
+</h3>
+<pre>ENV</pre>
+<p>Reference to the singleton <code>EnvHash</code>, providing a dictionary interface to system environment variables.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/env.jl#L68-L73">source</a><br><h3 id="Base.is_unix">
+<code>Base.is_unix</code><span class="docstring-category">Function</span>
+</h3>
+<pre>is_unix([os])</pre>
+<p>Predicate for testing if the OS provides a Unix-like interface. See documentation in <a href="../../manual/handling-operating-system-variation/#Handling-Operating-System-Variation-1">Handling Operating System Variation</a>.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/osutils.jl#L3-L8">source</a><br><h3 id="Base.is_apple">
+<code>Base.is_apple</code><span class="docstring-category">Function</span>
+</h3>
+<pre>is_apple([os])</pre>
+<p>Predicate for testing if the OS is a derivative of Apple Macintosh OS X or Darwin. See documentation in <a href="../../manual/handling-operating-system-variation/#Handling-Operating-System-Variation-1">Handling Operating System Variation</a>.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/osutils.jl#L43-L48">source</a><br><h3 id="Base.is_linux">
+<code>Base.is_linux</code><span class="docstring-category">Function</span>
+</h3>
+<pre>is_linux([os])</pre>
+<p>Predicate for testing if the OS is a derivative of Linux. See documentation in <a href="../../manual/handling-operating-system-variation/#Handling-Operating-System-Variation-1">Handling Operating System Variation</a>.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/osutils.jl#L19-L24">source</a><br><h3 id="Base.is_bsd">
+<code>Base.is_bsd</code><span class="docstring-category">Function</span>
+</h3>
+<pre>is_bsd([os])</pre>
+<p>Predicate for testing if the OS is a derivative of BSD. See documentation in <a href="../../manual/handling-operating-system-variation/#Handling-Operating-System-Variation-1">Handling Operating System Variation</a>.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/osutils.jl#L27-L32">source</a><br><h3 id="Base.is_windows">
+<code>Base.is_windows</code><span class="docstring-category">Function</span>
+</h3>
+<pre>is_windows([os])</pre>
+<p>Predicate for testing if the OS is a derivative of Microsoft Windows NT. See documentation in <a href="../../manual/handling-operating-system-variation/#Handling-Operating-System-Variation-1">Handling Operating System Variation</a>.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/osutils.jl#L35-L40">source</a><br><h3 id="Base.Sys.windows_version">
+<code>Base.Sys.windows_version</code><span class="docstring-category">Function</span>
+</h3>
+<pre>Sys.windows_version()</pre>
+<p>Returns the version number for the Windows NT Kernel as a (major, minor) pair, or <code>(0, 0)</code> if this is not running on Windows.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/sysinfo.jl#L201-L206">source</a><br><h3 id="Base.@static">
+<code>Base.@static</code><span class="docstring-category">Macro</span>
+</h3>
+<pre>@static</pre>
+<p>Partially evaluates an expression at parse time.</p>
+<p>For example, <code>@static is_windows() ? foo : bar</code> will evaluate <code>is_windows()</code> and insert either <code>foo</code> or <code>bar</code> into the expression. This is useful in cases where a construct would be invalid on other platforms, such as a <code>ccall</code> to a non-existent function. <code>@static if is_apple() foo end</code> and <code>@static foo &lt;&amp;&amp;,||&gt; bar</code> are also valid syntax.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/osutils.jl#L51-L60">source</a><br><h2 id="Errors-1">Errors</h2>
+<h3 id="Base.error">
+<code>Base.error</code><span class="docstring-category">Function</span>
+</h3>
+<pre>error(message::AbstractString)</pre>
+<p>Raise an <code>ErrorException</code> with the given message.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/docs/helpdb/Base.jl#L1761-L1765">source</a><br><h3 id="Core.throw">
+<code>Core.throw</code><span class="docstring-category">Function</span>
+</h3>
+<pre>throw(e)</pre>
+<p>Throw an object as an exception.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/docs/helpdb/Base.jl#L2319-L2323">source</a><br><h3 id="Base.rethrow">
+<code>Base.rethrow</code><span class="docstring-category">Function</span>
+</h3>
+<pre>rethrow([e])</pre>
+<p>Throw an object without changing the current exception backtrace. The default argument is the current exception (if called within a <code>catch</code> block).</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/error.jl#L32-L37">source</a><br><h3 id="Base.backtrace">
+<code>Base.backtrace</code><span class="docstring-category">Function</span>
+</h3>
+<pre>backtrace()</pre>
+<p>Get a backtrace object for the current program point.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/error.jl#L41-L45">source</a><br><h3 id="Base.catch_backtrace">
+<code>Base.catch_backtrace</code><span class="docstring-category">Function</span>
+</h3>
+<pre>catch_backtrace()</pre>
+<p>Get the backtrace of the current exception, for use within <code>catch</code> blocks.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/error.jl#L48-L52">source</a><br><h3 id="Base.assert">
+<code>Base.assert</code><span class="docstring-category">Function</span>
+</h3>
+<pre>assert(cond)</pre>
+<p>Throw an <a href="#Base.AssertionError"><code>AssertionError</code></a> if <code>cond</code> is <code>false</code>. Also available as the macro <code>@assert expr</code>.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/docs/helpdb/Base.jl#L182-L187">source</a><br><h3 id="Base.@assert">
+<code>Base.@assert</code><span class="docstring-category">Macro</span>
+</h3>
+<pre>@assert cond [text]</pre>
+<p>Throw an <code>AssertionError</code> if <code>cond</code> is <code>false</code>. Preferred syntax for writing assertions. Message <code>text</code> is optionally displayed upon assertion failure.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/docs/helpdb/Base.jl#L1989-L1994">source</a><br><h3 id="Base.ArgumentError">
+<code>Base.ArgumentError</code><span class="docstring-category">Type</span>
+</h3>
+<pre>ArgumentError(msg)</pre>
+<p>The parameters to a function call do not match a valid signature. Argument <code>msg</code> is a descriptive error string.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/base.jl#L27-L32">source</a><br><h3 id="Base.AssertionError">
+<code>Base.AssertionError</code><span class="docstring-category">Type</span>
+</h3>
+<pre>AssertionError([msg])</pre>
+<p>The asserted condition did not evaluate to <code>true</code>. Optional argument <code>msg</code> is a descriptive error string.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/base.jl#L79-L84">source</a><br><h3 id="Core.BoundsError">
+<code>Core.BoundsError</code><span class="docstring-category">Type</span>
+</h3>
+<pre>BoundsError([a],[i])</pre>
+<p>An indexing operation into an array, <code>a</code>, tried to access an out-of-bounds element, <code>i</code>.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/docs/helpdb/Base.jl#L1136-L1140">source</a><br><h3 id="Base.DimensionMismatch">
+<code>Base.DimensionMismatch</code><span class="docstring-category">Type</span>
+</h3>
+<pre>DimensionMismatch([msg])</pre>
+<p>The objects called do not have matching dimensionality. Optional argument <code>msg</code> is a descriptive error string.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/base.jl#L68-L73">source</a><br><h3 id="Core.DivideError">
+<code>Core.DivideError</code><span class="docstring-category">Type</span>
+</h3>
+<pre>DivideError()</pre>
+<p>Integer division was attempted with a denominator value of 0.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/docs/helpdb/Base.jl#L2661-L2665">source</a><br><h3 id="Core.DomainError">
+<code>Core.DomainError</code><span class="docstring-category">Type</span>
+</h3>
+<pre>DomainError()</pre>
+<p>The arguments to a function or constructor are outside the valid domain.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/docs/helpdb/Base.jl#L1623-L1627">source</a><br><h3 id="Base.EOFError">
+<code>Base.EOFError</code><span class="docstring-category">Type</span>
+</h3>
+<pre>EOFError()</pre>
+<p>No more data was available to read from a file or stream.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/base.jl#L61-L65">source</a><br><h3 id="Core.ErrorException">
+<code>Core.ErrorException</code><span class="docstring-category">Type</span>
+</h3>
+<pre>ErrorException(msg)</pre>
+<p>Generic error type. The error message, in the <code>.msg</code> field, may provide more specific details.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/docs/helpdb/Base.jl#L693-L697">source</a><br><h3 id="Core.InexactError">
+<code>Core.InexactError</code><span class="docstring-category">Type</span>
+</h3>
+<pre>InexactError()</pre>
+<p>Type conversion cannot be done exactly.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/docs/helpdb/Base.jl#L1609-L1613">source</a><br><h3 id="Core.InterruptException">
+<code>Core.InterruptException</code><span class="docstring-category">Type</span>
+</h3>
+<pre>InterruptException()</pre>
+<p>The process was stopped by a terminal interrupt (CTRL+C).</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/docs/helpdb/Base.jl#L2048-L2052">source</a><br><h3 id="Base.KeyError">
+<code>Base.KeyError</code><span class="docstring-category">Type</span>
+</h3>
+<pre>KeyError(key)</pre>
+<p>An indexing operation into an <code>Associative</code> (<code>Dict</code>) or <code>Set</code> like object tried to access or delete a non-existent element.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/base.jl#L37-L42">source</a><br><h3 id="Base.LoadError">
+<code>Base.LoadError</code><span class="docstring-category">Type</span>
+</h3>
+<pre>LoadError(file::AbstractString, line::Int, error)</pre>
+<p>An error occurred while <code>include</code>ing, <code>require</code>ing, or <code>using</code> a file. The error specifics should be available in the <code>.error</code> field.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/base.jl#L95-L100">source</a><br><h3 id="Base.MethodError">
+<code>Base.MethodError</code><span class="docstring-category">Type</span>
+</h3>
+<pre>MethodError(f, args)</pre>
+<p>A method with the required type signature does not exist in the given generic function. Alternatively, there is no unique most-specific method.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/base.jl#L47-L52">source</a><br><h3 id="Base.NullException">
+<code>Base.NullException</code><span class="docstring-category">Type</span>
+</h3>
+<pre>NullException()</pre>
+<p>An attempted access to a <a href="#Base.Nullable"><code>Nullable</code></a> with no defined value.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/docs/helpdb/Base.jl#L2062-L2066">source</a><br><h3 id="Core.OutOfMemoryError">
+<code>Core.OutOfMemoryError</code><span class="docstring-category">Type</span>
+</h3>
+<pre>OutOfMemoryError()</pre>
+<p>An operation allocated too much memory for either the system or the garbage collector to handle properly.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/docs/helpdb/Base.jl#L1121-L1126">source</a><br><h3 id="Core.ReadOnlyMemoryError">
+<code>Core.ReadOnlyMemoryError</code><span class="docstring-category">Type</span>
+</h3>
+<pre>ReadOnlyMemoryError()</pre>
+<p>An operation tried to write to memory that is read-only.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/docs/helpdb/Base.jl#L357-L361">source</a><br><h3 id="Core.OverflowError">
+<code>Core.OverflowError</code><span class="docstring-category">Type</span>
+</h3>
+<pre>OverflowError()</pre>
+<p>The result of an expression is too large for the specified type and will cause a wraparound.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/docs/helpdb/Base.jl#L1822-L1826">source</a><br><h3 id="Base.ParseError">
+<code>Base.ParseError</code><span class="docstring-category">Type</span>
+</h3>
+<pre>ParseError(msg)</pre>
+<p>The expression passed to the <code>parse</code> function could not be interpreted as a valid Julia expression.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/base.jl#L17-L22">source</a><br><h3 id="Base.Distributed.ProcessExitedException">
+<code>Base.Distributed.ProcessExitedException</code><span class="docstring-category">Type</span>
+</h3>
+<pre>ProcessExitedException()</pre>
+<p>After a client Julia process has exited, further attempts to reference the dead child will throw this exception.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/distributed/cluster.jl#L815-L820">source</a><br><h3 id="Core.StackOverflowError">
+<code>Core.StackOverflowError</code><span class="docstring-category">Type</span>
+</h3>
+<pre>StackOverflowError()</pre>
+<p>The function call grew beyond the size of the call stack. This usually happens when a call recurses infinitely.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/docs/helpdb/Base.jl#L1666-L1671">source</a><br><h3 id="Base.SystemError">
+<code>Base.SystemError</code><span class="docstring-category">Type</span>
+</h3>
+<pre>SystemError(prefix::AbstractString, [errno::Int32])</pre>
+<p>A system call failed with an error code (in the <code>errno</code> global variable).</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/base.jl#L3-L7">source</a><br><h3 id="Core.TypeError">
+<code>Core.TypeError</code><span class="docstring-category">Type</span>
+</h3>
+<pre>TypeError(func::Symbol, context::AbstractString, expected::Type, got)</pre>
+<p>A type assertion failure, or calling an intrinsic function with an incorrect argument type.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/docs/helpdb/Base.jl#L1902-L1906">source</a><br><h3 id="Core.UndefRefError">
+<code>Core.UndefRefError</code><span class="docstring-category">Type</span>
+</h3>
+<pre>UndefRefError()</pre>
+<p>The item or field is not defined for the given object.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/docs/helpdb/Base.jl#L749-L753">source</a><br><h3 id="Core.UndefVarError">
+<code>Core.UndefVarError</code><span class="docstring-category">Type</span>
+</h3>
+<pre>UndefVarError(var::Symbol)</pre>
+<p>A symbol in the current scope is not defined.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/docs/helpdb/Base.jl#L1775-L1779">source</a><br><h3 id="Base.InitError">
+<code>Base.InitError</code><span class="docstring-category">Type</span>
+</h3>
+<pre>InitError(mod::Symbol, error)</pre>
+<p>An error occurred when running a module's <code>__init__</code> function. The actual error thrown is available in the <code>.error</code> field.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/base.jl#L107-L112">source</a><br><h3 id="Base.retry">
+<code>Base.retry</code><span class="docstring-category">Function</span>
+</h3>
+<pre>retry(f::Function;  delays=ExponentialBackOff(), check=nothing) -&gt; Function</pre>
+<p>Returns an anonymous function that calls function <code>f</code>. If an exception arises, <code>f</code> is repeatedly called again, each time <code>check</code> returns <code>true</code>, after waiting the number of seconds specified in <code>delays</code>. <code>check</code> should input <code>delays</code>'s current state and the <code>Exception</code>.</p>
+<p><strong>Examples</strong></p>
+<pre>retry(f, delays=fill(5.0, 3))
+retry(f, delays=rand(5:10, 2))
+retry(f, delays=Base.ExponentialBackOff(n=3, first_delay=5, max_delay=1000))
+retry(http_get, check=(s,e)-&gt;e.status == "503")(url)
+retry(read, check=(s,e)-&gt;isa(e, UVError))(io, 128; all=false)</pre>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/error.jl#L117-L133">source</a><br><h3 id="Base.ExponentialBackOff">
+<code>Base.ExponentialBackOff</code><span class="docstring-category">Type</span>
+</h3>
+<pre>ExponentialBackOff(; n=1, first_delay=0.05, max_delay=10.0, factor=5.0, jitter=0.1)</pre>
+<p>A <a href="../numbers/#Core.Float64"><code>Float64</code></a> iterator of length <code>n</code> whose elements exponentially increase at a rate in the interval <code>factor</code> * (1 ± <code>jitter</code>). The first element is <code>first_delay</code> and all elements are clamped to <code>max_delay</code>.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/error.jl#L98-L104">source</a><br><h2 id="Events-1">Events</h2>
+<h3 id="Base.Timer-Tuple{Function,Real,Real}">
+<code>Base.Timer</code><span class="docstring-category">Method</span>
+</h3>
+<pre>Timer(callback::Function, delay, repeat=0)</pre>
+<p>Create a timer to call the given <code>callback</code> function. The <code>callback</code> is passed one argument, the timer object itself. The callback will be invoked after the specified initial <code>delay</code>, and then repeating with the given <code>repeat</code> interval. If <code>repeat</code> is <code>0</code>, the timer is only triggered once. Times are in seconds. A timer is stopped and has its resources freed by calling <a href="../io-network/#Base.close"><code>close</code></a> on it.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/event.jl#L416-L424">source</a><br><h3 id="Base.Timer">
+<code>Base.Timer</code><span class="docstring-category">Type</span>
+</h3>
+<pre>Timer(delay, repeat=0)</pre>
+<p>Create a timer that wakes up tasks waiting for it (by calling <a href="../parallel/#Base.wait"><code>wait</code></a> on the timer object) at a specified interval. Times are in seconds. Waiting tasks are woken with an error when the timer is closed (by <a href="../io-network/#Base.close"><code>close</code></a>. Use <a href="../io-network/#Base.isopen"><code>isopen</code></a> to check whether a timer is still active.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/event.jl#L316-L322">source</a><br><h3 id="Base.AsyncCondition">
+<code>Base.AsyncCondition</code><span class="docstring-category">Type</span>
+</h3>
+<pre>AsyncCondition()</pre>
+<p>Create a async condition that wakes up tasks waiting for it (by calling <a href="../parallel/#Base.wait"><code>wait</code></a> on the object) when notified from C by a call to <code>uv_async_send</code>. Waiting tasks are woken with an error when the object is closed (by <a href="../io-network/#Base.close"><code>close</code></a>. Use <a href="../io-network/#Base.isopen"><code>isopen</code></a> to check whether it is still active.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/event.jl#L259-L267">source</a><br><h3 id="Base.AsyncCondition-Tuple{Function}">
+<code>Base.AsyncCondition</code><span class="docstring-category">Method</span>
+</h3>
+<pre>AsyncCondition(callback::Function)</pre>
+<p>Create a async condition that calls the given <code>callback</code> function. The <code>callback</code> is passed one argument, the async condition object itself.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/event.jl#L289-L294">source</a><br><h2 id="Reflection-1">Reflection</h2>
+<h3 id="Base.module_name">
+<code>Base.module_name</code><span class="docstring-category">Function</span>
+</h3>
+<pre>module_name(m::Module) -&gt; Symbol</pre>
+<p>Get the name of a <code>Module</code> as a <code>Symbol</code>.</p>
+<pre>julia&gt; module_name(Base.LinAlg)
+:LinAlg</pre>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/reflection.jl#L5-L14">source</a><br><h3 id="Base.module_parent">
+<code>Base.module_parent</code><span class="docstring-category">Function</span>
+</h3>
+<pre>module_parent(m::Module) -&gt; Module</pre>
+<p>Get a module's enclosing <code>Module</code>. <code>Main</code> is its own parent, as is <code>LastMain</code> after <code>workspace()</code>.</p>
+<pre>julia&gt; module_parent(Main)
+Main
+
+julia&gt; module_parent(Base.LinAlg.BLAS)
+Base.LinAlg</pre>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/reflection.jl#L17-L29">source</a><br><h3 id="Base.current_module">
+<code>Base.current_module</code><span class="docstring-category">Function</span>
+</h3>
+<pre>current_module() -&gt; Module</pre>
+<p>Get the <em>dynamically</em> current <code>Module</code>, which is the <code>Module</code> code is currently being read from. In general, this is not the same as the module containing the call to this function.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/reflection.jl#L32-L37">source</a><br><h3 id="Base.fullname">
+<code>Base.fullname</code><span class="docstring-category">Function</span>
+</h3>
+<pre>fullname(m::Module)</pre>
+<p>Get the fully-qualified name of a module as a tuple of symbols. For example,</p>
+<pre>julia&gt; fullname(Base.Pkg)
+(:Base, :Pkg)
+
+julia&gt; fullname(Main)
+()</pre>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/reflection.jl#L40-L52">source</a><br><h3 id="Base.names">
+<code>Base.names</code><span class="docstring-category">Function</span>
+</h3>
+<pre>names(x::Module, all::Bool=false, imported::Bool=false)</pre>
+<p>Get an array of the names exported by a <code>Module</code>, excluding deprecated names. If <code>all</code> is true, then the list also includes non-exported names defined in the module, deprecated names, and compiler-generated names. If <code>imported</code> is true, then names explicitly imported from other modules are also included.</p>
+<p>As a special case, all names defined in <code>Main</code> are considered "exported", since it is not idiomatic to explicitly export names from <code>Main</code>.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/reflection.jl#L75-L86">source</a><br><h3 id="Core.nfields">
+<code>Core.nfields</code><span class="docstring-category">Function</span>
+</h3>
+<pre>nfields(x::DataType) -&gt; Int</pre>
+<p>Get the number of fields of a <code>DataType</code>.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/docs/helpdb/Base.jl#L1698-L1702">source</a><br><h3 id="Base.fieldnames">
+<code>Base.fieldnames</code><span class="docstring-category">Function</span>
+</h3>
+<pre>fieldnames(x::DataType)</pre>
+<p>Get an array of the fields of a <code>DataType</code>.</p>
+<pre>julia&gt; fieldnames(Hermitian)
+2-element Array{Symbol,1}:
+ :data
+ :uplo</pre>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/reflection.jl#L124-L135">source</a><br><h3 id="Base.fieldname">
+<code>Base.fieldname</code><span class="docstring-category">Function</span>
+</h3>
+<pre>fieldname(x::DataType, i::Integer)</pre>
+<p>Get the name of field <code>i</code> of a <code>DataType</code>.</p>
+<pre>julia&gt; fieldname(SparseMatrixCSC,1)
+:m
+
+julia&gt; fieldname(SparseMatrixCSC,5)
+:nzval</pre>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/reflection.jl#L107-L119">source</a><br><h3 id="Base.datatype_module">
+<code>Base.datatype_module</code><span class="docstring-category">Function</span>
+</h3>
+<pre>Base.datatype_module(t::DataType) -&gt; Module</pre>
+<p>Determine the module containing the definition of a <code>DataType</code>.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/reflection.jl#L155-L159">source</a><br><h3 id="Base.datatype_name">
+<code>Base.datatype_name</code><span class="docstring-category">Function</span>
+</h3>
+<pre>Base.datatype_name(t) -&gt; Symbol</pre>
+<p>Get the name of a (potentially UnionAll-wrapped) <code>DataType</code> (without its parent module) as a symbol.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/reflection.jl#L147-L151">source</a><br><h3 id="Base.isconst">
+<code>Base.isconst</code><span class="docstring-category">Function</span>
+</h3>
+<pre>isconst([m::Module], s::Symbol) -&gt; Bool</pre>
+<p>Determine whether a global is declared <code>const</code> in a given <code>Module</code>. The default <code>Module</code> argument is <a href="#Base.current_module"><code>current_module()</code></a>.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/reflection.jl#L164-L169">source</a><br><h3 id="Base.function_name">
+<code>Base.function_name</code><span class="docstring-category">Function</span>
+</h3>
+<pre>Base.function_name(f::Function) -&gt; Symbol</pre>
+<p>Get the name of a generic <code>Function</code> as a symbol, or <code>:anonymous</code>.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/reflection.jl#L856-L860">source</a><br><h3 id="Base.function_module-Tuple{Function}">
+<code>Base.function_module</code><span class="docstring-category">Method</span>
+</h3>
+<pre>Base.function_module(f::Function) -&gt; Module</pre>
+<p>Determine the module containing the (first) definition of a generic function.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/reflection.jl#L900-L905">source</a><br><h3 id="Base.function_module-Tuple{Any,Any}">
+<code>Base.function_module</code><span class="docstring-category">Method</span>
+</h3>
+<pre>Base.function_module(f::Function, types) -&gt; Module</pre>
+<p>Determine the module containing a given definition of a generic function.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/reflection.jl#L908-L912">source</a><br><h3 id="Base.functionloc-Tuple{Any,Any}">
+<code>Base.functionloc</code><span class="docstring-category">Method</span>
+</h3>
+<pre>functionloc(f::Function, types)</pre>
+<p>Returns a tuple <code>(filename,line)</code> giving the location of a generic <code>Function</code> definition.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/reflection.jl#L878-L882">source</a><br><h3 id="Base.functionloc-Tuple{Method}">
+<code>Base.functionloc</code><span class="docstring-category">Method</span>
+</h3>
+<pre>functionloc(m::Method)</pre>
+<p>Returns a tuple <code>(filename,line)</code> giving the location of a <code>Method</code> definition.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/reflection.jl#L865-L869">source</a><br><h3 id="Base.@functionloc">
+<code>Base.@functionloc</code><span class="docstring-category">Macro</span>
+</h3>
+<pre>@functionloc</pre>
+<p>Applied to a function or macro call, it evaluates the arguments to the specified call, and returns a tuple <code>(filename,line)</code> giving the location for the method that would be called for those arguments. It calls out to the <code>functionloc</code> function.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/interactiveutil.jl#L477-L483">source</a><br><h2 id="Internals-1">Internals</h2>
+<h3 id="Base.gc">
+<code>Base.gc</code><span class="docstring-category">Function</span>
+</h3>
+<pre>gc()</pre>
+<p>Perform garbage collection. This should not generally be used.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/docs/helpdb/Base.jl#L1782-L1786">source</a><br><h3 id="Base.gc_enable">
+<code>Base.gc_enable</code><span class="docstring-category">Function</span>
+</h3>
+<pre>gc_enable(on::Bool)</pre>
+<p>Control whether garbage collection is enabled using a boolean argument (<code>true</code> for enabled, <code>false</code> for disabled). Returns previous GC state. Disabling garbage collection should be used only with extreme caution, as it can cause memory use to grow without bound.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/docs/helpdb/Base.jl#L1806-L1812">source</a><br><h3 id="Base.macroexpand">
+<code>Base.macroexpand</code><span class="docstring-category">Function</span>
+</h3>
+<pre>macroexpand(x)</pre>
+<p>Takes the expression <code>x</code> and returns an equivalent expression with all macros removed (expanded).</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/expr.jl#L56-L60">source</a><br><h3 id="Base.@macroexpand">
+<code>Base.@macroexpand</code><span class="docstring-category">Macro</span>
+</h3>
+<pre>@macroexpand</pre>
+<p>Return equivalent expression with all macros removed (expanded).</p>
+<p>There is a subtle difference between <code>@macroexpand</code> and <code>macroexpand</code> in that expansion takes place in different contexts. This is best seen in the following example:</p>
+<pre>julia&gt; module M
+           macro m()
+               1
+           end
+           function f()
+               (@macroexpand(@m), macroexpand(:(@m)))
+           end
+       end
+M
+
+julia&gt; macro m()
+           2
+       end
+@m (macro with 1 method)
+
+julia&gt; M.f()
+(1, 2)</pre>
+<p>With <code>@macroexpand</code> the expression expands where <code>@macroexpand</code> appears in the code (module <code>M</code> in the example). With <code>macroexpand</code> the expression expands in the current module where the code was finally called (REPL in the example). Note that when calling <code>macroexpand</code> or <code>@macroexpand</code> directly from the REPL, both of these contexts coincide, hence there is no difference.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/expr.jl#L63-L94">source</a><br><h3 id="Base.expand">
+<code>Base.expand</code><span class="docstring-category">Function</span>
+</h3>
+<pre>expand(x)</pre>
+<p>Takes the expression <code>x</code> and returns an equivalent expression in lowered form. See also <a href="#Base.code_lowered"><code>code_lowered</code></a>.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/expr.jl#L48-L53">source</a><br><h3 id="Base.code_lowered">
+<code>Base.code_lowered</code><span class="docstring-category">Function</span>
+</h3>
+<pre>code_lowered(f, types)</pre>
+<p>Returns an array of lowered ASTs for the methods matching the given generic function and type signature.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/reflection.jl#L479-L483">source</a><br><h3 id="Base.@code_lowered">
+<code>Base.@code_lowered</code><span class="docstring-category">Macro</span>
+</h3>
+<pre>@code_lowered</pre>
+<p>Evaluates the arguments to the function or macro call, determines their types, and calls <a href="#Base.code_lowered"><code>code_lowered</code></a> on the resulting expression.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/interactiveutil.jl#L502-L507">source</a><br><h3 id="Base.code_typed">
+<code>Base.code_typed</code><span class="docstring-category">Function</span>
+</h3>
+<pre>code_typed(f, types; optimize=true)</pre>
+<p>Returns an array of lowered and type-inferred ASTs for the methods matching the given generic function and type signature. The keyword argument <code>optimize</code> controls whether additional optimizations, such as inlining, are also applied.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/reflection.jl#L766-L772">source</a><br><h3 id="Base.@code_typed">
+<code>Base.@code_typed</code><span class="docstring-category">Macro</span>
+</h3>
+<pre>@code_typed</pre>
+<p>Evaluates the arguments to the function or macro call, determines their types, and calls <a href="#Base.code_typed"><code>code_typed</code></a> on the resulting expression.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/interactiveutil.jl#L486-L491">source</a><br><h3 id="Base.code_warntype">
+<code>Base.code_warntype</code><span class="docstring-category">Function</span>
+</h3>
+<pre>code_warntype([io::IO], f, types)</pre>
+<p>Prints lowered and type-inferred ASTs for the methods matching the given generic function and type signature to <code>io</code> which defaults to <code>STDOUT</code>. The ASTs are annotated in such a way as to cause "non-leaf" types to be emphasized (if color is available, displayed in red). This serves as a warning of potential type instability. Not all non-leaf types are particularly problematic for performance, so the results need to be used judiciously. See <a href="../../manual/performance-tips/#man-code-warntype-1"><code>@code_warntype</code></a> for more information.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/interactiveutil.jl#L316-L325">source</a><br><h3 id="Base.@code_warntype">
+<code>Base.@code_warntype</code><span class="docstring-category">Macro</span>
+</h3>
+<pre>@code_warntype</pre>
+<p>Evaluates the arguments to the function or macro call, determines their types, and calls <a href="#Base.code_warntype"><code>code_warntype</code></a> on the resulting expression.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/interactiveutil.jl#L494-L499">source</a><br><h3 id="Base.code_llvm">
+<code>Base.code_llvm</code><span class="docstring-category">Function</span>
+</h3>
+<pre>code_llvm([io], f, types)</pre>
+<p>Prints the LLVM bitcodes generated for running the method matching the given generic function and type signature to <code>io</code> which defaults to <code>STDOUT</code>.</p>
+<p>All metadata and dbg.* calls are removed from the printed bitcode. Use code_llvm_raw for the full IR.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/reflection.jl#L732-L739">source</a><br><h3 id="Base.@code_llvm">
+<code>Base.@code_llvm</code><span class="docstring-category">Macro</span>
+</h3>
+<pre>@code_llvm</pre>
+<p>Evaluates the arguments to the function or macro call, determines their types, and calls <a href="#Base.code_llvm"><code>code_llvm</code></a> on the resulting expression.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/interactiveutil.jl#L510-L515">source</a><br><h3 id="Base.code_native">
+<code>Base.code_native</code><span class="docstring-category">Function</span>
+</h3>
+<pre>code_native([io], f, types, [syntax])</pre>
+<p>Prints the native assembly instructions generated for running the method matching the given generic function and type signature to <code>io</code> which defaults to <code>STDOUT</code>. Switch assembly syntax using <code>syntax</code> symbol parameter set to <code>:att</code> for AT&amp;T syntax or <code>:intel</code> for Intel syntax. Output is AT&amp;T syntax by default.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/reflection.jl#L745-L751">source</a><br><h3 id="Base.@code_native">
+<code>Base.@code_native</code><span class="docstring-category">Macro</span>
+</h3>
+<pre>@code_native</pre>
+<p>Evaluates the arguments to the function or macro call, determines their types, and calls <a href="#Base.code_native"><code>code_native</code></a> on the resulting expression.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/interactiveutil.jl#L518-L523">source</a><br><h3 id="Base.precompile">
+<code>Base.precompile</code><span class="docstring-category">Function</span>
+</h3>
+<pre>precompile(f,args::Tuple{Vararg{Any}})</pre>
+<p>Compile the given function <code>f</code> for the argument tuple (of types) <code>args</code>, but do not execute it.</p>
+<a class="source-link" target="_blank" href="https://github.com/JuliaLang/julia/tree/d386e40c17d43b79fc89d3e579fc04547241787c/base/docs/helpdb/Base.jl#L1404-L1408">source</a><br><div class="_attribution">
+  <p class="_attribution-p">
+    © 2009–2016 Jeff Bezanson, Stefan Karpinski, Viral B. Shah, and other contributors<br>Licensed under the MIT License.<br>
+    <a href="https://docs.julialang.org/en/release-0.6/stdlib/base/" class="_attribution-link" target="_blank">https://docs.julialang.org/en/release-0.6/stdlib/base/</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>
