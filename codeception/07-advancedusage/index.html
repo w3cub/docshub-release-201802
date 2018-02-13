@@ -1,0 +1,382 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>7. Advanced Usage - Codeception - W3cubDocs</title>
+  
+  <meta name="description" content="In this chapter we will cover some techniques and options that you can use to improve your testing experience and keep your project better organized &hellip;">
+  <meta name="keywords" content="advanced, usage, -, codeception">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/codeception/07-advancedusage/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/codeception.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/codeception/" class="_nav-link" title="" style="margin-left:0;">Codeception</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _codeception">
+				
+<h1 id="advanced-usage">Advanced Usage</h1> <p>In this chapter we will cover some techniques and options that you can use to improve your testing experience and keep your project better organized.</p> <h2 id="cest-classes">Cest Classes</h2> <p>If you want to get a class-like structure for your Cepts, you can use the Cest format instead of plain PHP. It is very simple and is fully compatible with Cept scenarios. It means that if you feel that your test is long enough and you want to split it, you can easily move it into classes.</p> <p>You can create a Cest file by running the command:</p> <pre data-language="bash">$ php codecept generate:cest suitename CestName</pre> <p>The generated file will look like this:</p> <pre data-language="php">&lt;?php
+class BasicCest
+{
+    public function _before(\AcceptanceTester $I)
+    {
+    }
+
+    public function _after(\AcceptanceTester $I)
+    {
+    }
+
+    // tests
+    public function tryToTest(\AcceptanceTester $I)
+    {
+    }
+}</pre> <p><strong>Each public method of Cest (except those starting with <code class="highlighter-rouge">_</code>) will be executed as a test</strong> and will receive an instance of the Actor class as the first parameter and the <code class="highlighter-rouge">$scenario</code> variable as the second one.</p> <p>In <code class="highlighter-rouge">_before</code> and <code class="highlighter-rouge">_after</code> methods you can use common setups and teardowns for the tests in the class. This actually makes Cest tests more flexible than Cepts, which rely only on similar methods in Helper classes.</p> <p>As you see, we are passing the Actor object into <code class="highlighter-rouge">tryToTest</code> method. This allows us to write scenarios the way we did before:</p> <pre data-language="php">&lt;?php
+class BasicCest
+{
+    // test
+    public function tryToTest(\AcceptanceTester $I)
+    {
+        $I-&gt;wantTo('log in to site');
+        $I-&gt;amOnPage('/');
+        $I-&gt;click('Login');
+        $I-&gt;fillField('username', 'john');
+        $I-&gt;fillField('password', 'coltrane');
+        $I-&gt;click('Enter');
+        $I-&gt;see('Hello, John');
+        $I-&gt;seeInCurrentUrl('/account');
+    }
+}</pre> <p>As you see, Cest classes have no parents like <code class="highlighter-rouge">\Codeception\Test\Unit</code> or <code class="highlighter-rouge">PHPUnit_Framework_TestCase</code>. This is done intentionally. It allows you to extend your classes with common behaviors and workarounds that may be used in child classes. But don’t forget to make these methods <code class="highlighter-rouge">protected</code> so they won’t be executed as tests.</p> <p>You can also define a <code class="highlighter-rouge">_failed</code> method in Cest classes which will be called if test finishes with <code class="highlighter-rouge">error</code> or fails.</p> <h2 id="dependency-injection">Dependency Injection</h2> <p>Codeception supports simple dependency injection for Cest and \Codeception\TestCase\Test classes. It means that you can specify which classes you need as parameters of the special <code class="highlighter-rouge">_inject()</code> method, and Codeception will automatically create the respective objects and invoke this method, passing all dependencies as arguments. This may be useful when working with Helpers. Here’s an example for Cest:</p> <pre data-language="php">&lt;?php
+class SignUpCest
+{
+    /**
+     * @var Helper\SignUp
+     */
+    protected $signUp;
+
+    /**
+     * @var Helper\NavBarHelper
+     */
+    protected $navBar;
+
+    protected function _inject(\Helper\SignUp $signUp, \Helper\NavBar $navBar)
+    {
+        $this-&gt;signUp = $signUp;
+        $this-&gt;navBar = $navBar;
+    }
+
+    public function signUp(\AcceptanceTester $I)
+    {
+        $I-&gt;wantTo('sign up');
+
+        $this-&gt;navBar-&gt;click('Sign up');
+        $this-&gt;signUp-&gt;register([
+            'first_name'            =&gt; 'Joe',
+            'last_name'             =&gt; 'Jones',
+            'email'                 =&gt; 'joe@jones.com',
+            'password'              =&gt; '1234',
+            'password_confirmation' =&gt; '1234'
+        ]);
+    }
+}</pre> <p>And for Test classes:</p> <pre data-language="php">&lt;?php
+class MathTest extends \Codeception\TestCase\Test
+{
+   /**
+    * @var \UnitTester
+    */
+    protected $tester;
+
+    /**
+     * @var Helper\Math
+     */
+    protected $math;
+
+    protected function _inject(\Helper\Math $math)
+    {
+        $this-&gt;math = $math;
+    }
+
+    public function testAll()
+    {
+        $this-&gt;assertEquals(3, $this-&gt;math-&gt;add(1, 2));
+        $this-&gt;assertEquals(1, $this-&gt;math-&gt;subtract(3, 2));
+    }
+}</pre> <p>However, Dependency Injection is not limited to this. It allows you to <strong>inject any class</strong>, which can be constructed with arguments known to Codeception.</p> <p>In order to make auto-wiring work, you will need to implement the <code class="highlighter-rouge">_inject()</code> method with the list of desired arguments. It is important to specify the type of arguments, so Codeception can guess which objects are expected to be received. The <code class="highlighter-rouge">_inject()</code> will only be invoked once, just after creation of the TestCase object (either Cest or Test). Dependency Injection will also work in a similar manner for Helper and Actor classes.</p> <p>Each test of a Cest class can declare its own dependencies and receive them from method arguments:</p> <pre data-language="php">&lt;?php
+class UserCest
+{
+    function updateUser(\Helper\User $u, \AcceptanceTester $I, \Page\User $userPage)
+    {
+        $user = $u-&gt;createDummyUser();
+        $userPage-&gt;login($user-&gt;getName(), $user-&gt;getPassword());
+        $userPage-&gt;updateProfile(['name' =&gt; 'Bill']);
+        $I-&gt;see('Profile was saved');
+        $I-&gt;see('Profile of Bill','h1');
+    }
+}</pre> <p>Moreover, Codeception can resolve dependencies recursively (when <code class="highlighter-rouge">A</code> depends on <code class="highlighter-rouge">B</code>, and <code class="highlighter-rouge">B</code> depends on <code class="highlighter-rouge">C</code> etc.) and handle parameters of primitive types with default values (like <code class="highlighter-rouge">$param = 'default'</code>). Of course, you are not allowed to have <em>cyclic dependencies</em>.</p> <h3 id="examples">Examples</h3> <p>What if you want to execute the same test scenario with different data? In this case you can inject examples as <code class="highlighter-rouge">\Codeception\Example</code> instances. Data is defined via the <code class="highlighter-rouge">@example</code> annotation, using JSON or Doctrine-style notation (limited to a single line). Doctrine-style:</p> <pre data-language="php">&lt;?php
+ /**
+  * @example ["/api/", 200]
+  * @example ["/api/protected", 401]
+  * @example ["/api/not-found-url", 404]
+  * @example ["/api/faulty", 500]
+  */
+  public function checkEndpoints(ApiTester $I, \Codeception\Example $example)
+  {
+    $I-&gt;sendGET($example[0]);
+    $I-&gt;seeResponseCodeIs($example[1]);
+  }</pre> <p>JSON:</p> <pre data-language="php">&lt;?php
+ /**
+  * @example { "url": "/", "title": "Welcome" }
+  * @example { "url": "/info", "title": "Info" }
+  * @example { "url": "/about", "title": "About Us" }
+  * @example { "url": "/contact", "title": "Contact Us" }
+  */
+  public function staticPages(AcceptanceTester $I, \Codeception\Example $example)
+  {
+    $I-&gt;amOnPage($example['url']);
+    $I-&gt;see($example['title'], 'h1');
+    $I-&gt;seeInTitle($example['title']);
+  }</pre> <div class="alert alert-info"> If you use JSON notation please keep in mind that all string keys and values should be enclosed in double quotes (`"`) according to JSON standard. </div> <p>Key-value data in Doctrine-style annotation syntax:</p> <pre data-language="php">&lt;?php
+ /**
+  * @example(url="/", title="Welcome")
+  * @example(url="/info", title="Info")
+  * @example(url="/about", title="About Us")
+  * @example(url="/contact", title="Contact Us")
+  */
+  public function staticPages(AcceptanceTester $I, \Codeception\Example $example)
+  {
+    $I-&gt;amOnPage($example['url']);
+    $I-&gt;see($example['title'], 'h1');
+    $I-&gt;seeInTitle($example['title']);
+  }</pre> <p>You can also use the <code class="highlighter-rouge">@dataprovider</code> annotation for creating dynamic examples, using a protected method for providing example data:</p> <pre data-language="php">&lt;?php
+   /**
+    * @dataprovider pageProvider
+    */
+    public function staticPages(AcceptanceTester $I, \Codeception\Example $example)
+    {
+        $I-&gt;amOnPage($example['url']);
+        $I-&gt;see($example['title'], 'h1');
+        $I-&gt;seeInTitle($example['title']);
+    }
+
+    /**
+     * @return array
+     */
+    protected function pageProvider() // alternatively, if you want the function to be public, be sure to prefix it with `_`
+    {
+        return [
+            ['url'=&gt;"/", 'title'=&gt;"Welcome"],
+            ['url'=&gt;"/info", 'title'=&gt;"Info"],
+            ['url'=&gt;"/about", 'title'=&gt;"About Us"],
+            ['url'=&gt;"/contact", 'title'=&gt;"Contact Us"]
+        ];
+    }</pre> <h3 id="beforeafter-annotations">Before/After Annotations</h3> <p>You can control execution flow with <code class="highlighter-rouge">@before</code> and <code class="highlighter-rouge">@after</code> annotations. You may move common actions into protected (non-test) methods and invoke them before or after the test method by putting them into annotations. It is possible to invoke several methods by using more than one <code class="highlighter-rouge">@before</code> or <code class="highlighter-rouge">@after</code> annotation. Methods are invoked in order from top to bottom.</p> <pre data-language="php">&lt;?php
+class ModeratorCest {
+
+    protected function login(AcceptanceTester $I)
+    {
+        $I-&gt;amOnPage('/login');
+        $I-&gt;fillField('Username', 'miles');
+        $I-&gt;fillField('Password', 'davis');
+        $I-&gt;click('Login');
+    }
+
+    /**
+     * @before login
+     */
+    public function banUser(AcceptanceTester $I)
+    {
+        $I-&gt;amOnPage('/users/charlie-parker');
+        $I-&gt;see('Ban', '.button');
+        $I-&gt;click('Ban');
+    }
+
+    /**
+     * @before login
+     * @before cleanup
+     * @after logout
+     * @after close
+     */
+    public function addUser(AcceptanceTester $I)
+    {
+        $I-&gt;amOnPage('/users/charlie-parker');
+        $I-&gt;see('Ban', '.button');
+        $I-&gt;click('Ban');
+    }
+}</pre> <h2 id="environments">Environments</h2> <p>For cases where you need to run tests with different configurations you can define different config environments. The most typical use cases are running acceptance tests in different browsers, or running database tests using different database engines.</p> <p>Let’s demonstrate the usage of environments for the browsers case.</p> <p>We need to add some new lines to <code class="highlighter-rouge">acceptance.suite.yml</code>:</p> <pre data-language="yaml">actor: AcceptanceTester
+modules:
+    enabled:
+        - WebDriver
+        - \Helper\Acceptance
+    config:
+        WebDriver:
+            url: 'http://127.0.0.1:8000/'
+            browser: 'firefox'
+
+env:
+    phantom:
+         modules:
+            config:
+                WebDriver:
+                    browser: 'phantomjs'
+
+    chrome:
+         modules:
+            config:
+                WebDriver:
+                    browser: 'chrome'
+
+    firefox:
+        # nothing changed</pre> <p>Basically you can define different environments inside the <code class="highlighter-rouge">env</code> root, name them (<code class="highlighter-rouge">phantom</code>, <code class="highlighter-rouge">chrome</code> etc.), and then redefine any configuration parameters that were set before.</p> <p>You can also define environments in separate configuration files placed in the directory specified by the <code class="highlighter-rouge">envs</code> option in the <code class="highlighter-rouge">paths</code> configuration:</p> <pre data-language="yaml">paths:
+    envs: tests/_envs</pre> <p>The names of these files are used as environments names (e.g. <code class="highlighter-rouge">chrome.yml</code> or <code class="highlighter-rouge">chrome.dist.yml</code> for an environment named <code class="highlighter-rouge">chrome</code>). You can generate a new file with this environment configuration by using the <code class="highlighter-rouge">generate:environment</code> command:</p> <pre data-language="bash">$ php codecept g:env chrome</pre> <p>In that file you can specify just the options you wish to override:</p> <pre data-language="yaml">modules:
+    config:
+        WebDriver:
+            browser: 'chrome'</pre> <p>The environment configuration files are merged into the main configuration before the suite configuration is merged.</p> <p>You can easily switch between those configs by running tests with <code class="highlighter-rouge">--env</code> option. To run the tests only for PhantomJS you just need to pass <code class="highlighter-rouge">--env phantom</code> as an option:</p> <pre data-language="bash">$ php codecept run acceptance --env phantom</pre> <p>To run the tests in all 3 browsers, list all the environments:</p> <pre data-language="bash">$ php codecept run acceptance --env phantom --env chrome --env firefox</pre> <p>The tests will be executed 3 times, each time in a different browser.</p> <p>It’s also possible to merge multiple environments into a single configuration by separating them with a comma:</p> <pre data-language="bash">$ php codecept run acceptance --env dev,phantom --env dev,chrome --env dev,firefox</pre> <p>The configuration is merged in the order given. This way you can easily create multiple combinations of your environment configurations.</p> <p>Depending on the environment, you may choose which tests are to be executed. For example, you might need some tests to be executed in Firefox only, and some tests in Chrome only.</p> <p>The desired environments can be specified with the <code class="highlighter-rouge">@env</code> annotation for tests in Test and Cest formats:</p> <pre data-language="php">&lt;?php
+class UserCest
+{
+    /**
+     * This test will be executed only in 'firefox' and 'phantom' environments
+     *
+     * @env firefox
+     * @env phantom
+     */
+    public function webkitOnlyTest(AcceptanceTester $I)
+    {
+        // I do something
+    }
+}</pre> <p>For Cept you should use simple comments:</p> <pre data-language="php">&lt;?php
+// @env firefox
+// @env phantom</pre> <p>This way you can easily control which tests will be executed for each environment.</p> <h3 id="current-values">Current values</h3> <p>Sometimes you may need to change the test behavior in real time. For instance, the behavior of the same test may differ in Firefox and in Chrome. In runtime we can retrieve the current environment name, test name, or list of enabled modules by calling the <code class="highlighter-rouge">$scenario-&gt;current()</code> method.</p> <pre data-language="php">&lt;?php
+// retrieve current environment
+$scenario-&gt;current('env');
+
+// list of all enabled modules
+$scenario-&gt;current('modules');
+
+// test name
+$scenario-&gt;current('name');
+
+// browser name (if WebDriver module enabled)
+$scenario-&gt;current('browser');
+
+// capabilities (if WebDriver module enabled)
+$scenario-&gt;current('capabilities');</pre> <p>You can access <code class="highlighter-rouge">\Codeception\Scenario</code> in the Cept and Cest formats. In Cept, the <code class="highlighter-rouge">$scenario</code> variable is available by default, while in Cest you should retrieve it through dependency injection:</p> <pre data-language="php">&lt;?php
+public function myTest(\AcceptanceTester $I, \Codeception\Scenario $scenario)
+{
+    if ($scenario-&gt;current('browser') == 'phantomjs') {
+      // emulate popups for PhantomJS
+      $I-&gt;executeScript('window.alert = function(){return true;}');
+    }
+}</pre> <p><code class="highlighter-rouge">Codeception\Scenario</code> is also availble in Actor classes and StepObjects. You can access it with <code class="highlighter-rouge">$this-&gt;getScenario()</code>.</p> <h3 id="dependencies">Dependencies</h3> <p>With the <code class="highlighter-rouge">@depends</code> annotation you can specify a test that should be passed before the current one. If that test fails, the current test will be skipped. You should pass the method name of the test you are relying on.</p> <pre data-language="php">&lt;?php
+class ModeratorCest {
+
+    public function login(AcceptanceTester $I)
+    {
+        // logs moderator in
+    }
+
+    /**
+     * @depends login
+     */
+    public function banUser(AcceptanceTester $I)
+    {
+        // bans user
+    }
+}</pre> <p><code class="highlighter-rouge">@depends</code> applies to the <code class="highlighter-rouge">Cest</code> and <code class="highlighter-rouge">Codeception\Test\Unit</code> formats. Dependencies can be set across different classes. To specify a dependent test from another file you should provide a <em>test signature</em>. Normally, the test signature matches the <code class="highlighter-rouge">className:methodName</code> format. But to get the exact test signature just run the test with the <code class="highlighter-rouge">--steps</code> option to see it:</p> <pre data-language="yaml">Signature: ModeratorCest:login`</pre> <p>Codeception reorders tests so dependent tests will always be executed before the tests that rely on them.</p> <h2 id="interactive-console">Interactive Console</h2> <p>The interactive console was added to try Codeception commands before executing them inside a test.</p> <p><img src="data:image/png;base64,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" alt="console"></p> <p>You can run the console with the following command:</p> <pre data-language="bash">$ php codecept console suitename</pre> <p>Now you can execute all the commands of an appropriate Actor class and see the results immediately. This is especially useful when used with the <code class="highlighter-rouge">WebDriver</code> module. It always takes too long to launch Selenium and the browser for tests. But with the console you can try different selectors, and different commands, and then write a test that should pass when executed.</p> <p>And a special hint: show your boss how you can easily manipulate web pages with the console and Selenium. It will be easy to convince them to automate this step and introduce acceptance testing to the project.</p> <h2 id="running-from-different-folders">Running from different folders</h2> <p>If you have several projects with Codeception tests, you can use a single <code class="highlighter-rouge">codecept</code> file to run all of your tests. You can pass the <code class="highlighter-rouge">-c</code> option to any Codeception command (except <code class="highlighter-rouge">bootstrap</code>), to execute Codeception in another directory:</p> <pre data-language="bash">$ php codecept run -c ~/projects/ecommerce/
+$ php codecept run -c ~/projects/drupal/
+$ php codecept generate:cept acceptance CreateArticle -c ~/projects/drupal/</pre> <p>To create a project in directory different from the current one, just provide its path as a parameter:</p> <pre data-language="bash">$ php codecept bootstrap ~/projects/drupal/</pre> <p>Also, the <code class="highlighter-rouge">-c</code> option allows you to specify another config file to be used. Thus, you can have several <code class="highlighter-rouge">codeception.yml</code> files for your test suite (e.g. to to specify different environments and settings). Just pass the <code class="highlighter-rouge">.yml</code> filename as the <code class="highlighter-rouge">-c</code> parameter to execute tests with specific config settings.</p> <h2 id="groups">Groups</h2> <p>There are several ways to execute a bunch of tests. You can run tests from a specific directory:</p> <pre data-language="bash">$ php codecept run tests/acceptance/admin</pre> <p>You can execute one (or several) specific groups of tests:</p> <pre data-language="bash">$ php codecept run -g admin -g editor</pre> <p>The concept of groups was taken from PHPUnit and behave in the same way.</p> <p>For Test and Cest files you can use the <code class="highlighter-rouge">@group</code> annotation to add a test to a group.</p> <pre data-language="php">&lt;?php
+/**
+ * @group admin
+ */
+public function testAdminUser()
+{
+}</pre> <p>For Cept files, use pseudo-annotations in comments:</p> <pre data-language="php">&lt;?php
+// @group admin
+// @group editor
+$I = new AcceptanceTester($scenario);
+$I-&gt;wantToTest('admin area');</pre> <p>For <code class="highlighter-rouge">.feature</code>-files (Gherkin) use tags:</p> <pre data-language="gherkin">@admin @editor
+Feature: Admin area</pre> <h3 id="group-files">Group Files</h3> <p>Groups can be defined in global or suite configuration files. Tests for groups can be specified as an array of file names or directories containing them:</p> <pre data-language="yaml">groups:
+  # add 2 tests to db group
+  db: [tests/unit/PersistTest.php, tests/unit/DataTest.php]
+  
+  # add all tests from a directory to api group
+  api: [tests/functional/api]</pre> <p>A list of tests for the group can be passed from a Group file. It should be defined in plain text with test names on separate lines:</p> <pre data-language="bash">tests/unit/DbTest.php
+tests/unit/UserTest.php:create
+tests/unit/UserTest.php:update</pre> <p>A group file can be included by its relative filename:</p> <pre data-language="yaml">groups:
+  # requiring a group file
+  slow: tests/_data/slow.txt</pre> <p>You can create group files manually or generate them from third party applications. For example, you can write a script that updates the slow group by taking the slowest tests from xml report.</p> <p>You can even specify patterns for loading multiple group files with a single definition:</p> <pre data-language="yaml">groups:
+  p*: tests/_data/p*</pre> <p>This will load all found <code class="highlighter-rouge">p*</code> files in <code class="highlighter-rouge">tests/_data</code> as groups. Group names will be as follows p1,p2,…,pN.</p> <h2 id="shell-autocompletion">Shell autocompletion</h2> <p>For bash and zsh shells, you can use autocompletion for your Codeception projects by executing the following in your shell (or add it to your .bashrc/.zshrc):</p> <pre data-language="bash"># BASH ~4.x, ZSH
+source &lt;([codecept location] _completion --generate-hook --program codecept --use-vendor-bin)
+
+# BASH ~3.x, ZSH
+[codecept location] _completion --generate-hook --program codecept --use-vendor-bin | source /dev/stdin
+
+# BASH (any version)
+eval $([codecept location] _completion --generate-hook --program codecept --use-vendor-bin)</pre> <h3 id="explanation">Explanation</h3> <p>By using the above code in your shell, Codeception will try to autocomplete the following:</p> <ul> <li>Commands</li> <li>Suites</li> <li>Test paths</li> </ul> <p>Usage of <code class="highlighter-rouge">-use-vendor-bin</code> is optional. This option will work for most Codeception projects, where Codeception is located in your <code class="highlighter-rouge">vendor/bin</code> folder. But in case you are using a global Codeception installation for example, you wouldn’t use this option.</p> <p>Note that with the <code class="highlighter-rouge">-use-vendor-bin</code> option, your commands will be completed using the Codeception binary located in your project’s root. Without the option, it will use whatever Codeception binary you originally used to generate the completion script (‘codecept location’ in the above examples)</p> <h2 id="conclusion">Conclusion</h2> <p>Codeception is a framework which may look simple at first glance but it allows you to build powerful tests with a single API, refactor them, and write them faster using the interactive console. Codeception tests can be easily organized in groups or Cest classes.</p> <ul> <li><strong>Next Chapter: <a href="../07-bdd/">BDD &gt;</a></strong></li> <li><strong>Previous Chapter: <a href="../06-reusingtestcode/">&lt; ReusingTestCode</a></strong></li> </ul>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2011–2017 Michael Bodnarchuk and contributors<br>Licensed under the MIT License.<br>
+    <a href="http://codeception.com/docs/07-AdvancedUsage" class="_attribution-link" target="_blank">http://codeception.com/docs/07-AdvancedUsage</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>

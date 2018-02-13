@@ -1,0 +1,154 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Robust Chrome Testing With Puppeteer - CodeceptJS - W3cubDocs</title>
+  
+  <meta name="description" content="Among all Selenium alternatives the most interesting emerging ones are tools developed around Google Chrome DevTools Protocol. And the most &hellip;">
+  <meta name="keywords" content="robust, chrome, testing, with, puppeteer, -, codeceptjs">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <link rel="canonical" href="http://docs.w3cub.com/codeceptjs/puppeteer/">
+  <link href="/favicon.png" rel="icon">
+  <link type="text/css" rel="stylesheet" href="/assets/application-e0f881b0fce8cbe96f33dadc355b7159d5d2912911231446d60eb8f9caffa802.css">
+  <script type="text/javascript" src="/assets/application-8fc46316434047265cd383f02b8e7f434ed7dec4a59f920dd633deef8d488d1b.js"></script>
+  <script src="/json/codeceptjs.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71174418-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+	<div class="_app">
+	<header class="_header">
+  
+  <form class="_search">
+    <input type="search" class="_search-input" placeholder="Search&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+    <a class="_search-clear"></a>
+    <div class="_search-tag"></div>
+  </form>
+  
+  <a class="_home-link" href="/" ></a>
+  <a class="_menu-link"></a>
+  <h1 class="_logo">
+    <a href="/" class="_nav-link" title="API Documentation Browser">W3cubDocs</a>
+  </h1>
+  
+  <span class="_logo-sub-nav">/</span><span class="_logo-sub-nav"><a href="/codeceptjs/" class="_nav-link" title="" style="margin-left:0;">CodeceptJS</a></span>
+  
+  <nav class="_nav">
+    <a href="/app/" class="_nav-link ">App</a>
+    <a href="/about/" class="_nav-link ">About</a>
+  </nav>
+</header>
+	<section class="_sidebar">
+		<div class="_list">
+			
+		</div>
+	</section>
+	<section class="_container ">
+		<div class="_content">
+			<div class="_page _codeceptjs">
+				
+<h1 id="robust-chrome-testing-with-puppeteer">Robust Chrome Testing with Puppeteer</h1> <p>Among all Selenium alternatives the most interesting emerging ones are tools developed around Google Chrome <a href="https://chromedevtools.github.io/devtools-protocol/" target="_blank">DevTools Protocol</a>. And the most prominent one is <a href="https://github.com/GoogleChrome/puppeteer" target="_blank">Puppeteer</a>. It operates over Google Chrome directly without requireing additional tools like ChromeDriver. So tests setup with Puppeteer can be started with npm install only. If you want get faster and simpler to setup tests, Puppeteer would be your choice.</p> <p>CodeceptJS uses Puppeteer to improve end to end testing experience.</p> <ol> <li>No need to learn the syntax of a new tool, all drivers in CodeceptJS share the same API.</li> <li>CodeceptJS can locate elements by XPath.</li> </ol> <p>Take a look at a sample test:</p> <pre data-language="js">I.amOnPage('https://github.com');
+I.click('Sign in', '//html/body/div[1]/header');
+I.see('Sign in to GitHub', 'h1');
+I.fillField('Username or email address', 'something@totest.com');
+I.fillField('Password', '123456');
+I.click('Sign in');
+I.see('Incorrect username or password.', '.flash-error');
+</pre> <p>It's readable and simple, contains XPath and works using Puppeteer API!</p> <h2 id="setup">Setup</h2> <p>To start you need CodeceptJS with Puppeteer packages installed</p> <pre data-language="bash">npm install -g codeceptjs-puppeteer
+</pre> <p>Or see <a href="http://codecept.io/installation/" target="_blank">alternative installation options</a> If you already have CodeceptJS project, just install <code>puppeteer</code> package and enable it in config.</p> <p>And a basic project initialized</p> <pre data-language="sh">codeceptjs init
+</pre> <p>You will be asked for a Helper to use, you should select Puppeteer and provide url of a website you are testing.</p> <h2 id="configuring">Configuring</h2> <p>Make sure <code>Puppeteer</code> helper is enabled in <code>codecept.json</code> config:</p> <pre data-language="js">{ // ..
+  "helpers": {
+    "Puppeteer": {
+      "url": "http://localhost",
+      "show": false
+    }
+  }
+  // ..
+}
+</pre> <p>Turn on the <code>show</code> option if you want to follow test progress in a window. This is very useful for debugging.</p> <p>Sometimes test may run faster than application gets rendered. In this case it is <strong>recommended to increase <code>waitForAction</code> config value</strong>. It will wait for a small amount of time (100ms) by default after each user action taken.</p> <p><em>More options are listed in <a href="http://codecept.io/helpers/Puppeteer/" target="_blank">helper reference</a>.</em></p> <h2 id="writing-tests">Writing Tests</h2> <p>CodeceptJS test should be created with <code>gt</code> command:</p> <pre>codeceptjs gt
+</pre> <p>As an example we will use <code>ToDoMvc</code> app for testing.</p> <h3 id="actions">Actions</h3> <p>Tests consist with a scenario of user's action taken on a page. The most widely used ones are:</p> <ul> <li>
+<code>amOnPage</code> - to open a webpage (accepts relative or absolute url)</li> <li>
+<code>click</code> - to locate a button or link and click on it</li> <li>
+<code>fillField</code> - to enter a text inside a field</li> <li>
+<code>selectOption</code>, <code>checkOption</code> - to interact with a form</li> <li>
+<code>wait*</code> to wait for some parts of page to be fully rendered (important for testing SPA)</li> <li>
+<code>grab*</code> to get values from page sources</li> <li>
+<code>see</code>, <code>dontSee</code> - to check for a text on a page</li> <li>
+<code>seeElement</code>, <code>dontSeeElement</code> - to check for elements on a page</li> </ul> <p><em>All actions are listed in <a href="http://codecept.io/helpers/Puppeteer/" target="_blank">helper reference</a>.</em></p> <p>All actions whicn interact with elements <strong>support CSS and XPath locators</strong>. Actions like <code>click</code> or <code>fillField</code> by locate elements by their name or value on a page:</p> <pre data-language="js">
+// search for link or button
+I.click('Login');
+// locate field by its label
+I.fillField('Name', 'Miles');
+// we can use input name
+I.fillField('user[email]','miles@davis.com');
+</pre> <p>You can also specify the exact locator type with strict locators:</p> <pre data-language="js">I.click({css: 'button.red'});
+I.fillField({name: 'user[email]'},'miles@davis.com');
+I.seeElement({xpath: '//body/header'});
+</pre> <p>A complete ToDo-MVC test may look like:</p> <pre data-language="js">Feature('ToDo');
+
+Scenario('create todo item', (I) =&gt; {
+  I.amOnPage('http://todomvc.com/examples/react/');
+  I.dontSeeElement('.todo-count');
+  I.fillField('What needs to be done?', 'Write a guide');
+  I.pressKey('Enter');
+  I.see('Write a guide', '.todo-list');
+  I.see('1 item left', '.todo-count');
+});
+</pre> <h3 id="grabbers">Grabbers</h3> <p>If you need to get element's value inside a test you can use <code>grab*</code> methods. They should be used with <code>await</code> operator inside <code>async</code> function:</p> <pre data-language="js">const assert = require('assert');
+Scenario('get value of current tasks', async (I) =&gt; {
+  I.createTodo('do 1');
+  I.createTodo('do 2');
+  let numTodos = await I.grabTextFrom('.todo-count strong');
+  assert.equal(2, numTodos);
+});
+</pre> <h3 id="within">Within</h3> <p>In case some actions should be taken inside one element (a container or modal window) you can use <code>within</code> block to narrow the scope. Please take a not that you can't use within inside another within in Puppeteer helper:</p> <pre data-language="js">within('.todoapp', () =&gt; {
+  I.createTodo('my new item');
+  I.see('1 item left', '.todo-count');
+  I.click('.todo-list input.toggle');
+});
+I.see('0 items left', '.todo-count');
+</pre> <p>CodeceptJS allows you to implement custom actions like <code>I.createTodo</code> or use <strong>PageObjects</strong>. Learn how to improve your tests in <a href="http://codecept.io/pageobjects/" target="_blank">PageObjects</a> guide.</p> <h2 id="extending">Extending</h2> <p>Puppeteer has a very <a href="https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md" target="_blank">rich and flexible API</a>. Sure, you can extend your test suites to use the methods listed there. CodeceptJS already prepares some objects for you and you can use them from your you helpers.</p> <p>Start with creating an <code>MyPuppeteer</code> helper using <code>generate:helper</code> or <code>gh</code> command:</p> <pre>codeceptjs gh
+</pre> <p>Then inside a Helper you can access <code>Puppeteer</code> helper of CodeceptJS. Let's say you want to create <code>I.renderPageToPdf</code> action. In this case you need to call <code>pdf</code> method of <code>page</code> object</p> <pre data-language="js">// inside a MyPuppeteer helper
+async renderPageToPdf() {
+  const page = this.helpers['Puppeteer'].page;
+  await page.emulateMedia('screen');
+  return page.pdf({path: 'page.pdf'});
+}
+</pre> <p>The same way you can also access <code>browser</code> object to implement more actions or handle events. <a href="http://codecept.io/helpers/" target="_blank">Learn more about Helpers</a> in the corresponding guide.</p> <h2 id="done">done()</h2> <p>Yes, also the <a href="https://github.com/DavertMik/codeceptjs-todomvc-puppeteer" target="_blank">demo project is available on GitHub</a></p>
+<div class="_attribution">
+  <p class="_attribution-p">
+    © 2015 DavertMik &lt;davert@codegyre.com&gt; (http://codegyre.com)<br>Licensed under the MIT License.<br>
+    <a href="http://codecept.io/puppeteer/" class="_attribution-link" target="_blank">http://codecept.io/puppeteer/</a>
+  </p>
+</div>
+
+			</div>
+		</div>
+	</section>
+
+	</div>
+	<svg style="display:none">
+		<symbol id="icon-dir"><svg viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"/></svg></symbol>
+	  </svg>
+</body>
+</html>
